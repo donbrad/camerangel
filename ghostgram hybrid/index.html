@@ -76,6 +76,7 @@
 	<script src="scripts/models/deviceModel.js"></script>
 	<script src="scripts/models/everliveModel.js"></script>
 	<script src="scripts/models/mapModel.js"></script>
+	<script src="scripts/models/memberdirectory.js"></script>
 	<script src="scripts/models/monkeylearnModel.js"></script>
 	<script src="scripts/models/noteModel.js"></script>
 	<script src="scripts/models/notificationModel.js"></script>
@@ -230,6 +231,65 @@
 		</li>
      </ul>
 
+</div>
+
+<div data-role="drawer" id="ggDrawer" style="width: 50%;" data-title="Hot Buttons"  data-use-native-scrolling="true">
+	<header data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+		</div>
+	</header>
+
+	<ul data-role="listview"  style="padding-left: 8px;">
+		<li>
+			<a class="btnClear" data-role="button" href="#privateNotes">
+				<img src="images/icon-myNotes-alt.svg" class="icon-sm" />
+				My Notes
+			</a>
+		</li>
+		<li>
+			<div>
+				<a data-role="button" class="btnClear" data-click='userStatusView.camera'>
+					<img src="images/icon-camera.svg" class="icon-sm" />
+					Camera
+				</a>
+			</div>
+		</li>
+		<li>
+			<div>
+				<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
+					<img src="images/icon-external.svg" class="icon-sm" />
+					Sign Out
+				</a>
+			</div>
+		</li>
+		<li> <div><h3>Personal Safety</h3></div></li>
+		<li> <a data-role="button" class="btnClear" >
+				Police (911)
+			</a>
+		</li>
+		<li> <a data-role="button" class="btnClear" >
+			Fire (911)
+		</a>
+		</li>
+		<li> <a data-role="button" class="btnClear" >
+			Medical (911)
+		</a>
+		</li>
+		<li> <a data-role="button" class="btnClear">
+			Roadside
+		</a>
+		</li>
+		<li> <a data-role="button" class="btnClear" >
+			Family Alert
+		</a>
+		</li>
+		<li> <a data-role="button" class="btnClear" >
+			Local Alert
+		</a>
+		</li>
+
+	</ul>
 </div>
 
  <div data-role="layout" data-id="profileLayout" style="display:none;">
@@ -1375,13 +1435,13 @@
     			<ul class="chat-option-ul">
     				# if (isPrivate){#
     					<li>
-		    				<a class="btnClear-red" data-channel="#:channelId #" data-role="button"  data-click="channelsView.deleteChannel">
+		    				<a class="btnClear-red" data-channel="#:channelUUID #" data-role="button"  data-click="channelsView.deleteChannel">
 		    					<img src="images/icon-trash.svg" />
 		    					<p class="chat-option-selection"> Delete </p>
 		    				</a>
 	    				</li>
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelUUID #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 			    				# if(data.isMuted) {#
 		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
 			    					<p class="channelMute">Unmute</p>
@@ -1393,14 +1453,14 @@
 	    				</li>
     				#} else {#
     					<li>
-		    				<a class="btnClear-red" data-role="button" data-channel="#:channelId #" data-click="channelsView.deleteChannel" data-channel="#:channelId #">
+		    				<a class="btnClear-red" data-role="button" data-channel="#:channelUUID #" data-click="channelsView.deleteChannel" data-channel="#:channelUUID #">
 		    					<img src="images/icon-trash.svg" />
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
 
 	    				<li>
-		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelId #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
+		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelUUID #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 		    					# if(data.isMuted) {#
 		    						<img src="images/icon-unmute.svg" class="channelMuteImg"/>
 			    					<p class="channelMute">Unmute</p>
@@ -1414,7 +1474,7 @@
     				#}#
     				# if(isPrivate !== true && isOwner){#
     						<li>
-			    				<a class="btnClear-grey" data-role="button" data-click="channelsView.editChannel" data-channel="#:channelId #">
+			    				<a class="btnClear-grey" data-role="button" data-click="channelsView.editChannel" data-channel="#:channelUUID #">
 				    				<img src="images/option-edit.svg" />
 				    				<p class="chat-option-selection">Edit</p>
 				    			</a>
@@ -1424,7 +1484,7 @@
     			</ul>
     		</div>
     	</div><!-- chat-options -->
-    	<a class="chat-mainBoxLink" id="#:channelId#" data-channel="#:channelId#">
+    	<a class="chat-mainBoxLink" id="#:channelUUID#" data-channel="#:channelUUID#">
 	    	#if (isPrivate){#
 	    		<div class="chat-mainBox private">
 	    	#} else if (isOwner){#
@@ -1726,7 +1786,7 @@
 		}
 	}
 	var messageClass = "chat-message-text";
-	if(userModel.currentUser.useLargeView){
+	if(userModel._user.useLargeView){
 		 messageClass = "userLgFontSize chat-message-text";
 	}
 	if (isContact === undefined) {
@@ -3951,22 +4011,22 @@
 			</li>
 			<li>
 				<label>Use Retina Photos
-					<input type="checkbox" id="settingsRetinaPhoto" data-role="switch" data-bind="checked: currentUser.isRetina"/>
+					<input type="checkbox" id="settingsRetinaPhoto" data-role="switch" data-bind="checked: _user.isRetina"/>
 				</label>
 			</li>
 			<li>
 				<label> Sync on WIFI Only
-					<input type="checkbox" id="settingsWIFIOnly" data-role="switch" data-bind="checked: currentUser.isWIFIOnly" />
+					<input type="checkbox" id="settingsWIFIOnly" data-role="switch" data-bind="checked: _user.isWIFIOnly" />
 				</label>
 			</li>
 			<li>
 				<label> Keep Original Photo
-					<input type="checkbox" id="settingsKeepPhoto" data-role="switch" data-bind="checked: currentUser.isPhotoStored" />
+					<input type="checkbox" id="settingsKeepPhoto" data-role="switch" data-bind="checked: _user.isPhotoStored" />
 				</label>
 			</li>
 			<li>
 				<label> Save to Phone Photo Album
-					<input type="checkbox" id="settingsSaveToAlbum" data-role="switch"  data-bind="checked: currentUser.saveToPhotoAlbum"/>
+					<input type="checkbox" id="settingsSaveToAlbum" data-role="switch"  data-bind="checked: _user.saveToPhotoAlbum"/>
 				</label>
 			</li>
 			<li>
@@ -3982,12 +4042,12 @@
 			</li>
 			<li>
 				<label>User Id (UUID) <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-					<input type="text" id="profile-uuid" data-bind="value: currentUser.userUUID" readonly/>
+					<input type="text" id="profile-uuid" data-bind="value: _user.userUUID" readonly/>
 				</label>
 			</li>
 			<li>
 				<label>App Version <span class="helper helper-right"><i class="fa fa-lock"></i> Locked </span>
-					<input type="text" id="profile-version" data-bind="value: currentUser.appVersion" readonly/>
+					<input type="text" id="profile-version" data-bind="value: _user.appVersion" readonly/>
 				</label>
 			</li>
 			<li>

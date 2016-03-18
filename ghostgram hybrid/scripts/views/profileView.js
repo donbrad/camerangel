@@ -12,11 +12,11 @@ var profileView = {
 
     onShow: function (e) {
         _preventDefault(e);
-        if (userModel.currentUser.emailVerified){
+        if (userModel._user.emailVerified){
             $("#verified-email").removeClass("hidden");
         }
 
-        if(userModel.currentUser.phoneVerified){
+        if(userModel._user.phoneVerified){
             $("#verified-phone").removeClass("hidden");
         }
 
@@ -37,21 +37,21 @@ var profileEditView = {
     onShow: function (e) {
         _preventDefault(e);
 
-        profileEditView._activeProfile.set('name', userModel.currentUser.get('name'));
-        profileEditView._activeProfile.set('username', userModel.currentUser.get('username'));
-        profileEditView._activeProfile.set('alias', userModel.currentUser.get('alias'));
-        profileEditView._activeProfile.set('email', userModel.currentUser.get('email'));
-        profileEditView._activeProfile.set('photo', userModel.currentUser.get('photo'));
-        profileEditView._activeProfile.set('phone', userModel.currentUser.get('phone'));
+        profileEditView._activeProfile.set('name', userModel._user.get('name'));
+        profileEditView._activeProfile.set('username', userModel._user.get('username'));
+        profileEditView._activeProfile.set('alias', userModel._user.get('alias'));
+        profileEditView._activeProfile.set('email', userModel._user.get('email'));
+        profileEditView._activeProfile.set('photo', userModel._user.get('photo'));
+        profileEditView._activeProfile.set('phone', userModel._user.get('phone'));
 
         $(".phone").val(profileEditView._activeProfile.phone);
 
         // Set verified
-        if(userModel.currentUser.phoneVerified){
+        if(userModel._user.phoneVerified){
         	$("#profile-verified-phone").removeClass("hidden");
         }
 
-        if(userModel.currentUser.emailValidated){
+        if(userModel._user.emailValidated){
         	$("#profile-verified-email").removeClass("hidden");
         }
         
@@ -65,10 +65,10 @@ var profileEditView = {
 
         mobileNotify("Updating your profile...");
 
-        userModel.currentUser.set('name', profileEditView._activeProfile.get('name'));
-        userModel.currentUser.set('alias', profileEditView._activeProfile.get('alias'));
-        userModel.currentUser.set('email', profileEditView._activeProfile.get('email'));
-        userModel.currentUser.set('photo', profileEditView._activeProfile.get('photo'));
+        userModel._user.set('name', profileEditView._activeProfile.get('name'));
+        userModel._user.set('alias', profileEditView._activeProfile.get('alias'));
+        userModel._user.set('email', profileEditView._activeProfile.get('email'));
+        userModel._user.set('photo', profileEditView._activeProfile.get('photo'));
 
         // Todo Don - possible to redirect the user to last view (_returnView)
         APP.kendo.navigate('#home');

@@ -148,20 +148,23 @@
 
 		contactModel.init();
 
-
 		mapModel.init();
 
 		placesModel.init();
 
 		privateNoteModel.init();  // Depends on everlive...
 
+		memberdirectory.init();
 
-
+		noteModel.init();
+		
 		photoModel.init();
 
 		channelModel.init();
 
 		smartEvent.init();
+
+		smartMovie.init();
 
 		tagModel.init();
 
@@ -173,8 +176,6 @@
 
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
-
-
 
 
 		APP.kendo = new kendo.mobile.Application(document.body, {
@@ -190,7 +191,7 @@
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator !== undefined) {
 			deviceModel.appVersion = "emulator: 0.0.10";
-			userModel.currentUser.set('appVersion', deviceModel.appVersion);
+			userModel._user.set('appVersion', deviceModel.appVersion);
 		} else {
 			cordova.getAppVersion.getVersionCode(function(version) {
 
@@ -199,7 +200,7 @@
 				}
 
 				deviceModel.appVersion = version;
-				userModel.currentUser.set('appVersion', version);
+				userModel._user.set('appVersion', version);
 				mobileNotify("ghostgrams version: " + deviceModel.appVersion);
 
 			});

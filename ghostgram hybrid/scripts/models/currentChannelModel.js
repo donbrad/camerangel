@@ -8,7 +8,7 @@ var currentChannelModel = {
     currentChannel: new kendo.data.ObservableObject(),  // data for current channel
     handler : null,  // Handler functions for the current channel
     currentMessage: {},
-    channelId : null,
+    channelUUID : null,
     membersAdded : [],
     membersDeleted: [],
     memberList: [],
@@ -62,18 +62,18 @@ var currentChannelModel = {
         //currentChannelModel.potentialMembersDS.sync();
     },
 
-    setCurrentChannel : function (channelId) {
-        if (channelId === undefined || channelId === null) {
+    setCurrentChannel : function (channelUUID) {
+        if (channelUUID === undefined || channelUUID === null) {
             mobileNotify("CurrentChat :  Invalid Chat Id!!");
             return (null);
         }
 
         currentChannelModel.initDataSources();
 
-        var channel = channelModel.findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelUUID);
         if (channel !== undefined) {
             currentChannelModel.currentChannel = channel;
-            currentChannelModel.channelId = channelId;
+            currentChannelModel.channelUUID = channelUUID;
 
             if (channel.category !== 'Private') {
                 currentChannelModel.buildMemberList();
@@ -102,7 +102,7 @@ var currentChannelModel = {
         currentChannelModel.membersDS.data([]);
 
         for (var i=0; i< length; i++) {
-            if (members[i] !== userModel.currentUser.userUUID) {
+            if (members[i] !== userModel._user.userUUID) {
                 currentChannelModel.membersDS.add(currentChannelModel.memberList[members[i]]);
             }
         }
@@ -111,7 +111,7 @@ var currentChannelModel = {
 
     syncChannelMembers : function (callback) {
 
-        getChannelDetails(currentChannelModel.channelId, function (result) {
+        getChannelDetails(currentChannelModel.channelUUID, function (result) {
             var members = [];
             if (result.found) {
                 members = result.channel.members;
@@ -160,7 +160,7 @@ var currentChannelModel = {
         if (contactArray === undefined || contactArray === null)
             return;
 
-        var userId = userModel.currentUser.userUUID;
+        var userId = userModel._user.userUUID;
 
         for (var i=0; i< contactArray.length; i++) {
             var contact = {};
@@ -169,10 +169,10 @@ var currentChannelModel = {
                 contact.isContact = false;
                 contact.uuid = userId;
                 contact.contactId = null;
-                contact.alias = userModel.currentUser.alias;
-                contact.name = userModel.currentUser.name;
-                contact.photo = userModel.currentUser.photo;
-                contact.publicKey = userModel.currentUser.publicKey;
+                contact.alias = userModel._user.alias;
+                contact.name = userModel._user.name;
+                contact.photo = userModel._user.photo;
+                contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
                 currentChannelModel.memberList[contact.uuid] = contact;
                 // this is our user.
@@ -234,19 +234,19 @@ var currentChannelModel = {
 
     zeroUnreadCount : function () {
         // Messages from parse
-        updateParseObject('channels', 'channelId', channelId, 'unreadCount', 0);
+        updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', 0);
     },
 
     // Need to debounce this so we're not updating lastAccess on each message read.
     updateLastAccess: debounce(function () {
-        var accessTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.channelId;
-        updateParseObject('channels', 'channelId', channelId, 'lastAccess', accessTime);
+        var accessTime = ggTime.currentTime(), channelUUID = currentChannelModel.currentChannel.channelUUID;
+        updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', accessTime);
 
     }, this._debounceInterval),
 
     updateClearBefore: function () {
-        var clearTime = ggTime.currentTime(), channelId = currentChannelModel.currentChannel.channelId;
-        updateParseObject('channels', 'channelId', channelId, 'clearBefore', clearTime);
+        var clearTime = ggTime.currentTime(), channelUUID = currentChannelModel.currentChannel.channelUUID;
+        updateParseObject('channels', 'channelUUID', channelUUID, 'clearBefore', clearTime);
     }
 
 

@@ -11,19 +11,27 @@ var smartMovie = {
     _ggClass : 'Movie',
     _version : 1,
 
-    moviesDS: new kendo.data.DataSource({
-        offlineStorage:"smartMovie",
-        sort: {
-            field: "date",
-            dir: "desc"
-        }
-    }),
+    moviesDS: null,
 
     init : function () {
-
+        smartMovie.moviesDS = new kendo.data.DataSource({
+            offlineStorage: "smartMovie",
+            type: 'everlive',
+            transport: {
+                typeName: 'smartMovie',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "date",
+                dir: "desc"
+            }
+        });
     },
 
-    fetch : function () {
+    /*fetch : function () {
         var smartMovies = Parse.Object.extend(smartMovie._parseClass);
         var query = new Parse.Query(smartMovies);
         query.limit(1000);
@@ -43,7 +51,7 @@ var smartMovie = {
                 handleParseError(error);
             }
         });
-    },
+    },*/
 
     queryMovie: function (query) {
         if (query === undefined)
@@ -91,17 +99,18 @@ var smartMovie = {
     },
 
     addMovie : function (objectIn, callback) {
-        var smartMovies = Parse.Object.extend(smartMovie._parseClass);
-        var smartOb = new smartMovies();
+       /* var smartMovies = Parse.Object.extend(smartMovie._parseClass);
+        var smartOb = new smartMovies();*/
 
+        var smartOb = new kendo.data.ObservableObject();
 
-        mobileNotify("Creating Smart Movie...");
+            mobileNotify("Creating Smart Movie...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
-            objectIn.senderUUID = userModel.currentUser.userUUID;
+            objectIn.senderUUID = userModel._user.userUUID;
         }
 
-        smartOb.setACL(userModel.parseACL);
+        //smartOb.setACL(userModel.parseACL);
         smartOb.set('version', smartMovie._version);
         smartOb.set('ggType', smartMovie._ggClass);
         smartOb.set('uuid', objectIn.uuid);
@@ -110,8 +119,9 @@ var smartMovie = {
         smartOb.set('movieTitle', objectIn.movieTitle);
         smartOb.set('description', objectIn.description);
         var dateString = new Date(objectIn.showtime).toISOString();
-        var d = {"__type":"Date","iso":dateString};
-        smartOb.set('showtime', d);
+       /* var d = {"__type":"Date","iso":dateString};
+        smartOb.set('showtime', d);*/
+        smartOb.set('showtime', dateString);
         smartOb.set('showtimeString', objectIn.showtimeString);
         smartOb.set('theatreId', objectIn.theatreId);
         smartOb.set('theatreName', objectIn.theatreName);
@@ -119,7 +129,7 @@ var smartMovie = {
         smartOb.set('theatrePhone', objectIn.theatrePhone);
         smartOb.set('theatreLat', objectIn.theatreLat);
         smartOb.set('theatreLng', objectIn.theatreLng);
-        smartOb.set('imbdId', objectIn.imdbId);
+        smartOb.set('imdbId', objectIn.imdbId);
         smartOb.set('tmsId', objectIn.tmsId);
         smartOb.set('imageUrl', objectIn.imageUrl);
         smartOb.set('officialUrl', objectIn.officialUrl);
@@ -128,11 +138,13 @@ var smartMovie = {
         smartOb.set('runtime', objectIn.runtime);
         smartOb.set('genre', objectIn.genre);
 
-        var smartObj = smartOb.toJSON();
-        smartMovie.moviesDS.add(smartObj);
+       // var smartObj = smartOb.toJSON();
+        smartMovie.moviesDS.add(smartOb);
         smartMovie.moviesDS.sync();
 
-        smartOb.save(null, {
+        callback(smartOb);
+
+        /*smartOb.save(null, {
             success: function(thisObject) {
                 // Execute any logic that should take place after the object is saved.;
 
@@ -150,7 +162,7 @@ var smartMovie = {
                     callback(null);
                 }
             }
-        });
+        });*/
     }
 
 };

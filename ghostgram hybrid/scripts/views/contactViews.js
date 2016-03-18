@@ -195,7 +195,7 @@ var contactsView = {
        // contactModel.contactListDS.data(contactModel.contactsDS.data());
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
-        contactsView.updateContactListDS();
+        //contactsView.updateContactListDS();
         mobileNotify("Updating contact status...");
         contactModel.updateContactListStatus();
 
@@ -727,8 +727,10 @@ var addContactView = {
     addContact : function (e) {
         _preventDefault(e);
 
-        var Contacts = Parse.Object.extend("contacts");
-        var contact = new Contacts();
+      /*  var Contacts = Parse.Object.extend("contacts");
+        var contact = new Contacts();*/
+
+        var contact = new kendo.data.ObservableObject();
 
         var name = $('#addContactName').val(),
             alias = $('#addContactAlias').val(),
@@ -762,14 +764,16 @@ var addContactView = {
         }
         var url = contactModel.createIdenticon(guid);
         $('#addContactPhoto').prop('src', url);
-        contact.setACL(userModel.parseACL);
+     /*   contact.setACL(userModel.parseACL);*/
+        contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
-        contact.set("photo", null);
+        contact.set("identicon", url);
+        contact.set("photo", url);
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
@@ -780,7 +784,7 @@ var addContactView = {
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
-        contact.set('ownerUUID', userModel.currentUser.userUUID);
+        contact.set('ownerUUID', userModel._user.userUUID);
 
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
 
@@ -840,8 +844,13 @@ var addContactView = {
                 contact.set("contactEmail", null);
             }
 
+          contactModel.contactsDS.add(contact);
+          //contactModel.contactListDS.add(contactx);
 
-          contact.save(null, {
+          addContactView.closeModal();
+          APP.kendo.navigate('#contacts');
+
+     /*     contact.save(null, {
               success: function(thiscontact) {
                   // Execute any logic that should take place after the object is saved.
                   mobileNotify('Added contact : ' + thiscontact.get('name'));
@@ -863,7 +872,7 @@ var addContactView = {
                   handleParseError(error);
               }
           });
-
+*/
             /*getBase64FromImageUrl(photo, function (fileData) {
                 var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
                 parseFile.save().then(function() {
@@ -1025,7 +1034,7 @@ var editContactView = {
         }
 
 
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"name", editContactView._activeContact.name);
+        /*updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"name", editContactView._activeContact.name);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"alias", editContactView._activeContact.alias);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"phone", editContactView._activeContact.phone);
         updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"email", editContactView._activeContact.email);
@@ -1042,7 +1051,7 @@ var editContactView = {
             updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactEmail", editContactView._activeContact.contactEmail);
             updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactAddress", editContactView._activeContact.contactAddress);
             updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "publicKey", editContactView._activeContact.publicKey);
-        }
+        }*/
         //$("#contacts-listview").data("kendoMobileListView").refresh();
 
     },
@@ -1415,9 +1424,9 @@ var contactActionView = {
         // Is there already a private channel provisioned for this user?
         var channel = channelModel.findPrivateChannel(contactUUID);
 
-        var navStr = '#channel?channelId=';
+        var navStr = '#channel?channelUUID=';
         if (channel !== undefined) {
-            navStr = navStr + channel.channelId;
+            navStr = navStr + channel.channelUUID;
             APP.kendo.navigate(navStr);
         } else {
             channelModel.addPrivateChannel(contactUUID,contactPublicKey, contactName);

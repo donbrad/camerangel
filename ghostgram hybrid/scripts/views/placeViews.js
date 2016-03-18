@@ -29,9 +29,9 @@ var placesView = {
         	enableSwipe: true,
         	tap: function(e){
         		var place = e.touch.target[0].dataset["uuid"];
-                var placeId = LZString.compressToEncodedURIComponent(place);
+                var placeUUID = LZString.compressToEncodedURIComponent(place);
 
-                APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
+                APP.kendo.navigate("#placeView?place="+placeUUID+"&returnview=places");
 
         	},
         	swipe: function(e) {
@@ -71,10 +71,10 @@ var placesView = {
     deletePlaceBtn: function(e){
         _preventDefault(e);
 
-        var placeId = e.button[0].dataset["uuid"];
-        var place = placesModel.getPlaceModel(placeId);
+        var placeUUID = e.button[0].dataset["uuid"];
+        var place = placesModel.getPlaceModel(placeUUID);
         if (place !== undefined)
-    	    placesModel.deletePlace(placeId);
+    	    placesModel.deletePlace(placeUUID);
 
 
     },
@@ -1064,8 +1064,8 @@ var editPlaceView = {
 
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
-                var placeId = LZString.decompressFromEncodedURIComponent(e.view.params.place);
-                editPlaceView.setActivePlace(placeId);
+                var placeUUID = LZString.decompressFromEncodedURIComponent(e.view.params.place);
+                editPlaceView.setActivePlace(placeUUID);
             }
 
             if (e.view.params.returnview !== undefined)
@@ -1105,10 +1105,10 @@ var editPlaceView = {
             APP.kendo.navigate("#editChannel?channel=" + placeChatId);
         } else {
             // No placechat yet, create and then jump to edit
-            var placeChatguid = uuid.v4(), placeId = editPlaceView._activePlace.get('uuid');
+            var placeChatguid = uuid.v4(), placeUUID = editPlaceView._activePlace.get('uuid');
 
             // Todo: need to add place name collision detection here...
-            channelModel.addPlaceChannel(placeChatguid, placeId, editPlaceView._activePlace.get('name'), true);
+            channelModel.addPlaceChannel(placeChatguid, placeUUID, editPlaceView._activePlace.get('name'), true);
 
             editPlaceView._activePlace.set('placeChatId', placeChatguid);
             editPlaceView._activePlace.set('hasPlaceChat', true);
@@ -1117,8 +1117,8 @@ var editPlaceView = {
             editPlaceView._activePlaceModel.set('hasPlaceChat', true);
 
 
-            updateParseObject('places', 'uuid', placeId,'hasPlaceChat', true);
-            updateParseObject('places', 'uuid', placeId,'placeChatId', placeChatguid);
+            updateParseObject('places', 'uuid', placeUUID,'hasPlaceChat', true);
+            updateParseObject('places', 'uuid', placeUUID,'placeChatId', placeChatguid);
 
         }
     },
@@ -1147,7 +1147,7 @@ var editPlaceView = {
             return true;
 
         // Make sure the matching place isn't the one we're currently editing...
-        if (place.uuid !== editPlaceView._activePlace.get('placeId')) {
+        if (place.uuid !== editPlaceView._activePlace.get('placeUUID')) {
             mobileNotify("You already have a place named " + editPlaceView._activePlace.get('name'));
             return false;
         }
@@ -1204,16 +1204,16 @@ var editPlaceView = {
         }
     },
 
-    setActivePlace : function (placeId) {
-        editPlaceView._activePlaceId = placeId;
+    setActivePlace : function (placeUUID) {
+        editPlaceView._activePlaceId = placeUUID;
 
-        var placeObj = placesModel.getPlaceModel(placeId);
+        var placeObj = placesModel.getPlaceModel(placeUUID);
 
         editPlaceView._activePlaceModel = placeObj;
 
         editPlaceView._activePlace.unbind('change' , editPlaceView.validatePlace);
 
-        editPlaceView._activePlace.set('placeId', placeId);
+        editPlaceView._activePlace.set('placeUUID', placeUUID);
         editPlaceView._activePlace.set('placeChatId', placeObj.placeChatId);
         editPlaceView._activePlace.set('uuid', placeObj.uuid);
         editPlaceView._activePlace.set('name', placeObj.name);
@@ -1319,11 +1319,11 @@ var placeView = {
     buildMemoriesDS : function () {
         var ds = placeView._memoriesDS;
         ds.data([]);
-        var placeId = placeView._activePlaceId;
+        var placeUUID = placeView._activePlaceId;
         var zipcode = placeView._activePlace.zipcode;
-        var photoList = photoModel.findPhotosByPlaceId(placeId);
+        var photoList = photoModel.findPhotosByPlaceId(placeUUID);
 
-        var notesList = noteModel.findNotesByObjectId(noteModel._places, placeId);
+        var notesList = noteModel.findNotesByObjectId(noteModel._places, placeUUID);
 
         if (photoList !== undefined && photoList.length > 0) {
             for (var p = 0; p < photoList.length; p++) {
@@ -1372,8 +1372,8 @@ var placeView = {
 
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
-                var placeId = LZString.decompressFromEncodedURIComponent(e.view.params.place);
-                placeView.setActivePlace(placeId);
+                var placeUUID = LZString.decompressFromEncodedURIComponent(e.view.params.place);
+                placeView.setActivePlace(placeUUID);
             } else {
                 // No active place --
                 placeView._activePlace = null;
@@ -1502,10 +1502,10 @@ var placeView = {
         ux.hideSearch();
     },
 
-    setActivePlace : function (placeId) {
-        placeView._activePlaceId = placeId;
+    setActivePlace : function (placeUUID) {
+        placeView._activePlaceId = placeUUID;
 
-        var placeObj = placesModel.getPlaceModel(placeId);
+        var placeObj = placesModel.getPlaceModel(placeUUID);
 
         if (placeObj === undefined) {
             mobileNotify("Couldn't find shared place");
@@ -1514,7 +1514,7 @@ var placeView = {
         }
 
         placeView._activePlaceModel = placeObj;
-        placeView._activePlace.set('placeId', placeId);
+        placeView._activePlace.set('placeUUID', placeUUID);
         placeView._activePlace.set('name', placeObj.name);
         placeView._activePlace.set('alias', placeObj.alias);
         placeView._activePlace.set('lat', placeObj.lat);
@@ -1534,7 +1534,7 @@ var placeView = {
     doDirections : function (e) {
         _preventDefault(e);
 
-        var place = placesModel.getPlaceModel(placeView._activePlace.placeId);
+        var place = placesModel.getPlaceModel(placeView._activePlace.placeUUID);
         if (place === undefined) {
             mobileNotify("Oops, Couldn't find this place");
             return;
@@ -1609,7 +1609,7 @@ var placeView = {
 
         galleryPicker.openModal(function (photo) {
 
-            // photoModel.addPhotoOffer(photo.photoId, channelView._channelId,  photo.thumbnailUrl, photo.imageUrl, true);
+            // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID,  photo.thumbnailUrl, photo.imageUrl, true);
 
             var url = photo.thumbnailUrl;
             if (photo.imageUrl !== undefined && photo.imageUrl !== null)
@@ -1638,18 +1638,18 @@ var placeView = {
 
             var photoObj  = {
                 photoId : photo.photoId,
-                channelId: null,
+                channelUUID: null,
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 canCopy: true,
-                ownerId: userModel.currentUser.userUUID,
-                ownerName: userModel.currentUser.name
+                ownerId: userModel._user.userUUID,
+                ownerName: userModel._user.name
             };
         }
 
 
         placeView.photos.push(photoObj);
-        // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+        // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
     validateNotePhotos : function () {
@@ -1705,7 +1705,11 @@ var placeView = {
            newNote.set('tags', []);
            newNote.set('tagString', tagString);
 
-           noteModel.saveParseNote(newNote);
+
+           noteModel.notesDS.add(newNote);
+           noteModel.notesDS.sync();
+           
+           //noteModel.saveParseNote(newNote);
 
            placeView._memoriesDS.add(newNote.toJSON());
 
@@ -1763,13 +1767,13 @@ var placeView = {
             if (note !== undefined) {
                 placeView._memoriesDS.remove(note);
                 noteModel.notesDS.remove(note);
-                deleteParseObject(noteModel._parseClass, 'uuid', item.uuid);
+               // deleteParseObject(noteModel._parseClass, 'uuid', item.uuid);
             }
         } else if (item.ggType === 'Photo') {
             var photo = placeView._currentItem;
             placeView._memoriesDS.remove(photo);
             photoModel.photosDS.remove(photo);
-            deleteParseObject(photoModel._parseClass, 'photoId', photo.photoId);
+            //deleteParseObject(photoModel._parseClass, 'photoId', photo.photoId);
 
 
 
@@ -1871,7 +1875,7 @@ var placeView = {
 
         if (placeView._activePlace.hasPlaceChat) {
 
-           APP.kendo.navigate('#channel?channelId=' + placeView._activePlace.placeChatId);
+           APP.kendo.navigate('#channel?channelUUID=' + placeView._activePlace.placeChatId);
         }
     }
 };
@@ -1902,10 +1906,10 @@ var checkInView = {
 
                 var place = e.dataItem, name = null;
                 if (place.ggType === 'Place') {
-                    var placeId = place.uuid;
+                    var placeUUID = place.uuid;
                     name = place.name;
-                    mapModel.checkIn(placeId);
-                    userModel.checkIn(placeId);
+                    mapModel.checkIn(placeUUID);
+                    userModel.checkIn(placeUUID);
                 } else {
                     // Must be  ggType === "Venue" ie lightweight place
                     name = place.title;
@@ -2015,8 +2019,8 @@ var mapView = {
 
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
-                var placeId = LZString.decompressFromEncodedURIComponent(e.view.params.place);
-                mapView.setActivePlace(placeId);
+                var placeUUID = LZString.decompressFromEncodedURIComponent(e.view.params.place);
+                mapView.setActivePlace(placeUUID);
                 valid = true;
             } else {
                 // No active place --
@@ -2074,10 +2078,10 @@ var mapView = {
        	mapModel.googleMap.setCenter(point);
     },
 
-    setActivePlace : function (placeId) {
-        mapView._activePlaceId = placeId;
+    setActivePlace : function (placeUUID) {
+        mapView._activePlaceId = placeUUID;
 
-        var placeObj = placesModel.getPlaceModel(placeId);
+        var placeObj = placesModel.getPlaceModel(placeUUID);
 
         mapView._activePlaceModel = placeObj;
 
@@ -2087,7 +2091,7 @@ var mapView = {
         // Todo: cull this list based on what we show in ux...
         mapView._activePlace.set('lat', placeObj.lat);
         mapView._activePlace.set('lng', placeObj.lng);
-        mapView._activePlace.set('placeId', placeId);
+        mapView._activePlace.set('placeUUID', placeUUID);
         mapView._activePlace.set('name', placeObj.name);
         mapView._activePlace.set('alias', placeObj.alias);
         mapView._activePlace.set('address', placeObj.address);
@@ -2146,7 +2150,7 @@ var smartEventPlacesView = {
                 click: function (e) {
                     var geo = e.dataItem;
                     var request = {
-                        placeId: geo.placeId
+                        placeUUID: geo.placeUUID
                     };
 
                     if (geo.category === 'Area') {
@@ -2276,7 +2280,7 @@ var smartEventPlacesView = {
                 ds.data([]);
                 predictions.forEach( function (prediction) {
                     var desObj = {category:"Place",description: prediction.description};
-                    desObj.placeId = prediction.place_id;
+                    desObj.placeUUID = prediction.place_id;
                     if (prediction.types[0] === 'establishment') {
                         desObj.title = prediction.terms[0].value;
                         desObj.address = prediction.terms[1].value + " " + prediction.terms[2].value + ", " + prediction.terms[3].value;
@@ -2316,7 +2320,7 @@ var smartEventPlacesView = {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
                 predictions.forEach( function (prediction) {
-                    var desObj = {category:"Area", description: prediction.description, placeId: prediction.place_id};
+                    var desObj = {category:"Area", description: prediction.description, placeUUID: prediction.place_id};
                     switch (prediction.types[0]) {
                         case 'geocode':
                         case 'locality':
@@ -2538,7 +2542,7 @@ var smartLocationView = {
     _lat: null,
     _lng: null,
     _geo : {
-        lat: 0, lng: 0, address: null, placeId: null
+        lat: 0, lng: 0, address: null, placeUUID: null
 
     },
     _address: null,
@@ -2563,7 +2567,7 @@ var smartLocationView = {
                 click: function (e) {
                     var geo = e.dataItem;
                     var request = {
-                        placeId: geo.placeId
+                        placeUUID: geo.placeUUID
                     };
 
                     if (geo.category === 'Area') {
@@ -2574,7 +2578,7 @@ var smartLocationView = {
                                 smartLocationView._geo.lat = place.geometry.location.lat();
                                 smartLocationView._geo.lng = place.geometry.location.lng();
                                 smartLocationView._geo.address = place.formatted_address;
-                                smartLocationView._geo.placeId = place.place_id;
+                                smartLocationView._geo.placeUUID = place.place_id;
                                 $('#smartLocation-place').val(place.formatted_address);
 
                                 if (smartLocationView._callback !== null) {
@@ -2653,7 +2657,7 @@ var smartLocationView = {
                 var ds = smartLocationView.placesDS;
                 ds.data([]);
                 predictions.forEach( function (prediction) {
-                    var desObj = {category:"Area", description: prediction.description, placeId: prediction.place_id};
+                    var desObj = {category:"Area", description: prediction.description, placeUUID: prediction.place_id};
                     switch (prediction.types[0]) {
                         case 'geocode':
                         case 'locality':

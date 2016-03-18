@@ -12,7 +12,7 @@ var archiveView = {
 			// chat
 			archive.add({
 				message: {
-					channelId: '1',
+					channelUUID: '1',
 					channelName: 'myplacez design',
 
 					sender: {
@@ -21,7 +21,7 @@ var archiveView = {
 						image: 'http://files.parsetfss.com/b7762404-2bdf-4947-a141-9fdd3b9daf41/tfss-c1b74c69-deea-43a4-b36a-685f95b76f90-61ebcea2-9085-4a3d-99f2-58e7cfe04eb3.png'
 					},
 
-					placeId: '1',
+					placeUUID: '1',
 					placeName: 'Home',
 					address: '221 Davis St., Greenfield, MA',
 
@@ -40,7 +40,7 @@ var archiveView = {
 			// events
 			archive.add({
 				message: {
-					channelId: '1',
+					channelUUID: '1',
 					channelName: 'myplacez design',
 
 					sender: {
@@ -49,7 +49,7 @@ var archiveView = {
 						image: 'http://files.parsetfss.com/b7762404-2bdf-4947-a141-9fdd3b9daf41/tfss-c1b74c69-deea-43a4-b36a-685f95b76f90-61ebcea2-9085-4a3d-99f2-58e7cfe04eb3.png'
 					},
 
-					placeId: '1',
+					placeUUID: '1',
 					placeName: 'Home',
 					address: '221 Davis St., Greenfield, MA',
 
@@ -65,7 +65,7 @@ var archiveView = {
 				object: {
 					name: 'Margot and the Nukes',
 
-					placeId: '2',
+					placeUUID: '2',
 					placeName: 'Iron Horse',
 					address: '24 Main St., Northampton, MA',
 					
@@ -77,7 +77,7 @@ var archiveView = {
 			// urls
 			archive.add({
 				message: {
-					channelId: '2',
+					channelUUID: '2',
 					channelName: 'ghostgram design',
 
 					sender: {
@@ -86,7 +86,7 @@ var archiveView = {
 						image: 'http://files.parsetfss.com/b7762404-2bdf-4947-a141-9fdd3b9daf41/tfss-c1b74c69-deea-43a4-b36a-685f95b76f90-61ebcea2-9085-4a3d-99f2-58e7cfe04eb3.png'
 					},
 
-					placeId: '1',
+					placeUUID: '1',
 					placeName: 'Home',
 					address: '221 Davis St., Greenfield, MA',
 
@@ -108,7 +108,7 @@ var archiveView = {
 			// photos
 			archive.add({
 				message: {
-					channelId: '2',
+					channelUUID: '2',
 					channelName: 'ghostgram design',
 
 					sender: {
@@ -117,7 +117,7 @@ var archiveView = {
 						image: 'https://pbs.twimg.com/profile_images/3365228794/6f017221480a3d8c4df6debf92240bb3_400x400.png'
 					},
 
-					placeId: '1',
+					placeUUID: '1',
 					placeName: 'Home',
 					address: '221 Davis St., Greenfield, MA',
 
@@ -224,11 +224,11 @@ var archiveView = {
 		}
 
 		if (archiveView.sentinel.filters.chats !== undefined) {
-			filters.push({ field: 'channelId', operator: 'eq', value: archiveView.sentinel.filters.chats });
+			filters.push({ field: 'channelUUID', operator: 'eq', value: archiveView.sentinel.filters.chats });
 		}
 
 		if (archiveView.sentinel.filters.places !== undefined) {
-			filters.push({ field: 'message.placeId', operator: 'eq', value: archiveView.sentinel.filters.places });
+			filters.push({ field: 'message.placeUUID', operator: 'eq', value: archiveView.sentinel.filters.places });
 		}
 
 		if (archiveView.sentinel.filters.date !== undefined) {

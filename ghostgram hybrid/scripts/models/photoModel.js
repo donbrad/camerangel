@@ -30,8 +30,8 @@ var photoModel = {
     init: function () {
 
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
-            type: 'everlive',
             offlineStorage: "photos",
+            type: 'everlive',
             transport: {
                 typeName: 'photos',
                 dataProvider: APP.everlive
@@ -44,6 +44,11 @@ var photoModel = {
                 dir: "desc"
             }
         });
+
+
+        photoModel.photosDS.fetch();
+        deviceModel.setAppState('hasPhotos', true);
+        deviceModel.isParseSyncComplete();
     },
 
     initOffer : function () {
@@ -75,12 +80,12 @@ var photoModel = {
 
                     models.push(photo);
 
-                    /*elModels.push(elPhoto);*/
+                    elModels.push(photoModel._filterEverlive(photo));
                 }
 
-                /*everlive.getCount('photos', function(error, count){
+                everlive.getCount('photos', function(error, count){
                     if (error === null && count === 0) {
-                        everlive.createAll('photos', models, function (error1, data) {
+                        everlive.createAll('photos', elModels, function (error1, data) {
                             if (error1 !== null) {
                                 mobileNotify("Everlive Photo error " + JSON.stringify(error1));
                             }
@@ -92,8 +97,8 @@ var photoModel = {
                     }
 
                 });
-                 photoModel.photosDS.fetch();
-*/
+                 //photoModel.photosDS.fetch();
+
                 deviceModel.setAppState('hasPhotos', true);
                 photoModel.photosDS.data(models);
                 photoModel.photosDS.sync();
@@ -125,6 +130,8 @@ var photoModel = {
          elPhoto.modifiedAt = elPhoto.updatedAt;
 
          elPhoto.uuid = elPhoto.photoId;
+
+        return(elPhoto);
 
     },
 
@@ -253,14 +260,14 @@ var photoModel = {
         return(photoModel.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
     },
 
-    findPhotosByChannel : function (channelId) {
+    findPhotosByChannel : function (channelUUID) {
 
-        return(photoModel.queryPhotos({ field: "channelId", operator: "eq", value: channelId }));
+        return(photoModel.queryPhotos({ field: "channelUUID", operator: "eq", value: channelUUID }));
     },
 
-    findPhotosByPlaceId : function (placeId) {
+    findPhotosByPlaceId : function (placeUUID) {
 
-        return(photoModel.queryPhotos({ field: "placeId", operator: "eq", value: placeId }));
+        return(photoModel.queryPhotos({ field: "placeUUID", operator: "eq", value: placeUUID }));
     },
 
     findPhotosByPlaceString : function (placeString) {
@@ -278,11 +285,11 @@ var photoModel = {
         return(photoModel.queryPhotos({ field: "senderUUID", operator: "eq", value: senderId }));
     },
 
-     getChannelOffers : function (channelId, callback) {
+     getChannelOffers : function (channelUUID, callback) {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
         var queryOffer = new Parse.Query(ParsePhotoOffer);
 
-         queryOffer.equalTo("channelId", channelId);
+         queryOffer.equalTo("channelUUID", channelUUID);
         queryOffer.find({
             success: function(collection) {
 
@@ -306,10 +313,10 @@ var photoModel = {
         });
     },
 
-    getPhotoOffer : function (channelId, photoId, callback) {
+    getPhotoOffer : function (channelUUID, photoId, callback) {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
         var queryOffer = new Parse.Query(ParsePhotoOffer);
-        queryOffer.equalTo("channelId", channelId);
+        queryOffer.equalTo("channelUUID", channelUUID);
         queryOffer.equalTo("photoId", photoId);
         queryOffer.find({
             success: function(collection) {
@@ -377,19 +384,19 @@ var photoModel = {
                 updateParseObject('photos', "photoId", photo.photoId, "senderName",  null);
             }
 
-            if (photo.channelId === undefined) {
-                photo.channelId = null;
+            if (photo.channelUUID === undefined) {
+                photo.channelUUID = null;
                 photo.channelName = null;
 
-                updateParseObject('photos', "photoId", photo.photoId, "channelId",  null);
+                updateParseObject('photos', "photoId", photo.photoId, "channelUUID",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "channelName",  null);
             }
 
-            if (photo.placeId === undefined) {
-                photo.placeId = null;
+            if (photo.placeUUID === undefined) {
+                photo.placeUUID = null;
                 photo.placeName= null;
 
-                updateParseObject('photos', "photoId", photo.photoId, "placeId",  null);
+                updateParseObject('photos', "photoId", photo.photoId, "placeUUID",  null);
                 updateParseObject('photos', "photoId", photo.photoId, "placeName",  null);
             }
 
@@ -491,10 +498,12 @@ var photoModel = {
     addChatPhoto : function (photoObj, callback) {
 
         mobileNotify("Adding Chat photo to Memories...");
-        var Photos = Parse.Object.extend(photoModel._parseClass);
-        var photo = new Photos();
+      /*  var Photos = Parse.Object.extend(photoModel._parseClass);
+        var photo = new Photos();*/
 
-        photo.setACL(userModel.parseACL);
+        var photo = new kendo.data.ObservableObject();
+
+        //photo.setACL(userModel.parseACL);
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
 
@@ -504,9 +513,9 @@ var photoModel = {
 
         var filename = photoId.replace(/-/g,'');
 
-        var channelId = photoObj.channelId;
+        var channelUUID = photoObj.channelUUID;
 
-        var channel = channelModel.findChannelModel(channelId);
+        var channel = channelModel.findChannelModel(channelUUID);
         if (channel !== undefined) {
             photo.set('channelName', channel.name);
         }
@@ -515,7 +524,7 @@ var photoModel = {
 
         photo.set('photoId', photoObj.photoId);  // use the original photo id from sender to enable recall
         photo.set('uuid', photoObj.photoId);
-        photo.set('channelId', channelId);
+        photo.set('channelUUID', channelUUID);
         photo.set('version', photoModel._version);
 
         photo.set('senderUUID',ownerId );
@@ -539,7 +548,7 @@ var photoModel = {
         photo.set('eventName', photoObj.eventName);
         photo.set('tagString', photoObj.tagString);
         photo.set('tags', photoObj.tags);
-        photo.set('placeId', photoObj.placeId);
+        photo.set('placeUUID', photoObj.placeUUID);
         photo.set('placeName', photoObj.placeName);
         photo.set('address', photoObj.address);
         photo.set('lat', photoObj.lat);
@@ -549,12 +558,12 @@ var photoModel = {
         photo.set('thumbnailUrl',photoObj.thumbnailUrl);
         photo.set('imageUrl',photoObj.imageUrl);
 
-        var photoObj = photo.toJSON();
+       // var photoObj = photo.toJSON();
 
-        photoModel.photosDS.add(photoObj);
+        photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
 
-        photo.save(null, {
+       /* photo.save(null, {
             success: function(photoIn) {
 
                 // Execute any logic that should take place after the object is saved.
@@ -567,7 +576,7 @@ var photoModel = {
                 handleParseError(error);
             }
         });
-
+*/
         /*devicePhoto.convertImgToDataURL(photoObj.thumbnailUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
             var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
@@ -614,7 +623,7 @@ var photoModel = {
        return(acl);
     },
 
-    addPhotoOffer : function (photoId, channelId, thumbnailUrl, imageUrl, canCopy) {
+    addPhotoOffer : function (photoId, channelUUID, thumbnailUrl, imageUrl, canCopy) {
 
         var PhotoOffer = Parse.Object.extend("photoOffer");
         var offer = new PhotoOffer();
@@ -629,9 +638,9 @@ var photoModel = {
 
         offer.set('uuid', offeruuid);
         offer.set('photoId', photoId);
-        offer.set('channelId', channelId);
-        offer.set('ownerId', userModel.currentUser.userUUID);
-        offer.set('ownerName', userModel.currentUser.name);
+        offer.set('channelUUID', channelUUID);
+        offer.set('ownerId', userModel._user.userUUID);
+        offer.set('ownerName', userModel._user.name);
 
        /* if (thumbnailUrl === undefined || thumbnailUrl === null) {
             thumbnailUrl = null;
@@ -732,10 +741,13 @@ var photoModel = {
     addDevicePhoto: function (devicePhoto) {
         mobileNotify("Adding  photo....");
         // Todo: add additional processing to create Parse photoOffer
-        var Photos = Parse.Object.extend(photoModel._parseClass);
+      /*  var Photos = Parse.Object.extend(photoModel._parseClass);
         var photo = new Photos();
+*/
+        var photo = new kendo.data.ObservableObject();
 
-        photo.setACL(userModel.parseACL);
+        //photo.setACL(userModel.parseACL);
+
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
 
@@ -752,26 +764,26 @@ var photoModel = {
         photo.set('thumbnail', devicePhoto.thumbnailFile);
         photo.set('title', null);
         photo.set('description', null);
-        photo.set('senderUUID', userModel.currentUser.userUUID);
-        photo.set('senderName', userModel.currentUser.name);
+        photo.set('senderUUID', userModel._user.userUUID);
+        photo.set('senderName', userModel._user.name);
         photo.set('eventId', null);
         photo.set('eventName', null);
         photo.set('tagString', null);
         photo.set('tags', []);
         photo.set('tagsString', null);
-        photo.set('placeId', null);
+        photo.set('placeUUID', null);
         photo.set('placeName', null);
         photo.set('address', null);
         photo.set('offerId', null);
 
 
         if (channelView._active) {
-            var channelId = channelView._channelId;
+            var channelUUID = channelView._channelUUID;
             var channelName = channelView._channel.name;
-            photo.set('channelId', channelId);
+            photo.set('channelUUID', channelUUID);
             photo.set('channelName', channelName);
         } else {
-            photo.set('channelId', null);
+            photo.set('channelUUID', null);
             photo.set('channelName', null);
         }
 
@@ -796,16 +808,16 @@ var photoModel = {
             photo.set('addressString', addressStr);
         }
 
-        if (userModel.currentUser.currentPlaceUUID !== null) {
-            photo.set('placeId', userModel.currentUser.currentPlaceUUID);
-            photo.set('placeString', userModel.currentUser.currentPlace);
+        if (userModel._user.currentPlaceUUID !== null) {
+            photo.set('placeUUID', userModel._user.currentPlaceUUID);
+            photo.set('placeString', userModel._user.currentPlace);
         }
 
-        var photoObj = photo.toJSON();
-        photoModel.photosDS.add(photoObj);
+       // var photoObj = photo.toJSON();
+        photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
 
-        photo.save(null, {
+       /* photo.save(null, {
             success: function(photoIn) {
 
                 // Execute any logic that should take place after the object is saved.
@@ -819,7 +831,7 @@ var photoModel = {
                 handleParseError(error);
             }
         });
-
+*/
 
        /* var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
         parseFile.save().then(function() {
@@ -878,7 +890,7 @@ var photoModel = {
         // Remove from isotope and then rerender the layout
         //$('#gallery-grid').isotope( 'remove', photoModel.currentIsoModel ).isotope('layout');
         // Delete from remote parse collection
-        deleteParseObject('photos', 'photoId', photo.photoId);
+        //deleteParseObject('photos', 'photoId', photo.photoId);
     },
 
     deleteAllPhotos : function () {

@@ -117,17 +117,27 @@ var smartEvent = {
 
     termsDS : null,
 
-    eventsDS: new kendo.data.DataSource({
-        offlineStorage:"smartEvent",
-        sort: {
-            field: "date",
-            dir: "desc"
-        }
-    }),
+    eventsDS: null,
 
     init : function () {
         smartEvent.termsDS = new kendo.data.DataSource({
             data: smartEvent.termMap
+        });
+
+        smartEvent.eventsDS = new kendo.data.DataSource({
+            offlineStorage: "smartEvent",
+            type: 'everlive',
+            transport: {
+                typeName: 'smartEvent',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { id:  Everlive.idField}
+            },
+            sort: {
+                field: "date",
+                dir: "desc"
+            }
         });
     },
 
@@ -282,9 +292,9 @@ var smartEvent = {
             event.set('isAccepted', true);
             event.set('isDeclined', false);
 
-            appDataChannel.eventAccept(eventId, senderId, userModel.currentUser.userUUID, comment);
-            updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', true);
-            updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', false);
+            appDataChannel.eventAccept(eventId, senderId, userModel._user.userUUID, comment);
+           /* updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', true);
+            updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', false);*/
         }
 
     },
@@ -295,9 +305,9 @@ var smartEvent = {
             event.set('isAccepted', false);
             event.set('isDeclined', true);
 
-            appDataChannel.eventDecline(eventId, senderId, userModel.currentUser.userUUID, comment);
-            updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', false);
-            updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', true);
+            appDataChannel.eventDecline(eventId, senderId, userModel._user.userUUID, comment);
+          /*  updateParseObject('smartobject', 'uuid', eventId, 'isAccepted', false);
+            updateParseObject('smartobject', 'uuid', eventId, 'isDeclined', true);*/
         }
     },
 
@@ -321,16 +331,16 @@ var smartEvent = {
                 // Is there already a response from this recipient
                 for (var i=0; i<event.rsvpList.length; i++) {
                     if (event.rsvpList[i].contactId === recipientId) {
-                        event.rsvpList[i] = commentObj;
+                        event.rsvpList[i] = JSON.stringify(commentObj);
                         found = true;
                     }
                 }
                 if (!found) {
                     // No response from this recipient -- need to add one
-                    event.rsvpList.push(commentObj);
+                    event.rsvpList.push(JSON.stringify(commentObj));
                 }
 
-                updateParseObject('smartobject', 'uuid', eventId, 'rsvpList', event.rsvpList);
+                //updateParseObject('smartobject', 'uuid', eventId, 'rsvpList', event.rsvpList);
             }
 
         }
@@ -350,28 +360,28 @@ var smartEvent = {
         var event = smartEvent.findObject(eventId);
         if (event !== undefined) {
             event.set('wasCancelled', true);
-            updateParseObject('smartobject', 'uuid', eventId, 'wasCancelled', true);
+           // updateParseObject('smartobject', 'uuid', eventId, 'wasCancelled', true);
         }
     },
 
     addEvent : function (objectIn, callback) {
-        var smartEvents = Parse.Object.extend(smartEvent._parseClass);
-        var smartOb = new smartEvents();
-
+      /*  var smartEvents = Parse.Object.extend(smartEvent._parseClass);
+        var smartOb = new smartEvents();*/
+        var smartOb = new kendo.data.ObservableObject();
 
         mobileNotify("Creating Smart Event...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
-            objectIn.senderUUID = userModel.currentUser.userUUID;
+            objectIn.senderUUID = userModel._user.userUUID;
         }
 
-        smartOb.setACL(userModel.parseACL);
+        //smartOb.setACL(userModel.parseACL);
         smartOb.set('version', smartEvent._version);
         smartOb.set('ggType', smartEvent._ggClass);
         smartOb.set('uuid', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);
-        smartOb.set('channelId', objectIn.channelId);
+        smartOb.set('channelUUID', objectIn.channelUUID);
         smartOb.set('calendarId', objectIn.calendarId);
         smartOb.set('eventChatId', objectIn.eventChatId);
         smartOb.set('action', objectIn.action);
@@ -380,8 +390,8 @@ var smartEvent = {
         smartOb.set('description', objectIn.description);
         // Parse.com date gymnastics...
         var dateString = new Date(objectIn.date).toISOString();
-        var d = {"__type":"Date","iso":dateString};
-        smartOb.set('date', d);
+        //var d = {"__type":"Date","iso":dateString};
+        smartOb.set('date', dateString);
         smartOb.set('duration', objectIn.duration);
         smartOb.set('durationString', objectIn.durationString);
         smartOb.set('approxTime', objectIn.approxTime);
@@ -395,7 +405,7 @@ var smartEvent = {
             objectIn.lng = objectIn.lng.toString();
         }
         smartOb.set('lng', objectIn.lng);
-        smartOb.set('placeId', objectIn.placeId);
+        smartOb.set('placeUUID', objectIn.placeUUID);
         smartOb.set('placeName', objectIn.placeName);
         smartOb.set('placeType', objectIn.placeType);
         smartOb.set('googleId', objectIn.googleId);
@@ -408,11 +418,13 @@ var smartEvent = {
         smartOb.set('inviteList', objectIn.inviteList);
         smartOb.set('rsvpList', objectIn.rsvpList);
 
-        var smartObj = smartOb.toJSON();
-        smartEvent.eventsDS.add(smartObj);
+        //var smartObj = smartOb.toJSON();
+        smartEvent.eventsDS.add(smartOb);
         smartEvent.eventsDS.sync();
 
-        smartOb.save(null, {
+        callback(smartOb);
+
+       /* smartOb.save(null, {
             success: function(thisObject) {
                 // Execute any logic that should take place after the object is saved.;
 
@@ -430,7 +442,7 @@ var smartEvent = {
                     callback(null);
                 }
             }
-        });
+        });*/
     },
 
     removeFromList: function (list, target) {

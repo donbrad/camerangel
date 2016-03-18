@@ -11,7 +11,7 @@ var privateChannel = {
     thisUser: {},
     userId: '',
     users: [],
-    channelId: '',
+    channelUUID: '',
     contactId : '',
     contactKey: '',
     contactName : '',
@@ -30,7 +30,7 @@ var privateChannel = {
             alias: alias,
             name: name,
             username: userUUID,
-            publicKey: userModel.currentUser.get('publicKey')
+            publicKey: userModel._user.get('publicKey')
         };
 
         privateChannel.contactId = contactUUID;
@@ -41,7 +41,7 @@ var privateChannel = {
         // A mapping of all currently connected users' usernames userUUID's to their public keys and aliases
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
-        privateChannel.channelId = contactUUID;
+        privateChannel.channelUUID = contactUUID;
         privateChannel.last24Hours = ggTime.lastDay();
 
     },
@@ -56,7 +56,7 @@ var privateChannel = {
         archiveMsg.ttl = msg.ttl;
         archiveMsg.sender = msg.sender;
         archiveMsg.recipient = privateChannel.userId;
-        archiveMsg.channelId = msg.recipient;   // private channelId is just the contacts Id;
+        archiveMsg.channelUUID = msg.recipient;   // private channelUUID is just the contacts Id;
         archiveMsg.actualRecipient = msg.recipient;  // since we're echoing back to sender, need to store recipient.
         var encryptMessage = '', encryptData = '';
         var currentTime =  msg.time;  // use the current message time (time sent by this user)
@@ -73,7 +73,7 @@ var privateChannel = {
 
         // Archive the message in this users data channel
         APP.pubnub.publish({
-            channel: userDataChannel.channelId,
+            channel: userDataChannel.channelUUID,
             message: archiveMsg,
             error: function (error) {
                 mobileNotify("Archive message error : " + error);
@@ -92,7 +92,7 @@ var privateChannel = {
     },
 
     decryptMessage : function (msg) {
-        var RSAKey = cryptico.privateKeyFromString(userModel.currentUser.privateKey);
+        var RSAKey = cryptico.privateKeyFromString(userModel._user.privateKey);
         var data = null;
         var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
         if (msg.data !== undefined && msg.data !== null) {
@@ -103,7 +103,7 @@ var privateChannel = {
         var parsedMsg = {
             type: 'privateMessage',
             msgID: msg.msgID,
-            channelId: msg.channelId,  //For private channels, channelID is just sender ID
+            channelUUID: msg.channelUUID,  //For private channels, channelUUID is just sender ID
             content: content,
             data: data,
             TTL: msg.ttl,
@@ -125,8 +125,8 @@ var privateChannel = {
 
         channelView.preprocessMessage(message);
         // If this message is for the current channel, then display immediately
-        if (channelView._active && message.channelId === channelView._channelId) {
-            channelModel.updateLastAccess(channelView._channelId, null);
+        if (channelView._active && message.channelUUID === channelView._channelUUID) {
+            channelModel.updateLastAccess(channelView._channelUUID, null);
             channelView.messagesDS.add(message);
 
             if (message.data.photos !== undefined && message.data.photos.length > 0) {
@@ -146,8 +146,8 @@ var privateChannel = {
             }
         } else {
             // Is there a private channel for this sender?
-            channelModel.confirmPrivateChannel(message.channelId);
-            channelModel.incrementUnreadCount(message.channelId, 1, null);
+            channelModel.confirmPrivateChannel(message.channelUUID);
+            channelModel.incrementUnreadCount(message.channelUUID, 1, null);
         }
 
         userDataChannel.messagesDS.add(message);
@@ -179,37 +179,37 @@ var privateChannel = {
             encryptData = null;
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Private Chat: " + userModel.currentUser.name;
+            var notificationString = "Private Chat: " + userModel._user.name;
             var message = {
                 type: 'privateMessage',
                 recipient: recipient,
-                sender: userModel.currentUser.userUUID,
+                sender: userModel._user.userUUID,
                 pn_apns: {
                     aps: {
                         alert : notificationString,
                         badge: 1,
                         'content-available' : 1
                     },
-                    target: '#channel?channelId=' + privateChannel.userId,
-                    channelId : privateChannel.userId,
-                    senderId: userModel.currentUser.userUUID,
+                    target: '#channel?channelUUID=' + privateChannel.userId,
+                    channelUUID : privateChannel.userId,
+                    senderId: userModel._user.userUUID,
                     isMessage: true,
                     isPrivate: true
                 },
                 pn_gcm : {
                     data : {
                         title: notificationString,
-                        message: 'Private Message from ' + userModel.currentUser.name,
-                        target: '#channel?channelId=' + privateChannel.userId,
+                        message: 'Private Message from ' + userModel._user.name,
+                        target: '#channel?channelUUID=' + privateChannel.userId,
                         image: "icon",
-                        channelId : privateChannel.userId,
-                        senderId: userModel.currentUser.userUUID,
+                        channelUUID : privateChannel.userId,
+                        senderId: userModel._user.userUUID,
                         isMessage: true,
                         isPrivate: true
                     }
                 },
                 msgID: msgID,
-                channelId: privateChannel.userId,
+                channelUUID: privateChannel.userId,
                 content: encryptMessage,  // publish the encryptedMessage
                 data: encryptData,        // publish the encryptedData.
                 time: currentTime,
@@ -228,15 +228,15 @@ var privateChannel = {
                         mobileNotify("Private Channel Publish error "  + statusText);
                     }
 
-                    // Store a local copy of the sent message.  Need to update channelId :
+                    // Store a local copy of the sent message.  Need to update channelUUID :
                     // for the recipient, its this users uuid.
                     // for the sender, it's the recipients uuid
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: message.recipient,
-                        sender: userModel.currentUser.userUUID,
+                        sender: userModel._user.userUUID,
                         msgID: message.msgID,
-                        channelId: message.recipient,
+                        channelUUID: message.recipient,
                         content: content,
                         data: contentData,
                         time: currentTime,
@@ -246,7 +246,7 @@ var privateChannel = {
                     };
 
 
-                    channelModel.updateLastAccess(parsedMsg.channelId, null);
+                    channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
                     userDataChannel.messagesDS.add(parsedMsg);
@@ -271,7 +271,7 @@ var privateChannel = {
         privateChannel.last24Hours = ggTime.lastDay();
         dataSource.filter(
             [
-            { field: "channelId", operator: "eq", value: privateChannel.channelId },
+            { field: "channelUUID", operator: "eq", value: privateChannel.channelUUID },
             { field: "time", operator: "gte", value:  privateChannel.last24Hours}
         ]);
 
@@ -279,7 +279,7 @@ var privateChannel = {
         var clearMessageArray = [];
 
         // Does this channel have recalled messages
-        var recalledMessages = channelModel.getRecalledMessages(privateChannel.channelId);
+        var recalledMessages = channelModel.getRecalledMessages(privateChannel.channelUUID);
 
         if (recalledMessages.length > 0) {
             // Has recalled messages -- remove by brute force

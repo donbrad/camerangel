@@ -19,7 +19,7 @@ var userModel = {
     key : null,
     initialView : '#newuserhome',
 
-    currentUser: new kendo.data.ObservableObject({
+    _user: new kendo.data.ObservableObject({
         _version: 1,
         username: '',
         name: '',
@@ -60,9 +60,9 @@ var userModel = {
     },
 
     updateLocalStorage: function () {
-        if (userModel.currentUser.get('rememberUsername')) {
+        if (userModel._user.get('rememberUsername')) {
             localStorage.setItem('ggRememberUsername', true);
-            localStorage.setItem('ggUsername', userModel.currentUser.get('username'));
+            localStorage.setItem('ggUsername', userModel._user.get('username'));
         }
     },
 
@@ -75,6 +75,10 @@ var userModel = {
             userModel.hasAccount = false;
             userModel.initialView = '#newuserhome';
         }
+
+        userModel._user.bind("change", function(e) {
+           
+        });
     },
 
 
@@ -129,68 +133,68 @@ var userModel = {
                 // Update new fields
                 var dirty = false;
                 if (user.get('addressList') === undefined) {
-                    userModel.currentUser.set('addressList', []);
+                    userModel._user.set('addressList', []);
                     user.set('addressList', []);
                     dirty = true;
                 }
 
                 if (user.get('emailList') === undefined) {
-                    userModel.currentUser.set('emailList', []);
+                    userModel._user.set('emailList', []);
                     user.set('emailList', []);
                     dirty = true;
                 }
 
                 if (user.get('phoneList') === undefined) {
-                    userModel.currentUser.set('phoneList', []);
+                    userModel._user.set('phoneList', []);
                     user.set('phoneList', []);
                     dirty = true;
                 }
 
                 if (user.get('archiveIntro') === undefined) {
-                    userModel.currentUser.set('archiveIntro', false);
+                    userModel._user.set('archiveIntro', false);
                     user.set('archiveIntro', false);
                     dirty = true;
                 }
 
 
                 if (user.get('homeIntro') === undefined) {
-                    userModel.currentUser.set('homeIntro', false);
+                    userModel._user.set('homeIntro', false);
                     user.set('homeIntro', false);
                     dirty = true;
                 }
 
                 if (user.get('chatIntro') === undefined) {
-                    userModel.currentUser.set('chatIntro', false);
+                    userModel._user.set('chatIntro', false);
                     user.set('chatIntro', false);
                     dirty = true;
                 }
 
                 if (user.get('contactIntro') === undefined) {
-                    userModel.currentUser.set('contactIntro', false);
+                    userModel._user.set('contactIntro', false);
                     user.set('contactIntro', false);
                     dirty = true;
                 }
 
                 if (user.get('galleryIntro') === undefined) {
-                    userModel.currentUser.set('galleryIntro', false);
+                    userModel._user.set('galleryIntro', false);
                     user.set('galleryIntro', false);
                     dirty = true;
                 }
 
                 if (user.get('identiconIntro') === undefined) {
-                    userModel.currentUser.set('identiconIntro', false);
+                    userModel._user.set('identiconIntro', false);
                     user.set('identiconIntro', false);
                     dirty = true;
                 }
 
                 if (user.get('placesIntro') === undefined) {
-                    userModel.currentUser.set('placesIntro', false);
+                    userModel._user.set('placesIntro', false);
                     user.set('placesIntro', false);
                     dirty = true;
                 }
 
                 if (user.get('firstMessage') === undefined) {
-                    userModel.currentUser.set('firstMessage', false);
+                    userModel._user.set('firstMessage', false);
                     user.set('firstMessage', false);
                     dirty = true;
                 }
@@ -214,60 +218,61 @@ var userModel = {
                 userModel.decryptPrivateKey();
                 userModel.initialView = '#home';
 
-                userModel.currentUser.set('username', user.get('username'));
-                userModel.currentUser.set('objectId', user.get('objectId'));
-                userModel.currentUser.set('name', user.get('name'));
-                userModel.currentUser.set('email', user.get('email'));
-                userModel.currentUser.set('phone', user.get('phone'));
-                userModel.currentUser.set('alias', user.get('alias'));
-                userModel.currentUser.set('userUUID', user.get('userUUID'));
-                userModel.currentUser.set('publicKey', user.get('publicKey'));
-                // userModel.currentUser.set('privateKey', userModel.parseUser.get('privateKey'));
-                userModel.currentUser.set('statusMessage', user.get('statusMessage'));
-                userModel.currentUser.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-                userModel.currentUser.set('currentPlace', user.get('currentPlace'));
-                userModel.currentUser.set('aliasPublic', user.get('aliasPublic'));
-                userModel.currentUser.set('aliasPhoto', user.get('aliasPhoto'));
-                userModel.currentUser.set('photo', user.get('photo'));
-                userModel.currentUser.set('isAvailable', user.get('isAvailable'));
-                userModel.currentUser.set('isCheckedIn', user.get('isCheckedIn'));
-                userModel.currentUser.set('isVisible', user.get('isVisible'));
-                userModel.currentUser.set('isRetina', user.get('isRetina'));
-                userModel.currentUser.set('isWIFIOnly', user.get('isWIFIOnly'));
-                userModel.currentUser.set('isPhotoStored', user.get('isPhotoStored'));
-                userModel.currentUser.set('addressList', user.get('addressList'));
-                userModel.currentUser.set('emailList', user.get('emailList'));
-                userModel.currentUser.set('phoneList', user.get('phoneList'));
-                userModel.currentUser.set('archiveIntro', user.get('archiveIntro'));
-                userModel.currentUser.set('homeIntro', user.get('homeIntro'));
-                userModel.currentUser.set('chatIntro', user.get('chatIntro'));
-                userModel.currentUser.set('contactIntro', user.get('contactIntro'));
-                userModel.currentUser.set('galleryIntro', user.get('galleryIntro'));
-                userModel.currentUser.set('identiconIntro', user.get('identiconIntro'));
-                userModel.currentUser.set('placesIntro', user.get('placesIntro'));
-                userModel.currentUser.set('saveToPhotoAlbum',user.get('saveToPhotoAlbum'));
-                userModel.currentUser.set('rememberUsername', user.get('rememberUsername'));
+                userModel._user.set('username', user.get('username'));
+                userModel._user.set('objectId', user.get('objectId'));
+                userModel._user.set('name', user.get('name'));
+                userModel._user.set('email', user.get('email'));
+                userModel._user.set('phone', user.get('phone'));
+                userModel._user.set('alias', user.get('alias'));
+                userModel._user.set('userUUID', user.get('userUUID'));
+                userModel._user.set('publicKey', user.get('publicKey'));
+                // userModel._user.set('privateKey', userModel.parseUser.get('privateKey'));
+                userModel._user.set('statusMessage', user.get('statusMessage'));
+                userModel._user.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                userModel._user.set('currentPlace', user.get('currentPlace'));
+                userModel._user.set('aliasPublic', user.get('aliasPublic'));
+                userModel._user.set('aliasPhoto', user.get('aliasPhoto'));
+                userModel._user.set('photo', user.get('photo'));
+                userModel._user.set('isAvailable', user.get('isAvailable'));
+                userModel._user.set('isCheckedIn', user.get('isCheckedIn'));
+                userModel._user.set('isVisible', user.get('isVisible'));
+                userModel._user.set('isRetina', user.get('isRetina'));
+                userModel._user.set('isWIFIOnly', user.get('isWIFIOnly'));
+                userModel._user.set('isPhotoStored', user.get('isPhotoStored'));
+                userModel._user.set('addressList', user.get('addressList'));
+                userModel._user.set('emailList', user.get('emailList'));
+                userModel._user.set('phoneList', user.get('phoneList'));
+                userModel._user.set('archiveIntro', user.get('archiveIntro'));
+                userModel._user.set('homeIntro', user.get('homeIntro'));
+                userModel._user.set('chatIntro', user.get('chatIntro'));
+                userModel._user.set('contactIntro', user.get('contactIntro'));
+                userModel._user.set('galleryIntro', user.get('galleryIntro'));
+                userModel._user.set('identiconIntro', user.get('identiconIntro'));
+                userModel._user.set('placesIntro', user.get('placesIntro'));
+                userModel._user.set('saveToPhotoAlbum',user.get('saveToPhotoAlbum'));
+                userModel._user.set('rememberUsername', user.get('rememberUsername'));
                 var phoneVerified = user.get('phoneVerified');
-                userModel.currentUser.set('phoneVerified', phoneVerified);
-                userModel.currentUser.set('emailValidated', user.get('emailVerified'));
-                userModel.currentUser.set('useIdenticon', user.get('useIdenticon'));
-                userModel.currentUser.set('availImgUrl', 'images/status-away.svg');
+                userModel._user.set('phoneVerified', phoneVerified);
+                userModel._user.set('emailValidated', user.get('emailVerified'));
+                userModel._user.set('useIdenticon', user.get('useIdenticon'));
+                userModel._user.set('availImgUrl', 'images/status-away.svg');
                 ux.updateHeaderStatusImages();
 
                 userModel.createIdenticon(user.get('userUUID'));
 
                 var photo = user.get('photo');
                 if (photo === undefined || photo === null) {
-                    userModel.currentUser.photo =  userModel.identiconUrl;
+                    userModel._user.photo =  userModel.identiconUrl;
                 }
                 userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
-                userModel.currentUser.bind('change', userModel.sync);
+                userModel._user.bind('change', userModel.sync);
                 userModel.initPubNub();
                 userModel.fetchParseData();
 
-                APP.everlive.users.currentUser(function(data) {
+                APP.everlive.users._user(function(data) {
                     if (data.result) {
+                        everlive._user = data.result;
                         mobileNotify(data.result.Username + " is logged in to Everlive!");
                     } else {
                         var username = user.get('username'), password = user.get('recoveryPassword');
@@ -280,12 +285,12 @@ var userModel = {
                                         mobileNotify(JSON.stringify(error1));
                                     } else {
                                         var token = data1;
-                                        mobileNotify("Everlive account created for " + username);
+                                        userModel.updateEverliveUser();
                                     }
 
                                 });
                             } else {
-                                mobileNotify("Everlive account confirmed -- migration enabled");
+                                userModel.updateEverliveUser();
                             }
                         });
                     }
@@ -300,12 +305,12 @@ var userModel = {
                                     mobileNotify(JSON.stringify(error1));
                                 } else {
                                     var token = data1;
-                                    mobileNotify("Everlive account created for " + username);
+                                    userModel.updateEverliveUser();
                                 }
 
                             });
                         } else {
-                            mobileNotify("Everlive account confirmed -- migration enabled");
+                            userModel.updateEverliveUser();
                         }
                     });
                 });
@@ -331,6 +336,17 @@ var userModel = {
 
     },
 
+    updateEverliveUser : function () {
+        APP.everlive.Users.updateSingle(userModel._user,
+            function(data){
+                mobileNotify("Everlive User Account Updated");
+            },
+            function(error){
+               mobileNotify("Everlive User Update Error : " + JSON.stringify(error));
+            });
+
+    },
+
     deleteAccount: function () {
 
     },
@@ -349,8 +365,8 @@ var userModel = {
         var publicKey = cryptico.publicKeyString(RSAkey);
         var privateKey = cryptico.privateKeyString(RSAkey);
 
-        userModel.currentUser.set('publicKey',publicKey);
-        userModel.currentUser.set('privateKey',privateKey);
+        userModel._user.set('publicKey',publicKey);
+        userModel._user.set('privateKey',privateKey);
         user.set("publicKey", publicKey);
         var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
         user.set("privateKey", newPrivateKey);
@@ -362,7 +378,7 @@ var userModel = {
    sync: function (e) {
       _preventDefault(e);
 
-       var fieldValue = userModel.currentUser.get(e.field);
+       var fieldValue = userModel._user.get(e.field);
         userModel.parseUser.set(e.field, fieldValue);
         userModel.parseUser.save(null, {
             success : function (user){
@@ -396,8 +412,8 @@ var userModel = {
         var privateKey = userModel.parseUser.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         var RSAKey = cryptico.privateKeyFromString(newPrivateKey);
-        userModel.currentUser.set('privateKey', newPrivateKey);
-        userModel.currentUser.set('RSAKey', RSAKey);
+        userModel._user.set('privateKey', newPrivateKey);
+        userModel._user.set('RSAKey', RSAKey);
 
     },
 
@@ -422,33 +438,33 @@ var userModel = {
         }
     },
 
-    checkIn : function (placeId, lat, lng, locationName, googlePlaceId) {
+    checkIn : function (placeUUID, lat, lng, locationName, googlePlaceId) {
 
-        if (placeId !== null) {
-            var place = placesModel.getPlaceModel(placeId);
+        if (placeUUID !== null) {
+            var place = placesModel.getPlaceModel(placeUUID);
 
-            userModel.currentUser.set('currentPlace', place.name);
-            userModel.currentUser.set('currentPlaceUUID', place.uuid);
-            userModel.currentUser.set('googlePlaceId', place.googleId);
-            userModel.currentUser.set('lat', place.lat.toFixed(6));
-            userModel.currentUser.set('lng', place.lat.toFixed(6));
+            userModel._user.set('currentPlace', place.name);
+            userModel._user.set('currentPlaceUUID', place.uuid);
+            userModel._user.set('googlePlaceId', place.googleId);
+            userModel._user.set('lat', place.lat.toFixed(6));
+            userModel._user.set('lng', place.lat.toFixed(6));
 
         } else {
-            userModel.currentUser.set('currentPlace', locationName);
-            userModel.currentUser.set('currentPlaceUUID', null);
-            userModel.currentUser.set('googlePlaceId', googlePlaceId);
-            userModel.currentUser.set('lat', lat.toFixed(6));
-            userModel.currentUser.set('lng', lat.toFixed(6));
+            userModel._user.set('currentPlace', locationName);
+            userModel._user.set('currentPlaceUUID', null);
+            userModel._user.set('googlePlaceId', googlePlaceId);
+            userModel._user.set('lat', lat.toFixed(6));
+            userModel._user.set('lng', lat.toFixed(6));
         }
 
-        userModel.currentUser.set('isCheckedIn', true);
+        userModel._user.set('isCheckedIn', true);
         userStatus.update();
     },
 
     checkOut : function () {
-        userModel.currentUser.set('isCheckedIn', false);
-        userModel.currentUser.set('currentPlace', null);
-        userModel.currentUser.set('currentPlaceUUID',null);
+        userModel._user.set('isCheckedIn', false);
+        userModel._user.set('currentPlace', null);
+        userModel._user.set('currentPlaceUUID',null);
 
     },
 
@@ -457,7 +473,7 @@ var userModel = {
         if (APP.pubnub !== null) {
             return;
         }
-        var uuid = userModel.currentUser.get('userUUID');
+        var uuid = userModel._user.get('userUUID');
 
         if (uuid === undefined || uuid === null) {
             mobileNotify("initPubNub : invalid UUID!!!!");
@@ -485,18 +501,18 @@ var userModel = {
        // APP.models.places.placesDS.fetch();
 
         // fetch channel (chat) models (objects) from parse.
-       channelModel.fetch();
+       //channelModel.fetch();
 
         // fetch contact models (objects) from parse.
-        contactModel.fetch();
+        //contactModel.fetch();
 
-        placesModel.fetch();
+       // placesModel.fetch();
 
-        photoModel.fetch();
+       // photoModel.fetch();
 
-        noteModel.fetch();
+       // noteModel.fetch();
 
-        smartEvent.fetch();
+        //smartEvent.fetch();
 
         userStatus.init();
 
@@ -510,7 +526,7 @@ var userModel = {
         $('#profileStatusPhoto').addClass('hidden');
         $('#profileStatusIdenticon').removeClass('hidden');
 
-        var hash = userModel.currentUser.userUUID;
+        var hash = userModel._user.userUUID;
         if (hash === undefined) {
             hash = "01234567890ABCDE";
         } else {
@@ -534,40 +550,35 @@ var userModel = {
 };
 
 var userStatus = {
-    parseUserStatus: null,
-    parseUserStatusACL : null,   // this ACL can be used to create public read objects that only the user can create, update and delete
+
+    _ggClass : 'userStatus',
+    _version : 1,
+    _statusObj : new kendo.data.ObservableObject(),
+    _id : null,
+
 
     init: function () {
-        var UserStatusModel = Parse.Object.extend("userStatus");
-        userStatus.setACL();
-        var query = new Parse.Query(UserStatusModel);
-        query.equalTo("userUUID", userModel.currentUser.userUUID);
-        query.find({
-            success: function(results) {
-                if (results.length > 0) {
-                    userStatus.parseUserStatus = results[0];
-                } else {
-                    userStatus.parseUserStatus = new UserStatusModel();
-                    userStatus.parseUserStatus.setACL(userStatus.parseUserStatusACL);
-                    userStatus.update();
-                }
+        var filter = new Everlive.Query();
+        filter.where().eq('userUUID', userModel._user.userUUID);
 
-            },
-            error: function(error) {
-                mobileNotify("Parse User Status Error: " + error.code + " " + error.message);
-            }
-        });
+        var data = APP.everlive.data(userStatus._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        userStatus.create();
+                    } else {
+                        var member = data.result[0];
+                        userStatus._id = member.Id;
+                    }
+
+                },
+                function(error){
+                    mobileNotify("Member Directory Init error : " + JSON.stringify(error));
+                });
 
     },
 
-    // create a special ACL with public read and user only write access
-    setACL : function () {
-        var acl = new Parse.ACL();
-        acl.setPublicReadAccess(true);
-        acl.setPublicWriteAccess(false);
-        acl.setWriteAccess(Parse.User.current().id, true);
-        userStatus.parseUserStatusACL = acl;
-    },
+
 
     syncField : function (field) {
         switch(field) {
@@ -581,7 +592,7 @@ var userStatus = {
             case 'lng' :
             case 'googlePlaceId' :
             case 'currentPlaceUUID' :
-                userStatus.parseUserStatus.set(field, userModel.currentUser.get(field));
+                userStatus.parseUserStatus.set(field, userModel._user.get(field));
                 userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
                 userStatus.parseUserStatus.save(null, {
                     success : function (user){
@@ -594,25 +605,41 @@ var userStatus = {
         }
     },
 
+    create : function () {
+        var data = APP.everlive.data(userStatus._ggClass);
+
+        userStatus.updateEverlive();
+
+        data.create(dirObj,
+            function(data){
+                userStatus._id = data.result.Id;
+                userStatus._statusObj.id  = data.result.Id;
+                userStatus.updateEverlive();
+            },
+            function(error){
+                mobileNotify("User Status Init error : " + JSON.stringify(error));
+            });
+    },
+
     update : function () {
         var status = userStatus.parseUserStatus;
 
-        status.set('userUUID', userModel.currentUser.userUUID);
-        status.set('isAvailable', userModel.currentUser.isAvailable);
-        status.set('isVisible', userModel.currentUser.isVisible);
-        status.set('statusMessage', userModel.currentUser.statusMessage);
-        status.set('currentPlace', userModel.currentUser.currentPlace);
-        var lat = userModel.currentUser.lat;
+        status.set('userUUID', userModel._user.userUUID);
+        status.set('isAvailable', userModel._user.isAvailable);
+        status.set('isVisible', userModel._user.isVisible);
+        status.set('statusMessage', userModel._user.statusMessage);
+        status.set('currentPlace', userModel._user.currentPlace);
+        var lat = userModel._user.lat;
        /* if (lat !== null)
             lat = lat.toFixed(6);*/
-        status.set('lat', userModel.currentUser.lat);
-        var lng = userModel.currentUser.lng;
+        status.set('lat', userModel._user.lat);
+        var lng = userModel._user.lng;
        /* if (lng !== null)
             lng = lng.toFixed(6);*/
-        status.set('lng', userModel.currentUser.lng);
-        status.set('googlePlaceId', userModel.currentUser.googlePlaceId);
-        status.set('currentPlaceUUID', userModel.currentUser.currentPlaceUUID);
-        status.set('isCheckedIn', userModel.currentUser.isCheckedIn);
+        status.set('lng', userModel._user.lng);
+        status.set('googlePlaceId', userModel._user.googlePlaceId);
+        status.set('currentPlaceUUID', userModel._user.currentPlaceUUID);
+        status.set('isCheckedIn', userModel._user.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
         status.save(null, {
             success: function(status) {
@@ -627,7 +654,33 @@ var userStatus = {
         });
 
 
+    },
+
+    updateEverlive : function () {
+        var status = userStatus._statusObj;
+
+        status.set('userUUID', userModel._user.userUUID);
+        status.set('isAvailable', userModel._user.isAvailable);
+        status.set('isVisible', userModel._user.isVisible);
+        status.set('statusMessage', userModel._user.statusMessage);
+        status.set('currentPlace', userModel._user.currentPlace);
+        var lat = userModel._user.lat;
+        /* if (lat !== null)
+         lat = lat.toFixed(6);*/
+        status.set('lat', userModel._user.lat);
+        var lng = userModel._user.lng;
+        /* if (lng !== null)
+         lng = lng.toFixed(6);*/
+        status.set('lng', userModel._user.lng);
+        status.set('googlePlaceId', userModel._user.googlePlaceId);
+        status.set('currentPlaceUUID', userModel._user.currentPlaceUUID);
+        status.set('isCheckedIn', userModel._user.isCheckedIn);
+        status.set('lastUpdate', ggTime.currentTime());
+
+        userStatus._statusObj.sync();
+
     }
+
 
 
 };

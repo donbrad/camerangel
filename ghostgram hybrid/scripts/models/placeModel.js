@@ -70,9 +70,7 @@ var placesModel = {
             }
         });
 
-        placesModel.placesDS.fetch();
-
-
+        
         // Reflect any core contact changes to contactList
         placesModel.placesDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
@@ -83,8 +81,8 @@ var placesModel = {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
-                        var place = e.items[0], placeId = place.uuid;
-                        var placeList = placesModel.findPlaceListUUID(placeId);
+                        var place = e.items[0], placeUUID = place.uuid;
+                        var placeList = placesModel.findPlaceListUUID(placeUUID);
 
                         // if the places's name or alias has been updated, need to update the tag...
                         var tagList = tagModel.findTagByCategoryId(place.uuid);
@@ -118,6 +116,12 @@ var placesModel = {
 
 
         });
+
+        placesModel.placesDS.fetch();
+        placesModel.syncPlaceListDS();
+        deviceModel.setAppState('hasPlaces', true);
+        deviceModel.isParseSyncComplete();
+
     },
 
     newPlace : function () {
@@ -318,13 +322,13 @@ var placesModel = {
         }
     },
 
-    getPlaceModel : function (placeId) {
+    getPlaceModel : function (placeUUID) {
 
-        var place = placesModel.queryPlace({ field: "uuid", operator: "eq", value: placeId });
+        var place = placesModel.queryPlace({ field: "uuid", operator: "eq", value: placeUUID });
 
 
        /* var dataSource = placesModel.placesDS;
-        dataSource.filter( { field: "uuid", operator: "eq", value: placeId });
+        dataSource.filter( { field: "uuid", operator: "eq", value: placeUUID });
         var view = dataSource.view();
         var place = view[0];
         dataSource.filter([]);*/
@@ -523,9 +527,9 @@ var placesModel = {
 
     },
 
-    deletePlace : function (placeId) {
+    deletePlace : function (placeUUID) {
 
-        var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: placeId});
+        var place = placesModel.queryPlace({field: "uuid", operator: "eq", value: placeUUID});
 
         if (place !== undefined) {
 
@@ -545,7 +549,7 @@ var placesModel = {
                 placesModel.placesDS.sync();
 
                 // Delete the parse object directly
-                deleteParseObject('places',"uuid", placeId);
+                deleteParseObject('places',"uuid", placeUUID);
             }
 
         }

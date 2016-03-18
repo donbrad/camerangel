@@ -21,7 +21,7 @@ Sentinel.prototype = _.assign({
 	/**
 	 * The category is the key and the value is the value :P, for example,
 	 * "place": 12345
-	 * where 12345 is the placeId
+	 * where 12345 is the placeUUID
 	 * @type {Object}
 	 */
 	filters: {},

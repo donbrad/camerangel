@@ -123,10 +123,10 @@ var mapModel = {
         mapModel.currentGoogleId = null;
     },
 
-    checkIn : function (placeId, placeName, googleId) {
+    checkIn : function (placeUUID, placeName, googleId) {
 
-        if (placeId !== null) {
-            mapModel.setCurrentPlace(placeId, true);
+        if (placeUUID !== null) {
+            mapModel.setCurrentPlace(placeUUID, true);
         } else {
             mapModel.currentPlaceName = placeName;
             mapModel.currentGoogleId = googleId;
@@ -289,7 +289,6 @@ var mapModel = {
 
             if (mapModel.isNewLocation(lat,lng)) {
                 // User is at a new location
-                var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
                 mapModel._updatePosition(lat, lng);
 
                 mapModel.reverseGeoCode(lat, lng, function (results, error) {
@@ -311,9 +310,9 @@ var mapModel = {
 
     },
 
-    setCurrentPlace : function (placeId, isCheckedIn) {
-        mapModel.currentPlaceId = placeId;
-        mapModel.currentPlace = placesModel.getPlaceModel(placeId);
+    setCurrentPlace : function (placeUUID, isCheckedIn) {
+        mapModel.currentPlaceId = placeUUID;
+        mapModel.currentPlace = placesModel.getPlaceModel(placeUUID);
         mapModel.currentGoogleId = mapModel.currentPlace.googleId;
         mapModel.currentPlaceName = mapModel.currentPlace.name;
 

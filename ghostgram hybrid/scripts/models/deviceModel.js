@@ -135,7 +135,7 @@ var deviceModel = {
                 deviceModel.isPushProvisioned();
            }
 
-           APP.everlive.sync();
+            tagModel.syncTags();
         }
     },
 
@@ -159,7 +159,7 @@ var deviceModel = {
         for (var i=0; i<channels.length; i++) {
             var channel = channels[i];
 
-            notificationModel.addUnreadNotification(channel.channelId, channel.name, channel.unreadCount);
+            notificationModel.addUnreadNotification(channel.channelUUID, channel.name, channel.unreadCount);
         }*/
     },
 

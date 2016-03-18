@@ -149,17 +149,17 @@ var privateNotesView = {
 
             var photoObj  = {
                 photoId : photo.photoId,
-                channelId: null,
+                channelUUID: null,
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 canCopy: true,
-                ownerId: userModel.currentUser.userUUID,
-                ownerName: userModel.currentUser.name
+                ownerId: userModel._user.userUUID,
+                ownerName: userModel._user.name
             };
         }
 
         privateNotesView.notePhotos.push(photoObj);
-        // photoModel.addPhotoOffer(photo.photoId, channelView._channelId, photo.thumbnailUrl, photo.imageUrl, canCopy);
+        // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
 
@@ -252,6 +252,8 @@ var privateNotesView = {
                 note.set('dataObject', dataObj);
                 note.set('time',ggTime.currentTime());
 
+                privateNoteModel.notesDS.sync();
+               
 
             } else {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
@@ -629,8 +631,8 @@ var privateNotesView = {
     noteAddLocation : function  () {
         channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
         channelView.activeMessage.address = mapModel.currentAddress;
-        if (userModel.currentUser.currentPlaceUUID !== null) {
-            channelView.activeMessage.place = {name: userModel.currentUser.currentPlace, uuid: userModel.currentUser.currentPlaceUUID};
+        if (userModel._user.currentPlaceUUID !== null) {
+            channelView.activeMessage.place = {name: userModel._user.currentPlace, uuid: userModel._user.currentPlaceUUID};
         }
     },
 

@@ -402,11 +402,11 @@
         if (typeof controller.setCurrentUser !== 'function') {
           throw new Error('A UserController must implement setCurrentUser()');
         }
-        if (typeof controller.currentUser !== 'function') {
-          throw new Error('A UserController must implement currentUser()');
+        if (typeof controller._user !== 'function') {
+          throw new Error('A UserController must implement _user()');
         }
-        if (typeof controller.currentUserAsync !== 'function') {
-          throw new Error('A UserController must implement currentUserAsync()');
+        if (typeof controller._userAsync !== 'function') {
+          throw new Error('A UserController must implement _userAsync()');
         }
         if (typeof controller.signUp !== 'function') {
           throw new Error('A UserController must implement signUp()');
@@ -7283,9 +7283,9 @@
     }, {
       key: 'isCurrentSessionRevocable',
       value: function isCurrentSessionRevocable() {
-        var currentUser = _ParseUser2['default'].current();
-        if (currentUser) {
-          return (0, _isRevocableSession2['default'])(currentUser.getSessionToken() || '');
+        var _user = _ParseUser2['default'].current();
+        if (_user) {
+          return (0, _isRevocableSession2['default'])(_user.getSessionToken() || '');
         }
         return false;
       }
@@ -7375,10 +7375,10 @@
 
   var _Storage2 = _interopRequireDefault(_Storage);
 
-  var CURRENT_USER_KEY = 'currentUser';
+  var CURRENT_USER_KEY = '_user';
   var canUseCurrentUser = !_CoreManager2['default'].get('IS_NODE');
-  var currentUserCacheMatchesDisk = false;
-  var currentUserCache = null;
+  var _userCacheMatchesDisk = false;
+  var _userCache = null;
 
   var authProviders = {};
 
@@ -7888,7 +7888,7 @@
           return null;
         }
         var controller = _CoreManager2['default'].getUserController();
-        return controller.currentUser();
+        return controller._user();
       }
 
       /**
@@ -7905,7 +7905,7 @@
           return _ParsePromise2['default'].as(null);
         }
         var controller = _CoreManager2['default'].getUserController();
-        return controller.currentUserAsync();
+        return controller._userAsync();
       }
 
       /**
@@ -8132,13 +8132,13 @@
     }, {
       key: '_clearCache',
       value: function _clearCache() {
-        currentUserCache = null;
-        currentUserCacheMatchesDisk = false;
+        _userCache = null;
+        _userCacheMatchesDisk = false;
       }
     }, {
       key: '_setCurrentUserCache',
       value: function _setCurrentUserCache(user) {
-        currentUserCache = user;
+        _userCache = user;
       }
     }]);
 
@@ -8160,27 +8160,27 @@
     },
 
     setCurrentUser: function setCurrentUser(user) {
-      currentUserCache = user;
+      _userCache = user;
       user._cleanupAuthData();
       user._synchronizeAllAuthData();
       return DefaultController.updateUserOnDisk(user);
     },
 
-    currentUser: function currentUser() {
-      if (currentUserCache) {
-        return currentUserCache;
+    _user: function _user() {
+      if (_userCache) {
+        return _userCache;
       }
-      if (currentUserCacheMatchesDisk) {
+      if (_userCacheMatchesDisk) {
         return null;
       }
       if (_Storage2['default'].async()) {
-        throw new Error('Cannot call currentUser() when using a platform with an async ' + 'storage system. Call currentUserAsync() instead.');
+        throw new Error('Cannot call _user() when using a platform with an async ' + 'storage system. Call _userAsync() instead.');
       }
       var path = _Storage2['default'].generatePath(CURRENT_USER_KEY);
       var userData = _Storage2['default'].getItem(path);
-      currentUserCacheMatchesDisk = true;
+      _userCacheMatchesDisk = true;
       if (!userData) {
-        currentUserCache = null;
+        _userCache = null;
         return null;
       }
       userData = JSON.parse(userData);
@@ -8198,23 +8198,23 @@
         delete userData._sessionToken;
       }
       var current = _ParseObject3['default'].fromJSON(userData);
-      currentUserCache = current;
+      _userCache = current;
       current._synchronizeAllAuthData();
       return current;
     },
 
-    currentUserAsync: function currentUserAsync() {
-      if (currentUserCache) {
-        return _ParsePromise2['default'].as(currentUserCache);
+    _userAsync: function _userAsync() {
+      if (_userCache) {
+        return _ParsePromise2['default'].as(_userCache);
       }
-      if (currentUserCacheMatchesDisk) {
+      if (_userCacheMatchesDisk) {
         return _ParsePromise2['default'].as(null);
       }
       var path = _Storage2['default'].generatePath(CURRENT_USER_KEY);
       return _Storage2['default'].getItemAsync(path).then(function (userData) {
-        currentUserCacheMatchesDisk = true;
+        _userCacheMatchesDisk = true;
         if (!userData) {
-          currentUserCache = null;
+          _userCache = null;
           return _ParsePromise2['default'].as(null);
         }
         userData = JSON.parse(userData);
@@ -8232,7 +8232,7 @@
           delete userData._sessionToken;
         }
         var current = _ParseObject3['default'].fromJSON(userData);
-        currentUserCache = current;
+        _userCache = current;
         current._synchronizeAllAuthData();
         return _ParsePromise2['default'].as(current);
       });
@@ -8292,22 +8292,22 @@
     },
 
     logOut: function logOut() {
-      return DefaultController.currentUserAsync().then(function (currentUser) {
+      return DefaultController._userAsync().then(function (_user) {
         var path = _Storage2['default'].generatePath(CURRENT_USER_KEY);
         var promise = _Storage2['default'].removeItemAsync(path);
         var RESTController = _CoreManager2['default'].getRESTController();
-        if (currentUser !== null) {
-          var currentSession = currentUser.getSessionToken();
+        if (_user !== null) {
+          var currentSession = _user.getSessionToken();
           if (currentSession && (0, _isRevocableSession2['default'])(currentSession)) {
             promise = promise.then(function () {
               return RESTController.request('POST', 'logout', {}, { sessionToken: currentSession });
             });
           }
-          currentUser._logOutWithAll();
-          currentUser._finishFetch({ sessionToken: undefined });
+          _user._logOutWithAll();
+          _user._finishFetch({ sessionToken: undefined });
         }
-        currentUserCacheMatchesDisk = true;
-        currentUserCache = null;
+        _userCacheMatchesDisk = true;
+        _userCache = null;
 
         return promise;
       });
@@ -8633,7 +8633,7 @@
           if (options && typeof options.sessionToken === 'string') {
             return _ParsePromise2['default'].as(options.sessionToken);
           } else if (userController) {
-            return userController.currentUserAsync().then(function (user) {
+            return userController._userAsync().then(function (user) {
               if (user) {
                 return _ParsePromise2['default'].as(user.getSessionToken());
               }

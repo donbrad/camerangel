@@ -13,7 +13,7 @@
 var smartEventView = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
-    _placeId :null,
+    _placeUUID :null,
     _geoObj: null,
     _isInited : false,
     _callback : null,
@@ -47,9 +47,9 @@ var smartEventView = {
         }
         thisObj.set("uuid", uuid.v4());
         thisObj.set("ggType", smartEvent._ggClass);
-        thisObj.set('senderUUID', userModel.currentUser.userUUID);
-        thisObj.set('senderName', userModel.currentUser.name);
-        thisObj.set('channelId', null);
+        thisObj.set('senderUUID', userModel._user.userUUID);
+        thisObj.set('senderName', userModel._user.name);
+        thisObj.set('channelUUID', null);
         thisObj.set('calendarId', null);
         thisObj.set('eventChatId', null);
         thisObj.set('title', null);
@@ -59,7 +59,7 @@ var smartEventView = {
         thisObj.set('address', null);
         thisObj.set('placeName', null);
         thisObj.set('placeType', null);
-        thisObj.set('placeId', null);
+        thisObj.set('placeUUID', null);
         thisObj.set('googleId', null);
         thisObj.set('calendarId', null);
         thisObj.set('lat', null);
@@ -96,7 +96,7 @@ var smartEventView = {
             newObj.uuid = uuid.v4();
         }
         thisObj.set("wasSent", true);
-        thisObj.set('channelId', newObj.channelId);
+        thisObj.set('channelUUID', newObj.channelUUID);
         thisObj.set('eventChatId', newObj.eventChatId);
         thisObj.set('title', newObj.title);
         thisObj.set('type', newObj.type);
@@ -104,8 +104,8 @@ var smartEventView = {
         thisObj.set('senderUUID', newObj.senderUUID);
 
         if (newObj.senderName === null) {
-            if (newObj.senderUUID === userModel.currentUser.userUUID) {
-                newObj.senderName = userModel.currentUser.name;
+            if (newObj.senderUUID === userModel._user.userUUID) {
+                newObj.senderName = userModel._user.name;
             } else {
                 var contact = contactModel.findContact(newObj.senderUUID);
                 if (contact !== undefined) {
@@ -120,7 +120,7 @@ var smartEventView = {
         thisObj.set('placeName', newObj.placeName);
         thisObj.set('placeType', newObj.placeType);
         thisObj.set('calendarId', newObj.calendarId);
-        thisObj.set('placeId', newObj.placeId);
+        thisObj.set('placeUUID', newObj.placeUUID);
         thisObj.set('googleId', newObj.googleId);
         thisObj.set('lat', newObj.lat);
         thisObj.set('lng', newObj.lng);
@@ -150,7 +150,7 @@ var smartEventView = {
             $('#actionMeeting-addToCalendar').prop('readonly', false);
         }
 
-        if (newObj.senderUUID === null || newObj.senderUUID === userModel.currentUser.userUUID) {
+        if (newObj.senderUUID === null || newObj.senderUUID === userModel._user.userUUID) {
             smartEventView.setSenderMode();
         } else {
             smartEventView.setRecipientMode();
@@ -176,7 +176,7 @@ var smartEventView = {
             $('#smartEventView-recipientListDiv').removeClass('hidden');
 
             // show/hide place btn
-            if(thisEvent.placeId === null){
+            if(thisEvent.placeUUID === null){
                 $(".event-place").addClass("hidden");
             } else {
                 $(".event-place").removeClass("hidden");
@@ -230,7 +230,7 @@ var smartEventView = {
             }
         }
         // show/hide place btn
-        if(thisEvent.placeId === null){
+        if(thisEvent.placeUUID === null){
             $(".event-place").addClass("hidden");
         } else {
             $(".event-place").removeClass("hidden");
@@ -275,7 +275,7 @@ var smartEventView = {
 
     onShow: function(e) {
         _preventDefault(e);
-        smartEventView._placeId = null;
+        smartEventView._placeUUID = null;
         smartEventView._geoObj = null;
 
         $("#smartEventView-placesearchBtn").text("");
@@ -314,7 +314,7 @@ var smartEventView = {
 
                var thisObj = smartEventView._activeObject;
 
-               thisObj.set('placeId', null);
+               thisObj.set('placeUUID', null);
                thisObj.set('googleId', geo.googleId);
                thisObj.set('placeName', geo.name);
                thisObj.set('address', geo.address);
@@ -485,14 +485,14 @@ var smartEventView = {
                 change: function (e) {
                     var placeStr = $("#smartEventView-placesearch").val();
 
-                    if (smartEventView._placeId !== null) {
-                        var place = placesModel.getPlaceModel(smartEventView._placeId);
+                    if (smartEventView._placeUUID !== null) {
+                        var place = placesModel.getPlaceModel(smartEventView._placeUUID);
 
                         if (placeStr === place.name) {
                             return;
                         }
-                        smartEventView._placeId = null;
-                        smartEventView._activeObject.set('placeId', smartEventView._placeId);
+                        smartEventView._placeUUID = null;
+                        smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
                         smartEventView._activeObject.set('placeName',placeStr);
                         smartEventView._activeObject.set('address', null);
                         smartEventView._activeObject.set('lat',null);
@@ -513,8 +513,8 @@ var smartEventView = {
                     // User has selected one of their places
                     var place = e.item;
                     var dataItem = this.dataItem(e.item.index());
-                    smartEventView._placeId = dataItem.uuid;
-                    smartEventView._activeObject.set('placeId', smartEventView._placeId);
+                    smartEventView._placeUUID = dataItem.uuid;
+                    smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
                     smartEventView._activeObject.set('placeName',dataItem.name);
                     smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
                     smartEventView._activeObject.set('lat',dataItem.lat);
@@ -555,7 +555,7 @@ var smartEventView = {
         //$('#smartEventView-organizer').text(thisObject.senderName);
         smartEventView.checkExpired(thisObject.date);
 
-        if (thisObject.senderUUID === userModel.currentUser.userUUID) {
+        if (thisObject.senderUUID === userModel._user.userUUID) {
                 smartEventView.setSenderMode();
         } else {
                 smartEventView.setRecipientMode();
@@ -635,12 +635,12 @@ var smartEventView = {
 
         var event =  smartEventView._activeObject;
 
-        if (event.placeId !== null) {
-            var place = placesModel.getPlaceModel(event.placeId);
+        if (event.placeUUID !== null) {
+            var place = placesModel.getPlaceModel(event.placeUUID);
             if (place !== undefined) {
 
-                var placeId = packParameter(event.placeId), channelUrl = packParameter('channel?channelId='+channelView._channelId);
-                APP.kendo.navigate('#placeView?place=' + placeId + '&returnview=' + channelUrl);
+                var placeUUID = packParameter(event.placeUUID), channelUrl = packParameter('channel?channelUUID='+channelView._channelUUID);
+                APP.kendo.navigate('#placeView?place=' + placeUUID + '&returnview=' + channelUrl);
 
             }
 
@@ -781,13 +781,13 @@ var smartEventView = {
         thisObject.date = thisObj.date;
         thisObject.duration = thisObj.duration;
         thisObject.durationString = thisObj.durationString;
-        thisObject.placeId = thisObj.placeId;
+        thisObject.placeUUID = thisObj.placeUUID;
         thisObject.googleId = thisObj.googleId;
         thisObject.placeName = thisObj.placeName;
         thisObject.address = thisObj.address;
-        thisObject.senderUUID = userModel.currentUser.userUUID;
-        thisObject.senderName = userModel.currentUser.name;
-        thisObject.channelId = channelView._channelId;
+        thisObject.senderUUID = userModel._user.userUUID;
+        thisObject.senderName = userModel._user.name;
+        thisObject.channelUUID = channelView._channelUUID;
         thisObject.calendarId = thisObj.calendarId;
         thisObject.eventChatId = thisObj.eventChatId;
         thisObject.lat = thisObj.lat;
@@ -890,7 +890,7 @@ var smartEventView = {
         }
 
         thisObj.set('date', saveDate);
-        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('senderName', userModel._user.name);
 
          if (thisObj.addToCalendar && thisObj.calendarId === null) {
             smartEventView.addToCalendar();
@@ -1101,7 +1101,7 @@ var movieListView = {
         obj.set('lng', mapModel.lng);
         obj.set('allDay', true);
         obj.set('radius', movieListView._radius);
-        obj.set('placeId', null);
+        obj.set('placeUUID', null);
         obj.set('googleId', null);
         obj.set('placeName', null);
         obj.set('address', mapModel.currentCity);
@@ -1121,7 +1121,7 @@ var movieListView = {
         obj.set('allDay', activeObj.allDay);
         obj.set('radius', activeObj.radius);
         obj.set('address', activeObj.address);
-        obj.set('placeId',  activeObj.placeId);
+        obj.set('placeUUID',  activeObj.placeUUID);
         obj.set('googleId',  activeObj.googleId);
         obj.set('placeName',  activeObj.placeName);
         obj.set('placeType',  activeObj.placeType);
@@ -1539,7 +1539,7 @@ var movieListView = {
 var smartMovieEdit = {
     _activeObject : new kendo.data.ObservableObject(),
     _date : new Date(),
-    _placeId :null,
+    _placeUUID :null,
     _geoObj: null,
     _isInited : false,
     _callback : null,
@@ -1613,7 +1613,7 @@ var smartMovieEdit = {
         thisObj.set('lat', mapModel.lat);
         thisObj.set('lng', mapModel.lng);
         thisObj.set('date', newDate);
-        thisObj.set('placeId', null);
+        thisObj.set('placeUUID', null);
         thisObj.set('googleId', null);
         thisObj.set('placeName', null);
         thisObj.set('address', mapModel.address);
@@ -1636,7 +1636,7 @@ var smartMovieEdit = {
         thisObj.set('lat', obj.lat);
         thisObj.set('lng', obj.lng);
         thisObj.set('date', obj.date);
-        thisObj.set('placeId', obj.placeId);
+        thisObj.set('placeUUID', obj.placeUUID);
         thisObj.set('googleId', obj.googleId);
         thisObj.set('placeName', obj.name);
         thisObj.set('address', obj.address);
@@ -1658,7 +1658,7 @@ var smartMovieEdit = {
 
             var thisObj = smartMovieEdit._activeObject;
 
-            thisObj.set('placeId', null);
+            thisObj.set('placeUUID', null);
             thisObj.set('googleId', geo.googleId);
             thisObj.set('placeName', geo.name);
             thisObj.set('city', geo.city);
@@ -1808,7 +1808,7 @@ var smartMovieView = {
     }),
 
     _date : new Date(),
-    _placeId :null,
+    _placeUUID :null,
     _geoObj: null,
     _isInited : false,
     _callback : null,
@@ -1868,8 +1868,8 @@ var smartMovieView = {
 
         var thisObj = smartMovieView.activeObject;
 
-        thisObj.set('channelId', channelView._channelId);
-        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('channelUUID', channelView._channelUUID);
+        thisObj.set('senderName', userModel._user.name);
 
         if (thisObj.addToCalendar && thisObj.calendarId === null) {
             smartMovieView.addToCalendar();
@@ -2080,8 +2080,8 @@ var smartMovieView = {
 
         thisObj.set("uuid", uuid.v4());
         thisObj.set("ggType", smartMovie._ggClass);
-        thisObj.set('senderUUID', userModel.currentUser.userUUID);
-        thisObj.set('senderName', userModel.currentUser.name);
+        thisObj.set('senderUUID', userModel._user.userUUID);
+        thisObj.set('senderName', userModel._user.name);
         thisObj.set('placeString', movie.address);
         thisObj.set('movieTitle', movie.movieTitle);
         thisObj.set('tmsId', movie.tmsId);
@@ -2139,7 +2139,7 @@ var smartMovieView = {
         thisObj.set('senderUUID', obj.senderUUID);
         thisObj.set('senderName', obj.senderName);
         thisObj.set('placeString', obj.placeString);
-        thisObj.set('channelId', obj.channelId);
+        thisObj.set('channelUUID', obj.channelUUID);
         thisObj.set('movieTitle', obj.movieTitle);
         thisObj.set('tmsId', obj.tmsId);
         thisObj.set('imdbId', obj.imdbId);
@@ -2232,7 +2232,7 @@ var smartMovieView = {
 
 
 
-        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel.currentUser.userUUID) {
+        if (thisObject.senderUUID === null || thisObject.senderUUID === userModel._user.userUUID) {
             $("#smartMovieView-organizer").text("You");
         } else {
             var contact = contactModel.findContactByUUID(thisObject.senderUUID);
