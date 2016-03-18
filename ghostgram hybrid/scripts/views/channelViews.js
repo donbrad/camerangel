@@ -1852,7 +1852,7 @@ var channelView = {
             '<span class="btnSmart-date">' + placeName + '</span> ' +
             '</span>' +
             '<span class="btnSmart-type">' +
-            '<img src="images/smart-event-test.svg" class="icon-smartBtn" />' +
+            '<img src="images/smart-event-alt.svg" class="icon-smartBtn" />' +
             '</span>' +
             '</span></div>';
 
@@ -2478,11 +2478,9 @@ var channelPresence = {
             dataSource: channelView.membersDS,
             template: $("#chatMemberTemplate").html(),
             autobind: false,
-           /* filterable: {
-                field: "name",
-                operator: "startswith",
-                placeholder: "Search Members..."
-            },*/
+            dataBinding: function(e){
+                ux.checkEmptyUIState(channelView.membersDS, "#channelPresence");
+            },
             click: function (e) {
                 // Click to potential member list -- add this member to channel
                 var thisMember = e.dataItem;

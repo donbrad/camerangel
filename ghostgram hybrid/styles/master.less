@@ -360,7 +360,6 @@ form {
   text-align: center;
   padding-top: 25%;
   opacity: 0.6;
-  margin-left: -1em;
   img {
     width: 6rem;
     margin-left: auto;
@@ -532,8 +531,10 @@ form {
 }
 
 .icon-smart {
-  &:extend(.icon-sm);
+  height: 1.5em;
+  width: 1.5em;
   margin-right: 0.3em;
+  vertical-align: middle;
 }
 
 .icon-md {
@@ -2972,29 +2973,24 @@ a:hover {
   margin-left: 0.25rem;
 }
 
-#channelPresence > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
-  background: @darkBk;
-}
-
 #channelPresence-listview > li > div > div.memberTempName > h4 {
-  color: #fff;
+  color: @black;
 }
 
 .memberTempName {
   color: @black;
 }
 
-#channelPresence > div.km-header > div > div.km-view-title {
-  background: @darkBk;
-  color: #fff !important;
-}
-
-#channelPresence-listview > li {
-  border-top: 1px solid @shade-100;
-  .gone {
-    opacity: 0.4;
+#channelPresence-listview {
+  background: #fff;
+  li {
+    border-bottom: 1px solid @shade-200;
+    .gone {
+      opacity: 1;
+    }
   }
 }
+
 
 #channels-listview > li > div > a > div > img {
   margin-left: 1.25rem;
@@ -3096,8 +3092,8 @@ a:hover {
 }
 
 div.footerMenu.km-footer > ul > li > a {
-  padding: 0.75em;
-  margin: 0px;
+  padding: 0.7em;
+  margin: 0;
 }
 
 .actionBtn {
@@ -3111,13 +3107,14 @@ div.footerMenu.km-footer > ul > li > a {
   position: absolute;
   bottom: 4rem;
   p {
-    width: 8.75em;
+    width: auto;
     position: absolute;
     right: 0rem;
     top: 1rem;
     opacity:0;
     text-align: right;
-    padding-right: 5px;
+    padding-right: 10px;
+    white-space: nowrap;
   }
   img {
     height:1.25rem;
@@ -3208,6 +3205,12 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   fill: @primary-200;
 }
 
+#network-offline {
+  width: 100%;
+  padding: 0 1em;
+  background: @shade-100;
+  color: #fff;
+}
 
 #status-profile-img {
   .circle-img-md;

@@ -970,7 +970,6 @@ form p {
   text-align: center;
   padding-top: 25%;
   opacity: 0.6;
-  margin-left: -1em;
 }
 .emptyState img {
   width: 6rem;
@@ -1107,14 +1106,16 @@ form p {
   max-width: 1.3em;
   vertical-align: middle;
 }
-.icon-sm,
-.icon-smart {
+.icon-sm {
   height: 1em;
   max-width: 1em;
   vertical-align: baseline;
 }
 .icon-smart {
+  height: 1.5em;
+  width: 1.5em;
   margin-right: 0.3em;
+  vertical-align: middle;
 }
 .icon-md {
   height: 1.5em;
@@ -3436,24 +3437,20 @@ a:hover {
   margin-right: 0.25rem;
   margin-left: 0.25rem;
 }
-#channelPresence > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
-  background: #323642;
-}
 #channelPresence-listview > li > div > div.memberTempName > h4 {
-  color: #fff;
+  color: #4A4A4A;
 }
 .memberTempName {
   color: #4A4A4A;
 }
-#channelPresence > div.km-header > div > div.km-view-title {
-  background: #323642;
-  color: #fff !important;
+#channelPresence-listview {
+  background: #fff;
 }
-#channelPresence-listview > li {
-  border-top: 1px solid #979797;
+#channelPresence-listview li {
+  border-bottom: 1px solid #E0E0E0;
 }
-#channelPresence-listview > li .gone {
-  opacity: 0.4;
+#channelPresence-listview li .gone {
+  opacity: 1;
 }
 #channels-listview > li > div > a > div > img {
   margin-left: 1.25rem;
@@ -3544,8 +3541,8 @@ a:hover {
   height: 1.6rem;
 }
 div.footerMenu.km-footer > ul > li > a {
-  padding: 0.75em;
-  margin: 0px;
+  padding: 0.7em;
+  margin: 0;
 }
 .actionBtn {
   height: 3rem;
@@ -3559,13 +3556,14 @@ div.footerMenu.km-footer > ul > li > a {
   bottom: 4rem;
 }
 .actionBtn p {
-  width: 8.75em;
+  width: auto;
   position: absolute;
   right: 0rem;
   top: 1rem;
   opacity: 0;
   text-align: right;
-  padding-right: 5px;
+  padding-right: 10px;
+  white-space: nowrap;
 }
 .actionBtn img {
   height: 1.25rem;
@@ -3628,6 +3626,12 @@ div.footerMenu.km-footer > ul > li:nth-child(4) > a.km-state-active #nav-places 
 #gallery > div.footerMenu.km-footer > ul > li:nth-child(5) > a #nav-gallery,
 div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery {
   fill: #6CADF3;
+}
+#network-offline {
+  width: 100%;
+  padding: 0 1em;
+  background: #979797;
+  color: #fff;
 }
 #status-profile-img {
   border-radius: 50%;

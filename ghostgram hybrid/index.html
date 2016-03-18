@@ -148,7 +148,7 @@
     		<p class="actionBtn-text">Cancel</p>
     		<img src="images/nav-add-white.svg"/>
     	</a>
-    	
+    	<div id="network-offline" class="hidden">Offline Mode</div>
         <ul class="list-inline menuNav">
             <li>
                 <a data-role="button" href="#home" data-click-on="down">
@@ -1563,9 +1563,9 @@
 	</div>
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
-		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event.svg" class="icon-sm"/> Add Event</a></li>
+		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
 		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
-		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie.svg" class="icon-sm"/> Add Movie</a></li>
+		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
@@ -1777,17 +1777,17 @@
 </script>
 
 
-<div data-role="modalview" id="channelPresence"  data-init="channelPresence.onInit" data-open="channelPresence.onShow"  style="width: 90%; height: 90%;">
+<div data-role="modalview" id="channelPresence"  data-init="channelPresence.onInit" data-open="channelPresence.onShow"  style="width: 90%;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button" data-click="channelPresence.closeModal">
 				<img src="images/close.svg" />
 			</a>
-			<span>Members</span> <span class="badge primary-200" id="occupancyCount">1</span>
+			<span>Members</span><span class="badge primary-200" id="occupancyCount"></span>
 		</div>
-
 	</div>
-	<ul id="channelPresence-listview" ></ul>
+	<div class="emptyState hidden">No Members invited</div>
+	<ul id="channelPresence-listview"></ul>
 </div>
 
 <!-- edit chat members -->
@@ -4072,9 +4072,9 @@
 	</div>
 
 	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
-		<li><a data-action="privateNotesView.addEvent"><img src="images/smart-event.svg" class="icon-sm"/> Add Event</a></li>
+		<li><a data-action="privateNotesView.addEvent"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
 		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
-		<li><a data-action="privateNotesView.addMovie"><img src="images/smart-movie.svg" class="icon-sm"/> Add Movie</a></li>
+		<li><a data-action="privateNotesView.addMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
