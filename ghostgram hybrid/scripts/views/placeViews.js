@@ -797,8 +797,7 @@ var findPlacesView = {
         // Search nearby places
         places.nearbySearch({
             location: latlng,
-            radius: findPlacesView._radius,
-            types: ['establishment']
+            radius: findPlacesView._radius
         }, function (placesResults, placesStatus) {
 
             if (placesStatus !== google.maps.places.PlacesServiceStatus.OK) {
