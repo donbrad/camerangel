@@ -21,6 +21,7 @@ var userModel = {
 
     _user: new kendo.data.ObservableObject({
         _version: 1,
+        Id: null,   // everlive id -- existance and case critical for update to function
         username: '',
         name: '',
         userUUID: '',
@@ -266,7 +267,7 @@ var userModel = {
                 }
                 userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
-                userModel._user.bind('change', userModel.sync);
+                userModel._user.bind('change', userModel.syncToEverlive);
                 userModel.initPubNub();
                 userModel.fetchParseData();
 
@@ -285,12 +286,12 @@ var userModel = {
                                         mobileNotify(JSON.stringify(error1));
                                     } else {
                                         var token = data1;
-                                        userModel.updateEverliveUser();
+                                        everlive.updateUser();
                                     }
 
                                 });
                             } else {
-                                userModel.updateEverliveUser();
+                                everlive.updateUser();
                             }
                         });
                     }
@@ -305,12 +306,13 @@ var userModel = {
                                     mobileNotify(JSON.stringify(error1));
                                 } else {
                                     var token = data1;
-                                    userModel.updateEverliveUser();
+                                    userModel.currentUser.userUUID = uuid.v4();
+                                    everlive.updateUser();
                                 }
 
                             });
                         } else {
-                            userModel.updateEverliveUser();
+                            everlive.updateUser();
                         }
                     });
                 });
@@ -336,16 +338,6 @@ var userModel = {
 
     },
 
-    updateEverliveUser : function () {
-        APP.everlive.Users.updateSingle(userModel._user,
-            function(data){
-                mobileNotify("Everlive User Account Updated");
-            },
-            function(error){
-               mobileNotify("Everlive User Update Error : " + JSON.stringify(error));
-            });
-
-    },
 
     deleteAccount: function () {
 
@@ -371,15 +363,16 @@ var userModel = {
         var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
         user.set("privateKey", newPrivateKey);
 
-        user.save();
+        //user.save();
 
     },
 
-   sync: function (e) {
+   syncToEverlive: function (e) {
       _preventDefault(e);
 
-       var fieldValue = userModel._user.get(e.field);
-        userModel.parseUser.set(e.field, fieldValue);
+       var field = e.field;
+       var fieldValue = userModel._user.get(field);
+       /* userModel.parseUser.set(e.field, fieldValue);
         userModel.parseUser.save(null, {
             success : function (user){
                 //mobileNotify("Updated your " + e.field);
@@ -387,8 +380,10 @@ var userModel = {
             error: function (user, error){
                 mobileNotify("Profile save error: " + error);
             }
-        });
-       userStatus.syncField(e.field);
+        });*/
+       
+       
+       userStatus.syncField(field, fieldValue);
     },
 
     encryptPrivateKey : function (key) {
@@ -569,6 +564,7 @@ var userStatus = {
                     } else {
                         var member = data.result[0];
                         userStatus._id = member.Id;
+                        userStatus._statusObj.id = member.id;
                     }
 
                 },
@@ -581,6 +577,7 @@ var userStatus = {
 
 
     syncField : function (field) {
+
         switch(field) {
             case 'userUUID':
             case 'isAvailable' :
@@ -592,7 +589,10 @@ var userStatus = {
             case 'lng' :
             case 'googlePlaceId' :
             case 'currentPlaceUUID' :
-                userStatus.parseUserStatus.set(field, userModel._user.get(field));
+
+                updateObject[field] =  userModel._user.get(field);
+                
+               /* userStatus.parseUserStatus.set(field, userModel._user.get(field));
                 userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
                 userStatus.parseUserStatus.save(null, {
                     success : function (user){
@@ -601,20 +601,20 @@ var userStatus = {
                     error: function (user, error){
                         mobileNotify("User Status update error: " + error);
                     }
-                });
+                });*/
         }
     },
 
     create : function () {
         var data = APP.everlive.data(userStatus._ggClass);
 
-        userStatus.updateEverlive();
 
-        data.create(dirObj,
+
+        data.create(userStatus._statusObj,
             function(data){
                 userStatus._id = data.result.Id;
                 userStatus._statusObj.id  = data.result.Id;
-                userStatus.updateEverlive();
+                //userStatus.updateEverlive();
             },
             function(error){
                 mobileNotify("User Status Init error : " + JSON.stringify(error));
@@ -659,6 +659,7 @@ var userStatus = {
     updateEverlive : function () {
         var status = userStatus._statusObj;
 
+
         status.set('userUUID', userModel._user.userUUID);
         status.set('isAvailable', userModel._user.isAvailable);
         status.set('isVisible', userModel._user.isVisible);
@@ -677,7 +678,14 @@ var userStatus = {
         status.set('isCheckedIn', userModel._user.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
 
-        userStatus._statusObj.sync();
+
+        everlive.updateOne(userStatus._ggClass, status, function (error, data){
+
+            if (error !== null) {
+                mobileNotify("Update User Status error : " + JSON.stringify(error));
+            }
+
+        })
 
     }
 

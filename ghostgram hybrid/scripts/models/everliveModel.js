@@ -36,6 +36,7 @@ var everlive = {
         APP.everlive.users.login(username, password,
             function (data) {
                 everlive._token = data.result.Id;
+                userModel.currentUser.Id = data.result.Id;
                 everlive._signedIn = true;
                 callback(null, data);
             },
@@ -44,13 +45,53 @@ var everlive = {
             });
     },
 
-    currentUser : function () {
+    updateUser : function () {
+        var updateObj = userModel.currentUser;
+
+        APP.everlive.Users.updateSingle(updateObj,
+            function(data){
+                var result = data.result;
+            },
+            function(error){
+                mobileNotify("User Update Error : " + JSON.stringify(error));
+            });
+    },
+
+
+    updateUserField : function (field, value) {
+        var updateObj = {Id : userModel.currentUser.Id};
+        
+        updateObj[field] = value;
+        APP.everlive.Users.updateSingle(updateObj,
+            function(data){
+                var result = data.result;
+            },
+            function(error){
+                mobileNotify("User UpdateField Error : " + JSON.stringify(error));
+            }); 
+        
+    },
+
+
+    currentUser : function (callback) {
+        APP.everlive.Users.currentUser()
+            .then(function (data) {
+                    everlive._user = data.result;
+                    callback(null, data.result)
+                },
+                function(error){
+                    callback(error, null);
+
+                });
+    },
+
+    currentUserId : function () {
         APP.everlive.Users.currentUser()
             .then(function (data) {
                     everlive._user = data.result;
                 },
                 function(error){
-                   mobileNotify("Everlive User Error : " + JSON.stringify(error));
+                    mobileNotify("Everlive User Error : " + JSON.stringify(error));
                 });
     },
 
