@@ -391,7 +391,7 @@ var userModel = {
     },
 
     generateUserKey : function () {
-        var rawKey = userModel.parseUser.get('userUUID');
+        var rawKey = userModel.currentUser.userUUID;
 
          userModel.key = rawKey.replace(/-/g,'');
 
