@@ -286,6 +286,8 @@ var userModel = {
                                         mobileNotify(JSON.stringify(error1));
                                     } else {
                                         var token = data1;
+                                        userModel.currentUser.userUUID = uuid.v4();
+                                        userModel.key =  userModel.currentUser.userUUID.replace(/-/g,'');
                                         everlive.updateUser();
                                     }
 
@@ -307,6 +309,7 @@ var userModel = {
                                 } else {
                                     var token = data1;
                                     userModel.currentUser.userUUID = uuid.v4();
+                                    userModel.key =  userModel.currentUser.userUUID.replace(/-/g,'');
                                     everlive.updateUser();
                                 }
 
@@ -391,7 +394,7 @@ var userModel = {
     },
 
     generateUserKey : function () {
-        var rawKey = userModel.currentUser.userUUID;
+        var rawKey = userModel.parseUser.get('userUUID');
 
          userModel.key = rawKey.replace(/-/g,'');
 
