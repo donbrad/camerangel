@@ -270,7 +270,7 @@ var userModel = {
                 userModel.initPubNub();
                 userModel.fetchParseData();
 
-                APP.everlive.users._user(function(data) {
+                APP.everlive.users.currentUser(function(data) {
                     if (data.result) {
                         everlive._user = data.result;
                         mobileNotify(data.result.Username + " is logged in to Everlive!");
