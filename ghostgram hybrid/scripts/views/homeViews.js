@@ -36,8 +36,7 @@ var homeView = {
 
             places.nearbySearch({
                 location: latlng,
-                radius: homeView._radius,
-                types: ['establishment']
+                radius: homeView._radius
             }, function (placesResults, placesStatus) {
                 if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
                     APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
