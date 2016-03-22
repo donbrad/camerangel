@@ -74,7 +74,7 @@ var userModel = {
 
     init: function () {
         var hasAccount = window.localStorage.getItem('ggHasAccount');
-        if (hasAccount !== undefined) {
+        if (hasAccount !== undefined && hasAccount === true) {
             userModel.hasAccount = true;
             userModel.initialView = '#usersignin';
         } else {
@@ -89,12 +89,7 @@ var userModel = {
 
 
     initParse: function () {
-      /* if (! Parse.Session.isCurrentSessionRevocable()) {
-           mobileNotify("Please Login on this device");
-
-       }*/
-
-
+    
        // userModel.parseUser = Parse.User.current();
         userModel.device.udid = device.uuid;
         userModel.device.platform = device.platform;
