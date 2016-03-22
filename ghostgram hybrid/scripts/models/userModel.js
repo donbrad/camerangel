@@ -433,6 +433,14 @@ var userModel = {
 
     },
 
+    setUserUUID : function (uuid) {
+
+        userModel.userUUID  = uuid;
+        userModel._user.set("userUUID", uuid);
+        userModel.key = uuid.replace(/-/g,'');
+    },
+    
+    
     generateUserKey : function () {
         var rawKey = userModel.userUUID;
 
@@ -442,11 +450,7 @@ var userModel = {
 
     decryptPrivateKey : function () {
 
-        if (userModel.key === null) {
-            mobileNotify("Generating User Key...");
-            userModel.generateUserKey();
-        }
-
+       
         var privateKey = userModel._user.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         var RSAKey = cryptico.privateKeyFromString(newPrivateKey);
