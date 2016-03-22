@@ -224,9 +224,10 @@ var userModel = {
 
                 userModel.initialView = '#home';
 
+                userModel.userUUID = user.get('userUUID');
+                userModel._user.set('userUUID', userModel.userUUID);
+                localStorage.setItem('ggUserUUID', userModel.userUUID);
 
-                userModel._user.set('userUUID', user.get('userUUID'));
-                localStorage.setItem('ggUserUUID', user.get('userUUID'));
                 userModel.generateUserKey();
                 userModel.updatePrivateKey();
                 userModel.decryptPrivateKey();
@@ -300,8 +301,13 @@ var userModel = {
                                     } else {
                                         var token = data1;
                                         userModel.userUUID = uuid.v4();
-                                        localStorage.setItem('ggUserUUID',  userModel.userUUID);
-                                        userModel.key =   userModel.userUUID.replace(/-/g,'');
+                                        userModel._user.set('userUUID', userModel.userUUID);
+                                        localStorage.setItem('ggUserUUID', userModel.userUUID);
+
+                                        userModel.generateUserKey();
+                                        userModel.updatePrivateKey();
+                                        userModel.decryptPrivateKey();
+
                                         everlive.updateUser();
                                     }
 
@@ -323,7 +329,13 @@ var userModel = {
                                 } else {
                                     var token = data1;
                                     userModel.userUUID = uuid.v4();
-                                    userModel.key =   userModel.userUUID.replace(/-/g,'');
+                                    userModel._user.set('userUUID', userModel.userUUID);
+                                    localStorage.setItem('ggUserUUID', userModel.userUUID);
+
+                                    userModel.generateUserKey();
+                                    userModel.updatePrivateKey();
+                                    userModel.decryptPrivateKey();
+
                                     everlive.updateUser();
                                 }
 
