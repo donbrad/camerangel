@@ -1057,8 +1057,7 @@ var signUpView = {
                             window.localStorage.setItem('ggUsername', username);
                             window.localStorage.setItem('ggUserUUID', userUUID);
 
-                            userModel.userUUID = userUUID;
-                            userModel.generateUserKey();
+                            userModel.setUserUUID(userUUID);
                             user.set('Id', data.Id);
                             user.set("username", username);
                             // user.set("password", password);
@@ -1082,7 +1081,6 @@ var signUpView = {
                             user.set('emailList', []);
                             user.set('phoneList', []);
                             user.set('archiveIntro', false);
-                            user.set('homeIntro', false);
                             user.set('chatIntro', false);
                             user.set('contactIntro', false);
                             user.set('galleryIntro', false);
@@ -1419,27 +1417,16 @@ var signInView = {
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
 
-                userModel.parseUser = user;
+                userModel.setUserUUID(user.get('userUUID'));
 
-                userModel.generateUserKey();
-
-                // Check version -- ensure all users are version 1 with new public/private keys
-                if (userModel.parseUser.get("version") === undefined) {
-                    userModel.generateNewPrivateKey(userModel.parseUser);
-                    userModel.parseUser.set("version", 1);
-                    userModel.parseUser.save();
-                }
                 var publicKey = user.get('publicKey');
                 var privateKey = user.get('privateKey');
                 if (publicKey === undefined || privateKey === undefined) {
-                    userModel.generateNewPrivateKey(user);
+                    userModel.generateNewPrivateKey();
                 } else {
                     userModel.updatePrivateKey();
                 }
-                if (userModel.parseUser.get("recoveryPassword") !== password) {
-                    userModel.parseUser.set("recoveryPassword", password);
-                    userModel.parseUser.save();
-                }
+
 
 
                 userModel._user.set('username', userModel.parseUser.get('username'));
