@@ -1302,7 +1302,7 @@ var newUserView = {
 
     onShow : function (e) {
 
-    	_introRun: false,
+        newUserView._introRun = false;
         _preventDefault(e);
 
         if(!newUserView._introRun){

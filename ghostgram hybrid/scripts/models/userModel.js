@@ -114,17 +114,16 @@ var userModel = {
         }
 
         everlive.currentUser(function (error, data) {
-            if (error !== null) {
+            if (error !== null && data !== null) {
+                // No error and data
+                userModel.initialView = '#home';
+            } else {
                 if (userModel.hasAccount) {
                     mobileNotify("Please login to ghostgrams");
                     userModel.initialView = '#usersignin';
                 } else {
                     userModel.initialView = '#newuserhome';
                 }
-            } else {
-                userModel.initialView = '#home';
-
-
             }
 
         });
