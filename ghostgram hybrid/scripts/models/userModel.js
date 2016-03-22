@@ -113,8 +113,24 @@ var userModel = {
 
         }
 
+        everlive.currentUser(function (error, data) {
+            if (error !== null) {
+                if (userModel.hasAccount) {
+                    mobileNotify("Please login to ghostgrams");
+                    userModel.initialView = '#usersignin';
+                } else {
+                    userModel.initialView = '#newuserhome';
+                }
+            } else {
+                userModel.initialView = '#home';
 
-        if (Parse.User.current() === null) {
+
+            }
+
+        });
+
+
+   /*     if (Parse.User.current() === null) {
 
             if (userModel.hasAccount) {
                 mobileNotify("Please login to ghostgrams");
@@ -364,7 +380,7 @@ var userModel = {
                 }
             });
         }
-
+*/
     },
 
 
