@@ -17,6 +17,7 @@ var userModel = {
     identiconUrl : null,
     rememberUserName : false,
     key : null,
+    userUUID: null,
     initialView : '#newuserhome',
 
     _user: new kendo.data.ObservableObject({
@@ -64,7 +65,11 @@ var userModel = {
         if (userModel._user.get('rememberUsername')) {
             localStorage.setItem('ggRememberUsername', true);
             localStorage.setItem('ggUsername', userModel._user.get('username'));
+
         }
+
+
+
     },
 
     init: function () {
@@ -97,11 +102,13 @@ var userModel = {
         userModel.device.model = device.model;
         userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
         userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
+        userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
+
         // If remembering Username, get it from localstorage and prefill signin.
         if (userModel.rememberUsername) {
            userModel.username = window.localStorage.getItem('ggUsername');
             if (userModel.username == undefined || userModel.username === '') {
-                window.localStorage.setItem('ggUsername', userModel.parseUser.get('username'));
+                window.localStorage.setItem('ggUsername', userModel._user.get('username'));
             }
 
         }
@@ -226,6 +233,7 @@ var userModel = {
                 userModel._user.set('phone', user.get('phone'));
                 userModel._user.set('alias', user.get('alias'));
                 userModel._user.set('userUUID', user.get('userUUID'));
+                localStorage.setItem('ggUserUUID', user.get('userUUID'));
                 userModel._user.set('publicKey', user.get('publicKey'));
                 // userModel._user.set('privateKey', userModel.parseUser.get('privateKey'));
                 userModel._user.set('statusMessage', user.get('statusMessage'));
@@ -286,8 +294,9 @@ var userModel = {
                                         mobileNotify(JSON.stringify(error1));
                                     } else {
                                         var token = data1;
-                                        userModel.currentUser.userUUID = uuid.v4();
-                                        userModel.key =  userModel.currentUser.userUUID.replace(/-/g,'');
+                                        userModel.userUUID = uuid.v4();
+                                        localStorage.setItem('ggUserUUID',  userModel.userUUID);
+                                        userModel.key =   userModel.userUUID.replace(/-/g,'');
                                         everlive.updateUser();
                                     }
 
@@ -308,8 +317,8 @@ var userModel = {
                                     mobileNotify(JSON.stringify(error1));
                                 } else {
                                     var token = data1;
-                                    userModel.currentUser.userUUID = uuid.v4();
-                                    userModel.key =  userModel.currentUser.userUUID.replace(/-/g,'');
+                                    userModel.userUUID = uuid.v4();
+                                    userModel.key =   userModel.userUUID.replace(/-/g,'');
                                     everlive.updateUser();
                                 }
 
@@ -354,17 +363,21 @@ var userModel = {
     },
 
     // user is valid parse User object
-    generateNewPrivateKey : function (user) {
+    generateNewPrivateKey : function () {
         // Generate Keys for the user.
-        var RSAkey = cryptico.generateRSAKey(1024);
+        var RSAkey = cryptico.generateRSAKey(512);
         var publicKey = cryptico.publicKeyString(RSAkey);
         var privateKey = cryptico.privateKeyString(RSAkey);
 
+        //userModel._user.set('secretKey',RSAkey);
         userModel._user.set('publicKey',publicKey);
-        userModel._user.set('privateKey',privateKey);
-        user.set("publicKey", publicKey);
         var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
-        user.set("privateKey", newPrivateKey);
+        userModel._user.set('privateKey',newPrivateKey);
+
+
+       /* user.set("publicKey", publicKey);
+        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
+        user.set("privateKey", newPrivateKey);*/
 
         //user.save();
 
@@ -394,7 +407,7 @@ var userModel = {
     },
 
     generateUserKey : function () {
-        var rawKey = userModel.parseUser.get('userUUID');
+        var rawKey = userModel.userUUID;
 
          userModel.key = rawKey.replace(/-/g,'');
 
@@ -407,7 +420,7 @@ var userModel = {
             userModel.generateUserKey();
         }
 
-        var privateKey = userModel.parseUser.get('privateKey');
+        var privateKey = userModel._user.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         var RSAKey = cryptico.privateKeyFromString(newPrivateKey);
         userModel._user.set('privateKey', newPrivateKey);
