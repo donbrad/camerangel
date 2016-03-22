@@ -56,7 +56,7 @@ var everlive = {
     },
 
     updateUser : function () {
-        var updateObj = userModel.currentUser;
+        var updateObj = userModel._user;
 
         APP.everlive.Users.updateSingle(updateObj,
             function(data){
@@ -69,7 +69,7 @@ var everlive = {
 
 
     updateUserField : function (field, value) {
-        var updateObj = {Id : userModel.currentUser.Id};
+        var updateObj = {Id : userModel._user.Id};
         
         updateObj[field] = value;
         APP.everlive.Users.updateSingle(updateObj,

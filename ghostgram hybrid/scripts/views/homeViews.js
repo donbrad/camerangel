@@ -1033,7 +1033,7 @@ var signUpView = {
         var phone = $('#home-signup-phone').val();
         var alias = $('#home-signup-alias').val();
 
-        var userUUID = uuid.v4();
+
 
         // clean up the phone number and ensure it's prefixed with 1
         // phone = phone.replace(/\+[0-9]{1-2}/,'');
@@ -1041,7 +1041,103 @@ var signUpView = {
 
         isValidMobileNumber(phone, function (result) {
             if (result.status === 'ok' && result.valid === true) {
-                Parse.Cloud.run('preflightPhone', {phone: phone}, { //Todo:  replace with memberdirectory search for phone.
+                memberdirectory.findMemberByPhone(phone, function (result) {
+                    if (result !== null) {
+                        mobileNotify("Your phone number matches existing user.");
+                        return;
+                    } else {
+
+                        everlive.createAccount(username, name, password, function (error, data) {
+                            if (error !== null) {
+                                mobileNotify("Error creating account : " + JSON.stringify(error));
+                                return;
+                            }
+                            var userUUID = uuid.v4(); var user = userModel._user;
+                            window.localStorage.setItem('ggRecoveryPassword', password);
+                            window.localStorage.setItem('ggUsername', username);
+                            window.localStorage.setItem('ggUserUUID', userUUID);
+
+                            userModel.userUUID = userUUID;
+                            userModel.generateUserKey();
+                            user.set('Id', data.Id);
+                            user.set("username", username);
+                            // user.set("password", password);
+                            user.set("email", username);
+                            user.set("name", name);
+                            user.set("phone", phone);
+                            user.set("alias", alias);
+                            user.set("currentPlace", "");
+                            user.set("currentPlaceUUID", "");
+                            user.set('photo', null);
+                            user.set("isAvailable", true);
+                            user.set("isVisible", true);
+                            user.set("isCheckedIn", false);
+                            user.set("availImgUrl", "images/status-available.svg");
+                            user.set("phoneVerified", false);
+                            user.set("useIdenticon", true);
+                            user.set("useLargeView", false);
+                            user.set("rememberUsername", false);
+                            user.set("userUUID", userUUID);
+                            user.set('addressList', []);
+                            user.set('emailList', []);
+                            user.set('phoneList', []);
+                            user.set('archiveIntro', false);
+                            user.set('homeIntro', false);
+                            user.set('chatIntro', false);
+                            user.set('contactIntro', false);
+                            user.set('galleryIntro', false);
+                            user.set('identiconIntro', false);
+                            user.set('placesIntro', false);
+                            user.set('firstMessage', false);
+                            var aesPassword  = GibberishAES.enc(password, userModel.key);
+                            user.set('recoveryPassword', aesPassword);
+                            userModel.generateNewPrivateKey(user);
+
+                            userModel.createIdenticon(userUUID);
+                            var photo = user.get('photo');
+                            if (photo === undefined || photo === null) {
+                                userModel._user.photo = userModel.identiconUrl;
+                            }
+                            //user.set("publicKey", publicKey);
+                            //user.set("privateKey", privateKey);
+                            userModel._user.bind('change', userModel.sync);
+                            mobileNotify('Welcome to ghostgrams!');
+                            userModel.initPubNub();
+                            window.localStorage.setItem('ggHasAccount', true);
+                            if (window.navigator.simulator === undefined) {
+
+                                cordova.plugins.notification.local.add({
+                                    id: 'userWelcome',
+                                    title: 'Welcome to ghostgrams',
+                                    message: 'You have a secure connection to your family, friends and favorite places',
+                                    autoCancel: true,
+                                    date: new Date(new Date().getTime() + 120)
+                                });
+                            }
+
+                            sendPhoneVerificationCode(phone, function (result) {
+                                if (result.status === 'ok') {
+                                    userModel._user.set('phoneVerificationCode', result.code);
+                                    mobileNotify("Phone Verification Code sent.  Please check your messages");
+                                    if (window.navigator.simulator === undefined) {
+
+                                        cordova.plugins.notification.local.add({
+                                            id: 'verifyPhone',
+                                            title: 'Welcome to ghostgrams',
+                                            message: 'Please verify your phone',
+                                            autoCancel: true,
+                                            date: new Date(new Date().getTime() + 30)
+                                        });
+                                    }
+                                }
+                            });
+
+                        });
+
+                    }
+
+                });
+    /*            Parse.Cloud.run('preflightPhone', {phone: phone}, { //Todo:  replace with memberdirectory search for phone.
                     success: function (data) {
                         if (data.status !== 'ok' || data.count !== 0) {
                             mobileNotify("Your phone number matches existing user.");
@@ -1157,7 +1253,7 @@ var signUpView = {
                                         }
                                     });
 
-                                   /* Parse.Cloud.run('sendPhoneVerificationCode', {phoneNumber: phone}, {
+                                   /!* Parse.Cloud.run('sendPhoneVerificationCode', {phoneNumber: phone}, {
                                         success: function (result) {
                                             mobileNotify('Please verify your phone');
                                             $("#modalview-verifyPhone").data("kendoMobileModalView").open();
@@ -1166,7 +1262,7 @@ var signUpView = {
                                             mobileNotify('Error sending verification code ' + error);
                                         }
                                     });
-*/
+*!/
                                     APP.kendo.navigate('#home');
                                 },
 
@@ -1182,30 +1278,13 @@ var signUpView = {
                         mobileNotify("Error checking phone number" + error);
                     }
                 });
-            } else {
+*/            } else {
                 mobileNotify("This phone number is not a valid mobile number.");
                 return;
             }
 
 
         });
-        /*      Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
-         success: function(result) {
-         if (result.status !== 'ok' || result.result.carrier.type !== 'mobile') {
-         mobileNotify("This phone number is not a valid mobile number.");
-         return;
-         } else {
-
-         }
-         },
-         error: function(error) {
-         // Show the error message somewhere and let the user try again.
-         mobileNotify("Error: " + error.code + " " + error.message);
-         }
-         });
-
-         }*/
-
     }
 
 };
