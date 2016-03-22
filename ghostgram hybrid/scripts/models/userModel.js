@@ -87,8 +87,37 @@ var userModel = {
         });
     },
 
+    initCloudModels : function () {
+        contactModel.init();
 
-    initParse: function () {
+        mapModel.init();
+
+        placesModel.init();
+
+        privateNoteModel.init();  // Depends on everlive...
+
+        memberdirectory.init();
+
+        noteModel.init();
+
+        photoModel.init();
+
+        channelModel.init();
+
+        smartEvent.init();
+
+        smartMovie.init();
+
+        tagModel.init();
+
+        if (window.navigator.simulator === undefined) {
+            serverPush.init();
+        }
+
+    },
+
+
+    initCloud: function () {
     
        // userModel.parseUser = Parse.User.current();
         userModel.device.udid = device.uuid;
@@ -98,6 +127,10 @@ var userModel = {
         userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
         userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
         userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
+        if (userModel.userUUID === undefined) {
+            userModel.userUUID = null;
+            userModel.hasAccount = false;
+        }
 
         // If remembering Username, get it from localstorage and prefill signin.
         if (userModel.rememberUsername) {
@@ -112,6 +145,9 @@ var userModel = {
             if (error !== null && data !== null) {
                 // No error and data
                 userModel.initialView = '#home';
+                userModel.initCloudModels();
+                userModel.initPubNub();
+
             } else {
                 if (userModel.hasAccount) {
                     mobileNotify("Please login to ghostgrams");

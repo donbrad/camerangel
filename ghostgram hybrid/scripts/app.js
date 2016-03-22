@@ -100,7 +100,7 @@
 			provider = Everlive.Constants.StorageProvider.LocalStorage;
 		}
 
-		Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
+		//Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
 
 		APP.everlive = new Everlive({
@@ -144,34 +144,9 @@
 
 		userModel.init();
 
-		userModel.initParse();
+		userModel.initCloud();
 
-		contactModel.init();
-
-		mapModel.init();
-
-		placesModel.init();
-
-		privateNoteModel.init();  // Depends on everlive...
-
-		memberdirectory.init();
-
-		noteModel.init();
 		
-		photoModel.init();
-
-		channelModel.init();
-
-		smartEvent.init();
-
-		smartMovie.init();
-
-		tagModel.init();
-
-		if (window.navigator.simulator === undefined) {
-			serverPush.init();
-		}
-
 		pruneNotifications();
 
 		// Uncomment to load all device contacts at initialization - major performance hit!!
