@@ -131,7 +131,7 @@ var userModel = {
 
                 userModel.parseUser = user;
 
-                userModel.generateUserKey();
+
                 if (user.get("version") === undefined) {
                     userModel.generateNewPrivateKey(userModel.parseUser);
                     userModel.parseUser.set("version", 1);
@@ -222,9 +222,15 @@ var userModel = {
                 if (dirty)
                     user.save();
 
+                userModel.initialView = '#home';
+
+
+                userModel._user.set('userUUID', user.get('userUUID'));
+                localStorage.setItem('ggUserUUID', user.get('userUUID'));
+                userModel.generateUserKey();
                 userModel.updatePrivateKey();
                 userModel.decryptPrivateKey();
-                userModel.initialView = '#home';
+
 
                 userModel._user.set('username', user.get('username'));
                 userModel._user.set('objectId', user.get('objectId'));
@@ -232,8 +238,7 @@ var userModel = {
                 userModel._user.set('email', user.get('email'));
                 userModel._user.set('phone', user.get('phone'));
                 userModel._user.set('alias', user.get('alias'));
-                userModel._user.set('userUUID', user.get('userUUID'));
-                localStorage.setItem('ggUserUUID', user.get('userUUID'));
+
                 userModel._user.set('publicKey', user.get('publicKey'));
                 // userModel._user.set('privateKey', userModel.parseUser.get('privateKey'));
                 userModel._user.set('statusMessage', user.get('statusMessage'));
