@@ -1103,6 +1103,7 @@ var signUpView = {
                             userModel._user.bind('change', userModel.sync);
                             mobileNotify('Welcome to ghostgrams!');
                             userModel.initPubNub();
+                            userModel.hasAccount = true;
                             window.localStorage.setItem('ggHasAccount', true);
                             if (window.navigator.simulator === undefined) {
 
