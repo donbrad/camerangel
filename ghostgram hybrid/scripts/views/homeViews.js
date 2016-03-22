@@ -447,22 +447,29 @@ var userStatusView = {
     doSignOut : function (e) {
         _preventDefault(e);
 
-        Parse.User.logOut();
-        userModel.parseUser = null;
-        userModel._user.unbind('change', userModel.sync);
-        userModel._user.set('username', null);
-        userModel._user.set('email', null);
-        userModel._user.set('phone',null);
-        userModel._user.set('alias', null);
-        userModel._user.set('userUUID', null);
-        userModel._user.set('rememberUsername', false);
-        userModel._user.set('phoneVerified', false);
-        userModel._user.set('emailVerified', false);
-        userModel.parseACL = '';
-        deviceModel.resetDeviceState();
 
-        userStatusView.closeModal();
-        APP.kendo.navigate('#usersignin');
+       // Parse.User.logOut();
+
+        everlive.logout(function (status) {
+            if (!status) {
+                mobileNotify("Signout Error....");
+            }
+            userModel.parseUser = null;
+            userModel._user.unbind('change', userModel.sync);
+            userModel._user.set('username', null);
+            userModel._user.set('email', null);
+            userModel._user.set('phone',null);
+            userModel._user.set('alias', null);
+            userModel._user.set('userUUID', null);
+            userModel._user.set('rememberUsername', false);
+            userModel._user.set('phoneVerified', false);
+            userModel._user.set('emailVerified', false);
+            deviceModel.resetDeviceState();
+
+            userStatusView.closeModal();
+            APP.kendo.navigate('#usersignin');
+        });
+
     },
 
     // Main entry point for userstatus modal
@@ -1034,7 +1041,7 @@ var signUpView = {
 
         isValidMobileNumber(phone, function (result) {
             if (result.status === 'ok' && result.valid === true) {
-                Parse.Cloud.run('preflightPhone', {phone: phone}, {
+                Parse.Cloud.run('preflightPhone', {phone: phone}, { //Todo:  replace with memberdirectory search for phone.
                     success: function (data) {
                         if (data.status !== 'ok' || data.count !== 0) {
                             mobileNotify("Your phone number matches existing user.");
@@ -1133,7 +1140,24 @@ var signUpView = {
                                         });
                                     }
 
-                                    Parse.Cloud.run('sendPhoneVerificationCode', {phoneNumber: phone}, {
+                                    sendPhoneVerificationCode(phone, function (result) {
+                                        if (result.status === 'ok') {
+                                            userModel._user.set('phoneVerificationCode', result.code);
+                                            mobileNotify("Phone Verification Code sent.  Please check your messages");
+                                            if (window.navigator.simulator === undefined) {
+
+                                                cordova.plugins.notification.local.add({
+                                                    id: 'verifyPhone',
+                                                    title: 'Welcome to ghostgrams',
+                                                    message: 'Please verify your phone',
+                                                    autoCancel: true,
+                                                    date: new Date(new Date().getTime() + 30)
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                   /* Parse.Cloud.run('sendPhoneVerificationCode', {phoneNumber: phone}, {
                                         success: function (result) {
                                             mobileNotify('Please verify your phone');
                                             $("#modalview-verifyPhone").data("kendoMobileModalView").open();
@@ -1142,7 +1166,7 @@ var signUpView = {
                                             mobileNotify('Error sending verification code ' + error);
                                         }
                                     });
-
+*/
                                     APP.kendo.navigate('#home');
                                 },
 
@@ -1306,10 +1330,7 @@ var signInView = {
 
         mobileNotify("Signing you in to ghostgrams....");
 
-
-        Parse.User.logIn(username,password , {
-            success: function(user) {
-                // Do stuff after successful login.
+        everlive.logIn(username,password , function (error, user) {
 
                 window.localStorage.setItem('ggHasAccount', true);
                 window.localStorage.setItem('ggRecoveryPassword', password);
@@ -1423,7 +1444,7 @@ var signInView = {
 
 
                 userModel.initPubNub();
-                userModel.fetchParseData();
+               // userModel.fetchParseData();
 
                 APP.kendo.navigate('#home');
 
@@ -1436,18 +1457,7 @@ var signInView = {
                     $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 
                 }
-            },
-            error: function(user, error) {
-                // The login failed. Check error to see why.
 
-               if(error.code === 101){
-               		mobileNotify("Invalid email/password");
-               } else {
-               		mobileNotify("Error: " + error.code + " " + error.message);
-               }
-               
-
-            }
         });
 
     }

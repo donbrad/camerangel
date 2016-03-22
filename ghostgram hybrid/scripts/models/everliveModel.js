@@ -45,6 +45,16 @@ var everlive = {
             });
     },
 
+    logout : function (callback) {
+        APP.everlive.users.logout().then(function () {
+                everlive._signedIn = false;
+                callback(true);
+            }, // success
+            function () {
+                callback(false);
+            });
+    },
+
     updateUser : function () {
         var updateObj = userModel.currentUser;
 
@@ -169,9 +179,9 @@ var everlive = {
             });
     },
 
-    logout : function () {
+    clearAuthentication : function () {
         APP.everlive.authentication.clearAuthorization();
-        everlive._signedIn = false;
+       
     },
 
     syncStart : function () {
