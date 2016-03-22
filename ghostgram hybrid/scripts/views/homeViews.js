@@ -36,8 +36,7 @@ var homeView = {
 
             places.nearbySearch({
                 location: latlng,
-                radius: homeView._radius,
-                types: ['establishment']
+                radius: homeView._radius
             }, function (placesResults, placesStatus) {
                 if (placesStatus === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
                     APP.map.geocoder.geocode({ 'latLng': latlng }, function (geoResults, geoStatus) {
@@ -448,22 +447,29 @@ var userStatusView = {
     doSignOut : function (e) {
         _preventDefault(e);
 
-        Parse.User.logOut();
-        userModel.parseUser = null;
-        userModel._user.unbind('change', userModel.sync);
-        userModel._user.set('username', null);
-        userModel._user.set('email', null);
-        userModel._user.set('phone',null);
-        userModel._user.set('alias', null);
-        userModel._user.set('userUUID', null);
-        userModel._user.set('rememberUsername', false);
-        userModel._user.set('phoneVerified', false);
-        userModel._user.set('emailVerified', false);
-        userModel.parseACL = '';
-        deviceModel.resetDeviceState();
 
-        userStatusView.closeModal();
-        APP.kendo.navigate('#usersignin');
+       // Parse.User.logOut();
+
+        everlive.logout(function (status) {
+            if (!status) {
+                mobileNotify("Signout Error....");
+            }
+            userModel.parseUser = null;
+            userModel._user.unbind('change', userModel.sync);
+            userModel._user.set('username', null);
+            userModel._user.set('email', null);
+            userModel._user.set('phone',null);
+            userModel._user.set('alias', null);
+            userModel._user.set('userUUID', null);
+            userModel._user.set('rememberUsername', false);
+            userModel._user.set('phoneVerified', false);
+            userModel._user.set('emailVerified', false);
+            deviceModel.resetDeviceState();
+
+            userStatusView.closeModal();
+            APP.kendo.navigate('#usersignin');
+        });
+
     },
 
     // Main entry point for userstatus modal
@@ -1027,7 +1033,7 @@ var signUpView = {
         var phone = $('#home-signup-phone').val();
         var alias = $('#home-signup-alias').val();
 
-        var userUUID = uuid.v4();
+
 
         // clean up the phone number and ensure it's prefixed with 1
         // phone = phone.replace(/\+[0-9]{1-2}/,'');
@@ -1035,7 +1041,102 @@ var signUpView = {
 
         isValidMobileNumber(phone, function (result) {
             if (result.status === 'ok' && result.valid === true) {
-                Parse.Cloud.run('preflightPhone', {phone: phone}, {
+                memberdirectory.findMemberByPhone(phone, function (result) {
+                    if (result !== null) {
+                        mobileNotify("Your phone number matches existing user.");
+                        return;
+                    } else {
+
+                        everlive.createAccount(username, name, password, function (error, data) {
+                            if (error !== null) {
+                                mobileNotify("Error creating account : " + JSON.stringify(error));
+                                return;
+                            }
+                            var userUUID = uuid.v4(); var user = userModel._user;
+                            window.localStorage.setItem('ggRecoveryPassword', password);
+                            window.localStorage.setItem('ggUsername', username);
+                            window.localStorage.setItem('ggUserUUID', userUUID);
+
+                            userModel.setUserUUID(userUUID);
+                            user.set('Id', data.Id);
+                            user.set("username", username);
+                            // user.set("password", password);
+                            user.set("email", username);
+                            user.set("name", name);
+                            user.set("phone", phone);
+                            user.set("alias", alias);
+                            user.set("currentPlace", "");
+                            user.set("currentPlaceUUID", "");
+                            user.set('photo', null);
+                            user.set("isAvailable", true);
+                            user.set("isVisible", true);
+                            user.set("isCheckedIn", false);
+                            user.set("availImgUrl", "images/status-available.svg");
+                            user.set("phoneVerified", false);
+                            user.set("useIdenticon", true);
+                            user.set("useLargeView", false);
+                            user.set("rememberUsername", false);
+                            user.set("userUUID", userUUID);
+                            user.set('addressList', []);
+                            user.set('emailList', []);
+                            user.set('phoneList', []);
+                            user.set('archiveIntro', false);
+                            user.set('chatIntro', false);
+                            user.set('contactIntro', false);
+                            user.set('galleryIntro', false);
+                            user.set('identiconIntro', false);
+                            user.set('placesIntro', false);
+                            user.set('firstMessage', false);
+                            var aesPassword  = GibberishAES.enc(password, userModel.key);
+                            user.set('recoveryPassword', aesPassword);
+                            userModel.generateNewPrivateKey(user);
+
+                            userModel.createIdenticon(userUUID);
+                            var photo = user.get('photo');
+                            if (photo === undefined || photo === null) {
+                                userModel._user.photo = userModel.identiconUrl;
+                            }
+                            //user.set("publicKey", publicKey);
+                            //user.set("privateKey", privateKey);
+                            userModel._user.bind('change', userModel.sync);
+                            mobileNotify('Welcome to ghostgrams!');
+                            userModel.initPubNub();
+                            userModel.hasAccount = true;
+                            window.localStorage.setItem('ggHasAccount', true);
+                            if (window.navigator.simulator === undefined) {
+
+                                cordova.plugins.notification.local.add({
+                                    id: 'userWelcome',
+                                    title: 'Welcome to ghostgrams',
+                                    message: 'You have a secure connection to your family, friends and favorite places',
+                                    autoCancel: true,
+                                    date: new Date(new Date().getTime() + 120)
+                                });
+                            }
+
+                            sendPhoneVerificationCode(phone, function (result) {
+                                if (result.status === 'ok') {
+                                    userModel._user.set('phoneVerificationCode', result.code);
+                                    mobileNotify("Phone Verification Code sent.  Please check your messages");
+                                    if (window.navigator.simulator === undefined) {
+
+                                        cordova.plugins.notification.local.add({
+                                            id: 'verifyPhone',
+                                            title: 'Welcome to ghostgrams',
+                                            message: 'Please verify your phone',
+                                            autoCancel: true,
+                                            date: new Date(new Date().getTime() + 30)
+                                        });
+                                    }
+                                }
+                            });
+
+                        });
+
+                    }
+
+                });
+    /*            Parse.Cloud.run('preflightPhone', {phone: phone}, { //Todo:  replace with memberdirectory search for phone.
                     success: function (data) {
                         if (data.status !== 'ok' || data.count !== 0) {
                             mobileNotify("Your phone number matches existing user.");
@@ -1134,7 +1235,24 @@ var signUpView = {
                                         });
                                     }
 
-                                    Parse.Cloud.run('sendPhoneVerificationCode', {phoneNumber: phone}, {
+                                    sendPhoneVerificationCode(phone, function (result) {
+                                        if (result.status === 'ok') {
+                                            userModel._user.set('phoneVerificationCode', result.code);
+                                            mobileNotify("Phone Verification Code sent.  Please check your messages");
+                                            if (window.navigator.simulator === undefined) {
+
+                                                cordova.plugins.notification.local.add({
+                                                    id: 'verifyPhone',
+                                                    title: 'Welcome to ghostgrams',
+                                                    message: 'Please verify your phone',
+                                                    autoCancel: true,
+                                                    date: new Date(new Date().getTime() + 30)
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                   /!* Parse.Cloud.run('sendPhoneVerificationCode', {phoneNumber: phone}, {
                                         success: function (result) {
                                             mobileNotify('Please verify your phone');
                                             $("#modalview-verifyPhone").data("kendoMobileModalView").open();
@@ -1143,7 +1261,7 @@ var signUpView = {
                                             mobileNotify('Error sending verification code ' + error);
                                         }
                                     });
-
+*!/
                                     APP.kendo.navigate('#home');
                                 },
 
@@ -1159,30 +1277,13 @@ var signUpView = {
                         mobileNotify("Error checking phone number" + error);
                     }
                 });
-            } else {
+*/            } else {
                 mobileNotify("This phone number is not a valid mobile number.");
                 return;
             }
 
 
         });
-        /*      Parse.Cloud.run('validateMobileNumber', { phone: phone }, {
-         success: function(result) {
-         if (result.status !== 'ok' || result.result.carrier.type !== 'mobile') {
-         mobileNotify("This phone number is not a valid mobile number.");
-         return;
-         } else {
-
-         }
-         },
-         error: function(error) {
-         // Show the error message somewhere and let the user try again.
-         mobileNotify("Error: " + error.code + " " + error.message);
-         }
-         });
-
-         }*/
-
     }
 
 };
@@ -1200,7 +1301,7 @@ var newUserView = {
 
     onShow : function (e) {
 
-    	_introRun: false,
+        newUserView._introRun = false;
         _preventDefault(e);
 
         if(!newUserView._introRun){
@@ -1307,10 +1408,7 @@ var signInView = {
 
         mobileNotify("Signing you in to ghostgrams....");
 
-
-        Parse.User.logIn(username,password , {
-            success: function(user) {
-                // Do stuff after successful login.
+        everlive.logIn(username,password , function (error, user) {
 
                 window.localStorage.setItem('ggHasAccount', true);
                 window.localStorage.setItem('ggRecoveryPassword', password);
@@ -1319,27 +1417,16 @@ var signInView = {
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
 
-                userModel.parseUser = user;
+                userModel.setUserUUID(user.get('userUUID'));
 
-                userModel.generateUserKey();
-
-                // Check version -- ensure all users are version 1 with new public/private keys
-                if (userModel.parseUser.get("version") === undefined) {
-                    userModel.generateNewPrivateKey(userModel.parseUser);
-                    userModel.parseUser.set("version", 1);
-                    userModel.parseUser.save();
-                }
                 var publicKey = user.get('publicKey');
                 var privateKey = user.get('privateKey');
                 if (publicKey === undefined || privateKey === undefined) {
-                    userModel.generateNewPrivateKey(user);
+                    userModel.generateNewPrivateKey();
                 } else {
                     userModel.updatePrivateKey();
                 }
-                if (userModel.parseUser.get("recoveryPassword") !== password) {
-                    userModel.parseUser.set("recoveryPassword", password);
-                    userModel.parseUser.save();
-                }
+
 
 
                 userModel._user.set('username', userModel.parseUser.get('username'));
@@ -1424,7 +1511,7 @@ var signInView = {
 
 
                 userModel.initPubNub();
-                userModel.fetchParseData();
+               // userModel.fetchParseData();
 
                 APP.kendo.navigate('#home');
 
@@ -1437,18 +1524,7 @@ var signInView = {
                     $("#modalview-verifyPhone").data("kendoMobileModalView").open();
 
                 }
-            },
-            error: function(user, error) {
-                // The login failed. Check error to see why.
 
-               if(error.code === 101){
-               		mobileNotify("Invalid email/password");
-               } else {
-               		mobileNotify("Error: " + error.code + " " + error.message);
-               }
-               
-
-            }
         });
 
     }

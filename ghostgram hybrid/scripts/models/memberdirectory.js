@@ -119,7 +119,7 @@ var memberdirectory = {
                 });
     },
 
-    findMemberByPhone : function (phone) {
+    findMemberByPhone : function (phone, callback) {
         var filter = new Everlive.Query();
         filter.where().eq('phone', phone);
 
@@ -139,7 +139,7 @@ var memberdirectory = {
                 });
     },
 
-    findMemberByEmail : function (email) {
+    findMemberByEmail : function (email, callback) {
         var filter = new Everlive.Query();
         filter.where().eq('email', email);
 

@@ -36,6 +36,7 @@ var everlive = {
         APP.everlive.users.login(username, password,
             function (data) {
                 everlive._token = data.result.Id;
+                userModel.currentUser.Id = data.result.Id;
                 everlive._signedIn = true;
                 callback(null, data);
             },
@@ -44,15 +45,56 @@ var everlive = {
             });
     },
 
-    currentUser : function () {
+    logout : function (callback) {
+        APP.everlive.users.logout().then(function () {
+                everlive._signedIn = false;
+                callback(true);
+            }, // success
+            function () {
+                callback(false);
+            });
+    },
+
+    updateUser : function () {
+        var updateObj = userModel._user;
+
+        APP.everlive.Users.updateSingle(updateObj,
+            function(data){
+                var result = data.result;
+            },
+            function(error){
+                mobileNotify("User Update Error : " + JSON.stringify(error));
+            });
+    },
+
+
+    updateUserField : function (field, value) {
+        var updateObj = {Id : userModel._user.Id};
+        
+        updateObj[field] = value;
+        APP.everlive.Users.updateSingle(updateObj,
+            function(data){
+                var result = data.result;
+            },
+            function(error){
+                mobileNotify("User UpdateField Error : " + JSON.stringify(error));
+            }); 
+        
+    },
+
+
+    currentUser : function (callback) {
         APP.everlive.Users.currentUser()
             .then(function (data) {
                     everlive._user = data.result;
+                    callback(null, data.result)
                 },
                 function(error){
-                   mobileNotify("Everlive User Error : " + JSON.stringify(error));
+                    callback(error, null);
+
                 });
     },
+    
 
     getCount : function (dataType, callback) {
         var data = APP.everlive.data(dataType);
@@ -137,9 +179,9 @@ var everlive = {
             });
     },
 
-    logout : function () {
+    clearAuthentication : function () {
         APP.everlive.authentication.clearAuthorization();
-        everlive._signedIn = false;
+       
     },
 
     syncStart : function () {

@@ -17,10 +17,12 @@ var userModel = {
     identiconUrl : null,
     rememberUserName : false,
     key : null,
+    userUUID: null,
     initialView : '#newuserhome',
 
     _user: new kendo.data.ObservableObject({
         _version: 1,
+        Id: null,   // everlive id -- existance and case critical for update to function
         username: '',
         name: '',
         userUUID: '',
@@ -63,12 +65,16 @@ var userModel = {
         if (userModel._user.get('rememberUsername')) {
             localStorage.setItem('ggRememberUsername', true);
             localStorage.setItem('ggUsername', userModel._user.get('username'));
+
         }
+
+
+
     },
 
     init: function () {
         var hasAccount = window.localStorage.getItem('ggHasAccount');
-        if (hasAccount !== undefined) {
+        if (hasAccount !== undefined && hasAccount === true) {
             userModel.hasAccount = true;
             userModel.initialView = '#usersignin';
         } else {
@@ -81,14 +87,38 @@ var userModel = {
         });
     },
 
+    initCloudModels : function () {
+        contactModel.init();
 
-    initParse: function () {
-      /* if (! Parse.Session.isCurrentSessionRevocable()) {
-           mobileNotify("Please Login on this device");
+        mapModel.init();
 
-       }*/
+        placesModel.init();
+
+        privateNoteModel.init();  // Depends on everlive...
+
+        memberdirectory.init();
+
+        noteModel.init();
+
+        photoModel.init();
+
+        channelModel.init();
+
+        smartEvent.init();
+
+        smartMovie.init();
+
+        tagModel.init();
+
+        if (window.navigator.simulator === undefined) {
+            serverPush.init();
+        }
+
+    },
 
 
+    initCloud: function () {
+    
        // userModel.parseUser = Parse.User.current();
         userModel.device.udid = device.uuid;
         userModel.device.platform = device.platform;
@@ -96,17 +126,41 @@ var userModel = {
         userModel.device.model = device.model;
         userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
         userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
+        userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
+        if (userModel.userUUID === undefined) {
+            userModel.userUUID = null;
+            userModel.hasAccount = false;
+        }
+
         // If remembering Username, get it from localstorage and prefill signin.
         if (userModel.rememberUsername) {
            userModel.username = window.localStorage.getItem('ggUsername');
             if (userModel.username == undefined || userModel.username === '') {
-                window.localStorage.setItem('ggUsername', userModel.parseUser.get('username'));
+                window.localStorage.setItem('ggUsername', userModel._user.get('username'));
             }
 
         }
 
+        everlive.currentUser(function (error, data) {
+            if (error !== null && data !== null) {
+                // No error and data
+                userModel.initialView = '#home';
+                userModel.initCloudModels();
+                userModel.initPubNub();
 
-        if (Parse.User.current() === null) {
+            } else {
+                if (userModel.hasAccount) {
+                    mobileNotify("Please login to ghostgrams");
+                    userModel.initialView = '#usersignin';
+                } else {
+                    userModel.initialView = '#newuserhome';
+                }
+            }
+
+        });
+
+
+   /*     if (Parse.User.current() === null) {
 
             if (userModel.hasAccount) {
                 mobileNotify("Please login to ghostgrams");
@@ -123,7 +177,7 @@ var userModel = {
 
                 userModel.parseUser = user;
 
-                userModel.generateUserKey();
+
                 if (user.get("version") === undefined) {
                     userModel.generateNewPrivateKey(userModel.parseUser);
                     userModel.parseUser.set("version", 1);
@@ -214,9 +268,16 @@ var userModel = {
                 if (dirty)
                     user.save();
 
+                userModel.initialView = '#home';
+
+                userModel.userUUID = user.get('userUUID');
+                userModel._user.set('userUUID', userModel.userUUID);
+                localStorage.setItem('ggUserUUID', userModel.userUUID);
+
+                userModel.generateUserKey();
                 userModel.updatePrivateKey();
                 userModel.decryptPrivateKey();
-                userModel.initialView = '#home';
+
 
                 userModel._user.set('username', user.get('username'));
                 userModel._user.set('objectId', user.get('objectId'));
@@ -224,7 +285,7 @@ var userModel = {
                 userModel._user.set('email', user.get('email'));
                 userModel._user.set('phone', user.get('phone'));
                 userModel._user.set('alias', user.get('alias'));
-                userModel._user.set('userUUID', user.get('userUUID'));
+
                 userModel._user.set('publicKey', user.get('publicKey'));
                 // userModel._user.set('privateKey', userModel.parseUser.get('privateKey'));
                 userModel._user.set('statusMessage', user.get('statusMessage'));
@@ -266,11 +327,11 @@ var userModel = {
                 }
                 userModel.parseACL = new Parse.ACL(userModel.parseUser);
 
-                userModel._user.bind('change', userModel.sync);
+                userModel._user.bind('change', userModel.syncToEverlive);
                 userModel.initPubNub();
                 userModel.fetchParseData();
 
-                APP.everlive.users._user(function(data) {
+                APP.everlive.users.currentUser(function(data) {
                     if (data.result) {
                         everlive._user = data.result;
                         mobileNotify(data.result.Username + " is logged in to Everlive!");
@@ -285,12 +346,20 @@ var userModel = {
                                         mobileNotify(JSON.stringify(error1));
                                     } else {
                                         var token = data1;
-                                        userModel.updateEverliveUser();
+                                        userModel.userUUID = uuid.v4();
+                                        userModel._user.set('userUUID', userModel.userUUID);
+                                        localStorage.setItem('ggUserUUID', userModel.userUUID);
+
+                                        userModel.generateUserKey();
+                                        userModel.updatePrivateKey();
+                                        userModel.decryptPrivateKey();
+
+                                        everlive.updateUser();
                                     }
 
                                 });
                             } else {
-                                userModel.updateEverliveUser();
+                                everlive.updateUser();
                             }
                         });
                     }
@@ -305,12 +374,20 @@ var userModel = {
                                     mobileNotify(JSON.stringify(error1));
                                 } else {
                                     var token = data1;
-                                    userModel.updateEverliveUser();
+                                    userModel.userUUID = uuid.v4();
+                                    userModel._user.set('userUUID', userModel.userUUID);
+                                    localStorage.setItem('ggUserUUID', userModel.userUUID);
+
+                                    userModel.generateUserKey();
+                                    userModel.updatePrivateKey();
+                                    userModel.decryptPrivateKey();
+
+                                    everlive.updateUser();
                                 }
 
                             });
                         } else {
-                            userModel.updateEverliveUser();
+                            everlive.updateUser();
                         }
                     });
                 });
@@ -333,19 +410,9 @@ var userModel = {
                 }
             });
         }
-
+*/
     },
 
-    updateEverliveUser : function () {
-        APP.everlive.Users.updateSingle(userModel._user,
-            function(data){
-                mobileNotify("Everlive User Account Updated");
-            },
-            function(error){
-               mobileNotify("Everlive User Update Error : " + JSON.stringify(error));
-            });
-
-    },
 
     deleteAccount: function () {
 
@@ -359,27 +426,32 @@ var userModel = {
     },
 
     // user is valid parse User object
-    generateNewPrivateKey : function (user) {
+    generateNewPrivateKey : function () {
         // Generate Keys for the user.
-        var RSAkey = cryptico.generateRSAKey(1024);
+        var RSAkey = cryptico.generateRSAKey(512);
         var publicKey = cryptico.publicKeyString(RSAkey);
         var privateKey = cryptico.privateKeyString(RSAkey);
 
+        //userModel._user.set('secretKey',RSAkey);
         userModel._user.set('publicKey',publicKey);
-        userModel._user.set('privateKey',privateKey);
-        user.set("publicKey", publicKey);
         var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
-        user.set("privateKey", newPrivateKey);
+        userModel._user.set('privateKey',newPrivateKey);
 
-        user.save();
+
+       /* user.set("publicKey", publicKey);
+        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
+        user.set("privateKey", newPrivateKey);*/
+
+        //user.save();
 
     },
 
-   sync: function (e) {
+   syncToEverlive: function (e) {
       _preventDefault(e);
 
-       var fieldValue = userModel._user.get(e.field);
-        userModel.parseUser.set(e.field, fieldValue);
+       var field = e.field;
+       var fieldValue = userModel._user.get(field);
+       /* userModel.parseUser.set(e.field, fieldValue);
         userModel.parseUser.save(null, {
             success : function (user){
                 //mobileNotify("Updated your " + e.field);
@@ -387,16 +459,26 @@ var userModel = {
             error: function (user, error){
                 mobileNotify("Profile save error: " + error);
             }
-        });
-       userStatus.syncField(e.field);
+        });*/
+       
+       
+       userStatus.syncField(field, fieldValue);
     },
 
     encryptPrivateKey : function (key) {
 
     },
 
+    setUserUUID : function (uuid) {
+
+        userModel.userUUID  = uuid;
+        userModel._user.set("userUUID", uuid);
+        userModel.key = uuid.replace(/-/g,'');
+    },
+    
+    
     generateUserKey : function () {
-        var rawKey = userModel.parseUser.get('userUUID');
+        var rawKey = userModel.userUUID;
 
          userModel.key = rawKey.replace(/-/g,'');
 
@@ -404,12 +486,8 @@ var userModel = {
 
     decryptPrivateKey : function () {
 
-        if (userModel.key === null) {
-            mobileNotify("Generating User Key...");
-            userModel.generateUserKey();
-        }
-
-        var privateKey = userModel.parseUser.get('privateKey');
+       
+        var privateKey = userModel._user.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         var RSAKey = cryptico.privateKeyFromString(newPrivateKey);
         userModel._user.set('privateKey', newPrivateKey);
@@ -569,6 +647,7 @@ var userStatus = {
                     } else {
                         var member = data.result[0];
                         userStatus._id = member.Id;
+                        userStatus._statusObj.id = member.id;
                     }
 
                 },
@@ -581,6 +660,7 @@ var userStatus = {
 
 
     syncField : function (field) {
+
         switch(field) {
             case 'userUUID':
             case 'isAvailable' :
@@ -592,7 +672,10 @@ var userStatus = {
             case 'lng' :
             case 'googlePlaceId' :
             case 'currentPlaceUUID' :
-                userStatus.parseUserStatus.set(field, userModel._user.get(field));
+
+                updateObject[field] =  userModel._user.get(field);
+                
+               /* userStatus.parseUserStatus.set(field, userModel._user.get(field));
                 userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
                 userStatus.parseUserStatus.save(null, {
                     success : function (user){
@@ -601,20 +684,20 @@ var userStatus = {
                     error: function (user, error){
                         mobileNotify("User Status update error: " + error);
                     }
-                });
+                });*/
         }
     },
 
     create : function () {
         var data = APP.everlive.data(userStatus._ggClass);
 
-        userStatus.updateEverlive();
 
-        data.create(dirObj,
+
+        data.create(userStatus._statusObj,
             function(data){
                 userStatus._id = data.result.Id;
                 userStatus._statusObj.id  = data.result.Id;
-                userStatus.updateEverlive();
+                //userStatus.updateEverlive();
             },
             function(error){
                 mobileNotify("User Status Init error : " + JSON.stringify(error));
@@ -659,6 +742,7 @@ var userStatus = {
     updateEverlive : function () {
         var status = userStatus._statusObj;
 
+
         status.set('userUUID', userModel._user.userUUID);
         status.set('isAvailable', userModel._user.isAvailable);
         status.set('isVisible', userModel._user.isVisible);
@@ -677,7 +761,14 @@ var userStatus = {
         status.set('isCheckedIn', userModel._user.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
 
-        userStatus._statusObj.sync();
+
+        everlive.updateOne(userStatus._ggClass, status, function (error, data){
+
+            if (error !== null) {
+                mobileNotify("Update User Status error : " + JSON.stringify(error));
+            }
+
+        })
 
     }
 

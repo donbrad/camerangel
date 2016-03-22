@@ -609,11 +609,34 @@ function unformatPhoneNumber(phone) {
 	}
 	return (newPhone);
 }
+function sendPhoneVerificationCode(phone, callback) {
+	$.ajax({
+		url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/sendPhoneVerificationCode?phoneNumber='+phone,
+		// dataType:"jsonp",
+		//  contentType: 'application/json',
+		success: function(result) {
+			if (result.status === 'ok') {
+				callback({
+					status: 'ok',
+					code: result.verification
+				});
+			} 
+		},
+		error: function(error) {
+			mobileNotify("Error sending Verification Code" + error);
+			callback({
+				status: 'error',
+				error: error
+			});
+		}
+	});
+}
 
 function isValidMobileNumber(phone, callback) {
-	Parse.Cloud.run('validateMobileNumber', {
-		phone: phone
-	}, {
+	$.ajax({
+		url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/validatePhoneNumber?phone='+phone,
+		// dataType:"jsonp",
+		//  contentType: 'application/json',
 		success: function(result) {
 			if (result.status === 'ok' && result.result.carrier.type !== 'mobile' && result.result.carrier.type !== 'voip') {
 				callback({
@@ -641,9 +664,8 @@ function isValidMobileNumber(phone, callback) {
 }
 
 function isValidEmail(email, callback) {
-	Parse.Cloud.run('validateEmail', {
-		email: email
-	}, {
+	$.ajax({
+		url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/validateEmail?email='+email,
 		success: function(result) {
 			if (result.status === 'ok') {
 				var data = result.result;
