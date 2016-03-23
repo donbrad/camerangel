@@ -696,7 +696,8 @@ var userStatus = {
         data.create(userStatus._statusObj,
             function(data){
                 userStatus._id = data.result.Id;
-                userStatus._statusObj.id  = data.result.Id;
+                userStatus._statusObj.Id  = data.result.Id;
+                userStatus.update();
                 //userStatus.updateEverlive();
             },
             function(error){
@@ -704,7 +705,7 @@ var userStatus = {
             });
     },
 
-    update : function () {
+   /* update : function () {
         var status = userStatus.parseUserStatus;
 
         status.set('userUUID', userModel._user.userUUID);
@@ -713,12 +714,12 @@ var userStatus = {
         status.set('statusMessage', userModel._user.statusMessage);
         status.set('currentPlace', userModel._user.currentPlace);
         var lat = userModel._user.lat;
-       /* if (lat !== null)
-            lat = lat.toFixed(6);*/
+       /!* if (lat !== null)
+            lat = lat.toFixed(6);*!/
         status.set('lat', userModel._user.lat);
         var lng = userModel._user.lng;
-       /* if (lng !== null)
-            lng = lng.toFixed(6);*/
+       /!* if (lng !== null)
+            lng = lng.toFixed(6);*!/
         status.set('lng', userModel._user.lng);
         status.set('googlePlaceId', userModel._user.googlePlaceId);
         status.set('currentPlaceUUID', userModel._user.currentPlaceUUID);
@@ -737,9 +738,9 @@ var userStatus = {
         });
 
 
-    },
+    },*/
 
-    updateEverlive : function () {
+    update : function () {
         var status = userStatus._statusObj;
 
 
@@ -762,7 +763,7 @@ var userStatus = {
         status.set('lastUpdate', ggTime.currentTime());
 
 
-        everlive.updateOne(userStatus._ggClass, status, function (error, data){
+        everlive.updateOne(userStatus._ggClass, status, function (error, data) {
 
             if (error !== null) {
                 mobileNotify("Update User Status error : " + JSON.stringify(error));

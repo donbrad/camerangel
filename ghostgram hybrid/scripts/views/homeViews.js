@@ -1022,9 +1022,19 @@ var signUpView = {
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
 
+    _getRecoverPassword : function () {
+        var encPassword = userModel._user.get('recoveryPassword');
+        var clearPassword = GibberishAES.dec(encPassword, userModel.key);
+
+        return(clearPassword);
+    },
+
+
     _createAccount : function (username, password, name, phone) {
         var userUUID = uuid.v4(); var user = userModel._user;
-        window.localStorage.setItem('ggRecoveryPassword', password);
+
+        var aesPassword  = GibberishAES.enc(password, userModel.key);
+        window.localStorage.setItem('ggRecoveryPassword', aesPassword);
         window.localStorage.setItem('ggUsername', username);
         window.localStorage.setItem('ggUserUUID', userUUID);
 
@@ -1061,7 +1071,7 @@ var signUpView = {
         user.set('saveToPhotoAlbum', false);
         user.set('isRetina', false);
         user.set('homeIntro', false);
-        var aesPassword  = GibberishAES.enc(password, userModel.key);
+
         user.set('recoveryPassword', aesPassword);
         userModel.generateNewPrivateKey(user);
 
