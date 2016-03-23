@@ -1470,9 +1470,7 @@ var signInView = {
                 } else {
                     userModel.updatePrivateKey();
                 }
-
-
-
+            
                 userModel._user.set('username', userModel.parseUser.get('username'));
                 var name = userModel.parseUser.get('name');
                 userModel._user.set('name', userModel.parseUser.get('name'));
@@ -1530,7 +1528,7 @@ var signInView = {
                     userModel._user.set('availImgUrl', 'images/status-available.svg');
                 }
                 userModel._user.set('emailValidated', userModel.parseUser.get('emailValidated'));
-                userModel.parseACL = new Parse.ACL(userModel.parseUser);
+               
                 userModel._user.bind('change', userModel.sync);
 
 

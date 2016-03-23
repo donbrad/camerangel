@@ -1135,7 +1135,7 @@ var editContactView = {
         $("#contactEditList").velocity("fadeIn");
     },
 
-    syncWithParse: function (e) {
+   /* syncWithParse: function (e) {
         _preventDefault(e);
 
         mobileNotify("Getting lastest info for " + contactModel.currentContact.name);
@@ -1212,7 +1212,7 @@ var editContactView = {
             });
         }
     },
-
+*/
     syncWithDevice : function (e) {
         _preventDefault(e);
 

@@ -47,13 +47,14 @@ var memberdirectory = {
         var data = APP.everlive.data(memberdirectory._ggClass);
 
         var validated = userModel._user.emailValidated || userModel._user.phoneValidated;
-        
+
         var dirObj = {
             userUUID : userModel._user.userUUID,
             name : userModel._user.name,
             alias : userModel._user.alias,
             phone : userModel._user.phone,
             email:  userModel._user.email,
+            photo: null,
             publicKey: userModel._user.publicKey,
             emailValidated: userModel._user.emailValidated,
             phoneValidated : userModel._user.phoneValidated,
@@ -83,6 +84,7 @@ var memberdirectory = {
             alias : userModel._user.alias,
             phone : userModel._user.phone,
             email:  userModel._user.email,
+            photo: null,
             publicKey: userModel._user.publicKey,
             emailValidated: userModel._user.emailValidated,
             phoneValidated : userModel._user.phoneValidated,

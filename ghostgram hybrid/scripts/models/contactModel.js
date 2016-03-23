@@ -691,45 +691,25 @@ var contactModel = {
         // If there's no contactUUID, need to lookup user by phone.
         if (thisContact.contactUUID === undefined || thisContact.contactUUID === null) {
             var phone  = thisContact.phone;
-            findUserByPhone(phone, function (result) {
-                if (result === null) {
-                    console.error("findUserByPhone got Null" + phone);
-                    return;
-                }
-                if (result.found) {
-                    var contact = result.user;
-
-
-                    contactModel._syncContactDetails(contact, thisContact, thisContactList);
-
-
-                    callback(thisContact);
-
-                } else {
-                    // No user data -- just return the current contact model
-                    callback(thisContact);
-                }
-
+            memberdirectory.findMemberByPhone(phone, function (result) {
+                var contact = result.user;
+                
+                contactModel._syncContactDetails(contact, thisContact, thisContactList);
+                
+                callback(thisContact);
+                
             });
 
         } else {
 
-            getUserContactInfo(thisContact.contactUUID, function (result) {
-                if (result === null) {
-                    console.error("getUseContactInfo got Null" + thisContact.contactUUID);
-                    return;
-                }
-                if (result.found) {
-                    var contact = result.user;
-
-                    contactModel._syncContactDetails(contact, thisContact, thisContactList);
-
-                    callback(thisContact);
-                } else {
-                    // No user data -- just return the current contact model
-                    callback(thisContact);
-                }
-
+           memberdirectory.findMemberByUUID(thisContact.contactUUID, function (result) {
+               
+                var contact = result.user;
+    
+                contactModel._syncContactDetails(contact, thisContact, thisContactList);
+    
+                callback(thisContact);
+               
             });
         }
 
@@ -800,35 +780,27 @@ var contactModel = {
         }
         mobileNotify("Updating contact info from ghostgrams...");
         var phone = model.get('phone');
-        findUserByPhone(phone, function (result) {
-            if (result.found) {
+        memberdirectory.findMemberByPhone(phone, function (result) {
+            if (result !== null) {
                 var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'),
-                    phoneValidated = model.get('phoneVerfied'),  emailValidated = model.get('emailValidated'), parseEmailVerified = result.user.emailValidated ;
+                    phoneValidated = model.get('phoneValidated'),  emailValidated = model.get('emailValidated'), parseEmailVerified = result.emailValidated ;
 
                 // Does the contact have a verified email address
-                if (result.user.emailValidated) {
+                if (result.emailValidated) {
                     // Yes - save the email address the contact verified
-                    model.set("email", result.user.email);
+                    model.set("email", result.email);
                 }
-                model.set('publicKey',  result.user.publicKey);
+                model.set('publicKey',  result.publicKey);
 
-                model.set("contactUUID", result.user.userUUID);
-              /*  if (contactUUID === undefined) {
-                    updateParseObject('contacts', 'uuid', uuid, 'contactUUID',  result.user.userUUID);
-                }
+                model.set("contactUUID", result.userUUID);
+         
+                if (phoneValidated !== result.phoneValidated) {
 
-                if (publicKey === undefined) {
-                    updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
-                }*/
-                if (phoneValidated !== result.user.phoneValidated) {
-                    if (result.user.phoneValidated === undefined)
-                        result.user.phoneValidated = false;
-
-                    if (result.user.phoneValidated){
+                    if (result.phoneValidated){
                         model.set('category', "member");
                     }
-                    model.set("phoneValidated", result.user.phoneValidated);
-                  /*  updateParseObject('contacts', 'uuid', uuid, 'phoneValidated', result.user.phoneValidated );*/
+                    model.set("phoneValidated", result.phoneValidated);
+                 
                 }
             }
 
@@ -840,14 +812,14 @@ var contactModel = {
     // The contact is a valid member and connected to the channel owner
     createChatContact : function (userId, callback) {
 
-        getUserContactInfo(userId, function (result) {
-            if (result.found) {
+        memberdirectory.findMemberByUUID(userId, function (result) {
+            if (result !== null) {
                 var guid = uuid.v4();
                 var contact = {};
                 contact.isContact = true;
-                contact.uuid = result.user.userUUID;
-                contact.alias = result.user.alias;
-                contact.name = result.user.name;
+                contact.uuid = result.userUUID;
+                contact.alias = result.alias;
+                contact.name = result.name;
                 var url = contactModel.createIdenticon(guid);
                 contact.photo = url;
                 contact.publicKey = null;
