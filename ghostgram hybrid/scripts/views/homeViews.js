@@ -1098,6 +1098,7 @@ var signUpView = {
                             }
                             //user.set("publicKey", publicKey);
                             //user.set("privateKey", privateKey);
+                            everlive.updateUser();
                             userModel._user.bind('change', userModel.sync);
                             mobileNotify('Welcome to ghostgrams!');
                             userModel.initPubNub();
