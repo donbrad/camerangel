@@ -1051,13 +1051,14 @@ var signUpView = {
                             if (error !== null) {
 
                                 if (error.code === 201) {
-                                    mobileNotify(username + " is an existing account.  Please SignIn.");
+                                    mobileNotify(username + " is an existing account.  Please Sign In.");
                                     APP.kendo.navigate('#usersignin');
                                     return;
                                 }
                                 mobileNotify("Error creating account : " + error.message);
                                 return;
                             }
+                            
                             var userUUID = uuid.v4(); var user = userModel._user;
                             window.localStorage.setItem('ggRecoveryPassword', password);
                             window.localStorage.setItem('ggUsername', username);
