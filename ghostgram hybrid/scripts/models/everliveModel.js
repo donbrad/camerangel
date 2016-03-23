@@ -9,6 +9,8 @@
 var everlive = {
 
     _token : null,
+    _tokenType: null,
+    _id : null,
     _signedIn : false,
     _user : null,
 
@@ -22,11 +24,10 @@ var everlive = {
             password,
             attrs,
             function(data) {
-                everlive._token = data.result.Id;
+
+                everlive._id = data.result.Id;
                 userModel.Id =  data.result.Id;
                 userModel._user.Id = data.result.Id;
-                everlive._signedIn = true;
-
                 callback(null, data);
             },
             function(error) {
@@ -37,8 +38,10 @@ var everlive = {
     login : function (username, password, callback) {
         APP.everlive.users.login(username, password,
             function (data) {
-                everlive._token = data.result.Id;
-                userModel._user.Id = data.result.Id;
+                everlive._token = data.result.access_token;
+                everlive._tokenType = data.result.tokenType;
+                everlive._id = data.result.principal_id;
+                userModel._user.Id = data.result.principal_id;
                 everlive._signedIn = true;
                 callback(null, data);
             },

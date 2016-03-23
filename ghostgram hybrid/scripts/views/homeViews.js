@@ -1070,8 +1070,8 @@ var signUpView = {
         //user.set("publicKey", publicKey);
         //user.set("privateKey", privateKey);
 
-        //userModel._user.bind('change', userModel.sync);
-        mobileNotify('Welcome to ghostgrams!');
+
+
 
         userModel.hasAccount = true;
         window.localStorage.setItem('ggHasAccount', true);
@@ -1107,7 +1107,8 @@ var signUpView = {
         userModel.initCloudModels();
         userModel.initPubNub();
         APP.kendo.navigate('#home');
-
+        userModel._user.bind('change', userModel.sync);
+        mobileNotify('Welcome to ghostgrams!');
     },
 
     doCreateAccount : function (e) {
