@@ -1058,7 +1058,7 @@ var signUpView = {
                             window.localStorage.setItem('ggUserUUID', userUUID);
 
                             userModel.setUserUUID(userUUID);
-                            user.set('Id', data.Id);
+                            user.set('Id', data.result.Id);
                             user.set("username", username);
                             // user.set("password", password);
                             user.set("email", username);
