@@ -39,7 +39,7 @@ var everlive = {
         APP.everlive.users.login(username, password,
             function (data) {
                 everlive._token = data.result.access_token;
-                everlive._tokenType = data.result.tokenType;
+                everlive._tokenType = data.result.token_type;
                 everlive._id = data.result.principal_id;
                 userModel._user.Id = data.result.principal_id;
                 everlive._signedIn = true;
