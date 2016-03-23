@@ -1022,6 +1022,94 @@ var signUpView = {
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
 
+    _createAccount : function (username, password, name, phone) {
+        var userUUID = uuid.v4(); var user = userModel._user;
+        window.localStorage.setItem('ggRecoveryPassword', password);
+        window.localStorage.setItem('ggUsername', username);
+        window.localStorage.setItem('ggUserUUID', userUUID);
+
+        userModel.setUserUUID(userUUID);
+        user.set('Id', data.result.Id);
+        user.set("username", username);
+        // user.set("password", password);
+        user.set("email", username);
+        user.set("name", name);
+        user.set("phone", phone);
+        user.set("alias", alias);
+        user.set("currentPlace", "");
+        user.set("currentPlaceUUID", "");
+        user.set('photo', null);
+        user.set("isAvailable", true);
+        user.set("isVisible", true);
+        user.set("isCheckedIn", false);
+        user.set("availImgUrl", "images/status-available.svg");
+        user.set("phoneVerified", false);
+        user.set("useIdenticon", true);
+        user.set("useLargeView", false);
+        user.set("rememberUsername", false);
+        user.set("userUUID", userUUID);
+        user.set('addressList', []);
+        user.set('emailList', []);
+        user.set('phoneList', []);
+        user.set('archiveIntro', false);
+        user.set('chatIntro', false);
+        user.set('contactIntro', false);
+        user.set('galleryIntro', false);
+        user.set('identiconIntro', false);
+        user.set('placesIntro', false);
+        user.set('firstMessage', false);
+        var aesPassword  = GibberishAES.enc(password, userModel.key);
+        user.set('recoveryPassword', aesPassword);
+        userModel.generateNewPrivateKey(user);
+
+        userModel.createIdenticon(userUUID);
+        var photo = user.get('photo');
+        if (photo === undefined || photo === null) {
+            userModel._user.photo = userModel.identiconUrl;
+        }
+        //user.set("publicKey", publicKey);
+        //user.set("privateKey", privateKey);
+
+        //userModel._user.bind('change', userModel.sync);
+        mobileNotify('Welcome to ghostgrams!');
+
+        userModel.hasAccount = true;
+        window.localStorage.setItem('ggHasAccount', true);
+        if (window.navigator.simulator === undefined) {
+
+            cordova.plugins.notification.local.add({
+                id: 'userWelcome',
+                title: 'Welcome to ghostgrams',
+                message: 'You have a secure connection to your family, friends and favorite places',
+                autoCancel: true,
+                date: new Date(new Date().getTime() + 120)
+            });
+        }
+
+        sendPhoneVerificationCode(phone, function (result) {
+            if (result.status === 'ok') {
+                userModel._user.set('phoneVerificationCode', result.code);
+                mobileNotify("Phone Verification Code sent.  Please check your messages");
+                if (window.navigator.simulator === undefined) {
+
+                    cordova.plugins.notification.local.add({
+                        id: 'verifyPhone',
+                        title: 'Welcome to ghostgrams',
+                        message: 'Please verify your phone',
+                        autoCancel: true,
+                        date: new Date(new Date().getTime() + 30)
+                    });
+                }
+            }
+        });
+
+        everlive.updateUser();
+        userModel.initCloudModels();
+        userModel.initPubNub();
+        APP.kendo.navigate('#home');
+
+    },
+
     doCreateAccount : function (e) {
         _preventDefault(e);
 
@@ -1058,91 +1146,21 @@ var signUpView = {
                                 mobileNotify("Error creating account : " + error.message);
                                 return;
                             }
-                            
-                            var userUUID = uuid.v4(); var user = userModel._user;
-                            window.localStorage.setItem('ggRecoveryPassword', password);
-                            window.localStorage.setItem('ggUsername', username);
-                            window.localStorage.setItem('ggUserUUID', userUUID);
 
-                            userModel.setUserUUID(userUUID);
-                            user.set('Id', data.result.Id);
-                            user.set("username", username);
-                            // user.set("password", password);
-                            user.set("email", username);
-                            user.set("name", name);
-                            user.set("phone", phone);
-                            user.set("alias", alias);
-                            user.set("currentPlace", "");
-                            user.set("currentPlaceUUID", "");
-                            user.set('photo', null);
-                            user.set("isAvailable", true);
-                            user.set("isVisible", true);
-                            user.set("isCheckedIn", false);
-                            user.set("availImgUrl", "images/status-available.svg");
-                            user.set("phoneVerified", false);
-                            user.set("useIdenticon", true);
-                            user.set("useLargeView", false);
-                            user.set("rememberUsername", false);
-                            user.set("userUUID", userUUID);
-                            user.set('addressList', []);
-                            user.set('emailList', []);
-                            user.set('phoneList', []);
-                            user.set('archiveIntro', false);
-                            user.set('chatIntro', false);
-                            user.set('contactIntro', false);
-                            user.set('galleryIntro', false);
-                            user.set('identiconIntro', false);
-                            user.set('placesIntro', false);
-                            user.set('firstMessage', false);
-                            var aesPassword  = GibberishAES.enc(password, userModel.key);
-                            user.set('recoveryPassword', aesPassword);
-                            userModel.generateNewPrivateKey(user);
-
-                            userModel.createIdenticon(userUUID);
-                            var photo = user.get('photo');
-                            if (photo === undefined || photo === null) {
-                                userModel._user.photo = userModel.identiconUrl;
-                            }
-                            //user.set("publicKey", publicKey);
-                            //user.set("privateKey", privateKey);
-
-                            //userModel._user.bind('change', userModel.sync);
-                            mobileNotify('Welcome to ghostgrams!');
-
-                            userModel.hasAccount = true;
-                            window.localStorage.setItem('ggHasAccount', true);
-                            if (window.navigator.simulator === undefined) {
-
-                                cordova.plugins.notification.local.add({
-                                    id: 'userWelcome',
-                                    title: 'Welcome to ghostgrams',
-                                    message: 'You have a secure connection to your family, friends and favorite places',
-                                    autoCancel: true,
-                                    date: new Date(new Date().getTime() + 120)
-                                });
-                            }
-
-                            sendPhoneVerificationCode(phone, function (result) {
-                                if (result.status === 'ok') {
-                                    userModel._user.set('phoneVerificationCode', result.code);
-                                    mobileNotify("Phone Verification Code sent.  Please check your messages");
-                                    if (window.navigator.simulator === undefined) {
-
-                                        cordova.plugins.notification.local.add({
-                                            id: 'verifyPhone',
-                                            title: 'Welcome to ghostgrams',
-                                            message: 'Please verify your phone',
-                                            autoCancel: true,
-                                            date: new Date(new Date().getTime() + 30)
-                                        });
-                                    }
+                            everlive.currentUser(function (err1, data1) {
+                                if (err1 !== null) {
+                                    signUpView._createAccount(username, password, name, phone);
+                                } else {
+                                    everlive.login(username, password, function (err2, data2) {
+                                        if (err2 === null ){
+                                            signUpView._createAccount(username, password, name, phone);
+                                        } else {
+                                            mobileNotify("Create Account Login error " + err2.message);
+                                        }
+                                    })
                                 }
-                            });
 
-                            everlive.updateUser();
-                            userModel.initCloudModels();
-                            userModel.initPubNub();
-                            APP.kendo.navigate('#home');
+                            });
 
                         });
 
