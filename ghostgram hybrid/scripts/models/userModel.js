@@ -40,7 +40,7 @@ var userModel = {
         statusMessage: '',
         rememberUsername: false,
         emailValidated: false,
-        phoneVerified: false,
+        phoneValidated: false,
         isVerified: false,
         isRetina: false,
         isWIFIOnly: false,
@@ -253,7 +253,7 @@ var userModel = {
                     dirty = true;
                 }
 
-                if (user.get('phoneVerified') === true && user.get('emailVerified') === true) {
+                if (user.get('phoneValidated') === true && user.get('emailValidated') === true) {
                     if (user.get('isVerified') !== true) {
                         user.set('isVerified', true);
                         dirty = true;
@@ -312,9 +312,9 @@ var userModel = {
                 userModel._user.set('placesIntro', user.get('placesIntro'));
                 userModel._user.set('saveToPhotoAlbum',user.get('saveToPhotoAlbum'));
                 userModel._user.set('rememberUsername', user.get('rememberUsername'));
-                var phoneVerified = user.get('phoneVerified');
-                userModel._user.set('phoneVerified', phoneVerified);
-                userModel._user.set('emailValidated', user.get('emailVerified'));
+                var phoneValidated = user.get('phoneValidated');
+                userModel._user.set('phoneValidated', phoneValidated);
+                userModel._user.set('emailValidated', user.get('emailValidated'));
                 userModel._user.set('useIdenticon', user.get('useIdenticon'));
                 userModel._user.set('availImgUrl', 'images/status-away.svg');
                 ux.updateHeaderStatusImages();
@@ -392,8 +392,8 @@ var userModel = {
                     });
                 });
 
-                if (phoneVerified) {
-                    deviceModel.setAppState('phoneVerified', true);
+                if (phoneValidated) {
+                    deviceModel.setAppState('phoneValidated', true);
                     notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
                 } else {
                     mobileNotify("Please verify your phone number");

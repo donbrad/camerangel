@@ -24,7 +24,7 @@ var deviceModel = {
         connection: 'none',
         inBackground: false,
         userNotifications: [],
-        phoneVerified: false,
+        phoneValidated: false,
         hasContacts: false,
         hasChannels: false,
         hasPrivateChannels: false,
@@ -85,7 +85,7 @@ var deviceModel = {
         deviceModel.state.isOnline = true;
         deviceModel.state.inBackground= false;
         deviceModel.state.userNotifications = [];
-        deviceModel.state.phoneVerified = false;
+        deviceModel.state.phoneValidated = false;
         deviceModel.state.hasContacts = false;
         deviceModel.state.hasChannels = false;
         deviceModel.state.hasMessages = false;

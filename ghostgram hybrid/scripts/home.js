@@ -40,7 +40,7 @@ function onBeforeOpenPhoto() {
 }
 
 function pruneNotifications() {
-	if 	( deviceModel.state.phoneVerified) {
+	if 	( deviceModel.state.phoneValidated) {
 		notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
 	}
 
@@ -172,8 +172,8 @@ function _signOut() {
 	userModel._user.set('alias', null);
 	userModel._user.set('userUUID', null);
 	userModel._user.set('rememberUsername', false);
-	userModel._user.set('phoneVerified', false);
-	userModel._user.set('emailVerified', false);
+	userModel._user.set('phoneValidated', false);
+	userModel._user.set('emailValidated', false);
 	userModel.parseACL = '';
 	deviceModel.resetDeviceState();
 }
@@ -285,7 +285,7 @@ function homeCreateAccount() {
 					user.set("isVisible", true);
 				    user.set("isCheckedIn", false);
 				    user.set("availImgUrl", "images/status-available.svg");
-					user.set("phoneVerified", false);
+					user.set("phoneValidated", false);
 				    user.set("useIdenticon", true);
 				    user.set("useLargeView", false);
 					user.set("rememberUsername", false);
@@ -315,10 +315,10 @@ function homeCreateAccount() {
 							userModel._user.set('saveToPhotoAlbum', user.get('saveToPhotoAlbum'));
 							userModel._user.set('aliasPhoto', user.get('aliasPhoto'));
 							userModel._user.set('userUUID', user.get('userUUID'));
-							userModel._user.set('phoneVerified', false);
+							userModel._user.set('phoneValidated', false);
 							userModel._user.set('useLargeView', false);
 							userModel._user.set('useIdenticon',user.get('useIdenticon'));
-							userModel._user.set('emailValidated',user.get('emailVerified'));
+							userModel._user.set('emailValidated',user.get('emailValidated'));
 							userModel.generateNewPrivateKey(user);
 
 							userModel.createIdenticon(userUUID);

@@ -425,7 +425,7 @@ var channelModel = {
     syncParseChannels : function (callback) {
         // Only sync channels for users with atleast email or phone validated
 
-       if (userModel._user.phoneVerified || userModel._user.emailValidated)  {
+       if (userModel._user.phoneValidated || userModel._user.emailValidated)  {
            var uuid = userModel._user.userUUID;
 
            getUserChannels(uuid, function (result) {

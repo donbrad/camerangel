@@ -810,10 +810,10 @@ var addContactView = {
 
             if (result.found) {
                 var thisContact = result.user;
-                contact.set("phoneVerified", thisContact.phoneVerified);
+                contact.set("phoneValidated", thisContact.phoneValidated);
                 // Does the contact have a verified email address
                 contact.set("email", thisContact.email);
-                if (thisContact.emailVerified) {
+                if (thisContact.emailValidated) {
                     // Yes - save the email address the contact verified
                     contact.set("emailValidated", true);
                 } else {
@@ -822,9 +822,9 @@ var addContactView = {
                 }
                 contact.set('contactUUID', thisContact.userUUID);
                 contact.set('contactPhone', thisContact.phone);
-                contact.set('phoneVerified', thisContact.phoneVerified);
+                contact.set('phoneValidated', thisContact.phoneValidated);
                 contact.set('phone', thisContact.phone);
-                if (thisContact.phoneVerified) {
+                if (thisContact.phoneValidated) {
                     contact.set('category', 'member');
                 }
                 contact.set('contactEmail', thisContact.email);
@@ -837,7 +837,7 @@ var addContactView = {
                 contact.set("email", email);
              /*   if (emailValid)
                     contactSendEmailInvite(email);*/
-                contact.set("phoneVerified", false);
+                contact.set("phoneValidated", false);
                 contact.set('publicKey',  null);
                 contact.set("contactUUID", null);
                 contact.set("contactPhone", null);
@@ -947,9 +947,9 @@ var editContactView = {
             editContactView._activeContact.set("name", contact.name);
             editContactView._activeContact.set("alias", contact.alias);
             editContactView._activeContact.set("phone", contact.phone);
-            editContactView._activeContact.set("phoneVerified", contact.phoneVerified);
+            editContactView._activeContact.set("phoneValidated", contact.phoneValidated);
             editContactView._activeContact.set("email", contact.email);
-            editContactView._activeContact.set("emailVerified", contact.emailValidated);  // emailVerified is a reserved term on Parse...
+            editContactView._activeContact.set("emailValidated", contact.emailValidated);  // emailValidated is a reserved term on Parse...
             editContactView._activeContact.set("group", contact.group);
             editContactView._activeContact.set("isFavorite", contact.isFavorite);
             editContactView._activeContact.set("isBlocked", contact.isBlocked);
@@ -1060,8 +1060,8 @@ var editContactView = {
 
         _preventDefault(e);
 
-        if (e.field !== 'emailVerified') {
-            // Parse throws an error if we try to update emailVerified it's a protected field...
+        if (e.field !== 'emailValidated') {
+            // Parse throws an error if we try to update emailValidated it's a protected field...
             //updateParseObject('contacts','uuid', editContactView._activeContact.uuid, e.field, this[e.field]);
         }
 
@@ -1086,19 +1086,19 @@ var editContactView = {
         //Show the status update div
         contactModel.updateContactDetails(contactId, function(contact) {
             editContactView.setActiveContact(contact);
-            editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
+            editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
             editContactView.updateContact();
             // Hide the status update div
         });
 
        // Set verified inputs
-       if(editContactView._activeContact.phoneVerified){
+       if(editContactView._activeContact.phoneValidated){
        		$("#edit-verified-phone").addClass("hidden");
        } else {
        		$("#edit-verified-phone").addClass("hidden");
        }
 
-       if(editContactView._activeContact.emailVerified){
+       if(editContactView._activeContact.emailValidated){
        		$("#edit-verified-email").addClass("hidden");
        } else {
        		$("#edit-verified-email").addClass("hidden");
@@ -1154,14 +1154,14 @@ var editContactView = {
                         contact.phone = user.phone;
                         mobileNotify(contact.name + " has changed their preferred phone.");
                     }
-                    if (contact.phoneVerified !== user.phoneVerified) {
+                    if (contact.phoneValidated !== user.phoneValidated) {
                         dirty = true;
-                        contact.phoneVerified = user.phoneVerified;
+                        contact.phoneValidated = user.phoneValidated;
                         mobileNotify(contact.name + " has verified their phone.");
                     }
-                    if (contact.emailValidated !== user.emailVerified) {
+                    if (contact.emailValidated !== user.emailValidated) {
                         dirty = true;
-                        contact.set('emailValidated',user.emailVerified);
+                        contact.set('emailValidated',user.emailValidated);
                         mobileNotify(contact.name + " has verified their email.");
                     }
                     if (contact.publicKey !== user.publicKey) {
@@ -1170,7 +1170,7 @@ var editContactView = {
                         mobileNotify(contact.name + " has changed their public key.");
                     }
 
-                    editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
+                    editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
 
                 }
 
@@ -1189,14 +1189,14 @@ var editContactView = {
                         contact.phone = user.phone;
                         mobileNotify(contact.name + " has changed their preferred phone.");
                     }
-                    if (contact.phoneVerified !== user.phoneVerified) {
+                    if (contact.phoneValidated !== user.phoneValidated) {
                         dirty = true;
-                        contact.phoneVerified = user.phoneVerified;
+                        contact.phoneValidated = user.phoneValidated;
                         mobileNotify(contact.name + " has verified their phone.");
                     }
-                    if (contact.emailValidated !== user.emailVerified) {
+                    if (contact.emailValidated !== user.emailValidated) {
                         dirty = true;
-                        contact.set('emailValidated',user.emailVerified);
+                        contact.set('emailValidated',user.emailValidated);
                         mobileNotify(contact.name + " has verified their email.");
                     }
                     if (contact.publicKey !== user.publicKey) {
@@ -1205,7 +1205,7 @@ var editContactView = {
                         mobileNotify(contact.name + " has changed their public key.");
                     }
 
-                    editContactView.updateVerifiedUX(contact.phoneVerified, contact.emailValidated);
+                    editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
 
                 }
 
@@ -1334,7 +1334,7 @@ var contactActionView = {
 
                 var contactName = contact.name;
                 var contactAlias = contact.alias;
-                var contactVerified = contact.phoneVerified;
+                var contactVerified = contact.phoneValidated;
                 var contactGroup = contact.group;
 
                 var contactIsAvailable = contact.isAvailable;
@@ -1511,7 +1511,7 @@ var contactActionView = {
             $(".statusContactCard-icon").attr("src", "images/status-available.svg");
         }
 
-        if (thisContact.phoneVerified) {
+        if (thisContact.phoneValidated) {
             $("#currentContactVerified").removeClass("hidden");
         } else {
             $("#currentContactVerified").addClass("hidden");

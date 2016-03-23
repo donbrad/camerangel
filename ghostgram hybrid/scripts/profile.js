@@ -192,11 +192,11 @@ function doProfileGallery(e) {
 function onInitProfile(e) {
 	e.preventDefault();
     
-    if (userModel._user.emailVerified){
+    if (userModel._user.emailValidated){
         $("#verified-email").removeClass("hidden");
     }
     
-    if(userModel._user.phoneVerified){
+    if(userModel._user.phoneValidated){
         $("#verified-phone").removeClass("hidden");
     }
     

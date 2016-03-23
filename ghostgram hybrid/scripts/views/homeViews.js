@@ -136,7 +136,7 @@ var homeView = {
         }
 
         var alias = userModel._user.alias;
-        var verified = userModel._user.phoneVerified;
+        var verified = userModel._user.phoneValidated;
         var name = userModel._user.name;
 
         var status = userModel._user.statusMessage;
@@ -279,7 +279,7 @@ var homeView = {
         ux.setSearchPlaceholder("Search notifications");
 
         // set verified ui for start screen
-        if(userModel._user.phoneVerified) {
+        if(userModel._user.phoneValidated) {
             $("#startPhoneVerified").addClass("hidden");
         }
 
@@ -462,8 +462,6 @@ var userStatusView = {
             userModel._user.set('alias', null);
             userModel._user.set('userUUID', null);
             userModel._user.set('rememberUsername', false);
-            userModel._user.set('phoneVerified', false);
-            userModel._user.set('emailVerified', false);
             deviceModel.resetDeviceState();
 
             userStatusView.closeModal();
@@ -1062,7 +1060,7 @@ var signUpView = {
         user.set("isCheckedIn", false);
         user.set("isValidated", false);
         user.set("availImgUrl", "images/status-available.svg");
-        user.set("phoneVerified", false);
+        user.set("phoneValidated", false);
         user.set("useIdenticon", true);
         user.set("useLargeView", false);
         user.set("rememberUsername", false);
@@ -1207,7 +1205,7 @@ var signUpView = {
                             user.set("isVisible", true);
                             user.set("isCheckedIn", false);
                             user.set("availImgUrl", "images/status-available.svg");
-                            user.set("phoneVerified", false);
+                            user.set("phoneValidated", false);
                             user.set("useIdenticon", true);
                             user.set("useLargeView", false);
                             user.set("rememberUsername", false);
@@ -1250,10 +1248,10 @@ var signUpView = {
                                     userModel._user.set('saveToPhotoAlbum', user.get('saveToPhotoAlbum'));
                                     userModel._user.set('aliasPhoto', user.get('aliasPhoto'));
                                     userModel._user.set('userUUID', user.get('userUUID'));
-                                    userModel._user.set('phoneVerified', false);
+                                    userModel._user.set('phoneValidated', false);
                                     userModel._user.set('useLargeView', false);
                                     userModel._user.set('useIdenticon', user.get('useIdenticon'));
-                                    userModel._user.set('emailValidated', user.get('emailVerified'));
+                                    userModel._user.set('emailValidated', user.get('emailValidated'));
                                     userModel.generateNewPrivateKey(user);
 
                                     userModel.createIdenticon(userUUID);
@@ -1524,14 +1522,14 @@ var signInView = {
                     userModel._user.photo =  userModel.identiconUrl;
                 }
 
-                var phoneVerified = userModel.parseUser.get('phoneVerified');
-                userModel._user.set('phoneVerified', phoneVerified);
+                var phoneValidated = userModel.parseUser.get('phoneValidated');
+                userModel._user.set('phoneValidated', phoneValidated);
                 userModel._user.set('availImgUrl', 'images/status-away.svg');
                 var isAvailable  = userModel._user.get('isAvailable');
                 if (isAvailable) {
                     userModel._user.set('availImgUrl', 'images/status-available.svg');
                 }
-                userModel._user.set('emailValidated', userModel.parseUser.get('emailVerified'));
+                userModel._user.set('emailValidated', userModel.parseUser.get('emailValidated'));
                 userModel.parseACL = new Parse.ACL(userModel.parseUser);
                 userModel._user.bind('change', userModel.sync);
 
@@ -1561,8 +1559,8 @@ var signInView = {
 
                 APP.kendo.navigate('#home');
 
-                if (phoneVerified) {
-                    deviceModel.setAppState('phoneVerified', true);
+                if (phoneValidated) {
+                    deviceModel.setAppState('phoneValidated', true);
                     notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
                 } else {
 

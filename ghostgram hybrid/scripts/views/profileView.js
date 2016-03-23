@@ -12,11 +12,11 @@ var profileView = {
 
     onShow: function (e) {
         _preventDefault(e);
-        if (userModel._user.emailVerified){
+        if (userModel._user.emailValidated){
             $("#verified-email").removeClass("hidden");
         }
 
-        if(userModel._user.phoneVerified){
+        if(userModel._user.phoneValidated){
             $("#verified-phone").removeClass("hidden");
         }
 
@@ -47,7 +47,7 @@ var profileEditView = {
         $(".phone").val(profileEditView._activeProfile.phone);
 
         // Set verified
-        if(userModel._user.phoneVerified){
+        if(userModel._user.phoneValidated){
         	$("#profile-verified-phone").removeClass("hidden");
         }
 

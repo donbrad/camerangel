@@ -629,8 +629,8 @@ var contactModel = {
             thisContact.set('phoneUpdate', true);
             thisContactList.set('phoneUpdate', true);
         }
-        thisContact.set('phoneVerified', contact.phoneVerified);
-        thisContactList.set('phoneVerified', contact.phoneVerified);
+        thisContact.set('phoneValidated', contact.phoneValidated);
+        thisContactList.set('phoneValidated', contact.phoneValidated);
         if (contact.userUUID !== undefined && contact.userUUID !== null) {
             if (thisContact.category !== 'member'){
                 isDirty = true;
@@ -651,10 +651,10 @@ var contactModel = {
             thisContactList.set('emailUpdated', true);
         }
 
-        thisContact.set('emailValidated', contact.emailVerified);
+        thisContact.set('emailValidated', contact.emailValidated);
         thisContact.set('contactPhoto', contact.photo);
         thisContact.set('contactAddress', contact.address);
-        thisContactList.set('emailValidated', contact.emailVerified);
+        thisContactList.set('emailValidated', contact.emailValidated);
         thisContactList.set('contactPhoto', contact.photo);
         thisContactList.set('contactAddress', contact.address);
         if(thisContact.address !== contact.address) {
@@ -673,7 +673,7 @@ var contactModel = {
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhoto', thisContact.contactPhoto);
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactAddress', thisContact.contactAddress);
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'phone', thisContact.phone);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'phoneVerified', thisContact.phoneVerified);
+            updateParseObject('contacts', 'uuid', thisContact.uuid, 'phoneValidated', thisContact.phoneValidated);
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'email', thisContact.email);
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'emailValidated', thisContact.emailValidated);
             updateParseObject('contacts', 'uuid', thisContact.uuid, 'address', thisContact.address);
@@ -803,10 +803,10 @@ var contactModel = {
         findUserByPhone(phone, function (result) {
             if (result.found) {
                 var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'),
-                    phoneVerified = model.get('phoneVerfied'),  emailVerified = model.get('emailVerfied'), parseEmailVerified = result.user.emailVerified ;
+                    phoneValidated = model.get('phoneVerfied'),  emailValidated = model.get('emailValidated'), parseEmailVerified = result.user.emailValidated ;
 
                 // Does the contact have a verified email address
-                if (result.user.emailVerified) {
+                if (result.user.emailValidated) {
                     // Yes - save the email address the contact verified
                     model.set("email", result.user.email);
                 }
@@ -820,15 +820,15 @@ var contactModel = {
                 if (publicKey === undefined) {
                     updateParseObject('contacts', 'uuid', uuid, 'publicKey',result.user.publicKey );
                 }*/
-                if (phoneVerified !== result.user.phoneVerified) {
-                    if (result.user.phoneVerified === undefined)
-                        result.user.phoneVerified = false;
+                if (phoneValidated !== result.user.phoneValidated) {
+                    if (result.user.phoneValidated === undefined)
+                        result.user.phoneValidated = false;
 
-                    if (result.user.phoneVerified){
+                    if (result.user.phoneValidated){
                         model.set('category', "member");
                     }
-                    model.set("phoneVerified", result.user.phoneVerified);
-                  /*  updateParseObject('contacts', 'uuid', uuid, 'phoneVerified', result.user.phoneVerified );*/
+                    model.set("phoneValidated", result.user.phoneValidated);
+                  /*  updateParseObject('contacts', 'uuid', uuid, 'phoneValidated', result.user.phoneValidated );*/
                 }
             }
 
@@ -905,9 +905,9 @@ var contactModel = {
                 contact.set('photo',url);
                 // Don't set actual phone and email for this contact until connected...
                 contact.set('contactPhone', contact.phone);
-                contact.set('phoneVerified', contact.phoneVerified);
+                contact.set('phoneValidated', contact.phoneValidated);
                 contact.set('contactEmail', contact.email);
-                contact.set('emailVerified', contact.emailVerified);
+                contact.set('emailValidated', contact.emailValidated);
 
                 var contactObj = contact.toJSON();
                 contactModel.addContactToContactList(contactObj);

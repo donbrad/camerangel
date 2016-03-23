@@ -319,7 +319,7 @@
 						<div class="left listName">
 							<h4 class="textClamp">
 							#= primaryName #
-							#if (data.phoneVerified){#
+							#if (data.phoneValidated){#
 									<img src="images/user-verified.svg" class="user-status-icon" />
 							#}#
 							<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
@@ -377,7 +377,7 @@
 					<div class="left listName">
 							<h4 class="textClamp">
 								#: data.name # 
-								#if (data.phoneVerified){#
+								#if (data.phoneValidated){#
 									<img src="images/user-verified.svg" class="user-status-icon" />
 								#}#
 								<span class="contacts-alias-sm">#: data.alias #</span>
