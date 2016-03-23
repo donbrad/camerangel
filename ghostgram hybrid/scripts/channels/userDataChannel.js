@@ -106,6 +106,11 @@ var userDataChannel = {
                 messages = messages[0];
                 var start = messages[1], end = messages[2];
                 messages = messages || [];
+                if (messages.length === 0) {
+                    userDataChannel.messagesDS.sync();
+                    userDataChannel.updateTimeStamp();
+                    return;
+                }
                 var RSAKey = cryptico.privateKeyFromString(userModel._user.privateKey);
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
