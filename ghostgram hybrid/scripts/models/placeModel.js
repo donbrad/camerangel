@@ -537,7 +537,7 @@ var placesModel = {
             if (place.isShared === true) {
                 //Mark the place as deleted...
                 place.set('isDeleted', true);
-                updateParseObject('places', 'uuid', place.uuid,'isDeleted', true);
+                //updateParseObject('places', 'uuid', place.uuid,'isDeleted', true);
             } else {
 
                 // If there's a channel related to this place, need to delete it
@@ -549,7 +549,7 @@ var placesModel = {
                 placesModel.placesDS.sync();
 
                 // Delete the parse object directly
-                deleteParseObject('places',"uuid", placeUUID);
+                //deleteParseObject('places',"uuid", placeUUID);
             }
 
         }

@@ -568,7 +568,7 @@ var contactModel = {
                 mobileNotify(contact.name + " is not a Chat Member!");
             } else {
                 contact.set("connectReceived",true);
-                updateParseObject("contacts", 'uuid', contactId, "connectReceived", true);
+                //updateParseObject("contacts", 'uuid', contactId, "connectReceived", true);
             }
         }
     },

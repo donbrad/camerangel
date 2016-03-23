@@ -547,11 +547,11 @@ var modalPhotoTag = {
                 photoObj.tags = [];
             }
 
-            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "title", photoObj.title);
+    /*        updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "title", photoObj.title);
             updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "description", photoObj.description);
             updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "tags", photoObj.tags);
             updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "tagsString", photoObj.tagsString);
-
+*/
         } else {
             mobileNotify("Can't find photo model!!");
         }
@@ -829,11 +829,11 @@ var modalPhotoView = {
                 photoObj.tags = [];
             }
 
-            updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "title", photoObj.title);
+            /*updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "title", photoObj.title);
             updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "description", photoObj.description);
             updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "tags", photoObj.tags);
             updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "tagsString", photoObj.tagsString);
-
+*/
         } else {
             mobileNotify("Can't find photo model!!");
         }

@@ -618,12 +618,12 @@ var editChannelView = {
         channelObj.set('members', memberArray);
         channelObj.set('inviteMembers', invitedMemberArray);
 
-        //Update the parse object
+       /* //Update the parse object
         updateParseObject('channels', 'channelUUID', channelUUID, 'name',  editChannelView._activeChannel.name);
         updateParseObject('channels', 'channelUUID', channelUUID, 'description',  editChannelView._activeChannel.description);
         updateParseObject('channels', 'channelUUID', channelUUID, 'members', memberArray);
         updateParseObject('channels', 'channelUUID', channelUUID, 'invitedMembers', invitedMemberArray);
-
+*/
 
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");

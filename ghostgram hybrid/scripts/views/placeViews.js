@@ -1116,9 +1116,9 @@ var editPlaceView = {
             editPlaceView._activePlaceModel.set('hasPlaceChat', true);
 
 
-            updateParseObject('places', 'uuid', placeUUID,'hasPlaceChat', true);
+           /* updateParseObject('places', 'uuid', placeUUID,'hasPlaceChat', true);
             updateParseObject('places', 'uuid', placeUUID,'placeChatId', placeChatguid);
-
+*/
         }
     },
 
@@ -1174,6 +1174,7 @@ var editPlaceView = {
         model.set('hasPlaceChat', newModel.hasPlaceChat);
         model.set('placeChatId', newModel.placeChatId);
 
+/*
 
         updateParseObject('places', 'uuid', newModel.uuid, "name", newModel.name);
         updateParseObject('places', 'uuid', newModel.uuid,'alias', newModel.alias);
@@ -1183,6 +1184,7 @@ var editPlaceView = {
         updateParseObject('places', 'uuid', newModel.uuid,'hasPlaceChat', newModel.hasPlaceChat);
         updateParseObject('places', 'uuid', newModel.uuid,'placeChatId', newModel.placeChatId);
 
+*/
 
         mobileNotify("Updated " + newModel.name);
 

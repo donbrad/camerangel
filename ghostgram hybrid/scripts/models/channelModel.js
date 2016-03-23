@@ -325,7 +325,7 @@ var channelModel = {
                 lastAccess = ggTime.currentTime();
             }
             channel.set('lastAccess', lastAccess);
-            updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', lastAccess);
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', lastAccess);
 
         }
     },
@@ -352,7 +352,7 @@ var channelModel = {
             var lastAccess = ggTime.currentTime();
             channel.set('unreadCount',0);
             //notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
-            updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', 0);
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', 0);
             channelModel.updateLastAccess(channelUUID, lastAccess);
 
         }
@@ -368,7 +368,7 @@ var channelModel = {
             var lastAccess = ggTime.currentTime();
             channel.set('unreadCount',channel.get('unreadCount') + count);
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
-            updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
             channelModel.updateLastAccess(channelUUID, lastAccess);
 
         }
@@ -388,7 +388,7 @@ var channelModel = {
 
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);
-            updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
             channelModel.updateLastAccess(channelUUID, lastAccess);
 
         }
@@ -405,7 +405,7 @@ var channelModel = {
             }
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount', channel.unreadCount + count);
-            updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', channel.unreadCount + count);
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', channel.unreadCount + count);
             channelModel.updateLastAccess(channelUUID, lastAccess);
         }
 
@@ -481,9 +481,9 @@ var channelModel = {
             channel.set('members', channelMembers);
             channel.set('isDirty', true);
 
-            updateParseObject('channels', 'channelUUID', channelUUID, 'name', channelName );
-            updateParseObject('channels', 'channelUUID', channelUUID, 'description', channelDescription );
-            updateParseObject('channels', 'channelUUID', channelUUID, 'members', channelMembers );
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'name', channelName );
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'description', channelDescription );
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'members', channelMembers );
         }
 
     },
@@ -517,7 +517,7 @@ var channelModel = {
         if (channel !== null) {
             channel.set('members', members);
             channelModel.confirmChannelMembers(members);
-            updateParseObject('channels', 'channelUUID', channelUUID, 'members', members );
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'members', members );
         }
 
     },
@@ -994,8 +994,8 @@ var channelModel = {
                         if (place !== undefined) {
                             place.set('hasPlaceChat', false);
                             place.set('placeChatId', null);
-                            updateParseObject("places", 'uuid', placeUUID, 'hasPlaceChat', false);
-                            updateParseObject("places", 'uuid', placeUUID, 'placeChatId', null);
+                            //updateParseObject("places", 'uuid', placeUUID, 'hasPlaceChat', false);
+                            //updateParseObject("places", 'uuid', placeUUID, 'placeChatId', null);
                         }
                     }
                 }
@@ -1009,7 +1009,7 @@ var channelModel = {
 
                 if (window.navigator.simulator === undefined)
                     serverPush.unprovisionGroupChannel(channelUUID);
-                updateParseObject("channels", 'channelUUID', channelUUID, 'isDeleted', true);
+                //updateParseObject("channels", 'channelUUID', channelUUID, 'isDeleted', true);
                 channel.set('isDeleted', true);
             }
         }
@@ -1028,7 +1028,7 @@ var channelModel = {
         dataSource.filter(cacheFilter);
 
         if (channel !== undefined) {
-            updateParseObject("channels", 'channelUUID', channelUUID, 'isDeleted', false);
+            //updateParseObject("channels", 'channelUUID', channelUUID, 'isDeleted', false);
             channel.set('isDeleted', false);
             serverPush.provisionGroupChannel(channelUUID);
         }
@@ -1048,7 +1048,7 @@ var channelModel = {
 
         if (channel !== undefined) {
 
-            updateParseObject("channels", 'channelUUID', channelUUID, 'isMuted', isMuted);
+            //updateParseObject("channels", 'channelUUID', channelUUID, 'isMuted', isMuted);
             channel.set('isMuted', isMuted);
             if (isMuted) {
                 serverPush.unprovisionGroupChannel(channelUUID);

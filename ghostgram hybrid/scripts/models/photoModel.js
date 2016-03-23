@@ -373,7 +373,7 @@ var photoModel = {
 
     upgradePhoto : function (photo) {
         // current trigger is no version field -- later we'll compare numbers
-        if (photo.version === undefined) {
+ /*       if (photo.version === undefined) {
            // photo.version = photoModel._version;
 
             if (photo.senderUUID === undefined) {
@@ -492,7 +492,7 @@ var photoModel = {
             updateParseObject('photos', "photoId", photo.photoId, "version", photoModel._version);
 
         }
-
+*/
     },
 
     addChatPhoto : function (photoObj, callback) {
@@ -600,7 +600,7 @@ var photoModel = {
         var photo = photoModel.findPhotoById(photoId);
         devicePhoto.convertImgToDataURL(imageUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
+     /*       var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
             parseFile.save().then(function () {
 
                 photo.set('imageUrl',parseFile._url);
@@ -609,7 +609,7 @@ var photoModel = {
                 updateParseObject('photos', 'photoId', photoId, 'imageUrl', parseFile._url);
 
             });
-
+*/
         });
 
     },
@@ -677,7 +677,7 @@ var photoModel = {
                     mobileNotify("Photo Offer with unknown photo: " + photoId);
                 } else {
                     photo.set("offerId", offeruuid);
-                    updateParseObject('photos', 'photoId', photoId, 'offerId', offeruuid);
+                    //updateParseObject('photos', 'photoId', photoId, 'offerId', offeruuid);
                 }
 
             },
@@ -710,8 +710,8 @@ var photoModel = {
 
                         photo.set('imageUrl', parseFileImage._url);
 
-                        updateParseObject('photos', 'photoId', photoId, 'image', parseFileImage);
-                        updateParseObject('photos', 'photoId', photoId, 'imageUrl', parseFileImage._url);
+                        //updateParseObject('photos', 'photoId', photoId, 'image', parseFileImage);
+                        //updateParseObject('photos', 'photoId', photoId, 'imageUrl', parseFileImage._url);
 
                     });
 
@@ -731,8 +731,8 @@ var photoModel = {
         if (offer !== undefined) {
             offer.set('imageUrl', image);
             offer.set('uploaded', true);
-            updateParseObject('photoOffer', 'photoId', photoId, 'image', image);
-            updateParseObject('photoOffer', 'photoId', photoId, 'uploaded', true);
+            //updateParseObject('photoOffer', 'photoId', photoId, 'image', image);
+            //updateParseObject('photoOffer', 'photoId', photoId, 'uploaded', true);
 
         }
 

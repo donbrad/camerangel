@@ -144,8 +144,8 @@ var appDataChannel = {
                 if (contact !== undefined) {
                     contact.set('contactUUID', m.userId);
                     contact.set('contactEmail', m.email);
-                    updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
-                    updateParseObject('contacts', 'uuid', contact.uuid, 'contactEmail', m.email);
+                    /*updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
+                    updateParseObject('contacts', 'uuid', contact.uuid, 'contactEmail', m.email);*/
                 }
             } break;
 
@@ -165,10 +165,10 @@ var appDataChannel = {
                 contact.set('contactEmail', m.email);
                 contact.set('publicKey', m.publicKey);
 
-                updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
+                /*updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
                 updateParseObject('contacts', 'uuid', contact.uuid, 'contactEmail', m.email);
                 updateParseObject('contacts', 'uuid', contact.uuid, 'contactPhone', m.phone);
-                updateParseObject('contacts', 'uuid', contact.uuid, 'publicKey', m.publicKey);
+                updateParseObject('contacts', 'uuid', contact.uuid, 'publicKey', m.publicKey);*/
             } break;
 
             //  { type: 'channelInvite',  channelUUID: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}

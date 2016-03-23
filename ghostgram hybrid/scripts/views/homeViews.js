@@ -518,7 +518,7 @@ var userStatusView = {
         if(updatedStatus !== "") {
             // Save new status
             userModel._user.set("statusMessage", updatedStatus);
-            updateParseObject('userStatus','userUUID', userModel._user.uuid, "statusMessage", updatedStatus);
+            //updateParseObject('userStatus','userUUID', userModel._user.uuid, "statusMessage", updatedStatus);
         }
         // clear status box
         $("#profileStatusUpdate").val("");
@@ -570,7 +570,7 @@ var userStatusView = {
         _preventDefault(e);
 
         userModel._user.set(e.field, this[e.field]);
-        updateParseObject('userStatus','userUUID', userModel._user.uuid, e.field, this[e.field]);
+        //updateParseObject('userStatus','userUUID', userModel._user.uuid, e.field, this[e.field]);
 
     },
 

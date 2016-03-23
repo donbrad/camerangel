@@ -1062,7 +1062,7 @@ var editContactView = {
 
         if (e.field !== 'emailVerified') {
             // Parse throws an error if we try to update emailVerified it's a protected field...
-            updateParseObject('contacts','uuid', editContactView._activeContact.uuid, e.field, this[e.field]);
+            //updateParseObject('contacts','uuid', editContactView._activeContact.uuid, e.field, this[e.field]);
         }
 
 
