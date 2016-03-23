@@ -432,17 +432,17 @@ var userModel = {
         var publicKey = cryptico.publicKeyString(RSAkey);
         var privateKey = cryptico.privateKeyString(RSAkey);
 
-        //userModel._user.set('secretKey',RSAkey);
-        userModel._user.set('publicKey',publicKey);
+
+
+        userModel._RSAKey = RSAKey;
+        userModel._publicKey = publicKey;
+        userModel._privateKey = privateKey;
+
         var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
         userModel._user.set('privateKey',newPrivateKey);
+        userModel._user.set('publicKey',publicKey);
 
 
-       /* user.set("publicKey", publicKey);
-        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
-        user.set("privateKey", newPrivateKey);*/
-
-        //user.save();
 
     },
 
@@ -492,6 +492,8 @@ var userModel = {
         var RSAKey = cryptico.privateKeyFromString(newPrivateKey);
         userModel._user.set('privateKey', newPrivateKey);
         userModel._user.set('RSAKey', RSAKey);
+        userModel._RSAKey = RSAKey;
+        userModel._privateKey = newPrivateKey;
 
     },
 
@@ -543,6 +545,8 @@ var userModel = {
         userModel._user.set('isCheckedIn', false);
         userModel._user.set('currentPlace', null);
         userModel._user.set('currentPlaceUUID',null);
+        userModel._user.set('googlePlaceId', null);
+        userStatus.update();
 
     },
 
@@ -655,11 +659,17 @@ var userStatus = {
                     mobileNotify("Member Directory Init error : " + JSON.stringify(error));
                 });
 
+        /*userStatus._statusObj.on('change', function () {
+            userStatus.update();
+        });*/
+
     },
 
 
 
     syncField : function (field) {
+
+        var updateObject = userStatus._statusObj;
 
         switch(field) {
             case 'userUUID':
@@ -673,7 +683,7 @@ var userStatus = {
             case 'googlePlaceId' :
             case 'currentPlaceUUID' :
 
-                updateObject[field] =  userModel._user.get(field);
+                updateObject.set(field, userModel._user.get(field));
                 
                /* userStatus.parseUserStatus.set(field, userModel._user.get(field));
                 userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());

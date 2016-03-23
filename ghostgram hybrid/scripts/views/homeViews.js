@@ -518,6 +518,7 @@ var userStatusView = {
         if(updatedStatus !== "") {
             // Save new status
             userModel._user.set("statusMessage", updatedStatus);
+            userStatus.update();
             //updateParseObject('userStatus','userUUID', userModel._user.uuid, "statusMessage", updatedStatus);
         }
         // clear status box
