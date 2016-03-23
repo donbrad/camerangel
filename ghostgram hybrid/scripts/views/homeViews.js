@@ -1049,7 +1049,12 @@ var signUpView = {
 
                         everlive.createAccount(username, name, password, function (error, data) {
                             if (error !== null) {
-                                mobileNotify("Error creating account : " + JSON.stringify(error));
+
+                                if (error.code === 201) {
+                                    mobileNotify(username + " is an existing account.  Please SignIn.");
+                                    return;
+                                }
+                                mobileNotify("Error creating account : " + error.message);
                                 return;
                             }
                             var userUUID = uuid.v4(); var user = userModel._user;
