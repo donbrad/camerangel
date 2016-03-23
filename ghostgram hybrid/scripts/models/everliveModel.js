@@ -23,6 +23,8 @@ var everlive = {
             attrs,
             function(data) {
                 everlive._token = data.result.Id;
+                userModel.Id =  data.result.Id;
+                userModel.currentUser.Id = data.result.Id;
                 everlive._signedIn = true;
 
                 callback(null, data);

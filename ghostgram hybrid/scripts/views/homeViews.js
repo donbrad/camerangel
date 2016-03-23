@@ -1098,10 +1098,10 @@ var signUpView = {
                             }
                             //user.set("publicKey", publicKey);
                             //user.set("privateKey", privateKey);
-                            everlive.updateUser();
-                            userModel._user.bind('change', userModel.sync);
+
+                            //userModel._user.bind('change', userModel.sync);
                             mobileNotify('Welcome to ghostgrams!');
-                            userModel.initPubNub();
+
                             userModel.hasAccount = true;
                             window.localStorage.setItem('ggHasAccount', true);
                             if (window.navigator.simulator === undefined) {
@@ -1131,6 +1131,11 @@ var signUpView = {
                                     }
                                 }
                             });
+
+                            everlive.updateUser();
+                            userModel.initCloudModels();
+                            userModel.initPubNub();
+                            APP.kendo.navigate('#home');
 
                         });
 
