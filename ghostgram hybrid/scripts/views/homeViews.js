@@ -1052,6 +1052,7 @@ var signUpView = {
 
                                 if (error.code === 201) {
                                     mobileNotify(username + " is an existing account.  Please SignIn.");
+                                    APP.kendo.navigate('#usersignin');
                                     return;
                                 }
                                 mobileNotify("Error creating account : " + error.message);
