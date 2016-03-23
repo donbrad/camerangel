@@ -1035,7 +1035,7 @@ var signUpView = {
         user.set("email", username);
         user.set("name", name);
         user.set("phone", phone);
-        user.set("alias", alias);
+        user.set("alias", null);
         user.set("currentPlace", "");
         user.set("currentPlaceUUID", "");
         user.set('photo', null);
