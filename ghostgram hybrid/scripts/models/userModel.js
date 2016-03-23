@@ -651,7 +651,7 @@ var userStatus = {
                     } else {
                         var member = data.result[0];
                         userStatus._id = member.Id;
-                        userStatus._statusObj.id = member.id;
+                        userStatus._statusObj.Id = member.Id;
                     }
 
                 },
