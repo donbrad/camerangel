@@ -569,21 +569,21 @@
     <div class="modalview-content">
 	    <h3>
 	    	Verify Number
-	    	<a class="right closeBox" data-click="ux.closeModalViewVerifyPhone" data-role="button">
+	    	<a class="right closeBox" data-click="verifyPhoneModal.closeModal" data-role="button">
 	    		<img src="images/close.svg" />
 	    	</a>
 	    </h3>
 	        <ul data-role="listview" data-style="inset">
 	            <li>
-	                <label>Enter code from text message</label>
+	                <label>Enter code in text message from (530) 206-8126</label>
 	                <input type="tel" id="verifyPhone-code" value="" />
-	              	<span class="helper helper-right btnClear-grey" data-click="sendVerificationCode" data-role="button">
+	              	<span class="helper helper-right btnClear-grey" data-click="verifyPhoneModal.sendCode" data-role="button">
 	              		Resend code
 	              	</span>
 	            </li>
 	        </ul>
 	    <div style="padding-top: 8px; text-align:center;">
-	        <a class="btnPrimary btnSpan" data-click="verifyPhone" type="button" data-role="button" data-align="right">Verify</a>
+	        <a class="btnPrimary btnSpan" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" data-align="right">Verify</a>
 	    </div>
    	</div>
 </div>

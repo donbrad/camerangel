@@ -565,37 +565,9 @@ function findUserByPhone(phone, callBack) {
 			});
 		}
 	});
-}
-
-function verifyPhone(e) {
-	e.preventDefault();
-	var code = $('#verifyPhone-code').val();
-	// all verification codes are 5 or 6 numbers
-	if (code.length < 5) {
-		mobileNotify("Invalid verification code, please try again");
-		return;
-	}
-
-	Parse.Cloud.run('verifyPhoneNumber', {
-		code: code
-	}, {
-		success: function(result) {
-			if (result.verified) {
-				mobileNotify("Your phone number is verified.  Thank You!");
-				$("#modalview-verifyPhone").data("kendoMobileModalView").close();
-				var thisUser = userModel._user;
-				appDataChannel.userValidatedMessage(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
-			} else {
-				mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
-			}
-
-		},
-		error: function(result, error) {
-			mobileNotify('Error verifying phone ' + error);
-		}
-	});
-
 }*/
+
+
 
 //Remove all formatting from  phone number and add 1 for 10 digit US numbers.
 function unformatPhoneNumber(phone) {

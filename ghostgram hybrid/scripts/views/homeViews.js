@@ -1095,22 +1095,8 @@ var signUpView = {
             });
         }
 
-        sendPhoneVerificationCode(phone, function (result) {
-            if (result.status === 'ok') {
-                userModel._user.set('phoneVerificationCode', result.code);
-                mobileNotify("Phone Verification Code sent.  Please check your messages");
-                if (window.navigator.simulator === undefined) {
+        verifyPhoneModal.sendAndOpenModal();
 
-                    cordova.plugins.notification.local.add({
-                        id: 'verifyPhone',
-                        title: 'Welcome to ghostgrams',
-                        message: 'Please verify your phone',
-                        autoCancel: true,
-                        date: new Date(new Date().getTime() + 30)
-                    });
-                }
-            }
-        });
 
         everlive.updateUser();
         userModel.initCloudModels();
@@ -1627,3 +1613,79 @@ var changePasswordView = {
     }
 };
 
+var verifyPhoneModal = {
+
+    onOpen: function (e) {
+        _preventDefault(e);
+    },
+    
+    onDone: function (e) {
+        _preventDefault(e);
+    },
+
+    sendAndOpenModal : function (e) {
+
+        var phone = userModel._user.get('phone');
+        sendPhoneVerificationCode(phone, function (result) {
+            if (result.status === 'ok') {
+                userModel._user.set('phoneVerificationCode', result.code);
+                verifyPhoneModal.openModal();
+                if (window.navigator.simulator === undefined) {
+
+                    cordova.plugins.notification.local.add({
+                        id: 'verifyPhone',
+                        title: 'Welcome to ghostgrams',
+                        message: 'Please verify your phone',
+                        autoCancel: true,
+                        date: new Date(new Date().getTime() + 30)
+                    });
+                }
+            }
+        });
+    },
+
+    openModal: function (e) {
+        $("#modalview-verifyPhone").data("kendoMobileModalView").open(); 
+    },
+    
+    closeModal: function (e) {
+        $("#modalview-verifyPhone").data("kendoMobileModalView").close();
+    },
+
+    sendCode : function (e) {
+        var phone = userModel._user.get('phone');
+        sendPhoneVerificationCode(phone, function (result) {
+            if (result.status === 'ok') {
+                userModel._user.set('phoneVerificationCode', result.code);
+
+            }
+        });
+    },
+
+    verifyCode : function (e) {
+        
+        e.preventDefault();
+        var userCode = $('#verifyPhone-code').val();
+        var sentCode = userModel._user.get('phoneVerificationCode');
+        
+        // all verification codes are 5 or 6 numbers
+        if (userCode.length < 5) {
+            mobileNotify("Invalid verification code, please try again");
+            return;
+        }
+
+        if (userCode === sentCode) {
+                mobileNotify("Your phone number is verified.  Thank You!");
+                var thisUser = userModel._user;
+                thisUser.set('phoneValidated', true);
+                thisUser.set('isValidated', true);
+                var isVerified = thisUser.get('isVerified');
+
+                appDataChannel.userValidatedMessage(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
+                verifyPhoneModal.closeModal();
+            } else {
+                mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
+            }
+
+        }
+}
