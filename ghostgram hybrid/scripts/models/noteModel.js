@@ -88,7 +88,7 @@ var noteModel = {
         return (view);
     },
 
-    fetch: function () {
+    /*fetch: function () {
         var NoteModel = Parse.Object.extend(noteModel._parseClass);
         var query = new Parse.Query(NoteModel);
         query.limit(1000);
@@ -109,7 +109,7 @@ var noteModel = {
                 handleParseError(error);
             }
         });
-    },
+    },*/
 
     addNote : function (note) {
        /* var Notes = Parse.Object.extend(noteModel._parseClass);

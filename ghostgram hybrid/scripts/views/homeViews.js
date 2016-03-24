@@ -1110,7 +1110,6 @@ var signUpView = {
     doCreateAccount : function (e) {
         _preventDefault(e);
 
-        var user = new Parse.User();
         var username = $('#home-signup-username').val();
         var name = $('#home-signup-fullname').val();
         var password = $('#home-signup-password').val();

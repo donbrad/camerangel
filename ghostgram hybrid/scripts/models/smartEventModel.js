@@ -142,7 +142,7 @@ var smartEvent = {
     },
 
 
-    fetch : function () {
+   /* fetch : function () {
         var smartEvents = Parse.Object.extend(smartEvent._parseClass);
         var query = new Parse.Query(smartEvents);
 
@@ -163,7 +163,7 @@ var smartEvent = {
             }
         });
     },
-
+*/
     queryTerm: function (query) {
 
         if (query === undefined)

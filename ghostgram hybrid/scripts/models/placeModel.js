@@ -128,7 +128,7 @@ var placesModel = {
         return(new Object(placesModel._placeModel));
     },
 
-    fetch : function () {
+/*    fetch : function () {
         var PlaceModel = Parse.Object.extend(placesModel._parseClass);
         var query = new Parse.Query(PlaceModel);
         query.limit(1000);
@@ -209,7 +209,7 @@ var placesModel = {
                 handleParseError(error);
             }
         });
-    },
+    },*/
 
 
    updateDistance : function() {

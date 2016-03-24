@@ -55,6 +55,7 @@ var photoModel = {
         photoModel.currentOffer = null;
     },
 
+/*
 
     _fetchPhotos : function () {
         var ParsePhotoModel = Parse.Object.extend(photoModel._parseClass);
@@ -109,6 +110,7 @@ var photoModel = {
             }
         });
     },
+*/
 
     _filterEverlive : function (photo) {
         var elPhoto = photo;
@@ -136,7 +138,7 @@ var photoModel = {
     },
 
 
-    _fetchOffers : function () {
+/*    _fetchOffers : function () {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
         var queryOffer = new Parse.Query(ParsePhotoOffer);
         query.limit(1000);
@@ -164,7 +166,7 @@ var photoModel = {
     fetch: function () {
         photoModel._fetchPhotos();
         //photoModel._fetchOffers();
-    },
+    },*/
 
     isPhotoCached : function (photo) {
         var store = deviceModel.fileDirectory;
@@ -285,7 +287,7 @@ var photoModel = {
         return(photoModel.queryPhotos({ field: "senderUUID", operator: "eq", value: senderId }));
     },
 
-     getChannelOffers : function (channelUUID, callback) {
+    /* getChannelOffers : function (channelUUID, callback) {
         var ParsePhotoOffer = Parse.Object.extend("photoOffer");
         var queryOffer = new Parse.Query(ParsePhotoOffer);
 
@@ -369,7 +371,7 @@ var photoModel = {
             }
         });
     },
-
+*/
 
     upgradePhoto : function (photo) {
         // current trigger is no version field -- later we'll compare numbers
@@ -614,6 +616,7 @@ var photoModel = {
 
     },
 
+/*
 
     getPhotoOfferACL : function () {
         var acl = new Parse.ACL();
@@ -622,6 +625,7 @@ var photoModel = {
         acl.setWriteAccess(Parse.User.current().id, true);
        return(acl);
     },
+*/
 
     addPhotoOffer : function (photoId, channelUUID, thumbnailUrl, imageUrl, canCopy) {
 
@@ -690,7 +694,7 @@ var photoModel = {
 
     },
 
-    // Upload a device resolution photo to parse (update an outstanding offers)
+    /*// Upload a device resolution photo to parse (update an outstanding offers)
     uploadPhotoImage: function (photoId) {
         var photo = photoModel.findPhotoById(photoId);
 
@@ -723,7 +727,7 @@ var photoModel = {
 
         }
 
-    },
+    },*/
 
     addImageToPhotoOffer : function (photoId, image) {
         var offer = photoModel.findOfferByPhotoId(photoId);
@@ -801,7 +805,7 @@ var photoModel = {
         }
         photo.set('lat', lat);
         photo.set('lng', lng);
-        photo.set('geoPoint', new Parse.GeoPoint(parseFloat(lat), parseFloat(lng)));
+        photo.set('geoPoint', {longitude: parseFloat(lng), latitude: parseFloat(lat)});  // everlive format for geoPoint
 
         if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
             var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;

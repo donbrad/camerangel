@@ -166,16 +166,16 @@ var notificationModel = {
             null, true);
     },
 
-    parseFetch: function () {
+/*    parseFetch: function () {
         var NotificationModel = Parse.Object.extend("notifications");
         var query = new Parse.Query(NotificationModel);
-     /*   var NotificationCollection = Parse.Collection.extend({
+     /!*   var NotificationCollection = Parse.Collection.extend({
             model: NotificationModel
         });
 
         var notifications = new NotificationCollection();
 
-        notifications.fetch({*/
+        notifications.fetch({*!/
         query.find({
             success: function(collection) {
                 var userNotifications = [];
@@ -196,7 +196,7 @@ var notificationModel = {
                 handleParseError(error);
             }
         });
-    },
+    },*/
 
     localStorageFetch: function () {
         var userNotifications = window.localStorage.getItem('ggUserNotifications');
