@@ -1673,7 +1673,7 @@ var verifyPhoneModal = {
             return;
         }
 
-        if (userCode === sentCode) {
+        if (Number(userCode) === sentCode) {
                 mobileNotify("Your phone number is verified.  Thank You!");
                 var thisUser = userModel._user;
                 thisUser.set('phoneValidated', true);
