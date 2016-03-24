@@ -1435,7 +1435,7 @@ var signInView = {
 
         mobileNotify("Signing you in to ghostgrams....");
 
-        everlive.logIn(username, password , function (error, user) {
+        everlive.login(username, password , function (error, user) {
 
                 if (error !== null) {
                     mobileNotify ("Sign In error : " + error.message);
