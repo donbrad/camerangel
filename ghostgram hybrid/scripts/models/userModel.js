@@ -16,6 +16,7 @@ var userModel = {
     userName : '',
     identiconUrl : null,
     rememberUserName : false,
+    recoverPassword: null,
     key : null,
     userUUID: null,
     initialView : '#newuserhome',
@@ -128,6 +129,7 @@ var userModel = {
         userModel.device.model = device.model;
         userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
         userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
+       
         userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
         if (userModel.userUUID === undefined) {
             userModel.userUUID = null;
@@ -149,7 +151,7 @@ var userModel = {
                 userModel.initialView = '#home';
                 userModel.initCloudModels();
                 userModel.initPubNub();
-
+              
             } else {
                 if (userModel.hasAccount) {
                     mobileNotify("Please login to ghostgrams");
@@ -427,15 +429,26 @@ var userModel = {
         userModel.identiconUrl = canvas.toDataURL('image/png');
     },
 
+    _setRecoveryPassword : function () {
+        var aesPassword  = GibberishAES.enc(password, userModel.key);
+        window.localStorage.setItem('ggRecoveryPassword', aesPassword);
+    },
+    
+    _getRecoveryPassword : function () {
+        var encPassword = window.localStorage.setItem('ggRecoveryPassword');
+        var clearPassword = GibberishAES.dec(encPassword, userModel.key);
+
+        return(clearPassword);
+    },
+
+
     // user is valid parse User object
     generateNewPrivateKey : function () {
         // Generate Keys for the user.
         var RSAkey = cryptico.generateRSAKey(512);
         var publicKey = cryptico.publicKeyString(RSAkey);
         var privateKey = cryptico.privateKeyString(RSAkey);
-
-
-
+        
         userModel._RSAKey = RSAKey;
         userModel._publicKey = publicKey;
         userModel._privateKey = privateKey;

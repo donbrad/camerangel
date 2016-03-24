@@ -1021,19 +1021,13 @@ var signUpView = {
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
 
-    _getRecoverPassword : function () {
-        var encPassword = userModel._user.get('recoveryPassword');
-        var clearPassword = GibberishAES.dec(encPassword, userModel.key);
-
-        return(clearPassword);
-    },
 
 
     _createAccount : function (username, password, name, phone) {
         var userUUID = uuid.v4(); var user = userModel._user;
 
-        var aesPassword  = GibberishAES.enc(password, userModel.key);
-        window.localStorage.setItem('ggRecoveryPassword', aesPassword);
+        userModel._setRecoveryPassword(password);
+
         window.localStorage.setItem('ggUsername', username);
         window.localStorage.setItem('ggUserUUID', userUUID);
 
@@ -1118,6 +1112,7 @@ var signUpView = {
         everlive.updateUser();
         userModel.initCloudModels();
         userModel.initPubNub();
+        userStatus.update();
         APP.kendo.navigate('#home');
         userModel._user.bind('change', userModel.sync);
         mobileNotify('Welcome to ghostgrams!');
@@ -1452,11 +1447,16 @@ var signInView = {
 
         mobileNotify("Signing you in to ghostgrams....");
 
-        everlive.logIn(username,password , function (error, user) {
+        everlive.logIn(username, password , function (error, user) {
 
+                if (error !== null) {
+                    mobileNotify ("Sign In error : " + error.message);
+                    return;
+
+                }
                 window.localStorage.setItem('ggHasAccount', true);
-                window.localStorage.setItem('ggRecoveryPassword', password);
                 window.localStorage.setItem('ggUsername', username);
+                userModel._setRecoveryPassword(password);
 
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
@@ -1604,24 +1604,18 @@ var changePasswordView = {
             return;
         }
 
-        var user = Parse.User.current();
-        if (user) {
-            user.set("password",pass1);
-            user.save()
-                .then(
-                    function(user) {
-                        mobileNotify("Your password was changed");
-                       changePasswordView.closeModal();
+        everlive.changePassword(pass1, function (error, status){
+            if (error === null && status === true) {
+                mobileNotify("Your password was changed");
+                changePasswordView.closeModal();
 
-                        // Clear forms
-                        $("#newPassword1").val("");
-                    },
-                    function(error) {
-                        mobileNotify("Error updating password" + error);
-                    }
-                );
-        }
+                // Clear forms
+                $("#newPassword1").val("");
+            } else {
+                mobileNotify("Error updating password" + JSON.stringify(error));
+            }
 
+        });
 
     },
 

@@ -60,6 +60,20 @@ var everlive = {
             });
     },
 
+    changePassword : function (newPassword, callback) {
+        var username = userModel._user.get('Username');
+        var password = userModel._getRecoveryPassword();
+        APP.everlive.users.changePassword(username, password, newPassword, true, 
+            function (data) {
+                callback(null, true);
+            },
+            function (error) {
+               callback(error, false);
+            }
+        );
+    },
+
+
     updateUser : function () {
         var updateObj = userModel._user;
 
