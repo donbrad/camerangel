@@ -429,8 +429,9 @@ var userModel = {
         userModel.identiconUrl = canvas.toDataURL('image/png');
     },
 
-    _setRecoveryPassword : function () {
+    _setRecoveryPassword : function (password) {
         var aesPassword  = GibberishAES.enc(password, userModel.key);
+        userModel._user.set('recoveryPassword', aesPassword);
         window.localStorage.setItem('ggRecoveryPassword', aesPassword);
     },
     
@@ -521,15 +522,14 @@ var userModel = {
     },
 
     updatePrivateKey : function () {
-        var privateKey = userModel.parseUser.get('privateKey');
+        var privateKey = userModel._user.get('privateKey');
         if (privateKey === undefined ){
             return;
         }
 
         if (privateKey.charAt(0) === "{") {
             var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
-            userModel.parseUser.set('privateKey', newPrivateKey);
-            userModel.parseUser.save();
+            userModel._user.set('privateKey', newPrivateKey);
         }
     },
 

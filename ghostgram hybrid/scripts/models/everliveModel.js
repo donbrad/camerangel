@@ -76,6 +76,10 @@ var everlive = {
 
     updateUser : function () {
         var updateObj = userModel._user;
+        
+        if (updateObj.useIdenticon) {
+            updateObj.photo = null;     //Don't store the image on the cloud -- just create it when the user logs in.
+        }
 
         APP.everlive.Users.updateSingle(updateObj,
             function(data){
