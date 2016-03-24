@@ -1460,7 +1460,7 @@ var signInView = {
                 }
             
                 userModel._user.set('username', user.get('username'));
-                userModel._user.set('Username', user.get('username'));
+                userModel._user.set('Username', user.get('Username'));
                 userModel._user.set('DisplayName', user.get('DisplayName'));
                 userModel._user.set('name', user.get('name'));
                 userModel._user.set('recoveryPassword', user.get('recoveryPassword'));
