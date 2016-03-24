@@ -119,7 +119,7 @@ function _createBitlyUrl (url, callBack) {
 		}
 	});
 }
-
+/*
 function updateParseObject(objectName, idField, idFieldValue, newField, newFieldValue) {
 	var object = Parse.Object.extend(objectName);
 	var query = new Parse.Query(object);
@@ -190,7 +190,7 @@ function deleteParseObject(objectName, field, fieldValue) {
 			handleParseError(error);
 		}
 	});
-}
+}*/
 
 function _nullString (stringIn) {
 	if (stringIn === undefined) {
@@ -218,7 +218,7 @@ function getNetworkState() {
 	}
 }
 
-function handleParseError(err) {
+/*function handleParseError(err) {
 	switch (err.code) {
 		case Parse.Error.INVALID_SESSION_TOKEN:
 			mobileNotify("Security Check: Please Sign In");
@@ -230,7 +230,7 @@ function handleParseError(err) {
 			console.error(err.code + " : " + err.message);
 			break;
 	}
-}
+}*/
 
 function getDistanceInMiles(lat1, lon1, lat2, lon2) {
 
@@ -366,7 +366,7 @@ function getChannelDetails(channelUUID, callBack) {
 
 
 
-function getUserChannels(uuid, callBack) {
+/*function getUserChannels(uuid, callBack) {
 	Parse.Cloud.run('getUserChannels', {
 		uuid: uuid
 	}, {
@@ -595,7 +595,7 @@ function verifyPhone(e) {
 		}
 	});
 
-}
+}*/
 
 //Remove all formatting from  phone number and add 1 for 10 digit US numbers.
 function unformatPhoneNumber(phone) {

@@ -109,7 +109,7 @@ var channelModel = {
     },
 
 
-    fetch : function () {
+/*    fetch : function () {
         var Channel = Parse.Object.extend(channelModel._parseClass);
         var query = new Parse.Query(Channel);
         query.limit(1000);
@@ -211,7 +211,7 @@ var channelModel = {
         deviceModel.isParseSyncComplete();
 
 
-    },
+    },*/
 
     queryChannels : function (query) {
         if (query === undefined)
@@ -625,8 +625,8 @@ var channelModel = {
             return;
         }
 
-        var Channels = Parse.Object.extend(channelModel._parseClass);
-        var channel = new Channels();
+       /* var Channels = Parse.Object.extend(channelModel._parseClass);*/
+        var channel = new kendo.data.ObservableObject();
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);
         channel.set("name", contactName);
@@ -649,24 +649,11 @@ var channelModel = {
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel._user.userUUID, contactUUID]);
 
-        var channelObj = channel.toJSON();
-        channelModel.channelsDS.add(channelObj);
-        channelModel.channelsDS.sync();
 
-        channel.setACL(userModel.parseACL);
-        channel.save(null, {
-            success: function(channel) {
-                //ux.closeModalViewAddChannel();
-                mobileNotify('New Private Chat : ' + channel.get('name'));
-                notificationModel.addNewPrivateChatNotification(channel.get('channelUUID'), channel.get('name'));
-            },
-            error: function(channel, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                mobileNotify('Error creating Chat: ' + error.message);
-                handleParseError(error);
-            }
-        });
+        channelModel.channelsDS.add(channel);
+        channelModel.channelsDS.sync();
+        notificationModel.addNewPrivateChatNotification(channel.get('channelUUID'), channel.get('name'));
+
 
     },
 
@@ -680,9 +667,9 @@ var channelModel = {
             // Channel already exists
             return;
         }
-        var Channels = Parse.Object.extend(channelModel._parseClass);
 
-        channel = new Channels();
+
+        channel = new kendo.data.ObservableObject();
         channel.set('isPlace', false);
         channel.set('placeUUID', null);
         channel.set('placeName', null);
@@ -732,50 +719,12 @@ var channelModel = {
         channel.set("members", channelMembers);
         channel.set("invitedMembers", []);
 
-        var channelObj = channel.toJSON();
-        channelModel.channelsDS.add(channelObj);
+
+        channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
-
-        channel.setACL(userModel.parseACL);
-        channel.save(null, {
-            success: function(channel) {
-                //ux.closeModalViewAddChannel();
-                if (isDeleted === undefined)
-                    mobileNotify('Added  Chat : ' + channel.get('name'));
-                    notificationModel.addNewChatNotification(channel.get('channelUUID'), "Group Chat: " + channel.get('name'), channel.get('description'));
-            },
-            error: function(channel, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                mobileNotify('Error creating Chat: ' + error.message);
-                handleParseError(error);
-            }
-        });
+        notificationModel.addNewChatNotification(channel.get('channelUUID'), "Group Chat: " + channel.get('name'), channel.get('description'));
 
 
-       /* if (channelName !== undefined && channelName !== null) {
-            mobileNotify("Getting details for channel :" + channelName);
-        }
-
-       getChannelDetails(channelUUID, function (result) {
-            if (result.found) {
-                var newChannel = result.channel;
-                channelModel.addChannel(
-                    newChannel.name,
-                    newChannel.description,
-                    false,
-                    newChannel.durationDays,
-                    newChannel.channelUUID,
-                    newChannel.ownerId,
-                    newChannel.ownerName,
-                    newChannel.placeUUID,
-                    newChannel.placeName,
-                    newChannel.isPrivatePlace,
-                    members
-                );
-
-            }
-        });*/
     },
 
 
@@ -787,8 +736,7 @@ var channelModel = {
             return;
         }
 
-        var Channels = Parse.Object.extend(channelModel._parseClass);
-        var channel = new Channels();
+        var channel = new kendo.data.ObservableObject();
 
         /* var ChannelMap = Parse.Object.extend('channelmap');
          var channelMap = new ChannelMap();*/
@@ -847,34 +795,20 @@ var channelModel = {
         channel.set("members", [ownerUUID]);
         channel.set("invitedMembers", []);
 
-        var channelObj = channel.toJSON();
-        channelModel.channelsDS.add(channelObj);
+
+        channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
         //currentChannelModel.currentChannel = channelModel.findChannelModel(channelUUID);
+        notificationModel.addNewChatNotification(channel.get('channelUUID'), "Place Chat: " + channel.get('name'), channel.get('description'));
 
-        channel.setACL(userModel.parseACL);
-        channel.save(null, {
-            success: function(channel) {
-                // Execute any logic that should take place after the object is saved.
-                mobileNotify('Added Place Chat : ' + channel.get('name'));
-                notificationModel.addNewChatNotification(channel.get('channelUUID'), "Place Chat: " + channel.get('name'), channel.get('description'));
-
-                APP.kendo.navigate('#editChannel?channel=' + channelUUID);
-
-            },
-            error: function(channel, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                mobileNotify('Error creating Place Chat: ' + error.message);
-                handleParseError(error);
-            }
-        });
+        APP.kendo.navigate('#editChannel?channel=' + channelUUID);
+        
     },
 
     // Add group channel for owner...
     addChannel : function (channelName, channelDescription) {
-        var Channels = Parse.Object.extend(channelModel._parseClass);
-        var channel = new Channels();
+    
+        var channel = new kendo.data.ObservableObject();
 
        /* var ChannelMap = Parse.Object.extend('channelmap');
         var channelMap = new ChannelMap();*/
@@ -930,26 +864,14 @@ var channelModel = {
         channel.set("members", [ownerUUID]);
         channel.set("invitedMembers", []);
 
-        var channelObj = channel.toJSON();
-        channelModel.channelsDS.add(channelObj);
+        
+        channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+        mobileNotify('Added Chat : ' + channel.get('name'));
+        APP.kendo.navigate('#editChannel?channel=' + channelUUID);
+
         //currentChannelModel.currentChannel = channelModel.findChannelModel(channelUUID);
-
-        channel.setACL(userModel.parseACL);
-        channel.save(null, {
-            success: function(channel) {
-                // Execute any logic that should take place after the object is saved.
-                mobileNotify('Added Chat : ' + channel.get('name'));
-                APP.kendo.navigate('#editChannel?channel=' + channelUUID);
-
-            },
-            error: function(channel, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                mobileNotify('Error creating Chat: ' + error.message);
-                handleParseError(error);
-            }
-        });
+        
     },
 
     deletePrivateChannel : function (channelUUID) {
@@ -1003,7 +925,7 @@ var channelModel = {
                 if (window.navigator.simulator === undefined)
                     serverPush.unprovisionGroupChannel(channelUUID);
                 dataSource.remove(channel);
-                deleteParseObject("channels", 'channelUUID', channelUUID);
+                //deleteParseObject("channels", 'channelUUID', channelUUID);
                 //mobileNotify("Removed channel : " + channel.get('name'));
             } else {
 

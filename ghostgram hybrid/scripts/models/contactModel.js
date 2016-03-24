@@ -140,7 +140,7 @@ var contactModel = {
 
     },
 
-
+/*
     fetch : function () {
 
         var parseContactModel = Parse.Object.extend(contactModel._parseClass);
@@ -167,7 +167,7 @@ var contactModel = {
                     if (model.get('groups') === undefined){
                         model.set('groups', []);
                     }
-                   /* var dirty = false;
+                   /!* var dirty = false;
 
 
                     var identicon = model.get('identicon');
@@ -244,7 +244,7 @@ var contactModel = {
                     }
 
                     if (dirty)
-                        model.save();*/
+                        model.save();*!/
                     var data = model.toJSON();
 
                     models.push(data);
@@ -289,7 +289,7 @@ var contactModel = {
                 handleParseError(error);
             }
         });
-    },
+    },*/
 
     setCurrentContact: function (contact) {
         if (contact !== undefined && contact !== null) {
@@ -716,7 +716,7 @@ var contactModel = {
 
     },
 
-    getContactStatusObject : function(contactUUID, callback) {
+   /* getContactStatusObject : function(contactUUID, callback) {
         var UserStatusModel = Parse.Object.extend("userStatus");
         var query = new Parse.Query(UserStatusModel);
         query.equalTo("userUUID", contactUUID);
@@ -734,7 +734,7 @@ var contactModel = {
                 callback(null);
             }
         });
-    },
+    },*/
 
     // force defined and === true overrides the timer
     updateContactListStatus : function (force) {
@@ -748,8 +748,8 @@ var contactModel = {
             if (contact.lastUpdate === undefined || contact.lastUpdate > time + 900) {
                 var contactId = contact.contactUUID;
                 if (contactId !== undefined && contactId !== null) {
-                    contactModel.getContactStatusObject(contactId, function (user) {
-                        if (user !== undefined && user !== null) {
+                    userStatus.getStatus(contactId, function (error, user) {
+                        if (error == null && user !== null) {
                             var userId = user.get('userUUID');
                             var contact = contactModel.findContactList(userId);
                             contact.set('statusMessage', user.get('statusMessage'));

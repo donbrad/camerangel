@@ -21,11 +21,13 @@ var userModel = {
     initialView : '#newuserhome',
 
     _user: new kendo.data.ObservableObject({
-        _version: 1,
+        version: 1,
         Id: null,   // everlive id -- existance and case critical for update to function
         username: '',
         name: '',
         userUUID: '',
+        Email: null,
+        Username: null,
         email: '',
         phone: '',
         alias: '',
@@ -656,7 +658,7 @@ var userStatus = {
 
                 },
                 function(error){
-                    mobileNotify("Member Directory Init error : " + JSON.stringify(error));
+                    mobileNotify("User Status Init error : " + JSON.stringify(error));
                 });
 
         /*userStatus._statusObj.on('change', function () {
@@ -665,7 +667,25 @@ var userStatus = {
 
     },
 
+    getStatus : function (uuid, callback) {
+        var filter = new Everlive.Query();
+        filter.where().eq('userUUID', uuid);
 
+        var data = APP.everlive.data(userStatus._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        userStatus.create();
+                    } else {
+                        var member = data.result[0];
+                        callback(null, member);
+                    }
+
+                },
+                function(error){
+                    callback(error, null);
+                });
+    },
 
     syncField : function (field) {
 
