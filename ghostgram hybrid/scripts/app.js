@@ -120,16 +120,7 @@
 		//contactModel.importDeviceContacts();
 
 
-		APP.kendo = new kendo.mobile.Application(document.body, {
-
-			// comment out the following line to get a UI which matches the look
-			// and feel of the operating system
-			skin: 'material',
-
-			// the application needs to know which view to load first
-			initial: userModel.initialView
-		});
-
+	
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator !== undefined) {
 			deviceModel.appVersion = "emulator: 0.0.10";

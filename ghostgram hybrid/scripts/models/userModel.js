@@ -154,6 +154,7 @@ var userModel = {
                 userModel.initPubNub();
               
             } else {
+
                 if (userModel.hasAccount) {
                     mobileNotify("Please login to ghostgrams");
                     userModel.initialView = '#usersignin';
@@ -161,6 +162,16 @@ var userModel = {
                     userModel.initialView = '#newuserhome';
                 }
             }
+            
+            APP.kendo = new kendo.mobile.Application(document.body, {
+
+                // comment out the following line to get a UI which matches the look
+                // and feel of the operating system
+                skin: 'material',
+
+                // the application needs to know which view to load first
+                initial: userModel.initialView
+            });
 
         });
 
