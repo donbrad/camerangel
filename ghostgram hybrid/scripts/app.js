@@ -97,7 +97,8 @@
 		
 		//Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
-
+		userModel.init();
+		
 		everlive.init();
 
 	/*	if (!deviceModel.state.introFetched) {
@@ -108,7 +109,7 @@
 			notificationModel.localStorageFetch();
 		/*}*/
 
-		userModel.init();
+
 
 		userModel.initCloud();
 

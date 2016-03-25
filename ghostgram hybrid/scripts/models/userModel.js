@@ -80,10 +80,10 @@ var userModel = {
         
         if (hasAccount !== undefined && hasAccount === true) {
             userModel.hasAccount = true;
-            userModel.initialView = '#usersignin';
+            //userModel.initialView = '#usersignin';
         } else {
             userModel.hasAccount = false;
-            userModel.initialView = '#newuserhome';
+            //userModel.initialView = '#newuserhome';
         }
 
         userModel._user.bind("change", function(e) {
