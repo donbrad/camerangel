@@ -12,6 +12,7 @@ var everlive = {
     _tokenType: null,
     _id : null,
     _signedIn : false,
+    _isAuthenticated : false,
     _status: null,
     _user : null,
 
@@ -39,10 +40,10 @@ var everlive = {
                 //key: 'intelligram'
             },
             authentication: {
-                persist: true,
+                persist: true/*,
                 onAuthenticationRequired: function() {
 
-                }
+                }*/
             }
         });
 
@@ -51,9 +52,18 @@ var everlive = {
 
         APP.everlive.on('syncEnd', everlive.syncEnd);
 
-        everlive.checkAuthStatus(function (error, data) {
+        everlive.checkAuthStatus(function (error, status) {
             if (error === null) {
-                everlive._status = data;
+                if (!status) {
+                    if (userModel.hasAccount) {
+                        userModel.initialView = '#usersignin';
+                    } else {
+                        userModel.initialView = '#newuserhome';
+                    }
+                } else {
+                    userModel.initialView = '#home';
+                }
+
             }
         })
 
@@ -62,7 +72,14 @@ var everlive = {
     checkAuthStatus : function (callback) {
         APP.everlive.authentication.getAuthenticationStatus(
             function (data) {
-                callback(null, data);
+                if (data.status === "unauthenticated") {
+                    everlive._status = data.status;
+                    everlive._isAuthenticated = false;
+                } else {
+                    everlive._status = data.status;
+                    everlive._isAuthenticated = true;
+                }
+                callback(null, everlive._isAuthenticated);
             }, 
             function (error) {
                 callback(error, null);
