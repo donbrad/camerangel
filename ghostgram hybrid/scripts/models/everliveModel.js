@@ -202,14 +202,15 @@ var everlive = {
 
             userModel._user.set('emailValidated', user.get('Verified'));
 
+            userModel.initKendo();
             everlive.updateUser();
             userModel.initCloudModels();
             userModel.initPubNub();
             userStatus.update();
-            APP.kendo.navigate('#home');
-            userModel._user.bind('change', userModel.sync);
 
             APP.kendo.navigate('#home');
+            userModel._user.bind('change', userModel.sync);
+            
 
             if (phoneValidated) {
                 deviceModel.setAppState('phoneValidated', true);

@@ -19,6 +19,7 @@ var userModel = {
     recoverPassword: null,
     key : null,
     userUUID: null,
+    kendoInit : false,
     initialView : '#newuserhome',
 
     _user: new kendo.data.ObservableObject({
@@ -120,6 +121,11 @@ var userModel = {
     },
 
     initKendo : function () {
+        if (userModel.kendoInit)
+            return;
+        
+        userModel.kendoInit = true;
+        
         APP.kendo = new kendo.mobile.Application(document.body, {
 
             // comment out the following line to get a UI which matches the look
@@ -162,7 +168,7 @@ var userModel = {
             if (error === null && data !== null) {
                 // No error and valid auth data
                 userModel.initialView = '#home';
-                userModel.initKendo();
+               
                 userModel.initCloudModels();
                 userModel.initPubNub();
                 everlive.loadUserData();
