@@ -12,7 +12,58 @@ var everlive = {
     _tokenType: null,
     _id : null,
     _signedIn : false,
+    _status: null,
     _user : null,
+
+    init: function () {
+        APP.everlive = new Everlive({
+            appId: 's2fo2sasaubcx7qe',
+            scheme: 'https',
+            offline: true,
+            offlineStorage: {
+                storage: {
+                    provider: provider
+                }/*,
+                 conflicts: {
+                 strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
+                 }*/
+            },
+            encryption: {
+                provider: Everlive.Constants.EncryptionProvider.Default
+                //key: 'intelligram'
+            },
+            authentication: {
+                persist: true,
+                onAuthenticationRequired: function() {
+
+                }
+            }
+        });
+
+        // Wire up the everlive sync monitors
+        APP.everlive.on('syncStart', everlive.syncStart);
+
+        APP.everlive.on('syncEnd', everlive.syncEnd);
+
+        everlive.checkAuthStatus(function (error, data) {
+            if (error === null) {
+                everlive._status = data;
+            }
+        })
+
+    },
+
+    checkAuthStatus : function (callback) {
+        APP.everlive.authentication.getAuthenticationStatus(
+            function (data) {
+                callback(null, data);
+            }, 
+            function (error) {
+                callback(error, null);
+                
+            });
+    },
+    
 
     createAccount: function (username, name, password, callback) {
         var attrs = {

@@ -103,36 +103,7 @@
 		//Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
 
-		APP.everlive = new Everlive({
-			appId: 's2fo2sasaubcx7qe',
-			scheme: 'https',
-			offline: true,
-			offlineStorage: {
-				storage: {
-					provider: provider
-				}/*,
-				conflicts: {
-					strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
-				}*/
-			},
-			encryption: {
-				provider: Everlive.Constants.EncryptionProvider.Default
-				//key: 'intelligram'
-			},
-			authentication: {
-				persist: true,
-				onAuthenticationRequired: function() {
-					APP.kendo.navigate('#usersignin');
-				}
-			}
-		});
-
-
-		// Wire up the everlive sync monitors
-		APP.everlive.on('syncStart', everlive.syncStart);
-
-		APP.everlive.on('syncEnd', everlive.syncEnd);
-
+		everlive.init();
 
 	/*	if (!deviceModel.state.introFetched) {
 

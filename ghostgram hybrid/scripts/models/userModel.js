@@ -24,7 +24,7 @@ var userModel = {
     _user: new kendo.data.ObservableObject({
         version: 1,
         Id: null,   // everlive id -- existance and case critical for update to function
-        username: '',
+        username: null,
         name: '',
         userUUID: '',
         Email: null,
@@ -77,6 +77,7 @@ var userModel = {
 
     init: function () {
         var hasAccount = window.localStorage.getItem('ggHasAccount');
+        
         if (hasAccount !== undefined && hasAccount === true) {
             userModel.hasAccount = true;
             userModel.initialView = '#usersignin';
