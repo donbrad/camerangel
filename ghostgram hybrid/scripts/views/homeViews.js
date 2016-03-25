@@ -1459,13 +1459,13 @@ var signInView = {
                     userModel.updatePrivateKey();
                 }
             
-                userModel._user.set('username', user.get('username'));
+                userModel._user.set('username', user.get('Username'));
                 userModel._user.set('Username', user.get('Username'));
                 userModel._user.set('DisplayName', user.get('DisplayName'));
                 userModel._user.set('name', user.get('name'));
                 userModel._user.set('recoveryPassword', user.get('recoveryPassword'));
                 userModel._user.set('Email', user.get('Email'));
-                userModel._user.set('email', user.get('email'));
+                userModel._user.set('email', user.get('Email'));
                 userModel._user.set('phone', user.get('phone'));
                 userModel._user.set('alias', user.get('alias'));
                 userModel._user.set('address', user.get('address'));
@@ -1507,40 +1507,24 @@ var signInView = {
                     userModel._user.photo =  userModel.identiconUrl;
                 }
 
-                var phoneValidated = user.get('phoneValidated');
-                userModel._user.set('phoneValidated', phoneValidated);
+
+                userModel._user.set('phoneValidated',user.get('phoneValidated'));
+                userModel._user.set('addressValidated',user.get('addressValidated'));
                 userModel._user.set('availImgUrl', 'images/status-away.svg');
                 var isAvailable  = userModel._user.get('isAvailable');
                 if (isAvailable) {
                     userModel._user.set('availImgUrl', 'images/status-available.svg');
                 }
-                userModel._user.set('emailValidated', user.get('emailValidated'));
-               
-                userModel._user.bind('change', userModel.sync);
 
 
-                everlive.login(username,password, function (error, data){
-                    if (error !== null) {
-                        mobileNotify(JSON.stringify(error));
+                userModel._user.set('emailValidated', user.get('Verified'));
 
-                        everlive.createAccount(username, name, password, function (error1, data1) {
-                            if (error1 !== null) {
-                                mobileNotify(JSON.stringify(error1));
-                            } else {
-                                mobileNotify("Everlive account created for " + username);
-                                //userModel._user.set('everliveToken', everlive._token);
-                            }
-
-                        });
-                    } else {
-                        mobileNotify("Everlive account confirmed -- migration enabled");
-                       // userModel._user.set('everliveToken', everlive._token);
-                    }
-                });
-
-
+                everlive.updateUser();
+                userModel.initCloudModels();
                 userModel.initPubNub();
-               // userModel.fetchParseData();
+                userStatus.update();
+                APP.kendo.navigate('#home');
+                userModel._user.bind('change', userModel.sync);
 
                 APP.kendo.navigate('#home');
 
