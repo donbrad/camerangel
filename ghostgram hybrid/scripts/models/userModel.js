@@ -155,10 +155,11 @@ var userModel = {
             }
 
         }
-
+        userModel.initialView = '#newuserhome';
+        
         // Check the status of kendo auth
         everlive.currentUser(function (error, data) {
-            if (error !== null && data !== null) {
+            if (error === null && data !== null) {
                 // No error and valid auth data
                 userModel.initialView = '#home';
                 userModel.initKendo();
