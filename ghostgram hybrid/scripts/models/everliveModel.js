@@ -117,6 +117,7 @@ var everlive = {
                 everlive._id = data.result.principal_id;
                 userModel._user.Id = data.result.principal_id;
                 everlive._signedIn = true;
+                callback(null, userModel._user.Id);
             },
             function(error){
                 callback(error, null);
