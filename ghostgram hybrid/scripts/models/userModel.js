@@ -72,7 +72,6 @@ var userModel = {
         }
 
 
-
     },
 
     init: function () {
@@ -86,9 +85,9 @@ var userModel = {
             //userModel.initialView = '#newuserhome';
         }
 
-        userModel._user.bind("change", function(e) {
+       /* userModel._user.bind("change", function(e) {
            
-        });
+        });*/
     },
 
     initCloudModels : function () {
@@ -120,6 +119,17 @@ var userModel = {
 
     },
 
+    initKendo : function () {
+        APP.kendo = new kendo.mobile.Application(document.body, {
+
+            // comment out the following line to get a UI which matches the look
+            // and feel of the operating system
+            skin: 'material',
+
+            // the application needs to know which view to load first
+            initial: userModel.initialView
+        });
+    },
 
     initCloud: function () {
     
@@ -146,32 +156,29 @@ var userModel = {
 
         }
 
+        // Check the status of kendo auth
         everlive.currentUser(function (error, data) {
             if (error !== null && data !== null) {
-                // No error and data
+                // No error and valid auth data
                 userModel.initialView = '#home';
+                userModel.initKendo();
                 userModel.initCloudModels();
                 userModel.initPubNub();
               
             } else {
-
+                if (error.code !== 301) { // 301 = not auth credentials, could be new user or member not signed it
+                    mobileNotify("Kendo Auth Error " + JSON.stringify(error));
+                }
                 if (userModel.hasAccount) {
+                    //
                     mobileNotify("Please login to ghostgrams");
                     userModel.initialView = '#usersignin';
                 } else {
                     userModel.initialView = '#newuserhome';
                 }
+                userModel.initKendo();
             }
-            
-            APP.kendo = new kendo.mobile.Application(document.body, {
 
-                // comment out the following line to get a UI which matches the look
-                // and feel of the operating system
-                skin: 'material',
-
-                // the application needs to know which view to load first
-                initial: userModel.initialView
-            });
 
         });
 
