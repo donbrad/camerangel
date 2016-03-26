@@ -192,9 +192,11 @@ var everlive = {
             updateObj.photo = null;     //Don't store the image on the cloud -- just create it when the user logs in.
         }
 
+        updateObj.privateKey = GibberishAES.enc(updateObj.privateKey, userModel.key);
         APP.everlive.Users.updateSingle(updateObj,
             function(data){
                 var result = data.result;
+                updateObj.privateKey = GibberishAES.dec(updateObj.privateKey, userModel.key);
             },
             function(error){
                 mobileNotify("User Update Error : " + JSON.stringify(error));
