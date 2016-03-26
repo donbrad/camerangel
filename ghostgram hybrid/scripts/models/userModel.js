@@ -628,7 +628,9 @@ var userStatus = {
     update : function () {
         var status = userStatus._statusObj;
 
-
+        if (status.Id === undefined || status.Id === null) {
+            status.Id = everlive._id;
+        }
         status.set('userUUID', userModel._user.userUUID);
         status.set('isAvailable', userModel._user.isAvailable);
         status.set('isVisible', userModel._user.isVisible);
