@@ -51,7 +51,7 @@ var everlive = {
         APP.everlive.on('syncStart', everlive.syncStart);
 
         APP.everlive.on('syncEnd', everlive.syncEnd);
-/*
+
         everlive.checkAuthStatus(function (error, status) {
             if (error === null) {
                 if (!status) {
@@ -65,7 +65,7 @@ var everlive = {
                 }
 
             }
-        })*/
+        });
 
     },
 
