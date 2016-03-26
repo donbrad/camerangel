@@ -441,6 +441,78 @@ var userModel = {
 */
     },
 
+    update_user : function (user) {
+        userModel.setUserUUID(user.userUUID);
+
+        var publicKey = user.publicKey;
+        var privateKey = user.privateKey;
+        if (publicKey === null || privateKey === null) {
+            userModel.generateNewPrivateKey();
+        }
+
+        userModel._user.set('username', user.Username);
+        userModel._user.set('Username', user.Username);
+        userModel._user.set('DisplayName', user.DisplayName);
+        userModel._user.set('name', user.name);
+        userModel._user.set('recoveryPassword', user.recoveryPassword);
+        userModel._user.set('Email', user.Email);
+        userModel._user.set('email', user.email);
+        userModel._user.set('phone', user.phone);
+        userModel._user.set('alias', user.alias);
+        userModel._user.set('address', user.address);
+        userModel._user.set('aliasPhoto', user.aliasPhoto);
+        userModel._user.set('statusMessage', user.statusMessage);
+        userModel._user.set('isAvailable', user.isAvailable);
+        userModel._user.set('isCheckedIn', user.isCheckedIn);
+        userModel._user.set('isVisible', user.isVisible);
+        userModel._user.set('isRetina', user.isRetina);
+        userModel._user.set('isWIFIOnly', user.isWIFIOnly);
+        userModel._user.set('isPhotoStored', user.isPhotoStored);
+        userModel._user.set('saveToPhotoAlbum', user.saveToPhotoAlbum);
+        userModel._user.set('currentPlace', user.currentPlace);
+        userModel._user.set('googlePlaceId', user.googlePlaceId);
+        userModel._user.set('lat', user.lat);
+        userModel._user.set('lng', user.lng);
+        userModel._user.set('currentPlaceUUID', user.currentPlaceUUID);
+        userModel._user.set('photo', user.photo);
+        userModel._user.set('aliasPublic', user.aliasPublic);
+        userModel._user.set('userUUID', user.userUUID);
+        userModel._user.set('useIdenticon', user.useIdenticon);
+        userModel._user.set('useLargeView', user.useLargeView);
+        userModel._user.set('rememberUsername', user.rememberUsername);
+
+        userModel._user.set('addressList', user.addressList);
+        userModel._user.set('emailList', user.emailList);
+        userModel._user.set('phoneList', user.phoneList);
+        userModel._user.set('homeIntro', user.homeIntro);
+
+
+        userModel._user.set('publicKey', publicKey);
+        userModel._user.set('privateKey', privateKey);
+        userModel.decryptPrivateKey();
+
+        userModel.createIdenticon(user.userUUID);
+
+        var photo = user.photo;
+        if (photo === undefined || photo === null) {
+            userModel._user.photo =  userModel.identiconUrl;
+        }
+
+
+        var phoneValidated = user.phoneValidated;
+        userModel._user.set('phoneValidated',phoneValidated);
+        userModel._user.set('addressValidated',user.addressValidated);
+        userModel._user.set('availImgUrl', 'images/status-away.svg');
+        var isAvailable  = userModel._user.get('isAvailable');
+        if (isAvailable) {
+            userModel._user.set('availImgUrl', 'images/status-available.svg');
+        }
+
+
+        userModel._user.set('emailValidated', user.Verified);
+
+    },
+    
 
     deleteAccount: function () {
 
@@ -481,8 +553,6 @@ var userModel = {
         var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
         userModel._user.set('privateKey',newPrivateKey);
         userModel._user.set('publicKey',publicKey);
-
-
 
     },
 
