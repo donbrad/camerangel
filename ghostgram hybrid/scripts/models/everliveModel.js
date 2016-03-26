@@ -280,15 +280,15 @@ var everlive = {
 
 
     currentUser : function (callback) {
-        APP.everlive.Users.currentUser()
-            .then(function (data) {
+        APP.everlive.Users.currentUser(
+            function (data) {
                     everlive._user = data.result;
-                    callback(null, data.result)
-                },
-                function(error){
+                    callback(null, data.result);
+            },
+            function(error){
                     callback(error, null);
 
-                });
+            });
     },
     
 
