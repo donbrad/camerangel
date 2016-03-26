@@ -133,7 +133,7 @@ var userModel = {
             skin: 'material',
 
             // the application needs to know which view to load first
-            initial: userModel.initialView
+            initial: '#startUpView'
         });
     },
 
@@ -183,7 +183,7 @@ var userModel = {
                 } else {
                     userModel.initialView = '#newuserhome';
                 }
-                userModel.initKendo();
+
             }
 
 

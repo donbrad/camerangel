@@ -201,8 +201,7 @@ var everlive = {
 
 
             userModel._user.set('emailValidated', user.get('Verified'));
-
-            userModel.initKendo();
+            
             everlive.updateUser();
             userModel.initCloudModels();
             userModel.initPubNub();
