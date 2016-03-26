@@ -251,6 +251,7 @@ var everlive = {
         if (updateObj.Id === undefined) {
             updateObj.Id = everlive._id;
         }
+        
         if (updateObj.useIdenticon) {
             updateObj.photo = null;     //Don't store the image on the cloud -- just create it when the user logs in.
         }
