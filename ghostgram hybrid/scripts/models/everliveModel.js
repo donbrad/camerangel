@@ -131,68 +131,67 @@ var everlive = {
                 return;
             }
 
-            userModel.setUserUUID(user.get('userUUID'));
+            userModel.setUserUUID(user.userUUID);
 
-            var publicKey = user.get('publicKey');
-            var privateKey = user.get('privateKey');
+            var publicKey = user.publicKey;
+            var privateKey = user.privateKey;
             if (publicKey === undefined || privateKey === undefined) {
                 userModel.generateNewPrivateKey();
             } else {
                 userModel.updatePrivateKey();
             }
 
-            userModel._user.set('username', user.get('Username'));
-            userModel._user.set('Username', user.get('Username'));
-            userModel._user.set('DisplayName', user.get('DisplayName'));
-            userModel._user.set('name', user.get('name'));
-            userModel._user.set('recoveryPassword', user.get('recoveryPassword'));
-            userModel._user.set('Email', user.get('Email'));
-            userModel._user.set('email', user.get('Email'));
-            userModel._user.set('phone', user.get('phone'));
-            userModel._user.set('alias', user.get('alias'));
-            userModel._user.set('address', user.get('address'));
-            userModel._user.set('aliasPhoto', user.get('aliasPhoto'));
-            userModel._user.set('statusMessage', user.get('statusMessage'));
-            userModel._user.set('isAvailable', user.get('isAvailable'));
-            userModel._user.set('isCheckedIn', user.get('isCheckedIn'));
-            userModel._user.set('isVisible', user.get('isVisible'));
-            userModel._user.set('isRetina', user.get('isRetina'));
-            userModel._user.set('isWIFIOnly', user.get('isWIFIOnly'));
-            userModel._user.set('isPhotoStored', user.get('isPhotoStored'));
-            userModel._user.set('saveToPhotoAlbum', user.get('saveToPhotoAlbum'));
-            userModel._user.set('currentPlace', user.get('currentPlace'));
-            userModel._user.set('googlePlaceId', user.get('googlePlaceId'));
-            userModel._user.set('lat', user.get('lat'));
-            userModel._user.set('lng', user.get('lng'));
-            userModel._user.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-            userModel._user.set('photo', user.get('photo'));
-            userModel._user.set('aliasPublic', user.get('aliasPublic'));
-            userModel._user.set('userUUID', user.get('userUUID'));
-            userModel._user.set('useIdenticon', user.get('useIdenticon'));
-            userModel._user.set('useLargeView', user.get('useLargeView'));
-            userModel._user.set('rememberUsername', user.get('rememberUsername'));
+            userModel._user.set('username', user.Username);
+            userModel._user.set('Username', user.Username);
+            userModel._user.set('DisplayName', user.DisplayName);
+            userModel._user.set('name', user.name);
+            userModel._user.set('recoveryPassword', user.recoveryPassword);
+            userModel._user.set('Email', user.Email);
+            userModel._user.set('email', user.email);
+            userModel._user.set('phone', user.phone);
+            userModel._user.set('alias', user.alias);
+            userModel._user.set('address', user.address);
+            userModel._user.set('aliasPhoto', user.aliasPhoto);
+            userModel._user.set('statusMessage', user.statusMessage);
+            userModel._user.set('isAvailable', user.isAvailable);
+            userModel._user.set('isCheckedIn', user.isCheckedIn);
+            userModel._user.set('isVisible', user.isVisible);
+            userModel._user.set('isRetina', user.isRetina);
+            userModel._user.set('isWIFIOnly', user.isWIFIOnly);
+            userModel._user.set('isPhotoStored', user.isPhotoStored);
+            userModel._user.set('saveToPhotoAlbum', user.saveToPhotoAlbum);
+            userModel._user.set('currentPlace', user.currentPlace);
+            userModel._user.set('googlePlaceId', user.googlePlaceId);
+            userModel._user.set('lat', user.lat);
+            userModel._user.set('lng', user.lng);
+            userModel._user.set('currentPlaceUUID', user.currentPlaceUUID);
+            userModel._user.set('photo', user.photo);
+            userModel._user.set('aliasPublic', user.aliasPublic);
+            userModel._user.set('userUUID', user.userUUID);
+            userModel._user.set('useIdenticon', user.useIdenticon);
+            userModel._user.set('useLargeView', user.useLargeView);
+            userModel._user.set('rememberUsername', user.rememberUsername);
 
-            userModel._user.set('addressList', user.get('addressList'));
-            userModel._user.set('emailList', user.get('emailList'));
-            userModel._user.set('phoneList', user.get('phoneList'));
-            userModel._user.set('homeIntro', user.get('archiveIntro'));
-            userModel._user.set('homeIntro', user.get('homeIntro'));
+            userModel._user.set('addressList', user.addressList);
+            userModel._user.set('emailList', user.emailList);
+            userModel._user.set('phoneList', user.phoneList);
+            userModel._user.set('homeIntro', user.homeIntro);
 
 
             userModel._user.set('publicKey', publicKey);
             userModel.decryptPrivateKey();
             //		userModel._user.set('privateKey', privateKey);
-            userModel.createIdenticon(user.get('userUUID'));
+            userModel.createIdenticon(user.userUUID);
 
-            var photo = user.get('photo');
+            var photo = user.photo;
             if (photo === undefined || photo === null) {
                 userModel._user.photo =  userModel.identiconUrl;
             }
 
 
-            var phoneValidated = user.get('phoneValidated');
+            var phoneValidated = user.phoneValidated;
             userModel._user.set('phoneValidated',phoneValidated);
-            userModel._user.set('addressValidated',user.get('addressValidated'));
+            userModel._user.set('addressValidated',user.addressValidated);
             userModel._user.set('availImgUrl', 'images/status-away.svg');
             var isAvailable  = userModel._user.get('isAvailable');
             if (isAvailable) {
@@ -200,7 +199,7 @@ var everlive = {
             }
 
 
-            userModel._user.set('emailValidated', user.get('Verified'));
+            userModel._user.set('emailValidated', user.Verified);
             
             everlive.updateUser();
             userModel.initCloudModels();
