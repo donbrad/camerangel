@@ -168,8 +168,8 @@ var userModel = {
                 if (data !== null) {
                     everlive.loadUserData();
                 } else {
+                    // no error and no data -- user isnt signed in
                     if (userModel.hasAccount) {
-
                         mobileNotify("Please login to ghostgrams");
                         APP.kendo.navigate('#usersignin');
                     } else {
@@ -282,7 +282,7 @@ var userModel = {
     },
     
     _getRecoveryPassword : function () {
-        var encPassword = window.localStorage.setItem('ggRecoveryPassword');
+        var encPassword = window.localStorage.getItem('ggRecoveryPassword');
         var clearPassword = GibberishAES.dec(encPassword, userModel.key);
 
         return(clearPassword);
@@ -494,6 +494,7 @@ var userStatus = {
     _ggClass : 'userStatus',
     _version : 1,
     _statusObj : new kendo.data.ObservableObject(),
+    _status : null,
     _id : null,
 
 
@@ -507,9 +508,9 @@ var userStatus = {
                     if (data.count === 0) {
                         userStatus.create();
                     } else {
-                        var member = data.result[0];
-                        userStatus._id = member.Id;
-                        userStatus._statusObj.Id = member.Id;
+                        userStatus._status = data.result[0];
+                        window.localStorage.setItem('ggUserStatus', JSON.stringify(userStatus._status));
+
                     }
 
                 },
@@ -534,6 +535,8 @@ var userStatus = {
                         userStatus.create();
                     } else {
                         var member = data.result[0];
+                        userStatus._status = member;
+                        window.localStorage.setItem('ggUserStatus', JSON.stringify(userStatus._status));
                         callback(null, member);
                     }
 
@@ -577,12 +580,11 @@ var userStatus = {
     create : function () {
         var data = APP.everlive.data(userStatus._ggClass);
 
-
+        userStatus._statusObj.Id  = everlive._id;
 
         data.create(userStatus._statusObj,
             function(data){
-                userStatus._id = data.result.Id;
-                userStatus._statusObj.Id  = data.result.Id;
+
                 userStatus.update();
                 //userStatus.updateEverlive();
             },
