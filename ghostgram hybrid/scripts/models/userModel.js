@@ -86,7 +86,7 @@ var userModel = {
             //userModel.initialView = '#newuserhome';
         }
 
-      
+        userModel.initKendo();
     },
 
     initCloudModels : function () {
