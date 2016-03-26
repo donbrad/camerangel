@@ -165,7 +165,7 @@ var userModel = {
         everlive.currentUser(function (error, data) {
             if (error === null && data !== null) {
                 // No error and valid auth data
-                APP.kendo.navigate('#home');
+                //APP.kendo.navigate('#home');
                 
                 everlive.loadUserData();
               
