@@ -135,10 +135,8 @@ var everlive = {
 
             var publicKey = user.publicKey;
             var privateKey = user.privateKey;
-            if (publicKey === undefined || privateKey === undefined) {
+            if (publicKey === null || privateKey === null) {
                 userModel.generateNewPrivateKey();
-            } else {
-                userModel.updatePrivateKey();
             }
 
             userModel._user.set('username', user.Username);
@@ -179,8 +177,9 @@ var everlive = {
 
 
             userModel._user.set('publicKey', publicKey);
+            userModel._user.set('privateKey', privateKey);
             userModel.decryptPrivateKey();
-            //		userModel._user.set('privateKey', privateKey);
+
             userModel.createIdenticon(user.userUUID);
 
             var photo = user.photo;

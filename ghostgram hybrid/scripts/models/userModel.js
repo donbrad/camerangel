@@ -525,8 +525,7 @@ var userModel = {
     },
 
     decryptPrivateKey : function () {
-
-       
+        
         var privateKey = userModel._user.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         var RSAKey = cryptico.privateKeyFromString(newPrivateKey);
