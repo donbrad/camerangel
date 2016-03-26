@@ -86,9 +86,7 @@ var userModel = {
             //userModel.initialView = '#newuserhome';
         }
 
-       /* userModel._user.bind("change", function(e) {
-           
-        });*/
+      
     },
 
     initCloudModels : function () {
@@ -167,7 +165,7 @@ var userModel = {
         everlive.currentUser(function (error, data) {
             if (error === null && data !== null) {
                 // No error and valid auth data
-                userModel.initialView = '#home';
+                APP.kendo.navigate('#home');
                 
                 everlive.loadUserData();
               
@@ -179,9 +177,9 @@ var userModel = {
                 if (userModel.hasAccount) {
                     //
                     mobileNotify("Please login to ghostgrams");
-                    userModel.initialView = '#usersignin';
+                    APP.kendo.navigate('#usersignin');
                 } else {
-                    userModel.initialView = '#newuserhome';
+                    APP.kendo.navigate('#newuserhome');
                 }
 
             }
