@@ -806,10 +806,10 @@ var addContactView = {
        // mobileNotify("Invite sent");
 
         // Look up this contacts phone number in the gg directory
-      findUserByPhone(phone, function (result) {
+      memberdirectory.findMemberByPhone(phone, function (user) {
 
-            if (result.found) {
-                var thisContact = result.user;
+            if (user !== null) {
+                var thisContact = user;
                 contact.set("phoneValidated", thisContact.phoneValidated);
                 // Does the contact have a verified email address
                 contact.set("email", thisContact.email);
