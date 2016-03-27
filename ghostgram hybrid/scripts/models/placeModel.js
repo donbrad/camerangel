@@ -369,15 +369,15 @@ var placesModel = {
             return;
         }
 
-        var Place = Parse.Object.extend(placesModel._parseClass);
-        var placeParse = new Place();
+       // var Place = Parse.Object.extend(placesModel._parseClass);
+        var placeParse = new kendo.data.ObservableObject();
 
         var newPlace = placesModel.newPlace();
 
         // Check that the place name is unique (in this users place's)
         place.name = place.name.toString();
 
-        placeParse.setACL(userModel.parseACL);
+        //placeParse.setACL(userModel.parseACL);
         placeParse.set('uuid', place.uuid);
         placeParse.set('ggType', placesModel._ggClass);
         placeParse.set('version', placesModel._version);
@@ -415,9 +415,9 @@ var placesModel = {
         // update the distance value for the local object...
         placeParse.set('distance', distance);
         // Get a json object to add to kendo (strip the parse specific stuff)
-        var placeObj = placeParse.toJSON();
-        placesModel.placesDS.add(placeObj);
-        placesModel.placesDS.sync();
+      //  var placeObj = placeParse.toJSON();
+        placesModel.placesDS.add(place);
+       /* placesModel.placesDS.sync();
 
         placeParse.save(null, {
             success: function(placeIn) {
@@ -436,13 +436,13 @@ var placesModel = {
                 // error is a Parse.Error with an error code and message.
                 handleParseError(error);
             }
-        });
+        });*/
 
     },
 
     addPlace: function (place, createChatFlag,  callback) {
-        var Place = Parse.Object.extend(placesModel._parseClass);
-        var placeParse = new Place();
+        //var Place = Parse.Object.extend(placesModel._parseClass);
+        var placeParse = new kendo.data.ObservableObject();
 
         var newPlace = placesModel.newPlace();
 
@@ -457,7 +457,7 @@ var placesModel = {
         var guid = uuid.v4();
 
 
-        placeParse.setACL(userModel.parseACL);
+       // placeParse.setACL(userModel.parseACL);
         placeParse.set('uuid', guid);
         placeParse.set('ggType', placesModel._ggClass);
         placeParse.set('version', placesModel._version);
@@ -500,14 +500,14 @@ var placesModel = {
         var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
         // Get a json object to add to kendo (strip the parse specific stuff)
-        var placeObj = placeParse.toJSON();
+        //var placeParse = placeParse.toJSON();
         // update the distance value for the local object...
-        placeObj.distance = distance.toFixed(2);
-        placeObj.isDirty = true;
-        placesModel.placesDS.add(placeObj);
+        placeParse.distance = distance.toFixed(2);
+        placeParse.isDirty = true;
+        placesModel.placesDS.add(placeParse);
         placesModel.placesDS.sync();
 
-        placeParse.save(null, {
+       /* placeParse.save(null, {
             success: function(placeIn) {
                 // Set the needs sync (isDirty flag to false)
                 var placeInuuid = placeIn.get('uuid');
@@ -523,7 +523,7 @@ var placesModel = {
                 // error is a Parse.Error with an error code and message.
                 handleParseError(error);
             }
-        });
+        });*/
 
     },
 
@@ -544,7 +544,7 @@ var placesModel = {
                 if (place.placeChatId !== undefined && place.placeChatId !== null) {
                     channelModel.deleteChannel(place.placeChatId, false);
                 }
-                var placeObj = place.toJSON();
+               // var placeObj = place.toJSON();
                 placesModel.placesDS.remove(place);
                 placesModel.placesDS.sync();
 
