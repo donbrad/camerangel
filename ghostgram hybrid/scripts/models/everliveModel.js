@@ -15,6 +15,8 @@ var everlive = {
     _isAuthenticated : false,
     _status: null,
     _user : null,
+    _lastSync: 0,
+    _delta : 60,
 
     init: function () {
         var provider = Everlive.Constants.StorageProvider.FileSystem;
@@ -47,6 +49,7 @@ var everlive = {
             }
         });
 
+
         // Wire up the everlive sync monitors
         APP.everlive.on('syncStart', everlive.syncStart);
 
@@ -67,6 +70,18 @@ var everlive = {
             }
         });
 
+    },
+
+    syncCloud : function (){
+        var time = ggTime.currentTimeInSeconds();
+
+        if (everlive._lastSync < time) {
+
+            everlive._lastSync = time + everlive._delta;
+
+            APP.everlive.sync();
+
+        }
     },
 
     checkAuthStatus : function (callback) {
@@ -193,7 +208,7 @@ var everlive = {
         }
 
         updateObj.privateKey = GibberishAES.enc(updateObj.privateKey, userModel.key);
-        
+
         APP.everlive.Users.updateSingle(updateObj,
             function(data){
                 var result = data.result;

@@ -749,7 +749,10 @@ var addContactView = {
             mobileNotify('Contacts must have a valid phone number!');
             return;
         }
-
+        
+        phone = phone.replace(/\D+/g, "");
+        if (phone[0] !== '1')
+            phone = '1' + phone;
 
         var guid = uuid.v4();
 
@@ -788,9 +791,7 @@ var addContactView = {
 
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
 
-        phone = phone.replace(/\D+/g, "");
-        if (phone[0] !== '1')
-            phone = '1' + phone;
+       
 
         if (contactModel.findContactByPhone(phone) !== undefined) {
             mobileNotify("Existing contact with this phone number");
@@ -846,6 +847,7 @@ var addContactView = {
 
           contactModel.contactsDS.add(contact);
           contactModel.contactsDS.sync();
+          everlive.syncCloud();
           //contactModel.contactListDS.add(contactx);
 
           addContactView.closeModal();

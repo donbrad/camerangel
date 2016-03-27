@@ -1029,6 +1029,7 @@ var addPlaceView = {
                 mobileNotify(placeObj.name + " added to your Places...");
 
                 addPlaceView.onDone();
+                everlive.syncCloud();
 
                 if (createChatFlag) {
                     channelModel.addPlaceChannel(placeObj.placeChatId, placeObj.uuid, placeObj.name, placeObj.isPrivate);
@@ -1228,6 +1229,9 @@ var editPlaceView = {
         editPlaceView._activePlace.set('isPrivate', placeObj.isPrivate);
         editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
         editPlaceView._activePlace.bind('change' , editPlaceView.validatePlace);
+
+        placesModel.placesDS.sync();
+        everlive.syncCloud();
 
     }
 
