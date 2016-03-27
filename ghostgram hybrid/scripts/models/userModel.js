@@ -300,8 +300,8 @@ var userModel = {
         userModel._publicKey = publicKey;
         userModel._privateKey = privateKey;
 
-        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
-        userModel._user.set('privateKey',newPrivateKey);
+       // var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
+        userModel._user.set('privateKey', privateKey);
         userModel._user.set('publicKey',publicKey);
 
     },
@@ -325,8 +325,12 @@ var userModel = {
        userStatus.syncField(field, fieldValue);
     },
 
-    encryptPrivateKey : function (key) {
-
+    encryptPrivateKey : function () {
+        var privateKey = userModel._user.get('privateKey');
+        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
+        userModel._user.set('privateKey', newPrivateKey);
+        
+        
     },
 
     setUserUUID : function (uuid) {
@@ -339,7 +343,6 @@ var userModel = {
     
     generateUserKey : function () {
         var rawKey = userModel.userUUID;
-
          userModel.key = rawKey.replace(/-/g,'');
 
     },

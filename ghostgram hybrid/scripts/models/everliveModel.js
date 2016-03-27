@@ -193,6 +193,7 @@ var everlive = {
         }
 
         updateObj.privateKey = GibberishAES.enc(updateObj.privateKey, userModel.key);
+        
         APP.everlive.Users.updateSingle(updateObj,
             function(data){
                 var result = data.result;
