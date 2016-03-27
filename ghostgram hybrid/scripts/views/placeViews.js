@@ -1175,6 +1175,9 @@ var editPlaceView = {
         model.set('hasPlaceChat', newModel.hasPlaceChat);
         model.set('placeChatId', newModel.placeChatId);
 
+        placesModel.placesDS.sync();
+        everlive.syncCloud();
+
 /*
 
         updateParseObject('places', 'uuid', newModel.uuid, "name", newModel.name);
@@ -1230,8 +1233,7 @@ var editPlaceView = {
         editPlaceView._activePlace.set('isAvailable', placeObj.isAvailable);
         editPlaceView._activePlace.bind('change' , editPlaceView.validatePlace);
 
-        placesModel.placesDS.sync();
-        everlive.syncCloud();
+
 
     }
 
