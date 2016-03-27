@@ -507,6 +507,10 @@ var placesModel = {
         placesModel.placesDS.add(placeParse);
         placesModel.placesDS.sync();
 
+        if (callback !== undefined) {
+            callback(placeParse);
+        }
+        
        /* placeParse.save(null, {
             success: function(placeIn) {
                 // Set the needs sync (isDirty flag to false)
