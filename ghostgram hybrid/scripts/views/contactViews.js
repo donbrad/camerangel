@@ -1279,7 +1279,7 @@ var contactActionView = {
 
             if (thisContact.lastUpdate !== undefined && thisContact.lastUpdate > time + 900) {
                 // Need to get current data for this contact
-                userStatus.getStatus(thisContact.contactUUID, function (error, user) {
+                userStatus.getMemberStatus(thisContact.contactUUID, function (error, user) {
                     if (error === null && user !== null) {
                         var contactIsAvailable = user.get('isAvailable');
                         contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);

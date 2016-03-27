@@ -541,6 +541,26 @@ var userStatus = {
                         userStatus.create();
                     } else {
                         var member = data.result[0];
+                        callback(null, member);
+                    }
+
+                },
+                function(error){
+                    callback(error, null);
+                });
+    },
+
+    getMemberStatus : function (uuid, callback) {
+        var filter = new Everlive.Query();
+        filter.where().eq('userUUID', uuid);
+
+        var data = APP.everlive.data(userStatus._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        callback(null, null)
+                    } else {
+                        var member = data.result[0];
                         userStatus._status = member;
                         window.localStorage.setItem('ggUserStatus', JSON.stringify(userStatus._status));
                         callback(null, member);

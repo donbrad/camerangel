@@ -748,7 +748,7 @@ var contactModel = {
             if (contact.lastUpdate === undefined || contact.lastUpdate > time + 900) {
                 var contactId = contact.contactUUID;
                 if (contactId !== undefined && contactId !== null) {
-                    userStatus.getStatus(contactId, function (error, user) {
+                    userStatus.getMemberStatus(contactId, function (error, user) {
                         if (error == null && user !== null) {
                             var userId = user.get('userUUID');
                             var contact = contactModel.findContactList(userId);
