@@ -53,8 +53,11 @@ var userModel = {
         isAvailable: true,
         useIdenticon: true,
         availImgUrl: 'images/status-available.svg',
+        lat: '',
+        lng: '',
         currentPlace: '',
         currentPlaceUUID: '',
+        googlePlaceId: '',
         isCheckedIn: false
     }),
 
