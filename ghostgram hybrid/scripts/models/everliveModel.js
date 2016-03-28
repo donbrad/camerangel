@@ -136,6 +136,7 @@ var everlive = {
                 everlive._id = data.result.principal_id;
                 userModel._user.Id = data.result.principal_id;
                 everlive._signedIn = true;
+                everlive._isAuthenticated = true;
                 callback(null, userModel._user.Id);
             },
             function(error){
@@ -177,6 +178,7 @@ var everlive = {
     logout : function (callback) {
         APP.everlive.users.logout().then(function () {
                 everlive._signedIn = false;
+                everlive._isAuthenticated = false;
                 callback(true);
             }, // success
             function () {
