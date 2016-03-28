@@ -147,7 +147,8 @@ var userModel = {
         userModel.device.model = device.model;
         userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
         userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
-       
+        userModel.username = window.localStorage.getItem('ggUserName');
+        userModel.hasAccount = window.localStorage.getItem('ggHasAccount');
         userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
         if (userModel.userUUID === undefined) {
             userModel.userUUID = null;
