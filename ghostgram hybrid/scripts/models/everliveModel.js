@@ -31,7 +31,9 @@ var everlive = {
         APP.everlive = new Everlive({
             appId: 's2fo2sasaubcx7qe',
             scheme: 'https',
-            offline: true,
+            offline: {
+                syncUnmodified: true
+            },
             offlineStorage: {
                 storage: {
                     provider: provider
@@ -41,8 +43,8 @@ var everlive = {
                  }*/
                 },
                 encryption: {
-                    provider: Everlive.Constants.EncryptionProvider.Default
-                    key: 'intelligram'
+                    provider: Everlive.Constants.EncryptionProvider.Default,
+                    key: userModel.key
                 },
                 files: {
                     storagePath: 'ghostgrams/storage',
