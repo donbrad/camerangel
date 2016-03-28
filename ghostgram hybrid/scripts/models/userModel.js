@@ -705,6 +705,8 @@ var userStatus = {
             }
         );
 
+        everlive.updateUserStatus();
+
     }
 
 

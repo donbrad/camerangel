@@ -221,7 +221,31 @@ var everlive = {
             });
     },
 
+    updateUserStatus : function () {
+        var updateObj = {Id : everlive._id};
+       
+        updateObj.isAvailable  = userModel._user.isAvailable;
+        updateObj.isVisible  = userModel._user.isVisible;
+        updateObj.statusMessage  = userModel._user.statusMessage;
+        updateObj.currentPlace  = userModel._user.currentPlace;
+        updateObj.currentPlace  = userModel._user.currentPlace; 
+        updateObj.lat  = userModel._user.lat;
+        updateObj.lng  = userModel._user.lng;
+        updateObj.googlePlaceId  = userModel._user.googlePlaceId;
+        updateObj.currentPlaceUUID  = userModel._user.currentPlaceUUID;
+        updateObj.isCheckedIn  = userModel._user.isCheckedIn;
+        APP.everlive.Users.updateSingle(updateObj,
+            function(data){
+                var result = data.result;
+              
+            },
+            function(error){
+                mobileNotify("User Status Update Error : " + JSON.stringify(error));
+            });
+       
 
+    },
+    
     updateUserField : function (field, value) {
         var updateObj = {Id : userModel._user.Id};
         
