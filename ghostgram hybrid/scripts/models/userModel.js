@@ -185,6 +185,14 @@ var userModel = {
                 if (error !== undefined && error.code !== 301) { // 301 = no auth credentials, could be new user or member not signed it
                     // So other error - just notify for now...
                     mobileNotify("Kendo Auth Error " + JSON.stringify(error));
+                } else {
+                    // no error and no data -- user isnt signed in
+                    if (userModel.hasAccount) {
+                        mobileNotify("Please login to ghostgrams");
+                        APP.kendo.navigate('#usersignin');
+                    } else {
+                        APP.kendo.navigate('#newuserhome');
+                    }
                 }
 
             }
