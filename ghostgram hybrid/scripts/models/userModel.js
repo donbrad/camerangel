@@ -53,8 +53,11 @@ var userModel = {
         isAvailable: true,
         useIdenticon: true,
         availImgUrl: 'images/status-available.svg',
+        lat: '',
+        lng: '',
         currentPlace: '',
         currentPlaceUUID: '',
+        googlePlaceId: '',
         isCheckedIn: false
     }),
 
@@ -86,9 +89,7 @@ var userModel = {
             //userModel.initialView = '#newuserhome';
         }
 
-       /* userModel._user.bind("change", function(e) {
-           
-        });*/
+        userModel.initKendo();
     },
 
     initCloudModels : function () {
@@ -133,7 +134,7 @@ var userModel = {
             skin: 'material',
 
             // the application needs to know which view to load first
-            initial: userModel.initialView
+            initial: '#startUpView'
         });
     },
 
@@ -165,284 +166,106 @@ var userModel = {
 
         // Check the status of kendo auth
         everlive.currentUser(function (error, data) {
-            if (error === null && data !== null) {
-                // No error and valid auth data
-                userModel.initialView = '#home';
+            if (error === null ) {
 
-                everlive.loadUserData();
+                if (data !== null) {
+                    everlive.loadUserData();
+                } else {
+                    // no error and no data -- user isnt signed in
+                    if (userModel.hasAccount) {
+                        mobileNotify("Please login to ghostgrams");
+                        APP.kendo.navigate('#usersignin');
+                    } else {
+                        APP.kendo.navigate('#newuserhome');
+                    }
+
+                }
               
             } else {
-                if (error.code !== 301) { // 301 = no auth credentials, could be new user or member not signed it
+                if (error !== undefined && error.code !== 301) { // 301 = no auth credentials, could be new user or member not signed it
                     // So other error - just notify for now...
                     mobileNotify("Kendo Auth Error " + JSON.stringify(error));
                 }
-                if (userModel.hasAccount) {
-                    //
-                    mobileNotify("Please login to ghostgrams");
-                    userModel.initialView = '#usersignin';
-                } else {
-                    userModel.initialView = '#newuserhome';
-                }
-                userModel.initKendo();
-            }
 
+            }
 
         });
 
-
-   /*     if (Parse.User.current() === null) {
-
-            if (userModel.hasAccount) {
-                mobileNotify("Please login to ghostgrams");
-                userModel.initialView = '#usersignin';
-            } else {
-                userModel.initialView = '#newuserhome';
-            }
-
-        } else {
-            // Need to force parse to actually fetch the data from the service.  Parse creates a local cache of user data that gets saved on login / create
-            // account while all user.set / saves are pushed to the cloud...
-            mobileNotify("Syncing user data...");
-            Parse.User.currentAsync().then(function (user) {
-
-                userModel.parseUser = user;
-
-
-                if (user.get("version") === undefined) {
-                    userModel.generateNewPrivateKey(userModel.parseUser);
-                    userModel.parseUser.set("version", 1);
-                    userModel.parseUser.save();
-                }
-
-                // Update new fields
-                var dirty = false;
-                if (user.get('addressList') === undefined) {
-                    userModel._user.set('addressList', []);
-                    user.set('addressList', []);
-                    dirty = true;
-                }
-
-                if (user.get('emailList') === undefined) {
-                    userModel._user.set('emailList', []);
-                    user.set('emailList', []);
-                    dirty = true;
-                }
-
-                if (user.get('phoneList') === undefined) {
-                    userModel._user.set('phoneList', []);
-                    user.set('phoneList', []);
-                    dirty = true;
-                }
-
-                if (user.get('archiveIntro') === undefined) {
-                    userModel._user.set('archiveIntro', false);
-                    user.set('archiveIntro', false);
-                    dirty = true;
-                }
-
-
-                if (user.get('homeIntro') === undefined) {
-                    userModel._user.set('homeIntro', false);
-                    user.set('homeIntro', false);
-                    dirty = true;
-                }
-
-                if (user.get('chatIntro') === undefined) {
-                    userModel._user.set('chatIntro', false);
-                    user.set('chatIntro', false);
-                    dirty = true;
-                }
-
-                if (user.get('contactIntro') === undefined) {
-                    userModel._user.set('contactIntro', false);
-                    user.set('contactIntro', false);
-                    dirty = true;
-                }
-
-                if (user.get('galleryIntro') === undefined) {
-                    userModel._user.set('galleryIntro', false);
-                    user.set('galleryIntro', false);
-                    dirty = true;
-                }
-
-                if (user.get('identiconIntro') === undefined) {
-                    userModel._user.set('identiconIntro', false);
-                    user.set('identiconIntro', false);
-                    dirty = true;
-                }
-
-                if (user.get('placesIntro') === undefined) {
-                    userModel._user.set('placesIntro', false);
-                    user.set('placesIntro', false);
-                    dirty = true;
-                }
-
-                if (user.get('firstMessage') === undefined) {
-                    userModel._user.set('firstMessage', false);
-                    user.set('firstMessage', false);
-                    dirty = true;
-                }
-
-                if (user.get('phoneValidated') === true && user.get('emailValidated') === true) {
-                    if (user.get('isVerified') !== true) {
-                        user.set('isVerified', true);
-                        dirty = true;
-                    }
-                } else {
-                    if (user.get('isVerified') !== false) {
-                        user.set('isVerified', false);
-                        dirty = true;
-                    }
-                }
-
-                if (dirty)
-                    user.save();
-
-                userModel.initialView = '#home';
-
-                userModel.userUUID = user.get('userUUID');
-                userModel._user.set('userUUID', userModel.userUUID);
-                localStorage.setItem('ggUserUUID', userModel.userUUID);
-
-                userModel.generateUserKey();
-                userModel.updatePrivateKey();
-                userModel.decryptPrivateKey();
-
-
-                userModel._user.set('username', user.get('username'));
-                userModel._user.set('objectId', user.get('objectId'));
-                userModel._user.set('name', user.get('name'));
-                userModel._user.set('email', user.get('email'));
-                userModel._user.set('phone', user.get('phone'));
-                userModel._user.set('alias', user.get('alias'));
-
-                userModel._user.set('publicKey', user.get('publicKey'));
-                // userModel._user.set('privateKey', userModel.parseUser.get('privateKey'));
-                userModel._user.set('statusMessage', user.get('statusMessage'));
-                userModel._user.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-                userModel._user.set('currentPlace', user.get('currentPlace'));
-                userModel._user.set('aliasPublic', user.get('aliasPublic'));
-                userModel._user.set('aliasPhoto', user.get('aliasPhoto'));
-                userModel._user.set('photo', user.get('photo'));
-                userModel._user.set('isAvailable', user.get('isAvailable'));
-                userModel._user.set('isCheckedIn', user.get('isCheckedIn'));
-                userModel._user.set('isVisible', user.get('isVisible'));
-                userModel._user.set('isRetina', user.get('isRetina'));
-                userModel._user.set('isWIFIOnly', user.get('isWIFIOnly'));
-                userModel._user.set('isPhotoStored', user.get('isPhotoStored'));
-                userModel._user.set('addressList', user.get('addressList'));
-                userModel._user.set('emailList', user.get('emailList'));
-                userModel._user.set('phoneList', user.get('phoneList'));
-                userModel._user.set('archiveIntro', user.get('archiveIntro'));
-                userModel._user.set('homeIntro', user.get('homeIntro'));
-                userModel._user.set('chatIntro', user.get('chatIntro'));
-                userModel._user.set('contactIntro', user.get('contactIntro'));
-                userModel._user.set('galleryIntro', user.get('galleryIntro'));
-                userModel._user.set('identiconIntro', user.get('identiconIntro'));
-                userModel._user.set('placesIntro', user.get('placesIntro'));
-                userModel._user.set('saveToPhotoAlbum',user.get('saveToPhotoAlbum'));
-                userModel._user.set('rememberUsername', user.get('rememberUsername'));
-                var phoneValidated = user.get('phoneValidated');
-                userModel._user.set('phoneValidated', phoneValidated);
-                userModel._user.set('emailValidated', user.get('emailValidated'));
-                userModel._user.set('useIdenticon', user.get('useIdenticon'));
-                userModel._user.set('availImgUrl', 'images/status-away.svg');
-                ux.updateHeaderStatusImages();
-
-                userModel.createIdenticon(user.get('userUUID'));
-
-                var photo = user.get('photo');
-                if (photo === undefined || photo === null) {
-                    userModel._user.photo =  userModel.identiconUrl;
-                }
-                userModel.parseACL = new Parse.ACL(userModel.parseUser);
-
-                userModel._user.bind('change', userModel.syncToEverlive);
-                userModel.initPubNub();
-                userModel.fetchParseData();
-
-                APP.everlive.users.currentUser(function(data) {
-                    if (data.result) {
-                        everlive._user = data.result;
-                        mobileNotify(data.result.Username + " is logged in to Everlive!");
-                    } else {
-                        var username = user.get('username'), password = user.get('recoveryPassword');
-                        everlive.login(username, password, function (error, data){
-                            if (error !== null) {
-                                mobileNotify(JSON.stringify(error));
-
-                                everlive.createAccount(username, name, password, function (error1, data1) {
-                                    if (error1 !== null) {
-                                        mobileNotify(JSON.stringify(error1));
-                                    } else {
-                                        var token = data1;
-                                        userModel.userUUID = uuid.v4();
-                                        userModel._user.set('userUUID', userModel.userUUID);
-                                        localStorage.setItem('ggUserUUID', userModel.userUUID);
-
-                                        userModel.generateUserKey();
-                                        userModel.updatePrivateKey();
-                                        userModel.decryptPrivateKey();
-
-                                        everlive.updateUser();
-                                    }
-
-                                });
-                            } else {
-                                everlive.updateUser();
-                            }
-                        });
-                    }
-                }, function(err) {
-                    var username = user.get('username'), password = user.get('recoveryPassword');
-                    everlive.login(username, password, function (error, data){
-                        if (error !== null) {
-                            mobileNotify(JSON.stringify(error));
-
-                            everlive.createAccount(username, name, password, function (error1, data1) {
-                                if (error1 !== null) {
-                                    mobileNotify(JSON.stringify(error1));
-                                } else {
-                                    var token = data1;
-                                    userModel.userUUID = uuid.v4();
-                                    userModel._user.set('userUUID', userModel.userUUID);
-                                    localStorage.setItem('ggUserUUID', userModel.userUUID);
-
-                                    userModel.generateUserKey();
-                                    userModel.updatePrivateKey();
-                                    userModel.decryptPrivateKey();
-
-                                    everlive.updateUser();
-                                }
-
-                            });
-                        } else {
-                            everlive.updateUser();
-                        }
-                    });
-                });
-
-                if (phoneValidated) {
-                    deviceModel.setAppState('phoneValidated', true);
-                    notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
-                } else {
-                    mobileNotify("Please verify your phone number");
-
-                    cordova.plugins.notification.local.schedule({
-                        id         : 1,
-                        title      : 'Phone not verified',
-                        text       : 'Please verify your mobile phone number ',
-                        sound      : null,
-                        autoClear  : true,
-                        at         : new Date(new Date().getTime())
-                    });
-                    //Add verify phone notification to home screen
-                }
-            });
-        }
-*/
     },
 
+    update_user : function (user) {
+
+        userModel.setUserUUID(user.userUUID);
+
+        var publicKey = user.publicKey;
+        var privateKey = user.privateKey;
+        if (publicKey === null || privateKey === null) {
+            userModel.generateNewPrivateKey();
+        }
+        
+        userModel._user.set('username', user.Username);
+        userModel._user.set('Username', user.Username);
+        userModel._user.set('DisplayName', user.DisplayName);
+        userModel._user.set('name', user.name);
+        userModel._user.set('recoveryPassword', user.recoveryPassword);
+        userModel._user.set('Email', user.Email);
+        userModel._user.set('email', user.email);
+        userModel._user.set('phone', user.phone);
+        userModel._user.set('alias', user.alias);
+        userModel._user.set('address', user.address);
+        userModel._user.set('aliasPhoto', user.aliasPhoto);
+        userModel._user.set('statusMessage', user.statusMessage);
+        userModel._user.set('isAvailable', user.isAvailable);
+        userModel._user.set('isCheckedIn', user.isCheckedIn);
+        userModel._user.set('isVisible', user.isVisible);
+        userModel._user.set('isRetina', user.isRetina);
+        userModel._user.set('isWIFIOnly', user.isWIFIOnly);
+        userModel._user.set('isPhotoStored', user.isPhotoStored);
+        userModel._user.set('saveToPhotoAlbum', user.saveToPhotoAlbum);
+        userModel._user.set('currentPlace', user.currentPlace);
+        userModel._user.set('googlePlaceId', user.googlePlaceId);
+        userModel._user.set('lat', user.lat);
+        userModel._user.set('lng', user.lng);
+        userModel._user.set('currentPlaceUUID', user.currentPlaceUUID);
+        userModel._user.set('photo', user.photo);
+        userModel._user.set('aliasPublic', user.aliasPublic);
+        userModel._user.set('userUUID', user.userUUID);
+        userModel._user.set('useIdenticon', user.useIdenticon);
+        userModel._user.set('useLargeView', user.useLargeView);
+        userModel._user.set('rememberUsername', user.rememberUsername);
+
+        userModel._user.set('addressList', user.addressList);
+        userModel._user.set('emailList', user.emailList);
+        userModel._user.set('phoneList', user.phoneList);
+        userModel._user.set('homeIntro', user.homeIntro);
+
+
+        userModel._user.set('publicKey', publicKey);
+        userModel._user.set('privateKey', privateKey);
+        userModel.decryptPrivateKey();
+
+        userModel.createIdenticon(user.userUUID);
+
+        var photo = user.photo;
+        if (photo === undefined || photo === null) {
+            userModel._user.photo =  userModel.identiconUrl;
+        }
+
+
+        var phoneValidated = user.phoneValidated;
+        userModel._user.set('phoneValidated',phoneValidated);
+        userModel._user.set('addressValidated',user.addressValidated);
+        userModel._user.set('availImgUrl', 'images/status-away.svg');
+        var isAvailable  = userModel._user.get('isAvailable');
+        if (isAvailable) {
+            userModel._user.set('availImgUrl', 'images/status-available.svg');
+        }
+
+
+        userModel._user.set('emailValidated', user.Verified);
+
+    },
+    
 
     deleteAccount: function () {
 
@@ -462,7 +285,7 @@ var userModel = {
     },
     
     _getRecoveryPassword : function () {
-        var encPassword = window.localStorage.setItem('ggRecoveryPassword');
+        var encPassword = window.localStorage.getItem('ggRecoveryPassword');
         var clearPassword = GibberishAES.dec(encPassword, userModel.key);
 
         return(clearPassword);
@@ -480,11 +303,9 @@ var userModel = {
         userModel._publicKey = publicKey;
         userModel._privateKey = privateKey;
 
-        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
-        userModel._user.set('privateKey',newPrivateKey);
+       // var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
+        userModel._user.set('privateKey', privateKey);
         userModel._user.set('publicKey',publicKey);
-
-
 
     },
 
@@ -507,8 +328,12 @@ var userModel = {
        userStatus.syncField(field, fieldValue);
     },
 
-    encryptPrivateKey : function (key) {
-
+    encryptPrivateKey : function () {
+        var privateKey = userModel._user.get('privateKey');
+        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
+        userModel._user.set('privateKey', newPrivateKey);
+        
+        
     },
 
     setUserUUID : function (uuid) {
@@ -521,14 +346,12 @@ var userModel = {
     
     generateUserKey : function () {
         var rawKey = userModel.userUUID;
-
          userModel.key = rawKey.replace(/-/g,'');
 
     },
 
     decryptPrivateKey : function () {
-
-       
+        
         var privateKey = userModel._user.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         var RSAKey = cryptico.privateKeyFromString(newPrivateKey);
@@ -677,6 +500,7 @@ var userStatus = {
     _ggClass : 'userStatus',
     _version : 1,
     _statusObj : new kendo.data.ObservableObject(),
+    _status : null,
     _id : null,
 
 
@@ -690,9 +514,9 @@ var userStatus = {
                     if (data.count === 0) {
                         userStatus.create();
                     } else {
-                        var member = data.result[0];
-                        userStatus._id = member.Id;
-                        userStatus._statusObj.Id = member.Id;
+                        userStatus._status = data.result[0];
+                        window.localStorage.setItem('ggUserStatus', JSON.stringify(userStatus._status));
+
                     }
 
                 },
@@ -717,6 +541,28 @@ var userStatus = {
                         userStatus.create();
                     } else {
                         var member = data.result[0];
+                        callback(null, member);
+                    }
+
+                },
+                function(error){
+                    callback(error, null);
+                });
+    },
+
+    getMemberStatus : function (uuid, callback) {
+        var filter = new Everlive.Query();
+        filter.where().eq('userUUID', uuid);
+
+        var data = APP.everlive.data(userStatus._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        callback(null, null)
+                    } else {
+                        var member = data.result[0];
+                        userStatus._status = member;
+                        window.localStorage.setItem('ggUserStatus', JSON.stringify(userStatus._status));
                         callback(null, member);
                     }
 
@@ -760,12 +606,11 @@ var userStatus = {
     create : function () {
         var data = APP.everlive.data(userStatus._ggClass);
 
-
+        userStatus._statusObj.Id  = everlive._id;
 
         data.create(userStatus._statusObj,
             function(data){
-                userStatus._id = data.result.Id;
-                userStatus._statusObj.Id  = data.result.Id;
+
                 userStatus.update();
                 //userStatus.updateEverlive();
             },
@@ -812,7 +657,9 @@ var userStatus = {
     update : function () {
         var status = userStatus._statusObj;
 
-
+        if (status.Id === undefined || status.Id === null) {
+            status.Id = everlive._id;
+        }
         status.set('userUUID', userModel._user.userUUID);
         status.set('isAvailable', userModel._user.isAvailable);
         status.set('isVisible', userModel._user.isVisible);

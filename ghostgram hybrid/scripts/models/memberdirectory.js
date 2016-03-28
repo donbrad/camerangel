@@ -141,6 +141,25 @@ var memberdirectory = {
                 });
     },
 
+    findMemberByPhoneList : function (phoneList, callback) {
+        var filter = new Everlive.Query();
+        filter.where().isin('phone', phoneList);
+        var data = APP.everlive.data(memberdirectory._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        callback(null)
+                    } else {
+                        var member = data.result[0];
+                        callback(member);
+                    }
+
+                },
+                function(error){
+                    mobileNotify("MemberDirectory Find phone error : " + JSON.stringify(error));
+                });
+    },
+
     findMemberByEmail : function (email, callback) {
         var filter = new Everlive.Query();
         filter.where().eq('email', email);

@@ -15,6 +15,8 @@ var everlive = {
     _isAuthenticated : false,
     _status: null,
     _user : null,
+    _lastSync: 0,
+    _delta : 60,
 
     init: function () {
         var provider = Everlive.Constants.StorageProvider.FileSystem;
@@ -47,6 +49,7 @@ var everlive = {
             }
         });
 
+
         // Wire up the everlive sync monitors
         APP.everlive.on('syncStart', everlive.syncStart);
 
@@ -65,8 +68,20 @@ var everlive = {
                 }
 
             }
-        })
+        });
 
+    },
+
+    syncCloud : function (){
+        var time = ggTime.currentTimeInSeconds();
+
+        if (everlive._lastSync < time) {
+
+            everlive._lastSync = time + everlive._delta;
+
+            APP.everlive.sync();
+
+        }
     },
 
     checkAuthStatus : function (callback) {
@@ -77,6 +92,8 @@ var everlive = {
                     everlive._isAuthenticated = false;
                 } else {
                     everlive._status = data.status;
+                    everlive._user = data.user;
+                    everlive._id = data.user.Id;
                     everlive._isAuthenticated = true;
                 }
                 callback(null, everlive._isAuthenticated);
@@ -131,78 +148,9 @@ var everlive = {
                 return;
             }
 
-            userModel.setUserUUID(user.get('userUUID'));
-
-            var publicKey = user.get('publicKey');
-            var privateKey = user.get('privateKey');
-            if (publicKey === undefined || privateKey === undefined) {
-                userModel.generateNewPrivateKey();
-            } else {
-                userModel.updatePrivateKey();
-            }
-
-            userModel._user.set('username', user.get('Username'));
-            userModel._user.set('Username', user.get('Username'));
-            userModel._user.set('DisplayName', user.get('DisplayName'));
-            userModel._user.set('name', user.get('name'));
-            userModel._user.set('recoveryPassword', user.get('recoveryPassword'));
-            userModel._user.set('Email', user.get('Email'));
-            userModel._user.set('email', user.get('Email'));
-            userModel._user.set('phone', user.get('phone'));
-            userModel._user.set('alias', user.get('alias'));
-            userModel._user.set('address', user.get('address'));
-            userModel._user.set('aliasPhoto', user.get('aliasPhoto'));
-            userModel._user.set('statusMessage', user.get('statusMessage'));
-            userModel._user.set('isAvailable', user.get('isAvailable'));
-            userModel._user.set('isCheckedIn', user.get('isCheckedIn'));
-            userModel._user.set('isVisible', user.get('isVisible'));
-            userModel._user.set('isRetina', user.get('isRetina'));
-            userModel._user.set('isWIFIOnly', user.get('isWIFIOnly'));
-            userModel._user.set('isPhotoStored', user.get('isPhotoStored'));
-            userModel._user.set('saveToPhotoAlbum', user.get('saveToPhotoAlbum'));
-            userModel._user.set('currentPlace', user.get('currentPlace'));
-            userModel._user.set('googlePlaceId', user.get('googlePlaceId'));
-            userModel._user.set('lat', user.get('lat'));
-            userModel._user.set('lng', user.get('lng'));
-            userModel._user.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-            userModel._user.set('photo', user.get('photo'));
-            userModel._user.set('aliasPublic', user.get('aliasPublic'));
-            userModel._user.set('userUUID', user.get('userUUID'));
-            userModel._user.set('useIdenticon', user.get('useIdenticon'));
-            userModel._user.set('useLargeView', user.get('useLargeView'));
-            userModel._user.set('rememberUsername', user.get('rememberUsername'));
-
-            userModel._user.set('addressList', user.get('addressList'));
-            userModel._user.set('emailList', user.get('emailList'));
-            userModel._user.set('phoneList', user.get('phoneList'));
-            userModel._user.set('homeIntro', user.get('archiveIntro'));
-            userModel._user.set('homeIntro', user.get('homeIntro'));
+            userModel.update_user(user);
 
 
-            userModel._user.set('publicKey', publicKey);
-            userModel.decryptPrivateKey();
-            //		userModel._user.set('privateKey', privateKey);
-            userModel.createIdenticon(user.get('userUUID'));
-
-            var photo = user.get('photo');
-            if (photo === undefined || photo === null) {
-                userModel._user.photo =  userModel.identiconUrl;
-            }
-
-
-            var phoneValidated = user.get('phoneValidated');
-            userModel._user.set('phoneValidated',phoneValidated);
-            userModel._user.set('addressValidated',user.get('addressValidated'));
-            userModel._user.set('availImgUrl', 'images/status-away.svg');
-            var isAvailable  = userModel._user.get('isAvailable');
-            if (isAvailable) {
-                userModel._user.set('availImgUrl', 'images/status-available.svg');
-            }
-
-
-            userModel._user.set('emailValidated', user.get('Verified'));
-
-            userModel.initKendo();
             everlive.updateUser();
             userModel.initCloudModels();
             userModel.initPubNub();
@@ -250,14 +198,21 @@ var everlive = {
 
     updateUser : function () {
         var updateObj = userModel._user;
-        
+
+        if (updateObj.Id === undefined || updateObj.Id === null) {
+            updateObj.Id = everlive._id;
+        }
+
         if (updateObj.useIdenticon) {
             updateObj.photo = null;     //Don't store the image on the cloud -- just create it when the user logs in.
         }
 
+        updateObj.privateKey = GibberishAES.enc(updateObj.privateKey, userModel.key);
+
         APP.everlive.Users.updateSingle(updateObj,
             function(data){
                 var result = data.result;
+                updateObj.privateKey = GibberishAES.dec(updateObj.privateKey, userModel.key);
             },
             function(error){
                 mobileNotify("User Update Error : " + JSON.stringify(error));
@@ -281,15 +236,15 @@ var everlive = {
 
 
     currentUser : function (callback) {
-        APP.everlive.Users.currentUser()
-            .then(function (data) {
+        APP.everlive.Users.currentUser(
+            function (data) {
                     everlive._user = data.result;
-                    callback(null, data.result)
-                },
-                function(error){
+                    callback(null, data.result);
+            },
+            function(error){
                     callback(error, null);
 
-                });
+            });
     },
     
 

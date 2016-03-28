@@ -749,7 +749,10 @@ var addContactView = {
             mobileNotify('Contacts must have a valid phone number!');
             return;
         }
-
+        
+        phone = phone.replace(/\D+/g, "");
+        if (phone[0] !== '1')
+            phone = '1' + phone;
 
         var guid = uuid.v4();
 
@@ -764,7 +767,7 @@ var addContactView = {
         }
         var url = contactModel.createIdenticon(guid);
         $('#addContactPhoto').prop('src', url);
-     /*   contact.setACL(userModel.parseACL);*/
+    
         contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
         contact.set("name", name );
@@ -788,9 +791,7 @@ var addContactView = {
 
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
 
-        phone = phone.replace(/\D+/g, "");
-        if (phone[0] !== '1')
-            phone = '1' + phone;
+       
 
         if (contactModel.findContactByPhone(phone) !== undefined) {
             mobileNotify("Existing contact with this phone number");
@@ -806,10 +807,10 @@ var addContactView = {
        // mobileNotify("Invite sent");
 
         // Look up this contacts phone number in the gg directory
-      findUserByPhone(phone, function (result) {
+      memberdirectory.findMemberByPhone(phone, function (user) {
 
-            if (result.found) {
-                var thisContact = result.user;
+            if (user !== null) {
+                var thisContact = user;
                 contact.set("phoneValidated", thisContact.phoneValidated);
                 // Does the contact have a verified email address
                 contact.set("email", thisContact.email);
@@ -845,6 +846,8 @@ var addContactView = {
             }
 
           contactModel.contactsDS.add(contact);
+          contactModel.contactsDS.sync();
+          everlive.syncCloud();
           //contactModel.contactListDS.add(contactx);
 
           addContactView.closeModal();
@@ -1276,7 +1279,7 @@ var contactActionView = {
 
             if (thisContact.lastUpdate !== undefined && thisContact.lastUpdate > time + 900) {
                 // Need to get current data for this contact
-                userStatus.getStatus(thisContact.contactUUID, function (error, user) {
+                userStatus.getMemberStatus(thisContact.contactUUID, function (error, user) {
                     if (error === null && user !== null) {
                         var contactIsAvailable = user.get('isAvailable');
                         contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);

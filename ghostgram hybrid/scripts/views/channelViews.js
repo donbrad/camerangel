@@ -558,9 +558,9 @@ var editChannelView = {
                 // Invited member -- need to look up userId by phone number before sending delete notification
                 var phone = editChannelView.membersDeleted[md].phone;
                 if (phone !== undefined && phone !== null) {
-                    findUserByPhone(phone, function (result) {
-                        if (result.found) {
-                            var user = result.user, contactId = user.get('userUUID');
+                    memberdirectory.findMemberByPhone(phone, function (user) {
+                        if (user !== null) {
+                            var contactId = user.userUUID;
                             appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
                         }
 
