@@ -442,10 +442,7 @@ var contactModel = {
             }
            // dataSource.remove(contact);
 
-          /*  updateParseObject("contacts", 'uuid', contactId, "isDeleted", true);
-            updateParseObject("contacts", 'uuid', contactId, "category", 'zapped');
-            updateParseObject("contacts", 'uuid', contactId, "xcategory", contact.get('xcategory'));
-*/
+
             // Delete any current private channel
             channelModel.deletePrivateChannel(contactId);
 
@@ -473,11 +470,7 @@ var contactModel = {
                 contactList.set('category', xcategory);
             }
             // dataSource.remove(contact);
-
-           /* updateParseObject("contacts", 'uuid', contactId, "isDeleted", false);
-            updateParseObject("contacts", 'uuid', contactId, "category", xcategory);
-            updateParseObject("contacts", 'uuid', contactId, "xcategory", null);
-*/
+            
         }
     },
 
@@ -554,7 +547,6 @@ var contactModel = {
                 mobileNotify(contact.name + " is not a Chat Member!");
             } else {
                 contact.set("connectSent",true);
-                //updateParseObject("contacts", 'uuid', contactId, "connectSent", true);
                 appDataChannel.connectRequest(contact.contactUUID, comment);
             }
         }
@@ -568,7 +560,6 @@ var contactModel = {
                 mobileNotify(contact.name + " is not a Chat Member!");
             } else {
                 contact.set("connectReceived",true);
-                //updateParseObject("contacts", 'uuid', contactId, "connectReceived", true);
             }
         }
     },
@@ -593,7 +584,7 @@ var contactModel = {
 
         if (contact !== undefined) {
             contact.set('isBlocked', true);
-            //updateParseObject("contacts", 'uuid', contactId, "isBlocked", true);
+            
             var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
             if (contactList !== undefined) {
                 contactList.set('isBlocked', true);
@@ -607,8 +598,7 @@ var contactModel = {
         if (contact !== undefined) {
 
             contact.set('isBlocked', false);
-
-            //updateParseObject("contacts", 'uuid', contactId, "isBlocked", false);
+            
             var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
             if (contactList !== undefined) {
                 contactList.set('isBlocked', false);
@@ -664,22 +654,7 @@ var contactModel = {
 
         thisContact.set('publicKey', contact.publicKey);
         thisContactList.set('publicKey', contact.publicKey);
-
-        /*if (isDirty) {
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhoto', thisContact.contactPhoto);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactAddress', thisContact.contactAddress);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'phone', thisContact.phone);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'phoneValidated', thisContact.phoneValidated);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'email', thisContact.email);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'emailValidated', thisContact.emailValidated);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'address', thisContact.address);
-
-        }
-*/
+        
     },
 
 

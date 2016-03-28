@@ -92,7 +92,9 @@ var userModel = {
         userModel.initKendo();
     },
 
+    
     initCloudModels : function () {
+        
         contactModel.init();
 
         mapModel.init();
@@ -174,7 +176,7 @@ var userModel = {
                 } else {
                     // no error and no data -- user isnt signed in
                     if (userModel.hasAccount) {
-                        mobileNotify("Please login to ghostgrams");
+                        mobileNotify("Please signin to ghostgrams");
                         APP.kendo.navigate('#usersignin');
                     } else {
                         APP.kendo.navigate('#newuserhome');

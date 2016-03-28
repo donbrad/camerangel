@@ -196,7 +196,7 @@ var contactsView = {
         //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
         //contactsView.updateContactListDS();
-        mobileNotify("Updating contact status...");
+        //mobileNotify("Updating contact status...");
         contactModel.updateContactListStatus();
 
         // Update the contact list every 5 minutes while the contact list view is active
