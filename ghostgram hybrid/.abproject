@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams mobile",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.13",
+  "BundleVersion": "0.0.14",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
