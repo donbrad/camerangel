@@ -59,11 +59,13 @@ var everlive = {
             if (error === null) {
                 if (!status) {
                     if (userModel.hasAccount) {
+                        everlive._signedIn = false;
                         userModel.initialView = '#usersignin';
                     } else {
                         userModel.initialView = '#newuserhome';
                     }
                 } else {
+                    everlive._signedIn = false;
                     userModel.initialView = '#home';
                 }
 
@@ -236,6 +238,11 @@ var everlive = {
 
 
     currentUser : function (callback) {
+        if (!everlive._isAuthenticated) {
+            callback (null, null);
+            return;
+        }
+
         APP.everlive.Users.currentUser(
             function (data) {
                     everlive._user = data.result;
