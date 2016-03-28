@@ -19,11 +19,14 @@ var everlive = {
     _delta : 60,
 
     init: function () {
-        var provider = Everlive.Constants.StorageProvider.FileSystem;
+       var provider = Everlive.Constants.StorageProvider.FileSystem;
         if (window.navigator.simulator === undefined) {
             // Use local storage in the emulator
             provider = Everlive.Constants.StorageProvider.LocalStorage;
         }
+
+
+
 
         APP.everlive = new Everlive({
             appId: 's2fo2sasaubcx7qe',
@@ -32,14 +35,19 @@ var everlive = {
             offlineStorage: {
                 storage: {
                     provider: provider
-                }/*,
+                /*,
                  conflicts: {
                  strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
                  }*/
-            },
-            encryption: {
-                provider: Everlive.Constants.EncryptionProvider.Default
-                //key: 'intelligram'
+                },
+                encryption: {
+                    provider: Everlive.Constants.EncryptionProvider.Default
+                    key: 'intelligram'
+                },
+                files: {
+                    storagePath: 'ghostgrams/storage',
+                    metaPath: 'ghostrams/meta'
+                }
             },
             authentication: {
                 persist: true/*,
@@ -48,6 +56,7 @@ var everlive = {
                 }*/
             }
         });
+
 
 
         // Wire up the everlive sync monitors
@@ -97,6 +106,7 @@ var everlive = {
                     everlive._user = data.user;
                     everlive._id = data.user.Id;
                     everlive._isAuthenticated = true;
+                    everlive.syncCloud();
                 }
                 callback(null, everlive._isAuthenticated);
             }, 
