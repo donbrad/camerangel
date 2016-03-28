@@ -660,7 +660,7 @@ var channelModel = {
 
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
-    addMemberChannel : function (channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, isDeleted) {
+    addMemberChannel : function (channelUUID, channelName, channelDescription, channelMembers, ownerUUID, ownerName, options, isDeleted) {
 
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel !== undefined)  {
@@ -692,7 +692,7 @@ var channelModel = {
         channel.set("channelUUID", channelUUID);
         channel.set("name", channelName);
         channel.set("description", channelDescription);
-        channel.set("ownerId", ownerId);
+        channel.set("ownerUUID", ownerUUID);
         channel.set("ownerName", ownerName);
         channel.set("isOwner", false);
         channel.set('isPrivate', false);
@@ -786,7 +786,7 @@ var channelModel = {
         channel.set("lastAccess", addTime);
         channel.set("channelUUID", channelUUID);
 
-        channel.set("ownerId", ownerUUID);
+        channel.set("ownerUUID", ownerUUID);
 
         channel.set("ownerName", ownerName);
         // Channel owner can access and edit members...
@@ -855,7 +855,7 @@ var channelModel = {
         channel.set("lastAccess", addTime);
         channel.set("channelUUID", channelUUID);
 
-        channel.set("ownerId", ownerUUID);
+        channel.set("ownerUUID", ownerUUID);
 
         channel.set("ownerName", ownerName);
         // Channel owner can access and edit members...
