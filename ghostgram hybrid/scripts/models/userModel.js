@@ -168,7 +168,7 @@ var userModel = {
             if (error === null && data !== null) {
                 // No error and valid auth data
                 userModel.initialView = '#home';
-                
+
                 everlive.loadUserData();
               
             } else {
