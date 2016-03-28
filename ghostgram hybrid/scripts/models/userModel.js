@@ -668,6 +668,8 @@ var userStatus = {
     update : function () {
         var status = userStatus._statusObj;
 
+        var data =  APP.everlive.data(userStatus._ggClass);
+
         if (status.Id === undefined || status.Id === null) {
             status.Id = everlive._id;
         }
@@ -690,13 +692,18 @@ var userStatus = {
         status.set('lastUpdate', ggTime.currentTime());
 
 
-        everlive.updateOne(userStatus._ggClass, status, function (error, data) {
+        data.updateSingle( status,
+            function ( data) {
+                mobileNotify("User Status Updated");
 
-            if (error !== null) {
-                mobileNotify("Update User Status error : " + JSON.stringify(error));
+            },
+            function (error) {
+                if (error !== null) {
+                    mobileNotify("Update User Status error : " + JSON.stringify(error));
+                }
+
             }
-
-        })
+        );
 
     }
 
