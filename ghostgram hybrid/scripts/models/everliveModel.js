@@ -248,7 +248,6 @@ var everlive = {
         updateObj.isVisible  = userModel._user.isVisible;
         updateObj.statusMessage  = userModel._user.statusMessage;
         updateObj.currentPlace  = userModel._user.currentPlace;
-        updateObj.currentPlace  = userModel._user.currentPlace; 
         updateObj.lat  = userModel._user.lat;
         updateObj.lng  = userModel._user.lng;
         updateObj.googlePlaceId  = userModel._user.googlePlaceId;
