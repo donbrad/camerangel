@@ -39,6 +39,7 @@ var photoModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
+            serverSorting: true,
             sort: {
                 field: "timestamp",
                 dir: "desc"

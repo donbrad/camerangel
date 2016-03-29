@@ -17,13 +17,17 @@ var privateNoteModel = {
         privateNoteModel.notesDS = new kendo.data.DataSource({
             type: 'everlive',
             offlineStorage: "privatenote",
-
             transport: {
                 typeName: 'privatenote',
                 dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}
+            },
+            serverSorting: true,
+            sort: {
+                field: "time",
+                dir: "desc"
             }
         });
 
