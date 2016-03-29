@@ -51,7 +51,7 @@ var everlive = {
 
                 files: {
                     storagePath: 'ghostgrams',
-                    metaPath: 'ghostrams'
+                    metaPath: 'ghostrams_meta'
                 }
             },
             authentication: {
