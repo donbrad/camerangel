@@ -64,6 +64,7 @@ var placesModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
+            serverSorting: true,
             sort: {
                 field: "distance",
                 dir: "asc"

@@ -49,6 +49,7 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
+            serverSorting: true,
             sort: {
                 field: "lastAccess",
                 dir: "desc"
