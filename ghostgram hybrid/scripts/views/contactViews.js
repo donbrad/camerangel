@@ -787,6 +787,9 @@ var addContactView = {
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
+        contact.set('emailValidated', false);
+        contact.set('phoneValidated', false);
+        contact.set('isValidated', false);
         contact.set('ownerUUID', userModel._user.userUUID);
 
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
@@ -811,6 +814,12 @@ var addContactView = {
 
             if (user !== null) {
                 var thisContact = user;
+                if (thisContact.phoneValidated === undefined) {
+                    thisContact.phoneValidated = false;
+                }
+                if (thisContact.emailValidated === undefined) {
+                    thisContact.emailValidated = false;
+                }
                 contact.set("phoneValidated", thisContact.phoneValidated);
                 // Does the contact have a verified email address
                 contact.set("email", thisContact.email);
@@ -823,7 +832,6 @@ var addContactView = {
                 }
                 contact.set('contactUUID', thisContact.userUUID);
                 contact.set('contactPhone', thisContact.phone);
-                contact.set('phoneValidated', thisContact.phoneValidated);
                 contact.set('phone', thisContact.phone);
                 if (thisContact.phoneValidated) {
                     contact.set('category', 'member');
