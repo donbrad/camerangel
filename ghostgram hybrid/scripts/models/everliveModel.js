@@ -32,10 +32,10 @@ var everlive = {
         APP.everlive = new Everlive({
             appId: 's2fo2sasaubcx7qe',
             scheme: 'https',
-            caching: {
+            /*caching: {
                 maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
                 enabled: true //Global setting for enabling/disabling cache. Default is FALSE.
-            },
+            },*/
             offline: {
                 syncUnmodified: true,
                 encryption: {
