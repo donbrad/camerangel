@@ -116,10 +116,7 @@ var noteModel = {
         var noteParse = new Notes();*/
 
         var noteObj = new kendo.data.ObservableObject();
-
-       /* if (note.isPrivate === undefined || note.isPrivate) {
-            noteParse.setACL(userModel.parseACL);
-        }*/
+        
         noteObj.set('version', noteModel._version);
         noteObj.set('ggType', noteModel._ggClass);
         noteObj.set('uuid', note.uuid);
@@ -159,7 +156,7 @@ var noteModel = {
         });*/
     },
 
-    saveParseNote : function (noteParse) {
+   /* saveParseNote : function (noteParse) {
 
 
         var isPrivate = noteParse.get('isPrivate');
@@ -182,7 +179,7 @@ var noteModel = {
                 handleParseError(error);
             }
         });
-    },
+    },*/
 
     // Creates an new note with field values to set defaults
     // type should be a note model type noteModel._x

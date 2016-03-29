@@ -27,6 +27,7 @@ var privateNotesView = {
 
         $("#privateNotesView-listview").kendoMobileListView({
             dataSource: privateNoteModel.notesDS,
+            autoBind: false,
             template: $("#privateNote-template").html()
 
         }).kendoTouch({
