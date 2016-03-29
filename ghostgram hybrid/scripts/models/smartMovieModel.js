@@ -24,6 +24,7 @@ var smartMovie = {
             schema: {
                 model: { id:  Everlive.idField}
             },
+            serverSorting : true,
             sort: {
                 field: "date",
                 dir: "desc"

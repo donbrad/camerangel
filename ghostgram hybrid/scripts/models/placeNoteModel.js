@@ -19,6 +19,7 @@ var placeNoteModel = {
                 typeName: 'placenote',
                 dataProvider: APP.everlive
             },
+            serverSorting: true,
             schema: {
                 model: { id:  Everlive.idField}
             }
