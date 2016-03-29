@@ -97,7 +97,7 @@ var everlive = {
         if (everlive._lastSync < time) {
 
             everlive._lastSync = time + everlive._delta;
-
+            APP.everlive.online();
             APP.everlive.sync();
 
         }

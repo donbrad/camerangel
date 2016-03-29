@@ -847,7 +847,7 @@ var addContactView = {
 
           contactModel.contactsDS.add(contact);
           contactModel.contactsDS.sync();
-          everlive.syncCloud();
+          deviceModel.syncEverlive();
           //contactModel.contactListDS.add(contactx);
 
           addContactView.closeModal();

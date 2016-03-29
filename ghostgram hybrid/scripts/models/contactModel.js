@@ -685,7 +685,7 @@ var contactModel = {
 
         contactModel.contactsDS.add(contact);
         contactModel.contactsDS.sync();
-        everlive.syncCloud();
+        deviceModel.syncEverlive();
 
         /*contact.save(null, {
             success: function(contact) {

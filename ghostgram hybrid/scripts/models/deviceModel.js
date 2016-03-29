@@ -184,7 +184,7 @@ var deviceModel = {
 
         if (currentTime > deviceModel.lastEverliveSync + 60) {
             deviceModel.lastEverliveSync = ggTime.currentTimeInSeconds();
-
+            APP.everlive.online();
             APP.everlive.sync();
         }
 
