@@ -133,7 +133,6 @@ var userModel = {
                 } else {
                     everlive._signedIn = true;
                     everlive.loadUserData();
-                    userModel.initCloudModels();
                     userModel.initialView = '#home';
                     //APP.kendo.navigate(userModel.initialView);
 
