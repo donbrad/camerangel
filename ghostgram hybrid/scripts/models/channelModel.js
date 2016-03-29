@@ -723,6 +723,7 @@ var channelModel = {
 
         channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+        deviceModel.syncEverlive();
         notificationModel.addNewChatNotification(channel.get('channelUUID'), "Group Chat: " + channel.get('name'), channel.get('description'));
 
 
@@ -799,6 +800,7 @@ var channelModel = {
 
         channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+        deviceModel.syncEverlive();
         //currentChannelModel.currentChannel = channelModel.findChannelModel(channelUUID);
         notificationModel.addNewChatNotification(channel.get('channelUUID'), "Place Chat: " + channel.get('name'), channel.get('description'));
 
@@ -868,6 +870,7 @@ var channelModel = {
         
         channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+        deviceModel.syncEverlive();
         mobileNotify('Added Chat : ' + channel.get('name'));
         APP.kendo.navigate('#editChannel?channel=' + channelUUID);
 
