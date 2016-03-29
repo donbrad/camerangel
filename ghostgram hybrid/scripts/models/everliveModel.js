@@ -47,12 +47,12 @@ var everlive = {
                  conflicts: {
                  strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
                  }*/
-                },
+                }/*,
 
                 files: {
                     storagePath: 'ghostgrams',
                     metaPath: 'ghostrams_meta'
-                }
+                }*/
             },
             authentication: {
                 persist: true/*,
