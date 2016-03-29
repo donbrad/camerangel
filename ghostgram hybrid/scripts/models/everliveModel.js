@@ -382,8 +382,14 @@ var everlive = {
             });
     },
 
-    purgeAll : function () {
-
+    purgeAll : function (callback) {
+        APP.everlive.offlineStorage.purgeAll(
+            function () {
+                callback(null, true);
+            },
+            function (error) {
+                callback(error, false);
+            });
     },
 
     clearAuthentication : function () {
