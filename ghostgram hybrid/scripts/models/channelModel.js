@@ -41,7 +41,7 @@ var channelModel = {
 
         channelModel.channelsDS = new kendo.data.DataSource({
             type: 'everlive',
-            offlineStorage: "channels",
+           // offlineStorage: "channels",
             transport: {
                 typeName: 'channels',
                 dataProvider: APP.everlive

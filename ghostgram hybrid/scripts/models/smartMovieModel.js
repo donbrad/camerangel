@@ -15,7 +15,7 @@ var smartMovie = {
 
     init : function () {
         smartMovie.moviesDS = new kendo.data.DataSource({
-            offlineStorage: "smartMovie",
+            //offlineStorage: "smartMovie",
             type: 'everlive',
             transport: {
                 typeName: 'smartMovie',

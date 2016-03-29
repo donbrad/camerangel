@@ -22,7 +22,7 @@ var noteModel = {
 
     init: function () {
         noteModel.notesDS = new kendo.data.DataSource({
-            offlineStorage: "note",
+           // offlineStorage: "note",
             type: 'everlive',
             transport: {
                 typeName: 'note',

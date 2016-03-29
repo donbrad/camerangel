@@ -30,7 +30,7 @@ var photoModel = {
     init: function () {
 
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
-            offlineStorage: "photos",
+           // offlineStorage: "photos",
             type: 'everlive',
             transport: {
                 typeName: 'photos',

@@ -125,7 +125,7 @@ var smartEvent = {
         });
 
         smartEvent.eventsDS = new kendo.data.DataSource({
-            offlineStorage: "smartEvent",
+            //offlineStorage: "smartEvent",
             type: 'everlive',
             transport: {
                 typeName: 'smartEvent',

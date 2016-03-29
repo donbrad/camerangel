@@ -23,8 +23,7 @@ var tagModel = {
 
         tagModel.tagsDS = new kendo.data.DataSource({
             type: 'everlive',
-            offlineStorage: "tags",
-
+         //   offlineStorage: "tags",
             transport: {
                 typeName: 'tags',
                 dataProvider: APP.everlive
