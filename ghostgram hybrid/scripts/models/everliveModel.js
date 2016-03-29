@@ -19,6 +19,7 @@ var everlive = {
     _delta : 60,
 
     init: function () {
+        
        var provider = Everlive.Constants.StorageProvider.FileSystem;
         if (window.navigator.simulator === undefined) {
             // Use local storage in the emulator
@@ -39,10 +40,9 @@ var everlive = {
                 syncUnmodified: true,
                 encryption: {
                     provider: Everlive.Constants.EncryptionProvider.Default,
-                    key: userModel.key
-                }
-            },
-            offlineStorage: {
+                    key: 'intelligram'
+                },
+
                 storage: {
                     provider: provider
                 /*,
