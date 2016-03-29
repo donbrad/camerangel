@@ -229,6 +229,10 @@ var deviceModel = {
 
     },
 
+    isOnline : function () {
+        return(deviceModel.state.isOnline);
+    },
+    
     isWifi : function () {
        return(deviceModel.state.connection === 'internet');
     },
@@ -257,11 +261,13 @@ var deviceModel = {
         switch (networkState) {
             case Connection.NONE:
                 deviceModel.setAppState('connection', "none");
+                deviceModel.setAppState('isOnline', false);
                 mobileNotify("Offline");
                 break;
             case Connection.ETHERNET:
             case Connection.WIFI:
                 deviceModel.setAppState('connection', "internet");
+                deviceModel.setAppState('isOnline', true);
                 mobileNotify("Online via Wifi");
                 break;
             case Connection.CELL:
@@ -269,6 +275,7 @@ var deviceModel = {
             case Connection.CELL_3G:
             case Connection.CELL_4G:
                 deviceModel.setAppState('connection', "cell");
+                deviceModel.setAppState('isOnline', true);
                 mobileNotify("Online via Cell");
                 break;
         }

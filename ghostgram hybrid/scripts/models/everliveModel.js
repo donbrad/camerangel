@@ -35,10 +35,8 @@ var everlive = {
                 enabled: true //Global setting for enabling/disabling cache. Default is FALSE.
             },*/
             offline: {
-               /* syncUnmodified: true,*/
                 encryption: {
                     provider: Everlive.Constants.EncryptionProvider.Default
-                   // , key: 'intelligram'
                 },
 
                 storage: {
