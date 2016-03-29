@@ -500,7 +500,7 @@ var placesModel = {
         placeParse.distance = distance.toFixed(2);
         placeParse.isDirty = true;
         placesModel.placesDS.add(placeParse);
-        placesModel.placesDS.sync();
+        //placesModel.placesDS.sync();
 
         if (callback !== undefined) {
             callback(placeParse);
