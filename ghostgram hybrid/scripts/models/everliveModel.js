@@ -20,11 +20,11 @@ var everlive = {
 
     init: function () {
         
-       var provider = Everlive.Constants.StorageProvider.FileSystem;
-        if (window.navigator.simulator === undefined) {
+     /*  var provider = Everlive.Constants.StorageProvider.FileSystem;
+        if (window.navigator.simulator === undefined) {*/
             // Use local storage in the emulator
-            provider = Everlive.Constants.StorageProvider.LocalStorage;
-        }
+            var provider = Everlive.Constants.StorageProvider.LocalStorage;
+       /* }*/
 
 
         APP.everlive = new Everlive({
@@ -47,12 +47,12 @@ var everlive = {
                  conflicts: {
                     strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
                     }*/
-                },
+                }/*,
 
                 files: {
                     storagePath: 'ghostgrams',
                     metaPath: 'ghostrams_meta'
-                }
+                }*/
             },
             authentication: {
                 persist: true/*,
