@@ -10,7 +10,7 @@
     "velocity": "~1.2.3",
     "lodash": "~3.10.1",
     "pickadate": "~3.5.6",
-    "everlive": "~1.6.7"
+    "everlive": "~1.6.9"
   },
   "homepage": "https://github.com/donbrad/ghostgram",
   "authors": [
