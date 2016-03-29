@@ -34,8 +34,10 @@ var everlive = {
                 maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
                 enabled: true //Global setting for enabling/disabling cache. Default is FALSE.
             },*/
-            offline: {
-               /* syncUnmodified: true,*/
+            offline: true,
+
+           /* offline: {
+               /!* syncUnmodified: true,*!/
                 encryption: {
                     provider: Everlive.Constants.EncryptionProvider.Default,
                     key: 'intelligram'
@@ -43,22 +45,28 @@ var everlive = {
 
                 storage: {
                     provider: provider
-                    /*,
+                    /!*,
                  conflicts: {
                     strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
-                    }*/
-                }/*,
+                    }*!/
+                }/!*,
 
                 files: {
                     storagePath: 'ghostgrams',
                     metaPath: 'ghostrams_meta'
-                }*/
-            },
+                }*!/
+            },*/
             authentication: {
-                persist: true/*,
+                persist: true,
                 onAuthenticationRequired: function() {
-
-                }*/
+                    if (userModel.hasAccount) {
+                        everlive._signedIn = false;
+                        userModel.initialView = '#usersignin';
+                    } else {
+                        userModel.initialView = '#newuserhome';
+                    }
+                    APP.kendo.navigate(userModel.initialView);
+                }
             }
         });
         
