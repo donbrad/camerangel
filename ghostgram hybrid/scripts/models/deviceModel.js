@@ -167,9 +167,9 @@ var deviceModel = {
     onResume: function() {
        deviceModel.setAppState('inBackground', false);
 
-        if (deviceModel.state.parseSyncComplete) {
-            notificationModel.processUnreadChannels();
-        }
+     
+        notificationModel.processUnreadChannels();
+        
 
     },
 

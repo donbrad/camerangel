@@ -37,8 +37,8 @@ var everlive = {
             offline: {
                /* syncUnmodified: true,*/
                 encryption: {
-                    provider: Everlive.Constants.EncryptionProvider.Default
-                   // , key: 'intelligram'
+                    provider: Everlive.Constants.EncryptionProvider.Default,
+                    key: 'intelligram'
                 },
 
                 storage: {
@@ -175,6 +175,7 @@ var everlive = {
             userModel.initCloudModels();
             userModel.initPubNub();
             userStatus.update();
+            deviceModel.isPushProvisioned();
 
             APP.kendo.navigate('#home');
             userModel._user.bind('change', userModel.sync);
@@ -379,6 +380,10 @@ var everlive = {
             function(error){
                 callback(error, null);
             });
+    },
+
+    purgeAll : function () {
+
     },
 
     clearAuthentication : function () {
