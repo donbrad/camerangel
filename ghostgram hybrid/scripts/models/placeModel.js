@@ -63,11 +63,6 @@ var placesModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            serverSorting: true,
-            sort: {
-                field: "distance",
-                dir: "asc"
             }
         });
 
@@ -485,14 +480,13 @@ var placesModel = {
         placeParse.set('zipcode', place.zipcode);
         placeParse.set('isVisible', true);
         placeParse.set('isDeleted', false);
-        placeParse.set('isAvailable', place.isAvailable === "true");
+        placeParse.set('isAvailable', true);
  //       placeParse.set('isPrivate', place.isPrivate === "true");
         placeParse.set('isPrivate', true);
+        placeParse.set('hasPlaceChat', false);
+        placeParse.set('placeChatId', null);
 
-        if (!createChatFlag) {
-            placeParse.set('hasPlaceChat', false);
-            placeParse.set('placeChatId', null);
-        } else {
+        if (createChatFlag) {
             placeParse.set('hasPlaceChat', true);
             var placeChatguid = uuid.v4();
             placeParse.set('placeChatId', placeChatguid);

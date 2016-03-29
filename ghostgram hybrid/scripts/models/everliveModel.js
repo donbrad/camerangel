@@ -117,13 +117,17 @@ var everlive = {
                 if (data.status === "unauthenticated") {
                     everlive._status = data.status;
                     everlive._isAuthenticated = false;
-                } else {
+                } else if (data.status === "authenticated"){
                     everlive._status = data.status;
                     everlive._user = data.user;
                     everlive._id = data.user.Id;
                     everlive._isAuthenticated = true;
 
+                } else if (data.status === "authenticating") {
+                    everlive._status = data.status;
+                    everlive._isAuthenticated = false;
                 }
+                mobileNotify("Everlive User Status: " + data.status);
                 callback(null, everlive._isAuthenticated);
             }, 
             function (error) {
