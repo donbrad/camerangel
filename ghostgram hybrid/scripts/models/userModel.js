@@ -119,7 +119,6 @@ var userModel = {
         }
 
         userModel.initKendo();
-
         
     },
 

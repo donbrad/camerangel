@@ -37,8 +37,8 @@ var everlive = {
             offline: {
                 syncUnmodified: true,
                 encryption: {
-                    provider: Everlive.Constants.EncryptionProvider.Default,
-                    key: 'intelligram'
+                    provider: Everlive.Constants.EncryptionProvider.Default
+                   // , key: 'intelligram'
                 },
 
                 storage: {
@@ -50,8 +50,8 @@ var everlive = {
                 },
 
                 files: {
-                    storagePath: 'ghostgrams/storage',
-                    metaPath: 'ghostrams/meta'
+                    storagePath: 'ghostgrams',
+                    metaPath: 'ghostrams'
                 }
             },
             authentication: {
