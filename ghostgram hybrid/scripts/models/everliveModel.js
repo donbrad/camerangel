@@ -27,8 +27,6 @@ var everlive = {
         }
 
 
-
-
         APP.everlive = new Everlive({
             appId: 's2fo2sasaubcx7qe',
             scheme: 'https',
@@ -63,30 +61,13 @@ var everlive = {
                 }*/
             }
         });
-
-
-
+        
         // Wire up the everlive sync monitors
         APP.everlive.on('syncStart', everlive.syncStart);
 
         APP.everlive.on('syncEnd', everlive.syncEnd);
 
-        everlive.checkAuthStatus(function (error, status) {
-            if (error === null) {
-                if (!status) {
-                    if (userModel.hasAccount) {
-                        everlive._signedIn = false;
-                        userModel.initialView = '#usersignin';
-                    } else {
-                        userModel.initialView = '#newuserhome';
-                    }
-                } else {
-                    everlive._signedIn = false;
-                    userModel.initialView = '#home';
-                }
-
-            }
-        });
+       
 
     },
 
@@ -113,7 +94,7 @@ var everlive = {
                     everlive._user = data.user;
                     everlive._id = data.user.Id;
                     everlive._isAuthenticated = true;
-                    everlive.syncCloud();
+
                 }
                 callback(null, everlive._isAuthenticated);
             }, 
@@ -162,6 +143,7 @@ var everlive = {
     },
 
     loadUserData : function () {
+        mobileNotify("Loading user information...");
         everlive.currentUser( function (err, user) {
             if (err !== null) {
                 mobileNotify("Can't access User's Account : " + err.message);

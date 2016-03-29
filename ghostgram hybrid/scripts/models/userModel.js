@@ -80,6 +80,35 @@ var userModel = {
 
     init: function () {
         var hasAccount = window.localStorage.getItem('ggHasAccount');
+        userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
+        userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
+        userModel.username = window.localStorage.getItem('ggUserName');
+        userModel.hasAccount = window.localStorage.getItem('ggHasAccount');
+        userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
+
+        // userModel.parseUser = Parse.User.current();
+        userModel.device.udid = device.uuid;
+        userModel.device.platform = device.platform;
+        userModel.device.device = device.name;
+        userModel.device.model = device.model;
+
+        if (userModel.userUUID === undefined) {
+            userModel.userUUID = null;
+            userModel.hasAccount = false;
+        }
+
+        // If remembering Username, get it from localstorage and prefill signin.
+        if (userModel.rememberUsername) {
+            userModel.username = window.localStorage.getItem('ggUsername');
+            if (userModel.username === undefined) {
+                userModel.username = null;
+            }
+
+        }
+
+        if (userModel.userUUID !== undefined && userModel.userUUID !== null) {
+            userModel.key = userModel.userUUID.replace(/-/g,'');
+        }
         
         if (hasAccount !== undefined && hasAccount === true) {
             userModel.hasAccount = true;
@@ -90,6 +119,28 @@ var userModel = {
         }
 
         userModel.initKendo();
+
+        everlive.checkAuthStatus(function (error, status) {
+            if (error === null) {
+                if (!status) {
+                    if (userModel.hasAccount) {
+                        everlive._signedIn = false;
+                        userModel.initialView = '#usersignin';
+                    } else {
+                        userModel.initialView = '#newuserhome';
+                    }
+                    APP.kendo.navigate(userModel.initialView);
+                } else {
+                    everlive._signedIn = true;
+                    everlive.loadUserData();
+                    userModel.initCloudModels();
+                    userModel.initialView = '#home';
+                    //APP.kendo.navigate(userModel.initialView);
+
+                }
+
+            }
+        });
     },
 
     
@@ -140,32 +191,7 @@ var userModel = {
         });
     },
 
-    initCloud: function () {
-    
-       // userModel.parseUser = Parse.User.current();
-        userModel.device.udid = device.uuid;
-        userModel.device.platform = device.platform;
-        userModel.device.device = device.name;
-        userModel.device.model = device.model;
-        userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
-        userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
-        userModel.username = window.localStorage.getItem('ggUserName');
-        userModel.hasAccount = window.localStorage.getItem('ggHasAccount');
-        userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
-        if (userModel.userUUID === undefined) {
-            userModel.userUUID = null;
-            userModel.hasAccount = false;
-        }
-
-        // If remembering Username, get it from localstorage and prefill signin.
-        if (userModel.rememberUsername) {
-           userModel.username = window.localStorage.getItem('ggUsername');
-            if (userModel.username == undefined || userModel.username === '') {
-                window.localStorage.setItem('ggUsername', userModel._user.get('username'));
-            }
-
-        }
-        userModel.initialView = '#newuserhome';
+    /*initCloud: function () {
 
         // Check the status of kendo auth
         everlive.currentUser(function (error, data) {
@@ -202,7 +228,7 @@ var userModel = {
 
         });
 
-    },
+    },*/
 
     update_user : function (user) {
 
