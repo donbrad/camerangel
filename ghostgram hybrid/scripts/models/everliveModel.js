@@ -21,11 +21,11 @@ var everlive = {
     init: function () {
         
        var provider = Everlive.Constants.StorageProvider.FileSystem;
-        if (window.navigator.simulator === undefined) {
+       /* if (window.navigator.simulator === undefined) {
             // Use local storage in the emulator
             provider = Everlive.Constants.StorageProvider.LocalStorage;
         }
-
+*/
 
         APP.everlive = new Everlive({
             appId: 's2fo2sasaubcx7qe',
