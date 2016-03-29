@@ -66,7 +66,27 @@ var everlive = {
         APP.everlive.on('syncStart', everlive.syncStart);
 
         APP.everlive.on('syncEnd', everlive.syncEnd);
+        
+        everlive.checkAuthStatus(function (error, status) {
+            if (error === null) {
+                if (!status) {
+                    if (userModel.hasAccount) {
+                        everlive._signedIn = false;
+                        userModel.initialView = '#usersignin';
+                    } else {
+                        userModel.initialView = '#newuserhome';
+                    }
+                    APP.kendo.navigate(userModel.initialView);
+                } else {
+                    everlive._signedIn = true;
+                    everlive.loadUserData();
+                    userModel.initialView = '#home';
+                    //APP.kendo.navigate(userModel.initialView);
 
+                }
+
+            }
+        });
        
 
     },
