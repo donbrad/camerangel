@@ -704,6 +704,10 @@ var userStatus = {
             },
             function (error) {
                 if (error !== null) {
+                    if (error !== undefined && error.code === 801) {
+                        userStatus.create();
+                        return;
+                    }
                     mobileNotify("Update User Status error : " + JSON.stringify(error));
                 }
 
