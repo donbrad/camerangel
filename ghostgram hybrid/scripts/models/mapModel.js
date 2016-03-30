@@ -6,8 +6,8 @@
 
 var mapModel = {
 
-    lat: null,
-    lng: null,
+    lat: 42.1347293,
+    lng: -91.1362623,
     latlng : null,
 
     currentAddress : null,   // Current physical address - location
@@ -388,6 +388,13 @@ var mapModel = {
         if (lat === undefined || lng === undefined) {
             return;
         }
+        if (typeof lat === 'string') {
+            lat = parseFloat(lat);
+        }
+        if (typeof lng === 'string') {
+            lng = parseFloat(lng);
+        }
+
         mapModel.googleMap.setCenter({lat : lat, lng: lng});
 
     }

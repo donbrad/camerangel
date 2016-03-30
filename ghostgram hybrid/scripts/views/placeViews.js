@@ -2062,6 +2062,9 @@ var mapView = {
     },
 
     displayActivePlace : function () {
+        if (mapView._lat === null || mapView._lat === null) {
+            return;
+        }
         var point = new google.maps.LatLng(mapView._lat, mapView._lng);
         // Center the map.
         
