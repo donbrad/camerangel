@@ -105,6 +105,9 @@ var placesModel = {
                         var placeList = placesModel.findPlaceListUUID(place.uuid);
                         if (placeList === undefined)
                             placesModel.placeListDS.add(place);
+                        var placeObj = placesModel.getPlaceModel(place.uuid);
+                        if (placeObj === undefined)
+                            placesModel.placesDS.add(place);
                         tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
                         break;
                 }
