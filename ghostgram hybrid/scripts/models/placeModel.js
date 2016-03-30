@@ -429,6 +429,9 @@ var placesModel = {
         everlive.createOne(placesModel._cloudClass, placeObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating place " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                placesModel.placesDS.add(placeObj);
             }
         });
 
