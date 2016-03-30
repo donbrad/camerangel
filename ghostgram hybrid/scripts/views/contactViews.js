@@ -852,9 +852,17 @@ var addContactView = {
                 contact.set("contactEmail", null);
             }
 
-          contactModel.contactsDS.add(contact);
+          everlive.createOne(contactModel._cloudClass, contact, function (error, data){
+              if (error !== null) {
+                  mobileNotify ("Error creating Contact " + JSON.stringify(error));
+              } else {
+                  contactModel.contactsDS.add(contact);
+              }
+          });
+
+        /*  contactModel.contactsDS.add(contact);
           contactModel.contactsDS.sync();
-          deviceModel.syncEverlive();
+          deviceModel.syncEverlive();*/
           //contactModel.contactListDS.add(contactx);
 
           addContactView.closeModal();

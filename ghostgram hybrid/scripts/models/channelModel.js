@@ -679,8 +679,15 @@ var channelModel = {
         channel.set("members", [userModel._user.userUUID, contactUUID]);
 
 
-        channelModel.channelsDS.add(channel);
-        channelModel.channelsDS.sync();
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Channel " + JSON.stringify(error));
+            } else {
+                channelModel.channelsDS.add(channel);
+            }
+        });
+
+
         notificationModel.addNewPrivateChatNotification(channel.get('channelUUID'), channel.get('name'));
 
 
@@ -749,9 +756,16 @@ var channelModel = {
         channel.set("invitedMembers", []);
 
 
-        channelModel.channelsDS.add(channel);
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Channel " + JSON.stringify(error));
+            } else {
+                channelModel.channelsDS.add(channel);
+            }
+        });
+       /* channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
-        deviceModel.syncEverlive();
+        deviceModel.syncEverlive();*/
         notificationModel.addNewChatNotification(channel.get('channelUUID'), "Group Chat: " + channel.get('name'), channel.get('description'));
 
 
@@ -826,9 +840,16 @@ var channelModel = {
         channel.set("invitedMembers", []);
 
 
-        channelModel.channelsDS.add(channel);
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Channel " + JSON.stringify(error));
+            } else {
+                channelModel.channelsDS.add(channel);
+            }
+        });
+    /*    channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
-        deviceModel.syncEverlive();
+        deviceModel.syncEverlive();*/
         //currentChannelModel.currentChannel = channelModel.findChannelModel(channelUUID);
         notificationModel.addNewChatNotification(channel.get('channelUUID'), "Place Chat: " + channel.get('name'), channel.get('description'));
 
@@ -895,10 +916,17 @@ var channelModel = {
         channel.set("members", [ownerUUID]);
         channel.set("invitedMembers", []);
 
-        
-        channelModel.channelsDS.add(channel);
+
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Channel " + JSON.stringify(error));
+            } else {
+                channelModel.channelsDS.add(channel);
+            }
+        });
+       /* channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
-        deviceModel.syncEverlive();
+        deviceModel.syncEverlive();*/
         mobileNotify('Added Chat : ' + channel.get('name'));
         APP.kendo.navigate('#editChannel?channel=' + channelUUID);
 
@@ -948,14 +976,20 @@ var channelModel = {
                         if (place !== undefined) {
                             place.set('hasPlaceChat', false);
                             place.set('placeChatId', null);
-                            //updateParseObject("places", 'uuid', placeUUID, 'hasPlaceChat', false);
-                            //updateParseObject("places", 'uuid', placeUUID, 'placeChatId', null);
                         }
                     }
                 }
 
                 if (window.navigator.simulator === undefined)
                     serverPush.unprovisionGroupChannel(channelUUID);
+
+                var Id = channel.Id;
+
+                if (Id !== undefined){
+                    everlive.deleteOne(channelModel._cloudClass, Id, function (error, data) {
+                        dataSource.remove(channel);
+                    });
+                }
                 dataSource.remove(channel);
                 //deleteParseObject("channels", 'channelUUID', channelUUID);
                 //mobileNotify("Removed channel : " + channel.get('name'));

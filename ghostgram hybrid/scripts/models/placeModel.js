@@ -330,9 +330,11 @@ var placesModel = {
         placeObj.set('distance', distance);
         // Get a json object to add to kendo (strip the parse specific stuff)
       //  var placeObj = placeObj.toJSON();
-        everlive.createOne(placesModel._ggClass, place, function (error, data){
+        everlive.createOne(placesModel._cloudClass, place, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating place " + JSON.stringify(error));
+            } else {
+                placesModel.placesDS.add(place);
             }
         });
 

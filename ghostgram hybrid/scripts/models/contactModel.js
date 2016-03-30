@@ -683,9 +683,16 @@ var contactModel = {
         contact.set('contactEmail', null);
         contact.set('ownerUUID', userModel._user.userUUID);
 
-        contactModel.contactsDS.add(contact);
+        everlive.createOne(contactModel._cloudClass, contact, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating place " + JSON.stringify(error));
+            } else {
+                contactModel.contactsDS.add(contact);
+            }
+        });
+        /*contactModel.contactsDS.add(contact);
         contactModel.contactsDS.sync();
-        deviceModel.syncEverlive();
+        deviceModel.syncEverlive();*/
 
         /*contact.save(null, {
             success: function(contact) {
