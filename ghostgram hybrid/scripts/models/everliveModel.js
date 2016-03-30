@@ -400,7 +400,7 @@ var everlive = {
 
     deleteOne : function (dataType, objectId, callback) {
         var data = APP.everlive.data(dataType);
-        data.destroySingle(objectId,
+        data.destroySingle({Id: objectId},
             function(data){
                 callback(null, data);
             },

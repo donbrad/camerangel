@@ -469,7 +469,7 @@ var placesModel = {
 
                 if (Id !== undefined){
                     everlive.deleteOne(placesModel._cloudClass, Id, function (error, data) {
-
+                        placesModel.placesDS.remove(place);
                     });
                 }
                 // Delete the parse object directly
