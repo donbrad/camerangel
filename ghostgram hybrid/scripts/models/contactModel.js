@@ -114,7 +114,7 @@ var contactModel = {
         contactModel.updateContactListStatus(true);
         contactModel.syncContactTags();
         deviceModel.setAppState('hasContacts', true);
-        deviceModel.isParseSyncComplete();
+       /* deviceModel.isParseSyncComplete();*/
 
         contactModel.contactListDS.online(false);
 

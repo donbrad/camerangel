@@ -94,7 +94,7 @@ var channelModel = {
 
         channelModel.channelsDS.fetch();
         deviceModel.setAppState('hasChannels', true);
-        deviceModel.isParseSyncComplete();
+       /* deviceModel.isParseSyncComplete();*/
 
         notificationModel.processUnreadChannels();
 

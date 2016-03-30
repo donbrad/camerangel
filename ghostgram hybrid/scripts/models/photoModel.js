@@ -33,8 +33,8 @@ var photoModel = {
            // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'photos',
-                dataProvider: APP.everlive
+                typeName: 'photos'/*,
+                dataProvider: APP.everlive*/
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -49,7 +49,7 @@ var photoModel = {
 
         photoModel.photosDS.fetch();
         deviceModel.setAppState('hasPhotos', true);
-        deviceModel.isParseSyncComplete();
+        /*deviceModel.isParseSyncComplete();*/
     },
 
     initOffer : function () {

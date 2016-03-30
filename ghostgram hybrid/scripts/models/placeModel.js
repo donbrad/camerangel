@@ -53,7 +53,6 @@ var placesModel = {
 
 
     init : function () {
-
         placesModel.placesDS = new kendo.data.DataSource({
             type: 'everlive',
            // offlineStorage: "places",
@@ -65,8 +64,7 @@ var placesModel = {
                 model: { Id:  Everlive.idField}
             }
         });
-
-
+        
         // Reflect any core contact changes to contactList
         placesModel.placesDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
@@ -106,8 +104,8 @@ var placesModel = {
                         if (placeList === undefined)
                             placesModel.placeListDS.add(place);
                         var placeObj = placesModel.getPlaceModel(place.uuid);
-                        if (placeObj === undefined)
-                            placesModel.placesDS.add(place);
+                       /* if (placeObj === undefined)
+                            placesModel.placesDS.add(place);*/
                         tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
                         break;
                 }
@@ -118,8 +116,8 @@ var placesModel = {
 
         placesModel.placesDS.fetch();
         placesModel.syncPlaceListDS();
-        deviceModel.setAppState('hasPlaces', true);
-        deviceModel.isParseSyncComplete();
+      /*  deviceModel.setAppState('hasPlaces', true);
+        deviceModel.isParseSyncComplete();*/
 
     },
 
