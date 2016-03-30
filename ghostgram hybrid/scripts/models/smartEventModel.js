@@ -128,8 +128,8 @@ var smartEvent = {
             //offlineStorage: "smartEvent",
             type: 'everlive',
             transport: {
-                typeName: 'smartEvent',
-                dataProvider: APP.everlive
+                typeName: 'smartEvent'
+                //dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}
@@ -141,30 +141,7 @@ var smartEvent = {
             }
         });
     },
-
-
-   /* fetch : function () {
-        var smartEvents = Parse.Object.extend(smartEvent._cloudClass);
-        var query = new Parse.Query(smartEvents);
-
-        query.find({
-            success: function(collection) {
-                var models = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var smartObj = collection[i];
-
-                    models.push(smartObj.toJSON());
-                }
-                deviceModel.setAppState('hasSmartEvents', true);
-                smartEvent.eventsDS.data(models);
-                deviceModel.isParseSyncComplete();
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-    },
-*/
+    
     queryTerm: function (query) {
 
         if (query === undefined)
@@ -419,9 +396,18 @@ var smartEvent = {
         smartOb.set('inviteList', objectIn.inviteList);
         smartOb.set('rsvpList', objectIn.rsvpList);
 
+
+        everlive.createOne(smartEvent._cloudClass, smartOb, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Smart Event " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                smartEvent.eventsDS.add(smartOb);
+            }
+        });
         //var smartObj = smartOb.toJSON();
-        smartEvent.eventsDS.add(smartOb);
-        smartEvent.eventsDS.sync();
+
+      //  smartEvent.eventsDS.sync();
 
         callback(smartOb);
 

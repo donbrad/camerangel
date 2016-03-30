@@ -8,6 +8,8 @@
 'use strict';
 
 var placeNoteModel = {
+    _cloudClass : 'placenote',
+    
     notesDS: null,
 
     init: function () {
@@ -102,8 +104,13 @@ var placeNoteModel = {
 
     deleteNote : function (note) {
          if (note !== undefined) {
-             placeNoteModel.notesDS.remove(note);
-             placeNoteModel.notesDS.sync();
+             var Id = note.Id;
+             if (Id !== undefined){
+                 everlive.deleteOne(placeNoteModel._cloudClass, Id, function (error, data) {
+                     placeNoteModel.notesDS.remove(note);
+                 });
+             }
+        
          }
 
     },
@@ -111,8 +118,13 @@ var placeNoteModel = {
     deleteNoteById : function (noteId) {
         var note = placeNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
         if (note !== undefined && note !== null) {
-            placeNoteModel.notesDS.remove(note);
-            placeNoteModel.notesDS.sync();
+            var Id = note.Id;
+            if (Id !== undefined){
+                everlive.deleteOne(placeNoteModel._cloudClass, Id, function (error, data) {
+                    placeNoteModel.notesDS.remove(note);
+                });
+            }
+
         }
 
     }

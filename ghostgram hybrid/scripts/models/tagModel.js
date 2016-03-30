@@ -12,6 +12,7 @@
 var tagModel = {
 
     _ggClass : 'tag',
+    _cloudClass : 'tags',
     _user : 'user',
     _version: 1,
     _tagsSynced : false,
@@ -25,8 +26,8 @@ var tagModel = {
             type: 'everlive',
          //   offlineStorage: "tags",
             transport: {
-                typeName: 'tags',
-                dataProvider: APP.everlive
+                typeName: 'tags'/*,
+                dataProvider: APP.everlive*/
             },
             schema: {
                 model: { id:  Everlive.idField}
@@ -59,8 +60,16 @@ var tagModel = {
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = semanticCategory;
 
-        tagModel.tagsDS.add(tagObj);
-        tagModel.tagsDS.sync();
+
+        everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                tagModel.tagsDS.add(tagObj);
+
+            }
+        });
 
     },
 
@@ -75,8 +84,15 @@ var tagModel = {
         tagObj.categoryId = null;
         tagObj.semanticCategory = 'Group';
 
-        tagModel.tagsDS.add(tagObj);
-        tagModel.tagsDS.sync();
+        everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                tagModel.tagsDS.add(tagObj);
+
+            }
+        });
     },
 
     addContactTag : function (tag, alias, description, categoryId) {
@@ -96,8 +112,15 @@ var tagModel = {
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Contact';
 
-        tagModel.tagsDS.add(tagObj);
-        tagModel.tagsDS.sync();
+        everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                tagModel.tagsDS.add(tagObj);
+
+            }
+        });
     },
 
     addPlaceTag : function (tag, alias, description, categoryId) {
@@ -118,8 +141,15 @@ var tagModel = {
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Place';
 
-        tagModel.tagsDS.add(tagObj);
-        tagModel.tagsDS.sync();
+        everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                tagModel.tagsDS.add(tagObj);
+
+            }
+        });
     },
 
 

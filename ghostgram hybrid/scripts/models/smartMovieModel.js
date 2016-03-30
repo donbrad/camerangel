@@ -18,8 +18,8 @@ var smartMovie = {
             //offlineStorage: "smartMovie",
             type: 'everlive',
             transport: {
-                typeName: 'smartMovie',
-                dataProvider: APP.everlive
+                typeName: 'smartMovie'
+                //dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}
@@ -139,9 +139,16 @@ var smartMovie = {
         smartOb.set('runtime', objectIn.runtime);
         smartOb.set('genre', objectIn.genre);
 
-       // var smartObj = smartOb.toJSON();
-        smartMovie.moviesDS.add(smartOb);
-        smartMovie.moviesDS.sync();
+
+        everlive.createOne(smartMovie._cloudClass, smartOb, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                smartMovie.moviesDS.add(smartOb);
+            }
+        });
+       
 
         callback(smartOb);
 
