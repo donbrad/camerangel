@@ -125,89 +125,6 @@ var placesModel = {
         return(new Object(placesModel._placeModel));
     },
 
-/*    fetch : function () {
-        var PlaceModel = Parse.Object.extend(placesModel._parseClass);
-        var query = new Parse.Query(PlaceModel);
-        query.limit(1000);
-
-        query.find({
-            success: function(collection) {
-                var models = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var parseModel = collection[i];
-                    var dirty = false;
-
-                    if (parseModel.get('ggType') === undefined) {
-                        parseModel.set('ggType', placesModel._ggClass);
-                        dirty = true;
-                    }
-
-                    if (parseModel.get('version') === undefined) {
-                        parseModel.set('version', placesModel._version);
-                        dirty = true;
-                    }
-
-                    if (parseModel.get('isShared') === undefined) {
-                        parseModel.set('isShared', false);
-                        dirty = true;
-                    }
-                    if (parseModel.get('isDeleted') === undefined) {
-                        parseModel.set('isDeleted', false);
-                        dirty = true;
-                    }
-                    if (parseModel.get('distance') === undefined) {
-                        parseModel.set('distance', 0.0);
-                        dirty = true;
-                    }
-                    if (parseModel.get('alias') === undefined) {
-                        parseModel.set('alias', null);
-                        dirty = true;
-                    }
-                    if (parseModel.get('factualId') === undefined) {
-                        parseModel.set('factualId', null);
-                        dirty = true;
-                    }
-                    if (dirty)
-                        parseModel.save();
-
-                    var model = parseModel.toJSON();
-
-                    models.push(model);
-                }
-
-                everlive.getCount('places', function(error, count){
-                    if (error === null && count === 0) {
-                        everlive.createAll('places', models, function (error1, data) {
-                            if (error1 !== null) {
-                                mobileNotify("Everlive Places error " + JSON.stringify(error1));
-                            }
-
-                            placesModel.placesDS.sync();
-                            //placesModel.computePlaceDSDistance();
-                            placesModel.syncPlaceListDS();
-                            deviceModel.setAppState('hasPlaces', true);
-                            deviceModel.isParseSyncComplete();
-                        });
-                    } else {
-                        if (error !== null)
-                            mobileNotify("Everlive Places error " + JSON.stringify(error));
-
-                        placesModel.placesDS.fetch();
-                        placesModel.syncPlaceListDS();
-                        deviceModel.setAppState('hasPlaces', true);
-                        deviceModel.isParseSyncComplete();
-                     }
-
-                });
-
-
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-    },*/
-
 
    updateDistance : function() {
         var length = placesModel.placeListDS.total();
@@ -367,56 +284,64 @@ var placesModel = {
         }
 
        // var Place = Parse.Object.extend(placesModel._parseClass);
-        var placeParse = new kendo.data.ObservableObject();
+        var placeObj = new kendo.data.ObservableObject();
 
         var newPlace = placesModel.newPlace();
 
         // Check that the place name is unique (in this users place's)
         place.name = place.name.toString();
 
-        //placeParse.setACL(userModel.parseACL);
-        placeParse.set('uuid', place.uuid);
-        placeParse.set('ggType', placesModel._ggClass);
-        placeParse.set('version', placesModel._version);
-        placeParse.set('category', place.category);
+        //placeObj.setACL(userModel.parseACL);
+        placeObj.set('uuid', place.uuid);
+        placeObj.set('ggType', placesModel._ggClass);
+        placeObj.set('version', placesModel._version);
+        placeObj.set('category', place.category);
         var name =  place.name.toString();
-        placeParse.set('name', name);
-        placeParse.set('venueName', place.venueName);
+        placeObj.set('name', name);
+        placeObj.set('venueName', place.venueName);
         if (place.alias === undefined)
             place.alias = null;
-        placeParse.set('alias', place.alias);
-        placeParse.set('isShared', true);
-        placeParse.set('googleId', place.googleId);
+        placeObj.set('alias', place.alias);
+        placeObj.set('isShared', true);
+        placeObj.set('googleId', place.googleId);
         if (place.factualId === undefined)
             place.factualId = null;
-        placeParse.set('factualId', place.factualId);
-        placeParse.set('address', place.address);
-        placeParse.set('lat', place.lat);
-        placeParse.set('lng', place.lng);
-        placeParse.set('distance', 0);
-        placeParse.set('type', place.type);
-        placeParse.set('city', place.city);
-        placeParse.set('state', place.state);
-        placeParse.set('country', place.country);
-        placeParse.set('zipcode', place.zipcode);
-        placeParse.set('isVisible', true);
-        placeParse.set('isDeleted', false);
-        placeParse.set('isAvailable', place.isAvailable === "true");
-    //    placeParse.set('isPrivate', place.isPrivate === "true");
-        placeParse.set('isPrivate', true);
-        placeParse.set('hasPlaceChat', true);
-        placeParse.set('placeChatId', placeChatId);
+        placeObj.set('factualId', place.factualId);
+        placeObj.set('address', place.address);
+        placeObj.set('lat', place.lat);
+        placeObj.set('lng', place.lng);
+        placeObj.set('distance', 0);
+        placeObj.set('type', place.type);
+        placeObj.set('city', place.city);
+        placeObj.set('state', place.state);
+        placeObj.set('country', place.country);
+        placeObj.set('zipcode', place.zipcode);
+        placeObj.set('isVisible', true);
+        placeObj.set('isDeleted', false);
+        placeObj.set('isAvailable', place.isAvailable === "true");
+    //    placeObj.set('isPrivate', place.isPrivate === "true");
+        placeObj.set('isPrivate', true);
+        placeObj.set('hasPlaceChat', true);
+        placeObj.set('placeChatId', placeChatId);
 
         var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
         // update the distance value for the local object...
-        placeParse.set('distance', distance);
+        placeObj.set('distance', distance);
         // Get a json object to add to kendo (strip the parse specific stuff)
-      //  var placeObj = placeParse.toJSON();
-        placesModel.placesDS.add(place);
+      //  var placeObj = placeObj.toJSON();
+        everlive.createOne(placesModel._ggClass, place, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating place " + JSON.stringify(error));
+            }
+        });
+
+
+
+      //  placesModel.placesDS.add(place);
        /* placesModel.placesDS.sync();
 
-        placeParse.save(null, {
+        placeObj.save(null, {
             success: function(placeIn) {
                 // Execute any logic that should take place after the object is saved.
 
@@ -439,7 +364,7 @@ var placesModel = {
 
     addPlace: function (place, createChatFlag,  callback) {
         //var Place = Parse.Object.extend(placesModel._parseClass);
-        var placeParse = new kendo.data.ObservableObject();
+        var placeObj = new kendo.data.ObservableObject();
 
         var newPlace = placesModel.newPlace();
 
@@ -454,76 +379,66 @@ var placesModel = {
         var guid = uuid.v4();
 
 
-       // placeParse.setACL(userModel.parseACL);
-        placeParse.set('uuid', guid);
-        placeParse.set('ggType', placesModel._ggClass);
-        placeParse.set('version', placesModel._version);
-        placeParse.set('category', place.category);
+       // placeObj.setACL(userModel.parseACL);
+        placeObj.set('uuid', guid);
+        placeObj.set('ggType', placesModel._ggClass);
+        placeObj.set('version', placesModel._version);
+        placeObj.set('category', place.category);
         var name =  place.name.toString();
-        placeParse.set('name', name);
-        placeParse.set('venueName', place.venueName);
+        placeObj.set('name', name);
+        placeObj.set('venueName', place.venueName);
         if (place.alias === undefined)
             place.alias = null;
-        placeParse.set('alias', place.alias);
-        placeParse.set('isShared', false);
-        placeParse.set('googleId', place.googleId);
+        placeObj.set('alias', place.alias);
+        placeObj.set('isShared', false);
+        placeObj.set('googleId', place.googleId);
         if (place.factualId === undefined)
             place.factualId = null;
-        placeParse.set('factualId', place.factualId);
-        placeParse.set('address', place.address);
-        placeParse.set('lat', place.lat);
-        placeParse.set('lng', place.lng);
-        placeParse.set('distance',0);
-        placeParse.set('type', place.type);
-        placeParse.set('city', place.city);
-        placeParse.set('state', place.state);
-        placeParse.set('country', place.country);
-        placeParse.set('zipcode', place.zipcode);
-        placeParse.set('isVisible', true);
-        placeParse.set('isDeleted', false);
-        placeParse.set('isAvailable', true);
- //       placeParse.set('isPrivate', place.isPrivate === "true");
-        placeParse.set('isPrivate', true);
-        placeParse.set('hasPlaceChat', false);
-        placeParse.set('placeChatId', null);
+        placeObj.set('factualId', place.factualId);
+        placeObj.set('address', place.address);
+        placeObj.set('lat', place.lat);
+        placeObj.set('lng', place.lng);
+        placeObj.set('distance',0);
+        placeObj.set('type', place.type);
+        placeObj.set('city', place.city);
+        placeObj.set('state', place.state);
+        placeObj.set('country', place.country);
+        placeObj.set('zipcode', place.zipcode);
+        placeObj.set('isVisible', true);
+        placeObj.set('isDeleted', false);
+        placeObj.set('isAvailable', true);
+ //       placeObj.set('isPrivate', place.isPrivate === "true");
+        placeObj.set('isPrivate', true);
+        placeObj.set('hasPlaceChat', false);
+        placeObj.set('placeChatId', null);
 
         if (createChatFlag) {
-            placeParse.set('hasPlaceChat', true);
+            placeObj.set('hasPlaceChat', true);
             var placeChatguid = uuid.v4();
-            placeParse.set('placeChatId', placeChatguid);
+            placeObj.set('placeChatId', placeChatguid);
         }
 
         var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
         // Get a json object to add to kendo (strip the parse specific stuff)
-        //var placeParse = placeParse.toJSON();
+        //var placeObj = placeObj.toJSON();
         // update the distance value for the local object...
-        placeParse.distance = distance.toFixed(2);
-        placeParse.isDirty = true;
-        placesModel.placesDS.add(placeParse);
+        placeObj.distance = distance.toFixed(2);
+        placeObj.isDirty = true;
+
+        everlive.createOne(placesModel._ggClass, placeObj, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating place " + JSON.stringify(error));
+            }
+        });
+
+       // placesModel.placesDS.add(placeObj);
         //placesModel.placesDS.sync();
 
         if (callback !== undefined) {
-            callback(placeParse);
+            callback(placeObj);
         }
         
-       /* placeParse.save(null, {
-            success: function(placeIn) {
-                // Set the needs sync (isDirty flag to false)
-                var placeInuuid = placeIn.get('uuid');
-                var place = placesModel.getPlaceModel(placeInuuid);
-                place.set('isDirty', false);
-                if (callback !== undefined) {
-                    callback(placeIn.toJSON());
-                }
-
-            },
-            error: function(place, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
-            }
-        });*/
 
     },
 
@@ -544,10 +459,16 @@ var placesModel = {
                 if (place.placeChatId !== undefined && place.placeChatId !== null) {
                     channelModel.deleteChannel(place.placeChatId, false);
                 }
-               // var placeObj = place.toJSON();
-                placesModel.placesDS.remove(place);
-                placesModel.placesDS.sync();
+                // var placeObj = place.toJSON();
+               /* placesModel.placesDS.remove(place);
+                placesModel.placesDS.sync();*/
+                var Id = place.Id;
 
+                if (Id !== undefined){
+                    everlive.deleteOne(placesModel._ggClass, Id, function (error, data) {
+
+                    });
+                }
                 // Delete the parse object directly
                 //deleteParseObject('places',"uuid", placeUUID);
             }

@@ -340,11 +340,20 @@ var everlive = {
                 });
     },
 
-
+    readOne: function (dataType, objectId, callback) {
+        var data = APP.everlive.data(dataType);
+        data.getById(objectId,
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
 
     updateOne: function (dataType, dataObject, callback) {
         var data = APP.everlive.data(dataType);
-        data.update(dataObject,
+        data.updateSingle(dataObject,
             function(data){
                 callback(null, data);
             },
@@ -387,9 +396,20 @@ var everlive = {
             });
     },
 
-    deleteOne : function (dataType, dataObject,callback) {
+    deleteOne : function (dataType, objectId, callback) {
         var data = APP.everlive.data(dataType);
-        data.destroy(dataObject, // filter expression
+        data.destroySingle(objectId,
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
+    deleteMatching : function (dataType, query, callback) {
+        var data = APP.everlive.data(dataType);
+        data.destroy( query, // filter expression
             function(data){
                 callback(null, data);
             },
@@ -400,7 +420,7 @@ var everlive = {
 
     deleteAll : function (dataType, callback) {
         var data = APP.everlive.data(dataType);
-        data.destroy( // filter expression
+        data.destroy(
             function(data){
                 callback(null, data);
             },
