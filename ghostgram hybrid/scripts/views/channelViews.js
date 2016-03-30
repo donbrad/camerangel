@@ -16,19 +16,30 @@ var channelsView = {
     _viewInitialized : false,
     _showDeletedChannels : false,
 
-    _channelListDS : new kendo.data.DataSource({
-        offlineStorage: "channellist",
-        sort: {
-            field: "lastAccess",
-            dir: "desc"
-        }
-    }),
+    _channelListDS : null,
 
 
     onInit : function (e) {
         e.preventDefault();
 
-        channelsView._channelListDS.online(false);
+        
+        channelsView._channelListDS =  new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "channels",
+            transport: {
+                typeName: 'channellist'
+                //dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
+            sort: {
+                field: "lastAccess",
+                dir: "desc"
+            }
+        });
+        
+        //channelsView._channelListDS.online(false);
 
         $("#channels-listview").kendoMobileListView({
             dataSource: channelsView._channelListDS,

@@ -19,13 +19,9 @@ var photoModel = {
     parsePhoto: {},
     photosDS: null,
 
-    offersDS: new kendo.data.DataSource({
-        offlineStorage: "offers"
-    }),
+    offersDS : null,
 
-    deletedPhotosDS: new kendo.data.DataSource({
-        offlineStorage: "deletedphotos"
-    }),
+    deletedPhotosDS: null, 
 
     init: function () {
 
@@ -47,7 +43,43 @@ var photoModel = {
         });
 
 
-        photoModel.photosDS.fetch();
+    photoModel.offersDS = new kendo.data.DataSource({  // this is the gallery datasource
+        // offlineStorage: "photos",
+        type: 'everlive',
+        transport: {
+            typeName: 'photooffers'/*,
+             dataProvider: APP.everlive*/
+        },
+        schema: {
+            model: { Id:  Everlive.idField}
+        },
+        serverSorting: true,
+        sort: {
+            field: "timestamp",
+            dir: "desc"
+        }
+    });
+
+
+    photoModel.deletedPhotosDS = new kendo.data.DataSource({  // this is the gallery datasource
+        // offlineStorage: "photos",
+        type: 'everlive',
+        transport: {
+            typeName: 'deletedphotos'/*,
+             dataProvider: APP.everlive*/
+        },
+        schema: {
+            model: { Id:  Everlive.idField}
+        },
+        serverSorting: true,
+        sort: {
+            field: "timestamp",
+            dir: "desc"
+        }
+    });
+
+
+    photoModel.photosDS.fetch();
         deviceModel.setAppState('hasPhotos', true);
         /*deviceModel.isParseSyncComplete();*/
     },

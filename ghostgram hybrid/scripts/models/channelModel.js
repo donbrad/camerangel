@@ -21,21 +21,13 @@ var channelModel = {
     channelsDS: null,
 
     // List of all active private channels (those with messages)
-    privateChannelsDS: new kendo.data.DataSource({
-        offlineStorage: "privatechannels"
-    }),
+    privateChannelsDS: null, 
 
-    recalledMessagesDS : new kendo.data.DataSource({
-        offlineStorage: "recalledMessages"
-    }),
+    recalledMessagesDS : null, 
 
-    groupMessagesDS : new kendo.data.DataSource({
-        offlineStorage: "groupMessages"
-    }),
+    groupMessagesDS : null,
 
     init :  function () {
-
-        channelModel.recalledMessagesDS.online(false);
 
         channelModel.activeChannels = [];
 
@@ -43,8 +35,8 @@ var channelModel = {
             type: 'everlive',
            // offlineStorage: "channels",
             transport: {
-                typeName: 'channels',
-                dataProvider: APP.everlive
+                typeName: 'channels'
+                //dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -53,6 +45,42 @@ var channelModel = {
             sort: {
                 field: "lastAccess",
                 dir: "desc"
+            }
+        });
+        
+        channelModel.privateChannelsDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "channels",
+            transport: {
+                typeName: 'privatechannels'
+                //dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            }
+        });
+
+        channelModel.recalledMessagesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "channels",
+            transport: {
+                typeName: 'recalledmessages'
+                //dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            }
+        });
+
+        channelModel.gropuMessagesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "channels",
+            transport: {
+                typeName: 'gropumessages'
+                //dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
             }
         });
 
