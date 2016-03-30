@@ -10,7 +10,7 @@
 
 var photoModel = {
     _version : 1,
-    _parseClass : 'photos',
+    _cloudClass : 'photos',
     _ggClass: 'Photo',
     currentPhoto: {},
     currentOffer: null,
@@ -91,7 +91,7 @@ var photoModel = {
 /*
 
     _fetchPhotos : function () {
-        var ParsePhotoModel = Parse.Object.extend(photoModel._parseClass);
+        var ParsePhotoModel = Parse.Object.extend(photoModel._cloudClass);
         var query = new Parse.Query(ParsePhotoModel);
         query.limit(1000);
 
@@ -533,7 +533,7 @@ var photoModel = {
     addChatPhoto : function (photoObj, callback) {
 
         mobileNotify("Adding Chat photo to Memories...");
-      /*  var Photos = Parse.Object.extend(photoModel._parseClass);
+      /*  var Photos = Parse.Object.extend(photoModel._cloudClass);
         var photo = new Photos();*/
 
         var photo = new kendo.data.ObservableObject();
@@ -778,7 +778,7 @@ var photoModel = {
     addDevicePhoto: function (devicePhoto) {
         mobileNotify("Adding  photo....");
         // Todo: add additional processing to create Parse photoOffer
-      /*  var Photos = Parse.Object.extend(photoModel._parseClass);
+      /*  var Photos = Parse.Object.extend(photoModel._cloudClass);
         var photo = new Photos();
 */
         var photo = new kendo.data.ObservableObject();

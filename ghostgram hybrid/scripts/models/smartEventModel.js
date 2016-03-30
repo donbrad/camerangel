@@ -4,7 +4,7 @@
 'use strict';
 
 var smartEvent = {
-    _parseClass : 'smartEvent',
+    _cloudClass : 'smartEvent',
     _ggClass : 'Event',
     _version : 1,
 
@@ -144,7 +144,7 @@ var smartEvent = {
 
 
    /* fetch : function () {
-        var smartEvents = Parse.Object.extend(smartEvent._parseClass);
+        var smartEvents = Parse.Object.extend(smartEvent._cloudClass);
         var query = new Parse.Query(smartEvents);
 
         query.find({
@@ -366,7 +366,7 @@ var smartEvent = {
     },
 
     addEvent : function (objectIn, callback) {
-      /*  var smartEvents = Parse.Object.extend(smartEvent._parseClass);
+      /*  var smartEvents = Parse.Object.extend(smartEvent._cloudClass);
         var smartOb = new smartEvents();*/
         var smartOb = new kendo.data.ObservableObject();
 

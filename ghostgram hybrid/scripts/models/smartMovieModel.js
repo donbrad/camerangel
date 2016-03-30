@@ -7,7 +7,7 @@
 
 var smartMovie = {
 
-    _parseClass : 'smartMovie',
+    _cloudClass : 'smartMovie',
     _ggClass : 'Movie',
     _version : 1,
 
@@ -33,7 +33,7 @@ var smartMovie = {
     },
 
     /*fetch : function () {
-        var smartMovies = Parse.Object.extend(smartMovie._parseClass);
+        var smartMovies = Parse.Object.extend(smartMovie._cloudClass);
         var query = new Parse.Query(smartMovies);
         query.limit(1000);
         query.find({
@@ -100,7 +100,7 @@ var smartMovie = {
     },
 
     addMovie : function (objectIn, callback) {
-       /* var smartMovies = Parse.Object.extend(smartMovie._parseClass);
+       /* var smartMovies = Parse.Object.extend(smartMovie._cloudClass);
         var smartOb = new smartMovies();*/
 
         var smartOb = new kendo.data.ObservableObject();

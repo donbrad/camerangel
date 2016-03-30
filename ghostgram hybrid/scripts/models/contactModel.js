@@ -10,7 +10,7 @@ var contactModel = {
 
     _version: 1,
     _ggClass: 'Contact',
-    _parseClass: 'contacts',
+    _cloudClass: 'contacts',
 
    contactsDS: null,
 

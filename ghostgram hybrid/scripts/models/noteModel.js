@@ -13,7 +13,7 @@ var noteModel = {
     _private: 'private',
     _places: 'place',
     _group: 'group',
-    _parseClass : 'note',
+    _cloudClass : 'note',
     _ggClass: 'Note',
     _version: 1,
 
@@ -89,7 +89,7 @@ var noteModel = {
     },
 
     /*fetch: function () {
-        var NoteModel = Parse.Object.extend(noteModel._parseClass);
+        var NoteModel = Parse.Object.extend(noteModel._cloudClass);
         var query = new Parse.Query(NoteModel);
         query.limit(1000);
         
@@ -112,7 +112,7 @@ var noteModel = {
     },*/
 
     addNote : function (note) {
-       /* var Notes = Parse.Object.extend(noteModel._parseClass);
+       /* var Notes = Parse.Object.extend(noteModel._cloudClass);
         var noteParse = new Notes();*/
 
         var noteObj = new kendo.data.ObservableObject();
@@ -186,7 +186,7 @@ var noteModel = {
     // object id is uuid / is for the parent object
     // private sets the acl on the note to available to this user only
     createNote : function (type, objectId, isPrivate) {
-      /*  var Notes = Parse.Object.extend(noteModel._parseClass);
+      /*  var Notes = Parse.Object.extend(noteModel._cloudClass);
         var note = new Notes();*/
         var note = new kendo.data.ObservableObject();
         note.set('uuid',uuid.v4());
@@ -223,7 +223,7 @@ var noteModel = {
                     var field = keys[i];
                     if (noteObj[field] !== note[field]) {
                         noteObj.set(field, note[field]);
-                      //  updateParseObject(noteModel._parseClass, 'uuid', note.uuid, field, note[field]);
+                      //  updateParseObject(noteModel._cloudClass, 'uuid', note.uuid, field, note[field]);
 
                     }
                 }

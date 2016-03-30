@@ -7,7 +7,7 @@
 var channelModel = {
 
     _version: 1,
-    _parseClass: "channels",
+    _cloudClass: "channels",
     _ggClass: 'Chat',
     _channelName : "channels",
     _channelMemberName : "channelMember",
@@ -139,7 +139,7 @@ var channelModel = {
 
 
 /*    fetch : function () {
-        var Channel = Parse.Object.extend(channelModel._parseClass);
+        var Channel = Parse.Object.extend(channelModel._cloudClass);
         var query = new Parse.Query(Channel);
         query.limit(1000);
 
@@ -654,7 +654,7 @@ var channelModel = {
             return;
         }
 
-       /* var Channels = Parse.Object.extend(channelModel._parseClass);*/
+       /* var Channels = Parse.Object.extend(channelModel._cloudClass);*/
         var channel = new kendo.data.ObservableObject();
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);

@@ -1774,13 +1774,13 @@ var placeView = {
             if (note !== undefined) {
                 placeView._memoriesDS.remove(note);
                 noteModel.notesDS.remove(note);
-               // deleteParseObject(noteModel._parseClass, 'uuid', item.uuid);
+               // deleteParseObject(noteModel._cloudClass, 'uuid', item.uuid);
             }
         } else if (item.ggType === 'Photo') {
             var photo = placeView._currentItem;
             placeView._memoriesDS.remove(photo);
             photoModel.photosDS.remove(photo);
-            //deleteParseObject(photoModel._parseClass, 'photoId', photo.photoId);
+            //deleteParseObject(photoModel._cloudClass, 'photoId', photo.photoId);
 
 
 

@@ -6,7 +6,7 @@
 
 var smartFlight = {
 
-    _parseClass : 'smartFlight',
+    _cloudClass : 'smartFlight',
     _ggClass : 'Flight',
     _version : 1,
 

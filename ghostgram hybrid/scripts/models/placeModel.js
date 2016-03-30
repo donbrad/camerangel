@@ -9,7 +9,7 @@
 var placesModel = {
 
     _version: 1,
-    _parseClass : 'places',
+    _cloudClass : 'places',
     _ggClass : 'Place',
 
     locatorActive : false,
@@ -283,7 +283,7 @@ var placesModel = {
             return;
         }
 
-       // var Place = Parse.Object.extend(placesModel._parseClass);
+       // var Place = Parse.Object.extend(placesModel._cloudClass);
         var placeObj = new kendo.data.ObservableObject();
 
         var newPlace = placesModel.newPlace();
@@ -363,7 +363,7 @@ var placesModel = {
     },
 
     addPlace: function (place, createChatFlag,  callback) {
-        //var Place = Parse.Object.extend(placesModel._parseClass);
+        //var Place = Parse.Object.extend(placesModel._cloudClass);
         var placeObj = new kendo.data.ObservableObject();
 
         var newPlace = placesModel.newPlace();
@@ -426,7 +426,7 @@ var placesModel = {
         placeObj.distance = distance.toFixed(2);
         placeObj.isDirty = true;
 
-        everlive.createOne(placesModel._ggClass, placeObj, function (error, data){
+        everlive.createOne(placesModel._cloudClass, placeObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating place " + JSON.stringify(error));
             }
@@ -465,7 +465,7 @@ var placesModel = {
                 var Id = place.Id;
 
                 if (Id !== undefined){
-                    everlive.deleteOne(placesModel._ggClass, Id, function (error, data) {
+                    everlive.deleteOne(placesModel._cloudClass, Id, function (error, data) {
 
                     });
                 }
