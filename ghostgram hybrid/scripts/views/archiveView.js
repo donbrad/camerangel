@@ -8,7 +8,7 @@ var archiveView = {
 
 	init: function () {
 
-		if (archive.dataSource.total() === 0 && 1) {
+		/*if (archive.dataSource.total() === 0 && 1) {
 			// chat
 			archive.add({
 				message: {
@@ -140,7 +140,7 @@ var archiveView = {
 				}
 			});
 		}
-
+*/
 		//archiveView.checkIfEmpty();
 
 		$('#search-archives input').clearSearch({ callback: archiveView.clearSearch });
