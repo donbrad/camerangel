@@ -378,7 +378,9 @@ var everlive = {
         var data = APP.everlive.data(dataType);
         data.create(dataObject,
             function(data){
-                callback(null, data);
+                var Id = data.result.Id;  // get the Id from the server object
+                dataObject.Id = Id;   // Add the everlive Id so caller can add to local datasource
+                callback(null, dataObject);
             },
             function(error){
                 callback(error, null);
