@@ -26,7 +26,6 @@ var contactsView = {
         $("#contacts-listview").kendoMobileListView({
             dataSource: contactModel.contactListDS,
             template: $("#contactsTemplate").html(),
-            autoBind: false,
             headerTemplate: $("#contactsHeaderTemplate").html(),
             fixedHeaders: true,
             dataBound: function(e){
