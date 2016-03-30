@@ -14,6 +14,7 @@ var everlive = {
     _signedIn : false,
     _isAuthenticated : false,
     _status: null,
+    _authenticating: false,
     _user : null,
     _lastSync: 0,
     _delta : 60,
@@ -57,8 +58,9 @@ var everlive = {
                 }*!/
             },*/
             authentication: {
-                persist: true,
+                persist: true/*,
                 onAuthenticationRequired: function() {
+                    mobileNotify("Auth Required - kendo...");
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
                         userModel.initialView = '#usersignin';
@@ -66,7 +68,7 @@ var everlive = {
                         userModel.initialView = '#newuserhome';
                     }
                     APP.kendo.navigate(userModel.initialView);
-                }
+                }*/
             }
         });
         
@@ -74,28 +76,8 @@ var everlive = {
         APP.everlive.on('syncStart', everlive.syncStart);
 
         APP.everlive.on('syncEnd', everlive.syncEnd);
-        setTimeout(function(){
-            everlive.checkAuthStatus(function (error, status) {
-                if (error === null) {
-                    if (!status) {
-                        if (userModel.hasAccount) {
-                            everlive._signedIn = false;
-                            userModel.initialView = '#usersignin';
-                        } else {
-                            userModel.initialView = '#newuserhome';
-                        }
-                        APP.kendo.navigate(userModel.initialView);
-                    } else {
-                        everlive._signedIn = true;
-                        everlive.loadUserData();
-                        userModel.initialView = '#home';
-                        //APP.kendo.navigate(userModel.initialView);
 
-                    }
-
-                }
-            });
-        }, 2000);
+        everlive.isUserSignedIn();
 
     },
 
@@ -109,6 +91,41 @@ var everlive = {
             APP.everlive.sync();
 
         }
+    },
+
+    isUserSignedIn : function () {
+        everlive.checkAuthStatus(function (error, status) {
+            if (error === null) {
+                if (status === "unauthenticated" || status === "invalidAuthentication" || status === "expiredAuthentication") {
+                    everlive._authenticating = false;
+                    if (userModel.hasAccount) {
+                        everlive._signedIn = false;
+                        userModel.initialView = '#usersignin';
+                    } else {
+                        userModel.initialView = '#newuserhome';
+                    }
+                    APP.kendo.navigate(userModel.initialView);
+                } else if (status === "authenticated") {
+                    everlive._authenticating = false;
+                    everlive._signedIn = true;
+                    everlive.loadUserData();
+                    userModel.initialView = '#home';
+                    //APP.kendo.navigate(userModel.initialView);
+
+                }  else if (status === "authenticating") {
+                    mobileNotify("Authenticating your account...");
+                    if (!everlive._authenticating) {
+                        everlive._authenticating = true;
+                        setTimeout(function(){
+                            everlive.isUserSignedIn();
+                        }, 3000);
+                    }
+
+                }
+
+            }
+        });
+
     },
 
     checkAuthStatus : function (callback) {
@@ -127,8 +144,7 @@ var everlive = {
                     everlive._status = data.status;
                     everlive._isAuthenticated = false;
                 }
-                mobileNotify("Everlive User Status: " + data.status);
-                callback(null, everlive._isAuthenticated);
+                callback(null, data.status);
             }, 
             function (error) {
                 callback(error, null);
