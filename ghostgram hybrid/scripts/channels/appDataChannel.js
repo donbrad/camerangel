@@ -15,9 +15,7 @@ var appDataChannel = {
     lastAccess: 0,   // last access time stamp
     _channelName: 'app',
     _version: 1,
-    messagesDS : new kendo.data.DataSource({
-        offlineStorage: "appmessages"
-    }),
+    messagesDS : null,
 
     init: function () {
 
@@ -26,6 +24,18 @@ var appDataChannel = {
         var channel = userModel._user.userUUID.replace(/-/g,'_');
 
 
+        appDataChannel.messagesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "places",
+            transport: {
+                typeName: 'appmessages'/*,
+                 dataProvider: APP.everlive*/
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            }
+        });
+        
         appDataChannel.channelUUID = channel;
 
         var ts = localStorage.getItem('appDataChannel');

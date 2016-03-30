@@ -58,8 +58,8 @@ var placesModel = {
             type: 'everlive',
            // offlineStorage: "places",
             transport: {
-                typeName: 'places',
-                dataProvider: APP.everlive
+                typeName: 'places'/*,
+                dataProvider: APP.everlive*/
             },
             schema: {
                 model: { Id:  Everlive.idField}
