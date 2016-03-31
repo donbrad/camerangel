@@ -55,8 +55,7 @@ var contactsView = {
                     return;
                 }
 
-                // Todo: don remove current contact logic...
-                contactModel.setCurrentContact(contact);
+               
                 if (contact.contactUUID !== undefined && contact.contactUUID !== null){
                     $("#contactActionBtns > li:first-child").show();
                 } else {

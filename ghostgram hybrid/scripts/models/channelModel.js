@@ -76,7 +76,7 @@ var channelModel = {
             type: 'everlive',
             // offlineStorage: "channels",
             transport: {
-                typeName: 'gropumessages'
+                typeName: 'groupmessages'
                 //dataProvider: APP.everlive
             },
             schema: {
@@ -369,6 +369,8 @@ var channelModel = {
     },
 
     cacheGroupMessage : function (message) {
+
+
         channelModel.groupMessagesDS.add(message);
     },
 
