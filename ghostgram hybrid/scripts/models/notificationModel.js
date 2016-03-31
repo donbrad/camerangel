@@ -46,7 +46,9 @@ var notificationModel = {
                field: "date",
                dir: "desc"
            }
-       });  
+       });
+
+        notificationModel.notificationDS.fetch();
     },
 
     findNotification : function (type, id) {
@@ -252,9 +254,8 @@ var notificationModel = {
             if (unreadCount > 0)
                 notificationModel.addUnreadNotification(channelUUID, channelName, unreadCount);
         } else {
+            var Id = notObj.Id;
             if (unreadCount === undefined || unreadCount === 0) {
-
-                var Id = notObj.Id;
 
                 if (Id !== undefined){
                     everlive.deleteOne(notificationModel._cloudClass, Id, function (error, data) {
@@ -263,10 +264,8 @@ var notificationModel = {
                 }
 
             } else {
-
-
                 notObj.set('unreadCount', unreadCount);
-                var Id = notObj.Id;
+
                 if (Id !== undefined){
                     everlive.updateOne(notificationModel._cloudClass, notObj, function (error, data) {
                         //placeNoteModel.notesDS.remove(note);
