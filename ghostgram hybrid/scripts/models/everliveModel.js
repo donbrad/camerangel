@@ -35,16 +35,17 @@ var everlive = {
                 maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
                 enabled: true //Global setting for enabling/disabling cache. Default is FALSE.
             },*/
-            offline: true,
+           // offline: true,
 
-           /* offline: {
-               /!* syncUnmodified: true,*!/
+           offline: {
+               syncUnmodified: true,
                 encryption: {
                     provider: Everlive.Constants.EncryptionProvider.Default,
-                    key: 'intelligram'
-                },
+                        key : 'intelligram'
+                }
+            },
 
-                storage: {
+               /* storage: {
                     provider: provider
                     /!*,
                  conflicts: {
