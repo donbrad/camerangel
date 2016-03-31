@@ -27,7 +27,6 @@ var contactsView = {
             dataSource: contactModel.contactListDS,
             template: $("#contactsTemplate").html(),
             headerTemplate: $("#contactsHeaderTemplate").html(),
-            autoBind: false,
             fixedHeaders: true,
             dataBound: function(e){
                 ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
@@ -55,7 +54,7 @@ var contactsView = {
                     return;
                 }
 
-               
+
                 if (contact.contactUUID !== undefined && contact.contactUUID !== null){
                     $("#contactActionBtns > li:first-child").show();
                 } else {
