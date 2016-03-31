@@ -99,12 +99,13 @@ var contactModel = {
                         // add to contactlist and contacttags
                         var contactList = contactModel.findContactList(contact.uuid);
                         if (contactList !== undefined) {
-                            contact.identicon = contactModel..createIdenticon(contact.uuid);
-                            contact.photo = contact.identicon;
+                            contact.identicon = contactModel.createIdenticon(contact.uuid);
+                            if (contact.photo === null)
+                                contact.photo = contact.identicon;
                             contactModel.contactListDS.add(contact);
                         } else {
                             if (contactList.photo === undefined || contactList.photo === null) {
-                                contactList.identicon = contactModel..createIdenticon(contactList.uuid);
+                                contactList.identicon = contactModel.createIdenticon(contactList.uuid);
                                 contactList.photo = contactList.identicon;
                             }
                         }
