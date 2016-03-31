@@ -53,7 +53,7 @@ var contactModel = {
             //offlineStorage: "contacts",
             transport: {
                 typeName: 'contacts',
-                dataProvider: APP.everlive
+                //dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -99,7 +99,6 @@ var contactModel = {
                         var contactList = contactModel.findContactList(contact.uuid);
                         if (contactList !== undefined)
                             contactModel.contactListDS.add(contact);
-
                         tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
                          break;
                 }
@@ -109,7 +108,6 @@ var contactModel = {
         });
 
         contactModel.contactsDS.fetch();
-        contactModel.contactListDS.fetch();
         contactModel.buildContactList();
         contactModel.updateContactListStatus(true);
         contactModel.syncContactTags();
