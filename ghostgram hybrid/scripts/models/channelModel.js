@@ -72,7 +72,7 @@ var channelModel = {
             }
         });
 
-        channelModel.gropuMessagesDS = new kendo.data.DataSource({
+        channelModel.groupMessagesDS = new kendo.data.DataSource({
             type: 'everlive',
             // offlineStorage: "channels",
             transport: {
