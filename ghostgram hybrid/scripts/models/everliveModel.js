@@ -110,6 +110,7 @@ var everlive = {
                     everlive._authenticating = false;
                     everlive._signedIn = true;
                     everlive.loadUserData();
+                    deviceModel.syncEverlive();
                     userModel.initialView = '#home';
                     //APP.kendo.navigate(userModel.initialView);
 
