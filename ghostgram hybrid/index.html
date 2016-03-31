@@ -242,59 +242,67 @@
 </div>
 
 <div data-role="drawer" id="ggDrawer" style="width: 50%;" data-title="Hot Buttons"  data-use-native-scrolling="true">
-	<header data-role="header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-		</div>
-	</header>
+
 
 	<ul data-role="listview"  style="padding-left: 8px;">
 		<li>
+			<div>
+				<h3 class="gg-drawer-header">Shortcuts</h3>
+			</div>
+		</li>
+		<li>
 			<a class="btnClear" data-role="button" href="#privateNotes">
-				<img src="images/icon-myNotes-alt.svg" class="icon-sm" />
+				<img src="images/icon-myNotes-light.svg" class="icon-sm" />
 				My Notes
 			</a>
 		</li>
 		<li>
-			<div>
-				<a data-role="button" class="btnClear" data-click='userStatusView.camera'>
-					<img src="images/icon-camera.svg" class="icon-sm" />
+			<a data-role="button" class="btnClear" data-click='userStatusView.camera'>
+				<img src="images/icon-camera.svg" class="icon-sm" />
 					Camera
-				</a>
-			</div>
+			</a>
+		</li>
+		<li>
+			<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
+				<img src="images/icon-external.svg" class="icon-sm" />
+					Sign Out
+			</a>
+
 		</li>
 		<li>
 			<div>
-				<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
-					<img src="images/icon-external.svg" class="icon-sm" />
-					Sign Out
-				</a>
+				<h3 class="gg-drawer-header">Personal Safety</h3>
 			</div>
 		</li>
-		<li> <div><h3>Personal Safety</h3></div></li>
-		<li> <a data-role="button" class="btnClear" >
-				Police (911)
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-police.svg" class="icon-gg-drawer" /> Police (911)
 			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear" >
-			Fire (911)
-		</a>
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-fire.svg" class="icon-gg-drawer" /> Fire (911)
+			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear" >
-			Medical (911)
-		</a>
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-medical.svg" class="icon-gg-drawer" /> Medical (911)
+			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear">
-			Roadside
-		</a>
+		<li>
+			<a data-role="button" class="btnClear">
+				<img src="images/gg-roadside.svg" class="icon-gg-drawer-lg" /> Roadside
+			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear" >
-			Family Alert
-		</a>
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-family.svg" class="icon-gg-drawer-lg" /> Family Alert
+			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear" >
-			Local Alert
-		</a>
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-local.svg" class="icon-gg-drawer" /> Local Alert
+			</a>
 		</li>
 
 	</ul>
@@ -456,7 +464,7 @@
 </script>
 
 <!-- home - for new users -->
- <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade">
+ <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade" data-swipe-to-open="false">
  	<div class="newuserBox">
 		<p id="newWelcome">Welcome to</p>
 		<p id="newLogo"><img src="images/logo.svg" class="icon-logo"/></p>
@@ -468,6 +476,50 @@
 		</h3>
 	</div>
     <div class="clearfix"></div>
+	 <div class="feature-card preMotion hidden">
+		 <div class="featureList">
+			 <div class="icon-feature-body">
+				 <div class="icon-feature-img">
+					 <img src="images/icon-feature-secure.svg"  />
+				 </div>
+				 <h3>Secure</h3>
+				 <p class="feature-body-text">Stay connected to the people, places and topics that matter to you.</p>
+			 </div>
+		 </div>
+		 <div class="featureList">
+			 <div class="icon-feature-body">
+				 <div class="icon-feature-img">
+					 <img src="images/icon-feature-savings.svg"  />
+				 </div>
+				 <h3>Convenient</h3>
+				 <p class="feature-body-text">Don't waste your money receiving andstoring stuff you didn't ask for or don't need in the future. Offer photos to friends. You decide if they can keep a copy or just have quick peek.
+				 </p>
+			 </div>
+		 </div>
+		 <div class="featureList">
+			 <div class="icon-feature-body">
+				 <div class="icon-feature-img">
+					 <img src="images/icon-feature-trusted.svg" />
+				 </div>
+				 <h3>Trusted</h3>
+				 <p class="feature-body-text">Share your passion, opinion and secrets with confidence. You know who's on the other end and no one else can snoop or ease drop.
+				 </p>
+			 </div>
+		 </div>
+		 <div class="featureList">
+			 <div class="icon-feature-body">
+				 <div class="icon-feature-img">
+					 <img src="images/icon-feature-smart.svg"  />
+				 </div>
+				 <h3>Automated</h3>
+				 <p class="feature-body-text">Communicate, collaborate and coordinate easily with intelligrams: set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
+				 </p>
+			 </div>
+		 </div>
+	 </div>
+
+
+
     <div class="loginBox card preMotion" id="featureCard1">
         <h3>
             Join ghostgrams!
