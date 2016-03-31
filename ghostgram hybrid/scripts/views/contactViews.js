@@ -910,7 +910,7 @@ var editContactView = {
     // Set active contact object and process any updates (with user notification)
     setActiveContact : function (contact) {
         if (contact !== undefined) {
-
+            editContactView._activeContact.set("Id", contact.Id);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
             editContactView._activeContact.set("alias", contact.alias);
