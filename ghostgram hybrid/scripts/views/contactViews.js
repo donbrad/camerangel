@@ -27,6 +27,7 @@ var contactsView = {
             dataSource: contactModel.contactListDS,
             template: $("#contactsTemplate").html(),
             headerTemplate: $("#contactsHeaderTemplate").html(),
+            autoBind: false,
             fixedHeaders: true,
             dataBound: function(e){
                 ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
@@ -191,11 +192,7 @@ var contactsView = {
 
         $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
         
-       // contactModel.contactListDS.data(contactModel.contactsDS.data());
-        //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
-        //contactsView.updateContactListDS();
-        //mobileNotify("Updating contact status...");
         contactModel.updateContactListStatus();
 
         // Update the contact list every 5 minutes while the contact list view is active
