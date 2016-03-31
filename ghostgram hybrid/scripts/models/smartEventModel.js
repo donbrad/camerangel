@@ -134,7 +134,6 @@ var smartEvent = {
             schema: {
                 model: { id:  Everlive.idField}
             },
-            serverSorting: true,
             sort: {
                 field: "date",
                 dir: "desc"

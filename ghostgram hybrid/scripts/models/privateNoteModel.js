@@ -24,7 +24,6 @@ var privateNoteModel = {
             schema: {
                 model: { id:  Everlive.idField}
             },
-            serverSorting: true,
             sort: {
                 field: "time",
                 dir: "desc"

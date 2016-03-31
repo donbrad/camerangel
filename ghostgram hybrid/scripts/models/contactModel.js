@@ -58,7 +58,6 @@ var contactModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            serverSorting: true,
             sort: {
                 field: "name",
                 dir: "asc"
