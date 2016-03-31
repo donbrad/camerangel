@@ -226,7 +226,7 @@ var notificationModel = {
     localStorageFetch: function () {
         var userNotifications = window.localStorage.getItem('ggUserNotifications');
 
-        userNotifications = JSON.parse(userNotifications);
+       /* userNotifications = JSON.parse(userNotifications);
         deviceModel.state.userNotifications = [];
         if (userNotifications !== null && userNotifications.length > 0) {
             for (var j = 0; j < userNotifications.length; j++) {
@@ -234,7 +234,7 @@ var notificationModel = {
                 notificationModel.notificationDS.add(notification);
                 deviceModel.state.userNotifications.push(notification);
             }
-        }
+        }*/
     },
 
     findNotificationModel: function (uuid) {
