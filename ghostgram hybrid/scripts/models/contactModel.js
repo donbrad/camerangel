@@ -109,7 +109,7 @@ var contactModel = {
         });
 
         contactModel.contactsDS.fetch();
-        contactModel.contactListDS.fetch();
+       // contactModel.contactListDS.fetch();
         contactModel.buildContactList();
         contactModel.updateContactListStatus(true);
         contactModel.syncContactTags();
