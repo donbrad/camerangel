@@ -52,7 +52,7 @@ var contactModel = {
             type: 'everlive',
             //offlineStorage: "contacts",
             transport: {
-                typeName: 'contacts',
+                typeName: 'contacts'
                 //dataProvider: APP.everlive
             },
             schema: {
@@ -108,6 +108,7 @@ var contactModel = {
         });
 
         contactModel.contactsDS.fetch();
+        contactModel.contactListDS.fetch();
         contactModel.buildContactList();
         contactModel.updateContactListStatus(true);
         contactModel.syncContactTags();
