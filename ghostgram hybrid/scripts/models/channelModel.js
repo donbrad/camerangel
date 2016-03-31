@@ -931,7 +931,7 @@ var channelModel = {
         var channel = channelModel.findPrivateChannel(channelUUID);
 
         if (channel !== undefined) {
-            deleteParseObject('channels', 'channelUUID', channelUUID);
+            //deleteParseObject('channels', 'channelUUID', channelUUID);
             channelModel.channelsDS.remove(channel);
         }
     },
