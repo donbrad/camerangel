@@ -927,6 +927,7 @@ var editContactView = {
             editContactView._activeContact.set("address", contact.address);
             editContactView._activeContact.set("category", contact.category);
             if (contact.contactUUID !== undefined) {
+                editContactView._activeContact.set("category",'member');
                 editContactView._activeContact.set("contactUUID", contact.contactUUID);
                 editContactView._activeContact.set("contactPhone", contact.contactPhone);
                 editContactView._activeContact.set("contactEmail", contact.contactEmail);
@@ -969,6 +970,7 @@ var editContactView = {
         contact.set("isFavorite", editContactView._activeContact.isFavorite);
         contact.set("isBlocked", editContactView._activeContact.isBlocked);
         if (editContactView._activeContact.contactUUID !== undefined && editContactView._activeContact.contactUUID !== null) {
+            contact.set("category", 'member');
             contact.set("contactUUID", editContactView._activeContact.contactUUID);
             contact.set("contactEmail", editContactView._activeContact.contactEmail);
             contact.set("contactPhone", editContactView._activeContact.contactPhone);

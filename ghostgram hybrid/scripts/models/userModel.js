@@ -708,7 +708,7 @@ var userStatus = {
                         userStatus.create();
                         return;
                     }
-                    mobileNotify("Update User Status error : " + JSON.stringify(error));
+                   // mobileNotify("Update User Status error : " + JSON.stringify(error));
                 }
 
             }
