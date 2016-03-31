@@ -1,6 +1,6 @@
 {
   "name": "ghostgrams mobile",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "dependencies": {
     "moment": "~2.10.3",
     "q": "1.0.1",
@@ -16,12 +16,14 @@
   "authors": [
     "Don Bradford <donbrad@hotmail.com>"
   ],
-  "description": "ghostgrams hybrid prototype",
+  "description": "ghostgrams pre alpha",
   "moduleType": [
     "globals"
   ],
   "keywords": [
     "sms",
+    "chat",
+    "messaging",
     "email",
     "better"
   ],
