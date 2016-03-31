@@ -117,8 +117,7 @@ var contactModel = {
         });
 
         contactModel.contactsDS.fetch();
-        contactModel.buildContactList();
-        contactModel.updateContactListStatus(true);
+      
         contactModel.syncContactTags();
         deviceModel.setAppState('hasContacts', true);
        /* deviceModel.isParseSyncComplete();*/
