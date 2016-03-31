@@ -98,8 +98,16 @@ var contactModel = {
                         var contact = e.items[0];
                         // add to contactlist and contacttags
                         var contactList = contactModel.findContactList(contact.uuid);
-                        if (contactList !== undefined)
+                        if (contactList !== undefined) {
+                            contact.identicon = contactModel..createIdenticon(contact.uuid);
+                            contact.photo = contact.identicon;
                             contactModel.contactListDS.add(contact);
+                        } else {
+                            if (contactList.photo === undefined || contactList.photo === null) {
+                                contactList.identicon = contactModel..createIdenticon(contactList.uuid);
+                                contactList.photo = contactList.identicon;
+                            }
+                        }
                         tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
                          break;
                 }
@@ -167,6 +175,8 @@ var contactModel = {
                 };
             }
 
+            contact.identicon = contactModel.createIdenticon(contact.uuid);
+            contact.photo = contact.identicon;
             contactModel.contactListDS.add(contact);
         }
 

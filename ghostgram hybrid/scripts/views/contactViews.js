@@ -771,8 +771,8 @@ var addContactView = {
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
-        contact.set("identicon", url);
-        contact.set("photo", url);
+        contact.set("identicon", null);
+        contact.set("photo", null);
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
