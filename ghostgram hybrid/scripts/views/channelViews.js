@@ -259,7 +259,7 @@ var channelsView = {
  */
 
 var addChannelView = {
-    // Todo: jordan - refractored the login in onShow into onInit for all handlers.  They should only be installed once in onInit
+   
     onInit : function (e) {
         _preventDefault(e);
         $("#channels-addChannel-name").keyup(function(){

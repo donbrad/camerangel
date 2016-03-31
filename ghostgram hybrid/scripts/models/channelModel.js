@@ -33,7 +33,6 @@ var channelModel = {
 
         channelModel.channelsDS = new kendo.data.DataSource({
             type: 'everlive',
-           // offlineStorage: "channels",
             transport: {
                 typeName: 'channels'
                 //dataProvider: APP.everlive
@@ -49,7 +48,6 @@ var channelModel = {
         
         channelModel.privateChannelsDS = new kendo.data.DataSource({
             type: 'everlive',
-            // offlineStorage: "channels",
             transport: {
                 typeName: 'privatechannels'
                 //dataProvider: APP.everlive
@@ -61,7 +59,7 @@ var channelModel = {
 
         channelModel.recalledMessagesDS = new kendo.data.DataSource({
             type: 'everlive',
-            // offlineStorage: "channels",
+          
             transport: {
                 typeName: 'recalledmessages'
                 //dataProvider: APP.everlive
@@ -73,7 +71,6 @@ var channelModel = {
 
         channelModel.groupMessagesDS = new kendo.data.DataSource({
             type: 'everlive',
-            // offlineStorage: "channels",
             transport: {
                 typeName: 'groupmessages'
                 //dataProvider: APP.everlive
@@ -918,20 +915,15 @@ var channelModel = {
         channel.set("invitedMembers", []);
 
 
-        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data) {
             if (error !== null) {
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
             } else {
                 channelModel.channelsDS.add(channel);
+                mobileNotify('Added Chat : ' + channel.get('name'));
+                APP.kendo.navigate('#editChannel?channel=' + channelUUID);
             }
         });
-       /* channelModel.channelsDS.add(channel);
-        channelModel.channelsDS.sync();
-        deviceModel.syncEverlive();*/
-        mobileNotify('Added Chat : ' + channel.get('name'));
-        APP.kendo.navigate('#editChannel?channel=' + channelUUID);
-
-        //currentChannelModel.currentChannel = channelModel.findChannelModel(channelUUID);
         
     },
 
