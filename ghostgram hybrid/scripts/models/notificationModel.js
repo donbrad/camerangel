@@ -11,6 +11,8 @@
 var notificationModel = {
 
     // Types of notifications...
+    _cloudClass : 'notifications',
+    _ggClass : 'Notification',
     _intro: 'ghostgrams recommends',
     _unreadCount : 'Unread Messages',
     _newChat : 'New Chat',
@@ -34,7 +36,7 @@ var notificationModel = {
            type: 'everlive',
            // offlineStorage: "channels",
            transport: {
-               typeName: 'notifications',
+               typeName: 'notifications'
                //dataProvider: APP.everlive
            },
            schema: {
@@ -118,7 +120,15 @@ var notificationModel = {
 
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
-        notificationModel.notificationDS.add(notification);
+
+        everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Notification " + JSON.stringify(error));
+            } else {
+                notificationModel.notificationDS.add(notification);
+            }
+        });
+
         return(notification);
     },
 
@@ -243,10 +253,25 @@ var notificationModel = {
                 notificationModel.addUnreadNotification(channelUUID, channelName, unreadCount);
         } else {
             if (unreadCount === undefined || unreadCount === 0) {
-                notificationModel.notificationDS.remove(notObj);
-                notificationModel.notificationDS.sync();
+
+                var Id = notObj.Id;
+
+                if (Id !== undefined){
+                    everlive.deleteOne(notificationModel._cloudClass, Id, function (error, data) {
+                        notificationModel.notificationDS.remove(notObj);
+                    });
+                }
+
             } else {
+
+
                 notObj.set('unreadCount', unreadCount);
+                var Id = notObj.Id;
+                if (Id !== undefined){
+                    everlive.updateOne(notificationModel._cloudClass, notObj, function (error, data) {
+                        //placeNoteModel.notesDS.remove(note);
+                    });
+                }
             }
         }
 
