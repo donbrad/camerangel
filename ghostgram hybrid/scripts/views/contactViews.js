@@ -829,9 +829,7 @@ var addContactView = {
                 contact.set('contactUUID', thisContact.userUUID);
                 contact.set('contactPhone', thisContact.phone);
                 contact.set('phone', thisContact.phone);
-                if (thisContact.phoneValidated) {
-                    contact.set('category', 'member');
-                }
+                contact.set('category', 'member');
                 contact.set('contactEmail', thisContact.email);
                 contact.set('photo', null);
                 contact.set('contactPhoto', thisContact.photo);
