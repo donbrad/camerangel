@@ -189,8 +189,8 @@ var contactsView = {
         }
 
         $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
-        
 
+        contactsView.updateContactListDS();
         contactModel.updateContactListStatus();
 
         // Update the contact list every 5 minutes while the contact list view is active
