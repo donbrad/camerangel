@@ -953,6 +953,7 @@ var addPlaceView = {
 
         addPlaceView._activePlace.unbind('change',addPlaceView.onSync);
 
+        
         addPlaceView._activePlace.set('alias', geoPlace.alias);
         addPlaceView._activePlace.set('venueName', geoPlace.venueName);
         addPlaceView._activePlace.set('isAvailable',"true");
@@ -1217,7 +1218,10 @@ var editPlaceView = {
         editPlaceView._activePlaceModel = placeObj;
 
         editPlaceView._activePlace.unbind('change' , editPlaceView.validatePlace);
-
+        if (placeObj === undefined) {
+            mobileNotify("No Id for Place " + placeObj.name);
+        }
+        editPlaceView._activePlace.set('Id', placeObj.Id);
         editPlaceView._activePlace.set('placeUUID', placeUUID);
         editPlaceView._activePlace.set('placeChatId', placeObj.placeChatId);
         editPlaceView._activePlace.set('uuid', placeObj.uuid);
@@ -1521,6 +1525,7 @@ var placeView = {
         }
 
         placeView._activePlaceModel = placeObj;
+        placeView._activePlace.set('Id', placeObj.Id);
         placeView._activePlace.set('placeUUID', placeUUID);
         placeView._activePlace.set('name', placeObj.name);
         placeView._activePlace.set('alias', placeObj.alias);

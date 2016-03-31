@@ -497,6 +497,11 @@ var editChannelView = {
     },
 
     setActiveChannel : function (channel) {
+
+        if (channel.Id === undefined) {
+            mobileNotify("No Id for channel " + channel.name);
+        }
+        editChannelView._activeChannel.set('Id', channel.Id);
         editChannelView._activeChannel.set('name', channel.name);
         editChannelView._activeChannel.set('description', channel.description);
         editChannelView._activeChannel.set('isPlace', channel.isPlace);
