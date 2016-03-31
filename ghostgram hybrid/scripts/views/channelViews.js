@@ -622,6 +622,13 @@ var editChannelView = {
         channelObj.set('members', memberArray);
         channelObj.set('inviteMembers', invitedMemberArray);
 
+
+        var Id = channelObj.Id;
+        if (Id !== undefined){
+            everlive.updateOne(channelModel._cloudClass, channelObj, function (error, data) {
+                //placeNoteModel.notesDS.remove(note);
+            });
+        }
        /* //Update the parse object
         updateParseObject('channels', 'channelUUID', channelUUID, 'name',  editChannelView._activeChannel.name);
         updateParseObject('channels', 'channelUUID', channelUUID, 'description',  editChannelView._activeChannel.description);

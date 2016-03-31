@@ -117,6 +117,7 @@ var photoModel = {
 
 
 
+
     isPhotoCached : function (photo) {
         var store = deviceModel.fileDirectory;
         var url = photo.imageUrl;
@@ -322,7 +323,7 @@ var photoModel = {
     },
 */
 
-
+   
     addChatPhoto : function (photoObj, callback) {
 
         mobileNotify("Adding Chat photo to Memories...");
@@ -661,7 +662,7 @@ var photoModel = {
                 photoModel.photosDS.add(photo);
             }
         });
-
+        
     },
 
 
@@ -679,7 +680,7 @@ var photoModel = {
                 photoModel.photosDS.remove(photo);
             });
         }
-
+        
     },
 
     deleteAllPhotos : function () {

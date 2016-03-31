@@ -982,6 +982,12 @@ var editContactView = {
         contact.set("category", editContactView._activeContact.category);
 
 
+        var Id = contact.Id;
+        if (Id !== undefined){
+            everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
+                //placeNoteModel.notesDS.remove(note);
+            });
+        }
         contactList.set("name", editContactView._activeContact.name);
         contactList.set("alias", editContactView._activeContact.alias);
         contactList.set("phone", editContactView._activeContact.phone);
