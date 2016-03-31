@@ -10,7 +10,7 @@
 
 var photoModel = {
     _version : 1,
-    _parseClass : 'photos',
+    _cloudClass : 'photos',
     _ggClass: 'Photo',
     currentPhoto: {},
     currentOffer: null,
@@ -19,26 +19,23 @@ var photoModel = {
     parsePhoto: {},
     photosDS: null,
 
-    offersDS: new kendo.data.DataSource({
-        offlineStorage: "offers"
-    }),
+    offersDS : null,
 
-    deletedPhotosDS: new kendo.data.DataSource({
-        offlineStorage: "deletedphotos"
-    }),
+    deletedPhotosDS: null, 
 
     init: function () {
 
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
-            offlineStorage: "photos",
+           // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'photos',
-                dataProvider: APP.everlive
+                typeName: 'photos'/*,
+                dataProvider: APP.everlive*/
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
+            serverSorting: true,
             sort: {
                 field: "timestamp",
                 dir: "desc"
@@ -46,71 +43,52 @@ var photoModel = {
         });
 
 
-        photoModel.photosDS.fetch();
+    photoModel.offersDS = new kendo.data.DataSource({  // this is the gallery datasource
+        // offlineStorage: "photos",
+        type: 'everlive',
+        transport: {
+            typeName: 'photooffers'/*,
+             dataProvider: APP.everlive*/
+        },
+        schema: {
+            model: { Id:  Everlive.idField}
+        },
+        serverSorting: true,
+        sort: {
+            field: "timestamp",
+            dir: "desc"
+        }
+    });
+
+
+    photoModel.deletedPhotosDS = new kendo.data.DataSource({  // this is the gallery datasource
+        // offlineStorage: "photos",
+        type: 'everlive',
+        transport: {
+            typeName: 'deletedphotos'/*,
+             dataProvider: APP.everlive*/
+        },
+        schema: {
+            model: { Id:  Everlive.idField}
+        },
+        serverSorting: true,
+        sort: {
+            field: "timestamp",
+            dir: "desc"
+        }
+    });
+
+
+    photoModel.photosDS.fetch();
         deviceModel.setAppState('hasPhotos', true);
-        deviceModel.isParseSyncComplete();
+        /*deviceModel.isParseSyncComplete();*/
     },
 
     initOffer : function () {
         photoModel.currentOffer = null;
     },
 
-/*
 
-    _fetchPhotos : function () {
-        var ParsePhotoModel = Parse.Object.extend(photoModel._parseClass);
-        var query = new Parse.Query(ParsePhotoModel);
-        query.limit(1000);
-
-        query.find({
-            success: function(collection) {
-                var models = [], elModels = [];
-                for (var i = 0; i < collection.length; i++) {
-
-                    var parsePhoto = collection[i];
-                    var photo = parsePhoto.toJSON();
-
-                    var filename = photo.photoId.replace(/-/g,'');
-                    filename = "photo_" + filename + ".jpg";
-
-                    if (photo.imageUrl === null) {
-                        photo.imageUrl = photo.thumbnailUrl;
-                    }
-
-                    photo.ggType = photoModel._ggClass;
-
-                    models.push(photo);
-
-                    elModels.push(photoModel._filterEverlive(photo));
-                }
-
-                everlive.getCount('photos', function(error, count){
-                    if (error === null && count === 0) {
-                        everlive.createAll('photos', elModels, function (error1, data) {
-                            if (error1 !== null) {
-                                mobileNotify("Everlive Photo error " + JSON.stringify(error1));
-                            }
-                            photoModel.photosDS.sync();
-                        });
-                    } else {
-                        if (error !== null)
-                            mobileNotify("Everlive Photo error " + JSON.stringify(error));
-                    }
-
-                });
-                 //photoModel.photosDS.fetch();
-
-                deviceModel.setAppState('hasPhotos', true);
-                photoModel.photosDS.data(models);
-                photoModel.photosDS.sync();
-                deviceModel.isParseSyncComplete();
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-    },
-*/
 
     _filterEverlive : function (photo) {
         var elPhoto = photo;
@@ -138,35 +116,6 @@ var photoModel = {
     },
 
 
-/*    _fetchOffers : function () {
-        var ParsePhotoOffer = Parse.Object.extend("photoOffer");
-        var queryOffer = new Parse.Query(ParsePhotoOffer);
-        query.limit(1000);
-
-        queryOffer.find({
-            success: function(collection) {
-
-                var offers = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var parseOffer = collection[i];
-                    var offer = parseOffer.toJSON();
-
-                    offers.push(offer);
-                }
-
-                photoModel.offersDS.data(offers);
-
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-    },
-
-    fetch: function () {
-        photoModel._fetchPhotos();
-        //photoModel._fetchOffers();
-    },*/
 
     isPhotoCached : function (photo) {
         var store = deviceModel.fileDirectory;
@@ -373,134 +322,11 @@ var photoModel = {
     },
 */
 
-    upgradePhoto : function (photo) {
-        // current trigger is no version field -- later we'll compare numbers
- /*       if (photo.version === undefined) {
-           // photo.version = photoModel._version;
-
-            if (photo.senderUUID === undefined) {
-                photo.senderUUID = null;
-                photo.senderName = null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "senderUUID",  null);
-                updateParseObject('photos', "photoId", photo.photoId, "senderName",  null);
-            }
-
-            if (photo.channelUUID === undefined) {
-                photo.channelUUID = null;
-                photo.channelName = null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "channelUUID",  null);
-                updateParseObject('photos', "photoId", photo.photoId, "channelName",  null);
-            }
-
-            if (photo.placeUUID === undefined) {
-                photo.placeUUID = null;
-                photo.placeName= null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "placeUUID",  null);
-                updateParseObject('photos', "photoId", photo.photoId, "placeName",  null);
-            }
-
-            if (photo.eventId === undefined) {
-                photo.eventId = null;
-                photo.eventName= null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "eventId",  null);
-                updateParseObject('photos', "photoId", photo.photoId, "eventName",  null);
-            }
-            if (photo.ggType === undefined) {
-
-                photo.ggType = photoModel._ggClass;
-
-                updateParseObject('photos', "photoId", photo.photoId, "ggType",  photoModel._ggClass);
-            }
-
-            if (photo.address === undefined) {
-
-                photo.address = null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "address",  null);
-            }
-
-            if (photo.deviceUrl === undefined) {
-
-                photo.deviceUrl = null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "deviceUrl",  null);
-            }
-
-            if (photo.addressString === undefined) {
-
-                photo.addressString = null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "addressString",  null);
-            }
-
-            if (photo.dateString === undefined) {
-                var timeStamp = parseInt(photo.timeStamp);
-                var timeStr = moment.unix(timeStamp).format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
-
-                photo.dateString = timeStr;
-
-                updateParseObject('photos', "photoId", photo.photoId, "dateString",  timeStr);
-            }
-
-
-            if (photo.title === undefined) {
-
-                photo.title = null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "title",  null);
-            }
-
-            if (photo.uuid === undefined) {
-
-                photo.uuid = photo.photoId;
-
-                updateParseObject('photos', "photoId", photo.photoId, "uuid",  photo.photoId);
-            }
-
-            if (photo.description === undefined) {
-
-                photo.description = null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "description",  null);
-            }
-
-            if (photo.address === undefined) {
-
-                photo.address = null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "address",  null);
-            }
-
-            if (photo.tags === undefined) {
-
-                photo.tags = [];
-
-                updateParseObject('photos', "photoId", photo.photoId, "tags",  []);
-
-            }
-
-            if (photo.tagsString === undefined) {
-
-
-                photo.tagsString = null;
-
-                updateParseObject('photos', "photoId", photo.photoId, "tagsString",  null);
-            }
-
-            updateParseObject('photos', "photoId", photo.photoId, "version", photoModel._version);
-
-        }
-*/
-    },
 
     addChatPhoto : function (photoObj, callback) {
 
         mobileNotify("Adding Chat photo to Memories...");
-      /*  var Photos = Parse.Object.extend(photoModel._parseClass);
+      /*  var Photos = Parse.Object.extend(photoModel._cloudClass);
         var photo = new Photos();*/
 
         var photo = new kendo.data.ObservableObject();
@@ -562,8 +388,17 @@ var photoModel = {
 
        // var photoObj = photo.toJSON();
 
-        photoModel.photosDS.add(photo);
-        photoModel.photosDS.sync();
+        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                photoModel.photosDS.add(photo);
+            }
+        });
+
+       /* photoModel.photosDS.add(photo);
+        photoModel.photosDS.sync();*/
 
        /* photo.save(null, {
             success: function(photoIn) {
@@ -745,7 +580,7 @@ var photoModel = {
     addDevicePhoto: function (devicePhoto) {
         mobileNotify("Adding  photo....");
         // Todo: add additional processing to create Parse photoOffer
-      /*  var Photos = Parse.Object.extend(photoModel._parseClass);
+      /*  var Photos = Parse.Object.extend(photoModel._cloudClass);
         var photo = new Photos();
 */
         var photo = new kendo.data.ObservableObject();
@@ -817,70 +652,16 @@ var photoModel = {
             photo.set('placeString', userModel._user.currentPlace);
         }
 
-       // var photoObj = photo.toJSON();
-        photoModel.photosDS.add(photo);
-        photoModel.photosDS.sync();
 
-       /* photo.save(null, {
-            success: function(photoIn) {
-
-                // Execute any logic that should take place after the object is saved.
-                photoModel.parsePhoto = photoIn;
-
-
-            },
-            error: function(contact, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
+        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                photoModel.photosDS.add(photo);
             }
         });
-*/
 
-       /* var parseFile = new Parse.File("thumbnail_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': data.imageData}, "image/jpg");
-        parseFile.save().then(function() {
-            photo.set("thumbnail", parseFile);
-            photo.set("thumbnailUrl", parseFile._url);
-            photoModel.currentPhoto.thumbnailUrl = parseFile._url;
-            photo.save(null, {
-                success: function(photo) {
-                    // Execute any logic that should take place after the object is saved.
-                    photoModel.parsePhoto = photo;
-
-                },
-                error: function(contact, error) {
-                    // Execute any logic that should take place if the save fails.
-                    // error is a Parse.Error with an error code and message.
-                    handleParseError(error);
-                }
-            });
-        });
-
-
-
-        var parseFile2 = new Parse.File("photo_"+photoModel.currentPhoto.filename + ".jpeg",{'base64': photoModel.currentPhoto.photoUrl},"image/jpg");
-        parseFile2.save().then(function() {
-            photo.set("image", parseFile2);
-            photo.set("imageUrl", parseFile2._url);
-            photoModel.currentPhoto.photoUrl = parseFile2._url;
-            photo.save(null, {
-                success: function(photo) {
-                    // Execute any logic that should take place after the object is saved.
-                    var photoObj = photo.toJSON();
-                    mobileNotify('Photo added to ghostgrams gallery');
-                    photoModel.photosDS.add(photoObj);
-                    photoModel.parsePhoto = photo;
-                    currentChannelModel.currentMessage.photo = {thumb: photo.get('thumbnailUrl'), photo: photo.get('imageUrl'), phone: photo.get('phoneUrl')};
-
-                },
-                error: function(contact, error) {
-                    // Execute any logic that should take place if the save fails.
-                    // error is a Parse.Error with an error code and message.
-                    handleParseError(error);
-                }
-            });
-        });
-*/
     },
 
 
@@ -890,11 +671,15 @@ var photoModel = {
         if (photo === undefined || photo === null) {
             mobileNotify("deletePhoto - can't find photo!");
         }
-        photoModel.photosDS.remove(photo);
-        // Remove from isotope and then rerender the layout
-        //$('#gallery-grid').isotope( 'remove', photoModel.currentIsoModel ).isotope('layout');
-        // Delete from remote parse collection
-        //deleteParseObject('photos', 'photoId', photo.photoId);
+
+        var Id = photo.Id;
+
+        if (Id !== undefined){
+            everlive.deleteOne(photoModel._cloudClass, Id, function (error, data) {
+                photoModel.photosDS.remove(photo);
+            });
+        }
+
     },
 
     deleteAllPhotos : function () {

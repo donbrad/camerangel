@@ -16,18 +16,17 @@ var channelsView = {
     _viewInitialized : false,
     _showDeletedChannels : false,
 
-    _channelListDS : new kendo.data.DataSource({
-        offlineStorage: "channellist",
-        sort: {
-            field: "lastAccess",
-            dir: "desc"
-        }
-    }),
+    _channelListDS : null,
 
 
     onInit : function (e) {
         e.preventDefault();
 
+        
+        channelsView._channelListDS =  new kendo.data.DataSource({
+            offlineStorage: "channellist"
+        });
+        
         channelsView._channelListDS.online(false);
 
         $("#channels-listview").kendoMobileListView({
@@ -498,6 +497,11 @@ var editChannelView = {
     },
 
     setActiveChannel : function (channel) {
+
+        if (channel.Id === undefined) {
+            mobileNotify("No Id for channel " + channel.name);
+        }
+        editChannelView._activeChannel.set('Id', channel.Id);
         editChannelView._activeChannel.set('name', channel.name);
         editChannelView._activeChannel.set('description', channel.description);
         editChannelView._activeChannel.set('isPlace', channel.isPlace);

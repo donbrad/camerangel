@@ -7,7 +7,7 @@
 var channelModel = {
 
     _version: 1,
-    _parseClass: "channels",
+    _cloudClass: "channels",
     _ggClass: 'Chat',
     _channelName : "channels",
     _channelMemberName : "channelMember",
@@ -21,37 +21,66 @@ var channelModel = {
     channelsDS: null,
 
     // List of all active private channels (those with messages)
-    privateChannelsDS: new kendo.data.DataSource({
-        offlineStorage: "privatechannels"
-    }),
+    privateChannelsDS: null, 
 
-    recalledMessagesDS : new kendo.data.DataSource({
-        offlineStorage: "recalledMessages"
-    }),
+    recalledMessagesDS : null, 
 
-    groupMessagesDS : new kendo.data.DataSource({
-        offlineStorage: "groupMessages"
-    }),
+    groupMessagesDS : null,
 
     init :  function () {
-
-        channelModel.recalledMessagesDS.online(false);
 
         channelModel.activeChannels = [];
 
         channelModel.channelsDS = new kendo.data.DataSource({
             type: 'everlive',
-            offlineStorage: "channels",
+           // offlineStorage: "channels",
             transport: {
-                typeName: 'channels',
-                dataProvider: APP.everlive
+                typeName: 'channels'
+                //dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
+            serverSorting: true,
             sort: {
                 field: "lastAccess",
                 dir: "desc"
+            }
+        });
+        
+        channelModel.privateChannelsDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "channels",
+            transport: {
+                typeName: 'privatechannels'
+                //dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            }
+        });
+
+        channelModel.recalledMessagesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "channels",
+            transport: {
+                typeName: 'recalledmessages'
+                //dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            }
+        });
+
+        channelModel.gropuMessagesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "channels",
+            transport: {
+                typeName: 'gropumessages'
+                //dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
             }
         });
 
@@ -93,7 +122,7 @@ var channelModel = {
 
         channelModel.channelsDS.fetch();
         deviceModel.setAppState('hasChannels', true);
-        deviceModel.isParseSyncComplete();
+       /* deviceModel.isParseSyncComplete();*/
 
         notificationModel.processUnreadChannels();
 
@@ -110,7 +139,7 @@ var channelModel = {
 
 
 /*    fetch : function () {
-        var Channel = Parse.Object.extend(channelModel._parseClass);
+        var Channel = Parse.Object.extend(channelModel._cloudClass);
         var query = new Parse.Query(Channel);
         query.limit(1000);
 
@@ -625,7 +654,7 @@ var channelModel = {
             return;
         }
 
-       /* var Channels = Parse.Object.extend(channelModel._parseClass);*/
+       /* var Channels = Parse.Object.extend(channelModel._cloudClass);*/
         var channel = new kendo.data.ObservableObject();
         var addTime = ggTime.currentTime();
         channel.set("version", channelModel._version);
@@ -650,8 +679,15 @@ var channelModel = {
         channel.set("members", [userModel._user.userUUID, contactUUID]);
 
 
-        channelModel.channelsDS.add(channel);
-        channelModel.channelsDS.sync();
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Channel " + JSON.stringify(error));
+            } else {
+                channelModel.channelsDS.add(channel);
+            }
+        });
+
+
         notificationModel.addNewPrivateChatNotification(channel.get('channelUUID'), channel.get('name'));
 
 
@@ -660,7 +696,7 @@ var channelModel = {
 
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
-    addMemberChannel : function (channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, isDeleted) {
+    addMemberChannel : function (channelUUID, channelName, channelDescription, channelMembers, ownerUUID, ownerName, options, isDeleted) {
 
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel !== undefined)  {
@@ -692,7 +728,7 @@ var channelModel = {
         channel.set("channelUUID", channelUUID);
         channel.set("name", channelName);
         channel.set("description", channelDescription);
-        channel.set("ownerId", ownerId);
+        channel.set("ownerUUID", ownerUUID);
         channel.set("ownerName", ownerName);
         channel.set("isOwner", false);
         channel.set('isPrivate', false);
@@ -720,8 +756,16 @@ var channelModel = {
         channel.set("invitedMembers", []);
 
 
-        channelModel.channelsDS.add(channel);
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Channel " + JSON.stringify(error));
+            } else {
+                channelModel.channelsDS.add(channel);
+            }
+        });
+       /* channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+        deviceModel.syncEverlive();*/
         notificationModel.addNewChatNotification(channel.get('channelUUID'), "Group Chat: " + channel.get('name'), channel.get('description'));
 
 
@@ -786,7 +830,7 @@ var channelModel = {
         channel.set("lastAccess", addTime);
         channel.set("channelUUID", channelUUID);
 
-        channel.set("ownerId", ownerUUID);
+        channel.set("ownerUUID", ownerUUID);
 
         channel.set("ownerName", ownerName);
         // Channel owner can access and edit members...
@@ -796,8 +840,16 @@ var channelModel = {
         channel.set("invitedMembers", []);
 
 
-        channelModel.channelsDS.add(channel);
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Channel " + JSON.stringify(error));
+            } else {
+                channelModel.channelsDS.add(channel);
+            }
+        });
+    /*    channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+        deviceModel.syncEverlive();*/
         //currentChannelModel.currentChannel = channelModel.findChannelModel(channelUUID);
         notificationModel.addNewChatNotification(channel.get('channelUUID'), "Place Chat: " + channel.get('name'), channel.get('description'));
 
@@ -855,7 +907,7 @@ var channelModel = {
         channel.set("lastAccess", addTime);
         channel.set("channelUUID", channelUUID);
 
-        channel.set("ownerId", ownerUUID);
+        channel.set("ownerUUID", ownerUUID);
 
         channel.set("ownerName", ownerName);
         // Channel owner can access and edit members...
@@ -864,9 +916,17 @@ var channelModel = {
         channel.set("members", [ownerUUID]);
         channel.set("invitedMembers", []);
 
-        
-        channelModel.channelsDS.add(channel);
+
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Channel " + JSON.stringify(error));
+            } else {
+                channelModel.channelsDS.add(channel);
+            }
+        });
+       /* channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+        deviceModel.syncEverlive();*/
         mobileNotify('Added Chat : ' + channel.get('name'));
         APP.kendo.navigate('#editChannel?channel=' + channelUUID);
 
@@ -916,14 +976,20 @@ var channelModel = {
                         if (place !== undefined) {
                             place.set('hasPlaceChat', false);
                             place.set('placeChatId', null);
-                            //updateParseObject("places", 'uuid', placeUUID, 'hasPlaceChat', false);
-                            //updateParseObject("places", 'uuid', placeUUID, 'placeChatId', null);
                         }
                     }
                 }
 
                 if (window.navigator.simulator === undefined)
                     serverPush.unprovisionGroupChannel(channelUUID);
+
+                var Id = channel.Id;
+
+                if (Id !== undefined){
+                    everlive.deleteOne(channelModel._cloudClass, Id, function (error, data) {
+                        dataSource.remove(channel);
+                    });
+                }
                 dataSource.remove(channel);
                 //deleteParseObject("channels", 'channelUUID', channelUUID);
                 //mobileNotify("Removed channel : " + channel.get('name'));

@@ -200,7 +200,7 @@ function _nullString (stringIn) {
 	return(stringIn);
 }
 
-function getNetworkState() {
+/*function getNetworkState() {
 	var networkState = navigator.connection.type;
 	switch (networkState) {
 		case Connection.ETHERNET:
@@ -216,7 +216,7 @@ function getNetworkState() {
 			mobileNotify("Online via Cell");
 			break;
 	}
-}
+}*/
 
 /*function handleParseError(err) {
 	switch (err.code) {

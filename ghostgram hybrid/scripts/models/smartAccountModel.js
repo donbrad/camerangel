@@ -8,7 +8,7 @@
 'use strict';
 
 var smartList = {
-    _parseClass : 'smartAccount',
+    _cloudClass : 'smartAccount',
     _ggClass : 'List',
     _version : 1,
 

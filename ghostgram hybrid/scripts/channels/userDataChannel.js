@@ -12,11 +12,21 @@ var userDataChannel = {
 
     channelUUID: null,   // channelUUID is users uuid
     lastAccess: 0,   // last access time stamp
-    messagesDS :  new kendo.data.DataSource({
-        offlineStorage: "privatemessages"
-        }),
+    messagesDS : null,
 
     init: function (channelUUID) {
+
+        userDataChannel.messagesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "places",
+            transport: {
+                typeName: 'privatemessages'/*,
+                 dataProvider: APP.everlive*/
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            }
+        });
 
         if (channelUUID !== undefined) {
             userDataChannel.channelUUID = channelUUID;

@@ -26,13 +26,26 @@ var notificationModel = {
     _connectResponse: 'Connect Response',
 
 
-    notificationDS: new kendo.data.DataSource({
-        offlineStorage: "notifications",
-        sort: {
-            field: "date",
-            dir: "desc"
-        }
-    }),
+    notificationDS: null, 
+    
+    
+    init : function () {
+       notificationModel.notificationDS = new kendo.data.DataSource({
+           type: 'everlive',
+           // offlineStorage: "channels",
+           transport: {
+               typeName: 'notifications',
+               //dataProvider: APP.everlive
+           },
+           schema: {
+               model: { Id:  Everlive.idField}
+           },
+           sort: {
+               field: "date",
+               dir: "desc"
+           }
+       });  
+    },
 
     findNotification : function (type, id) {
         var query = [

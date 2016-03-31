@@ -110,7 +110,7 @@
 
 
 
-		userModel.initCloud();
+		//userModel.initCloud();
 
 		
 		pruneNotifications();

@@ -80,6 +80,35 @@ var userModel = {
 
     init: function () {
         var hasAccount = window.localStorage.getItem('ggHasAccount');
+        userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
+        userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
+        userModel.username = window.localStorage.getItem('ggUserName');
+        userModel.hasAccount = window.localStorage.getItem('ggHasAccount');
+        userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
+
+        // userModel.parseUser = Parse.User.current();
+        userModel.device.udid = device.uuid;
+        userModel.device.platform = device.platform;
+        userModel.device.device = device.name;
+        userModel.device.model = device.model;
+
+        if (userModel.userUUID === undefined) {
+            userModel.userUUID = null;
+            userModel.hasAccount = false;
+        }
+
+        // If remembering Username, get it from localstorage and prefill signin.
+        if (userModel.rememberUsername) {
+            userModel.username = window.localStorage.getItem('ggUsername');
+            if (userModel.username === undefined) {
+                userModel.username = null;
+            }
+
+        }
+
+        if (userModel.userUUID !== undefined && userModel.userUUID !== null) {
+            userModel.key = userModel.userUUID.replace(/-/g,'');
+        }
         
         if (hasAccount !== undefined && hasAccount === true) {
             userModel.hasAccount = true;
@@ -90,9 +119,12 @@ var userModel = {
         }
 
         userModel.initKendo();
+        
     },
 
+    
     initCloudModels : function () {
+        
         contactModel.init();
 
         mapModel.init();
@@ -138,31 +170,7 @@ var userModel = {
         });
     },
 
-    initCloud: function () {
-    
-       // userModel.parseUser = Parse.User.current();
-        userModel.device.udid = device.uuid;
-        userModel.device.platform = device.platform;
-        userModel.device.device = device.name;
-        userModel.device.model = device.model;
-        userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
-        userModel.recoveryPassword = window.localStorage.getItem('ggRecoveryPassword');
-       
-        userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
-        if (userModel.userUUID === undefined) {
-            userModel.userUUID = null;
-            userModel.hasAccount = false;
-        }
-
-        // If remembering Username, get it from localstorage and prefill signin.
-        if (userModel.rememberUsername) {
-           userModel.username = window.localStorage.getItem('ggUsername');
-            if (userModel.username == undefined || userModel.username === '') {
-                window.localStorage.setItem('ggUsername', userModel._user.get('username'));
-            }
-
-        }
-        userModel.initialView = '#newuserhome';
+    /*initCloud: function () {
 
         // Check the status of kendo auth
         everlive.currentUser(function (error, data) {
@@ -173,7 +181,7 @@ var userModel = {
                 } else {
                     // no error and no data -- user isnt signed in
                     if (userModel.hasAccount) {
-                        mobileNotify("Please login to ghostgrams");
+                        mobileNotify("Please signin to ghostgrams");
                         APP.kendo.navigate('#usersignin');
                     } else {
                         APP.kendo.navigate('#newuserhome');
@@ -185,13 +193,21 @@ var userModel = {
                 if (error !== undefined && error.code !== 301) { // 301 = no auth credentials, could be new user or member not signed it
                     // So other error - just notify for now...
                     mobileNotify("Kendo Auth Error " + JSON.stringify(error));
+                } else {
+                    // no error and no data -- user isnt signed in
+                    if (userModel.hasAccount) {
+                        mobileNotify("Please login to ghostgrams");
+                        APP.kendo.navigate('#usersignin');
+                    } else {
+                        APP.kendo.navigate('#newuserhome');
+                    }
                 }
 
             }
 
         });
 
-    },
+    },*/
 
     update_user : function (user) {
 
@@ -391,14 +407,14 @@ var userModel = {
             userModel._user.set('currentPlaceUUID', place.uuid);
             userModel._user.set('googlePlaceId', place.googleId);
             userModel._user.set('lat', place.lat.toFixed(6));
-            userModel._user.set('lng', place.lat.toFixed(6));
+            userModel._user.set('lng', place.lng.toFixed(6));
 
         } else {
             userModel._user.set('currentPlace', locationName);
             userModel._user.set('currentPlaceUUID', null);
             userModel._user.set('googlePlaceId', googlePlaceId);
             userModel._user.set('lat', lat.toFixed(6));
-            userModel._user.set('lng', lat.toFixed(6));
+            userModel._user.set('lng', lng.toFixed(6));
         }
 
         userModel._user.set('isCheckedIn', true);
@@ -657,6 +673,8 @@ var userStatus = {
     update : function () {
         var status = userStatus._statusObj;
 
+        var data =  APP.everlive.data(userStatus._ggClass);
+
         if (status.Id === undefined || status.Id === null) {
             status.Id = everlive._id;
         }
@@ -679,13 +697,24 @@ var userStatus = {
         status.set('lastUpdate', ggTime.currentTime());
 
 
-        everlive.updateOne(userStatus._ggClass, status, function (error, data) {
+        data.updateSingle( status,
+            function ( data) {
+                mobileNotify("User Status Updated");
 
-            if (error !== null) {
-                mobileNotify("Update User Status error : " + JSON.stringify(error));
+            },
+            function (error) {
+                if (error !== null) {
+                    if (error !== undefined && error.code === 801) {
+                        userStatus.create();
+                        return;
+                    }
+                    mobileNotify("Update User Status error : " + JSON.stringify(error));
+                }
+
             }
+        );
 
-        })
+        everlive.updateUserStatus();
 
     }
 

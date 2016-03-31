@@ -10,7 +10,7 @@ var contactModel = {
 
     _version: 1,
     _ggClass: 'Contact',
-    _parseClass: 'contacts',
+    _cloudClass: 'contacts',
 
    contactsDS: null,
 
@@ -24,6 +24,7 @@ var contactModel = {
 
     // Contact data plus contact status
     contactListDS: new kendo.data.DataSource({
+        offlineStorage: 'contactlist',
         group: 'category',
         sort: {
             field: "name",
@@ -50,14 +51,15 @@ var contactModel = {
 
         contactModel.contactsDS = new kendo.data.DataSource({
             type: 'everlive',
-            offlineStorage: "contacts",
+            //offlineStorage: "contacts",
             transport: {
-                typeName: 'contacts',
-                dataProvider: APP.everlive
+                typeName: 'contacts'
+                //dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
             },
+            serverSorting: true,
             sort: {
                 field: "name",
                 dir: "asc"
@@ -96,9 +98,17 @@ var contactModel = {
                         var contact = e.items[0];
                         // add to contactlist and contacttags
                         var contactList = contactModel.findContactList(contact.uuid);
-                        if (contactList !== undefined)
+                        if (contactList !== undefined) {
+                            contact.identicon = contactModel.createIdenticon(contact.uuid);
+                            if (contact.photo === null)
+                                contact.photo = contact.identicon;
                             contactModel.contactListDS.add(contact);
-
+                        } else {
+                            if (contactList.photo === undefined || contactList.photo === null) {
+                                contactList.identicon = contactModel.createIdenticon(contactList.uuid);
+                                contactList.photo = contactList.identicon;
+                            }
+                        }
                         tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
                          break;
                 }
@@ -108,11 +118,12 @@ var contactModel = {
         });
 
         contactModel.contactsDS.fetch();
+       // contactModel.contactListDS.fetch();
         contactModel.buildContactList();
         contactModel.updateContactListStatus(true);
         contactModel.syncContactTags();
         deviceModel.setAppState('hasContacts', true);
-        deviceModel.isParseSyncComplete();
+       /* deviceModel.isParseSyncComplete();*/
 
         contactModel.contactListDS.online(false);
 
@@ -139,166 +150,7 @@ var contactModel = {
         }
 
     },
-
-/*
-    fetch : function () {
-
-        var parseContactModel = Parse.Object.extend(contactModel._parseClass);
-        var query = new Parse.Query(parseContactModel);
-        query.limit(1000);
-
-        query.find({
-            success: function(collection) {
-                contactModel.contactsDS.data([]);
-                var models = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var model = collection[i];
-
-                    var identicon = model.get('identicon');
-                    if (identicon === undefined || identicon === null || identicon === '') {
-                        var contactId = model.get('uuid');
-                        if (contactId !== undefined) {
-                            var url = contactModel.createIdenticon(contactId);
-                            model.set('identicon', url);
-                        }
-
-                    }
-
-                    if (model.get('groups') === undefined){
-                        model.set('groups', []);
-                    }
-                   /!* var dirty = false;
-
-
-                    var identicon = model.get('identicon');
-                    if (identicon === undefined || identicon === null || identicon === '') {
-                        var url = contactModel.createIdenticon(model.get('uuid'));
-                        model.set('identicon', url);
-                    }
-                  //  var photo = model.get('photo');
-                   // if (photo === undefined || photo === null || photo === '') {
-                        model.set('photo', url);
-                   // }
-                    //Push to the ownerUUID to legacy contacts...
-                    if (model.get('ownerUUID') === undefined) {
-                        model.set('ownerUUID', userModel._user.userUUID);
-                        dirty = true;
-                    }
-
-                    if (model.get('_ggType') === undefined) {
-                        model.set('ggType', contactModel._ggClass);
-                        dirty = true;
-                    }
-
-                    if (model.get('contactPhoto') === undefined) {
-                        model.set('contactPhoto', null);
-                        dirty = true;
-                    }
-                    if (model.get('isBlocked') === undefined) {
-                        model.set('isBlocked', false);
-                        dirty = true;
-                    }
-                    if (model.get('isFavorite') === undefined) {
-                        model.set('isFavorite', false);
-                        dirty = true;
-                    }
-
-                    if (model.get('emailValidated') === undefined) {
-                        model.set('emailValidated', false);
-                        dirty = true;
-                    }
-
-                    if (model.get('isDeleted') === undefined) {
-                        model.set('isDeleted', false);
-                        dirty = true;
-                    }
-
-                    if (model.get('connectSent') === undefined) {
-                        model.set('connectSent', false);
-                        dirty = true;
-                    }
-
-                    if (model.get('connectReceived') === undefined) {
-                        model.set('connectReceived', false);
-                        dirty = true;
-                    }
-
-                    if (model.get('contactAddress') === undefined) {
-                        model.set('contactAddress', null);
-                        dirty = true;
-                    }
-
-                    var phone = model.get('phone'), contactPhone = model.get('contactPhone');
-
-                    if (phone === undefined) {
-                        phone = null;
-                    }
-                    if (phone === null && contactPhone !== null) {
-                        model.set('phone', contactPhone);
-                        dirty = true;
-                    }
-
-                    if (model.get('version') === undefined) {
-                        model.set('version', 1);
-                        dirty = true;
-                    }
-
-                    if (dirty)
-                        model.save();*!/
-                    var data = model.toJSON();
-
-                    models.push(data);
-                }
-
-                everlive.getCount('contacts', function(error, count){
-                    if (error === null && count === 0) {
-                        everlive.createAll('contacts', models, function (error1, data) {
-                            if (error1 !== null) {
-                                mobileNotify("Everlive contacts error " + JSON.stringify(error1));
-                            }
-                            contactModel.contactsDS.sync();
-                            contactModel.buildContactList();
-                            contactModel.updateContactListStatus(true);
-                            contactModel.syncContactTags();
-                            deviceModel.setAppState('hasContacts', true);
-                            deviceModel.isParseSyncComplete();
-                        });
-                    } else {
-                        if (error !== null)
-                            mobileNotify("Everlive contacts error " + JSON.stringify(error));
-
-                        contactModel.contactsDS.fetch();
-                        contactModel.buildContactList();
-                        contactModel.updateContactListStatus(true);
-                        contactModel.syncContactTags();
-                        deviceModel.setAppState('hasContacts', true);
-                        deviceModel.isParseSyncComplete();
-                    }
-
-                });
-
-
-
-
-                // Update contactlistDs and get latest status for contacts
-               // contactModel.contactListDS.data(models);
-
-
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-    },*/
-
-    setCurrentContact: function (contact) {
-        if (contact !== undefined && contact !== null) {
-            contactModel.currentContact = contact;
-        } else {
-            contactModel.currentContact = null;
-        }
-    },
-
+    
     // Build an identity list for contacts indexed by contactUUID
     buildContactList : function () {
         var array = contactModel.contactsDS.data();
@@ -324,6 +176,8 @@ var contactModel = {
                 };
             }
 
+            contact.identicon = contactModel.createIdenticon(contact.uuid);
+            contact.photo = contact.identicon;
             contactModel.contactListDS.add(contact);
         }
 
@@ -442,10 +296,7 @@ var contactModel = {
             }
            // dataSource.remove(contact);
 
-          /*  updateParseObject("contacts", 'uuid', contactId, "isDeleted", true);
-            updateParseObject("contacts", 'uuid', contactId, "category", 'zapped');
-            updateParseObject("contacts", 'uuid', contactId, "xcategory", contact.get('xcategory'));
-*/
+
             // Delete any current private channel
             channelModel.deletePrivateChannel(contactId);
 
@@ -473,11 +324,7 @@ var contactModel = {
                 contactList.set('category', xcategory);
             }
             // dataSource.remove(contact);
-
-           /* updateParseObject("contacts", 'uuid', contactId, "isDeleted", false);
-            updateParseObject("contacts", 'uuid', contactId, "category", xcategory);
-            updateParseObject("contacts", 'uuid', contactId, "xcategory", null);
-*/
+            
         }
     },
 
@@ -554,7 +401,6 @@ var contactModel = {
                 mobileNotify(contact.name + " is not a Chat Member!");
             } else {
                 contact.set("connectSent",true);
-                //updateParseObject("contacts", 'uuid', contactId, "connectSent", true);
                 appDataChannel.connectRequest(contact.contactUUID, comment);
             }
         }
@@ -568,7 +414,6 @@ var contactModel = {
                 mobileNotify(contact.name + " is not a Chat Member!");
             } else {
                 contact.set("connectReceived",true);
-                //updateParseObject("contacts", 'uuid', contactId, "connectReceived", true);
             }
         }
     },
@@ -593,7 +438,7 @@ var contactModel = {
 
         if (contact !== undefined) {
             contact.set('isBlocked', true);
-            //updateParseObject("contacts", 'uuid', contactId, "isBlocked", true);
+            
             var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
             if (contactList !== undefined) {
                 contactList.set('isBlocked', true);
@@ -607,8 +452,7 @@ var contactModel = {
         if (contact !== undefined) {
 
             contact.set('isBlocked', false);
-
-            //updateParseObject("contacts", 'uuid', contactId, "isBlocked", false);
+            
             var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
             if (contactList !== undefined) {
                 contactList.set('isBlocked', false);
@@ -664,22 +508,7 @@ var contactModel = {
 
         thisContact.set('publicKey', contact.publicKey);
         thisContactList.set('publicKey', contact.publicKey);
-
-        /*if (isDirty) {
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'category', thisContact.category);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'publicKey', thisContact.publicKey);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhone', thisContact.contactPhone);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactEmail', thisContact.contactEmail);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactPhoto', thisContact.contactPhoto);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'contactAddress', thisContact.contactAddress);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'phone', thisContact.phone);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'phoneValidated', thisContact.phoneValidated);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'email', thisContact.email);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'emailValidated', thisContact.emailValidated);
-            updateParseObject('contacts', 'uuid', thisContact.uuid, 'address', thisContact.address);
-
-        }
-*/
+        
     },
 
 
@@ -865,9 +694,16 @@ var contactModel = {
         contact.set('contactEmail', null);
         contact.set('ownerUUID', userModel._user.userUUID);
 
-        contactModel.contactsDS.add(contact);
+        everlive.createOne(contactModel._cloudClass, contact, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating place " + JSON.stringify(error));
+            } else {
+                contactModel.contactsDS.add(contact);
+            }
+        });
+        /*contactModel.contactsDS.add(contact);
         contactModel.contactsDS.sync();
-
+        deviceModel.syncEverlive();*/
 
         /*contact.save(null, {
             success: function(contact) {

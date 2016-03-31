@@ -26,8 +26,8 @@ var contactsView = {
         $("#contacts-listview").kendoMobileListView({
             dataSource: contactModel.contactListDS,
             template: $("#contactsTemplate").html(),
-            autoBind: false,
             headerTemplate: $("#contactsHeaderTemplate").html(),
+            autoBind: false,
             fixedHeaders: true,
             dataBound: function(e){
                 ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
@@ -192,11 +192,7 @@ var contactsView = {
 
         $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
         
-       // contactModel.contactListDS.data(contactModel.contactsDS.data());
-        //APP.models.contacts.contactListDS.data(APP.models.contacts.deviceContactsDS.data());
 
-        //contactsView.updateContactListDS();
-        mobileNotify("Updating contact status...");
         contactModel.updateContactListStatus();
 
         // Update the contact list every 5 minutes while the contact list view is active
@@ -775,8 +771,8 @@ var addContactView = {
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
-        contact.set("identicon", url);
-        contact.set("photo", url);
+        contact.set("identicon", null);
+        contact.set("photo", null);
         contact.set('category', "new");
         contact.set("priority", 0);
         contact.set("isFavorite", false);
@@ -787,6 +783,9 @@ var addContactView = {
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
+        contact.set('emailValidated', false);
+        contact.set('phoneValidated', false);
+        contact.set('isValidated', false);
         contact.set('ownerUUID', userModel._user.userUUID);
 
         //phone = phone.replace(/\+[0-9]{1-2}/,'');
@@ -811,6 +810,12 @@ var addContactView = {
 
             if (user !== null) {
                 var thisContact = user;
+                if (thisContact.phoneValidated === undefined) {
+                    thisContact.phoneValidated = false;
+                }
+                if (thisContact.emailValidated === undefined) {
+                    thisContact.emailValidated = false;
+                }
                 contact.set("phoneValidated", thisContact.phoneValidated);
                 // Does the contact have a verified email address
                 contact.set("email", thisContact.email);
@@ -823,11 +828,8 @@ var addContactView = {
                 }
                 contact.set('contactUUID', thisContact.userUUID);
                 contact.set('contactPhone', thisContact.phone);
-                contact.set('phoneValidated', thisContact.phoneValidated);
                 contact.set('phone', thisContact.phone);
-                if (thisContact.phoneValidated) {
-                    contact.set('category', 'member');
-                }
+                contact.set('category', 'member');
                 contact.set('contactEmail', thisContact.email);
                 contact.set('photo', null);
                 contact.set('contactPhoto', thisContact.photo);
@@ -845,60 +847,21 @@ var addContactView = {
                 contact.set("contactEmail", null);
             }
 
-          contactModel.contactsDS.add(contact);
+          everlive.createOne(contactModel._cloudClass, contact, function (error, data){
+              if (error !== null) {
+                  mobileNotify ("Error creating Contact " + JSON.stringify(error));
+              } else {
+                  contactModel.contactsDS.add(contact);
+              }
+          });
+
+        /*  contactModel.contactsDS.add(contact);
           contactModel.contactsDS.sync();
-          everlive.syncCloud();
+          deviceModel.syncEverlive();*/
           //contactModel.contactListDS.add(contactx);
 
           addContactView.closeModal();
           APP.kendo.navigate('#contacts');
-
-     /*     contact.save(null, {
-              success: function(thiscontact) {
-                  // Execute any logic that should take place after the object is saved.
-                  mobileNotify('Added contact : ' + thiscontact.get('name'));
-                  //var photo = contact.get('photo');
-
-                  var contactx = thiscontact.toJSON();
-
-                  contactx.identicon = url;
-                  contactx.photo = url;
-                  contactModel.contactsDS.add(contactx);
-                  //contactModel.contactListDS.add(contactx);
-
-                  addContactView.closeModal();
-                  APP.kendo.navigate('#contacts');
-              },
-              error: function(contact, error) {
-                  // Execute any logic that should take place if the save fails.
-                  // error is a Parse.Error with an error code and message.
-                  handleParseError(error);
-              }
-          });
-*/
-            /*getBase64FromImageUrl(photo, function (fileData) {
-                var parseFile = new Parse.File(guid+".png", {base64 : fileData}, "image/png");
-                parseFile.save().then(function() {
-                    contact.set("parsePhoto", parseFile);
-                    contact.set("photo", parseFile._url);
-                    contact.save(null, {
-                        success: function(contact) {
-                            // Execute any logic that should take place after the object is saved.
-                            mobileNotify('Added contact : ' + contact.get('name'));
-                            contactModel.contactsDS.add(contact.attributes);
-                            APP.kendo.navigate('#contacts');
-                        },
-                        error: function(contact, error) {
-                            // Execute any logic that should take place if the save fails.
-                            // error is a Parse.Error with an error code and message.
-                            handleParseError(error);
-                        }
-                    });
-                }, function(error) {
-                    // The file either could not be read, or could not be saved to Parse.
-                    handleParseError(error);
-                });
-            });*/
 
         });
 
@@ -945,7 +908,7 @@ var editContactView = {
     // Set active contact object and process any updates (with user notification)
     setActiveContact : function (contact) {
         if (contact !== undefined) {
-           // editContactView._activeContact.unbind('change' , editContactView.syncActiveContact);
+            editContactView._activeContact.set("Id", contact.Id);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
             editContactView._activeContact.set("alias", contact.alias);
@@ -1037,37 +1000,7 @@ var editContactView = {
         }
 
 
-        /*updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"name", editContactView._activeContact.name);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"alias", editContactView._activeContact.alias);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"phone", editContactView._activeContact.phone);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"email", editContactView._activeContact.email);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"photo", editContactView._activeContact.photo);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"group", editContactView._activeContact.group);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"isFavorite", editContactView._activeContact.isFavorite);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"isBlocked", editContactView._activeContact.isBlocked);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"address", editContactView._activeContact.address);
-        updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid,"category", editContactView._activeContact.category);
-
-        if (editContactView._activeContact.contactUUID !== undefined && editContactView._activeContact.contactUUID !== null) {
-            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactUUID", editContactView._activeContact.contactUUID);
-            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactPhone", editContactView._activeContact.contactPhone);
-            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactEmail", editContactView._activeContact.contactEmail);
-            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "contactAddress", editContactView._activeContact.contactAddress);
-            updateParseObject('contacts', 'uuid', editContactView._activeContact.uuid, "publicKey", editContactView._activeContact.publicKey);
-        }*/
         //$("#contacts-listview").data("kendoMobileListView").refresh();
-
-    },
-
-    syncActiveContact: function (e) {
-
-        _preventDefault(e);
-
-        if (e.field !== 'emailValidated') {
-            // Parse throws an error if we try to update emailValidated it's a protected field...
-            //updateParseObject('contacts','uuid', editContactView._activeContact.uuid, e.field, this[e.field]);
-        }
-
 
     },
 
@@ -1138,84 +1071,7 @@ var editContactView = {
         $("#contactEditList").velocity("fadeIn");
     },
 
-   /* syncWithParse: function (e) {
-        _preventDefault(e);
-
-        mobileNotify("Getting lastest info for " + contactModel.currentContact.name);
-        var contact = editContactView._activeContact;
-        if (contact.contactUUID !== undefined) {
-            getUserContactInfo(contact.contactUUID, function (result) {
-                if (result.found) {
-                    var user = result.user, dirty = false;
-                    if (contact.email !== user.email) {
-                        dirty = true;
-                        contact.email = user.email;
-                        mobileNotify(contact.name + " has changed their preferred email.");
-                    }
-                    if (contact.phone !== user.phone) {
-                        dirty = true;
-                        contact.phone = user.phone;
-                        mobileNotify(contact.name + " has changed their preferred phone.");
-                    }
-                    if (contact.phoneValidated !== user.phoneValidated) {
-                        dirty = true;
-                        contact.phoneValidated = user.phoneValidated;
-                        mobileNotify(contact.name + " has verified their phone.");
-                    }
-                    if (contact.emailValidated !== user.emailValidated) {
-                        dirty = true;
-                        contact.set('emailValidated',user.emailValidated);
-                        mobileNotify(contact.name + " has verified their email.");
-                    }
-                    if (contact.publicKey !== user.publicKey) {
-                        dirty = true;
-                        contact.publicKey = user.publicKey;
-                        mobileNotify(contact.name + " has changed their public key.");
-                    }
-
-                    editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
-
-                }
-
-            });
-        } else {
-            findUserByPhone(contact.phone, function (result) {
-                if (result.found) {
-                    var user = result.user, dirty = false;
-                    if (contact.email !== user.email) {
-                        dirty = true;
-                        contact.email = user.email;
-                        mobileNotify(contact.name + " has changed their preferred email.");
-                    }
-                    if (contact.phone !== user.phone) {
-                        dirty = true;
-                        contact.phone = user.phone;
-                        mobileNotify(contact.name + " has changed their preferred phone.");
-                    }
-                    if (contact.phoneValidated !== user.phoneValidated) {
-                        dirty = true;
-                        contact.phoneValidated = user.phoneValidated;
-                        mobileNotify(contact.name + " has verified their phone.");
-                    }
-                    if (contact.emailValidated !== user.emailValidated) {
-                        dirty = true;
-                        contact.set('emailValidated',user.emailValidated);
-                        mobileNotify(contact.name + " has verified their email.");
-                    }
-                    if (contact.publicKey !== user.publicKey) {
-                        dirty = true;
-                        contact.publicKey = user.publicKey;
-                        mobileNotify(contact.name + " has changed their public key.");
-                    }
-
-                    editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
-
-                }
-
-            });
-        }
-    },
-*/
+  
     syncWithDevice : function (e) {
         _preventDefault(e);
 

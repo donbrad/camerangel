@@ -92,7 +92,7 @@ var memberdirectory = {
             isValidated: validated
         };
 
-        data.update(dirObj,
+        data.updateSingle(dirObj,
             function(data){
                 memberdirectory._id = data.result.Id;
             },

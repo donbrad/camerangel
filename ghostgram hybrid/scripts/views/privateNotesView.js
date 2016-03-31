@@ -252,8 +252,14 @@ var privateNotesView = {
                 note.set('dataObject', dataObj);
                 note.set('time',ggTime.currentTime());
 
-                privateNoteModel.notesDS.sync();
-               
+                var Id = note.Id;
+                if (Id !== undefined){
+                    everlive.updateOne(placeNoteModel._cloudClass, note, function (error, data) {
+                        //placeNoteModel.notesDS.remove(note);
+                    });
+                }
+
+
 
             } else {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
@@ -296,8 +302,18 @@ var privateNotesView = {
             ttl: ttl
         };
 
-        privateNoteModel.notesDS.add(message);
-        privateNoteModel.notesDS.sync();
+
+
+        everlive.createOne(privateNoteModel._cloudClass, message, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Private Note " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                privateNoteModel.notesDS.add(message);
+            }
+        });
+
+      //  privateNoteModel.notesDS.sync();
         privateNotesView.scrollToBottom();
 
         deviceModel.syncEverlive();
@@ -426,8 +442,16 @@ var privateNotesView = {
     deleteNote : function (e) {
         _preventDefault(e);
        if (privateNotesView.activeNote.noteId !== undefined) {
-           privateNoteModel.deleteNote(privateNotesView.activeNote);
-           privateNotesView.activeNote = {objects: [], photos: []};
+
+           var note = privateNotesView.activeNote;
+           var Id = note.Id;
+
+           if (Id !== undefined){
+               everlive.deleteOne(privateNoteModel._cloudClass, Id, function (error, data) {
+                   privateNoteModel.deleteNote(privateNotesView.activeNote);
+                   privateNotesView.activeNote = {objects: [], photos: []};
+               });
+           }           
        }
 
     },

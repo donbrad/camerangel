@@ -953,6 +953,7 @@ var addPlaceView = {
 
         addPlaceView._activePlace.unbind('change',addPlaceView.onSync);
 
+        
         addPlaceView._activePlace.set('alias', geoPlace.alias);
         addPlaceView._activePlace.set('venueName', geoPlace.venueName);
         addPlaceView._activePlace.set('isAvailable',"true");
@@ -1029,7 +1030,7 @@ var addPlaceView = {
                 mobileNotify(placeObj.name + " added to your Places...");
 
                 addPlaceView.onDone();
-                everlive.syncCloud();
+                deviceModel.syncEverlive();
 
                 if (createChatFlag) {
                     channelModel.addPlaceChannel(placeObj.placeChatId, placeObj.uuid, placeObj.name, placeObj.isPrivate);
@@ -1176,7 +1177,7 @@ var editPlaceView = {
         model.set('placeChatId', newModel.placeChatId);
 
         placesModel.placesDS.sync();
-        everlive.syncCloud();
+        deviceModel.syncEverlive();
 
 /*
 
@@ -1217,7 +1218,10 @@ var editPlaceView = {
         editPlaceView._activePlaceModel = placeObj;
 
         editPlaceView._activePlace.unbind('change' , editPlaceView.validatePlace);
-
+        if (placeObj === undefined) {
+            mobileNotify("No Id for Place " + placeObj.name);
+        }
+        editPlaceView._activePlace.set('Id', placeObj.Id);
         editPlaceView._activePlace.set('placeUUID', placeUUID);
         editPlaceView._activePlace.set('placeChatId', placeObj.placeChatId);
         editPlaceView._activePlace.set('uuid', placeObj.uuid);
@@ -1521,6 +1525,7 @@ var placeView = {
         }
 
         placeView._activePlaceModel = placeObj;
+        placeView._activePlace.set('Id', placeObj.Id);
         placeView._activePlace.set('placeUUID', placeUUID);
         placeView._activePlace.set('name', placeObj.name);
         placeView._activePlace.set('alias', placeObj.alias);
@@ -1774,13 +1779,13 @@ var placeView = {
             if (note !== undefined) {
                 placeView._memoriesDS.remove(note);
                 noteModel.notesDS.remove(note);
-               // deleteParseObject(noteModel._parseClass, 'uuid', item.uuid);
+               // deleteParseObject(noteModel._cloudClass, 'uuid', item.uuid);
             }
         } else if (item.ggType === 'Photo') {
             var photo = placeView._currentItem;
             placeView._memoriesDS.remove(photo);
             photoModel.photosDS.remove(photo);
-            //deleteParseObject(photoModel._parseClass, 'photoId', photo.photoId);
+            //deleteParseObject(photoModel._cloudClass, 'photoId', photo.photoId);
 
 
 
@@ -2062,6 +2067,9 @@ var mapView = {
     },
 
     displayActivePlace : function () {
+        if (mapView._lat === null || mapView._lat === null) {
+            return;
+        }
         var point = new google.maps.LatLng(mapView._lat, mapView._lng);
         // Center the map.
         
