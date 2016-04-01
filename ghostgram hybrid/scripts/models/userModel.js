@@ -147,6 +147,8 @@ var userModel = {
 
         tagModel.init();
 
+        notificationModel.init();
+
         if (window.navigator.simulator === undefined) {
             serverPush.init();
         }
