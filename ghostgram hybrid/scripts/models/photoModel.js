@@ -575,7 +575,7 @@ var photoModel = {
 
     },
 
-    addDevicePhoto: function (devicePhoto) {
+    addDevicePhoto: function (devicePhoto, callback) {
         mobileNotify("Adding  photo....");
         // Todo: add additional processing to create Parse photoOffer
       /*  var Photos = Parse.Object.extend(photoModel._cloudClass);
@@ -654,9 +654,15 @@ var photoModel = {
         everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
+                if (callback !== undefined) {
+                    callback(error, null);
+                }
             } else {
                 // Add the everlive object with everlive created Id to the datasource
                 photoModel.photosDS.add(photo);
+                if (callback !== undefined) {
+                    callback(null, photo);
+                }
             }
         });
         

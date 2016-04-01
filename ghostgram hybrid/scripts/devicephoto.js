@@ -143,10 +143,14 @@ var devicePhoto = {
                                             devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                             devicePhoto.currentPhoto.publicId = photoData.public_id;
                                             devicePhoto.currentPhoto.uploadComplete = true;
-                                            photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-                                            if (displayCallback !== undefined) {
-                                                displayCallback(photouuid, nativeUrl);
-                                            }
+                                            photoModel.addDevicePhoto(devicePhoto.currentPhoto, function (error, photo) {
+                                                if (error === null) {
+                                                    if (displayCallback !== undefined) {
+                                                        displayCallback(photouuid, nativeUrl);
+                                                    }
+                                                }
+                                            });
+                                           
 
 
                                             //photoModel.addPhotoOffer(photouuid, channelUUID, parseFile._url, null, null , false);
@@ -279,11 +283,16 @@ var devicePhoto = {
                                 devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                 devicePhoto.currentPhoto.publicId = photoData.public_id;
                                 devicePhoto.currentPhoto.uploadComplete = true;
-                                photoModel.addDevicePhoto(devicePhoto.currentPhoto);
-                                if (displayCallback !== undefined) {
-                                    displayCallback(photouuid, imageUrl);
-                                }
+                                photoModel.addDevicePhoto(devicePhoto.currentPhoto, function (error, photo) {
+                                    if (error === null) {
+                                        if (displayCallback !== undefined) {
+                                            displayCallback(photouuid, imageUrl);
+                                        } 
+                                    }
+                                    
 
+                                });
+                                
 
                                 //photoModel.addPhotoOffer(photouuid, channelUUID, parseFile._url, null, null , false);
 
