@@ -1046,6 +1046,82 @@ var channelModel = {
         for (var i=0; i<channelArray.length; i++) {
             channelModel.deleteChannel(channelArray.channelUUID);
         }
+    },
+
+    createChannelMap : function (channel) {
+        var mapObj = {};
+        mapObj.channelUUID = channel.channelUUID;
+        mapObj.channelName = channel.channelName;
+        mapObj.ownerUUID = channel.ownerUUID;
+        mapObj.members = channel.members;
+        mapObj.invitedMembers = channel.invitedMembers;
+
+        everlive.createOne('channelmap', mapObj, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Channel Map " + JSON.stringify(error));
+            }
+
+        });
+    },
+
+    updateChannelMap : function (channel) {
+        channelModel.queryChannelMap(channel.channelUUID, function (error, data) {
+            if (error !== null) {
+                channelModel.createChannelMap(channel);
+            } else {
+                var Id = data.Id;
+                if (Id !== undefined){
+                    var mapObj = {Id : Id};
+                    mapObj.channelUUID = channel.channelUUID;
+                    mapObj.channelName = channel.channelName;
+                    mapObj.ownerUUID = channel.ownerUUID;
+                    mapObj.members = channel.members;
+                    mapObj.invitedMembers = channel.invitedMembers;
+
+                    everlive.updateOne('channelmap', mapObj, function (error, data) {
+                        //placeNoteModel.notesDS.remove(note);
+                    });
+                }
+            }
+        });
+
+    },
+
+    deleteChannelMap : function (channelUUID) {
+        channelModel.queryChannelMap(channel.channelUUID, function (error, data) {
+            if (error !== null) {
+               mobileNotify ("Error Deleting Channel Map : " + JSON.stringify(error));
+            } else {
+                var Id = data.Id;
+                if (Id !== undefined) {
+                    everlive.deleteOne('channelmap', Id, function (error, data) {
+                        //placeNoteModel.notesDS.remove(note);
+                    });
+                }
+            }
+        });
+    },
+
+    queryChannelMap : function (channelUUID, callback) {
+        var filter = {channelUUID : channelUUID};
+        var data = APP.everlive.data('channelmap');
+        data.get(filter)
+            .then(function(data){
+                    callback (null, data);
+                },
+                function(error){
+                    callback (error, null);
+                });
+    },
+
+    queryChannelMapMember : function (memberId, callback) {
+        //todo: don need contains workaround from kendo
+    },
+
+    queryChannelMapInvite : function (phone, callback) {
+        //todo: don need contains workaround from kendo
     }
+
+
 
 };
