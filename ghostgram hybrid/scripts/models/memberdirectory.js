@@ -181,3 +181,112 @@ var memberdirectory = {
     }
 
 };
+
+
+var invitedirectory = {
+
+    _ggClass: 'invitemap',
+    _version: 1,
+
+    create : function (name, phone, email) {
+        var data = APP.everlive.data(invitedirectory._ggClass);
+
+        var dirObj = {
+            memberUUID : userModel._user.userUUID,
+            memberName : userModel._user.name,
+            memberPhone : userModel._user.phone,
+            memberEmail:  userModel._user.email,
+            name: name,
+            phone: phone,
+            email : email,
+            userUUID : null
+
+        };
+
+        data.create(dirObj,
+            function(data){
+
+            },
+            function(error){
+                mobileNotify("Invite Directory Create error : " + JSON.stringify(error));
+            });
+    },
+
+    queryByPhone : function (phone, callback) {
+        var query = new Everlive.Query();
+        query.where().eq('phone', phone).done();
+
+        APP.everlive.data(invitedirectory._ggClass).get(query).then (
+            function (data) {
+                callback(null, data.result);
+            },
+            function (error){
+                callback(error, null);
+            });
+    },
+
+    queryByEmail : function (email, callback) {
+        var query = new Everlive.Query();
+        query.where().eq('email', email).done();
+
+        APP.everlive.data(invitedirectory._ggClass).get(query).then (
+            function (data) {
+                callback(null, data.result);
+            },
+            function (error){
+                callback(error, null);
+            });
+    },
+
+    queryByMemberPhone : function (phone, callback) {
+        var query = new Everlive.Query();
+        query.where().eq('memberPhone', phone).done();
+
+        APP.everlive.data(invitedirectory._ggClass).get(query).then (
+            function (data) {
+                callback(null, data.result);
+            },
+            function (error){
+                callback(error, null);
+            });
+    },
+
+    queryByMemberEmail : function (email, callback) {
+        var query = new Everlive.Query();
+        query.where().eq('memberEmail', email).done();
+
+        APP.everlive.data(invitedirectory._ggClass).get(query).then (
+            function (data) {
+                callback(null, data.result);
+            },
+            function (error){
+                callback(error, null);
+            });
+    },
+
+    deleteByPhone : function (phone, callback) {
+        var query = new Everlive.Query();
+        query
+            .where()
+            .and()
+            .eq('phone', phone)
+            .eq('memberUUID', userModel.currentUser.userUUID)
+            .done();
+        APP.everlive.data(invitedirectory._ggClass).get(query).then (
+            function (data) {
+                APP.everlive.data(invitedirectory._ggClass).destroySingle({ Id: data.result.Id },
+                    function(){
+                        mobileNotify("Invite deleted...");
+                        callback(null, data.result);
+                    },
+                    function(error){
+                        mobileNotify("Invite delete error : " + JSON.stringify(error));
+                        callback(error, null);
+                    });
+
+            },
+            function (error){
+                callback(error, null);
+            });
+    }
+};

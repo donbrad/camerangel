@@ -1118,27 +1118,27 @@ var channelModel = {
 
     queryChannelMapMember : function (memberId, callback) {
         var query = new Everlive.Query();
-        query.where().eq(members, memberId).done();
+        query.where().eq('members', memberId).done();
 
         APP.everlive.data('channelmap').get(query).then (
             function (data) {
-
+                callback(null, data.result);
             },
             function (error){
-
+                callback(error, null);
             });
     },
 
     queryChannelMapInvite : function (phone, callback) {
         var query = new Everlive.Query();
-        query.where().eq(invitedMembers, phone).done();
+        query.where().eq('invitedMembers', phone).done();
 
         APP.everlive.data('channelmap').get(query).then (
             function (data) {
-
+                callback(null, data.result);
             },
             function (error){
-
+                callback(error, null);
             });
     }
 
