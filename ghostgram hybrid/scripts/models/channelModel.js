@@ -1117,11 +1117,29 @@ var channelModel = {
     },
 
     queryChannelMapMember : function (memberId, callback) {
-        //todo: don need contains workaround from kendo
+        var query = new Everlive.Query();
+        query.where().eq(members, memberId).done();
+
+        APP.everlive.data('channelmap').get(query).then (
+            function (data) {
+
+            },
+            function (error){
+
+            });
     },
 
     queryChannelMapInvite : function (phone, callback) {
-        //todo: don need contains workaround from kendo
+        var query = new Everlive.Query();
+        query.where().eq(invitedMembers, phone).done();
+
+        APP.everlive.data('channelmap').get(query).then (
+            function (data) {
+
+            },
+            function (error){
+
+            });
     }
 
 
