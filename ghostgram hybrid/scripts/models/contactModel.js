@@ -40,8 +40,11 @@ var contactModel = {
     phoneDS: new kendo.data.DataSource(),
     emailDS: new kendo.data.DataSource(),
     addressDS: new kendo.data.DataSource(),
+    photoDS : new kendo.data.DataSource(),
     phoneArray: [],
     emailArray: [],
+    photoArray: [],
+    addressArray: [],
     contactList: [],
 
 
