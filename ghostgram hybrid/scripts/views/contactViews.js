@@ -907,6 +907,7 @@ var editContactView = {
     // Set active contact object and process any updates (with user notification)
     setActiveContact : function (contact) {
         if (contact !== undefined) {
+            contactModel.checkIdenticon(contact);
             editContactView._activeContact.set("Id", contact.Id);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
@@ -1132,6 +1133,8 @@ var contactActionView = {
         var time = ggTime.currentTimeInSeconds();
         $("#contactActionBtns").removeClass('hidden');
         var thisContact = contactModel.findContactByUUID(contactId);
+
+        contactModel.checkIdenticon(thisContact);
         contactActionView.setContact(thisContact);
 
         contactActionView.refreshUX(thisContact);

@@ -180,6 +180,12 @@ var contactModel = {
         contactModel.contactListDS.fetch();
     },
 
+    checkIdenticon : function (contact) {
+        if (contact.identicon === undefined || contact.identicon === null) {
+            contact.identicon = contactModel.createIdenticon(contact.uuid);
+        }
+    },
+    
     addContactToContactList : function (contact) {
         var newContact = {
             uuid: contact.uuid,
