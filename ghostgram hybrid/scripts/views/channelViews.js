@@ -629,6 +629,9 @@ var editChannelView = {
                 //placeNoteModel.notesDS.remove(note);
             });
         }
+        
+        channelModel.updateChannelMap(channelObj);
+        
        /* //Update the parse object
         updateParseObject('channels', 'channelUUID', channelUUID, 'name',  editChannelView._activeChannel.name);
         updateParseObject('channels', 'channelUUID', channelUUID, 'description',  editChannelView._activeChannel.description);

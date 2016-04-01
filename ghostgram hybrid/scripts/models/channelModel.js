@@ -915,6 +915,8 @@ var channelModel = {
         channel.set("invitedMembers", []);
 
 
+        channelModel.createChannelMap(channel);
+        
         everlive.createOne(channelModel._cloudClass, channel, function (error, data) {
             if (error !== null) {
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
