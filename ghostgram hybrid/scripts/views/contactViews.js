@@ -958,6 +958,12 @@ var editContactView = {
         }
     },
 
+    changePhoto : function (e) {
+        _preventDefault(e);
+
+        mobileNotify("Change photo coming soon...");
+    },
+
     updateContact : function () {
         var contact = contactModel.findContactByUUID(editContactView._activeContact.uuid);
         var contactList = contactModel.findContactListUUID(editContactView._activeContact.uuid);
