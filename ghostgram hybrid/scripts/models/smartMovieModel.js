@@ -7,7 +7,7 @@
 
 var smartMovie = {
 
-    _parseClass : 'smartMovie',
+    _cloudClass : 'smartMovie',
     _ggClass : 'Movie',
     _version : 1,
 
@@ -15,11 +15,11 @@ var smartMovie = {
 
     init : function () {
         smartMovie.moviesDS = new kendo.data.DataSource({
-            offlineStorage: "smartMovie",
+            //offlineStorage: "smartMovie",
             type: 'everlive',
             transport: {
-                typeName: 'smartMovie',
-                dataProvider: APP.everlive
+                typeName: 'smartMovie'
+                //dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}
@@ -32,7 +32,7 @@ var smartMovie = {
     },
 
     /*fetch : function () {
-        var smartMovies = Parse.Object.extend(smartMovie._parseClass);
+        var smartMovies = Parse.Object.extend(smartMovie._cloudClass);
         var query = new Parse.Query(smartMovies);
         query.limit(1000);
         query.find({
@@ -99,7 +99,7 @@ var smartMovie = {
     },
 
     addMovie : function (objectIn, callback) {
-       /* var smartMovies = Parse.Object.extend(smartMovie._parseClass);
+       /* var smartMovies = Parse.Object.extend(smartMovie._cloudClass);
         var smartOb = new smartMovies();*/
 
         var smartOb = new kendo.data.ObservableObject();
@@ -138,9 +138,16 @@ var smartMovie = {
         smartOb.set('runtime', objectIn.runtime);
         smartOb.set('genre', objectIn.genre);
 
-       // var smartObj = smartOb.toJSON();
-        smartMovie.moviesDS.add(smartOb);
-        smartMovie.moviesDS.sync();
+
+        everlive.createOne(smartMovie._cloudClass, smartOb, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                smartMovie.moviesDS.add(smartOb);
+            }
+        });
+       
 
         callback(smartOb);
 

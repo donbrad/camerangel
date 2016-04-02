@@ -1,6 +1,6 @@
 {
-  "name": "ghostgrams",
-  "version": "0.2.2.6",
+  "name": "ghostgrams mobile",
+  "version": "0.1.16",
   "dependencies": {
     "moment": "~2.10.3",
     "q": "1.0.1",
@@ -10,18 +10,20 @@
     "velocity": "~1.2.3",
     "lodash": "~3.10.1",
     "pickadate": "~3.5.6",
-    "everlive": "~1.6.7"
+    "everlive": "~1.6.9"
   },
   "homepage": "https://github.com/donbrad/ghostgram",
   "authors": [
     "Don Bradford <donbrad@hotmail.com>"
   ],
-  "description": "ghostgrams hybrid prototype",
+  "description": "ghostgrams pre alpha",
   "moduleType": [
     "globals"
   ],
   "keywords": [
     "sms",
+    "chat",
+    "messaging",
     "email",
     "better"
   ],

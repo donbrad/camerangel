@@ -16,19 +16,18 @@ var channelsView = {
     _viewInitialized : false,
     _showDeletedChannels : false,
 
-    _channelListDS : new kendo.data.DataSource({
-        offlineStorage: "channellist",
-        sort: {
-            field: "lastAccess",
-            dir: "desc"
-        }
-    }),
+    _channelListDS : null,
 
 
     onInit : function (e) {
         e.preventDefault();
 
-        channelsView._channelListDS.online(false);
+        
+        channelsView._channelListDS =  new kendo.data.DataSource({
+           // offlineStorage: "channellist"
+        });
+        
+        //channelsView._channelListDS.online(false);
 
         $("#channels-listview").kendoMobileListView({
             dataSource: channelsView._channelListDS,
@@ -260,7 +259,7 @@ var channelsView = {
  */
 
 var addChannelView = {
-    // Todo: jordan - refractored the login in onShow into onInit for all handlers.  They should only be installed once in onInit
+   
     onInit : function (e) {
         _preventDefault(e);
         $("#channels-addChannel-name").keyup(function(){
@@ -498,6 +497,11 @@ var editChannelView = {
     },
 
     setActiveChannel : function (channel) {
+
+        if (channel.Id !== undefined) {
+            editChannelView._activeChannel.set('Id', channel.Id);
+        }
+
         editChannelView._activeChannel.set('name', channel.name);
         editChannelView._activeChannel.set('description', channel.description);
         editChannelView._activeChannel.set('isPlace', channel.isPlace);
@@ -558,9 +562,9 @@ var editChannelView = {
                 // Invited member -- need to look up userId by phone number before sending delete notification
                 var phone = editChannelView.membersDeleted[md].phone;
                 if (phone !== undefined && phone !== null) {
-                    findUserByPhone(phone, function (result) {
-                        if (result.found) {
-                            var user = result.user, contactId = user.get('userUUID');
+                    memberdirectory.findMemberByPhone(phone, function (user) {
+                        if (user !== null) {
+                            var contactId = user.userUUID;
                             appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
                         }
 
@@ -618,12 +622,22 @@ var editChannelView = {
         channelObj.set('members', memberArray);
         channelObj.set('inviteMembers', invitedMemberArray);
 
-        //Update the parse object
+
+        var Id = channelObj.Id;
+        if (Id !== undefined){
+            everlive.updateOne(channelModel._cloudClass, channelObj, function (error, data) {
+                //placeNoteModel.notesDS.remove(note);
+            });
+        }
+        
+        channelModel.updateChannelMap(channelObj);
+        
+       /* //Update the parse object
         updateParseObject('channels', 'channelUUID', channelUUID, 'name',  editChannelView._activeChannel.name);
         updateParseObject('channels', 'channelUUID', channelUUID, 'description',  editChannelView._activeChannel.description);
         updateParseObject('channels', 'channelUUID', channelUUID, 'members', memberArray);
         updateParseObject('channels', 'channelUUID', channelUUID, 'invitedMembers', invitedMemberArray);
-
+*/
 
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");

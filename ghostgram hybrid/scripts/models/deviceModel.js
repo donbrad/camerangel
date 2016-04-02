@@ -24,7 +24,7 @@ var deviceModel = {
         connection: 'none',
         inBackground: false,
         userNotifications: [],
-        phoneVerified: false,
+        phoneValidated: false,
         hasContacts: false,
         hasChannels: false,
         hasPrivateChannels: false,
@@ -85,7 +85,7 @@ var deviceModel = {
         deviceModel.state.isOnline = true;
         deviceModel.state.inBackground= false;
         deviceModel.state.userNotifications = [];
-        deviceModel.state.phoneVerified = false;
+        deviceModel.state.phoneValidated = false;
         deviceModel.state.hasContacts = false;
         deviceModel.state.hasChannels = false;
         deviceModel.state.hasMessages = false;
@@ -167,9 +167,9 @@ var deviceModel = {
     onResume: function() {
        deviceModel.setAppState('inBackground', false);
 
-        if (deviceModel.state.parseSyncComplete) {
-            notificationModel.processUnreadChannels();
-        }
+     
+        notificationModel.processUnreadChannels();
+        
 
     },
 
@@ -179,11 +179,12 @@ var deviceModel = {
 
         if (deviceModel.state.connection === 'none')
             return;
+
         var currentTime = ggTime.currentTimeInSeconds();
 
         if (currentTime > deviceModel.lastEverliveSync + 60) {
             deviceModel.lastEverliveSync = ggTime.currentTimeInSeconds();
-
+            APP.everlive.online();
             APP.everlive.sync();
         }
 
@@ -200,11 +201,11 @@ var deviceModel = {
         }
 
        // APP.models.home.invitesDS.online(true);
-        notificationModel.notificationDS.online(true);
+     /*   notificationModel.notificationDS.online(true);
         channelModel.channelsDS.online(true);
         photoModel.photosDS.online(true);
         contactModel.contactsDS.online(true);
-        placesModel.placesDS.online(true);
+        placesModel.placesDS.online(true);*/
 
         deviceModel.getNetworkState();
     },
@@ -221,14 +222,18 @@ var deviceModel = {
             APP.everlive.offline();
 
         //APP.models.home.invitesDS.online(false);
-        notificationModel.notificationDS.online(false);
+       /* notificationModel.notificationDS.online(false);
         channelModel.channelsDS.online(false);
         photoModel.photosDS.online(false);
         contactModel.contactsDS.online(false);
-        placesModel.placesDS.online(false);
+        placesModel.placesDS.online(false);*/
 
     },
 
+    isOnline : function () {
+        return(deviceModel.state.isOnline);
+    },
+    
     isWifi : function () {
        return(deviceModel.state.connection === 'internet');
     },
@@ -257,11 +262,13 @@ var deviceModel = {
         switch (networkState) {
             case Connection.NONE:
                 deviceModel.setAppState('connection', "none");
+                deviceModel.setAppState('isOnline', false);
                 mobileNotify("Offline");
                 break;
             case Connection.ETHERNET:
             case Connection.WIFI:
                 deviceModel.setAppState('connection', "internet");
+                deviceModel.setAppState('isOnline', true);
                 mobileNotify("Online via Wifi");
                 break;
             case Connection.CELL:
@@ -269,6 +276,7 @@ var deviceModel = {
             case Connection.CELL_3G:
             case Connection.CELL_4G:
                 deviceModel.setAppState('connection', "cell");
+                deviceModel.setAppState('isOnline', true);
                 mobileNotify("Online via Cell");
                 break;
         }

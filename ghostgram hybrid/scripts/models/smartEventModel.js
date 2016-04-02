@@ -4,7 +4,7 @@
 'use strict';
 
 var smartEvent = {
-    _parseClass : 'smartEvent',
+    _cloudClass : 'smartEvent',
     _ggClass : 'Event',
     _version : 1,
 
@@ -125,11 +125,11 @@ var smartEvent = {
         });
 
         smartEvent.eventsDS = new kendo.data.DataSource({
-            offlineStorage: "smartEvent",
+            //offlineStorage: "smartEvent",
             type: 'everlive',
             transport: {
-                typeName: 'smartEvent',
-                dataProvider: APP.everlive
+                typeName: 'smartEvent'
+                //dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}
@@ -140,30 +140,7 @@ var smartEvent = {
             }
         });
     },
-
-
-    fetch : function () {
-        var smartEvents = Parse.Object.extend(smartEvent._parseClass);
-        var query = new Parse.Query(smartEvents);
-
-        query.find({
-            success: function(collection) {
-                var models = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var smartObj = collection[i];
-
-                    models.push(smartObj.toJSON());
-                }
-                deviceModel.setAppState('hasSmartEvents', true);
-                smartEvent.eventsDS.data(models);
-                deviceModel.isParseSyncComplete();
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-    },
-
+    
     queryTerm: function (query) {
 
         if (query === undefined)
@@ -365,7 +342,7 @@ var smartEvent = {
     },
 
     addEvent : function (objectIn, callback) {
-      /*  var smartEvents = Parse.Object.extend(smartEvent._parseClass);
+      /*  var smartEvents = Parse.Object.extend(smartEvent._cloudClass);
         var smartOb = new smartEvents();*/
         var smartOb = new kendo.data.ObservableObject();
 
@@ -418,11 +395,24 @@ var smartEvent = {
         smartOb.set('inviteList', objectIn.inviteList);
         smartOb.set('rsvpList', objectIn.rsvpList);
 
-        //var smartObj = smartOb.toJSON();
-        smartEvent.eventsDS.add(smartOb);
-        smartEvent.eventsDS.sync();
 
-        callback(smartOb);
+        everlive.createOne(smartEvent._cloudClass, smartOb, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Smart Event " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+                smartEvent.eventsDS.add(smartOb);
+                if (callback !== undefined && callback !== null) {
+                    callback(smartOb);
+                }
+
+            }
+        });
+        //var smartObj = smartOb.toJSON();
+
+      //  smartEvent.eventsDS.sync();
+
+
 
        /* smartOb.save(null, {
             success: function(thisObject) {

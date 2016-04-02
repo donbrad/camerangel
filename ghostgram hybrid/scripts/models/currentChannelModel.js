@@ -234,19 +234,19 @@ var currentChannelModel = {
 
     zeroUnreadCount : function () {
         // Messages from parse
-        updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', 0);
+        //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', 0);
     },
 
     // Need to debounce this so we're not updating lastAccess on each message read.
     updateLastAccess: debounce(function () {
         var accessTime = ggTime.currentTime(), channelUUID = currentChannelModel.currentChannel.channelUUID;
-        updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', accessTime);
+       // updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', accessTime);
 
     }, this._debounceInterval),
 
     updateClearBefore: function () {
         var clearTime = ggTime.currentTime(), channelUUID = currentChannelModel.currentChannel.channelUUID;
-        updateParseObject('channels', 'channelUUID', channelUUID, 'clearBefore', clearTime);
+       // updateParseObject('channels', 'channelUUID', channelUUID, 'clearBefore', clearTime);
     }
 
 

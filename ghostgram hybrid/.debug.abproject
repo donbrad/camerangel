@@ -6,6 +6,11 @@
     },
     "nl.x-services.plugins.launchmyapp": {
       "URL_SCHEME": "ghostgrams"
+    },
+    "com.telerik.plugin.telerikanalytics": {
+      "AUTO_TRACK_EXCEPTIONS": "True",
+      "AUTO_TRACK_KENDO_EVENTS": "True",
+      "PRODUCT_ID": "7a8cc314b41f44299fd03db24685b341"
     }
   }
 }

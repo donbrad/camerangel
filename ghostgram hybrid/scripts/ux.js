@@ -391,16 +391,16 @@ var ux = {
 	    var userUUID = null, name = null, email = null, phone = null, version = null;
 
 
-	   if (userModel.parseUser !== null) {
-	        userUUID = userModel._user.get('userUUID');
-	        name = userModel._user.get('name');
-	        email = userModel._user.get('email');
-	        phone = userModel._user.get('phone');
-		   	version = userModel._user.get('appVersion');
-	    }
+
+		userUUID = userModel._user.get('userUUID');
+		name = userModel._user.get('name');
+		email = userModel._user.get('email');
+		phone = userModel._user.get('phone');
+		version = userModel._user.get('appVersion');
+
 	    
-	    var Support = Parse.Object.extend('support');
-	    var support = new Support();
+	   
+	    var support = {};
 		var guid = uuid.v4();
 		support.set("supportId", guid);
 	    support.set("userUUID", userUUID);
@@ -436,18 +436,7 @@ var ux = {
 
 			});
 		}
-	    
-	    support.save(null, {
-	        success: function(support) {
-	            mobileNotify("You support request was sent. Thank you!");
-	            ux.closeModalViewSupport();
-	            APP.models.sync.requestActive = false;
-	        },
-	        error: function(support, error) {
-	            mobileNotify("Error sending your support request: " + error);
-	            APP.models.sync.requestActive = false;
-	        }
-	    });
+		
 	},
 
 	closeModalViewVerifyPhone: function(e) {

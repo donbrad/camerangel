@@ -119,7 +119,7 @@ function _createBitlyUrl (url, callBack) {
 		}
 	});
 }
-
+/*
 function updateParseObject(objectName, idField, idFieldValue, newField, newFieldValue) {
 	var object = Parse.Object.extend(objectName);
 	var query = new Parse.Query(object);
@@ -190,7 +190,7 @@ function deleteParseObject(objectName, field, fieldValue) {
 			handleParseError(error);
 		}
 	});
-}
+}*/
 
 function _nullString (stringIn) {
 	if (stringIn === undefined) {
@@ -200,7 +200,7 @@ function _nullString (stringIn) {
 	return(stringIn);
 }
 
-function getNetworkState() {
+/*function getNetworkState() {
 	var networkState = navigator.connection.type;
 	switch (networkState) {
 		case Connection.ETHERNET:
@@ -216,9 +216,9 @@ function getNetworkState() {
 			mobileNotify("Online via Cell");
 			break;
 	}
-}
+}*/
 
-function handleParseError(err) {
+/*function handleParseError(err) {
 	switch (err.code) {
 		case Parse.Error.INVALID_SESSION_TOKEN:
 			mobileNotify("Security Check: Please Sign In");
@@ -230,7 +230,7 @@ function handleParseError(err) {
 			console.error(err.code + " : " + err.message);
 			break;
 	}
-}
+}*/
 
 function getDistanceInMiles(lat1, lon1, lat2, lon2) {
 
@@ -324,6 +324,13 @@ function mobileNotify(message) {
 	}
 
 }
+function _cleanString (str) {
+	if (typeof(value) !== "undefined" && value)	{
+		return (str);
+	} else {
+		return null;
+	}
+}
 
 // if new value is defined, return it, otherwise return original
 function _smartSet(original, newValue) {
@@ -366,7 +373,7 @@ function getChannelDetails(channelUUID, callBack) {
 
 
 
-function getUserChannels(uuid, callBack) {
+/*function getUserChannels(uuid, callBack) {
 	Parse.Cloud.run('getUserChannels', {
 		uuid: uuid
 	}, {
@@ -565,37 +572,9 @@ function findUserByPhone(phone, callBack) {
 			});
 		}
 	});
-}
+}*/
 
-function verifyPhone(e) {
-	e.preventDefault();
-	var code = $('#verifyPhone-code').val();
-	// all verification codes are 5 or 6 numbers
-	if (code.length < 5) {
-		mobileNotify("Invalid verification code, please try again");
-		return;
-	}
 
-	Parse.Cloud.run('verifyPhoneNumber', {
-		code: code
-	}, {
-		success: function(result) {
-			if (result.verified) {
-				mobileNotify("Your phone number is verified.  Thank You!");
-				$("#modalview-verifyPhone").data("kendoMobileModalView").close();
-				var thisUser = userModel._user;
-				appDataChannel.userValidatedMessage(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
-			} else {
-				mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
-			}
-
-		},
-		error: function(result, error) {
-			mobileNotify('Error verifying phone ' + error);
-		}
-	});
-
-}
 
 //Remove all formatting from  phone number and add 1 for 10 digit US numbers.
 function unformatPhoneNumber(phone) {

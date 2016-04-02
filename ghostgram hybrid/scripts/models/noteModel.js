@@ -13,7 +13,7 @@ var noteModel = {
     _private: 'private',
     _places: 'place',
     _group: 'group',
-    _parseClass : 'note',
+    _cloudClass : 'note',
     _ggClass: 'Note',
     _version: 1,
 
@@ -22,7 +22,7 @@ var noteModel = {
 
     init: function () {
         noteModel.notesDS = new kendo.data.DataSource({
-            offlineStorage: "note",
+           // offlineStorage: "note",
             type: 'everlive',
             transport: {
                 typeName: 'note',
@@ -88,8 +88,8 @@ var noteModel = {
         return (view);
     },
 
-    fetch: function () {
-        var NoteModel = Parse.Object.extend(noteModel._parseClass);
+    /*fetch: function () {
+        var NoteModel = Parse.Object.extend(noteModel._cloudClass);
         var query = new Parse.Query(NoteModel);
         query.limit(1000);
         
@@ -109,17 +109,14 @@ var noteModel = {
                 handleParseError(error);
             }
         });
-    },
+    },*/
 
     addNote : function (note) {
-       /* var Notes = Parse.Object.extend(noteModel._parseClass);
+       /* var Notes = Parse.Object.extend(noteModel._cloudClass);
         var noteParse = new Notes();*/
 
         var noteObj = new kendo.data.ObservableObject();
-
-       /* if (note.isPrivate === undefined || note.isPrivate) {
-            noteParse.setACL(userModel.parseACL);
-        }*/
+        
         noteObj.set('version', noteModel._version);
         noteObj.set('ggType', noteModel._ggClass);
         noteObj.set('uuid', note.uuid);
@@ -159,7 +156,7 @@ var noteModel = {
         });*/
     },
 
-    saveParseNote : function (noteParse) {
+   /* saveParseNote : function (noteParse) {
 
 
         var isPrivate = noteParse.get('isPrivate');
@@ -182,14 +179,14 @@ var noteModel = {
                 handleParseError(error);
             }
         });
-    },
+    },*/
 
     // Creates an new note with field values to set defaults
     // type should be a note model type noteModel._x
     // object id is uuid / is for the parent object
     // private sets the acl on the note to available to this user only
     createNote : function (type, objectId, isPrivate) {
-      /*  var Notes = Parse.Object.extend(noteModel._parseClass);
+      /*  var Notes = Parse.Object.extend(noteModel._cloudClass);
         var note = new Notes();*/
         var note = new kendo.data.ObservableObject();
         note.set('uuid',uuid.v4());
@@ -226,7 +223,7 @@ var noteModel = {
                     var field = keys[i];
                     if (noteObj[field] !== note[field]) {
                         noteObj.set(field, note[field]);
-                      //  updateParseObject(noteModel._parseClass, 'uuid', note.uuid, field, note[field]);
+                      //  updateParseObject(noteModel._cloudClass, 'uuid', note.uuid, field, note[field]);
 
                     }
                 }

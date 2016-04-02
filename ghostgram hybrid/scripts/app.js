@@ -93,46 +93,12 @@
 		StatusBar.overlaysWebView(false);
 		StatusBar.backgroundColorByHexString("#fff");
 		StatusBar.styleDefault();
-
-		var provider = Everlive.Constants.StorageProvider.FileSystem;
-		if (window.navigator.simulator === undefined) {
-			// Use local storage in the emulator
-			provider = Everlive.Constants.StorageProvider.LocalStorage;
-		}
-
+		
 		//Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
-
-		APP.everlive = new Everlive({
-			appId: 's2fo2sasaubcx7qe',
-			scheme: 'https',
-			offline: true,
-			offlineStorage: {
-				storage: {
-					provider: provider
-				}/*,
-				conflicts: {
-					strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
-				}*/
-			},
-			encryption: {
-				provider: Everlive.Constants.EncryptionProvider.Default
-				//key: 'intelligram'
-			},
-			authentication: {
-				persist: true,
-				onAuthenticationRequired: function() {
-					APP.kendo.navigate('#usersignin');
-				}
-			}
-		});
-
-
-		// Wire up the everlive sync monitors
-		APP.everlive.on('syncStart', everlive.syncStart);
-
-		APP.everlive.on('syncEnd', everlive.syncEnd);
-
+		userModel.init();
+		
+		everlive.init();
 
 	/*	if (!deviceModel.state.introFetched) {
 
@@ -142,9 +108,9 @@
 			notificationModel.localStorageFetch();
 		/*}*/
 
-		userModel.init();
 
-		userModel.initCloud();
+
+		//userModel.initCloud();
 
 		
 		pruneNotifications();
@@ -153,16 +119,7 @@
 		//contactModel.importDeviceContacts();
 
 
-		APP.kendo = new kendo.mobile.Application(document.body, {
-
-			// comment out the following line to get a UI which matches the look
-			// and feel of the operating system
-			skin: 'material',
-
-			// the application needs to know which view to load first
-			initial: userModel.initialView
-		});
-
+	
 		// Provide basic functionality in the simulator and deployable simulator
 		if (window.navigator.simulator !== undefined) {
 			deviceModel.appVersion = "emulator: 0.0.10";

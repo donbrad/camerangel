@@ -39,7 +39,7 @@
 	<script src="bower_components/pickadate/lib/picker.time.js"></script>
 
 	<!-- other components -->
-	<script src="scripts/libs/parse.js"></script>
+<!--	<script src="scripts/libs/parse.js"></script>-->
     <script src="scripts/libs/pubnub.js"></script>
 	<script src="scripts/libs/date.js"></script>
 	<script src="scripts/libs/guid.js"></script>
@@ -70,7 +70,7 @@
 	<script src="scripts/ux.js"></script>
     <script src="scripts/jquery.email-autocomplete.js"></script>
     <!--<script src="scripts/models/semanticDSs.js"></script>-->
-    <script src="scripts/models/archive.js"></script>
+    <!--<script src="scripts/models/archive.js"></script>-->
 	<script src="scripts/models/channelModel.js"></script>
 	<script src="scripts/models/contactModel.js"></script>
 	<script src="scripts/models/deviceModel.js"></script>
@@ -91,7 +91,7 @@
 	<script src="scripts/models/userModel.js"></script>
     <!--<script src="scripts/views/sentinel.js"></script>-->
 	<script src="scripts/views/smartViews.js"></script>
-    <script src="scripts/views/archiveView.js"></script>
+   <script src="scripts/views/archiveView.js"></script>
 	<script src="scripts/views/channelViews.js"></script>
 	<script src="scripts/views/contactViews.js"></script>
 	<script src="scripts/views/galleryView.js"></script>
@@ -111,6 +111,14 @@
 
 </head>
 <body id="body">
+
+<div data-role="view" data-title="ghostgrams starting..." id="startUpView">
+	<p id="startUpView_logo">ghostgrams</p>
+	<div id="startUpView_loading">
+		<img src="images/oval.svg" />
+	</div>
+</div>
+
 <div data-role="layout" data-id="main" style="display:none;" >
     <div data-role="header">
         <div data-role="navbar">
@@ -234,59 +242,67 @@
 </div>
 
 <div data-role="drawer" id="ggDrawer" style="width: 50%;" data-title="Hot Buttons"  data-use-native-scrolling="true">
-	<header data-role="header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-		</div>
-	</header>
+
 
 	<ul data-role="listview"  style="padding-left: 8px;">
 		<li>
+			<div>
+				<h3 class="gg-drawer-header">Shortcuts</h3>
+			</div>
+		</li>
+		<li>
 			<a class="btnClear" data-role="button" href="#privateNotes">
-				<img src="images/icon-myNotes-alt.svg" class="icon-sm" />
+				<img src="images/icon-myNotes-light.svg" class="icon-sm" />
 				My Notes
 			</a>
 		</li>
 		<li>
-			<div>
-				<a data-role="button" class="btnClear" data-click='userStatusView.camera'>
-					<img src="images/icon-camera.svg" class="icon-sm" />
+			<a data-role="button" class="btnClear" data-click='userStatusView.camera'>
+				<img src="images/icon-camera.svg" class="icon-sm" />
 					Camera
-				</a>
-			</div>
+			</a>
+		</li>
+		<li>
+			<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
+				<img src="images/icon-external.svg" class="icon-sm" />
+					Sign Out
+			</a>
+
 		</li>
 		<li>
 			<div>
-				<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
-					<img src="images/icon-external.svg" class="icon-sm" />
-					Sign Out
-				</a>
+				<h3 class="gg-drawer-header">Personal Safety</h3>
 			</div>
 		</li>
-		<li> <div><h3>Personal Safety</h3></div></li>
-		<li> <a data-role="button" class="btnClear" >
-				Police (911)
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-police.svg" class="icon-gg-drawer" /> Police (911)
 			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear" >
-			Fire (911)
-		</a>
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-fire.svg" class="icon-gg-drawer" /> Fire (911)
+			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear" >
-			Medical (911)
-		</a>
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-medical.svg" class="icon-gg-drawer" /> Medical (911)
+			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear">
-			Roadside
-		</a>
+		<li>
+			<a data-role="button" class="btnClear">
+				<img src="images/gg-roadside.svg" class="icon-gg-drawer-lg" /> Roadside
+			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear" >
-			Family Alert
-		</a>
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-family.svg" class="icon-gg-drawer-lg" /> Family Alert
+			</a>
 		</li>
-		<li> <a data-role="button" class="btnClear" >
-			Local Alert
-		</a>
+		<li>
+			<a data-role="button" class="btnClear" >
+				<img src="images/gg-local.svg" class="icon-gg-drawer" /> Local Alert
+			</a>
 		</li>
 
 	</ul>
@@ -448,7 +464,7 @@
 </script>
 
 <!-- home - for new users -->
- <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade">
+ <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade" data-swipe-to-open="false">
  	<div class="newuserBox">
 		<p id="newWelcome">Welcome to</p>
 		<p id="newLogo"><img src="images/logo.svg" class="icon-logo"/></p>
@@ -460,6 +476,50 @@
 		</h3>
 	</div>
     <div class="clearfix"></div>
+	 <div class="feature-card preMotion hidden">
+		 <div class="featureList">
+			 <div class="icon-feature-body">
+				 <div class="icon-feature-img">
+					 <img src="images/icon-feature-secure.svg"  />
+				 </div>
+				 <h3>Secure</h3>
+				 <p class="feature-body-text">Stay connected to the people, places and topics that matter to you.</p>
+			 </div>
+		 </div>
+		 <div class="featureList">
+			 <div class="icon-feature-body">
+				 <div class="icon-feature-img">
+					 <img src="images/icon-feature-savings.svg"  />
+				 </div>
+				 <h3>Convenient</h3>
+				 <p class="feature-body-text">Don't waste your money receiving andstoring stuff you didn't ask for or don't need in the future. Offer photos to friends. You decide if they can keep a copy or just have quick peek.
+				 </p>
+			 </div>
+		 </div>
+		 <div class="featureList">
+			 <div class="icon-feature-body">
+				 <div class="icon-feature-img">
+					 <img src="images/icon-feature-trusted.svg" />
+				 </div>
+				 <h3>Trusted</h3>
+				 <p class="feature-body-text">Share your passion, opinion and secrets with confidence. You know who's on the other end and no one else can snoop or ease drop.
+				 </p>
+			 </div>
+		 </div>
+		 <div class="featureList">
+			 <div class="icon-feature-body">
+				 <div class="icon-feature-img">
+					 <img src="images/icon-feature-smart.svg"  />
+				 </div>
+				 <h3>Automated</h3>
+				 <p class="feature-body-text">Communicate, collaborate and coordinate easily with intelligrams: set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
+				 </p>
+			 </div>
+		 </div>
+	 </div>
+
+
+
     <div class="loginBox card preMotion" id="featureCard1">
         <h3>
             Join ghostgrams!
@@ -568,22 +628,25 @@
 <div data-role="modalview" id="modalview-verifyPhone" style="width: 90%; display: none;" class="appearance">
     <div class="modalview-content">
 	    <h3>
-	    	Verify Number
-	    	<a class="right closeBox" data-click="ux.closeModalViewVerifyPhone" data-role="button">
+	    	Verify Mobile Number
+	    	<a class="right closeBox" data-click="verifyPhoneModal.closeModal" data-role="button">
 	    		<img src="images/close.svg" />
 	    	</a>
 	    </h3>
+		   <p> ghostgrams recently sent your phone a text message with a 6 number verification code to validate your mobile number.   The message was sent from <strong>(530) 206-8126</strong>.
+			   And looks like: <em>Your ghostgrams verification code is 123456</em>
+		   </p>
 	        <ul data-role="listview" data-style="inset">
 	            <li>
-	                <label>Enter code from text message</label>
+	                <div>Enter 6 Number code </div>
 	                <input type="tel" id="verifyPhone-code" value="" />
-	              	<span class="helper helper-right btnClear-grey" data-click="sendVerificationCode" data-role="button">
-	              		Resend code
+	              	<span class="helper helper-right btnClear-grey" data-click="verifyPhoneModal.sendCode" data-role="button">
+	              		Resend Veification code
 	              	</span>
 	            </li>
 	        </ul>
 	    <div style="padding-top: 8px; text-align:center;">
-	        <a class="btnPrimary btnSpan" data-click="verifyPhone" type="button" data-role="button" data-align="right">Verify</a>
+	        <a class="btnPrimary btnSpan" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" data-align="right">Verify</a>
 	    </div>
    	</div>
 </div>
@@ -1880,7 +1943,7 @@
 		<div class="memberTempName left">
 			<h4 class="textClamp">
 			#= primaryName #
-			#if(data.phoneVerified){#
+			#if(data.phoneValidated){#
 				<img class="user-status-icon" src="images/user-verified.svg" />
 			#}#
 			</h4>
@@ -1918,7 +1981,7 @@
 		<div class="editMemberName">
 			<h4 class="textClamp">
 				#= primaryName #
-				#if(data.phoneVerified){#
+				#if(data.phoneValidated){#
 					<img class="user-status-icon" src="images/user-verified.svg" />
 				#}#
 				
@@ -1962,7 +2025,7 @@
 <div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" data-hide="contactImportView.onHide" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
-			<a data-role="button" data-align="left" href="#:back"><img src="images/nav-back.svg" /></a>
+			<a data-role="backbutton" data-align="left"><img src="images/nav-back.svg" /></a>
 			<span data-role="view-title"></span>
 		</div>
 	</div>
@@ -2075,7 +2138,7 @@
 		<form id="editContactForm">
 			<div class="topHalf">
 				<div class="topHalfLeft">
-					<img class="circle-img-lg shadow" data-bind="attr:{src: photo}" />
+					<a data-role="button" data-click="editContactView.changePhoto"><img class="circle-img-lg shadow" data-bind="attr:{src: photo}" /> </a>
 				</div>
 				<div class="contactImg">
 					<label for="editContactName">
@@ -2131,10 +2194,16 @@
 					</label>
 				</li>
 				<li>
+					<label>ICE (In Case of Emergency Contact)
+						<input type="checkbox" data-role="switch"  data-bind="checked: isICE"/>
+					</label>
+				</li>
+				<li>
 					<label>Block
 						<input type="checkbox" data-role="switch"  data-bind="checked: isBlocked"/>
 					</label>
 				</li>
+
 			</ul>
 
 
@@ -2290,7 +2359,7 @@
 		<div class="left listName">
 			<h4 class="textClamp">
 				#= primaryName #
-				#if (data.phoneVerified){#
+				#if (data.phoneValidated){#
 				<img src="images/user-verified.svg" class="user-status-icon" />
 				#}#
 				<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
@@ -2344,7 +2413,7 @@
 		<div class="left listName">
 			<h4 class="textClamp">
 				#: data.name #
-				#if (data.phoneVerified){#
+				#if (data.phoneValidated){#
 				<img src="images/user-verified.svg" class="user-status-icon" />
 				#}#
 				<span class="contacts-alias-sm">#: data.alias #</span>

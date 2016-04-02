@@ -510,7 +510,7 @@
 		</div>
 		<div class="memberTempName left">
 
-			#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+			#if (data.alias !== '' && data.name !== data.alias && data.phoneValidated){#
 			<h4 class="textClamp">
 				#: data.alias #
 				<img class="user-status-icon" src="images/user-verified.svg" />
@@ -551,7 +551,7 @@
 			<img class="circle-img-md editChatImg" src="#: data.photo #"  />
 		</div>
 		<div class="editMemberName">
-			#if (data.alias !== '' && data.name !== data.alias && data.phoneVerified){#
+			#if (data.alias !== '' && data.name !== data.alias && data.phoneValidated){#
 			<h4 class="textClamp">
 				#: data.alias #
 				<img class="user-status-icon" src="images/user-verified.svg" />

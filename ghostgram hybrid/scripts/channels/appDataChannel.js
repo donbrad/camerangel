@@ -15,9 +15,7 @@ var appDataChannel = {
     lastAccess: 0,   // last access time stamp
     _channelName: 'app',
     _version: 1,
-    messagesDS : new kendo.data.DataSource({
-        offlineStorage: "appmessages"
-    }),
+    messagesDS : null,
 
     init: function () {
 
@@ -26,6 +24,18 @@ var appDataChannel = {
         var channel = userModel._user.userUUID.replace(/-/g,'_');
 
 
+        appDataChannel.messagesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "places",
+            transport: {
+                typeName: 'appmessages'/*,
+                 dataProvider: APP.everlive*/
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            }
+        });
+        
         appDataChannel.channelUUID = channel;
 
         var ts = localStorage.getItem('appDataChannel');
@@ -144,8 +154,8 @@ var appDataChannel = {
                 if (contact !== undefined) {
                     contact.set('contactUUID', m.userId);
                     contact.set('contactEmail', m.email);
-                    updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
-                    updateParseObject('contacts', 'uuid', contact.uuid, 'contactEmail', m.email);
+                    /*updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
+                    updateParseObject('contacts', 'uuid', contact.uuid, 'contactEmail', m.email);*/
                 }
             } break;
 
@@ -165,10 +175,10 @@ var appDataChannel = {
                 contact.set('contactEmail', m.email);
                 contact.set('publicKey', m.publicKey);
 
-                updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
+                /*updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
                 updateParseObject('contacts', 'uuid', contact.uuid, 'contactEmail', m.email);
                 updateParseObject('contacts', 'uuid', contact.uuid, 'contactPhone', m.phone);
-                updateParseObject('contacts', 'uuid', contact.uuid, 'publicKey', m.publicKey);
+                updateParseObject('contacts', 'uuid', contact.uuid, 'publicKey', m.publicKey);*/
             } break;
 
             //  { type: 'channelInvite',  channelUUID: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
@@ -790,7 +800,14 @@ var appDataChannel = {
         if (channel === undefined && channelMembers !== undefined && channelMembers.length > 1) {
             //mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
 
-            getChannelDetails(channelUUID, function (result) {
+            channelModel.queryChannelMap(channelUUID, function (error, data) {
+                if (error === null && data !== null) {
+                    channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
+                }
+            });
+
+            
+            /*getChannelDetails(channelUUID, function (result) {
                 if (result.found) {
                     channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
                 } else {
@@ -798,7 +815,7 @@ var appDataChannel = {
                     channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
 
                 }
-            });
+            });*/
                     //notificationModel.addNewChatNotification(channelUUID, channelName, "new channel...");
 
         }

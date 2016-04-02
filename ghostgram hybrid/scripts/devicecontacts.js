@@ -87,8 +87,8 @@ function syncContactWithDevice(name, callback) {
 
 // Unify contacts - process array of contacts that have matched full names
 function unifyContacts(contacts) {
-    var emailArray = [], phoneArray = [], addressArray = [],
-        emails = [], phones = [], addresses = [], photo='';
+    var emailArray = [], phoneArray = [], addressArray = [], photoArray = [],
+        emails = [], phones = [], addresses = [], photos = [], photo='';
 
 
     //Build histograms for email, phone and address
@@ -223,8 +223,10 @@ function deviceFindContacts(query, callback) {
                 }
 
 
+                contactItem.photos = [];
                 if (contacts[i].photos !== null) {
                     contactItem.photo = contacts[i].photos[0].value;
+                    contactItem.photos.push(contacts[i].photos[0].value);
                 } else {
                     contactItem.photo = null;
                 }

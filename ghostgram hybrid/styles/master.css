@@ -965,21 +965,27 @@ form p {
   margin-left: 0;
 }
 .emptyState {
-  position: absolute;
   width: 100%;
+  height: 100%;
   text-align: center;
-  padding-top: 25%;
   opacity: 0.6;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  vertical-align: middle;
 }
 .emptyState img {
   width: 6rem;
-  margin-left: auto;
-  margin-right: auto;
+  display: inline-block;
+  position: absolute;
+  top: -112px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  vertical-align: middle;
 }
 @media only screen and (max-width: 320px) {
-  .emptyState {
-    padding-top: 45%;
-  }
 }
 .noResults {
   position: absolute;
@@ -6426,4 +6432,96 @@ table.k-editor {
 }
 #privateNoteTags option {
   background-color: #fff;
+}
+#startUpView {
+  width: 100%;
+  height: 100%;
+  color: #6CADF3 !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+}
+#startUpView .km-material .km-content {
+  background-color: #6CADF3 !important;
+}
+#startUpView > div.km-content.km-widget.km-scroll-wrapper {
+  background-color: #6CADF3 !important;
+  background-image: none;
+}
+#startUpView_loading {
+  position: absolute;
+  margin: auto;
+  top: 45%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+#startUpView_loading img {
+  height: 30px;
+}
+#startUpView_logo {
+  position: absolute;
+  top: 35%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-family: 'PT Sans Caption', sans-serif !important;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.5em;
+}
+#ggDrawer > div {
+  background: #4A4A4A;
+  color: #fff;
+}
+.icon-gg-drawer {
+  height: 1.25em;
+  max-width: 1.25em;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+.icon-gg-drawer-lg {
+  height: 1.5em;
+  max-width: 1.5em;
+  vertical-align: middle;
+  margin-right: 0.25em;
+}
+.gg-drawer-header {
+  margin-left: 0 !important;
+}
+#ggDrawer > div > div.km-listview-wrapper > ul > li > a {
+  color: #fff !important;
+}
+#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(2) > a > img,
+#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(3) > a > img,
+#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(4) > a > img {
+  margin-right: 0.5em;
+}
+.feature-body-text {
+  font-size: 14px;
+}
+.icon-feature-img {
+  width: 100%;
+  text-align: center;
+}
+.icon-feature-img > img {
+  width: 3.5em;
+  height: 3.5em;
+}
+.icon-feature-body {
+  width: 100%;
+  text-align: center;
+}
+.featureList {
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+.feature-card {
+  padding: 0.5em;
+  background-color: #EFF1F2;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 3em;
 }

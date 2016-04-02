@@ -11,6 +11,8 @@
 var notificationModel = {
 
     // Types of notifications...
+    _cloudClass : 'notifications',
+    _ggClass : 'Notification',
     _intro: 'ghostgrams recommends',
     _unreadCount : 'Unread Messages',
     _newChat : 'New Chat',
@@ -26,13 +28,28 @@ var notificationModel = {
     _connectResponse: 'Connect Response',
 
 
-    notificationDS: new kendo.data.DataSource({
-        offlineStorage: "notifications",
-        sort: {
-            field: "date",
-            dir: "desc"
-        }
-    }),
+    notificationDS: null, 
+    
+    
+    init : function () {
+       notificationModel.notificationDS = new kendo.data.DataSource({
+           type: 'everlive',
+           // offlineStorage: "channels",
+           transport: {
+               typeName: 'notifications'
+               //dataProvider: APP.everlive
+           },
+           schema: {
+               model: { Id:  Everlive.idField}
+           },
+           sort: {
+               field: "date",
+               dir: "desc"
+           }
+       });
+
+        notificationModel.notificationDS.fetch();
+    },
 
     findNotification : function (type, id) {
         var query = [
@@ -105,7 +122,15 @@ var notificationModel = {
 
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
-        notificationModel.notificationDS.add(notification);
+
+        everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Notification " + JSON.stringify(error));
+            } else {
+                notificationModel.notificationDS.add(notification);
+            }
+        });
+
         return(notification);
     },
 
@@ -166,16 +191,16 @@ var notificationModel = {
             null, true);
     },
 
-    parseFetch: function () {
+/*    parseFetch: function () {
         var NotificationModel = Parse.Object.extend("notifications");
         var query = new Parse.Query(NotificationModel);
-     /*   var NotificationCollection = Parse.Collection.extend({
+     /!*   var NotificationCollection = Parse.Collection.extend({
             model: NotificationModel
         });
 
         var notifications = new NotificationCollection();
 
-        notifications.fetch({*/
+        notifications.fetch({*!/
         query.find({
             success: function(collection) {
                 var userNotifications = [];
@@ -196,12 +221,12 @@ var notificationModel = {
                 handleParseError(error);
             }
         });
-    },
+    },*/
 
     localStorageFetch: function () {
         var userNotifications = window.localStorage.getItem('ggUserNotifications');
 
-        userNotifications = JSON.parse(userNotifications);
+       /* userNotifications = JSON.parse(userNotifications);
         deviceModel.state.userNotifications = [];
         if (userNotifications !== null && userNotifications.length > 0) {
             for (var j = 0; j < userNotifications.length; j++) {
@@ -209,7 +234,7 @@ var notificationModel = {
                 notificationModel.notificationDS.add(notification);
                 deviceModel.state.userNotifications.push(notification);
             }
-        }
+        }*/
     },
 
     findNotificationModel: function (uuid) {
@@ -229,11 +254,23 @@ var notificationModel = {
             if (unreadCount > 0)
                 notificationModel.addUnreadNotification(channelUUID, channelName, unreadCount);
         } else {
+            var Id = notObj.Id;
             if (unreadCount === undefined || unreadCount === 0) {
-                notificationModel.notificationDS.remove(notObj);
-                notificationModel.notificationDS.sync();
+
+                if (Id !== undefined){
+                    everlive.deleteOne(notificationModel._cloudClass, Id, function (error, data) {
+                        notificationModel.notificationDS.remove(notObj);
+                    });
+                }
+
             } else {
                 notObj.set('unreadCount', unreadCount);
+
+                if (Id !== undefined){
+                    everlive.updateOne(notificationModel._cloudClass, notObj, function (error, data) {
+                        //placeNoteModel.notesDS.remove(note);
+                    });
+                }
             }
         }
 

@@ -12,11 +12,21 @@ var userDataChannel = {
 
     channelUUID: null,   // channelUUID is users uuid
     lastAccess: 0,   // last access time stamp
-    messagesDS :  new kendo.data.DataSource({
-        offlineStorage: "privatemessages"
-        }),
+    messagesDS : null,
 
     init: function (channelUUID) {
+
+        userDataChannel.messagesDS = new kendo.data.DataSource({
+            type: 'everlive',
+            // offlineStorage: "places",
+            transport: {
+                typeName: 'privatemessages'/*,
+                 dataProvider: APP.everlive*/
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            }
+        });
 
         if (channelUUID !== undefined) {
             userDataChannel.channelUUID = channelUUID;
@@ -106,6 +116,11 @@ var userDataChannel = {
                 messages = messages[0];
                 var start = messages[1], end = messages[2];
                 messages = messages || [];
+                if (messages.length === 0) {
+                    userDataChannel.messagesDS.sync();
+                    userDataChannel.updateTimeStamp();
+                    return;
+                }
                 var RSAKey = cryptico.privateKeyFromString(userModel._user.privateKey);
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
