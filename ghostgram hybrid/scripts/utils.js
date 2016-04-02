@@ -324,6 +324,13 @@ function mobileNotify(message) {
 	}
 
 }
+function _cleanString (str) {
+	if (typeof(value) !== "undefined" && value)	{
+		return (str);
+	} else {
+		return null;
+	}
+}
 
 // if new value is defined, return it, otherwise return original
 function _smartSet(original, newValue) {
