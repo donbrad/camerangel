@@ -402,13 +402,17 @@ var smartEvent = {
             } else {
                 // Add the everlive object with everlive created Id to the datasource
                 smartEvent.eventsDS.add(smartOb);
+                if (callback !== undefined && callback !== null) {
+                    callback(smartOb);
+                }
+
             }
         });
         //var smartObj = smartOb.toJSON();
 
       //  smartEvent.eventsDS.sync();
 
-        callback(smartOb);
+
 
        /* smartOb.save(null, {
             success: function(thisObject) {

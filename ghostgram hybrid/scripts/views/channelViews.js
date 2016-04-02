@@ -24,10 +24,10 @@ var channelsView = {
 
         
         channelsView._channelListDS =  new kendo.data.DataSource({
-            offlineStorage: "channellist"
+           // offlineStorage: "channellist"
         });
         
-        channelsView._channelListDS.online(false);
+        //channelsView._channelListDS.online(false);
 
         $("#channels-listview").kendoMobileListView({
             dataSource: channelsView._channelListDS,
