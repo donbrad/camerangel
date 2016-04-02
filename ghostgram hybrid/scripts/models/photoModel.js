@@ -673,11 +673,11 @@ var photoModel = {
 
                     for (var i=0; i<length; i++) {
                         if (photoList[i].Id === undefined) {
-                            photoModel.photosDS.remove(photoList[i];
+                            photoModel.photosDS.remove(photoList[i]);
                         }
                     }
                 }
-                
+
             }
         });
         
