@@ -677,8 +677,7 @@ var photoModel = {
                         }
                     }
                 }
-
-
+                
             }
         });
         
