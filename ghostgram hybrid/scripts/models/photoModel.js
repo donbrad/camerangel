@@ -209,6 +209,11 @@ var photoModel = {
         return(photoModel.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
     },
 
+    findPhotosById : function (photoId) {
+
+        return(photoModel.queryPhotos({ field: "photoId", operator: "eq", value: photoId }));
+    },
+
     findPhotosByChannel : function (channelUUID) {
 
         return(photoModel.queryPhotos({ field: "channelUUID", operator: "eq", value: channelUUID }));
@@ -650,19 +655,30 @@ var photoModel = {
             photo.set('placeString', userModel._user.currentPlace);
         }
 
-
+        // For perf reasons add the photo before it's stored on everlive
+        photoModel.photosDS.add(photo);
+        if (callback !== undefined) {
+            callback(null, photo);
+        }
         everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
-                if (callback !== undefined) {
-                    callback(error, null);
-                }
+
             } else {
-                // Add the everlive object with everlive created Id to the datasource
-                photoModel.photosDS.add(photo);
-                if (callback !== undefined) {
-                    callback(null, photo);
+                // look up the photo (and remove duplicate local copy if there is one)
+                var photoList = photoModel.findPhotosById(data.result.photoId);
+
+                if (photoList.length > 1) {
+                    var length = photoList.length;
+
+                    for (var i=0; i<length; i++) {
+                        if (photoList[i].Id === undefined) {
+                            photoModel.photosDS.remove(photoList[i];
+                        }
+                    }
                 }
+
+
             }
         });
         
