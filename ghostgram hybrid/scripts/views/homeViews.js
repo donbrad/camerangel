@@ -1125,8 +1125,12 @@ var signUpView = {
 
         isValidMobileNumber(phone, function (result) {
             if (result.status === 'ok' && result.valid === true) {
-                memberdirectory.findMemberByPhone(phone, function (result) {
-                    if (result !== null) {
+                isMemberPhone(phone, function (result) {
+                    if (result.status !== 'ok') {
+                        mobileNotify("isMemberPhone error!");
+                        return;
+                    }
+                    if (result.found === true) {
                         mobileNotify("Your phone number matches existing user.");
                         return;
                     } else {

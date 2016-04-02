@@ -588,6 +588,57 @@ function unformatPhoneNumber(phone) {
 	}
 	return (newPhone);
 }
+
+function isMemberPhone(phone, callback) {
+	$.ajax({
+		url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/isMemberPhone?phone='+phone,
+		// dataType:"jsonp",
+		//  contentType: 'application/json',
+		success: function(result) {
+			callback({
+				status: 'ok',
+				valid: true,
+				found: result.found
+			});
+
+		},
+		error: function(error) {
+			mobileNotify("Error checking phone number" + error);
+			callback({
+				status: 'error',
+				valid: false,
+				error: error
+			});
+		}
+	});
+}
+
+
+function isMemberEmail(email, callback) {
+	$.ajax({
+		url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/isMemberEmail?email='+email,
+		// dataType:"jsonp",
+		//  contentType: 'application/json',
+		success: function(result) {
+			callback({
+				status: 'ok',
+				valid: true,
+				found: result.found
+			});
+
+		},
+		error: function(error) {
+			mobileNotify("Error checking email" + error);
+			callback({
+				status: 'error',
+				valid: false,
+				error: error
+			});
+		}
+	});
+}
+
+
 function sendPhoneVerificationCode(phone, callback) {
 	$.ajax({
 		url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/sendPhoneVerificationCode?phoneNumber='+phone,
