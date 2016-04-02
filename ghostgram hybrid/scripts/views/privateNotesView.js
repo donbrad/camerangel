@@ -244,10 +244,10 @@ var privateNotesView = {
 
                 var contentData = JSON.stringify(activeNote.dataObject);
                 var dataObj = JSON.parse(contentData);
-                note.set('title', title);
-                note.set('tagString', tagString);
+                note.set('title', _cleanString(title));
+                note.set('tagString', _cleanString(tagString));
                 note.set('tags', tags);
-                note.set('content', text);
+                note.set('content', _cleanString(text));
                 note.set('data', contentData);
                 note.set('dataObject', dataObj);
                 note.set('time',ggTime.currentTime());
