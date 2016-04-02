@@ -12,7 +12,7 @@
  */
 var privateNotesView = {
     topOffset: 0,
-    _cloudClass : 'privatenote',
+   
     notesDS : null,
     activeNote: {objects: [], photos: []},
     noteObjects: [],

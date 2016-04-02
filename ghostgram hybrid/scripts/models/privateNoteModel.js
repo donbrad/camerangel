@@ -12,7 +12,8 @@
  */
 var privateNoteModel = {
     notesDS: null,
-
+    _cloudClass : 'privatenote',
+    
     init: function () {
         privateNoteModel.notesDS = new kendo.data.DataSource({
             type: 'everlive',
