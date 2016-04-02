@@ -449,7 +449,8 @@ var everlive = {
         } else if (err === '') {
             mobileNotify('Kendo Sync Error : unknown...');
         }
-
+        notificationModel.processUnreadChannels();
+        
     }
 
 };
