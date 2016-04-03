@@ -324,11 +324,12 @@ function mobileNotify(message) {
 	}
 
 }
+
 function _cleanString (str) {
 	if (typeof(value) !== "undefined" && value)	{
 		return (str);
 	} else {
-		return null;
+		return "";
 	}
 }
 

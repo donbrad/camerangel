@@ -17,7 +17,7 @@ var placeNoteModel = {
             type: 'everlive',
             //offlineStorage: "placenote",
             transport: {
-                typeName: 'placenote',
+                typeName: 'placenote'
                 //dataProvider: APP.everlive
             },
             schema: {
