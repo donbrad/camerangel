@@ -1304,9 +1304,12 @@ var contactActionView = {
             navStr = navStr + channel.channelUUID;
             APP.kendo.navigate(navStr);
         } else {
-            channelModel.addPrivateChannel(contactUUID,contactPublicKey, contactName);
-            navStr = navStr + contactUUID;
-            APP.kendo.navigate(navStr);
+            mobileNotify("Creating Private Chat with " + contactName);
+            channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, function (error, data) {
+                navStr = navStr + contactUUID;
+                APP.kendo.navigate(navStr);
+            });
+           
         }
 
     },
