@@ -1117,7 +1117,8 @@ var signUpView = {
         var phone = $('#home-signup-phone').val();
         var alias = $('#home-signup-alias').val();
 
-
+        // clear any previous account informaton for this device
+        everlive.clearAuthentication();
 
         // clean up the phone number and ensure it's prefixed with 1
         // phone = phone.replace(/\+[0-9]{1-2}/,'');
@@ -1125,8 +1126,12 @@ var signUpView = {
 
         isValidMobileNumber(phone, function (result) {
             if (result.status === 'ok' && result.valid === true) {
-                memberdirectory.findMemberByPhone(phone, function (result) {
-                    if (result !== null) {
+                isMemberPhone(phone, function (result) {
+                    if (result.status !== 'ok') {
+                        mobileNotify("isMemberPhone error!");
+                        return;
+                    }
+                    if (result.found === true) {
                         mobileNotify("Your phone number matches existing user.");
                         return;
                     } else {
@@ -1431,6 +1436,9 @@ var signInView = {
         // hide keyboard
         ux.hideKeyboard();
 
+        // clear any previous account informaton for this device
+        everlive.clearAuthentication();
+        
         var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
 
         mobileNotify("Signing you in to ghostgrams....");

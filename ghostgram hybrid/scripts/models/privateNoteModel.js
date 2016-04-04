@@ -12,14 +12,15 @@
  */
 var privateNoteModel = {
     notesDS: null,
-
+    _cloudClass : 'privatenote',
+    
     init: function () {
         privateNoteModel.notesDS = new kendo.data.DataSource({
             type: 'everlive',
            // offlineStorage: "privatenote",
             transport: {
-                typeName: 'privatenote',
-                dataProvider: APP.everlive
+                typeName: 'privatenote'/*,
+                dataProvider: APP.everlive*/
             },
             schema: {
                 model: { id:  Everlive.idField}

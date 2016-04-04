@@ -12,6 +12,7 @@
  */
 var privateNotesView = {
     topOffset: 0,
+   
     notesDS : null,
     activeNote: {objects: [], photos: []},
     noteObjects: [],
@@ -254,7 +255,7 @@ var privateNotesView = {
 
                 var Id = note.Id;
                 if (Id !== undefined){
-                    everlive.updateOne(placeNoteModel._cloudClass, note, function (error, data) {
+                    everlive.updateOne(privateNoteModel._cloudClass, note, function (error, data) {
                         //placeNoteModel.notesDS.remove(note);
                     });
                 }

@@ -643,7 +643,7 @@ var channelModel = {
 
 
     // Add a new private channel that this user created -- create a channel object
-    addPrivateChannel : function (contactUUID, contactPublicKey,  contactName) {
+    addPrivateChannel : function (contactUUID, contactPublicKey,  contactName, callback) {
         var channel = channelModel.findChannelModel(contactUUID);
         if (channel !== undefined)  {
             // Channel already exists
@@ -677,9 +677,15 @@ var channelModel = {
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
+                if (callback !== undefined) {
+                    callback(error, null);
+                }
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
             } else {
-                channelModel.channelsDS.add(channel);
+                    channelModel.channelsDS.add(channel);
+                    if (callback !== undefined) {
+                        callback(null, data);
+                    }
             }
         });
 

@@ -21,11 +21,11 @@ var everlive = {
 
     init: function () {
         
-        var provider = Everlive.Constants.StorageProvider.FileSystem;
-        if (window.navigator.simulator === undefined) {
+      /*  var provider = Everlive.Constants.StorageProvider.FileSystem;
+        if (window.navigator.simulator === undefined) {*/
             // Use local storage in the emulator
             var provider = Everlive.Constants.StorageProvider.LocalStorage;
-        }
+    /*    }*/
 
 
         APP.everlive = new Everlive({
@@ -260,6 +260,10 @@ var everlive = {
         }
 
         updateObj.privateKey = GibberishAES.enc(updateObj.privateKey, userModel.key);
+        if (updateObj.RSAKey !== undefined) {
+            delete updateObj.RSAKey;
+        }
+
 
         APP.everlive.Users.updateSingle(updateObj,
             function(data){
@@ -450,7 +454,7 @@ var everlive = {
             mobileNotify('Kendo Sync Error : unknown...');
         }
         notificationModel.processUnreadChannels();
-        
+
     }
 
 };
