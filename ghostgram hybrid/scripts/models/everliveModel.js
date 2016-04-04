@@ -442,6 +442,17 @@ var everlive = {
        
     },
 
+    clearLocalStorage : function () {
+        APP.everlive.offlineStorage.purgeAll(
+            function (data) {
+            
+        }, function (error) {
+                if (error !== null) {
+                    mobileNotify("Error clearing local storage : " + JSON.stringify(error));
+                }
+            });
+    },
+    
     syncStart : function () {
         mobileNotify("Syncing with Everlive");
     },

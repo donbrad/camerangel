@@ -1119,7 +1119,8 @@ var signUpView = {
 
         // clear any previous account informaton for this device
         everlive.clearAuthentication();
-
+        everlive.clearLocalStorage();
+        
         // clean up the phone number and ensure it's prefixed with 1
         // phone = phone.replace(/\+[0-9]{1-2}/,'');
         phone = unformatPhoneNumber(phone);
@@ -1438,7 +1439,7 @@ var signInView = {
 
         // clear any previous account informaton for this device
         everlive.clearAuthentication();
-        
+
         var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
 
         mobileNotify("Signing you in to ghostgrams....");
