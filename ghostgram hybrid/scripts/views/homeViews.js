@@ -371,9 +371,20 @@ var homeView = {
         if (notification !== undefined) {
             var type = notification.type, href = notification.href;
 
-            if (type === notificationModel._newChat) {
-                var channelId
-            } else if (type === notificationModel._unreadCount || type === notificationModel._newPrivate) {
+            if (type === notificationModel._newPrivate) {
+                var channelId = notification.privateId;
+                var checkChannel = channelModel.findChannelModel(channelId);
+                if (checkChannel === null) {
+                    var contact = contactModel.findContact(channelId);
+                    if (contact !== null) {
+                        channelModel.addPrivateChannel(channelId, contact.publicKey, contact.name);
+                        APP.kendo.navigate(href);
+                    }
+
+                } else {
+                    APP.kendo.navigate(href);
+                }
+            } else if (type === notificationModel._unreadCount || type === notificationModel._newChat) {
                 // For unread messages, new chats (including private chats) the action is to go to the the chat....
                 APP.kendo.navigate(href);
             } else if (type === notificationModel._deleteChat || type === notificationModel._deletePrivateChat) {
