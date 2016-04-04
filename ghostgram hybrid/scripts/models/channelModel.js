@@ -635,43 +635,13 @@ var channelModel = {
                     var channel = channelList[i];
 
                     if (channel.Id === undefined) {
+                        mobileNotify("Cleaning duplicate channel");
                         channelModel.channelsDS.remove(channel);
                     }
                 }
             }
         }
     },
-
-
-/*
-    // update current private channels based on channelList passed
-    updatePrivateChannels : function (channelKeys, channelList) {
-        if (channelList === undefined || channelList.length === 0) {
-            return;
-        }
-        var uuid = userModel._user.userUUID;
-
-        for (var i=0; i<channelKeys.length; i++) {
-            var key = channelKeys[i];
-
-            var channel = channelModel.findPrivateChannel(key),
-                count = channelList[i];
-            if (channel === undefined) {
-                // private channel doesn't exist
-                var contact = contactModel.findContactByUUID(key);
-                if (contact !== undefined) {
-                    channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
-                }
-            }
-
-            if (count !== 0) {
-                notificationModel.addUnreadNotification(channel.channelUUID, 'Private: ' + channel.name, channelList[i])
-            }
-        }
-
-    },
-*/
-
 
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName, callback) {
