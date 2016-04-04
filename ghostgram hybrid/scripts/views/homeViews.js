@@ -1117,7 +1117,8 @@ var signUpView = {
         var phone = $('#home-signup-phone').val();
         var alias = $('#home-signup-alias').val();
 
-
+        // clear any previous account informaton for this device
+        everlive.clearAuthentication();
 
         // clean up the phone number and ensure it's prefixed with 1
         // phone = phone.replace(/\+[0-9]{1-2}/,'');
