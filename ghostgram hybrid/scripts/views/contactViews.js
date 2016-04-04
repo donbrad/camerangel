@@ -909,7 +909,7 @@ var editContactView = {
         if (contact !== undefined) {
             contactModel.checkIdenticon(contact);
             editContactView._activeContact.set("mappedphoto", contact.identicon);
-            if (contact.photo === null) {
+            if (contact.photo !== null) {
                 editContactView._activeContact.set("mappedphoto", contact.photo);
             }
             editContactView._activeContact.set("Id", contact.Id);
@@ -1143,7 +1143,7 @@ var contactActionView = {
         var photo = contact.identicon;
         if (contact.photo !== null)
             photo = contact.photo;
-        $('#contactProfileImg').attr('src',  photo)
+        $('#contactProfileImg').attr('src',  photo);
 
         var primaryName = ux.returnUXPrimaryName(contact.name, contact.alias);
         $('#contactPrimaryName').text(primaryName);
