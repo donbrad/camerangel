@@ -374,7 +374,7 @@ var homeView = {
             if (type === notificationModel._newPrivate) {
                 var channelId = notification.privateId;
                 var checkChannel = channelModel.findChannelModel(channelId);
-                if (checkChannel === null) {
+                if (checkChannel === undefined || checkChannel === null) {
                     var contact = contactModel.findContact(channelId);
                     if (contact !== null) {
                         channelModel.addPrivateChannel(channelId, contact.publicKey, contact.name);
