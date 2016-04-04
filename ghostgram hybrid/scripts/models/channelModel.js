@@ -675,9 +675,12 @@ var channelModel = {
 
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName, callback) {
-        var channel = channelModel.findChannelModel(contactUUID);
-        if (channel !== undefined)  {
+        var channelCheck = channelModel.findChannelModel(contactUUID);
+        if (channelCheck !== undefined)  {
             // Channel already exists
+            if (callback !== undefined) {
+                callback(null, channelCheck);
+            }
             return;
         }
 
