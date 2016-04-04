@@ -25,7 +25,7 @@ var mapModel = {
     newLocationDetected: false,         // has the user been prompted to check in here
     wasPrompted: false,         // has the user been prompted to check in here
 
-    gpsOptions : {enableHighAccuracy : true, timeout: 3000, maximumAge: 5000},
+    gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
     lastPingSeconds : null,
     _pingInterval: 30, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
@@ -274,7 +274,7 @@ var mapModel = {
                 mapModel._updatePosition(lat, lng);
                 callback(lat, lng);
             }, function (error) {
-                mobileNotify("GPS error" + error.message);
+                mobileNotify("GPS error :" + error.message);
                 callback(0, 0);
             }, options);
         } else {
