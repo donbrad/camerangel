@@ -1129,9 +1129,13 @@ var contactActionView = {
             }
         }
 
-        // Custom ux management for contacts -- profileImage could be set with databinding.
-        $('#contactProfileImg').attr('src', contactActionView._activeContact.identicon );
-        var primaryName = ux.returnUXPrimaryName(contactActionView._activeContact.name, contactActionView._activeContact.alias);
+        // Custom ux management for contacts - if there's a custom photo for this user, display it, if not fallback to idenitcon
+        var photo = contact.identicon;
+        if (contact.photo !== null)
+            photo = contact.photo;
+        $('#contactProfileImg').attr('src',  photo)
+
+        var primaryName = ux.returnUXPrimaryName(contact.name, contact.alias);
         $('#contactPrimaryName').text(primaryName);
     },
 
@@ -1252,8 +1256,7 @@ var contactActionView = {
                     $("#currentContactVerified").addClass("hidden");
                 }
 
-                // set profile img
-                $("#contactProfileImg").attr("src", contact.photo);
+
 
                 contactActionView.refreshUX(contact);
 
