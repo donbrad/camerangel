@@ -447,7 +447,7 @@ var channelModel = {
         }
     },
 
-    syncParseChannels : function (callback) {
+/*    syncParseChannels : function (callback) {
         // Only sync channels for users with atleast email or phone validated
 
        if (userModel._user.phoneValidated || userModel._user.emailValidated)  {
@@ -482,7 +482,7 @@ var channelModel = {
                }
            });
        }
-    },
+    },*/
 
     updateChannel : function (channelUUID, channelName, channelDescription, channelMembers) {
         var channel = channelModel.findChannelModel(channelUUID);
@@ -653,6 +653,7 @@ var channelModel = {
        /* var Channels = Parse.Object.extend(channelModel._cloudClass);*/
         var channel = new kendo.data.ObservableObject();
         var addTime = ggTime.currentTime();
+        channel.set('ggType', channelModel._ggClass);
         channel.set("version", channelModel._version);
         channel.set("name", contactName);
         channel.set("isOwner", true);
@@ -674,7 +675,11 @@ var channelModel = {
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel._user.userUUID, contactUUID]);
 
-
+        channelModel.channelsDS.add(channel);
+        if (callback !== undefined) {
+            callback(null, data);
+        }
+        
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
                 if (callback !== undefined) {
@@ -682,10 +687,8 @@ var channelModel = {
                 }
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
             } else {
-                    channelModel.channelsDS.add(channel);
-                    if (callback !== undefined) {
-                        callback(null, data);
-                    }
+
+
             }
         });
 
@@ -1079,7 +1082,7 @@ var channelModel = {
                 if (Id !== undefined){
                     var mapObj = {Id : Id};
                     mapObj.channelUUID = channel.channelUUID;
-                    mapObj.channelName = channel.channelName;
+                    mapObj.channelName = channel.name;
                     mapObj.ownerUUID = channel.ownerUUID;
                     mapObj.members = channel.members;
                     mapObj.invitedMembers = channel.invitedMembers;
