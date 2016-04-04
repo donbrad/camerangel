@@ -908,6 +908,10 @@ var editContactView = {
     setActiveContact : function (contact) {
         if (contact !== undefined) {
             contactModel.checkIdenticon(contact);
+            editContactView._activeContact.set("mappedphoto", contact.identicon);
+            if (contact.photo === null) {
+                editContactView._activeContact.set("mappedphoto", contact.photo);
+            }
             editContactView._activeContact.set("Id", contact.Id);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
@@ -920,6 +924,7 @@ var editContactView = {
             editContactView._activeContact.set("isFavorite", contact.isFavorite);
             editContactView._activeContact.set("isBlocked", contact.isBlocked);
             editContactView._activeContact.set("photo", contact.photo);
+            editContactView._activeContact.set("identicon", contact.identicon);
             editContactView._activeContact.set("inviteSent", contact.inviteSent);
             editContactView._activeContact.set("connectSent", contact.connectSent);
             editContactView._activeContact.set("connectReceived", contact.connectReceived);
@@ -989,17 +994,13 @@ var editContactView = {
         contact.set("category", editContactView._activeContact.category);
 
 
-        var Id = contact.Id;
-        if (Id !== undefined){
-            everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
-                //placeNoteModel.notesDS.remove(note);
-            });
-        }
+
         contactList.set("name", editContactView._activeContact.name);
         contactList.set("alias", editContactView._activeContact.alias);
         contactList.set("phone", editContactView._activeContact.phone);
         contactList.set("email", editContactView._activeContact.email);
         contactList.set("photo", editContactView._activeContact.photo);
+        contactList.set("identicon", editContactView._activeContact.identicon);
         contactList.set("group", editContactView._activeContact.group);
         contactList.set("isFavorite", editContactView._activeContact.isFavorite);
         contactList.set("isBlocked", editContactView._activeContact.isBlocked);
@@ -1013,6 +1014,15 @@ var editContactView = {
             contactList.set("publicKey", editContactView._activeContact.publicKey);
         }
 
+
+        // Zero the identicon in the contact so it's pushed to cloud.
+        contact.identicon = null;
+        var Id = contact.Id;
+        if (Id !== undefined){
+            everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
+                //placeNoteModel.notesDS.remove(note);
+            });
+        }
 
         //$("#contacts-listview").data("kendoMobileListView").refresh();
 
