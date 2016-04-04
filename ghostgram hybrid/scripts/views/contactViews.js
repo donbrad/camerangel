@@ -1128,6 +1128,11 @@ var contactActionView = {
                 $("#contactActionBtns > li:first-child").hide();
             }
         }
+
+        // Custom ux management for contacts -- profileImage could be set with databinding.
+        $('#contactProfileImg').attr('src', contactActionView._activeContact.identicon );
+        var primaryName = ux.returnUXPrimaryName(contactActionView._activeContact.name, contactActionView._activeContact.alias);
+        $('#contactPrimaryName').text(primaryName);
     },
 
     setReturnModal : function (modalId) {
