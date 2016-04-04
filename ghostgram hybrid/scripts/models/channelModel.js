@@ -710,8 +710,9 @@ var channelModel = {
         channel.set("members", [userModel._user.userUUID, contactUUID]);
 
         channelModel.channelsDS.add(channel);
+        channelModel.channelsDS.sync();
         if (callback !== undefined) {
-            callback(null, data);
+            callback(null, channel);
         }
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
