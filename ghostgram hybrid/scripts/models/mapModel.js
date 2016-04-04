@@ -274,8 +274,14 @@ var mapModel = {
                 mapModel._updatePosition(lat, lng);
                 callback(lat, lng);
             }, function (error) {
-                mobileNotify("GPS error :" + error.message);
-                callback(0, 0);
+                if (error.code === 3) {
+                    mobileNotify("GPS : using cached location");
+                    callback(mapModel.lat, mapModel.lng);
+                } else {
+                    mobileNotify("GPS error :" + error.message);
+                    callback(0, 0);
+                }
+
             }, options);
         } else {
             callback(mapModel.lat, mapModel.lng);
