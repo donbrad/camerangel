@@ -1436,6 +1436,9 @@ var signInView = {
         // hide keyboard
         ux.hideKeyboard();
 
+        // clear any previous account informaton for this device
+        everlive.clearAuthentication();
+        
         var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
 
         mobileNotify("Signing you in to ghostgrams....");
