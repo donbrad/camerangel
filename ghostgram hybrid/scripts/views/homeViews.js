@@ -371,7 +371,9 @@ var homeView = {
         if (notification !== undefined) {
             var type = notification.type, href = notification.href;
 
-            if (type === notificationModel._unreadCount || type === notificationModel._newChat || type === notificationModel._newPrivate) {
+            if (type === notificationModel._newChat) {
+                var channelId
+            } else if (type === notificationModel._unreadCount || type === notificationModel._newPrivate) {
                 // For unread messages, new chats (including private chats) the action is to go to the the chat....
                 APP.kendo.navigate(href);
             } else if (type === notificationModel._deleteChat || type === notificationModel._deletePrivateChat) {

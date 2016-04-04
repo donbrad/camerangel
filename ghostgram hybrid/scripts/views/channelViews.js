@@ -1090,7 +1090,7 @@ var channelView = {
             cordova.plugins.Keyboard.disableScroll(true); // false to enable again
         }
 */
-        channelView.openEditor();
+
         $("#messages-listview").data("kendoMobileListView").scroller().reset();
         channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
@@ -1099,8 +1099,17 @@ var channelView = {
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
-        channelView.toggleTitleTag();
+
         var channelUUID = e.view.params.channelUUID;
+        // This isn't privateNote so handle as private or group channel
+        var thisChannel = channelModel.findChannelModel(channelUUID);
+        if (thisChannel === null) {
+            mobileNotify("Chat -- chat doesn't exist : " + channelUUID);
+            return;
+        }
+
+        channelView.openEditor();
+        channelView.toggleTitleTag();
 
         if (e.view.params.returnview !== undefined){
             channelView._returnview = unpackParameter(e.view.params.returnview);
@@ -1122,12 +1131,6 @@ var channelView = {
         });*/
 
 
-        // This isn't privateNote so handle as private or group channel
-        var thisChannel = channelModel.findChannelModel(channelUUID);
-        if (thisChannel === null) {
-            mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
-            return;
-        }
 
         channelView._channel = thisChannel;
 
