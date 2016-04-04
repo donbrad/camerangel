@@ -1446,14 +1446,16 @@ var channelView = {
             } else {
                 var thisContact = contactModel.findContact(contactArray[i]);
                 if (thisContact === undefined) {
+                    // No contact entry for this contact...
+
                     // Need to create a contact and then add to channels member list
                     var contactId = contactArray[i];
+                    
+
                     contactModel.createChatContact(contactId, function (newContact) {
                         channelView.memberList[contactId] = newContact;
                         channelView.membersDS.add(newContact);
                     });
-
-
                 } else {
                     contact.isContact = true;
                     contact.uuid = contactArray[i];
@@ -1461,6 +1463,9 @@ var channelView = {
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
                     contact.photo = thisContact.photo;
+                    if (thisContact.photo === null) {
+                        contact.photo = thisContact.identicon;
+                    }
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
                    channelView.memberList[contact.uuid] = contact;

@@ -654,14 +654,16 @@ var contactModel = {
                 contact.uuid = result.userUUID;
                 contact.alias = result.alias;
                 contact.name = result.name;
+                contact.category = "member";
                 var url = contactModel.createIdenticon(guid);
                 contact.photo = url;
-                contact.publicKey = null;
+                contact.identicon = url;
+                contact.publicKey = result.publicKey;
 
 
                /* currentChannelModel.memberList[contact.uuid] = contact;
                 currentChannelModel.membersDS.add(contact);*/
-                contactModel.addChatContact(guid, contact.name, contact.alias, contact.uuid);
+                contactModel.addChatContact(guid, contact.name, contact.alias, contact.uuid, results.phone, result.email, result.publicKey);
                 mobileNotify("Created New Contact for: " + contact.name);
 
                 if (callback !== undefined) {
@@ -675,19 +677,15 @@ var contactModel = {
     },
 
 
-    addChatContact : function (guid, name, alias, contactUUID) {
-      /*  var Contacts = Parse.Object.extend("contacts");
-        var contact = new Contacts();
+    addChatContact : function (guid, name, alias, contactUUID, contactPhone, contactEmail, contactKey) {
 
-
-        contact.setACL(userModel.parseACL);*/
 
         var contact = new kendo.data.ObservableObject();
         contact.set('version', contactModel._version);
         contact.set('ggType', contactModel._ggClass);
         contact.set("name", name );
         contact.set("alias", alias);
-        contact.set('category', "unknown");
+        contact.set('category', "member");
         contact.set("address", null);
         contact.set("group", null);
         contact.set("priority", 0);
@@ -695,46 +693,29 @@ var contactModel = {
         contact.set("isBlocked", false);
         contact.set("uuid", guid);
         contact.set('contactUUID', contactUUID);
-        contact.set('contactPhone', null);
-        contact.set('contactEmail', null);
+        contact.set('phone', contactPhone);
+        contact.set('email', contactEmail);
+        contact.set('contactPhone', contactPhone);
+        contact.set('contactEmail', contactEmail);
+        contact.set('publicKey', contactKey);
         contact.set('ownerUUID', userModel._user.userUUID);
+
+        contactModel.contactsDS.add(contact);
 
         everlive.createOne(contactModel._cloudClass, contact, function (error, data){
             if (error !== null) {
-                mobileNotify ("Error creating place " + JSON.stringify(error));
+                mobileNotify ("Error creating Chat Contact " + JSON.stringify(error));
             } else {
-                contactModel.contactsDS.add(contact);
+               // Todo: don add function to remove potential dups after sync
+                var contactObj = data;
+
             }
         });
         /*contactModel.contactsDS.add(contact);
         contactModel.contactsDS.sync();
         deviceModel.syncEverlive();*/
 
-        /*contact.save(null, {
-            success: function(contact) {
-                // Execute any logic that should take place after the object is saved.;
-                //var photo = contact.get('photo');
-                var url = contactModel.createIdenticon(guid);
-                contact.set('photo',url);
-                // Don't set actual phone and email for this contact until connected...
-                contact.set('contactPhone', contact.phone);
-                contact.set('phoneValidated', contact.phoneValidated);
-                contact.set('contactEmail', contact.email);
-                contact.set('emailValidated', contact.emailValidated);
 
-                var contactObj = contact.toJSON();
-                contactModel.addContactToContactList(contactObj);
-                contactModel.contactsDS.add(contact.attributes);
-
-                //contactModel.contactListDS.add(contact.attributes);
-                //addContactView.closeModal();
-            },
-            error: function(contact, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
-            }
-        });*/
     },
 
     importDeviceContacts: function() {
