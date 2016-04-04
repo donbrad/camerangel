@@ -260,6 +260,10 @@ var everlive = {
         }
 
         updateObj.privateKey = GibberishAES.enc(updateObj.privateKey, userModel.key);
+        if (updateObj.RSAKey !== undefined) {
+            delete updateObj.RSAKey;
+        }
+
 
         APP.everlive.Users.updateSingle(updateObj,
             function(data){
