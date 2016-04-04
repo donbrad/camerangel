@@ -1160,12 +1160,7 @@ var channelView = {
             channelView.isPrivateChat = true;
             channelView.messageLock = true;
             channelView.setMessageLockIcon(channelView.messageLock);
-            // *** Private Channel ***
-            var contactKey = thisChannel.contactKey;
-            if (contactKey === undefined) {
-              mobileNotify("No public key for " + thisChannel.name);
-              return;
-            }
+
 
           $('#messagePresenceButton').hide();
 
@@ -1183,6 +1178,17 @@ var channelView = {
           } else {
               channelView.privateContact = thisContact;
           }
+
+            // *** Private Channel ***
+            var contactKey = thisChannel.contactKey;
+            if (contactKey === undefined) {
+
+                contactKey = thisContact.publicKey;
+                if (contactKey === undefined) {
+                    mobileNotify("No public key for " + thisChannel.name);
+                    return;
+                }
+            }
 
           // Update private Chat name using combination of contact's name and alias.
 
