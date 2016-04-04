@@ -437,18 +437,22 @@ var everlive = {
             });
     },
 
+    clearAccount : function () {
+
+    },
+
     clearAuthentication : function () {
         APP.everlive.authentication.clearAuthorization();
        
     },
 
-    clearLocalStorage : function () {
+    clearLocalStorage : function (callback) {
         APP.everlive.offlineStorage.purgeAll(
             function (data) {
-            
+                mobileNotify("Device storage erased");
         }, function (error) {
                 if (error !== null) {
-                    mobileNotify("Error clearing local storage : " + JSON.stringify(error));
+                    mobileNotify("Error clearing device storage : " + JSON.stringify(error));
                 }
             });
     },
