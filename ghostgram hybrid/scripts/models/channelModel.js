@@ -581,6 +581,20 @@ var channelModel = {
         return(channel);*/
     },
 
+
+    findChannelList: function (channelUUID) {
+
+        return(channelModel.queryChannels({ field: "channelUUID", operator: "eq", value: channelUUID }));
+
+        /*var dataSource =  channelModel.channelsDS;
+         dataSource.filter( { field: "channelUUID", operator: "eq", value: channelUUID });
+         var view = dataSource.view();
+         var channel = view[0];
+         dataSource.filter([]);
+
+         return(channel);*/
+    },
+
     findChannelByName: function (channelName) {
 
         return(channelModel.queryChannel({ field: "name", operator: "eq", value: channelName }));
@@ -611,6 +625,23 @@ var channelModel = {
         dataSource.filter(queryCache);
         return(channel);
     },
+
+    _cleanDupChannels : function (channelId) {
+        var channelList = channelModel.findChannelList(channelId);
+
+        if (channelList !== undefined && channelList.length > 0) {
+            if (channelList.length > 1) {
+                for (var i=0; i< channelList.length; i++) {
+                    var channel = channelList[i];
+
+                    if (channel.Id === undefined) {
+                        channelModel.channelsDS.remove(channel);
+                    }
+                }
+            }
+        }
+    },
+
 
 /*
     // update current private channels based on channelList passed
@@ -679,7 +710,7 @@ var channelModel = {
         if (callback !== undefined) {
             callback(null, data);
         }
-        
+
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
                 if (callback !== undefined) {
@@ -688,7 +719,7 @@ var channelModel = {
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
             } else {
 
-
+                channelModel._cleanDupChannels(contactUUID);
             }
         });
 
