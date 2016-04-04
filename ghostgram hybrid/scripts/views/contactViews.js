@@ -1195,7 +1195,7 @@ var contactActionView = {
                         if (contactPlace !== "" && contactPlace !== undefined) {
                             $("#contactCurrentPlace").text("@" + contactPlace);
                         }
-                        contactActionView.refreshUX(contactActionView._activeContact);
+
                     }
                 });
             } else {
@@ -1214,7 +1214,6 @@ var contactActionView = {
                 if (thisContact.currentPlace !== "" && thisContact.currentPlace !== undefined) {
                     $("#contactCurrentPlace").text("@" + thisContact.currentPlace);
                 }
-                contactActionView.refreshUX(contactActionView._activeContact);
             }
         }
 
