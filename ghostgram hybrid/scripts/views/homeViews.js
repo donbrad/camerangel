@@ -793,9 +793,18 @@ var ghostEditView = {
     closeModal : function (e) {
         _preventDefault(e);
         $('#ghostEditModal').data('kendoMobileModalView').close();
-        if (ghostEditView._callback  !== null) {
-            ghostEditView._callback();
+        if (ghostEditView._callback  === 'contactaction') {
+
+            contactActionView.restoreModal();
         }
+
+        if (ghostEditView._returnview !== null) {
+            APP.kendo.navigate('#'+ghostEditView._returnview);
+        }
+
+       /* if (ghostEditView._callback  !== null) {
+            ghostEditView._callback();
+        }*/
     },
 
     sendGhostEmail : function (e) {
