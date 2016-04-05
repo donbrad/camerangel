@@ -212,6 +212,18 @@ var invitedirectory = {
             });
     },
 
+    isInvited : function (phone, memberUUID, callback) {
+        var query = new Everlive.Query();
+        query.where().and().eq('phone', phone).eq('memberUUID', memberUUID).done();
+        APP.everlive.data(invitedirectory._ggClass).get(query).then (
+            function (data) {
+                callback(null, data.result);
+            },
+            function (error){
+                callback(error, null);
+            });
+    },
+    
     queryByPhone : function (phone, callback) {
         var query = new Everlive.Query();
         query.where().eq('phone', phone).done();
@@ -272,6 +284,7 @@ var invitedirectory = {
             .eq('phone', phone)
             .eq('memberUUID', userModel.currentUser.userUUID)
             .done();
+        
         APP.everlive.data(invitedirectory._ggClass).get(query).then (
             function (data) {
                 APP.everlive.data(invitedirectory._ggClass).destroySingle({ Id: data.result.Id },

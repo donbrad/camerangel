@@ -808,6 +808,7 @@ var addContactView = {
       memberdirectory.findMemberByPhone(phone, function (user) {
 
             if (user !== null) {
+                // The user is gg member
                 var thisContact = user;
                 if (thisContact.phoneValidated === undefined) {
                     thisContact.phoneValidated = false;
@@ -835,7 +836,7 @@ var addContactView = {
                 contact.set('publicKey', thisContact.publicKey);
 
             } else {
-                // No - just use the email address the our user selected
+                // Not a member - just use the email address the our user selected
                 contact.set("email", email);
              /*   if (emailValid)
                     contactSendEmailInvite(email);*/
@@ -844,13 +845,25 @@ var addContactView = {
                 contact.set("contactUUID", null);
                 contact.set("contactPhone", null);
                 contact.set("contactEmail", null);
+
+                var userUUID = userModel.currentUser.userUUID;
+                // Has this user already invited this contact?
+                invitedirectory.isInvited(phone, userUUID,  function (error, data) {
+                   if (error === null) {
+                       if (data === null) {
+                           invitedirectory.create(name, phone, email);
+                       }
+                   }
+                });
             }
+
+          contactModel.contactsDS.add(contact);
 
           everlive.createOne(contactModel._cloudClass, contact, function (error, data){
               if (error !== null) {
                   mobileNotify ("Error creating Contact " + JSON.stringify(error));
               } else {
-                  contactModel.contactsDS.add(contact);
+                 contactModel._cleanDupContacts(contact.uuid);
               }
           });
 

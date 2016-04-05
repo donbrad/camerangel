@@ -371,6 +371,13 @@ var contactModel = {
         return(contact);
     },
 
+    findContactsByUUID : function(uuid) {
+        var contacts = contactModel.queryContacts({ field: "uuid", operator: "eq", value: uuid });
+
+        return(contacts);
+    },
+
+
     findContactList : function (contactUUID) {
         var contact = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contactUUID });
 
@@ -378,9 +385,9 @@ var contactModel = {
     },
 
     findContactListUUID : function ( uuid) {
-        var contact = contactModel.queryContactList({ field: "uuid", operator: "eq", value: uuid });
+        var contacts = contactModel.queryContactList({ field: "uuid", operator: "eq", value: uuid });
 
-        return(contact);
+        return(contacts);
     },
 
 
@@ -548,6 +555,23 @@ var contactModel = {
         }
 
 
+    },
+
+    _cleanDupContacts : function (uuid) {
+        var contactList = contactModel.findContactsUUID(uuid);
+
+        if (contactList !== undefined && contactList.length > 0) {
+            if (contactList.length > 1) {
+                for (var i=0; i< contactList.length; i++) {
+                    var contact = contactList[i];
+
+                    if (contact.Id === undefined) {
+                        mobileNotify("Cleaning duplicate channel");
+                        contactModel.contactsDS.remove(contact);
+                    }
+                }
+            }
+        }
     },
 
    /* getContactStatusObject : function(contactUUID, callback) {
