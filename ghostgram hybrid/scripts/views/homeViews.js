@@ -230,13 +230,11 @@ var homeView = {
     dismissNotification : function (e) {
         _preventDefault(e);
         var $currentBtn = $(e.button[0]);
-        //var uuid = e.sender.element[0].attributes['data-uuid'].value;
+        var uuid = e.sender.element[0].attributes['data-uuid'].value;
         var closeStatus = $currentBtn.hasClass("ggHome-close");
 
-        if(closeStatus){
-            // todo - wire dismiss notification
-            console.log("dismissing notification");
-            //notificationModel.deleteNotificationById(uuid);
+        if(closeStatus) {
+            notificationModel.deleteNotificationById(uuid);
         }
     },
 
