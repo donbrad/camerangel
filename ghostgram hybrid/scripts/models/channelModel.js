@@ -770,6 +770,7 @@ var channelModel = {
 
         channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
@@ -852,12 +853,13 @@ var channelModel = {
         channel.set("members", [ownerUUID]);
         channel.set("invitedMembers", []);
 
+        channelModel.channelsDS.add(channel);
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
             } else {
-                channelModel.channelsDS.add(channel);
+                channelModel._cleanDupChannels(channel.channelUUID);
             }
         });
     /*    channelModel.channelsDS.add(channel);

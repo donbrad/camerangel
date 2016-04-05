@@ -390,13 +390,27 @@ var photoModel = {
         photo.set('imageUrl',photoObj.imageUrl);
 
        // var photoObj = photo.toJSON();
+        photoModel.photosDS.add(photo);
+        if (callback !== undefined)
+            callback(photo);
 
         everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                photoModel.photosDS.add(photo);
+                var photoList = photoModel.findPhotosById(data.result.photoId);
+
+                if (photoList.length > 1) {
+                    var length = photoList.length;
+
+                    for (var i=0; i<length; i++) {
+                        if (photoList[i].Id === undefined) {
+                            photoModel.photosDS.remove(photoList[i]);
+                        }
+                    }
+                }
+
             }
         });
 
