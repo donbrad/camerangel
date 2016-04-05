@@ -1198,7 +1198,12 @@ var channelView = {
           name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
         $("#channelName").text(name);
           // Show contact img in header
-        $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
+
+        var photoUrl = thisContact.identicon;
+        if (thisContact.photo !== null) {
+            photoUrl = thisContact.photo;
+        }
+        $('#channelImage').attr('src', photoUrl).removeClass("hidden");
 
           privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
             channelView.messagesDS.data([]);
