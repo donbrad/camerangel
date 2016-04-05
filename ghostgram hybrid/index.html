@@ -1928,10 +1928,14 @@
 	var name = data.name;
 	var alias = data.alias;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
+	var photoUrl = data.identicon;
+	if (data.photo !== null) {
+	photoUrl = data.photo;
+	}
 	#
 	<div>
 		<div class="memberTempPhoto left">
-			<img src="#: data.photo #" class="circle-img-md" />
+			<img src="#: photoUrl #" class="circle-img-md" />
 		</div>
 		<div class="memberTempName left">
 			<h4 class="textClamp">
@@ -1951,8 +1955,13 @@
 		#}else {#
 		<div style="clear: both;">
 			#}#
+			# var photoUrl = data.identicon;
+			   if (data.photo !== null) {
+					photoUrl = data.photo;
+				}
+			#
 			<div class="memberTempPhoto left">
-				<img src="#: data.photo #" class="circle-img-md" />
+				<img src="#: photoUrl #" class="circle-img-md" />
 			</div>
 			<div class="memberTempName left">
 				<h4 class="textClamp">#: data.name #</h4>
@@ -2294,7 +2303,10 @@
 	var group = data.group;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
-
+	var photoUrl = data.identicon;
+	if (data.photo !== null) {
+		photoUrl = data.photo;
+	}
 	#
 	<div>
 		<div class="contact-options">
@@ -2338,11 +2350,11 @@
 			<div class="statusContactList">
 
 				#if (data.isAvailable !== undefined && data.isAvailable) { #
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photoUrl#" />
 				<img src="images/status-available.svg" class="statusContactList-icon" />
 				# }
 				else { #
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photoUrl#" />
 				<img src="images/status-away.svg" class="statusContactList-icon" />
 				#}#
 				# if (data.isBlocked) {#
@@ -2389,7 +2401,7 @@
 		#} else if(data.category === 'new'){#
 		<div class="left listPhoto">
 			<div class="statusContactList">
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photoUrl#" />
 			</div>
 		</div><!-- left -->
 		<div class="left listName">
@@ -2404,7 +2416,7 @@
 		#} else {#
 		<div class="left listPhoto">
 			<div class="statusContactList">
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photoUrl#" />
 			</div>
 		</div><!-- left -->
 		<div class="left listName">
