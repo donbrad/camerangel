@@ -135,6 +135,12 @@ var appDataChannel = {
         message.processed = true;
         message.processTime = ggTime.currentTime();
         appDataChannel.messagesDS.add(message);
+        everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
+            if (error !== null) {
+                mobileNotify ("App Channel cache error " + JSON.stringify(error));
+            }
+        });
+
     },
 
 
@@ -145,13 +151,9 @@ var appDataChannel = {
         if (m.msgID === undefined || appDataChannel.isProcessedMessage(m.msgID)) {
             return;
         }
-        m.isProcessed = true;
 
-        everlive.createOne(appDataChannel._cloudClass, m, function (error, data) {
-           if (error !== null) {
-               mobileNotify ("App Channel cache error " + JSON.stringify(error));
-           }
-        });
+        appDataChannel.archiveMessage(m);
+
 
         switch(m.type) {
             //  { type: 'newUser',  userId: <userUUID>,  phone: <phone>, email: <email>}
