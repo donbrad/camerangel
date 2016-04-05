@@ -253,6 +253,20 @@ var homeView = {
          });
          */
 
+        $(".home-status").kendoTouch(
+
+            { doubletap: function (e) { mobileNotify("Double Tap: Open Hot Buttons!"); }
+        });
+
+        $(".footer-menu").kendoTouch({
+            multiTouch: true,
+            gesturestart: function (e) {
+                mobileNotify("Two Finger: Open Hot Buttons!");
+            }
+        });
+
+
+
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
             template: $("#notificationTemplate").html(),
