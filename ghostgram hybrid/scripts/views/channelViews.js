@@ -1400,7 +1400,7 @@ var channelView = {
             contact.uuid = uuid;
             contact.alias = 'New!';
             contact.name = 'Chat Member';
-            contact.photoUrl = 'images/ghost-blue.svg';
+            contact.photoUrl = contactModel.createIdenticon(uuid);
 
             if (channelView.newMembers[uuid] === undefined) {
                 channelView.newMembers[uuid] = uuid;
@@ -1415,7 +1415,10 @@ var channelView = {
             contact.uuid = data.userUUID;
             contact.alias = data.alias;
             contact.name = data.name;
-            contact.photoUrl = data.photo;
+            contact.photoUrl = data.identicon;
+            if (data.photo !== null) {
+                contact.photoUrl = contact.photo;
+            }
         }
 
         return(contact);
