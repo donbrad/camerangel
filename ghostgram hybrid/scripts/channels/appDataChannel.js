@@ -14,6 +14,7 @@ var appDataChannel = {
     channelUUID: '',   // current app channel
     lastAccess: 0,   // last access time stamp
     _channelName: 'app',
+    _cloudClass: 'appmessages',
     _version: 1,
     messagesDS : null,
 
@@ -144,6 +145,13 @@ var appDataChannel = {
         if (m.msgID === undefined || appDataChannel.isProcessedMessage(m.msgID)) {
             return;
         }
+        m.isProcessed = true;
+
+        everlive.createOne(appDataChannel._cloudClass, m, function (error, data) {
+           if (error !== null) {
+               mobileNotify ("App Channel cache error " + JSON.stringify(error));
+           }
+        });
 
         switch(m.type) {
             //  { type: 'newUser',  userId: <userUUID>,  phone: <phone>, email: <email>}
