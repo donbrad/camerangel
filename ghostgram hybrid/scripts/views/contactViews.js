@@ -1006,8 +1006,7 @@ var editContactView = {
         contact.set("address", editContactView._activeContact.address);
         contact.set("category", editContactView._activeContact.category);
 
-
-
+        
         contactList.set("name", editContactView._activeContact.name);
         contactList.set("alias", editContactView._activeContact.alias);
         contactList.set("phone", editContactView._activeContact.phone);

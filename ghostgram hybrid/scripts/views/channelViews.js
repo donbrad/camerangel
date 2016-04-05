@@ -1491,7 +1491,8 @@ var channelView = {
     archiveMessage : function (e) {
         _preventDefault(e);
 
-        // close out li
+        mobileNotify("Archive is under development...");
+      /*  // close out li
         $(".selectedLI").velocity("slideUp", {delay: 150});
 
         //mobileNotify("message archived");
@@ -1510,7 +1511,7 @@ var channelView = {
 
         // ToDo - wire up requests
         //APP.kendo.navigate("#modalview-requestContent");
-        $("#modalview-requestContent").data("kendoMobileModalView").open();
+        $("#modalview-requestContent").data("kendoMobileModalView").open();*/
     },
 
     findChatMember: function (contactUUID) {
