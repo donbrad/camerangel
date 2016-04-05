@@ -663,6 +663,9 @@ var channelModel = {
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
+        channel.set('isPrivatePlace', false);
+        channel.set('placeUUID', null);
+        channel.set('placeName', null);
         channel.set('isDeleted', false);
         channel.set('isMuted', false);
         channel.set('category', 'Private');
@@ -812,7 +815,6 @@ var channelModel = {
 
         channel.set('version', channelModel._version);
         channel.set('ggType', channelModel._ggClass);
-        channel.set ('category', 'Place');
         channel.set('isMuted', false);
         channel.set('isDeleted', false);
         channel.set('isPrivate', false);
@@ -1066,6 +1068,11 @@ var channelModel = {
         var mapObj = {};
         mapObj.channelUUID = channel.channelUUID;
         mapObj.channelName = channel.channelName;
+        mapObj.isPlace = channel.isPlace;
+        mapObj.isPrivatePlace = channel.isPrivatePlace;
+        mapObj.placeUUID = channel.placeUUID;
+        mapObj.placeName = channel.placeName;
+        mapObj.category = channel.category;
         mapObj.ownerUUID = channel.ownerUUID;
         mapObj.members = channel.members;
         mapObj.invitedMembers = channel.invitedMembers;
@@ -1087,7 +1094,12 @@ var channelModel = {
                 if (Id !== undefined){
                     var mapObj = {Id : Id};
                     mapObj.channelUUID = channel.channelUUID;
-                    mapObj.channelName = channel.name;
+                    mapObj.channelName = channel.channelName;
+                    mapObj.isPlace = channel.isPlace;
+                    mapObj.isPrivatePlace = channel.isPrivatePlace;
+                    mapObj.placeUUID = channel.placeUUID;
+                    mapObj.placeName = channel.placeName;
+                    mapObj.category = channel.category;
                     mapObj.ownerUUID = channel.ownerUUID;
                     mapObj.members = channel.members;
                     mapObj.invitedMembers = channel.invitedMembers;
