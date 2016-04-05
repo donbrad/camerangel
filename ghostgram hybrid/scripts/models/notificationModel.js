@@ -123,11 +123,12 @@ var notificationModel = {
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
 
+        notificationModel.notificationDS.add(notification);
         everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Notification " + JSON.stringify(error));
             } else {
-                notificationModel.notificationDS.add(notification);
+                
             }
         });
 
