@@ -731,7 +731,7 @@ var contactModel = {
                 mobileNotify ("Error creating Chat Contact " + JSON.stringify(error));
             } else {
                // Todo: don add function to remove potential dups after sync
-                var contactObj = data;
+               contactModel._cleanDupContacts(contact.uuid);
 
             }
         });
@@ -797,17 +797,17 @@ var contactModel = {
                             contactItem.addresses.push(address);
                         }
                     }
-                    contactItem.photo = 'images/default-img.png';
+                    contactItem.photos = [];
                     if (contacts[i].photos !== null) {
                         returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
-                            contactItem.photo = validUrl;
-                            if (contactItem.phoneNumbers.length > 0)
-                                contactModel.deviceContactsDS.add(contactItem);
+                            contactItem.photos.push(validUrl);
+
                         });
-                    } else {
-                        if (contactItem.phoneNumbers.length > 0)
-                            contactModel.deviceContactsDS.add(contactItem);
                     }
+                    
+                    if (contactItem.phoneNumbers.length > 0)
+                        contactModel.deviceContactsDS.add(contactItem);
+
                     // Only add device contacts with phone numbers
                 }
 
