@@ -1463,6 +1463,7 @@ var channelView = {
                     contactModel.createChatContact(contactId, function (newContact) {
                         channelView.memberList[contactId] = newContact;
                         channelView.membersDS.add(newContact);
+                        channelView.membersDS.sync();
                     });
                 } else {
                     contact.isContact = true;
@@ -1471,6 +1472,9 @@ var channelView = {
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
                     contact.photo = thisContact.photo;
+                    if (thisContact.identicon === null) {
+                        contactModel.createIdenticon(thisContact.uuid);
+                    }
                     if (thisContact.photo === null) {
                         contact.photo = thisContact.identicon;
                     }
@@ -1478,6 +1482,7 @@ var channelView = {
                     contact.isPresent = false;
                    channelView.memberList[contact.uuid] = contact;
                    channelView.membersDS.add(contact);
+                    channelView.membersDS.sync();
                 }
             }
         }
