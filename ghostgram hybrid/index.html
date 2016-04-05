@@ -1966,10 +1966,14 @@
 	var name = data.name;
 	var alias = data.alias;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
+	var photoUrl = data.identicon;
+	if (data.photo !== null) {
+		photoUrl = data.photo;
+	}
 	#
 	<div class="editMemberBox" data-id="#: data.uuid #">
 		<div class="editMemberPhoto">
-			<img class="circle-img-md editChatImg" src="#: data.photo #"  />
+			<img class="circle-img-md editChatImg" src="#: photoUrl #"  />
 		</div>
 		<div class="editMemberName">
 			<h4 class="textClamp">
