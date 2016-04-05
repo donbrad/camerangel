@@ -384,7 +384,22 @@ var homeView = {
                 } else {
                     APP.kendo.navigate(href);
                 }
-            } else if (type === notificationModel._unreadCount || type === notificationModel._newChat) {
+            } else if (type === notificationModel._newChat) {
+                var chanId = notification.channelUUID;
+                var checkChan = channelModel.findChannelModel(chanId);
+                if (checkChannel === undefined || checkChannel === null) {
+                   channelModel.queryChannelMap(chanId, function(error, chanObj){
+                        channelModel.addMemberChannel(chanObj.channelUUID, chanObj.name, chanObj,description, chanObj.members,
+                        chanObj.ownerUUID, chanObj.ownerName, chanObj.options, false);
+
+                       APP.kendo.navigate(href);
+                   });
+
+                } else {
+                    APP.kendo.navigate(href);
+                }
+
+            } else  if (type === notificationModel._unreadCount) {
                 // For unread messages, new chats (including private chats) the action is to go to the the chat....
                 APP.kendo.navigate(href);
             } else if (type === notificationModel._deleteChat || type === notificationModel._deletePrivateChat) {
