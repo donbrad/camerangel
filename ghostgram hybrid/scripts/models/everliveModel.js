@@ -76,7 +76,7 @@ var everlive = {
         });
 
         everlive.getTimeStamp();
-        
+
         if (deviceModel.isOnline() ) {
             APP.everlive.online();
             APP.everlive.sync();
@@ -498,21 +498,23 @@ var everlive = {
     },
 
     syncEnd : function (syncInfo)  {
-        var err = syncInfo.error;
+        var err = syncInfo.error !== undefined;
+        var failedItems = syncInfo.failedItems, syncedItems = syncInfo.syncedItems;
+
         $('#modalview-syncEverlive').kendoMobileModalView("close");
         everlive._syncInProgress = false;
         if (!everlive._syncComplete) {
             everlive._syncComplete = true;
             appDataChannel.history();
             userDataChannel.history();
+            notificationModel.processUnreadChannels();
+
         }
       
-        if (err) {
+        if (err ) {
             mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
-        } else if (err === '') {
-            mobileNotify('Kendo Sync Error : unknown...');
         }
-        notificationModel.processUnreadChannels();
+
 
     }
 
