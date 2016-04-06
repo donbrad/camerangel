@@ -1202,7 +1202,7 @@ var channelView = {
         if (thisContact.identicon === undefined || thisContact.identicon === null) {
             thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
         }
-            
+
         var photoUrl = thisContact.identicon;
         if (thisContact.photo !== null) {
             photoUrl = thisContact.photo;
@@ -1451,7 +1451,7 @@ var channelView = {
                 contact.alias = userModel._user.alias;
                 contact.name = userModel._user.name;
                 contact.photo = userModel._user.photo;
-                contact.idenitcon = userModel._user.identicon;
+                contact.identicon = userModel._user.identicon;
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
                 channelView.memberList[contact.uuid] = contact;
@@ -1460,14 +1460,25 @@ var channelView = {
                 var thisContact = contactModel.findContact(contactArray[i]);
                 if (thisContact === undefined) {
                     // No contact entry for this contact...
-
                     // Need to create a contact and then add to channels member list
                     var contactId = contactArray[i];
+                    contact.isContact = false;
+                    contact.uuid = guid.v4();
+                    contact.contactId = null;
+                    contact.alias = "new";
+                    contact.name = "New contact...";
+                    contact.photo = null;
+                    contact.identicon = contactModel.createIdenticon(contact.uuid);
+                    contact.publicKey = null;
+                    contact.isPresent = false;
+                    contact.processing = true;
 
-                    contactModel.createChatContact(contactId, function (newContact) {
-                        channelView.memberList[contactId] = newContact;
-                        channelView.membersDS.add(newContact);
-                        channelView.membersDS.sync();
+                    channelView.memberList[contactId] = contact;
+                    channelView.membersDS.add(contact);
+                    channelView.membersDS.sync();
+                    
+                    contactModel.createChatContact(contactId, contact.uuid,  function (newContact) {
+
                     });
                 } else {
                     contact.isContact = true;
