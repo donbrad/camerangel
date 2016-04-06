@@ -1199,6 +1199,10 @@ var channelView = {
         $("#channelName").text(name);
           // Show contact img in header
 
+        if (thisContact.identicon === undefined || thisContact.identicon === null) {
+            thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
+        }
+            
         var photoUrl = thisContact.identicon;
         if (thisContact.photo !== null) {
             photoUrl = thisContact.photo;
