@@ -40,7 +40,7 @@ var everlive = {
            // offline: true,
 
            offline: {
-               syncUnmodified: true,
+               // syncUnmodified: true,
                 encryption: {
                     provider: Everlive.Constants.EncryptionProvider.Default,
                         key : 'intelligram'

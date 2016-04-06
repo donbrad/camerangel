@@ -705,11 +705,11 @@ var photoModel = {
             mobileNotify("deletePhoto - can't find photo!");
         }
 
+        photoModel.photosDS.remove(photo);
         var Id = photo.Id;
-
         if (Id !== undefined){
             everlive.deleteOne(photoModel._cloudClass, Id, function (error, data) {
-                photoModel.photosDS.remove(photo);
+               
             });
         }
         
