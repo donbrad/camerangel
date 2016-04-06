@@ -79,7 +79,6 @@ var everlive = {
 
         if (deviceModel.isOnline() ) {
             APP.everlive.online();
-            APP.everlive.sync();
         } else {
             APP.everlive.offline();
         }
@@ -154,6 +153,14 @@ var everlive = {
 
                 }
 
+            } else {
+                if (error.code === 1003) {
+                    setTimeout(function(){
+                        everlive.isUserSignedIn();
+                    }, 3000);
+                } else {
+                    mobileNotify("Authentication error " + JSON.stringify(error));
+                }
             }
         });
 
