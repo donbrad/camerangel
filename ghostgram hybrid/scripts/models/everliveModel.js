@@ -35,9 +35,14 @@ var everlive = {
             scheme: 'https',
             /*caching: {
                 maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
-                enabled: true //Global setting for enabling/disabling cache. Default is FALSE.
+                enabled: true, //Global setting for enabling/disabling cache. Default is FALSE.
+                typeSettings: { //Specify content type-specific settings that override the global settings.
+                    "userstatus": {
+                        maxAge: 5
+
+                    }
+                }
             },*/
-           // offline: true,
 
            offline: {
                // syncUnmodified: true,
@@ -328,15 +333,20 @@ var everlive = {
         updateObj.googlePlaceId  = userModel._user.googlePlaceId;
         updateObj.currentPlaceUUID  = userModel._user.currentPlaceUUID;
         updateObj.isCheckedIn  = userModel._user.isCheckedIn;
-        APP.everlive.Users.updateSingle(updateObj,
-            function(data){
-                var result = data.result;
-              
-            },
-            function(error){
-                mobileNotify("User Status Update Error : " + JSON.stringify(error));
-            });
-       
+
+        if (deviceModel.isOnline()) {
+            userModel._needStatusSync = false;
+            APP.everlive.Users.updateSingle(updateObj,
+                function(data){
+                    var result = data.result;
+                  
+                },
+                function(error){
+                    mobileNotify("User Status Update Error : " + JSON.stringify(error));
+                });
+        } else {
+            userModel._needStatusSync = true;
+        }
 
     },
     
