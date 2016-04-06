@@ -75,12 +75,15 @@ var everlive = {
             }
         });
 
+        everlive.getTimeStamp();
+        
         if (deviceModel.isOnline() ) {
             APP.everlive.online();
             APP.everlive.sync();
         } else {
             APP.everlive.offline();
         }
+
 
         // Wire up the everlive sync monitors
         APP.everlive.on('syncStart', everlive.syncStart);
@@ -91,7 +94,19 @@ var everlive = {
 
     },
 
+    updateTimeStamp : function () {
+        everlive._lastSync = ggTime.currentTime();
+        localStorage.setItem('ggEverliveTimeStamp',  everlive._lastSync);
+    },
 
+    getTimeStamp : function () {
+        everlive._lastSync = localStorage.getItem('ggEverliveTimeStamp');
+
+        if (everlive._lastSync === undefined || everlive._lastSync === null) {
+            everlive.updateTimeStamp();
+            everlive._syncComplete = false;
+        }
+    },
 
 
 
@@ -100,8 +115,7 @@ var everlive = {
 
         if (everlive._lastSync < time) {
 
-            everlive._lastSync = time + everlive._delta;
-            APP.everlive.online();
+            everlive.updateTimeStamp();
             APP.everlive.sync();
 
         }
