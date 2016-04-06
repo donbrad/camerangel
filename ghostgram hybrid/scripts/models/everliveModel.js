@@ -74,7 +74,14 @@ var everlive = {
                 }*/
             }
         });
-        
+
+        if (deviceModel.isOnline() ) {
+            APP.everlive.online();
+            APP.everlive.sync();
+        } else {
+            APP.everlive.offline();
+        }
+
         // Wire up the everlive sync monitors
         APP.everlive.on('syncStart', everlive.syncStart);
 
@@ -83,6 +90,10 @@ var everlive = {
         everlive.isUserSignedIn();
 
     },
+
+
+
+
 
     syncCloud : function (){
         var time = ggTime.currentTimeInSeconds();
