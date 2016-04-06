@@ -512,7 +512,7 @@ var everlive = {
         }
       
         if (err ) {
-            mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
+            mobileNotify('Kendo Sync Error : ' + JSON.stringify(syncInfo.error));
         }
 
 
