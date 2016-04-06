@@ -231,11 +231,12 @@ var homeView = {
         _preventDefault(e);
         var $currentBtn = $(e.button[0]);
         var uuid = e.sender.element[0].attributes['data-uuid'].value;
-        var closeStatus = $currentBtn.hasClass("ggHome-close");
+        /*var closeStatus = $currentBtn.hasClass("ggHome-close");
 
-        if(closeStatus) {
+        if(closeStatus) {*/
+        if (uuid !== undefined && uuid !== null)
             notificationModel.deleteNotificationById(uuid);
-        }
+       /* }*/
     },
 
     onInit: function(e) {
