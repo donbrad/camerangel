@@ -706,6 +706,26 @@ var channelModel = {
 
     },
 
+    syncChatContacts : function (memberList) {
+        if (memberList === undefined || memberList.length === 0) {
+            return;
+        }
+
+        for (var i=0; i<memberList.length; i++ ) {
+            var contactUUID = memberList[i];
+            var contact = contactModel.findContact(contactUUID);
+            if (contact === undefined) {
+                contactModel.createChatContact(contactUUID, function (data, error){
+                    if (error !== null) {
+                        mobileNotify ("Error creating Chat contact " + JSON.stringify(error));
+                    }
+                })
+                
+            }
+        }
+
+
+    },
 
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
@@ -770,6 +790,8 @@ var channelModel = {
 
         channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+
+        channelModel.syncChatContacts(channelMembers);
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {

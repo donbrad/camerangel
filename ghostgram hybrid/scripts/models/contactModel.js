@@ -638,6 +638,7 @@ var contactModel = {
         }
         mobileNotify("Updating contact info from ghostgrams...");
         var phone = model.get('phone');
+
         memberdirectory.findMemberByPhone(phone, function (result) {
             if (result !== null) {
                 var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'),
@@ -673,21 +674,9 @@ var contactModel = {
         memberdirectory.findMemberByUUID(userId, function (result) {
             if (result !== null) {
                 var guid = uuid.v4();
-                var contact = {};
-                contact.isContact = true;
-                contact.uuid = result.userUUID;
-                contact.alias = result.alias;
-                contact.name = result.name;
-                contact.category = "member";
-                var url = contactModel.createIdenticon(guid);
-                contact.photo = url;
-                contact.identicon = url;
-                contact.publicKey = result.publicKey;
+                
 
-
-               /* currentChannelModel.memberList[contact.uuid] = contact;
-                currentChannelModel.membersDS.add(contact);*/
-                contactModel.addChatContact(guid, contact.name, contact.alias, contact.uuid, results.phone, result.email, result.publicKey);
+                contactModel.addChatContact(guid, result.name, result.alias, result.userUUID, result.phone, result.email, result.publicKey);
                 mobileNotify("Created New Contact for: " + contact.name);
 
                 if (callback !== undefined) {
@@ -696,7 +685,7 @@ var contactModel = {
 
             }
 
-        })
+        });
 
     },
 
@@ -716,6 +705,9 @@ var contactModel = {
         contact.set("isFavorite", false);
         contact.set("isBlocked", false);
         contact.set("uuid", guid);
+        var url = contactModel.createIdenticon(guid);
+        contact.photo = null;
+        contact.identicon = url;
         contact.set('contactUUID', contactUUID);
         contact.set('phone', contactPhone);
         contact.set('email', contactEmail);
@@ -725,12 +717,13 @@ var contactModel = {
         contact.set('ownerUUID', userModel._user.userUUID);
 
         contactModel.contactsDS.add(contact);
+        contactModel.contactsDS.sync();
 
         everlive.createOne(contactModel._cloudClass, contact, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Chat Contact " + JSON.stringify(error));
             } else {
-               // Todo: don add function to remove potential dups after sync
+               
                contactModel._cleanDupContacts(contact.uuid);
 
             }

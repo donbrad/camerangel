@@ -167,7 +167,6 @@ var deviceModel = {
     onResume: function() {
        deviceModel.setAppState('inBackground', false);
 
-     
         notificationModel.processUnreadChannels();
         
 
@@ -177,16 +176,13 @@ var deviceModel = {
 
     syncEverlive: function () {
 
-        if (deviceModel.state.connection === 'none')
+        if (deviceModel.state.connection === 'none') {
+
+            APP.everlive.offline();
             return;
-
-        var currentTime = ggTime.currentTimeInSeconds();
-
-        if (currentTime > deviceModel.lastEverliveSync + 60) {
-            deviceModel.lastEverliveSync = ggTime.currentTimeInSeconds();
-            APP.everlive.online();
-            APP.everlive.sync();
         }
+
+        everlive.syncCloud();
 
     },
 
@@ -196,16 +192,9 @@ var deviceModel = {
         // Take all data sources online
 
         if (APP.everlive !== null) {
-            APP.everlive.online();
-            deviceModel.syncEverlive();
+           everlive.syncCloud();
         }
 
-       // APP.models.home.invitesDS.online(true);
-     /*   notificationModel.notificationDS.online(true);
-        channelModel.channelsDS.online(true);
-        photoModel.photosDS.online(true);
-        contactModel.contactsDS.online(true);
-        placesModel.placesDS.online(true);*/
 
         deviceModel.getNetworkState();
     },
@@ -220,14 +209,6 @@ var deviceModel = {
         // Take all data sources offline
         if (APP.everlive !== null)
             APP.everlive.offline();
-
-        //APP.models.home.invitesDS.online(false);
-       /* notificationModel.notificationDS.online(false);
-        channelModel.channelsDS.online(false);
-        photoModel.photosDS.online(false);
-        contactModel.contactsDS.online(false);
-        placesModel.placesDS.online(false);*/
-
     },
 
     isOnline : function () {

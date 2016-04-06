@@ -1447,6 +1447,7 @@ var channelView = {
                 contact.alias = userModel._user.alias;
                 contact.name = userModel._user.name;
                 contact.photo = userModel._user.photo;
+                contact.idenitcon = userModel._user.identicon;
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
                 channelView.memberList[contact.uuid] = contact;
@@ -1458,7 +1459,6 @@ var channelView = {
 
                     // Need to create a contact and then add to channels member list
                     var contactId = contactArray[i];
-                    
 
                     contactModel.createChatContact(contactId, function (newContact) {
                         channelView.memberList[contactId] = newContact;
@@ -1473,15 +1473,15 @@ var channelView = {
                     contact.name = thisContact.name;
                     contact.photo = thisContact.photo;
                     if (thisContact.identicon === null) {
-                        contactModel.createIdenticon(thisContact.uuid);
+                        thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
                     }
                     if (thisContact.photo === null) {
                         contact.photo = thisContact.identicon;
                     }
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
-                   channelView.memberList[contact.uuid] = contact;
-                   channelView.membersDS.add(contact);
+                       channelView.memberList[contact.uuid] = contact;
+                       channelView.membersDS.add(contact);
                     channelView.membersDS.sync();
                 }
             }

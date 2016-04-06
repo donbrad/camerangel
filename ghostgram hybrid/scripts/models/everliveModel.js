@@ -17,6 +17,7 @@ var everlive = {
     _authenticating: false,
     _user : null,
     _lastSync: 0,
+    _syncInProgress: true,
     _delta : 60,
 
     init: function () {
@@ -459,10 +460,12 @@ var everlive = {
     
     syncStart : function () {
         mobileNotify("Syncing with Everlive");
+        everlive._syncInProgress = true;
     },
 
     syncEnd : function (syncInfo)  {
         var err = syncInfo.error;
+        everlive._syncInProgress = false;
         if (err) {
             mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
         } else if (err === '') {
