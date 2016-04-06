@@ -315,7 +315,12 @@ var everlive = {
                     updateObj.privateKey = GibberishAES.dec(updateObj.privateKey, userModel.key);
                 },
                 function (error) {
-                    mobileNotify("User Update Error : " + JSON.stringify(error));
+                    if (error.code === 107) {
+                        mobileNotify("Deferring User Update...");
+                    } else {
+                        console.log("User Update Error : " + JSON.stringify(error));
+                    }
+
                 });
         } else {
             userModel._needSync = true;
@@ -344,7 +349,11 @@ var everlive = {
                   
                 },
                 function(error){
-                    mobileNotify("User Status Update Error : " + JSON.stringify(error));
+                    if (error.code === 107) {
+                        mobileNotify("Deferring User Status Update...");
+                    } else {
+                        console.log("User Update Status Error : " + JSON.stringify(error));
+                    }
                 });
         } else {
             userModel._needStatusSync = true;
