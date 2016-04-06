@@ -500,7 +500,7 @@ var everlive = {
     
     syncStart : function () {
 
-        $('#modalview-syncEverlive').kendoMobileModalView("open");
+        //$('#modalview-syncEverlive').kendoMobileModalView("open");
         everlive._syncInProgress = true;
     },
 
@@ -508,7 +508,7 @@ var everlive = {
         var err = syncInfo.error !== undefined;
         var failedItems = syncInfo.failedItems, syncedItems = syncInfo.syncedItems;
 
-        $('#modalview-syncEverlive').kendoMobileModalView("close");
+      //  $('#modalview-syncEverlive').kendoMobileModalView("close");
         everlive._syncInProgress = false;
         if (!everlive._syncComplete) {
             everlive._syncComplete = true;
@@ -519,7 +519,7 @@ var everlive = {
         }
       
         if (err ) {
-            mobileNotify('Kendo Sync Error : ' + JSON.stringify(syncInfo.error));
+            mobileNotify('Cloud Sync Error : ' + JSON.stringify(syncInfo.error));
         }
 
 
