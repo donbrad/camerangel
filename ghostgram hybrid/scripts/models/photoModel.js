@@ -671,6 +671,7 @@ var photoModel = {
 
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
+        deviceModel.syncEverlive();
         if (callback !== undefined) {
             callback(null, photo);
         }
