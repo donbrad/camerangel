@@ -507,7 +507,7 @@ var userStatusView = {
             userModel._user.set('userUUID', null);
             userModel._user.set('rememberUsername', false);
             deviceModel.resetDeviceState();
-
+            everlive.clearLocalStorage();
             userStatusView.closeModal();
             APP.kendo.navigate('#usersignin');
         });

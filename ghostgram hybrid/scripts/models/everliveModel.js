@@ -512,9 +512,15 @@ var everlive = {
         APP.everlive.offlineStorage.purgeAll(
             function (data) {
                 mobileNotify("Device storage erased");
+                if (callback !== undefined) {
+                    callback(null);
+                }
         }, function (error) {
                 if (error !== null) {
                     mobileNotify("Error clearing device storage : " + JSON.stringify(error));
+                }
+                if (callback !== undefined) {
+                    callback(error);
                 }
             });
     },
