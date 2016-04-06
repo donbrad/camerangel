@@ -459,12 +459,14 @@ var everlive = {
     },
     
     syncStart : function () {
-        mobileNotify("Syncing with Everlive");
+
+        $('#modalview-syncEverlive').kendoMobileModalView("open");
         everlive._syncInProgress = true;
     },
 
     syncEnd : function (syncInfo)  {
         var err = syncInfo.error;
+        $('#modalview-syncEverlive').kendoMobileModalView("close");
         everlive._syncInProgress = false;
         if (err) {
             mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
