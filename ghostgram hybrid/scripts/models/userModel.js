@@ -20,6 +20,7 @@ var userModel = {
     key : null,
     userUUID: null,
     kendoInit : false,
+    _needSync: false,
     initialView : '#newuserhome',
 
     _user: new kendo.data.ObservableObject({

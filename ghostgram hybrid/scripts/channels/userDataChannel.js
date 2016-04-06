@@ -58,9 +58,9 @@ var userDataChannel = {
             });
         }
 
-        userDataChannel.messagesDS.online(false);
+       /* userDataChannel.messagesDS.online(false);*/
         userDataChannel.messagesDS.fetch();
-        userDataChannel.history();
+       // userDataChannel.history();
 
         userDataChannel.expireMessages = setInterval(function(){  userDataChannel.removeExpiredMessages(); }, 60000);
 

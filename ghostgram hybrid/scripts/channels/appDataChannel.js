@@ -65,10 +65,8 @@ var appDataChannel = {
 
         });
 
-        appDataChannel.messagesDS.online(false);
-
         // Load the appData message queue
-        appDataChannel.history();
+       // appDataChannel.history();
     },
 
     updateTimeStamp : function () {

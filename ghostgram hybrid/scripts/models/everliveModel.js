@@ -18,7 +18,8 @@ var everlive = {
     _user : null,
     _lastSync: 0,
     _syncInProgress: true,
-    _delta : 60,
+    _syncComplete: false,
+    _delta : 30,
 
     init: function () {
         
@@ -102,6 +103,7 @@ var everlive = {
                     everlive._authenticating = false;
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
+                        everlive._syncComplete = false;
                         userModel.initialView = '#usersignin';
                     } else {
                         userModel.initialView = '#newuserhome';
@@ -110,6 +112,7 @@ var everlive = {
                 } else if (status === "authenticated") {
                     everlive._authenticating = false;
                     everlive._signedIn = true;
+                    everlive._syncComplete = false;
                     everlive.loadUserData();
                     deviceModel.syncEverlive();
                     userModel.initialView = '#home';
@@ -266,14 +269,19 @@ var everlive = {
         }
 
 
-        APP.everlive.Users.updateSingle(updateObj,
-            function(data){
-                var result = data.result;
-                updateObj.privateKey = GibberishAES.dec(updateObj.privateKey, userModel.key);
-            },
-            function(error){
-                mobileNotify("User Update Error : " + JSON.stringify(error));
-            });
+        if (deviceModel.isOnline()) {
+            userModel._needSync = false;
+            APP.everlive.Users.updateSingle(updateObj,
+                function (data) {
+                    var result = data.result;
+                    updateObj.privateKey = GibberishAES.dec(updateObj.privateKey, userModel.key);
+                },
+                function (error) {
+                    mobileNotify("User Update Error : " + JSON.stringify(error));
+                });
+        } else {
+            userModel._needSync = true;
+        }
     },
 
     updateUserStatus : function () {
@@ -468,6 +476,12 @@ var everlive = {
         var err = syncInfo.error;
         $('#modalview-syncEverlive').kendoMobileModalView("close");
         everlive._syncInProgress = false;
+        if (!everlive._syncComplete) {
+            everlive._syncComplete = true;
+            appDataChannel.history();
+            userDataChannel.history();
+        }
+      
         if (err) {
             mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
         } else if (err === '') {

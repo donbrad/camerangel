@@ -183,6 +183,7 @@ var deviceModel = {
         }
 
         everlive.syncCloud();
+        
 
     },
 
@@ -193,6 +194,9 @@ var deviceModel = {
 
         if (APP.everlive !== null) {
            everlive.syncCloud();
+            if (userModel._needSync) {
+                everlive.updateUser();
+            }
         }
 
 
