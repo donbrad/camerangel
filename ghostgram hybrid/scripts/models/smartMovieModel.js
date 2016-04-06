@@ -138,18 +138,21 @@ var smartMovie = {
         smartOb.set('runtime', objectIn.runtime);
         smartOb.set('genre', objectIn.genre);
 
-
+        smartMovie.moviesDS.add(smartOb);
+        if (callback !== undefined && callback !== null)
+            callback(smartOb);
+        
         everlive.createOne(smartMovie._cloudClass, smartOb, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                smartMovie.moviesDS.add(smartOb);
+                
             }
         });
        
 
-        callback(smartOb);
+       
 
         /*smartOb.save(null, {
             success: function(thisObject) {
