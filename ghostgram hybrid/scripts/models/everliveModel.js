@@ -307,6 +307,7 @@ var everlive = {
 
 
         if (deviceModel.isOnline()) {
+            APP.everlive.online();
             userModel._needSync = false;
             APP.everlive.Users.updateSingle(updateObj,
                 function (data) {
@@ -335,6 +336,7 @@ var everlive = {
         updateObj.isCheckedIn  = userModel._user.isCheckedIn;
 
         if (deviceModel.isOnline()) {
+            APP.everlive.online();
             userModel._needStatusSync = false;
             APP.everlive.Users.updateSingle(updateObj,
                 function(data){
