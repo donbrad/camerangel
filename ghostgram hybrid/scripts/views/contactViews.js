@@ -1180,9 +1180,13 @@ var contactActionView = {
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
 
-            if (thisContact.lastUpdate !== undefined && thisContact.lastUpdate > time + 900) {
+            if (thisContact.lastUpdate === undefined) {
+                thisContact.lastUpdate = time - 150;
+            }
+            if ( (thisContact.lastUpdate + 150) <= time ) {
                 // Need to get current data for this contact
                 userStatus.getMemberStatus(thisContact.contactUUID, function (error, user) {
+                    thisContact.lastUpdate = ggTime.currentTimeInSeconds();
                     if (error === null && user !== null) {
                         var contactIsAvailable = user.get('isAvailable');
                         contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
