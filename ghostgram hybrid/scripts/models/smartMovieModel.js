@@ -98,6 +98,17 @@ var smartMovie = {
         }
     },
 
+    validatePhone : function (phone) {
+        if (phone === undefined || phone === null) {
+            return (null);
+        }
+        if (phone.length < 14) {
+            return(phone);
+        }
+
+        return (null);
+    },
+
     addMovie : function (objectIn, callback) {
        /* var smartMovies = Parse.Object.extend(smartMovie._cloudClass);
         var smartOb = new smartMovies();*/
@@ -126,7 +137,7 @@ var smartMovie = {
         smartOb.set('theatreId', objectIn.theatreId);
         smartOb.set('theatreName', objectIn.theatreName);
         smartOb.set('theatreAddress', objectIn.theatreAddress);
-        smartOb.set('theatrePhone', objectIn.theatrePhone);
+        smartOb.set('theatrePhone', smartMovie.validatePhone(objectIn.theatrePhone));
         smartOb.set('theatreLat', objectIn.theatreLat);
         smartOb.set('theatreLng', objectIn.theatreLng);
         smartOb.set('imdbId', objectIn.imdbId);
