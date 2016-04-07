@@ -113,7 +113,7 @@
 		//userModel.initCloud();
 
 		
-		pruneNotifications();
+		// pruneNotifications();
 
 		// Uncomment to load all device contacts at initialization - major performance hit!!
 		//contactModel.importDeviceContacts();
