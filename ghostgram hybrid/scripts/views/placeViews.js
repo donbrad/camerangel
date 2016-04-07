@@ -1355,7 +1355,18 @@ var placeView = {
             }
         }
 
-        if (zipcode !== undefined && zipcode !== null) {
+        var placeObj = placeView._activePlace;
+        var point = {Latitude : placeObj.lat, Longitude: placeObj.lng}, radius = 1000;
+
+        var photoList = photoModel.findPhotosInRadius(point, radius);
+
+        if (photoList.length > 0) {
+            for (var p=0; p<photoList.length; p++) {
+                ds.add(photoList[p]);
+            }
+        }
+        
+       /* if (zipcode !== undefined && zipcode !== null) {
             var zipList = photoModel.findPhotosByAddressString(zipcode);
 
             if (zipList !== undefined && zipList.length > 0) {
@@ -1371,7 +1382,7 @@ var placeView = {
 
                 }
             }
-        }
+        }*/
     },
 
     onShow : function (e) {

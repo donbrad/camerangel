@@ -234,6 +234,22 @@ var photoModel = {
         return(photoModel.queryPhotos({ field: "addressString", operator: "contains", value: addressString }));
     },
 
+    findPhotosInRadius : function (point, radius) {
+        var photoArray = [];
+
+        var ds = photoModel.photosDS;
+        var length = ds.total();
+
+        for (var i=0; i<length; i++) {
+            var photo = ds.at(i);
+            if (placesModel.inRadius(point.Latitude, point.Longitude, photo.geoPoint.Latitude, photo.geoPoint.Longitude, radius)){
+                photoArray.push(photo);
+            }
+        }
+
+        return(photoArray);
+    },
+
     findPhotosBySender: function (senderId) {
 
         return(photoModel.queryPhotos({ field: "senderUUID", operator: "eq", value: senderId }));

@@ -474,8 +474,7 @@ var placesModel = {
                         placesModel.placesDS.remove(place);
                     });
                 }
-                // Delete the parse object directly
-                //deleteParseObject('places',"uuid", placeUUID);
+    
             }
 
         }
