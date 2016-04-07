@@ -231,6 +231,11 @@ var devicePhoto = {
                 var filename = photouuid.replace(/-/g,'');
 
 
+                photoExif.readData(imageUrl, function(exifObject) {
+                    devicePhoto.currentPhoto.exif = exifObject;
+                    console.log(exifObject);
+                });
+
                 devicePhoto.currentPhoto.photoId = photouuid;
                 devicePhoto.currentPhoto.filename = filename;
                 devicePhoto.currentPhoto.imageUrl = null;
