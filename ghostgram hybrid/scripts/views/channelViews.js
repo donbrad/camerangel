@@ -553,27 +553,30 @@ var editChannelView = {
 
         var membersDeleted = editChannelView.membersDeletedDS.data();
         //Send Delete messages to users deleted from the channel
-        for (var md = 0; md < membersDeleted.length; md++) {
-            var contactId = membersDeleted[md].contactUUID;
-            if (contactId !== null && ($.inArray(contactId, memberArray) == -1)) {  // if this user is still in the member array don't send a delete
-                // This is a ggMember -- send delete.
-                appDataChannel.groupChannelDelete(contactId, channelUUID,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
-            } else {
-                // Invited member -- need to look up userId by phone number before sending delete notification
-                var phone = editChannelView.membersDeleted[md].phone;
-                if (phone !== undefined && phone !== null) {
-                    memberdirectory.findMemberByPhone(phone, function (user) {
-                        if (user !== null) {
-                            var contactId = user.userUUID;
-                            appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
-                        }
+        if (membersDeleted !== undefined ) {
 
-                    });
+            for (var md = 0; md < membersDeleted.length; md++) {
+                var contactId = membersDeleted[md].contactUUID;
+                if (contactId !== null && ($.inArray(contactId, memberArray) == -1)) {  // if this user is still in the member array don't send a delete
+                    // This is a ggMember -- send delete.
+                    appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+                } else {
+                    // Invited member -- need to look up userId by phone number before sending delete notification
+                    var phone = editChannelView.membersDeleted[md].phone;
+                    if (phone !== undefined && phone !== null) {
+                        memberdirectory.findMemberByPhone(phone, function (user) {
+                            if (user !== null) {
+                                var contactId = user.userUUID;
+                                appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+                            }
+
+                        });
+                    }
+
                 }
-
             }
         }
-
+        
         var membersAdded = editChannelView.membersAddedDS.data();
         //Send Invite messages to users added to channel
         for (var ma = 0; ma <  membersAdded.length; ma++) {
