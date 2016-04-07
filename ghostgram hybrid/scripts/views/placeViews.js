@@ -2181,7 +2181,7 @@ var smartEventPlacesView = {
                 click: function (e) {
                     var geo = e.dataItem;
                     var request = {
-                        placeUUID: geo.placeUUID
+                        placeId: geo.placeUUID
                     };
 
                     if (geo.category === 'Area') {
@@ -2598,7 +2598,7 @@ var smartLocationView = {
                 click: function (e) {
                     var geo = e.dataItem;
                     var request = {
-                        placeUUID: geo.placeUUID
+                        placeId: geo.placeUUID
                     };
 
                     if (geo.category === 'Area') {
