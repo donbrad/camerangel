@@ -603,17 +603,25 @@ var contactModel = {
 
         for (var i=0; i<length; i++) {
             var contact = contactModel.contactListDS.at(i);
-            if (contact.lastUpdate === undefined || contact.lastUpdate > time + 900) {
+
+            if (contact.lastUpdate === undefined) {
+                contact.lastUpdate = time - 150;
+            }
+            if ( (contact.lastUpdate + 150) <= time ) {
                 var contactId = contact.contactUUID;
+               // contact.lastUpdate =  ggTime.currentTimeInSeconds();
                 if (contactId !== undefined && contactId !== null) {
                     userStatus.getMemberStatus(contactId, function (error, user) {
                         if (error == null && user !== null) {
                             var userId = user.get('userUUID');
                             var contact = contactModel.findContactList(userId);
-                            contact.set('statusMessage', user.get('statusMessage'));
-                            contact.set('currentPlace', user.get('currentPlace'));
-                            contact.set('currentPlaceUUID', user.get('currentPlace  UUID'));
-                            contact.set('isAvailable', user.get('isAvailable'));
+                            contact.set('statusMessage', user.statusMessage);
+                            contact.set('currentPlace', user.currentPlace);
+                            contact.set('currentPlaceUUID', user.currentPlaceUUID);
+                            contact.set('googlePlaceId', user.googlePlaceId);
+                            contact.set('lat', user.lat);
+                            contact.set('lng', user.lng);
+                            contact.set('isAvailable', user.getisAvailable);
                             contact.set('lastUpdate', ggTime.currentTimeInSeconds());
                         }
                     });

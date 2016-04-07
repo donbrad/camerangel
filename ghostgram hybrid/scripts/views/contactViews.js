@@ -1193,6 +1193,9 @@ var contactActionView = {
                         contactActionView._activeContact.set('statusMessage', user.statusMessage);
                         contactActionView._activeContact.set('currentPlace', user.currentPlace);
                         contactActionView._activeContact.set('currentPlaceUUID', user.currentPlaceUUID);
+                        contactActionView._activeContact.set('googlePlaceId', user.googlePlaceId);
+                        contactActionView._activeContact.set('lat', user.lat);
+                        contactActionView._activeContact.set('lng', user.lng);
                         contactActionView._activeContact.set('isAvailable', contactIsAvailable);
                         // set available
                         if (contactIsAvailable) {
@@ -1205,6 +1208,9 @@ var contactActionView = {
                         var contactPlace = user.currentPlace;
                         contactList.set('currentPlace', contactPlace);
                         contactList.set('currentPlaceUUID', user.currentPlaceUUID);
+                        contactList.set('googlePlaceId', user.googlePlaceId);
+                        contactList.set('lat', user.lat);
+                        contactList.set('lng', user.lng);
                         contactList.set('isAvailable', contactIsAvailable);
 
                         // set current place
