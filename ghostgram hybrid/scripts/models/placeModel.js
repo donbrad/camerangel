@@ -323,6 +323,7 @@ var placesModel = {
         placeObj.set('isPrivate', true);
         placeObj.set('hasPlaceChat', true);
         placeObj.set('placeChatId', placeChatId);
+        placeObj.set('placeRadius', 1000);
 
         var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
@@ -413,6 +414,8 @@ var placesModel = {
         placeObj.set('isPrivate', true);
         placeObj.set('hasPlaceChat', false);
         placeObj.set('placeChatId', null);
+        placeObj.set('placeRadius', 1000);
+
 
         if (createChatFlag) {
             placeObj.set('hasPlaceChat', true);

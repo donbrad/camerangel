@@ -1358,14 +1358,19 @@ var placeView = {
         var placeObj = placeView._activePlace;
         var point = {Latitude : placeObj.lat, Longitude: placeObj.lng}, radius = 1000;
 
+        if (placeObj.placeRadius !== undefined) {
+            radius = placeObj.placeRadius;
+        }
+
         var photoList = photoModel.findPhotosInRadius(point, radius);
 
+        mobileNotify("Adding " + photoList.length + " photos from Gallery");
         if (photoList.length > 0) {
             for (var p=0; p<photoList.length; p++) {
                 ds.add(photoList[p]);
             }
         }
-        
+
        /* if (zipcode !== undefined && zipcode !== null) {
             var zipList = photoModel.findPhotosByAddressString(zipcode);
 
