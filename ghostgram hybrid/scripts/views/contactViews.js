@@ -1188,11 +1188,11 @@ var contactActionView = {
                 userStatus.getMemberStatus(thisContact.contactUUID, function (error, user) {
                     thisContact.lastUpdate = ggTime.currentTimeInSeconds();
                     if (error === null && user !== null) {
-                        var contactIsAvailable = user.get('isAvailable');
+                        var contactIsAvailable = user.isAvailable;
                         contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
-                        contactActionView._activeContact.set('statusMessage', user.get('statusMessage'));
-                        contactActionView._activeContact.set('currentPlace', user.get('currentPlace'));
-                        contactActionView._activeContact.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                        contactActionView._activeContact.set('statusMessage', user.statusMessage);
+                        contactActionView._activeContact.set('currentPlace', user.currentPlace);
+                        contactActionView._activeContact.set('currentPlaceUUID', user.currentPlaceUUID);
                         contactActionView._activeContact.set('isAvailable', contactIsAvailable);
                         // set available
                         if (contactIsAvailable) {
@@ -1201,10 +1201,10 @@ var contactActionView = {
 
                         // Update the contactList object too
                         var contactList = contactModel.findContactList(thisContact.contactUUID);
-                        contactList.set('statusMessage', user.get('statusMessage'));
-                        var contactPlace = user.get('currentPlace');
+                        contactList.set('statusMessage', user.statusMessage);
+                        var contactPlace = user.currentPlace;
                         contactList.set('currentPlace', contactPlace);
-                        contactList.set('currentPlaceUUID', user.get('currentPlaceUUID'));
+                        contactList.set('currentPlaceUUID', user.currentPlaceUUID);
                         contactList.set('isAvailable', contactIsAvailable);
 
                         // set current place
