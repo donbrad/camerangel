@@ -510,6 +510,7 @@ var contactImportView = {
 var addContactView = {
 	_closeModal: false,
     _emailValid: false,
+    _phoneValid : false,
 
     doInit: function (e) {
         _preventDefault(e);
@@ -588,6 +589,9 @@ var addContactView = {
 
         // Set name
         var name = data.name;
+
+        addContactView._emailValid = false;
+        addContactView._phoneValid = false;
 
         if(name !== ''){
         	$("#addContactName-blank").removeClass("hidden");
@@ -698,13 +702,18 @@ var addContactView = {
                     $("#vaildMobileNumberError").velocity("slideUp");
                     $("#addContacViewAddButton").text("Add Contact");
                     mobileNotify("Mobile phone is valid!");
+                    addContactView._phoneValid = true;
 
-                    if (addContactView._emailValid){
+                    if (!addContactView._emailValid){
                         isValidEmail(email, function(emailResult) {
-                            if (emailResult.status === 'ok' )
+                            if (emailResult.status === 'ok' ) {
+                                addContactView._emailValid = true;
                                 addContactView.addContact();
+                            }
                         });
                     } else {
+
+                        addContactView._emailValid = true;
                         addContactView.addContact();
                     }
 
@@ -791,12 +800,12 @@ var addContactView = {
 
        
 
-        if (contactModel.findContactByPhone(phone) !== undefined) {
+      /*  if (contactModel.findContactByPhone(phone) !== undefined) {
             mobileNotify("Existing contact with this phone number");
             addContactView.closeModal();
             return;
         }
-
+*/
         contact.set("phone", phone);
 
         // Close modal
