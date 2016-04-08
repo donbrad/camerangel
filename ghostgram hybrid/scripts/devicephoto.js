@@ -218,7 +218,6 @@ var devicePhoto = {
         var options = {
             //sourceType: pictureSource.SAVEDPHOTOALBUM,
             sourceType: pictureSource.PHOTOLIBRARY,
-            encodingType: encodingType.JPEG,
             destinationType: destinationType.FILE_URI
         };
 
