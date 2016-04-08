@@ -858,6 +858,10 @@ var addContactView = {
             }
 
           contactModel.contactsDS.add(contact);
+          contactModel.contactsDS.sync();
+
+          addContactView.closeModal();
+          APP.kendo.navigate('#contacts');
 
           everlive.createOne(contactModel._cloudClass, contact, function (error, data){
               if (error !== null) {
@@ -872,8 +876,7 @@ var addContactView = {
           deviceModel.syncEverlive();*/
           //contactModel.contactListDS.add(contactx);
 
-          addContactView.closeModal();
-          APP.kendo.navigate('#contacts');
+
 
         });
 
