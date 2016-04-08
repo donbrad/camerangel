@@ -77,7 +77,8 @@ var devicePhoto = {
         navigator.camera.getPicture(
             function (imageData) {
                 var photouuid = uuid.v4();
-                var imageUrl = imageData;
+                var imageObj = JSON.parse(imageData);
+                var imageUrl = imageObj.filename;
                 if (device.platform === 'iOS') {
                     imageUrl = imageData.replace('file://', '');
                 }
