@@ -334,6 +334,7 @@ var everlive = {
         updateObj.currentPlace  = userModel._user.currentPlace;
         updateObj.lat  = userModel._user.lat;
         updateObj.lng  = userModel._user.lng;
+        updateObj.geoPoint = {longitude:  updateObj.lng, latitude: updateObj.lat};
         updateObj.googlePlaceId  = userModel._user.googlePlaceId;
         updateObj.currentPlaceUUID  = userModel._user.currentPlaceUUID;
         updateObj.isCheckedIn  = userModel._user.isCheckedIn;
