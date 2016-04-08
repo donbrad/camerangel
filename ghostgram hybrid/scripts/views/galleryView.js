@@ -258,7 +258,9 @@ var galleryView = {
         var localUrl = store +  uniqueNewFilename;
 
         window.resolveLocalFileSystemURL(localUrl, 
-            function() {return(device)}, 
+            function() {
+                return(device);
+            },
             function () {
                 var fileTransfer = new FileTransfer();
                 fileTransfer.download(image, localUrl,
