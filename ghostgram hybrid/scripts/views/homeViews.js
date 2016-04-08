@@ -1009,7 +1009,7 @@ var signUpView = {
             })
             .keyup(function(e){
                 if ($(this).val().length === 14) {
-                    homeView.continueSignUp();
+                    signUpView.continueSignUp();
                     $('#home-signup-phone').unbind("keyup");
                 }
             })
