@@ -113,7 +113,13 @@ var photoModel = {
     },
 
 
+    updateLocalUrl : function (uuid, localUrl) {
+        var photo = photoModel.findPhotoById(uuid);
 
+        if (photo !== undefined && photo !== null) {
+            photo.deviceUrl = localUrl;
+        }
+    },
 
     isPhotoCached : function (photo) {
         var store = deviceModel.fileDirectory;

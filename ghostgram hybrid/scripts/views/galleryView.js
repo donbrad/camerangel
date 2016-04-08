@@ -263,6 +263,7 @@ var galleryView = {
                 var fileTransfer = new FileTransfer();
                 fileTransfer.download(image, localUrl,
                     function(entry) {
+                        photoModel.updateLocalUrl(photouuid, localUrl);
                     },
                     function(err) {
                         mobileNotify("Photo cache error " + JSON.stringify(err));
