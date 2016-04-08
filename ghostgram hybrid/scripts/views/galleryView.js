@@ -259,7 +259,7 @@ var galleryView = {
 
         window.resolveLocalFileSystemURL(localUrl, 
             function() {
-                return(device);
+                
             },
             function () {
                 var fileTransfer = new FileTransfer();
@@ -270,9 +270,10 @@ var galleryView = {
                     function(err) {
                         mobileNotify("Photo cache error " + JSON.stringify(err));
                         console.dir(err);
-                    }); 
-                return(image);
+                    });
             });
+        
+        return(image);
     },
 
 

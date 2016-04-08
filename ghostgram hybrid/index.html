@@ -3456,7 +3456,10 @@
 </script>
 
 <script type="text/x-kendo-template" id="gallery-template">
-	# var photoUrl = galleryView.getDisplayUrl(uuid, deviceUrl, imageUrl, thumbnailUrl); #
+	# var photoUrl = galleryView.getDisplayUrl(uuid, deviceUrl, imageUrl, thumbnailUrl);
+	  if (photoUrl === null || photoUrl === undefined)
+		photoUrl = imageUrl;
+	#
 
 	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
 
