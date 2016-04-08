@@ -218,14 +218,15 @@ var devicePhoto = {
             destinationType: destinationType.FILE_URI
         };
 
-        if (device.platform === 'iOS') {
+        /*if (device.platform === 'iOS') {
             options.destinationType = destinationType.NATIVE_URI;
         }
-
+*/
         navigator.camera.getPicture(
             function (imageData) {
                 var photouuid = uuid.v4();
-                var imageUrl = imageData;
+                var imageObj = JSON.parse(imageData);
+                var imageUrl = imageObj.filename;
                /* if (device.platform === 'iOS') {
                     imageUrl = imageData.replace('file://', '');
                 }*/
