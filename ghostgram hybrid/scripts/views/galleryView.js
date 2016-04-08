@@ -67,7 +67,13 @@ var galleryView = {
             $("#gallery-listview").kendoMobileListView({
                 dataSource: photoModel.photosDS,
                 template: $("#gallery-template").html(),
-                click : galleryView.galleryClick()
+                click : function (e) {
+                    _preventDefault(e);
+
+                    var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+                    modalPhotoView.openModal(photo);
+                }
                 /*dataBound: function(e){
                     ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
                 }*/
