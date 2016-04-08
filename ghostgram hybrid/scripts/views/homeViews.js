@@ -927,59 +927,63 @@ var signUpView = {
        // Add strength meter to password
         //$("#home-signup-password").strength();
 
-        // Simple phone mask - http://jsfiddle.net/mykisscool/VpNMA/
-        $('#home-signup-phone')
+        // phone mask
+        if (window.navigator.simulator === true) {
+            $('#home-signup-phone')
 
-            .keydown(function (e) {
-                var key = e.charCode || e.keyCode || 0;
-                var $phone = $(this);
+                .keydown(function (e) {
+                    var key = e.charCode || e.keyCode || 0;
+                    var $phone = $(this);
 
-                // Auto-format- do not expose the mask as the user begins to type
-                if (key !== 8 && key !== 9) {
-                    if ($phone.val().length === 4) {
-                        $phone.val($phone.val() + ')');
+                    // Auto-format- do not expose the mask as the user begins to type
+                    if (key !== 8 && key !== 9) {
+                        if ($phone.val().length === 4) {
+                            $phone.val($phone.val() + ')');
+                        }
+                        if ($phone.val().length === 5) {
+                            $phone.val($phone.val() + ' ');
+                        }
+                        if ($phone.val().length === 9) {
+                            $phone.val($phone.val() + '-');
+                        }
                     }
-                    if ($phone.val().length === 5) {
-                        $phone.val($phone.val() + ' ');
+
+                    // Allow numeric (and tab, backspace, delete) keys only
+                    return (key == 8 ||
+                    key == 9 ||
+                    key == 46 ||
+                    (key >= 48 && key <= 57) ||
+                    (key >= 96 && key <= 105));
+                })
+                .keyup(function(e){
+                    if ($(this).val().length === 14) {
+                        continueSignUp();
+                        $('#home-signup-phone').unbind("keyup");
                     }
-                    if ($phone.val().length === 9) {
-                        $phone.val($phone.val() + '-');
+                })
+
+                .bind('focus click', function () {
+                    var $phone = $(this);
+
+                    if ($phone.val().length === 0) {
+                        $phone.val('(');
                     }
-                }
+                    else {
+                        var val = $phone.val();
+                        $phone.val('').val(val); // Ensure cursor remains at the end
+                    }
+                })
 
-                // Allow numeric (and tab, backspace, delete) keys only
-                return (key == 8 ||
-                key == 9 ||
-                key == 46 ||
-                (key >= 48 && key <= 57) ||
-                (key >= 96 && key <= 105));
-            })
-            .keyup(function(e){
-                if ($(this).val().length === 14) {
-                    continueSignUp();
-                    $('#home-signup-phone').unbind("keyup");
-                }
-            })
+                .blur(function () {
+                    var $phone = $(this);
 
-            .bind('focus click', function () {
-                var $phone = $(this);
-
-                if ($phone.val().length === 0) {
-                    $phone.val('(');
-                }
-                else {
-                    var val = $phone.val();
-                    $phone.val('').val(val); // Ensure cursor remains at the end
-                }
-            })
-
-            .blur(function () {
-                var $phone = $(this);
-
-                if ($phone.val() === '(') {
-                    $phone.val('');
-                }
-            });
+                    if ($phone.val() === '(') {
+                        $phone.val('');
+                    }
+                });
+        } else {
+            $("#home-signup-phone").mask("(999) 999-9999", {placeholder: "•"});
+        }
 
         // Confirm password events
         $("#home-signup-password").on("keyup", function(){
@@ -1548,10 +1552,23 @@ var verifyPhoneModal = {
     },
 
     openModal: function (e) {
-        $("#modalview-verifyPhone").data("kendoMobileModalView").open(); 
+        if (window.navigator.simulator !== true) {
+            $("#verifyPhone-code").mask("999999", {placeholder: " "})
+        }
+
+        $("#verifyPhone-code").on('keyup', function(e){
+            var val = $(this).val();
+            if(val.length > 4){
+                $("#modalview-verifyPhone-btn").text("Verify").addClass('btnPrimary').removeClass('btnIncomplete');
+            } else {
+                $("#modalview-verifyPhone-btn").addClass('btnIncomplete').removeClass('btnPrimary').text("Cancel");
+            }
+        });
+        $("#modalview-verifyPhone").data("kendoMobileModalView").open();
     },
     
     closeModal: function (e) {
+        $("#verifyPhone-code").unbind('keyup').val('');
         $("#modalview-verifyPhone").data("kendoMobileModalView").close();
     },
 
@@ -1566,18 +1583,19 @@ var verifyPhoneModal = {
     },
 
     verifyCode : function (e) {
-        
         e.preventDefault();
-        var userCode = $('#verifyPhone-code').val();
-        var sentCode = userModel._user.get('phoneVerificationCode');
-        
-        // all verification codes are 5 or 6 numbers
-        if (userCode.length < 5) {
-            mobileNotify("Invalid verification code, please try again");
-            return;
-        }
+        var val = $("#verifyPhone-code").val().length;
 
-        if (Number(userCode) === sentCode) {
+        if(val > 4){
+            var userCode = $('#verifyPhone-code').val();
+            var sentCode = userModel._user.get('phoneVerificationCode');
+            // all verification codes are 5 or 6 numbers
+            if (userCode.length < 5) {
+                mobileNotify("Invalid verification code, please try again");
+                return;
+            }
+
+            if (Number(userCode) === sentCode) {
                 mobileNotify("Your phone number is verified.  Thank You!");
                 var thisUser = userModel._user;
                 thisUser.set('phoneValidated', true);
@@ -1587,8 +1605,12 @@ var verifyPhoneModal = {
                 appDataChannel.userValidatedMessage(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
                 verifyPhoneModal.closeModal();
             } else {
-                mobileNotify("Sorry, your verification number: ' + result.recieved + ' didn't match. ");
+                mobileNotify("Sorry, your code didn't match. ");
             }
 
+        } else {
+            verifyPhoneModal.closeModal();
         }
+
+    }
 }

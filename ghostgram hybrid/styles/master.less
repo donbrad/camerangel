@@ -250,6 +250,12 @@ p {
   margin: 0px;
   line-height: 1.5;
 }
+
+.caption-sm {
+  font-size: 13px;
+  color: @shade-100;
+}
+
 .caption {
   .font-size(16);
   color: #979797;
@@ -509,6 +515,11 @@ form {
   line-height: 2;
 }
 
+.zero {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .badge {
   border-radius: 4px;
   background: @shade-200;
@@ -636,7 +647,7 @@ form {
 
 .btnStyle {
   text-decoration: none;
-  .font-size(16);
+  font-size: 1em;
   font-weight: 400;
   padding: 0.25em 0.5em;
   margin: 0px;
@@ -647,8 +658,22 @@ form {
   .btnStyle;
 }
 
+.km-root .km-material .km-button.km-state-disabled {
+  //background: rgba(0,0,0,0.3) !important;
+}
+
 .km-material .km-navbar .km-button.km-state-active, .km-material .k-toolbar .km-button.km-state-active {
   background: none;
+}
+
+.gg-read-value {
+  font-size: 1.2em;
+}
+
+.btnIncomplete {
+  &:extend(.btnStyle);
+  background-color: rgba(0,0,0,0.3) !important;
+  color: #fff !important;
 }
 
 .btnPrimary {
@@ -661,7 +686,6 @@ form {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
   background: @primary-100 !important;
-  /*
     :hover {
     	background: #E5A545 !important;
     	text-decoration: none;
@@ -675,7 +699,6 @@ form {
 	:disabled {
     	background: #A4A4A4 !important;
 	}
-	*/
 }
 
 .btnBlack {
@@ -1446,12 +1469,20 @@ div.footerMenu.km-footer > ul > li > a:active {
   right: 10px;
 }
 .helper-verified {
-  color: #43A047 !important;
+  margin-left: 0.25em;
+  color: #fff;
+  border-radius: 3px;
+  background-color: #65BBB3 !important;
   vertical-align: baseline;
   //.font-size(11);
+  font-size: 10px;
+  padding: 0.1em;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  text-transform: uppercase;
 }
 .helper-verified-img {
-  margin-right: -3px;
+  //margin-right: 3px;
   padding-top: 3px;
   height: 14px;
 }
@@ -2442,6 +2473,15 @@ div.footerMenu.km-footer > ul > li > a:active {
   float: right;
   position: absolute;
   right: 1em;
+}
+
+.edit-contact-group {
+  font-size: 1em;
+  color: #fff;
+  background: @primary-200;
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  margin-right: 0.5em;
 }
 
 .listTag {
@@ -4413,15 +4453,16 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .topHalfLeft {
-  width: 30%;
+  width: 25%;
   float: left;
   text-align: center;
 }
 
 .topHalfRight {
-  width: 70%;
+  width: 75%;
   float: left;
   padding-top: 0.5rem;
+  padding-left: 0.5em;
 }
 
 #testing {
@@ -4613,7 +4654,7 @@ div.contactListBox.activeContact > div > div > ul {
   float: left;
   position: absolute;
   top: 28px;
-  left: -16px;
+  left: -0.6em;
 }
 
 .mobile-input {
@@ -4671,7 +4712,7 @@ div.contactListBox.activeContact > div > div > ul {
   li:first-child {
     border: none !important;
   }
-  margin-top: 1rem;
+  //margin-top: 1rem;
 }
 
 #editContact-deleteBtn img {

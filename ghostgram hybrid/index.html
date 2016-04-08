@@ -37,6 +37,7 @@
 	<script src="bower_components/pickadate/lib/picker.js"></script>
 	<script src="bower_components/pickadate/lib/picker.date.js"></script>
 	<script src="bower_components/pickadate/lib/picker.time.js"></script>
+	<script src="bower_components/jquery.maskedinput/dist/jquery.maskedinput.min.js"></script>
 
 	<!-- other components -->
 <!--	<script src="scripts/libs/parse.js"></script>-->
@@ -242,8 +243,6 @@
 </div>
 
 <div data-role="drawer" id="ggDrawer" style="width: 50%;" data-title="Hot Buttons"  data-use-native-scrolling="true">
-
-
 	<ul data-role="listview"  style="padding-left: 8px;">
 		<li>
 			<div>
@@ -267,7 +266,6 @@
 				<img src="images/icon-external.svg" class="icon-sm" />
 					Sign Out
 			</a>
-
 		</li>
 		<li>
 			<div>
@@ -304,7 +302,6 @@
 				<img src="images/gg-local.svg" class="icon-gg-drawer" /> Local Alert
 			</a>
 		</li>
-
 	</ul>
 </div>
 
@@ -626,29 +623,28 @@
 </div>
     
 <div data-role="modalview" id="modalview-verifyPhone" style="width: 90%; display: none;" class="appearance">
-    <div class="modalview-content">
+    <div class="appBox">
 	    <h3>
 	    	Verify Mobile Number
 	    	<a class="right closeBox" data-click="verifyPhoneModal.closeModal" data-role="button">
 	    		<img src="images/close.svg" />
 	    	</a>
 	    </h3>
-		   <p> ghostgrams recently sent your phone a text message with a 6 number verification code to validate your mobile number.   The message was sent from <strong>(530) 206-8126</strong>.
-			   And looks like: <em>Your ghostgrams verification code is 123456</em>
-		   </p>
+		   	<p class="zero"> Sent From: <strong>(530) 206-8126</strong>.</p>
+			<p class="zero">Check your text messages for the code.</p>
 	        <ul data-role="listview" data-style="inset">
 	            <li>
 	                <div>Enter 6 Number code </div>
 	                <input type="tel" id="verifyPhone-code" value="" />
 	              	<span class="helper helper-right btnClear-grey" data-click="verifyPhoneModal.sendCode" data-role="button">
-	              		Resend Veification code
+	              		Resend Verification code
 	              	</span>
 	            </li>
 	        </ul>
-	    <div style="padding-top: 8px; text-align:center;">
-	        <a class="btnPrimary btnSpan" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" data-align="right">Verify</a>
-	    </div>
    	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnIncomplete btnFull-modal" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" id="modalview-verifyPhone-btn">Cancel</a>
+	</div>
 </div>
     
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="signUpView.onInit" data-show="signUpView.onShow">
@@ -672,7 +668,7 @@
         	<li>
                 <label class="left" for="home-signup-phone"> Mobile Phone</label>
                 	<div class="mobile-countryCode">+1</div>
-                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" placeholder="(•••) ••• - ••••" maxlength="14" required />
+                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" maxlength="14" required />
                 	<div class="mobile-helper"> Important! Your mobile number is how friends and family will add you. </div>
                 	<div class="clearfix"></div>
             </li>
@@ -2134,11 +2130,13 @@
 			<a data-role="button" data-click="editContactView.onDone" data-align="left" >Done</a>
 		</div>
 	</div>
-	<div style="padding-bottom: 12px;">
+	<div>
 		<form id="editContactForm">
 			<div class="topHalf">
 				<div class="topHalfLeft">
-					<a data-role="button" data-click="editContactView.changePhoto"><img class="circle-img-lg shadow" data-bind="attr:{src: photo}" /> </a>
+					<a data-role="button" data-click="editContactView.changePhoto" style="margin-top: -0.75em;">
+						<img class="circle-img-lg shadow" data-bind="attr:{src: photo}" />
+					</a>
 				</div>
 				<div class="contactImg">
 					<label for="editContactName">
@@ -2150,72 +2148,86 @@
 							<input style="width: 75%;" type="search" placeholder="Add a nickname" id="editContactAlias" data-bind="value: alias"/>
 						</span>
 					</div>
-					<div>
-						<span class="caption">Group</span>
-						<span>
-							<input style="width: 75%;" type="search" placeholder="Add a Group" id="editContactGroup" data-bind="value: group"/>
-						</span>
-					</div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
 
 			<ul data-role="listview" data-style="inset" id="contactEditList">
-				<li>
+				<li class="contactEdit-group-edit">
+					<label>Groups</label>
+					<input type="search" placeholder="Add a Group" id="editContactGroup" data-bind="value: group" />
+				</li>
+				<li class="contactEdit-group-edit">
+					<label><img src="images/gg-ice.svg" class="icon-sm" /> ICE Contact
+						<input type="checkbox" data-role="switch" data-bind="checked: isICE"/>
+					</label><br/>
+					<span class="caption-sm left">In Case of Emergency</span>
+				</li>
+				<li id="contactEdit-group-read" class="hidden">
+					<label>Groups
+						<a class="btnClear-sm" data-role="button">Edit</a>
+					</label>
+					<div id="contactEdit-group"></div>
+				</li>
+				<li id="contactEdit-phone-read">
+					<p>Phone
+						<span class="helper helper-verified" id="edit-verified-phone">
+	                         <img class="helper-verified-img" src="images/gg-verified.svg" height="16">
+	                             Verified
+                        </span>
+					</p>
+					<p class="gg-read-value" id="editContact-phone-input"></p>
+				</li>
+				<li id="contactEdit-phone-edit" class="hidden">
 					<label>Phone
-						<span class="helper helper-verified hidden" id="edit-verified-phone">
-	                         <img class="helper-verified-img" src="images/verified.svg" height="14">
-	                             Verified
-	                    	<span class="helper helper-right helper-form"> 
-	                    		<img src="images/lock.svg"/> Locked
-	                    	</span>
-                        </span>
-
-						<input id="editContactPhone" type="phone" data-bind="value:phone" name="Phone" />
+						<input id="editContactPhone" type="tel" data-bind="value:phone" name="Phone" />
 					</label>
 				</li>
-				<li>
+				<li id="editContact-email-read">
+					<p>Email
+						<span class="helper helper-verified" id="edit-verified-email">
+	                         <img class="helper-verified-img" src="images/gg-verified.svg" height="16">
+	                             Verified
+                        </span>
+					</p>
+					<p class="gg-read-value" data-bind="text: email"></p>
+				</li>
+				<li id="editContact-email-edit" class="hidden">
 					<label>Email
-						<span class="helper helper-verified hidden" id="edit-verified-email">
-	                         <img class="helper-verified-img" src="images/verified.svg" height="14">
-	                             Verified
-		                    <span class="helper helper-right helper-form">
-		                    	<img class="helper-img" src="images/lock.svg"/> Locked
-		                    </span>
-                        </span>
-
 						<input id="editContactEmail" type="email" data-bind="value: email" name="Email" />
-
 					</label>
 				</li>
-				<li>
+				<li><a class="btnClear" data-role="button">Add Address</a></li>
+				<li id="editContact-address-read" class="hidden">
+					<label>Address: <span data-bind="text: address"></span></label>
+				</li>
+				<li id="editContact-address-edit" class="hidden">
 					<label>Address
 						<input type="text" id="editContactAddress" data-bind="value: address"/>
 					</label>
 				</li>
-				<li>
-					<label>ICE (In Case of Emergency Contact)
-						<input type="checkbox" data-role="switch"  data-bind="checked: isICE"/>
-					</label>
-				</li>
-				<li>
+				<li class="hidden">
 					<label>Block
 						<input type="checkbox" data-role="switch"  data-bind="checked: isBlocked"/>
 					</label>
 				</li>
-
+				<li>
+					<a data-role="button" class="btnClear-red" data-click="editContactView.deleteContact">
+						Delete Contact
+					</a>
+				</li>
 			</ul>
 
 
-			<div class="edit-contacts-options">
+			<div class="edit-contacts-options hidden">
 				<!--<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="editContactView.syncWithParse">
 					<img src="images/ghost-sm.svg" />  Refresh Contact
 				</a>-->
-				<a data-role="button" class="btnClear-grey" id="editContact-resyncDeviceBtn" data-click="editContactView.syncWithDevice">
+				<a data-role="button" class="btnClear-grey hidden" id="editContact-resyncDeviceBtn" data-click="editContactView.syncWithDevice">
 					<img src="images/icon-sync.svg" class="icon-sm" />  Sync Contact with Device
 				</a>
-				<a data-role="button" class="btnClear-red " id="editContact-deleteBtn" data-click="editContactView.deleteContact">
-					<img src="images/icon-trash.svg" />  Delete Contact
+				<a data-role="button" class="btnClear-red " data-click="editContactView.deleteContact">
+					Delete Contact
 				</a>
 			</div>
 		</form>

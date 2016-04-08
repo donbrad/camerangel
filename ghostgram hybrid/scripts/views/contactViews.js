@@ -1036,23 +1036,36 @@ var editContactView = {
         //Show the status update div
         contactModel.updateContactDetails(contactId, function(contact) {
             editContactView.setActiveContact(contact);
-            editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
+            //editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
             editContactView.updateContact();
             // Hide the status update div
         });
 
        // Set verified inputs
        if(editContactView._activeContact.phoneValidated){
-       		$("#edit-verified-phone").addClass("hidden");
+       		$("#contactEdit-phone-read").removeClass("hidden");
+            $("#contactEdit-phone-edit").addClass('hidden');
        } else {
-       		$("#edit-verified-phone").addClass("hidden");
+       		$("#contactEdit-phone-read").addClass("hidden");
+            $("#contactEdit-phone-edit").removeClass('hidden');
        }
 
        if(editContactView._activeContact.emailValidated){
-       		$("#edit-verified-email").addClass("hidden");
+           $("#editContact-email-edit").addClass("hidden");
+           $("#editContact-email-read").removeClass("hidden");
        } else {
-       		$("#edit-verified-email").addClass("hidden");
+           $("#editContact-email-edit").removeClass("hidden");
+           $("#editContact-email-read").addClass("hidden");
        }
+
+        $("#editContactPhone").mask('9(999) 999-9999');
+        var phoneVal = ux.showCleanPhone(editContactView._activeContact.phone);
+        $('#editContact-phone-input').text(phoneVal);
+
+
+        var groupsHtml = ux.showGroups(editContactView._activeContact.group);
+        $("#contactEdit-group").html(groupsHtml);
+
 
     },
 
@@ -1079,7 +1092,7 @@ var editContactView = {
     onDone : function (e) {
         _preventDefault(e);
 
-       // contactModel.currentContact.unbind('change' , syncCurrentContact);
+        // contactModel.currentContact.unbind('change' , syncCurrentContact);
         APP.kendo.navigate("#contacts");
         // reset UI
         $("#contactEditList").velocity("fadeIn");

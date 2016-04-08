@@ -232,13 +232,13 @@ var ux = {
 
 		if($(".phone").is("input")){
 			var inputVal = $(".phone").val();
-	    	var formattedVal = inputVal.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+	    	var formattedVal = inputVal.replace(/(\d)(\d\d\d)(\d\d\d)(\d\d\d\d)/, '$1($2) $3-$4');
 			
 			$(".phone").val(formattedVal);
 		
 		} else {
 			$('.phone').text(function(i, text) {
-	    	return text.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+	    	return text.replace(/(\d)(\d\d\d)(\d\d\d)(\d\d\d\d)/, '$1($2) $3-$4');
 			});
 		}
 	},
@@ -254,7 +254,20 @@ var ux = {
 	},
 
 	showCleanPhone:function(phone){
-		return phone.replace(/\d(\d\d\d)(\d\d\d)(\d\d\d\d)/, '($1) $2-$3');
+		return phone.replace(/(\d)(\d\d\d)(\d\d\d)(\d\d\d\d)/, '$1($2) $3-$4');
+	},
+
+	showGroups: function(groupStr){
+		var groupsHtml = '';
+		var splitString = groupStr.replace(/\s+/g, '').split(",");
+		_.each(splitString, function(group){
+			console.log(group);
+			var htmlStr = '<span class="edit-contact-group">' + group + '</span>';
+			groupsHtml = groupsHtml.concat(htmlStr);
+		});
+
+		console.log(groupsHtml);
+		return groupsHtml;
 	},
 
 	showActionBtnText:function(path, fromRight, text){
@@ -322,6 +335,7 @@ var ux = {
 	},
 
 	notificationVerifyPhone: function (e) {
+		console.log("clicked");
 		_preventDefault(e);
 		$("#modalview-verifyPhone").data("kendoMobileModalView").open();
 	},

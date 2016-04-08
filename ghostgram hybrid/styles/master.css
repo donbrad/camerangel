@@ -807,6 +807,10 @@ p {
   margin: 0px;
   line-height: 1.5;
 }
+.caption-sm {
+  font-size: 13px;
+  color: #979797;
+}
 .caption {
   font-size: 16px;
   font-size: 1em;
@@ -1088,6 +1092,10 @@ form p {
   vertical-align: top;
   line-height: 2;
 }
+.zero {
+  margin: 0 !important;
+  padding: 0 !important;
+}
 .badge {
   border-radius: 4px;
   background: #E0E0E0;
@@ -1216,6 +1224,7 @@ form p {
   border: none;
 }
 .btnStyle,
+.btnIncomplete,
 .btnPrimary,
 .btnBlack,
 .btnBlack-sm,
@@ -1236,7 +1245,6 @@ form p {
 .km-material .km-buttongroup .km-button,
 .btnClear-grey-sm {
   text-decoration: none;
-  font-size: 16px;
   font-size: 1em;
   font-weight: 400;
   padding: 0.25em 0.5em;
@@ -1245,7 +1253,6 @@ form p {
 .km-root .km-button,
 .km-material .km-button {
   text-decoration: none;
-  font-size: 16px;
   font-size: 1em;
   font-weight: 400;
   padding: 0.25em 0.5em;
@@ -1254,6 +1261,13 @@ form p {
 .km-material .km-navbar .km-button.km-state-active,
 .km-material .k-toolbar .km-button.km-state-active {
   background: none;
+}
+.gg-read-value {
+  font-size: 1.2em;
+}
+.btnIncomplete {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  color: #fff !important;
 }
 .btnPrimary {
   -webkit-border-radius: 2px;
@@ -1264,21 +1278,19 @@ form p {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
   background: #2E93FD !important;
-  /*
-    :hover {
-    	background: #E5A545 !important;
-    	text-decoration: none;
-	}
-	:active {
-    	background: #FADDB0 !important;
-    	text-decoration: none;
-    	transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-	:disabled {
-    	background: #A4A4A4 !important;
-	}
-	*/
+}
+.btnPrimary :hover {
+  background: #E5A545 !important;
+  text-decoration: none;
+}
+.btnPrimary :active {
+  background: #FADDB0 !important;
+  text-decoration: none;
+  transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btnPrimary :disabled {
+  background: #A4A4A4 !important;
 }
 .btnBlack {
   -webkit-border-radius: 2px;
@@ -2037,11 +2049,18 @@ div.footerMenu.km-footer > ul > li > a:active {
   right: 10px;
 }
 .helper-verified {
-  color: #43A047 !important;
+  margin-left: 0.25em;
+  color: #fff;
+  border-radius: 3px;
+  background-color: #65BBB3 !important;
   vertical-align: baseline;
+  font-size: 10px;
+  padding: 0.1em;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  text-transform: uppercase;
 }
 .helper-verified-img {
-  margin-right: -3px;
   padding-top: 3px;
   height: 14px;
 }
@@ -2965,6 +2984,14 @@ textarea {
   float: right;
   position: absolute;
   right: 1em;
+}
+.edit-contact-group {
+  font-size: 1em;
+  color: #fff;
+  background: #6CADF3;
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  margin-right: 0.5em;
 }
 .listTag {
   border-radius: 3px;
@@ -4689,14 +4716,15 @@ div.contactListBox.activeContact > div > div > ul {
   text-align: left;
 }
 .topHalfLeft {
-  width: 30%;
+  width: 25%;
   float: left;
   text-align: center;
 }
 .topHalfRight {
-  width: 70%;
+  width: 75%;
   float: left;
   padding-top: 0.5rem;
+  padding-left: 0.5em;
 }
 #testing p {
   text-align: center;
@@ -4858,7 +4886,7 @@ div.contactListBox.activeContact > div > div > ul {
   float: left;
   position: absolute;
   top: 28px;
-  left: -16px;
+  left: -0.6em;
 }
 .mobile-input {
   float: left;
@@ -4897,14 +4925,12 @@ div.contactListBox.activeContact > div > div > ul {
 }
 /* Contacts */
 .contactImg {
-  width: 70%;
+  width: 75%;
   float: left;
   padding-top: 0.5rem;
+  padding-left: 0.5em;
   padding-top: 0px;
   margin-top: -1rem;
-}
-#contactEditList {
-  margin-top: 1rem;
 }
 #contactEditList li:first-child {
   border: none !important;
