@@ -310,6 +310,7 @@ var placesModel = {
         placeObj.set('address', place.address);
         placeObj.set('lat', place.lat);
         placeObj.set('lng', place.lng);
+        placeObj.set('geoPoint', {longitude: place.lng, latitude: place.lat});
         placeObj.set('distance', 0);
         placeObj.set('type', place.type);
         placeObj.set('city', place.city);

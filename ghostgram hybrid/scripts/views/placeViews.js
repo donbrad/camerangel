@@ -1030,7 +1030,7 @@ var addPlaceView = {
                 mobileNotify(placeObj.name + " added to your Places...");
 
                 addPlaceView.onDone();
-                deviceModel.syncEverlive();
+                //deviceModel.syncEverlive();
 
                 if (createChatFlag) {
                     channelModel.addPlaceChannel(placeObj.placeChatId, placeObj.uuid, placeObj.name, placeObj.isPrivate);
@@ -1177,7 +1177,7 @@ var editPlaceView = {
         model.set('placeChatId', newModel.placeChatId);
 
         placesModel.placesDS.sync();
-        deviceModel.syncEverlive();
+        //deviceModel.syncEverlive();
 
 /*
 
@@ -2181,7 +2181,7 @@ var smartEventPlacesView = {
                 click: function (e) {
                     var geo = e.dataItem;
                     var request = {
-                        placeId: geo.placeUUID
+                        placeId: geo.placeId
                     };
 
                     if (geo.category === 'Area') {
@@ -2351,7 +2351,7 @@ var smartEventPlacesView = {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
                 predictions.forEach( function (prediction) {
-                    var desObj = {category:"Area", description: prediction.description, placeUUID: prediction.place_id};
+                    var desObj = {category:"Area", description: prediction.description, placeId: prediction.place_id};
                     switch (prediction.types[0]) {
                         case 'geocode':
                         case 'locality':
@@ -2598,7 +2598,7 @@ var smartLocationView = {
                 click: function (e) {
                     var geo = e.dataItem;
                     var request = {
-                        placeId: geo.placeUUID
+                        placeId: geo.placeId
                     };
 
                     if (geo.category === 'Area') {
@@ -2609,7 +2609,7 @@ var smartLocationView = {
                                 smartLocationView._geo.lat = place.geometry.location.lat();
                                 smartLocationView._geo.lng = place.geometry.location.lng();
                                 smartLocationView._geo.address = place.formatted_address;
-                                smartLocationView._geo.placeUUID = place.place_id;
+                                smartLocationView._geo.placeId = place.place_id;
                                 $('#smartLocation-place').val(place.formatted_address);
 
                                 if (smartLocationView._callback !== null) {

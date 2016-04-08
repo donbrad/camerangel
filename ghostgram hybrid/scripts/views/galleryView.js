@@ -64,7 +64,16 @@ var galleryView = {
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
 
-
+            $("#gallery-listview").kendoMobileListView({
+                dataSource: photoModel.photosDS,
+                template: $("#gallery-template").html(),
+                click : galleryView.galleryClick()
+                /*dataBound: function(e){
+                    ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
+                }*/
+            });
+            
+            //data-source="photoModel.photosDS" data-template="gallery-template" data-click="galleryView.galleryClick"
             $("#gallery .gg_mainSearchInput").on('input', function() {
                 var query = this.value;
                 if (query.length > 0) {
@@ -280,7 +289,10 @@ var galleryView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            null  // Current channel Id for offers
+            null,  // Current channel Id for offers
+            function (photoUUID, displayUrl) {
+
+            }
         );
     },
 
@@ -291,7 +303,10 @@ var galleryView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            null // Current channel Id for offers
+            null, // Current channel Id for offers
+            function (photoUUID, displayUrl) {
+                
+            }
         );
     },
     sharePhoto: function (e)  {
