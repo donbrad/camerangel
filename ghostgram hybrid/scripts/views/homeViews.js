@@ -1498,6 +1498,7 @@ var signInView = {
 
         // clear any previous account informaton for this device
         everlive.clearAuthentication();
+        
 
         var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
 

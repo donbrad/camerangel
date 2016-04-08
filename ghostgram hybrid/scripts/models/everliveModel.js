@@ -504,7 +504,10 @@ var everlive = {
     },
 
     clearAuthentication : function () {
+
         APP.everlive.authentication.clearAuthorization();
+        APP.everlive.authentication.clearPersistedAuthentication();
+        APP.everlive.users.logout();
        
     },
 
