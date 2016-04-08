@@ -222,10 +222,10 @@ var devicePhoto = {
             destinationType: destinationType.FILE_URI
         };
 
-        /*if (device.platform === 'iOS') {
+        if (device.platform === 'iOS') {
             options.destinationType = destinationType.NATIVE_URI;
         }
-*/
+
         navigator.camera.getPicture(
             function (imageData) {
                 var photouuid = uuid.v4();
