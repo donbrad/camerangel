@@ -78,7 +78,7 @@ var devicePhoto = {
                 var photouuid = uuid.v4();
                 var imageObj = JSON.parse(imageData);
                 var metaObj = JSON.parse(imageObj.json_metadata);
-                var lat = metaObj.GPS.latitude, lng = metaObj.GPS.longitude, date = metaObj.DateStamp, time=metaObj.TimeStamp;
+                var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
                 if (device.platform === 'iOS') {
                     imageUrl = imageUrl.replace('file://', '');
@@ -104,6 +104,11 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.imageUrl = null;
                             devicePhoto.currentPhoto.imageFile = null;
+                            devicePhoto.currentPhoto.lat = lat;
+                            devicePhoto.currentPhoto.lng = lat;
+                            devicePhoto.currentPhoto.alt = altitude;
+                            devicePhoto.currentPhoto.date = date;
+                            devicePhoto.currentPhoto.time = time;
                             var uri = nativeUrl;
 
                             if (device.platform === 'iOS') {
@@ -255,6 +260,11 @@ var devicePhoto = {
                 devicePhoto.currentPhoto.filename = filename;
                 devicePhoto.currentPhoto.imageUrl = null;
                 devicePhoto.currentPhoto.imageFile = null;
+                devicePhoto.currentPhoto.lat = lat;
+                devicePhoto.currentPhoto.lng = lat;
+                devicePhoto.currentPhoto.alt = altitude;
+                devicePhoto.currentPhoto.date = date;
+                devicePhoto.currentPhoto.time = time;
                 var uri = imageUrl;
 
                 if (device.platform === 'iOS') {
