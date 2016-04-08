@@ -84,7 +84,13 @@ var devicePhoto = {
                 var localUrl = null;
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
+                PhotoExif.readData(imageUrl, function(exifObject) {
+                    if (exifObject !== undefined) {
+                        devicePhoto.currentPhoto.exif = exifObject;
+                        console.log(exifObject);
+                    }
 
+                });
                 // Create a local copy of the
                 window.resolveLocalFileSystemURL(imageData, function fileEntrySuccess(fileEntry) {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
