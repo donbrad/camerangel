@@ -61,7 +61,6 @@ var devicePhoto = {
         }
         var pictureSource = navigator.camera.PictureSourceType;   // picture source
         var encodingType = navigator.camera.EncodingType;
-
         var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 
         var saveToAlbum = userModel._user.get('saveToPhotoAlbum');
@@ -82,7 +81,7 @@ var devicePhoto = {
                 var lat = metaObj.GPS.latitude, lng = metaObj.GPS.longitude, date = metaObj.DateStamp, time=metaObj.TimeStamp;
                 var imageUrl = imageObj.filename;
                 if (device.platform === 'iOS') {
-                    imageUrl = imageData.replace('file://', '');
+                    imageUrl = imageUrl.replace('file://', '');
                 }
                 var localUrl = null;
                 // convert uuid into valid file name;
@@ -211,7 +210,7 @@ var devicePhoto = {
 
         var pictureSource = navigator.camera.PictureSourceType;   // picture source
         var destinationType = navigator.camera.DestinationType; // sets the format of returned value
-
+        var encodingType = navigator.camera.EncodingType;
 
         // Android storage is seriously different -- multiple photo directories with different permissions.
         // So need to get a data url in our space rather an direct link to the image in current storage
@@ -230,11 +229,11 @@ var devicePhoto = {
                 var photouuid = uuid.v4();
                 var imageObj = JSON.parse(imageData);
                 var metaObj = JSON.parse(imageObj.json_metadata);
-                var lat = metaObj.GPS.latitude, lng = metaObj.GPS.longitude, date = metaObj.DateStamp, time=metaObj.TimeStamp;
+                var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
-               /* if (device.platform === 'iOS') {
-                    imageUrl = imageData.replace('file://', '');
-                }*/
+               if (device.platform === 'iOS') {
+                    imageUrl = imageUrl.replace('file://', '');
+                }
 
             /*    if (device.platform === 'Android') {
                   imageUrl = imageData.replace('content://', '');
@@ -258,10 +257,10 @@ var devicePhoto = {
                 devicePhoto.currentPhoto.imageFile = null;
                 var uri = imageUrl;
 
-                /*if (device.platform === 'iOS') {
+                if (device.platform === 'iOS') {
                     nativeUrl = nativeUrl.replace('file://', '');
                     uri = nativeUrl;
-                }*/
+                }
                 devicePhoto.currentPhoto.phoneUrl = imageUrl;
 
 
