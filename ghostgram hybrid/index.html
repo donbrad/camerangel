@@ -28,6 +28,7 @@
 
 	<!-- bower components -->
 	<script src="bower_components/everlive/src/everlive.all.js"></script>
+	<script src="bower_components/google-libphonenumber/dist/browser/libphonenumber.js"></script>
 	<script src="bower_components/eventEmitter/EventEmitter.js"></script>
 	<script src="bower_components/q/q.js"></script>
 	<script src="bower_components/underscore/underscore.js"></script>
@@ -60,12 +61,13 @@
 
     <!--<script src="scripts/parseKendoDataSourceFactory.js"></script>-->
 	<script src="scripts/geo.js"></script>
-	<script src="scripts/home.js"></script>
-	<script src="scripts/channels.js"></script>
-	<script src="scripts/channel.js"></script>
+	<!--<script src="scripts/home.js"></script>-->
+	<!--<script src="scripts/channels.js"></script>-->
+	<!--<script src="scripts/channel.js"></script>-->
 	<script src="scripts/devicecontacts.js"></script>
     <script src="scripts/devicephoto.js"></script>
-    <script src="scripts/profile.js"></script>
+  <!--  <script src="scripts/profile.js"></script>-->
+	<script src="scripts/photoexif.js"></script>
 	<script src="scripts/serverPush.js"></script>
 	<script src="scripts/utils.js"></script>
 	<script src="scripts/ux.js"></script>
@@ -917,7 +919,7 @@
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal"><img src="images/close.svg"/></a>
 
-		<img class="circle-img-lg" id="contactProfileImg" />
+		<img class="circle-img-lg" id="contactProfileImg" data-bind="" />
 		<img src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
 		<h2 class="preMotionUp textClamp">
 
@@ -1057,13 +1059,6 @@
 					<img src="images/icon-myNotes-alt.svg" class="icon-sm" />
 					My Notes
 				</a>
-			</li>
-			<li>
-				<div>
-					<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
-						Sign Out
-					</a>
-				</div>
 			</li>
 		</ul>
 	</div>
@@ -1931,10 +1926,14 @@
 	var name = data.name;
 	var alias = data.alias;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
+	var photoUrl = data.identicon;
+	if (data.photo !== null) {
+	photoUrl = data.photo;
+	}
 	#
 	<div>
 		<div class="memberTempPhoto left">
-			<img src="#: data.photo #" class="circle-img-md" />
+			<img src="#: photoUrl #" class="circle-img-md" />
 		</div>
 		<div class="memberTempName left">
 			<h4 class="textClamp">
@@ -1954,8 +1953,13 @@
 		#}else {#
 		<div style="clear: both;">
 			#}#
+			# var photoUrl = data.identicon;
+			   if (data.photo !== null) {
+					photoUrl = data.photo;
+				}
+			#
 			<div class="memberTempPhoto left">
-				<img src="#: data.photo #" class="circle-img-md" />
+				<img src="#: photoUrl #" class="circle-img-md" />
 			</div>
 			<div class="memberTempName left">
 				<h4 class="textClamp">#: data.name #</h4>
@@ -1969,10 +1973,14 @@
 	var name = data.name;
 	var alias = data.alias;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
+	var photoUrl = data.identicon;
+	if (data.photo !== null) {
+		photoUrl = data.photo;
+	}
 	#
 	<div class="editMemberBox" data-id="#: data.uuid #">
 		<div class="editMemberPhoto">
-			<img class="circle-img-md editChatImg" src="#: data.photo #"  />
+			<img class="circle-img-md editChatImg" src="#: photoUrl #"  />
 		</div>
 		<div class="editMemberName">
 			<h4 class="textClamp">
@@ -2134,9 +2142,7 @@
 		<form id="editContactForm">
 			<div class="topHalf">
 				<div class="topHalfLeft">
-					<a data-role="button" data-click="editContactView.changePhoto" style="margin-top: -0.75em;">
-						<img class="circle-img-lg shadow" data-bind="attr:{src: photo}" />
-					</a>
+					<a data-role="button" data-click="editContactView.changePhoto"><img class="circle-img-lg shadow" data-bind="attr: {src: mappedphoto}" /> </a>
 				</div>
 				<div class="contactImg">
 					<label for="editContactName">
@@ -2309,7 +2315,10 @@
 	var group = data.group;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
-
+	var photoUrl = data.identicon;
+	if (data.photo !== null) {
+		photoUrl = data.photo;
+	}
 	#
 	<div>
 		<div class="contact-options">
@@ -2353,11 +2362,11 @@
 			<div class="statusContactList">
 
 				#if (data.isAvailable !== undefined && data.isAvailable) { #
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photoUrl#" />
 				<img src="images/status-available.svg" class="statusContactList-icon" />
 				# }
 				else { #
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photoUrl#" />
 				<img src="images/status-away.svg" class="statusContactList-icon" />
 				#}#
 				# if (data.isBlocked) {#
@@ -2404,7 +2413,7 @@
 		#} else if(data.category === 'new'){#
 		<div class="left listPhoto">
 			<div class="statusContactList">
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photoUrl#" />
 			</div>
 		</div><!-- left -->
 		<div class="left listName">
@@ -2419,7 +2428,7 @@
 		#} else {#
 		<div class="left listPhoto">
 			<div class="statusContactList">
-				<img class="circle-img-md" src="#:data.photo#" />
+				<img class="circle-img-md" src="#:photoUrl#" />
 			</div>
 		</div><!-- left -->
 		<div class="left listName">
@@ -2560,7 +2569,7 @@
 			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="archive-header-template" data-click="archiveView.archiveClick"></ul>
 		</div>
 		<!-- Photos -->
-		<ul id="gallery-listview" class="list-inline" data-role="listview" data-source="photoModel.photosDS" data-template="gallery-template" data-click="galleryView.galleryClick"></ul>
+		<ul id="gallery-listview" class="list-inline" data-role="listview" ></ul>
 
 	</div>
 	<ul data-role="actionsheet" id="galleryActions1" data-popup='{"direction": "left"}'>
@@ -3457,11 +3466,12 @@
 </script>
 
 <script type="text/x-kendo-template" id="gallery-template">
-	# if (imageUrl !== null) { #
-		<div class="galleryImg galleryImg-grid" style="background-image: url('#=imageUrl#')"> </div>
-	# } else { #
-		<div class="galleryImg galleryImg-grid" style="background-image: url('#=thumbnailUrl#')"> </div>
-	# } #
+	# var photoUrl = galleryView.getDisplayUrl(uuid, deviceUrl, imageUrl, thumbnailUrl);
+	  if (photoUrl === null || photoUrl === undefined)
+		photoUrl = imageUrl;
+	#
+
+	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
 
 </script>
 
@@ -4000,6 +4010,12 @@
 </div>
 
 <!-- change password modal -->
+<div data-role="modalview" id="modalview-syncEverlive" style="width: 100%; height: 100%; display:none;">
+	<div style="text-align: center; vertical-align: middle;">Syncing the ghostgrams cloud</div>
+
+</div>
+
+<!-- change password modal -->
 <div data-role="modalview" id="modalview-changePassword" data-init="changePasswordView.onInit"   data-open="changePasswordView.onShow" style="width: 90%; display:none;" class="appearance">
 
 	<div class="modal-bottom">
@@ -4143,7 +4159,9 @@
 			</li>
 		</ul>
 	</form>
-
+		<div style="text-align: center; padding: 16px;">
+			<a data-role="button" class="btnClear"  data-click="everlive.clearLocalStorage">Clear Local Storage</a>
+		</div>
 </div>
 
 <!--/*

@@ -262,6 +262,12 @@ var serverPush = {
     provisionDataChannels : function () {
 
         if (!serverPush._dataChannelsProvisioned) {
+
+            if (APP.pubnub === undefined || APP.pubnub === null ) {
+                mobileNotify("Provision Push - Pubnub not initialized");
+                return;
+            }
+
             var type = 'apns';
 
             if (device.platform === "Android") {

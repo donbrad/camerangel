@@ -371,6 +371,13 @@ var contactModel = {
         return(contact);
     },
 
+    findContactsByUUID : function(uuid) {
+        var contacts = contactModel.queryContacts({ field: "uuid", operator: "eq", value: uuid });
+
+        return(contacts);
+    },
+
+
     findContactList : function (contactUUID) {
         var contact = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contactUUID });
 
@@ -378,9 +385,9 @@ var contactModel = {
     },
 
     findContactListUUID : function ( uuid) {
-        var contact = contactModel.queryContactList({ field: "uuid", operator: "eq", value: uuid });
+        var contacts = contactModel.queryContactList({ field: "uuid", operator: "eq", value: uuid });
 
-        return(contact);
+        return(contacts);
     },
 
 
@@ -550,6 +557,23 @@ var contactModel = {
 
     },
 
+    _cleanDupContacts : function (uuid) {
+        var contactList = contactModel.findContactsUUID(uuid);
+
+        if (contactList !== undefined && contactList.length > 0) {
+            if (contactList.length > 1) {
+                for (var i=0; i< contactList.length; i++) {
+                    var contact = contactList[i];
+
+                    if (contact.Id === undefined) {
+                        mobileNotify("Cleaning duplicate channel");
+                        contactModel.contactsDS.remove(contact);
+                    }
+                }
+            }
+        }
+    },
+
    /* getContactStatusObject : function(contactUUID, callback) {
         var UserStatusModel = Parse.Object.extend("userStatus");
         var query = new Parse.Query(UserStatusModel);
@@ -579,17 +603,25 @@ var contactModel = {
 
         for (var i=0; i<length; i++) {
             var contact = contactModel.contactListDS.at(i);
-            if (contact.lastUpdate === undefined || contact.lastUpdate > time + 900) {
+
+            if (contact.lastUpdate === undefined) {
+                contact.lastUpdate = time - 150;
+            }
+            if ( (contact.lastUpdate + 150) <= time ) {
                 var contactId = contact.contactUUID;
+               // contact.lastUpdate =  ggTime.currentTimeInSeconds();
                 if (contactId !== undefined && contactId !== null) {
                     userStatus.getMemberStatus(contactId, function (error, user) {
                         if (error == null && user !== null) {
                             var userId = user.get('userUUID');
                             var contact = contactModel.findContactList(userId);
-                            contact.set('statusMessage', user.get('statusMessage'));
-                            contact.set('currentPlace', user.get('currentPlace'));
-                            contact.set('currentPlaceUUID', user.get('currentPlace  UUID'));
-                            contact.set('isAvailable', user.get('isAvailable'));
+                            contact.set('statusMessage', user.statusMessage);
+                            contact.set('currentPlace', user.currentPlace);
+                            contact.set('currentPlaceUUID', user.currentPlaceUUID);
+                            contact.set('googlePlaceId', user.googlePlaceId);
+                            contact.set('lat', user.lat);
+                            contact.set('lng', user.lng);
+                            contact.set('isAvailable', user.getisAvailable);
                             contact.set('lastUpdate', ggTime.currentTimeInSeconds());
                         }
                     });
@@ -614,6 +646,7 @@ var contactModel = {
         }
         mobileNotify("Updating contact info from ghostgrams...");
         var phone = model.get('phone');
+
         memberdirectory.findMemberByPhone(phone, function (result) {
             if (result !== null) {
                 var uuid = model.get('uuid'), contactUUID = model.get('contactUUID'), publicKey = model.get('publicKey'),
@@ -644,97 +677,118 @@ var contactModel = {
 
     // Create a contact for channel member that this user isn't connected to
     // The contact is a valid member and connected to the channel owner
-    createChatContact : function (userId, callback) {
-
-        memberdirectory.findMemberByUUID(userId, function (result) {
-            if (result !== null) {
-                var guid = uuid.v4();
-                var contact = {};
-                contact.isContact = true;
-                contact.uuid = result.userUUID;
-                contact.alias = result.alias;
-                contact.name = result.name;
-                var url = contactModel.createIdenticon(guid);
-                contact.photo = url;
-                contact.publicKey = null;
-
-
-               /* currentChannelModel.memberList[contact.uuid] = contact;
-                currentChannelModel.membersDS.add(contact);*/
-                contactModel.addChatContact(guid, contact.name, contact.alias, contact.uuid);
-                mobileNotify("Created New Contact for: " + contact.name);
-
-                if (callback !== undefined) {
-                    callback(contact);
-                }
-
-            }
-
-        })
-
-    },
-
-
-    addChatContact : function (guid, name, alias, contactUUID) {
-      /*  var Contacts = Parse.Object.extend("contacts");
-        var contact = new Contacts();
-
-
-        contact.setACL(userModel.parseACL);*/
+    createChatContact : function (userId, guid, callback) {
 
         var contact = new kendo.data.ObservableObject();
         contact.set('version', contactModel._version);
         contact.set('ggType', contactModel._ggClass);
-        contact.set("name", name );
-        contact.set("alias", alias);
-        contact.set('category', "unknown");
+        contact.set("name", "New Member" );
+        contact.set("alias", "new");
+        contact.set('category', "member");
         contact.set("address", null);
         contact.set("group", null);
         contact.set("priority", 0);
         contact.set("isFavorite", false);
         contact.set("isBlocked", false);
         contact.set("uuid", guid);
-        contact.set('contactUUID', contactUUID);
-        contact.set('contactPhone', null);
-        contact.set('contactEmail', null);
-        contact.set('ownerUUID', userModel._user.userUUID);
+        contact.set("processing",true);
+
+        var url = contactModel.createIdenticon(guid);
+        contact.photo = null;
+        contact.identicon = url;
+
+        contactModel.contactsDS.add(contact);
+        contactModel.contactsDS.sync();
 
         everlive.createOne(contactModel._cloudClass, contact, function (error, data){
             if (error !== null) {
-                mobileNotify ("Error creating place " + JSON.stringify(error));
+                mobileNotify ("Error creating Chat Contact " + JSON.stringify(error));
             } else {
-                contactModel.contactsDS.add(contact);
+
+                contactModel._cleanDupContacts(contact.uuid);
+
             }
         });
-        /*contactModel.contactsDS.add(contact);
-        contactModel.contactsDS.sync();
-        deviceModel.syncEverlive();*/
 
-        /*contact.save(null, {
-            success: function(contact) {
-                // Execute any logic that should take place after the object is saved.;
-                //var photo = contact.get('photo');
-                var url = contactModel.createIdenticon(guid);
-                contact.set('photo',url);
-                // Don't set actual phone and email for this contact until connected...
-                contact.set('contactPhone', contact.phone);
-                contact.set('phoneValidated', contact.phoneValidated);
-                contact.set('contactEmail', contact.email);
-                contact.set('emailValidated', contact.emailValidated);
+        memberdirectory.findMemberByUUID(userId,  function (result) {
+            if (result !== null) {
 
-                var contactObj = contact.toJSON();
-                contactModel.addContactToContactList(contactObj);
-                contactModel.contactsDS.add(contact.attributes);
+                contactModel.updateChatContact(guid, result.name, result.alias, result.userUUID, result.phone, result.email, result.publicKey);
+                mobileNotify("Created New Contact for: " + result.name);
 
-                //contactModel.contactListDS.add(contact.attributes);
-                //addContactView.closeModal();
-            },
-            error: function(contact, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
+                if (callback !== undefined) {
+                    callback(result);
+                }
+
             }
-        });*/
+
+        });
+
+    },
+
+
+    updateChatContact : function (guid, name, alias, contactUUID, contactPhone, contactEmail, contactKey) {
+
+
+
+        var contact = contactModel.findContactByUUID(uuid);
+        var create = false;
+
+        if (contact === undefined || contact === null) {
+            contact = new kendo.data.ObservableObject();
+
+            create = true;
+        }
+
+        contact.set('version', contactModel._version);
+        contact.set('ggType', contactModel._ggClass);
+        contact.set("name", name );
+        contact.set("alias", alias);
+        contact.set('category', "member");
+        contact.set("address", null);
+        contact.set("group", null);
+        contact.set("priority", 0);
+        contact.set("isFavorite", false);
+        contact.set("isBlocked", false);
+        contact.set("uuid", guid);
+        var url = contactModel.createIdenticon(guid);
+        contact.photo = null;
+        contact.identicon = url;
+        contact.set('contactUUID', contactUUID);
+        contact.set('phone', contactPhone);
+        contact.set('email', contactEmail);
+        contact.set('contactPhone', contactPhone);
+        contact.set('contactEmail', contactEmail);
+        contact.set('publicKey', contactKey);
+        contact.set('ownerUUID', userModel._user.userUUID);
+
+        if (create) {
+            // Need to create this contact
+            contactModel.contactsDS.add(contact);
+            contactModel.contactsDS.sync();
+
+            everlive.createOne(contactModel._cloudClass, contact, function (error, data) {
+                if (error !== null) {
+                    mobileNotify("Error creating Chat Contact " + JSON.stringify(error));
+                } else {
+
+                    contactModel._cleanDupContacts(contact.uuid);
+
+                }
+            });
+        } else {
+            everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
+                if (error !== null) {
+                    mobileNotify("Error updating Chat Contact " + JSON.stringify(error));
+                } else {
+
+                    contactModel._cleanDupContacts(contact.uuid);
+
+                }
+            });
+        }
+
+
     },
 
     importDeviceContacts: function() {
@@ -792,17 +846,17 @@ var contactModel = {
                             contactItem.addresses.push(address);
                         }
                     }
-                    contactItem.photo = 'images/default-img.png';
+                    contactItem.photos = [];
                     if (contacts[i].photos !== null) {
                         returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
-                            contactItem.photo = validUrl;
-                            if (contactItem.phoneNumbers.length > 0)
-                                contactModel.deviceContactsDS.add(contactItem);
+                            contactItem.photos.push(validUrl);
+
                         });
-                    } else {
-                        if (contactItem.phoneNumbers.length > 0)
-                            contactModel.deviceContactsDS.add(contactItem);
                     }
+                    
+                    if (contactItem.phoneNumbers.length > 0)
+                        contactModel.deviceContactsDS.add(contactItem);
+
                     // Only add device contacts with phone numbers
                 }
 

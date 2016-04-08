@@ -267,7 +267,7 @@ var tagModel = {
 
     syncTags : function () {
 
-        deviceModel.syncEverlive();
+        //deviceModel.syncEverlive();
     }
 
 };

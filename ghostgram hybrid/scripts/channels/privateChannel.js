@@ -92,7 +92,7 @@ var privateChannel = {
     },
 
     decryptMessage : function (msg) {
-        var RSAKey = cryptico.privateKeyFromString(userModel._user.privateKey);
+        var RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
         var data = null;
         var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
         if (msg.data !== undefined && msg.data !== null) {

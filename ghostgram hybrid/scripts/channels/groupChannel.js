@@ -176,6 +176,7 @@ var groupChannel = {
                         'content-available' : 1
                     },
                     senderId: userModel._user.userUUID,
+                    senderName :  userModel._user.name,
                     target: '#channel?channelUUID='+ groupChannel.channelUUID,
                     channelUUID: groupChannel.channelUUID,
                     isMessage: true,
@@ -186,6 +187,7 @@ var groupChannel = {
                         title: notificationString,
                         message: "Message from " + userModel._user.name,
                         senderId: userModel._user.userUUID,
+                        senderName :  userModel._user.name,
                         target: '#channel?channelUUID='+ groupChannel.channelUUID,
                         channelUUID: groupChannel.channelUUID,
                         isMessage: true,
@@ -193,6 +195,7 @@ var groupChannel = {
                     }
                 },
                 sender: userModel._user.userUUID,
+                senderName :  userModel._user.name,
                 content: text,
                 data: data,
                 time: currentTime,

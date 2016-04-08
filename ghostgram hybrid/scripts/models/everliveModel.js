@@ -17,7 +17,9 @@ var everlive = {
     _authenticating: false,
     _user : null,
     _lastSync: 0,
-    _delta : 60,
+    _syncInProgress: true,
+    _syncComplete: false,
+    _delta : 30,
 
     init: function () {
         
@@ -33,12 +35,17 @@ var everlive = {
             scheme: 'https',
             /*caching: {
                 maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
-                enabled: true //Global setting for enabling/disabling cache. Default is FALSE.
+                enabled: true, //Global setting for enabling/disabling cache. Default is FALSE.
+                typeSettings: { //Specify content type-specific settings that override the global settings.
+                    "userstatus": {
+                        maxAge: 5
+
+                    }
+                }
             },*/
-           // offline: true,
 
            offline: {
-               syncUnmodified: true,
+               // syncUnmodified: true,
                 encryption: {
                     provider: Everlive.Constants.EncryptionProvider.Default,
                         key : 'intelligram'
@@ -72,7 +79,16 @@ var everlive = {
                 }*/
             }
         });
-        
+
+        everlive.getTimeStamp();
+
+        if (deviceModel.isOnline() ) {
+            APP.everlive.online();
+        } else {
+            APP.everlive.offline();
+        }
+
+
         // Wire up the everlive sync monitors
         APP.everlive.on('syncStart', everlive.syncStart);
 
@@ -82,13 +98,28 @@ var everlive = {
 
     },
 
+    updateTimeStamp : function () {
+        everlive._lastSync = ggTime.currentTime();
+        localStorage.setItem('ggEverliveTimeStamp',  everlive._lastSync);
+    },
+
+    getTimeStamp : function () {
+        everlive._lastSync = localStorage.getItem('ggEverliveTimeStamp');
+
+        if (everlive._lastSync === undefined || everlive._lastSync === null) {
+            everlive.updateTimeStamp();
+            everlive._syncComplete = false;
+        }
+    },
+
+
+
     syncCloud : function (){
         var time = ggTime.currentTimeInSeconds();
 
         if (everlive._lastSync < time) {
 
-            everlive._lastSync = time + everlive._delta;
-            APP.everlive.online();
+            everlive.updateTimeStamp();
             APP.everlive.sync();
 
         }
@@ -101,6 +132,7 @@ var everlive = {
                     everlive._authenticating = false;
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
+                        everlive._syncComplete = false;
                         userModel.initialView = '#usersignin';
                     } else {
                         userModel.initialView = '#newuserhome';
@@ -109,6 +141,7 @@ var everlive = {
                 } else if (status === "authenticated") {
                     everlive._authenticating = false;
                     everlive._signedIn = true;
+                    everlive._syncComplete = false;
                     everlive.loadUserData();
                     deviceModel.syncEverlive();
                     userModel.initialView = '#home';
@@ -125,6 +158,14 @@ var everlive = {
 
                 }
 
+            } else {
+                if (error.code === 1003) {
+                    setTimeout(function(){
+                        everlive.isUserSignedIn();
+                    }, 3000);
+                } else {
+                    mobileNotify("Authentication error " + JSON.stringify(error));
+                }
             }
         });
 
@@ -258,21 +299,30 @@ var everlive = {
         if (updateObj.useIdenticon) {
             updateObj.photo = null;     //Don't store the image on the cloud -- just create it when the user logs in.
         }
-
-        updateObj.privateKey = GibberishAES.enc(updateObj.privateKey, userModel.key);
+        
         if (updateObj.RSAKey !== undefined) {
             delete updateObj.RSAKey;
         }
 
 
-        APP.everlive.Users.updateSingle(updateObj,
-            function(data){
-                var result = data.result;
-                updateObj.privateKey = GibberishAES.dec(updateObj.privateKey, userModel.key);
-            },
-            function(error){
-                mobileNotify("User Update Error : " + JSON.stringify(error));
-            });
+        if (deviceModel.isOnline()) {
+            APP.everlive.online();
+            userModel._needSync = false;
+            APP.everlive.Users.updateSingle(updateObj,
+                function (data) {
+                    var result = data.result;
+                },
+                function (error) {
+                    if (error.code === 107) {
+                        mobileNotify("Deferring User Update...");
+                    } else {
+                        console.log("User Update Error : " + JSON.stringify(error));
+                    }
+
+                });
+        } else {
+            userModel._needSync = true;
+        }
     },
 
     updateUserStatus : function () {
@@ -284,18 +334,29 @@ var everlive = {
         updateObj.currentPlace  = userModel._user.currentPlace;
         updateObj.lat  = userModel._user.lat;
         updateObj.lng  = userModel._user.lng;
+        updateObj.geoPoint = {longitude:  updateObj.lng, latitude: updateObj.lat};
         updateObj.googlePlaceId  = userModel._user.googlePlaceId;
         updateObj.currentPlaceUUID  = userModel._user.currentPlaceUUID;
         updateObj.isCheckedIn  = userModel._user.isCheckedIn;
-        APP.everlive.Users.updateSingle(updateObj,
-            function(data){
-                var result = data.result;
-              
-            },
-            function(error){
-                mobileNotify("User Status Update Error : " + JSON.stringify(error));
-            });
-       
+
+        if (deviceModel.isOnline()) {
+            APP.everlive.online();
+            userModel._needStatusSync = false;
+            APP.everlive.Users.updateSingle(updateObj,
+                function(data){
+                    var result = data.result;
+                  
+                },
+                function(error){
+                    if (error.code === 107) {
+                        mobileNotify("Deferring User Status Update...");
+                    } else {
+                        console.log("User Update Status Error : " + JSON.stringify(error));
+                    }
+                });
+        } else {
+            userModel._needStatusSync = true;
+        }
 
     },
     
@@ -437,23 +498,59 @@ var everlive = {
             });
     },
 
+    clearAccount : function () {
+
+    },
+
     clearAuthentication : function () {
+
         APP.everlive.authentication.clearAuthorization();
+        APP.everlive.authentication.clearPersistedAuthentication();
+        APP.everlive.users.logout();
        
     },
 
+    clearLocalStorage : function (callback) {
+        APP.everlive.offlineStorage.purgeAll(
+            function (data) {
+                mobileNotify("Device storage erased");
+                if (callback !== undefined) {
+                    callback(null);
+                }
+        }, function (error) {
+                if (error !== null) {
+                    mobileNotify("Error clearing device storage : " + JSON.stringify(error));
+                }
+                if (callback !== undefined) {
+                    callback(error);
+                }
+            });
+    },
+    
     syncStart : function () {
-        mobileNotify("Syncing with Everlive");
+
+        //$('#modalview-syncEverlive').kendoMobileModalView("open");
+        everlive._syncInProgress = true;
     },
 
     syncEnd : function (syncInfo)  {
-        var err = syncInfo.error;
-        if (err) {
-            mobileNotify('Kendo Sync Error : ' + JSON.stringify(err));
-        } else if (err === '') {
-            mobileNotify('Kendo Sync Error : unknown...');
+        var err = syncInfo.error !== undefined;
+        var failedItems = syncInfo.failedItems, syncedItems = syncInfo.syncedItems;
+
+      //  $('#modalview-syncEverlive').kendoMobileModalView("close");
+        everlive._syncInProgress = false;
+        if (!everlive._syncComplete) {
+            everlive._syncComplete = true;
+            appDataChannel.history();
+            userDataChannel.history();
+            notificationModel.processUnreadChannels();
+
         }
-        notificationModel.processUnreadChannels();
+      
+        if (err ) {
+            mobileNotify('Cloud Sync Error : ' + JSON.stringify(syncInfo.error));
+        }
+
 
     }
 

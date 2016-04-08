@@ -230,14 +230,13 @@ var homeView = {
     dismissNotification : function (e) {
         _preventDefault(e);
         var $currentBtn = $(e.button[0]);
-        //var uuid = e.sender.element[0].attributes['data-uuid'].value;
-        var closeStatus = $currentBtn.hasClass("ggHome-close");
+        var uuid = e.sender.element[0].attributes['data-uuid'].value;
+        /*var closeStatus = $currentBtn.hasClass("ggHome-close");
 
-        if(closeStatus){
-            // todo - wire dismiss notification
-            console.log("dismissing notification");
-            //notificationModel.deleteNotificationById(uuid);
-        }
+        if(closeStatus) {*/
+        if (uuid !== undefined && uuid !== null)
+            notificationModel.deleteNotificationById(uuid);
+       /* }*/
     },
 
     onInit: function(e) {
@@ -254,6 +253,20 @@ var homeView = {
          }
          });
          */
+
+        $(".home-status").kendoTouch(
+
+            { doubletap: function (e) { mobileNotify("Double Tap: Open Hot Buttons!"); }
+        });
+
+        $(".footer-menu").kendoTouch({
+            multiTouch: true,
+            gesturestart: function (e) {
+                mobileNotify("Two Finger: Open Hot Buttons!");
+            }
+        });
+
+
 
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
@@ -371,7 +384,38 @@ var homeView = {
         if (notification !== undefined) {
             var type = notification.type, href = notification.href;
 
-            if (type === notificationModel._unreadCount || type === notificationModel._newChat || type === notificationModel._newPrivate) {
+            if (type === notificationModel._newPrivate) {
+                var channelId = notification.privateId;
+                var checkChannel = channelModel.findChannelModel(channelId);
+                if (checkChannel === undefined || checkChannel === null) {
+                    mobileNotify("Creating  : " + notification.title + "...");
+                    var contact = contactModel.findContact(channelId);
+                    if (contact !== null) {
+                        channelModel.addPrivateChannel(channelId, contact.publicKey, contact.name);
+                        APP.kendo.navigate(href);
+                    }
+
+                } else {
+                    APP.kendo.navigate(href);
+                }
+            } else if (type === notificationModel._newChat) {
+                var chanId = notification.privateId;
+                var checkChan = channelModel.findChannelModel(chanId);
+                if (checkChannel === undefined || checkChannel === null) {
+                    mobileNotify("Looking up " + notification.title);
+                   channelModel.queryChannelMap(chanId, function(error, chanObj){
+                       mobileNotify("Creating chat : " + chanObj.name + "...");
+                        channelModel.addMemberChannel(chanObj.channelUUID, chanObj.name, chanObj,description, chanObj.members,
+                        chanObj.ownerUUID, chanObj.ownerName, chanObj.options, false);
+
+                       APP.kendo.navigate(href);
+                   });
+
+                } else {
+                    APP.kendo.navigate(href);
+                }
+
+            } else  if (type === notificationModel._unreadCount) {
                 // For unread messages, new chats (including private chats) the action is to go to the the chat....
                 APP.kendo.navigate(href);
             } else if (type === notificationModel._deleteChat || type === notificationModel._deletePrivateChat) {
@@ -463,7 +507,7 @@ var userStatusView = {
             userModel._user.set('userUUID', null);
             userModel._user.set('rememberUsername', false);
             deviceModel.resetDeviceState();
-
+            everlive.clearLocalStorage();
             userStatusView.closeModal();
             APP.kendo.navigate('#usersignin');
         });
@@ -780,9 +824,18 @@ var ghostEditView = {
     closeModal : function (e) {
         _preventDefault(e);
         $('#ghostEditModal').data('kendoMobileModalView').close();
-        if (ghostEditView._callback  !== null) {
-            ghostEditView._callback();
+        if (ghostEditView._callback  === 'contactaction') {
+
+            contactActionView.restoreModal();
         }
+
+        if (ghostEditView._returnview !== null) {
+            APP.kendo.navigate('#'+ghostEditView._returnview);
+        }
+
+       /* if (ghostEditView._callback  !== null) {
+            ghostEditView._callback();
+        }*/
     },
 
     sendGhostEmail : function (e) {
@@ -948,19 +1001,21 @@ var signUpView = {
                         }
                     }
 
-                    // Allow numeric (and tab, backspace, delete) keys only
-                    return (key == 8 ||
-                    key == 9 ||
-                    key == 46 ||
-                    (key >= 48 && key <= 57) ||
-                    (key >= 96 && key <= 105));
-                })
-                .keyup(function(e){
-                    if ($(this).val().length === 14) {
-                        continueSignUp();
-                        $('#home-signup-phone').unbind("keyup");
-                    }
-                })
+
+                // Allow numeric (and tab, backspace, delete) keys only
+                return (key == 8 ||
+                key == 9 ||
+                key == 46 ||
+                (key >= 48 && key <= 57) ||
+                (key >= 96 && key <= 105));
+            })
+            .keyup(function(e){
+                if ($(this).val().length === 14) {
+                    signUpView.continueSignUp();
+                    $('#home-signup-phone').unbind("keyup");
+                }
+            })
+
 
                 .bind('focus click', function () {
                     var $phone = $(this);
@@ -1007,7 +1062,13 @@ var signUpView = {
         
     },
 
+    continueSignUp : function () {
 
+        $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
+        // ToDo - Add step form validation
+        $("#createAccountBtn").velocity("fadeIn", {delay: 800});
+
+    },
 
     validate : function (e) {
         e.preventDefault();
@@ -1123,7 +1184,8 @@ var signUpView = {
 
         // clear any previous account informaton for this device
         everlive.clearAuthentication();
-
+        everlive.clearLocalStorage();
+        
         // clean up the phone number and ensure it's prefixed with 1
         // phone = phone.replace(/\+[0-9]{1-2}/,'');
         phone = unformatPhoneNumber(phone);
@@ -1443,6 +1505,7 @@ var signInView = {
         // clear any previous account informaton for this device
         everlive.clearAuthentication();
         
+
         var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
 
         mobileNotify("Signing you in to ghostgrams....");

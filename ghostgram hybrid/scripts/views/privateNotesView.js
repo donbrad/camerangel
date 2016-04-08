@@ -317,7 +317,7 @@ var privateNotesView = {
       //  privateNoteModel.notesDS.sync();
         privateNotesView.scrollToBottom();
 
-        deviceModel.syncEverlive();
+        //deviceModel.syncEverlive();
 
     },
 

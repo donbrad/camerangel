@@ -64,7 +64,22 @@ var galleryView = {
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
 
+            $("#gallery-listview").kendoMobileListView({
+                dataSource: photoModel.photosDS,
+                template: $("#gallery-template").html(),
+                click : function (e) {
+                    _preventDefault(e);
 
+                    var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+                    modalPhotoView.openModal(photo);
+                }
+                /*dataBound: function(e){
+                    ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
+                }*/
+            });
+            
+            //data-source="photoModel.photosDS" data-template="gallery-template" data-click="galleryView.galleryClick"
             $("#gallery .gg_mainSearchInput").on('input', function() {
                 var query = this.value;
                 if (query.length > 0) {
@@ -236,6 +251,32 @@ var galleryView = {
         $("#gallerySearch").attr("placeholder", "Search All");
     },
 
+    getDisplayUrl : function (photouuid, device, image, thumb) {
+        var filename = photouuid.replace(/-/g,'');
+        var uniqueNewFilename = "photo_" + filename + ".jpg";
+        var store = cordova.file.dataDirectory;
+        var localUrl = store +  uniqueNewFilename;
+
+        window.resolveLocalFileSystemURL(localUrl, 
+            function() {
+                
+            },
+            function () {
+                var fileTransfer = new FileTransfer();
+                fileTransfer.download(image, localUrl,
+                    function(entry) {
+                        photoModel.updateLocalUrl(photouuid, localUrl);
+                    },
+                    function(err) {
+                        mobileNotify("Photo cache error " + JSON.stringify(err));
+                        console.dir(err);
+                    });
+            });
+        
+        return(image);
+    },
+
+
     galleryClick : function (e) {
         _preventDefault(e);
         
@@ -280,7 +321,10 @@ var galleryView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            null  // Current channel Id for offers
+            null,  // Current channel Id for offers
+            function (photoUUID, displayUrl) {
+
+            }
         );
     },
 
@@ -291,7 +335,10 @@ var galleryView = {
             1600, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            null // Current channel Id for offers
+            null, // Current channel Id for offers
+            function (photoUUID, displayUrl) {
+                
+            }
         );
     },
     sharePhoto: function (e)  {

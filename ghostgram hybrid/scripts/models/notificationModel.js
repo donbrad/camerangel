@@ -72,6 +72,26 @@ var notificationModel = {
         return(item);
     },
 
+    findNotificationByUUID : function (uuid) {
+        var query = [
+            { field: "uuid", operator: "eq", value: uuid }
+        ];
+        if (query === undefined)
+            return(undefined);
+        var dataSource = notificationModel.notificationDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var item = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(item);
+    },
+
     queryNotification : function (query) {
         if (query === undefined)
             return(undefined);
@@ -120,14 +140,32 @@ var notificationModel = {
             this.dismissable = dismissable ? dismissable : false
     },
 
+    _cleanDupNotifications : function (noteId) {
+        var noteList = notificationModel.findNotificationByUUID(noteId);
+
+        if (noteList !== undefined && noteList.length > 0) {
+            if (noteList.length > 1) {
+                for (var i=0; i< noteList.length; i++) {
+                    var note = noteList[i];
+
+                    if (note.Id === undefined) {
+                        mobileNotify("Cleaning duplicate notification");
+                        notificationModel.notificationsDS.remove(note);
+                    }
+                }
+            }
+        }
+    },
+
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
 
+        notificationModel.notificationDS.add(notification);
         everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Notification " + JSON.stringify(error));
             } else {
-                notificationModel.notificationDS.add(notification);
+                notificationModel._cleanDupNotifications(notification.uuid);
             }
         });
 

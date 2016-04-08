@@ -61,7 +61,6 @@ var devicePhoto = {
         }
         var pictureSource = navigator.camera.PictureSourceType;   // picture source
         var encodingType = navigator.camera.EncodingType;
-
         var destinationType = navigator.camera.DestinationType; // sets the format of returned value
 
         var saveToAlbum = userModel._user.get('saveToPhotoAlbum');
@@ -77,14 +76,23 @@ var devicePhoto = {
         navigator.camera.getPicture(
             function (imageData) {
                 var photouuid = uuid.v4();
-                var imageUrl = imageData;
+                var imageObj = JSON.parse(imageData);
+                var metaObj = JSON.parse(imageObj.json_metadata);
+                var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
+                var imageUrl = imageObj.filename;
                 if (device.platform === 'iOS') {
-                    imageUrl = imageData.replace('file://', '');
+                    imageUrl = imageUrl.replace('file://', '');
                 }
                 var localUrl = null;
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
+                PhotoExif.readData(imageUrl, function(exifObject) {
+                    if (exifObject !== undefined) {
+                        devicePhoto.currentPhoto.exif = exifObject;
+                        console.log(exifObject);
+                    }
 
+                });
                 // Create a local copy of the
                 window.resolveLocalFileSystemURL(imageData, function fileEntrySuccess(fileEntry) {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
@@ -96,6 +104,11 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.imageUrl = null;
                             devicePhoto.currentPhoto.imageFile = null;
+                            devicePhoto.currentPhoto.lat = lat;
+                            devicePhoto.currentPhoto.lng = lat;
+                            devicePhoto.currentPhoto.alt = altitude;
+                            devicePhoto.currentPhoto.date = date;
+                            devicePhoto.currentPhoto.time = time;
                             var uri = nativeUrl;
 
                             if (device.platform === 'iOS') {
@@ -202,26 +215,30 @@ var devicePhoto = {
 
         var pictureSource = navigator.camera.PictureSourceType;   // picture source
         var destinationType = navigator.camera.DestinationType; // sets the format of returned value
-
+        var encodingType = navigator.camera.EncodingType;
 
         // Android storage is seriously different -- multiple photo directories with different permissions.
         // So need to get a data url in our space rather an direct link to the image in current storage
         var options = {
-            sourceType: pictureSource.SAVEDPHOTOALBUM,
+            //sourceType: pictureSource.SAVEDPHOTOALBUM,
+            sourceType: pictureSource.PHOTOLIBRARY,
             destinationType: destinationType.FILE_URI
         };
 
-        if (device.platform === 'iOS') {
+       /* if (device.platform === 'iOS') {
             options.destinationType = destinationType.NATIVE_URI;
-        }
+        }*/
 
         navigator.camera.getPicture(
             function (imageData) {
                 var photouuid = uuid.v4();
-                var imageUrl = imageData;
-               /* if (device.platform === 'iOS') {
-                    imageUrl = imageData.replace('file://', '');
-                }*/
+                var imageObj = JSON.parse(imageData);
+                var metaObj = JSON.parse(imageObj.json_metadata);
+                var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
+                var imageUrl = imageObj.filename;
+               if (device.platform === 'iOS') {
+                    imageUrl = imageUrl.replace('file://', '');
+                }
 
             /*    if (device.platform === 'Android') {
                   imageUrl = imageData.replace('content://', '');
@@ -231,16 +248,29 @@ var devicePhoto = {
                 var filename = photouuid.replace(/-/g,'');
 
 
+                PhotoExif.readData(imageUrl, function(exifObject) {
+                    if (exifObject !== undefined) {
+                        devicePhoto.currentPhoto.exif = exifObject;
+                        console.log(exifObject);
+                    }
+
+                });
+
                 devicePhoto.currentPhoto.photoId = photouuid;
                 devicePhoto.currentPhoto.filename = filename;
                 devicePhoto.currentPhoto.imageUrl = null;
                 devicePhoto.currentPhoto.imageFile = null;
+                devicePhoto.currentPhoto.lat = lat;
+                devicePhoto.currentPhoto.lng = lat;
+                devicePhoto.currentPhoto.alt = altitude;
+                devicePhoto.currentPhoto.date = date;
+                devicePhoto.currentPhoto.time = time;
                 var uri = imageUrl;
 
-                /*if (device.platform === 'iOS') {
+                if (device.platform === 'iOS') {
                     nativeUrl = nativeUrl.replace('file://', '');
                     uri = nativeUrl;
-                }*/
+                }
                 devicePhoto.currentPhoto.phoneUrl = imageUrl;
 
 

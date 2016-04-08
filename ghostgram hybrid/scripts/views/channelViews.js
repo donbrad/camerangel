@@ -553,27 +553,30 @@ var editChannelView = {
 
         var membersDeleted = editChannelView.membersDeletedDS.data();
         //Send Delete messages to users deleted from the channel
-        for (var md = 0; md < membersDeleted.length; md++) {
-            var contactId = membersDeleted[md].contactUUID;
-            if (contactId !== null && ($.inArray(contactId, memberArray) == -1)) {  // if this user is still in the member array don't send a delete
-                // This is a ggMember -- send delete.
-                appDataChannel.groupChannelDelete(contactId, channelUUID,  editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
-            } else {
-                // Invited member -- need to look up userId by phone number before sending delete notification
-                var phone = editChannelView.membersDeleted[md].phone;
-                if (phone !== undefined && phone !== null) {
-                    memberdirectory.findMemberByPhone(phone, function (user) {
-                        if (user !== null) {
-                            var contactId = user.userUUID;
-                            appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
-                        }
+        if (membersDeleted !== undefined ) {
 
-                    });
+            for (var md = 0; md < membersDeleted.length; md++) {
+                var contactId = membersDeleted[md].contactUUID;
+                if (contactId !== null && ($.inArray(contactId, memberArray) == -1)) {  // if this user is still in the member array don't send a delete
+                    // This is a ggMember -- send delete.
+                    appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+                } else {
+                    // Invited member -- need to look up userId by phone number before sending delete notification
+                    var phone = editChannelView.membersDeleted[md].phone;
+                    if (phone !== undefined && phone !== null) {
+                        memberdirectory.findMemberByPhone(phone, function (user) {
+                            if (user !== null) {
+                                var contactId = user.userUUID;
+                                appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
+                            }
+
+                        });
+                    }
+
                 }
-
             }
         }
-
+        
         var membersAdded = editChannelView.membersAddedDS.data();
         //Send Invite messages to users added to channel
         for (var ma = 0; ma <  membersAdded.length; ma++) {
@@ -1090,7 +1093,7 @@ var channelView = {
             cordova.plugins.Keyboard.disableScroll(true); // false to enable again
         }
 */
-        channelView.openEditor();
+
         $("#messages-listview").data("kendoMobileListView").scroller().reset();
         channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
@@ -1099,8 +1102,17 @@ var channelView = {
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
-        channelView.toggleTitleTag();
+
         var channelUUID = e.view.params.channelUUID;
+        // This isn't privateNote so handle as private or group channel
+        var thisChannel = channelModel.findChannelModel(channelUUID);
+        if (thisChannel === undefined || thisChannel === null) {
+            mobileNotify("Chat -- chat doesn't exist : " + channelUUID);
+            return;
+        }
+
+        channelView.openEditor();
+        channelView.toggleTitleTag();
 
         if (e.view.params.returnview !== undefined){
             channelView._returnview = unpackParameter(e.view.params.returnview);
@@ -1122,12 +1134,6 @@ var channelView = {
         });*/
 
 
-        // This isn't privateNote so handle as private or group channel
-        var thisChannel = channelModel.findChannelModel(channelUUID);
-        if (thisChannel === null) {
-            mobileNotify("ChatView -- chat doesn't exist : " + channelUUID);
-            return;
-        }
 
         channelView._channel = thisChannel;
 
@@ -1160,12 +1166,7 @@ var channelView = {
             channelView.isPrivateChat = true;
             channelView.messageLock = true;
             channelView.setMessageLockIcon(channelView.messageLock);
-            // *** Private Channel ***
-            var contactKey = thisChannel.contactKey;
-            if (contactKey === undefined) {
-              mobileNotify("No public key for " + thisChannel.name);
-              return;
-            }
+
 
           $('#messagePresenceButton').hide();
 
@@ -1184,12 +1185,32 @@ var channelView = {
               channelView.privateContact = thisContact;
           }
 
+            // *** Private Channel ***
+            var contactKey = thisChannel.contactKey;
+            if (contactKey === undefined) {
+
+                contactKey = thisContact.publicKey;
+                if (contactKey === undefined) {
+                    mobileNotify("No public key for " + thisChannel.name);
+                    return;
+                }
+            }
+
           // Update private Chat name using combination of contact's name and alias.
 
           name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
         $("#channelName").text(name);
           // Show contact img in header
-        $('#channelImage').attr('src', thisContact.photo).removeClass("hidden");
+
+        if (thisContact.identicon === undefined || thisContact.identicon === null) {
+            thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
+        }
+
+        var photoUrl = thisContact.identicon;
+        if (thisContact.photo !== null) {
+            photoUrl = thisContact.photo;
+        }
+        $('#channelImage').attr('src', photoUrl).removeClass("hidden");
 
           privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
             channelView.messagesDS.data([]);
@@ -1386,7 +1407,7 @@ var channelView = {
             contact.uuid = uuid;
             contact.alias = 'New!';
             contact.name = 'Chat Member';
-            contact.photoUrl = 'images/ghost-blue.svg';
+            contact.photoUrl = contactModel.createIdenticon(uuid);
 
             if (channelView.newMembers[uuid] === undefined) {
                 channelView.newMembers[uuid] = uuid;
@@ -1401,7 +1422,10 @@ var channelView = {
             contact.uuid = data.userUUID;
             contact.alias = data.alias;
             contact.name = data.name;
-            contact.photoUrl = data.photo;
+            contact.photoUrl = data.identicon;
+            if (data.photo !== null) {
+                contact.photoUrl = contact.photo;
+            }
         }
 
         return(contact);
@@ -1430,6 +1454,7 @@ var channelView = {
                 contact.alias = userModel._user.alias;
                 contact.name = userModel._user.name;
                 contact.photo = userModel._user.photo;
+                contact.identicon = userModel._user.identicon;
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
                 channelView.memberList[contact.uuid] = contact;
@@ -1437,14 +1462,27 @@ var channelView = {
             } else {
                 var thisContact = contactModel.findContact(contactArray[i]);
                 if (thisContact === undefined) {
+                    // No contact entry for this contact...
                     // Need to create a contact and then add to channels member list
                     var contactId = contactArray[i];
-                    contactModel.createChatContact(contactId, function (newContact) {
-                        channelView.memberList[contactId] = newContact;
-                        channelView.membersDS.add(newContact);
+                    contact.isContact = false;
+                    contact.uuid = guid.v4();
+                    contact.contactId = null;
+                    contact.alias = "new";
+                    contact.name = "New contact...";
+                    contact.photo = null;
+                    contact.identicon = contactModel.createIdenticon(contact.uuid);
+                    contact.publicKey = null;
+                    contact.isPresent = false;
+                    contact.processing = true;
+
+                    channelView.memberList[contactId] = contact;
+                    channelView.membersDS.add(contact);
+                    channelView.membersDS.sync();
+                    
+                    contactModel.createChatContact(contactId, contact.uuid,  function (newContact) {
+
                     });
-
-
                 } else {
                     contact.isContact = true;
                     contact.uuid = contactArray[i];
@@ -1452,10 +1490,17 @@ var channelView = {
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
                     contact.photo = thisContact.photo;
+                    if (thisContact.identicon === null) {
+                        thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
+                    }
+                    if (thisContact.photo === null) {
+                        contact.photo = thisContact.identicon;
+                    }
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
-                   channelView.memberList[contact.uuid] = contact;
-                   channelView.membersDS.add(contact);
+                       channelView.memberList[contact.uuid] = contact;
+                       channelView.membersDS.add(contact);
+                    channelView.membersDS.sync();
                 }
             }
         }
@@ -1477,7 +1522,8 @@ var channelView = {
     archiveMessage : function (e) {
         _preventDefault(e);
 
-        // close out li
+        mobileNotify("Archive is under development...");
+      /*  // close out li
         $(".selectedLI").velocity("slideUp", {delay: 150});
 
         //mobileNotify("message archived");
@@ -1496,7 +1542,7 @@ var channelView = {
 
         // ToDo - wire up requests
         //APP.kendo.navigate("#modalview-requestContent");
-        $("#modalview-requestContent").data("kendoMobileModalView").open();
+        $("#modalview-requestContent").data("kendoMobileModalView").open();*/
     },
 
     findChatMember: function (contactUUID) {

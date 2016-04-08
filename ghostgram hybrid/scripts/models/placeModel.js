@@ -310,6 +310,7 @@ var placesModel = {
         placeObj.set('address', place.address);
         placeObj.set('lat', place.lat);
         placeObj.set('lng', place.lng);
+        placeObj.set('geoPoint', {longitude: place.lng, latitude: place.lat});
         placeObj.set('distance', 0);
         placeObj.set('type', place.type);
         placeObj.set('city', place.city);
@@ -323,6 +324,7 @@ var placesModel = {
         placeObj.set('isPrivate', true);
         placeObj.set('hasPlaceChat', true);
         placeObj.set('placeChatId', placeChatId);
+        placeObj.set('placeRadius', 1000);
 
         var distance = getDistanceInMiles(mapModel.lat, mapModel.lng, place.lat, place.lng);
 
@@ -413,6 +415,8 @@ var placesModel = {
         placeObj.set('isPrivate', true);
         placeObj.set('hasPlaceChat', false);
         placeObj.set('placeChatId', null);
+        placeObj.set('placeRadius', 1000);
+
 
         if (createChatFlag) {
             placeObj.set('hasPlaceChat', true);
@@ -474,8 +478,7 @@ var placesModel = {
                         placesModel.placesDS.remove(place);
                     });
                 }
-                // Delete the parse object directly
-                //deleteParseObject('places',"uuid", placeUUID);
+    
             }
 
         }

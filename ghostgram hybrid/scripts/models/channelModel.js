@@ -447,7 +447,7 @@ var channelModel = {
         }
     },
 
-    syncParseChannels : function (callback) {
+/*    syncParseChannels : function (callback) {
         // Only sync channels for users with atleast email or phone validated
 
        if (userModel._user.phoneValidated || userModel._user.emailValidated)  {
@@ -482,7 +482,7 @@ var channelModel = {
                }
            });
        }
-    },
+    },*/
 
     updateChannel : function (channelUUID, channelName, channelDescription, channelMembers) {
         var channel = channelModel.findChannelModel(channelUUID);
@@ -581,6 +581,20 @@ var channelModel = {
         return(channel);*/
     },
 
+
+    findChannelList: function (channelUUID) {
+
+        return(channelModel.queryChannels({ field: "channelUUID", operator: "eq", value: channelUUID }));
+
+        /*var dataSource =  channelModel.channelsDS;
+         dataSource.filter( { field: "channelUUID", operator: "eq", value: channelUUID });
+         var view = dataSource.view();
+         var channel = view[0];
+         dataSource.filter([]);
+
+         return(channel);*/
+    },
+
     findChannelByName: function (channelName) {
 
         return(channelModel.queryChannel({ field: "name", operator: "eq", value: channelName }));
@@ -612,52 +626,46 @@ var channelModel = {
         return(channel);
     },
 
-/*
-    // update current private channels based on channelList passed
-    updatePrivateChannels : function (channelKeys, channelList) {
-        if (channelList === undefined || channelList.length === 0) {
-            return;
-        }
-        var uuid = userModel._user.userUUID;
+    _cleanDupChannels : function (channelId) {
+        var channelList = channelModel.findChannelList(channelId);
 
-        for (var i=0; i<channelKeys.length; i++) {
-            var key = channelKeys[i];
+        if (channelList !== undefined && channelList.length > 0) {
+            if (channelList.length > 1) {
+                for (var i=0; i< channelList.length; i++) {
+                    var channel = channelList[i];
 
-            var channel = channelModel.findPrivateChannel(key),
-                count = channelList[i];
-            if (channel === undefined) {
-                // private channel doesn't exist
-                var contact = contactModel.findContactByUUID(key);
-                if (contact !== undefined) {
-                    channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
+                    if (channel.Id === undefined) {
+                        mobileNotify("Cleaning duplicate channel");
+                        channelModel.channelsDS.remove(channel);
+                    }
                 }
             }
-
-            if (count !== 0) {
-                notificationModel.addUnreadNotification(channel.channelUUID, 'Private: ' + channel.name, channelList[i])
-            }
         }
-
     },
-*/
-
 
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName, callback) {
-        var channel = channelModel.findChannelModel(contactUUID);
-        if (channel !== undefined)  {
+        var channelCheck = channelModel.findChannelModel(contactUUID);
+        if (channelCheck !== undefined)  {
             // Channel already exists
+            if (callback !== undefined) {
+                callback(null, channelCheck);
+            }
             return;
         }
 
        /* var Channels = Parse.Object.extend(channelModel._cloudClass);*/
         var channel = new kendo.data.ObservableObject();
         var addTime = ggTime.currentTime();
+        channel.set('ggType', channelModel._ggClass);
         channel.set("version", channelModel._version);
         channel.set("name", contactName);
         channel.set("isOwner", true);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
+        channel.set('isPrivatePlace', false);
+        channel.set('placeUUID', null);
+        channel.set('placeName', null);
         channel.set('isDeleted', false);
         channel.set('isMuted', false);
         channel.set('category', 'Private');
@@ -674,6 +682,11 @@ var channelModel = {
         channel.set('contactKey', contactPublicKey);
         channel.set("members", [userModel._user.userUUID, contactUUID]);
 
+        channelModel.channelsDS.add(channel);
+        channelModel.channelsDS.sync();
+        if (callback !== undefined) {
+            callback(null, channel);
+        }
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
@@ -682,10 +695,8 @@ var channelModel = {
                 }
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
             } else {
-                    channelModel.channelsDS.add(channel);
-                    if (callback !== undefined) {
-                        callback(null, data);
-                    }
+
+                channelModel._cleanDupChannels(contactUUID);
             }
         });
 
@@ -695,6 +706,26 @@ var channelModel = {
 
     },
 
+    syncChatContacts : function (memberList) {
+        if (memberList === undefined || memberList.length === 0) {
+            return;
+        }
+
+        for (var i=0; i<memberList.length; i++ ) {
+            var contactUUID = memberList[i];
+            var contact = contactModel.findContact(contactUUID);
+            if (contact === undefined) {
+                contactModel.createChatContact(contactUUID, function (data, error){
+                    if (error !== null) {
+                        mobileNotify ("Error creating Chat contact " + JSON.stringify(error));
+                    }
+                })
+                
+            }
+        }
+
+
+    },
 
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
@@ -757,12 +788,16 @@ var channelModel = {
         channel.set("members", channelMembers);
         channel.set("invitedMembers", []);
 
+        channelModel.channelsDS.add(channel);
+        channelModel.channelsDS.sync();
+
+        channelModel.syncChatContacts(channelMembers);
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
             } else {
-                channelModel.channelsDS.add(channel);
+                channelModel._cleanDupChannels(channel.channelUUID);
             }
         });
        /* channelModel.channelsDS.add(channel);
@@ -804,7 +839,6 @@ var channelModel = {
 
         channel.set('version', channelModel._version);
         channel.set('ggType', channelModel._ggClass);
-        channel.set ('category', 'Place');
         channel.set('isMuted', false);
         channel.set('isDeleted', false);
         channel.set('isPrivate', false);
@@ -841,12 +875,13 @@ var channelModel = {
         channel.set("members", [ownerUUID]);
         channel.set("invitedMembers", []);
 
+        channelModel.channelsDS.add(channel);
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
             } else {
-                channelModel.channelsDS.add(channel);
+                channelModel._cleanDupChannels(channel.channelUUID);
             }
         });
     /*    channelModel.channelsDS.add(channel);
@@ -1058,6 +1093,11 @@ var channelModel = {
         var mapObj = {};
         mapObj.channelUUID = channel.channelUUID;
         mapObj.channelName = channel.channelName;
+        mapObj.isPlace = channel.isPlace;
+        mapObj.isPrivatePlace = channel.isPrivatePlace;
+        mapObj.placeUUID = channel.placeUUID;
+        mapObj.placeName = channel.placeName;
+        mapObj.category = channel.category;
         mapObj.ownerUUID = channel.ownerUUID;
         mapObj.members = channel.members;
         mapObj.invitedMembers = channel.invitedMembers;
@@ -1080,6 +1120,11 @@ var channelModel = {
                     var mapObj = {Id : Id};
                     mapObj.channelUUID = channel.channelUUID;
                     mapObj.channelName = channel.channelName;
+                    mapObj.isPlace = channel.isPlace;
+                    mapObj.isPrivatePlace = channel.isPrivatePlace;
+                    mapObj.placeUUID = channel.placeUUID;
+                    mapObj.placeName = channel.placeName;
+                    mapObj.category = channel.category;
                     mapObj.ownerUUID = channel.ownerUUID;
                     mapObj.members = channel.members;
                     mapObj.invitedMembers = channel.invitedMembers;

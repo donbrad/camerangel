@@ -1,0 +1,61 @@
+{
+  "name": "google-libphonenumber",
+  "version": "1.0.16",
+  "description": "A browserify-compatible wrapper for Google's libphonenumber.",
+  "author": {
+    "name": "Rui Marinho",
+    "email": "rui.marinho@seegno.com",
+    "url": "http://seegno.com"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "homepage": "http://seegno.github.io/google-libphonenumber/",
+  "bugs": "https://github.com/seegno/google-libphonenumber/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seegno/google-libphonenumber.git"
+  },
+  "main": "dist/libphonenumber.js",
+  "browser": "dist/browser/libphonenumber.js",
+  "keywords": [
+    "browserify",
+    "e164",
+    "format",
+    "formatting",
+    "international",
+    "libphonenumber",
+    "number",
+    "phone",
+    "phonenumber",
+    "rfc3966",
+    "standardize",
+    "wrapper"
+  ],
+  "options": {
+    "mocha": "--require should test"
+  },
+  "scripts": {
+    "build": "bin/build.sh",
+    "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,3ba' -e 'P;D' CHANGELOG.md",
+    "lint": "eslint src/index.js test && jscs src/index.js test",
+    "prepublish": "npm run build",
+    "test": "BROWSERIFY=false npm run build && npm run testonly",
+    "testonly": "mocha $npm_package_options_mocha",
+    "update": "bin/update.sh",
+    "version": "npm run changelog --future-release=$npm_package_version && npm run build && git add -A CHANGELOG.md dist"
+  },
+  "devDependencies": {
+    "babel-eslint": "^4.1.6",
+    "browserify": "^13.0.0",
+    "eslint": "^1.10.3",
+    "eslint-config-seegno": "^1.2.0",
+    "eslint-plugin-babel": "^3.0.0",
+    "jscs": "^2.7.0",
+    "jscs-config-seegno": "^1.1.0",
+    "minifyify": "^7.0.0",
+    "mocha": "^2.2.5",
+    "should": "^8.0.1"
+  },
+  "engines": {
+    "node": ">=0.10"
+  }
+}

@@ -395,16 +395,17 @@ var smartEvent = {
         smartOb.set('inviteList', objectIn.inviteList);
         smartOb.set('rsvpList', objectIn.rsvpList);
 
-
+        smartEvent.eventsDS.add(smartOb);
+        if (callback !== undefined && callback !== null) {
+            callback(smartOb);
+        }
+        
         everlive.createOne(smartEvent._cloudClass, smartOb, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Smart Event " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                smartEvent.eventsDS.add(smartOb);
-                if (callback !== undefined && callback !== null) {
-                    callback(smartOb);
-                }
+
 
             }
         });

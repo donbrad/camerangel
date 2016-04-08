@@ -58,9 +58,9 @@ var userDataChannel = {
             });
         }
 
-        userDataChannel.messagesDS.online(false);
+       /* userDataChannel.messagesDS.online(false);*/
         userDataChannel.messagesDS.fetch();
-        userDataChannel.history();
+       // userDataChannel.history();
 
         userDataChannel.expireMessages = setInterval(function(){  userDataChannel.removeExpiredMessages(); }, 60000);
 
@@ -121,7 +121,7 @@ var userDataChannel = {
                     userDataChannel.updateTimeStamp();
                     return;
                 }
-                var RSAKey = cryptico.privateKeyFromString(userModel._user.privateKey);
+                var RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
 

@@ -108,13 +108,7 @@ function initSignUp() {
 
 }
 
-function continueSignUp() {
 
-	$("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
-	// ToDo - Add step form validation
-	$("#createAccountBtn").velocity("fadeIn", {delay: 800});
-
-}
 
 function onShowSignIn(e){
 
