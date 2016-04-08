@@ -220,7 +220,7 @@ var userModel = {
 
         var publicKey = user.publicKey;
         var privateKey = user.privateKey;
-        if (publicKey === null || privateKey === null) {
+        if (publicKey === null  || publicKey === '' || privateKey === null || privateKey === '') {
             userModel.generateNewPrivateKey();
         }
         
