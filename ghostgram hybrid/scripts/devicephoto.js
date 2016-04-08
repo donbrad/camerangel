@@ -216,7 +216,9 @@ var devicePhoto = {
         // Android storage is seriously different -- multiple photo directories with different permissions.
         // So need to get a data url in our space rather an direct link to the image in current storage
         var options = {
-            sourceType: pictureSource.SAVEDPHOTOALBUM,
+            //sourceType: pictureSource.SAVEDPHOTOALBUM,
+            sourceType: pictureSource.PHOTOLIBRARY,
+            encodingType: encodingType.JPEG,
             destinationType: destinationType.FILE_URI
         };
 
