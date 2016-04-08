@@ -18,6 +18,9 @@ var userModel = {
     rememberUserName : false,
     recoverPassword: null,
     key : null,
+    privateKey : null,
+    publicKey: null,
+    RSAKey : null,
     userUUID: null,
     kendoInit : false,
     _needSync: false,
@@ -320,12 +323,15 @@ var userModel = {
         var publicKey = cryptico.publicKeyString(RSAkey);
         var privateKey = cryptico.privateKeyString(RSAkey);
         
-        userModel._RSAKey = RSAKey;
-        userModel._publicKey = publicKey;
-        userModel._privateKey = privateKey;
+        if (userModel.key === null) {
+            userModel.generateUserKey();
+        }
+        userModel.RSAKey = RSAKey;
+        userModel.publicKey = publicKey;
+        userModel.privateKey = privateKey;
 
-       // var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
-        userModel._user.set('privateKey', privateKey);
+        var newPrivateKey  = GibberishAES.enc(privateKey, userModel.key);
+        userModel._user.set('privateKey', newPrivateKey);
         userModel._user.set('publicKey',publicKey);
 
     },
@@ -376,10 +382,9 @@ var userModel = {
         var privateKey = userModel._user.get('privateKey');
         var newPrivateKey  = GibberishAES.dec(privateKey, userModel.key);
         var RSAKey = cryptico.privateKeyFromString(newPrivateKey);
-        userModel._user.set('privateKey', newPrivateKey);
-        userModel._user.set('RSAKey', RSAKey);
-        userModel._RSAKey = RSAKey;
-        userModel._privateKey = newPrivateKey;
+       
+        userModel.RSAKey = RSAKey;
+        userModel.privateKey = newPrivateKey;
 
     },
 
