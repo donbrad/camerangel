@@ -15,6 +15,7 @@
     <preference name="ShowSplashScreenSpinner" value="true" />
     <preference name="SuppressesIncrementalRendering" value="false" />
     <preference name="TopActivityIndicator" value="white" />
+	<preference name="CameraUsesGeolocation" value="true" />
 
     <!-- legacy preferences -->
     <!--
