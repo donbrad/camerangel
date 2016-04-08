@@ -1009,7 +1009,7 @@ var signUpView = {
             })
             .keyup(function(e){
                 if ($(this).val().length === 14) {
-                    continueSignUp();
+                    homeView.continueSignUp();
                     $('#home-signup-phone').unbind("keyup");
                 }
             })
@@ -1056,7 +1056,13 @@ var signUpView = {
         
     },
 
+    continueSignUp : function () {
 
+        $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
+        // ToDo - Add step form validation
+        $("#createAccountBtn").velocity("fadeIn", {delay: 800});
+
+    },
 
     validate : function (e) {
         e.preventDefault();
