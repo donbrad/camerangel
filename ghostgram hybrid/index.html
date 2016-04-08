@@ -3456,20 +3456,10 @@
 </script>
 
 <script type="text/x-kendo-template" id="gallery-template">
-	# var photoUrl = deviceUrl;
-	if (window.navigator.simulator !== undefined) {
-	   if (imageUrl !== null)
-			photoUrl = imageUrl
-	    else if (thumbnailUrl !== null)
-			photoUrl = thumbnailUrl;
-	}
-	if (photoUrl === null)
-		photoUrl = 'images/empty-gallery.svg';
-	#
+	# var photoUrl = galleryView.getDisplayUrl(uuid, deviceUrl, imageUrl, thumbnaiUrl);
+
 	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
-
-
-
+	
 </script>
 
 <script type="text/x-kendo-template" id="archive-header-template">

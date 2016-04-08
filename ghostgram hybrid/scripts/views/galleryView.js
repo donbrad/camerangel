@@ -251,6 +251,28 @@ var galleryView = {
         $("#gallerySearch").attr("placeholder", "Search All");
     },
 
+    getDisplayUrl : function (photouuid, device, image, thumb) {
+        var filename = photouuid.replace(/-/g,'');
+        var uniqueNewFilename = "photo_" + filename + ".jpg";
+        var store = cordova.file.dataDirectory;
+        var localUrl = store +  uniqueNewFilename;
+
+        window.resolveLocalFileSystemURL(localUrl, 
+            function() {return(device)}, 
+            function () {
+                var fileTransfer = new FileTransfer();
+                fileTransfer.download(image, localUrl,
+                    function(entry) {
+                    },
+                    function(err) {
+                        mobileNotify("Photo cache error " + JSON.stringify(err));
+                        console.dir(err);
+                    }); 
+                return(image);
+            });
+    },
+
+
     galleryClick : function (e) {
         _preventDefault(e);
         
