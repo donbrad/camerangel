@@ -846,7 +846,7 @@ var addContactView = {
                 contact.set("contactPhone", null);
                 contact.set("contactEmail", null);
 
-                var userUUID = userModel.currentUser.userUUID;
+                var userUUID = userModel._user.userUUID;
                 // Has this user already invited this contact?
                 invitedirectory.isInvited(phone, userUUID,  function (error, data) {
                    if (error === null) {
