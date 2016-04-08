@@ -3456,11 +3456,19 @@
 </script>
 
 <script type="text/x-kendo-template" id="gallery-template">
-	# if (imageUrl !== null) { #
-		<div class="galleryImg galleryImg-grid" style="background-image: url('#=imageUrl#')"> </div>
-	# } else { #
-		<div class="galleryImg galleryImg-grid" style="background-image: url('#=thumbnailUrl#')"> </div>
-	# } #
+	# var photoUrl = deviceUrl;
+	if (window.navigator.simulator !== undefined) {
+	   if (imageUrl !== null)
+			photoUrl = imageUrl
+	    else if (thumbnailUrl !== null)
+			photoUrl = thumbnailUrl;
+	}
+	if (photoUrl === null)
+		photoUrl = 'images/empty-gallery.svg';
+	#
+	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrll#')"> </div>
+
+
 
 </script>
 
