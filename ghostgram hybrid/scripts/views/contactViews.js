@@ -541,7 +541,7 @@ var addContactView = {
 
         $('#addContactEmail').on('blur', function () {
             var email = $('#addContactEmail').val();
-            if (!addContactView.validateContact(email)){
+            if (!addContactView.validateEmail(email)){
                 addContactView._emailValid = false;
                 mobileNotify(email + " + is not a valid email address");
             } else {
