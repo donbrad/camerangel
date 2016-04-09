@@ -668,10 +668,10 @@ var photoModel = {
 
         var lat = '0.0', lng ='0.0';
         if (devicePhoto.lat !== null) {
-            lat = mapModel.lat.toString();
+            lat = devicePhoto.lat.toString();
         }
         if (devicePhoto.lng !== null) {
-            lng = mapModel.lng.toString();
+            lng = devicePhoto.lng.toString();
         }
         photo.set('lat', lat);
         photo.set('lng', lng);
@@ -682,8 +682,15 @@ var photoModel = {
            alt = devicePhoto.alt;
         }
         photo.set('alt',alt);
-        
+        var timeStamp = new Date().getTime();
+        photo.set("timestamp", timeStamp);
+        var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
+        photo.set("dateString", timeStr);
+
+
         if (isCamera) {
+
+
             // If source is camera than we can use real time location information (not accurate for photos from gallery...)
             if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
                 var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
@@ -696,6 +703,11 @@ var photoModel = {
             }
 
         } else {
+            var dateStr = devicePhoto.date +  " " + devicePhoto.time;
+            timeStamp = moment(dataStr);
+            photo.set("timestamp", timeStamp);
+            timeStr = moment(dataStr).format('MMMM Do YYYY, h:mm');
+            photo.set("dateString", timeStr);
             photo.set('addressString', null);
             photo.set('placeUUID', null);
             photo.set('placeString', null);
