@@ -616,12 +616,8 @@ var photoModel = {
 
     },
 
-    addDevicePhoto: function (devicePhoto, callback) {
+    addDevicePhoto: function (devicePhoto, isCamera, callback) {
         mobileNotify("Adding  photo....");
-        // Todo: add additional processing to create Parse photoOffer
-      /*  var Photos = Parse.Object.extend(photoModel._cloudClass);
-        var photo = new Photos();
-*/
         var photo = new kendo.data.ObservableObject();
 
         //photo.setACL(userModel.parseACL);
@@ -671,26 +667,40 @@ var photoModel = {
         photo.set("dateString", timeStr);
 
         var lat = '0.0', lng ='0.0';
-        if (mapModel.lat !== null) {
+        if (devicePhoto.lat !== null) {
             lat = mapModel.lat.toString();
         }
-        if (mapModel.lng !== null) {
+        if (devicePhoto.lng !== null) {
             lng = mapModel.lng.toString();
         }
         photo.set('lat', lat);
         photo.set('lng', lng);
         photo.set('geoPoint', {longitude: parseFloat(lng), latitude: parseFloat(lat)});  // everlive format for geoPoint
 
-        if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
-            var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
-            photo.set('addressString', addressStr);
+        var alt = 0;
+        if (devicePhoto.alt !== undefined && devicePhoto.alt !== null) {
+           alt = devicePhoto.alt;
         }
+        photo.set('alt',alt);
+        
+        if (isCamera) {
+            // If source is camera than we can use real time location information (not accurate for photos from gallery...)
+            if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
+                var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
+                photo.set('addressString', addressStr);
+            }
 
-        if (userModel._user.currentPlaceUUID !== null) {
-            photo.set('placeUUID', userModel._user.currentPlaceUUID);
-            photo.set('placeString', userModel._user.currentPlace);
+            if (userModel._user.currentPlaceUUID !== null) {
+                photo.set('placeUUID', userModel._user.currentPlaceUUID);
+                photo.set('placeString', userModel._user.currentPlace);
+            }
+
+        } else {
+            photo.set('addressString', null);
+            photo.set('placeUUID', null);
+            photo.set('placeString', null);
         }
-
+       
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();

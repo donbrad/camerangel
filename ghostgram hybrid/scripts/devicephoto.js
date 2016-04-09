@@ -156,7 +156,7 @@ var devicePhoto = {
                                             devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                             devicePhoto.currentPhoto.publicId = photoData.public_id;
                                             devicePhoto.currentPhoto.uploadComplete = true;
-                                            photoModel.addDevicePhoto(devicePhoto.currentPhoto, function (error, photo) {
+                                            photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, function (error, photo) {
                                                 if (error === null) {
                                                     if (displayCallback !== undefined) {
                                                         displayCallback(photouuid, nativeUrl);
@@ -310,7 +310,7 @@ var devicePhoto = {
                                 devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                 devicePhoto.currentPhoto.publicId = photoData.public_id;
                                 devicePhoto.currentPhoto.uploadComplete = true;
-                                photoModel.addDevicePhoto(devicePhoto.currentPhoto, function (error, photo) {
+                                photoModel.addDevicePhoto(devicePhoto.currentPhoto, false, function (error, photo) {
                                     if (error === null) {
                                         if (displayCallback !== undefined) {
                                             displayCallback(photouuid, imageUrl);
