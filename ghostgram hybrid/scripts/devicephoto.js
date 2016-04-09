@@ -270,7 +270,9 @@ var devicePhoto = {
 */
                 devicePhoto.currentPhoto.photoId = photouuid;
                 devicePhoto.currentPhoto.filename = filename;
-                devicePhoto.currentPhoto.imageUrl = null;
+                devicePhoto.currentPhoto.imageUrl = imageUrl;
+                devicePhoto.currentPhoto.cloudUrl = null;
+                devicePhoto.currentPhoto.thumbnailUrl = imageUrl;
                 devicePhoto.currentPhoto.imageFile = null;
                 devicePhoto.currentPhoto.lat = lat;
                 devicePhoto.currentPhoto.lng = lat;
@@ -312,14 +314,12 @@ var devicePhoto = {
 
                         devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-
+                            
                             devicePhoto.currentPhoto.uploadComplete = false;
                             devicePhoto._uploadActive = true;
-                            devicePhoto.currentPhoto.uploadComplete = false;
-                            devicePhoto._uploadActive = true;
-                            devicePhoto.currentPhoto.imageUrl = image;
+                            devicePhoto.currentPhoto.imageUrl = imageUrl;
                             devicePhoto.currentPhoto.cloudUrl = null;
-                            devicePhoto.currentPhoto.thumbnailUrl = image;
+                            devicePhoto.currentPhoto.thumbnailUrl = imageUrl;
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto, false, function (error, photo) {
                                 if (error === null) {
                                     mobileNotify("Photo Cloud Save Error " + JSON.stringify(error));
