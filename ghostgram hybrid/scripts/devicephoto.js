@@ -265,12 +265,9 @@ var devicePhoto = {
                 devicePhoto.currentPhoto.alt = altitude;
                 devicePhoto.currentPhoto.date = date;
                 devicePhoto.currentPhoto.time = time;
-                var uri = imageUrl;
 
-                if (device.platform === 'iOS') {
-                    nativeUrl = nativeUrl.replace('file://', '');
-                    uri = nativeUrl;
-                }
+                var uri = imageUrl;
+                
                 devicePhoto.currentPhoto.phoneUrl = imageUrl;
 
 
