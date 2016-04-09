@@ -317,9 +317,9 @@ var devicePhoto = {
                             devicePhoto._uploadActive = true;
                             devicePhoto.currentPhoto.uploadComplete = false;
                             devicePhoto._uploadActive = true;
-                            devicePhoto.currentPhoto.imageUrl = nativeUrl;
+                            devicePhoto.currentPhoto.imageUrl = image;
                             devicePhoto.currentPhoto.cloudUrl = null;
-                            devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
+                            devicePhoto.currentPhoto.thumbnailUrl = image;
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto, false, function (error, photo) {
                                 if (error === null) {
                                     mobileNotify("Photo Cloud Save Error " + JSON.stringify(error));
