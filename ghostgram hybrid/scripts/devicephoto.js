@@ -17,7 +17,7 @@ var devicePhoto = {
     _cloudinaryThumb: 'http://res.cloudinary.com/ghostgrams/image/upload/c_scale,h_512,w_512/v1454612367/',
     _cloudinaryImage: 'http://res.cloudinary.com/ghostgrams/image/upload/v1454612367/',
 
-    cloudinaryUpload : function (photoId, photoData, folder, callback) {
+    cloudinaryUpload : function (photoUUID, photoId, photoData, folder, callback) {
         var formData = new FormData();
         formData.append('file', photoData);
         formData.append('api_key', 169985831568325);
@@ -39,7 +39,7 @@ var devicePhoto = {
             },
 
             success: function(responseData, textStatus, jqXHR) {
-
+                responseData.photoUUID = photoUUID;
                 callback(responseData, null);
 
             },
@@ -149,25 +149,37 @@ var devicePhoto = {
 
                                         devicePhoto.currentPhoto.uploadComplete = false;
                                         devicePhoto._uploadActive = true;
-
-                                        devicePhoto.cloudinaryUpload(filename, dataUrl, folder,  function (photoData) {
+                                        devicePhoto.currentPhoto.imageUrl = nativeUrl;
+                                        devicePhoto.currentPhoto.cloudUrl = null;
+                                        devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
+                                        if (displayCallback !== undefined) {
+                                            displayCallback(photouuid, nativeUrl);
+                                        }
+                                        photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, function (error, photo) {
+                                            if (error === null) {
+                                                mobileNotify("Photo Save Error : " + JSON.stringify(error));
+                                            }
+                                        });
+                                        
+                                        devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
+                                            var photoObj = photoModel.findPhotoById(photouuid);
+                                            
+                                            if (photoObj !== undefined) {
+                                                photoObj.imageUrl = photoData.url;
+                                                photoObj.cloudUrl = photoData.url;
+                                                photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
+                                                photoObj.publicId = photoData.public_id;
+                                            }
+                                            
+                                            photoModel.updateCloud(photoObj);
                                             devicePhoto._uploadActive = false;
-                                            devicePhoto.currentPhoto.imageUrl = photoData.url;
-                                            devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
-                                            devicePhoto.currentPhoto.publicId = photoData.public_id;
                                             devicePhoto.currentPhoto.uploadComplete = true;
-                                            photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, function (error, photo) {
-                                                if (error === null) {
-                                                    if (displayCallback !== undefined) {
-                                                        displayCallback(photouuid, nativeUrl);
-                                                    }
-                                                }
-                                            });
-                                           
-
-
-                                            //photoModel.addPhotoOffer(photouuid, channelUUID, parseFile._url, null, null , false);
-
+                                           /* devicePhoto.currentPhoto.imageUrl = photoData.url;
+                                            devicePhoto.currentPhoto.cloudUrl = photoData.url;
+                                            devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
+                                            devicePhoto.currentPhoto.publicId = photoData.public_id;*/
+                                            devicePhoto.currentPhoto.uploadComplete = true;
+                                            
 
                                         });
                                     });

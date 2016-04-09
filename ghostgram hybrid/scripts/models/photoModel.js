@@ -743,6 +743,13 @@ var photoModel = {
         
     },
 
+    updateCloud : function (photoObj)  {
+        everlive.updateOne(photoModel._cloudClass, photoObj, function (error, data) {
+            if (error !== null) {
+                mobileNotify("Cloud Photo Update Error : " + JSON.stringify(error));
+            }
+        });
+    },
 
     deletePhoto: function (photoId) {
         var photo = this.findPhotoById(photoId);
