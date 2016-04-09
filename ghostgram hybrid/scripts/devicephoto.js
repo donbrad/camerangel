@@ -306,9 +306,9 @@ var devicePhoto = {
                     function (image) {
 
                         var thumbNail = image;
-                        if (device.platform === 'iOS') {
+                        /*if (device.platform === 'iOS') {
                             thumbNail = image.replace('file://', '');
-                        }
+                        }*/
 
                         devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
@@ -594,6 +594,9 @@ var devicePhoto = {
             dataURL = canvas.toDataURL(outputFormat);
             callback(dataURL);
             canvas = null;
+        };
+        img.onerror = function () {
+
         };
         img.src = url;
     }
