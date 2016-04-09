@@ -661,11 +661,6 @@ var photoModel = {
             photo.set('channelName', null);
         }
 
-        var timeStamp = new Date().getTime();
-        photo.set("timestamp", timeStamp);
-        var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
-        photo.set("dateString", timeStr);
-
         var lat = '0.0', lng ='0.0';
         if (devicePhoto.lat !== null) {
             lat = devicePhoto.lat.toString();
@@ -690,7 +685,6 @@ var photoModel = {
 
         if (isCamera) {
 
-
             // If source is camera than we can use real time location information (not accurate for photos from gallery...)
             if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
                 var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
@@ -704,7 +698,7 @@ var photoModel = {
 
         } else {
             var dateStr = devicePhoto.date +  " " + devicePhoto.time;
-            timeStamp = moment(dataStr);
+            timeStamp = moment(dateStr);
             photo.set("timestamp", timeStamp);
             timeStr = moment(dataStr).format('MMMM Do YYYY, h:mm');
             photo.set("dateString", timeStr);
