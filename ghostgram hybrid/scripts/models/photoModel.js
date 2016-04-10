@@ -199,6 +199,10 @@ var photoModel = {
         return(offer);
     },
 
+    getUploadList : function () {
+        var uploadList = photoModel.queryPhotos({ field: "cloudUrl", operator: "eq", value: 'null' });
+        return (uploadList);
+    },
 
     findOfferById : function (offerId) {
 

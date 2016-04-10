@@ -750,6 +750,12 @@ function reverseGeoCode(lat, lng) {
 
 }
 
+
+function ggError(string) {
+	mobileNotify(string);
+	console.log(string);
+}
+
 function ggAddDays(startDate,numberOfDays)
 {
 
