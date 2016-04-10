@@ -661,12 +661,12 @@ var photoModel = {
             photo.set('channelName', null);
         }
 
-        var lat = '0.0', lng ='0.0';
+        var lat = 0.0, lng =0.0;
         if (devicePhoto.lat !== null) {
-            lat = devicePhoto.lat.toString();
+            lat = devicePhoto.lat;
         }
         if (devicePhoto.lng !== null) {
-            lng = devicePhoto.lng.toString();
+            lng = devicePhoto.lng;
         }
         photo.set('lat', lat);
         photo.set('lng', lng);
