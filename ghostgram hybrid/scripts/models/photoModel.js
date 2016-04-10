@@ -744,7 +744,7 @@ var photoModel = {
     updateCloud : function (photoObj)  {
         everlive.updateOne(photoModel._cloudClass, photoObj, function (error, data) {
             if (error !== null) {
-                mobileNotify("Cloud Photo Update Error : " + JSON.stringify(error));
+                ggError("Cloud Photo Update Error : " + JSON.stringify(error));
             }
         });
     },

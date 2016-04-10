@@ -315,7 +315,7 @@ var devicePhoto = {
                             }
 
                             devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData, error) {
-                                if (error !== null) {
+                                if (error === null) {
                                     var photoObj = photoModel.findPhotoById(photouuid);
 
                                     if (photoObj !== undefined) {
@@ -323,9 +323,9 @@ var devicePhoto = {
                                         photoObj.cloudUrl = photoData.url;
                                         photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                         photoObj.publicId = photoData.public_id;
+                                        photoModel.updateCloud(photoObj);
                                     }
-
-                                    photoModel.updateCloud(photoObj);
+                                    
                                     devicePhoto._uploadActive = false;
                                     devicePhoto.currentPhoto.uploadComplete = true;
                                     /* devicePhoto.currentPhoto.imageUrl = photoData.url;
