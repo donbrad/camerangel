@@ -1657,7 +1657,7 @@ var verifyPhoneModal = {
 var recoverPasswordView = {
     openModal: function (e) {
         var email = $("#home-signin-username").val();
-        
+
         // ux helper for quick user input
         if(email !== ''){
             $("#home-recoverPassword-email").val(email);
@@ -1675,7 +1675,7 @@ var recoverPasswordView = {
 
         var emailAddress = $("#home-recoverPassword-email").val();
         
-        APP.everlive.recoverPassword(emailAddress, function(error, data) {
+        everlive.recoverPassword(emailAddress, function(error, data) {
             if (error !== null) {
                 mobileNotify ("Password recovery error : " + JSON.stringify(error));
             } else {

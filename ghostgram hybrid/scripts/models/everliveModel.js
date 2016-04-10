@@ -270,7 +270,7 @@ var everlive = {
     },
     
     logout : function (callback) {
-        APP.everlive.users.logout().then(function () {
+        APP.everlive.authentication.logout().then(function () {
                 everlive._signedIn = false;
                 everlive._isAuthenticated = false;
                 callback(true);
@@ -523,9 +523,9 @@ var everlive = {
 
     clearAuthentication : function () {
 
-        APP.everlive.authentication.clearAuthorization();
-        APP.everlive.authentication.clearPersistedAuthentication();
-        APP.everlive.users.logout();
+     /*   APP.everlive.authentication.clearAuthorization();
+        APP.everlive.authentication.clearPersistedAuthentication();*/
+        APP.everlive.authentication.logout();
        
     },
 
