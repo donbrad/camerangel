@@ -128,7 +128,9 @@ var everlive = {
     isUserSignedIn : function () {
         everlive.checkAuthStatus(function (error, status) {
             if (error === null) {
-                if (status === "unauthenticated" || status === "invalidAuthentication" || status === "expiredAuthentication") {
+                if (status === "unauthenticated" || status === "invalidAuthentication" ||
+                    status === "expiredAuthentication" || status === "invalidAuthentication") {
+                    everlive.clearAuthentication();
                     everlive._authenticating = false;
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
@@ -184,6 +186,9 @@ var everlive = {
                     everlive._isAuthenticated = true;
 
                 } else if (data.status === "authenticating") {
+                    everlive._status = data.status;
+                    everlive._isAuthenticated = false;
+                } else if (data.status === "invalidAuthentication" ){
                     everlive._status = data.status;
                     everlive._isAuthenticated = false;
                 }
