@@ -129,8 +129,7 @@ var everlive = {
         everlive.checkAuthStatus(function (error, status) {
             if (error === null) {
                 if (status === "unauthenticated" || status === "invalidAuthentication" ||
-                    status === "expiredAuthentication" || status === "invalidAuthentication") {
-                    everlive.clearAuthentication();
+                    status === "expiredAuthentication" ) {
                     everlive._authenticating = false;
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
