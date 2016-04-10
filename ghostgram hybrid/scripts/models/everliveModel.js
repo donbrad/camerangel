@@ -293,6 +293,20 @@ var everlive = {
         );
     },
 
+    recoverPassword : function (email, callback) {
+        var attrs = {
+            Email: email
+        };
+        APP.everlive.users.resetPassword(attrs,
+            function (data) {
+                callback(null, true);
+            },
+            function (error) {
+                callback(error, false);
+            }
+        );
+
+    },
 
     updateUser : function () {
         var updateObj = userModel._user;

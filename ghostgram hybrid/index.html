@@ -569,7 +569,7 @@
 				<li>
 					<label>Password</label>
 					<input type="password" class="signupForm" id="home-signin-password" value=""  name="Password"  required />
-					<span id="forgotPassword" class="btnClear-grey" data-click="signInView.openForgotPassword" data-role="button">Forgot password?</span>
+					<span id="forgotPassword" class="btnClear-grey" data-click="recoverPasswordView.openModal" data-role="button">Forgot password?</span>
 				</li>
 				<li>
 					<label>
@@ -706,7 +706,7 @@
 <div data-role="modalview" id="modalview-recoverPassword"  style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">
 	    <h2>Password Recovery
-	        <a class="closeBox" data-click="ux.closeModalViewRecoverPassword" data-role="button" style="float: right;">
+	        <a class="closeBox" data-click="recoverPasswordView.closeModal" data-role="button" style="float: right;">
 	            <img src="images/close.svg" />
 	        </a>
 	    </h2>
@@ -715,7 +715,7 @@
 	    </label>
 	</div>
 	<div data-role="footer">
-		<a class="btnSpan-btm btnPrimary" data-click="homeRecoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
+		<a class="btnSpan-btm btnPrimary" data-click="recoverPasswordView.recoverPassword" id="modalview-recoverPassword-button" type="button" data-role="button">Send</a>
 	</div>
 </div>
 
