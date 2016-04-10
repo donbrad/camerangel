@@ -700,7 +700,7 @@ var photoModel = {
             var dateStr = devicePhoto.date +  " " + devicePhoto.time;
             timeStamp = moment(dateStr);
             photo.set("timestamp", timeStamp);
-            timeStr = moment(dateStr).format('MMMM Do YYYY, h:mm');
+            timeStr = moment(timeStamp).format('MMMM Do YYYY, h:mm');
             photo.set("dateString", timeStr);
             photo.set('addressString', null);
             photo.set('placeUUID', null);
