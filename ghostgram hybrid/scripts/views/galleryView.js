@@ -268,7 +268,7 @@ var galleryView = {
                         photoModel.updateLocalUrl(photouuid, localUrl);
                     },
                     function(err) {
-                        mobileNotify("Photo cache error " + JSON.stringify(err));
+                        ggError("Photo cache error " + JSON.stringify(err));
                         console.dir(err);
                     });
             });
