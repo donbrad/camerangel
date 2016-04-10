@@ -223,7 +223,7 @@ var everlive = {
     },
 
     login : function (username, password, callback) {
-        APP.everlive.users.login(username, password,
+        APP.everlive.authentication.login(username, password,
             function (data) {
                 everlive._token = data.result.access_token;
                 everlive._tokenType = data.result.token_type;
