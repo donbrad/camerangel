@@ -308,18 +308,18 @@ var devicePhoto = {
                     function (image) {
 
                         var thumbNail = image;
-                        /*if (device.platform === 'iOS') {
+                        if (device.platform === 'iOS') {
                             thumbNail = image.replace('file://', '');
-                        }*/
+                        }
 
-                        devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+                        devicePhoto.convertImgToDataURL(image, function (dataUrl) {
                             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-                            
+
                             devicePhoto.currentPhoto.uploadComplete = false;
                             devicePhoto._uploadActive = true;
-                            devicePhoto.currentPhoto.imageUrl = imageUrl;
+                            devicePhoto.currentPhoto.imageUrl = thumbNail;
                             devicePhoto.currentPhoto.cloudUrl = null;
-                            devicePhoto.currentPhoto.thumbnailUrl = imageUrl;
+                            devicePhoto.currentPhoto.thumbnailUrl = thumbNail;
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto, false, function (error, photo) {
                                 if (error === null) {
                                     mobileNotify("Photo Cloud Save Error " + JSON.stringify(error));
