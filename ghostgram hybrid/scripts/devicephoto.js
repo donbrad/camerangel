@@ -49,6 +49,47 @@ var devicePhoto = {
             });
     },
 
+
+    processGPS : function (gpsData) {
+        var gpsObj = {
+            hasData : false,
+            lat : 0,
+            latRef : null,
+            lng: 0,
+            lngRef: null,
+            alt: 0,
+            timestamp: 0
+        };
+
+        if (device.platform === 'iOS') {
+            if (gpsData === undefined || gpsData === null) {
+                return (gpsObj);
+            }
+            gpsObj.hasData = true;
+            gpsObj.lat = gpsData.Latitude;
+            gpsObj.latRef = gpsData.LatitudeRef;
+            gpsObj.lng = gpsData.Longitude;
+            gpsObj.lngRef = gpsData.LongitudeRef;
+            gpsObj.alt = gpsData.Altitude;
+            gpsObj.timestamp = gpsData.DateStamp + " " + gpsData.TimeStamp;
+
+            return (gpsObj);
+        } else {
+            // Assume android for now...
+            if (gpsData.gpsLatitude !== null) {
+                gpsObj.hasData = true;
+                gpsObj.lat = gpsData.gpsLatitude;
+                gpsObj.latRef = gpsData.gpsLatitudeRef;
+                gpsObj.lng = gpsData.gpsLongitude;
+                gpsObj.lngRef = gpsData.gpsLongitudeRef;
+                gpsObj.alt = gpsData.gpsAltitude;
+                gpsObj.timestamp = gpsData.gpsDateStamp + " " + gpsData.gpsTimeStamp;
+            }
+            return(gpsObj);
+        }
+    },
+
+
     deviceCamera : function (resolution, quality, isChat, channelUUID,  displayCallback) {
         if (resolution === undefined) {
             resolution = devicePhoto._resolution;  // default resolution for ghostgrams
@@ -80,8 +121,12 @@ var devicePhoto = {
                 var metaObj = JSON.parse(imageObj.json_metadata);
                 var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
+                var gpsObj = null;
                 if (device.platform === 'iOS') {
                     imageUrl = imageUrl.replace('file://', '');
+                    gpsObj = devicePhoto.processGPS(metaObj.GPS);
+                } else {
+                    gpsObj =  devicePhoto.processGPS(metaObj);
                 }
                 var localUrl = null;
                 // convert uuid into valid file name;
@@ -110,8 +155,7 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.lat = lat;
                             devicePhoto.currentPhoto.lng = -lng;
                             devicePhoto.currentPhoto.alt = altitude;
-                            devicePhoto.currentPhoto.date = date;
-                            devicePhoto.currentPhoto.time = time;
+                            devicePhoto.currentPhoto.timeStamp = time;
 
 
                             mobileNotify("Processing Photo...");
