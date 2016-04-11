@@ -664,6 +664,7 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
+        photo.set('Id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
@@ -736,7 +737,7 @@ var photoModel = {
             }
 
         } else {
-            var dateStr = devicePhoto.date +  " " + devicePhoto.time;
+            var dateStr = devicePhoto.timeStamp;
             timeStamp = moment(dateStr, "YYYY:MM:DD HH:mm:ss");
             photo.set("timestamp", timeStamp);
             timeStr = moment(timeStamp).format('MMMM Do YYYY, h:mm:ss A');
@@ -744,6 +745,7 @@ var photoModel = {
             photo.set('addressString', null);
             photo.set('placeUUID', null);
             photo.set('placeString', null);
+            photo.set('placeName', null);
         }
        
         // For perf reasons add the photo before it's stored on everlive

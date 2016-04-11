@@ -68,8 +68,14 @@ var devicePhoto = {
             gpsObj.hasData = true;
             gpsObj.lat = gpsData.Latitude;
             gpsObj.latRef = gpsData.LatitudeRef;
+            if (gps.latRef === 'S') {
+                gpsObj.lat = -gps.lat;
+            }
             gpsObj.lng = gpsData.Longitude;
             gpsObj.lngRef = gpsData.LongitudeRef;
+            if (gps.lngRef === 'W') {
+                gpsObj.lng = -gps.lng;
+            }
             gpsObj.alt = gpsData.Altitude;
             gpsObj.timestamp = gpsData.DateStamp + " " + gpsData.TimeStamp;
 
@@ -80,8 +86,14 @@ var devicePhoto = {
                 gpsObj.hasData = true;
                 gpsObj.lat = gpsData.gpsLatitude;
                 gpsObj.latRef = gpsData.gpsLatitudeRef;
+                if (gps.latRef === 'S') {
+                    gpsObj.lat = -gps.lat;
+                }
                 gpsObj.lng = gpsData.gpsLongitude;
                 gpsObj.lngRef = gpsData.gpsLongitudeRef;
+                if (gps.lngRef === 'W') {
+                    gpsObj.lng = -gps.lng;
+                }
                 gpsObj.alt = gpsData.gpsAltitude;
                 gpsObj.timestamp = gpsData.gpsDateStamp + " " + gpsData.gpsTimeStamp;
             }
@@ -119,7 +131,7 @@ var devicePhoto = {
                 var photouuid = uuid.v4();
                 var imageObj = JSON.parse(imageData);
                 var metaObj = JSON.parse(imageObj.json_metadata);
-                var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
+    //            var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
                 var gpsObj = null;
                 if (device.platform === 'iOS') {
@@ -152,10 +164,10 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
                             devicePhoto.currentPhoto.imageUrl = nativeUrl;
                             devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
-                            devicePhoto.currentPhoto.lat = lat;
-                            devicePhoto.currentPhoto.lng = -lng;
-                            devicePhoto.currentPhoto.alt = altitude;
-                            devicePhoto.currentPhoto.timeStamp = time;
+                            devicePhoto.currentPhoto.lat = gpsObj.lat;
+                            devicePhoto.currentPhoto.lng = gpsObj.lng;
+                            devicePhoto.currentPhoto.alt = gpsObj.alt;
+                            devicePhoto.currentPhoto.timeStamp = gpsObj.timestamp;
 
 
                             mobileNotify("Processing Photo...");
@@ -276,10 +288,14 @@ var devicePhoto = {
                 var photouuid = uuid.v4();
                 var imageObj = JSON.parse(imageData);
                 var metaObj = JSON.parse(imageObj.json_metadata);
-                var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
+                var gpsObj = null;
+              //  var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
-               if (device.platform === 'iOS') {
+                if (device.platform === 'iOS') {
                     imageUrl = imageUrl.replace('file://', '');
+                    gpsObj = devicePhoto.processGPS(metaObj.GPS);
+                } else {
+                    gpsObj =  devicePhoto.processGPS(metaObj);
                 }
 
             /*    if (device.platform === 'Android') {
@@ -306,11 +322,10 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
                             devicePhoto.currentPhoto.imageUrl = nativeUrl;
                             devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
-                            devicePhoto.currentPhoto.lat = lat;
-                            devicePhoto.currentPhoto.lng = -lng;
-                            devicePhoto.currentPhoto.alt = altitude;
-                            devicePhoto.currentPhoto.date = date;
-                            devicePhoto.currentPhoto.time = time;
+                            devicePhoto.currentPhoto.lat = gpsObj.lat;
+                            devicePhoto.currentPhoto.lng = gpsObj.lng;
+                            devicePhoto.currentPhoto.alt = gpsObj.alt;
+                            devicePhoto.currentPhoto.timeStamp = gpsObj.timestamp;
 
 
                             mobileNotify("Processing Photo...");
