@@ -99,7 +99,7 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.imageUrl = null;
                             devicePhoto.currentPhoto.imageFile = null;
                             devicePhoto.currentPhoto.lat = lat;
-                            devicePhoto.currentPhoto.lng = lng;
+                            devicePhoto.currentPhoto.lng = -lng;
                             devicePhoto.currentPhoto.alt = altitude;
                             devicePhoto.currentPhoto.date = date;
                             devicePhoto.currentPhoto.time = time;
@@ -143,11 +143,11 @@ var devicePhoto = {
 
                                         devicePhoto.currentPhoto.uploadComplete = false;
                                         devicePhoto._uploadActive = true;
-                                        devicePhoto.currentPhoto.imageUrl = nativeUrl;
+                                        devicePhoto.currentPhoto.imageUrl = thumbNail;
                                         devicePhoto.currentPhoto.cloudUrl = null;
-                                        devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
+                                        devicePhoto.currentPhoto.thumbnailUrl = thumbNail;
                                         if (displayCallback !== undefined) {
-                                            displayCallback(photouuid, nativeUrl);
+                                            displayCallback(photouuid, thumbNail);
                                         }
                                         photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, function (error, photo) {
                                             if (error === null) {
@@ -260,7 +260,7 @@ var devicePhoto = {
                 devicePhoto.currentPhoto.thumbnailUrl = imageUrl;
                 devicePhoto.currentPhoto.imageFile = null;
                 devicePhoto.currentPhoto.lat = lat;
-                devicePhoto.currentPhoto.lng = lng;
+                devicePhoto.currentPhoto.lng = -lng;
                 devicePhoto.currentPhoto.alt = altitude;
                 devicePhoto.currentPhoto.date = date;
                 devicePhoto.currentPhoto.time = time;
@@ -325,7 +325,7 @@ var devicePhoto = {
                                         photoObj.publicId = photoData.public_id;
                                         photoModel.updateCloud(photoObj);
                                     }
-                                    
+
                                     devicePhoto._uploadActive = false;
                                     devicePhoto.currentPhoto.uploadComplete = true;
                                     /* devicePhoto.currentPhoto.imageUrl = photoData.url;
