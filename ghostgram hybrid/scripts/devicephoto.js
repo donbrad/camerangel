@@ -69,12 +69,12 @@ var devicePhoto = {
             gpsObj.lat = gpsData.Latitude;
             gpsObj.latRef = gpsData.LatitudeRef;
             if (gps.latRef === 'S') {
-                gpsObj.lat = -gps.lat;
+                gpsObj.lat = -gpsObj.lat;
             }
             gpsObj.lng = gpsData.Longitude;
             gpsObj.lngRef = gpsData.LongitudeRef;
             if (gps.lngRef === 'W') {
-                gpsObj.lng = -gps.lng;
+                gpsObj.lng = -gpsObj.lng;
             }
             gpsObj.alt = gpsData.Altitude;
             gpsObj.timestamp = gpsData.DateStamp + " " + gpsData.TimeStamp;
@@ -87,12 +87,12 @@ var devicePhoto = {
                 gpsObj.lat = gpsData.gpsLatitude;
                 gpsObj.latRef = gpsData.gpsLatitudeRef;
                 if (gps.latRef === 'S') {
-                    gpsObj.lat = -gps.lat;
+                    gpsObj.lat = -gpsObj.lat;
                 }
                 gpsObj.lng = gpsData.gpsLongitude;
                 gpsObj.lngRef = gpsData.gpsLongitudeRef;
                 if (gps.lngRef === 'W') {
-                    gpsObj.lng = -gps.lng;
+                    gpsObj.lng = -gpsObj.lng;
                 }
                 gpsObj.alt = gpsData.gpsAltitude;
                 gpsObj.timestamp = gpsData.gpsDateStamp + " " + gpsData.gpsTimeStamp;
