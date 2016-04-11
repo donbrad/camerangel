@@ -336,11 +336,13 @@ var devicePhoto = {
                                                 photoObj.cloudUrl = photoData.url;
                                                 photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                                 photoObj.publicId = photoData.public_id;
+                                                photoModel.updateCloud(photoObj);
+                                                devicePhoto._uploadActive = false;
+                                                devicePhoto.currentPhoto.uploadComplete = true;
+                                                
                                             }
 
-                                            photoModel.updateCloud(photoObj);
-                                            devicePhoto._uploadActive = false;
-                                            devicePhoto.currentPhoto.uploadComplete = true;
+                                            
                                             /* devicePhoto.currentPhoto.imageUrl = photoData.url;
                                              devicePhoto.currentPhoto.cloudUrl = photoData.url;
                                              devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
