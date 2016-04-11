@@ -773,7 +773,7 @@ var photoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(photoModel._cloudClass);
-        APP.everlive.update({uuid: photoObj.uuid}, photoObj, function (error, data) {
+        data.update({uuid: photoObj.uuid}, photoObj, function (error, data) {
             if (error !== null) {
                 ggError("Cloud Photo Update Error : " + JSON.stringify(error));
             }
