@@ -95,6 +95,7 @@ var devicePhoto = {
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
                             var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
 
+                            var uri = nativeUrl;
                             if (device.platform === 'iOS') {
                                 nativeUrl = nativeUrl.replace('file://', '');
                                 uri = nativeUrl;
@@ -111,8 +112,6 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.alt = altitude;
                             devicePhoto.currentPhoto.date = date;
                             devicePhoto.currentPhoto.time = time;
-                            var uri = nativeUrl;
-
 
 
                             mobileNotify("Processing Photo...");
@@ -264,6 +263,11 @@ var devicePhoto = {
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
                             var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
 
+                            if (device.platform === 'iOS') {
+                                nativeUrl = nativeUrl.replace('file://', '');
+                            }
+                            var uri = nativeUrl;
+
                             devicePhoto.currentPhoto.photoId = photouuid;
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
@@ -274,14 +278,10 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.alt = altitude;
                             devicePhoto.currentPhoto.date = date;
                             devicePhoto.currentPhoto.time = time;
-                            var uri = nativeUrl;
 
-                            if (device.platform === 'iOS') {
-                                nativeUrl = nativeUrl.replace('file://', '');
-                                uri = nativeUrl;
-                            }
 
                             mobileNotify("Processing Photo...");
+
                             var scaleOptions = {
                                 uri: uri,
                                 filename: "photo_"+filename,
