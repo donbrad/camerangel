@@ -296,7 +296,7 @@ var devicePhoto = {
                     imageUrl = imageUrl.replace('file://', '');
                     gpsObj = devicePhoto.processGPS(metaObj.GPS);
                 } else {
-                    imageUrl = imageData.replace('content://', '');
+                    imageUrl = imageUrl.replace('content://', '');
                     gpsObj =  devicePhoto.processGPS(metaObj);
                 }
 
