@@ -135,7 +135,7 @@ var appDataChannel = {
         appDataChannel.messagesDS.add(message);
         everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
             if (error !== null) {
-                mobileNotify ("App Channel cache error " + JSON.stringify(error));
+                ggError ("App Channel cache error " + JSON.stringify(error));
             }
         });
 
