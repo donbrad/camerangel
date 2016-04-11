@@ -251,7 +251,7 @@ var galleryView = {
         $("#gallerySearch").attr("placeholder", "Search All");
     },
 
-    getDisplayUrl : function (photouuid, device, image, thumb) {
+    getDisplayUrl : function (photouuid, device, cloud, thumb) {
         var filename = photouuid.replace(/-/g,'');
         var uniqueNewFilename = "photo_" + filename + ".jpg";
         var store = deviceModel.fileDirectory;
@@ -263,7 +263,7 @@ var galleryView = {
             },
             function () {
                 var fileTransfer = new FileTransfer();
-                fileTransfer.download(image, localUrl,
+                fileTransfer.download(cloud, localUrl,
                     function(entry) {
                         photoModel.updateLocalUrl(photouuid, localUrl);
                     },
@@ -272,7 +272,7 @@ var galleryView = {
                     });
             });
         
-        return(image);
+        return(device);
     },
 
 
