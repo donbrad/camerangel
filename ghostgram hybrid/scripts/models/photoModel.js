@@ -642,7 +642,7 @@ var photoModel = {
         }
 
         photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
-        photo.set('thumbnail', devicePhoto.thumbnailFile);
+        photo.set('cloudUrl', devicePhoto.cloudUrl);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel._user.userUUID);
