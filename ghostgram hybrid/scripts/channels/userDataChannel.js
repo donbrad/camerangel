@@ -66,6 +66,12 @@ var userDataChannel = {
 
     },
 
+    closeChannel : function () {
+        APP.pubnub.unsubscribe({
+            channel: userDataChannel.channelUUID
+        });
+    },
+    
     queryMessages : function (query) {
         if (query === undefined)
             return(undefined);
