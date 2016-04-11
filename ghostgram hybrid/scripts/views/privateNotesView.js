@@ -153,6 +153,8 @@ var privateNotesView = {
                 channelUUID: null,
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
+                deviceUrl : photo.deviceUrl,
+                cloudUrl : photo.cloudUrl,
                 canCopy: true,
                 ownerId: userModel._user.userUUID,
                 ownerName: userModel._user.name
@@ -756,7 +758,7 @@ var privateNotesView = {
 
         if (photoObj !== undefined) {
 
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 
