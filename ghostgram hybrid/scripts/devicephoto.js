@@ -88,7 +88,7 @@ var devicePhoto = {
                 var filename = photouuid.replace(/-/g,'');
 
                 // Create a local copy of the
-                window.resolveLocalFileSystemURL(imageUrl, function fileEntrySuccess(fileEntry) {
+                window.resolveLocalFileSystemURL(imageObj.filename, function fileEntrySuccess(fileEntry) {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
@@ -253,7 +253,7 @@ var devicePhoto = {
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
 
-                window.resolveLocalFileSystemURL(imageUrl, function fileEntrySuccess(fileEntry) {
+                window.resolveLocalFileSystemURL(imageObj.filename, function fileEntrySuccess(fileEntry) {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
@@ -299,7 +299,7 @@ var devicePhoto = {
                             if (displayCallback !== undefined) {
                                 displayCallback(photouuid, nativeUrl);
                             }
-                            
+
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, function (error, photo) {
                                 if (error === null) {
                                     mobileNotify("Photo Save Error : " + JSON.stringify(error));
@@ -354,10 +354,15 @@ var devicePhoto = {
                                 });
 
 
-                            navigator.camera.cleanup(function(){}, function(){});
-                        }, function(){});
-                    }, function(){});
-                }, function(){});
+                        }, function(){
+
+                        });
+                    }, function(){
+
+                    });
+                }, function(){
+
+                });
 
   /*              devicePhoto.currentPhoto.photoId = photouuid;
                 devicePhoto.currentPhoto.filename = filename;
