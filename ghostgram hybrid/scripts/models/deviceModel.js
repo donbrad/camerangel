@@ -55,6 +55,7 @@ var deviceModel = {
                     var url = fileSystem.root.nativeURL;
                     url = url.replace('file://', '');
                     deviceModel.fileDirectory = url;
+                    console.log("fileDirectory = " + url);
                     userModel.appDirectory = url;
                     //mobileNotify(APP.fileDirectory);
                 },
@@ -67,6 +68,7 @@ var deviceModel = {
                     var url = fileSystem.root.nativeURL;
                     url = url.replace('file://', '');
                     deviceModel.tempDirectory = url;
+                    console.log("tempDirectory = " + url);
                     userModel.tempDirectory = url;
                     //mobileNotify(APP.tempDirectory);
                 },

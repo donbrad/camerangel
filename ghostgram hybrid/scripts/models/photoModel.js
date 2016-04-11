@@ -122,8 +122,12 @@ var photoModel = {
     },
 
     isPhotoCached : function (photo) {
+       
+        var url = photo.cloudUrl;
+        if (url === null) {
+            return;
+        }
         var store = deviceModel.fileDirectory;
-        var url = photo.imageUrl;
         var filename = photo.photoId.replace(/-/g, '');
 
         //Check for the file.
@@ -141,8 +145,7 @@ var photoModel = {
                 console.log("Cached local copy of " + name);
             },
             function(err) {
-                console.log("Error");
-                console.dir(err);
+              ggError("Local Cache Error " + JSON.stringify(err));
             });
     },
 
