@@ -12,6 +12,9 @@ var photoModel = {
     _version : 1,
     _cloudClass : 'photos',
     _ggClass: 'Photo',
+    _iosPrefix: "/var",
+    _androidPrefix: "/",
+    _emulatorPrefix: "",
     currentPhoto: {},
     currentOffer: null,
     previewSize: "33%",
@@ -87,32 +90,6 @@ var photoModel = {
 
 
 
-    _filterEverlive : function (photo) {
-        var elPhoto = photo;
-
-         delete elPhoto.ACL;
-
-         delete elPhoto.__proto__;
-
-         delete elPhoto.image;
-
-         delete elPhoto.thumbnail;
-
-         delete elPhoto.objectId;
-
-         delete elPhoto.geoPoint.__type;
-
-         delete elPhoto.geoPoint.__proto__;
-
-         elPhoto.modifiedAt = elPhoto.updatedAt;
-
-         elPhoto.uuid = elPhoto.photoId;
-
-        return(elPhoto);
-
-    },
-
-
     updateLocalUrl : function (uuid, localUrl) {
         var photo = photoModel.findPhotoById(uuid);
 
@@ -121,24 +98,43 @@ var photoModel = {
         }
     },
 
-    isPhotoCached : function (photo) {
-       
-        var url = photo.cloudUrl;
-        if (url === null) {
-            return;
-        }
-        var store = deviceModel.fileDirectory;
-        var filename = photo.photoId.replace(/-/g, '');
-
-        //Check for the file.
-        window.resolveLocalFileSystemURL(store + filename, function(){}, function() {photoModel.addToLocalCache(url, filename, photo)});
+    createPhotoLocalName : function (photoId) {
+        var filename = 'photo_' + photoId.replace(/-/g, '') + '.jpg';
+        return (filename);
     },
 
-    addToLocalCache : function (url, name, photo) {
-        var store = deviceModel.fileDirectory;
+    isPhotoCached : function (photo) {
+       
+        var urlCloud= photo.cloudUrl, urlDevice = photo.deviceUrl;
+
+        if (urlCloud !== null && urlDevice === null) {
+        // Photo is on the cloud but not the local device
+            var store = deviceModel.fileDirectory;
+            var filename = photoModel.createPhotoLocalName(photo.photoId);
+            var localUrl = store + filename;
+
+            //Check for the file.
+            window.resolveLocalFileSystemURL(localUrl,
+                function () {
+
+                },
+                function () {
+                    photoModel.addToLocalCache(urlCloud, localUrl, photo);
+                    console.log("Caching photo on device :  " + photo.uuid);
+                });
+        }
+
+        if (urlCloud === null && urlDevice !== null) {
+            // Photo is on the device but not stored in the cloud
+            console.log("Uploading Photo to cloud : " + photo.uuid);
+            photoModel.uploadPhotoToCloud(photo);
+        }
+    },
+
+    addToLocalCache : function (url, localUrl, photo) {
 
         var fileTransfer = new FileTransfer();
-        fileTransfer.download(url, store + name,
+        fileTransfer.download(url, localUrl,
             function(entry) {
                 photo.deviceUrl =  entry;
                 photo.isDirty = true;
@@ -159,7 +155,8 @@ var photoModel = {
         }
         devicePhoto.convertImgToDataURL(url, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-            
+            var folder = devicePhoto._userPhoto;
+            var filename = photouuid.replace(/-/g,'');
             devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                 var photoObj = photoModel.findPhotoById(photouuid);
 
