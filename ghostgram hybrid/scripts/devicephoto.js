@@ -297,7 +297,7 @@ var devicePhoto = {
                     imageUrl = imageUrl.replace('file://', '');
                     gpsObj = devicePhoto.processGPS(metaObj.GPS);
                 } else {
-                    imageFile = imageFile.replace('content://', '');
+                    //imageFile = imageFile.replace('content://', '');
                     gpsObj =  devicePhoto.processGPS(metaObj);
                 }
 
@@ -398,14 +398,14 @@ var devicePhoto = {
                                 });
 
 
-                        }, function(){
-
+                        }, function(error){
+                                console.log(JSON.stringify(error));
                         });
-                    }, function(){
-
+                    }, function(error){
+                        console.log(JSON.stringify(error));
                     });
-                }, function(){
-
+                }, function(error){
+                    console.log(JSON.stringify(error));
                 });
 
   /*              devicePhoto.currentPhoto.photoId = photouuid;
