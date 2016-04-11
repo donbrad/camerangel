@@ -254,7 +254,7 @@ var galleryView = {
     getDisplayUrl : function (photouuid, device, image, thumb) {
         var filename = photouuid.replace(/-/g,'');
         var uniqueNewFilename = "photo_" + filename + ".jpg";
-        var store = cordova.file.dataDirectory;
+        var store = deviceModel.fileDirectory;
         var localUrl = store +  uniqueNewFilename;
 
         window.resolveLocalFileSystemURL(localUrl, 
@@ -269,7 +269,6 @@ var galleryView = {
                     },
                     function(err) {
                         ggError("Photo cache error " + JSON.stringify(err));
-                        console.dir(err);
                     });
             });
         
