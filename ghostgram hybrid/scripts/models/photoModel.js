@@ -149,6 +149,33 @@ var photoModel = {
             });
     },
 
+    
+    uploadPhotoToCloud : function (photo) {
+        
+        var url = photo.deviceUrl, photouuid = photo.uuid;
+        
+        if (url === null) {
+            return;
+        }
+        devicePhoto.convertImgToDataURL(url, function (dataUrl) {
+            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+            
+            devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
+                var photoObj = photoModel.findPhotoById(photouuid);
+
+                if (photoObj !== undefined) {
+                    photoObj.imageUrl = photoData.url;
+                    photoObj.cloudUrl = photoData.url;
+                    photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
+                    photoObj.publicId = photoData.public_id;
+                    photoModel.updateCloud(photoObj);
+                    
+                }
+            });
+        }); 
+    },
+    
+    
     queryPhoto: function (query) {
         if (query === undefined)
             return(undefined);
@@ -745,7 +772,8 @@ var photoModel = {
     },
 
     updateCloud : function (photoObj)  {
-        everlive.updateOne(photoModel._cloudClass, photoObj, function (error, data) {
+        var data = APP.everlive.data(photoModel._cloudClass);
+        APP.everlive.update({uuid: photoObj.uuid}, photoObj, function (error, data) {
             if (error !== null) {
                 ggError("Cloud Photo Update Error : " + JSON.stringify(error));
             }

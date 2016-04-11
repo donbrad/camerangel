@@ -154,10 +154,6 @@ var devicePhoto = {
 
                                         devicePhoto.currentPhoto.uploadComplete = false;
                                         devicePhoto._uploadActive = true;
-                                        devicePhoto.currentPhoto.imageUrl = thumbNail;
-                                        devicePhoto.currentPhoto.cloudUrl = null;
-                                        devicePhoto.currentPhoto.thumbnailUrl = thumbNail;
-
                                         devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                                             var photoObj = photoModel.findPhotoById(photouuid);
                                             
@@ -166,18 +162,11 @@ var devicePhoto = {
                                                 photoObj.cloudUrl = photoData.url;
                                                 photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                                 photoObj.publicId = photoData.public_id;
+                                                photoModel.updateCloud(photoObj);
                                             }
-                                            
-                                            photoModel.updateCloud(photoObj);
+
                                             devicePhoto._uploadActive = false;
                                             devicePhoto.currentPhoto.uploadComplete = true;
-                                           /* devicePhoto.currentPhoto.imageUrl = photoData.url;
-                                            devicePhoto.currentPhoto.cloudUrl = photoData.url;
-                                            devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
-                                            devicePhoto.currentPhoto.publicId = photoData.public_id;*/
-                                            devicePhoto.currentPhoto.uploadComplete = true;
-                                            
-
                                         });
                                     });
 
@@ -321,13 +310,8 @@ var devicePhoto = {
                                     devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                                         var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
-                                        devicePhoto.currentPhoto.uploadComplete = false;
                                         devicePhoto._uploadActive = true;
-                                        devicePhoto.currentPhoto.imageUrl = thumbNail;
-                                        devicePhoto.currentPhoto.cloudUrl = null;
-                                        devicePhoto.currentPhoto.thumbnailUrl = thumbNail;
-
-
+                                        devicePhoto.currentPhoto.uploadComplete = false;
                                         devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                                             var photoObj = photoModel.findPhotoById(photouuid);
 
@@ -341,14 +325,6 @@ var devicePhoto = {
                                                 devicePhoto.currentPhoto.uploadComplete = true;
                                                 
                                             }
-
-                                            
-                                            /* devicePhoto.currentPhoto.imageUrl = photoData.url;
-                                             devicePhoto.currentPhoto.cloudUrl = photoData.url;
-                                             devicePhoto.currentPhoto.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
-                                             devicePhoto.currentPhoto.publicId = photoData.public_id;*/
-                                            devicePhoto.currentPhoto.uploadComplete = true;
-
 
                                         });
                                     });
