@@ -1246,17 +1246,17 @@ form p {
 .btnClear-grey-sm {
   text-decoration: none;
   font-size: 1em;
-  font-weight: 400;
   padding: 0.25em 0.5em;
-  margin: 0px;
+  margin: 0;
+  font-weight: 400;
 }
 .km-root .km-button,
 .km-material .km-button {
   text-decoration: none;
   font-size: 1em;
-  font-weight: 400;
   padding: 0.25em 0.5em;
-  margin: 0px;
+  margin: 0;
+  font-weight: 400;
 }
 .km-material .km-navbar .km-button.km-state-active,
 .km-material .k-toolbar .km-button.km-state-active {
@@ -1278,19 +1278,19 @@ form p {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
   background: #2E93FD !important;
-}
-.btnPrimary :hover {
-  background: #E5A545 !important;
-  text-decoration: none;
-}
-.btnPrimary :active {
-  background: #FADDB0 !important;
-  text-decoration: none;
-  transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btnPrimary :disabled {
-  background: #A4A4A4 !important;
+  /* :hover {
+    	background: #E5A545 !important;
+    	text-decoration: none;
+	}
+	:active {
+    	background: #FADDB0 !important;
+    	text-decoration: none;
+    	transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	:disabled {
+    	background: #A4A4A4 !important;
+	}*/
 }
 .btnBlack {
   -webkit-border-radius: 2px;
@@ -1370,6 +1370,9 @@ form p {
 .btnClear :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.btn-li {
+  text-align: left;
 }
 .btnClear-light {
   background: transparent;
@@ -1509,13 +1512,15 @@ form p {
 .btnSpan-btm {
   width: 100%;
   margin: 0 !important;
-  padding: 0px;
-  border-radius: 0px !important;
+  padding: 0;
+  border-radius: 0 !important;
   overflow-x: hidden;
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
 }
 .btnFull-modal {
   width: 100%;
@@ -1524,6 +1529,8 @@ form p {
   border-radius: 0px !important;
   height: 3rem;
   padding-top: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
 }
 .btnFull-modal :hover {
   background: transparent !important;
@@ -3339,6 +3346,9 @@ a:hover {
   padding-top: 0px;
   padding-bottom: 0px;
 }
+#addChatHasContacts {
+  margin-top: 1em;
+}
 #addChannelBtn {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
   position: fixed;
@@ -4719,6 +4729,7 @@ div.contactListBox.activeContact > div > div > ul {
   width: 25%;
   float: left;
   text-align: center;
+  margin-top: -1em;
 }
 .topHalfRight {
   width: 75%;
@@ -6528,7 +6539,8 @@ table.k-editor {
   font-size: 14px;
 }
 .icon-feature-img {
-  width: 100%;
+  float: left;
+  width: 20%;
   text-align: center;
 }
 .icon-feature-img > img {
@@ -6536,8 +6548,11 @@ table.k-editor {
   height: 3.5em;
 }
 .icon-feature-body {
-  width: 100%;
-  text-align: center;
+  float: left;
+  width: 80%;
+}
+.icon-feature-body h3 {
+  font-weight: 600;
 }
 .featureList {
   width: 100%;
@@ -6545,9 +6560,13 @@ table.k-editor {
   margin-bottom: 0.5em;
 }
 .feature-card {
-  padding: 0.5em;
+  padding: 1em 0.5em;
   background-color: #EFF1F2;
-  width: 100%;
+  width: 95%%;
   height: 100%;
   margin-bottom: 3em;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  border-radius: 3px;
+  margin-top: 1em;
 }

@@ -281,6 +281,63 @@ var ux = {
 		$(path + " > div.footerMenu.km-footer > a > span > p").text("").velocity({opacity: 0, right: "0"});
 	},
 
+	formatPhoneInput: function(e){
+			$('.phone-input')
+
+					.keydown(function (e) {
+						var key = e.charCode || e.keyCode || 0;
+						var $phone = $(this);
+
+						// Auto-format- do not expose the mask as the user begins to type
+						if (key !== 8 && key !== 9) {
+							if ($phone.val().length === 5) {
+								$phone.val($phone.val() + ')');
+							}
+							if ($phone.val().length === 6) {
+								$phone.val($phone.val() + ' ');
+							}
+							if ($phone.val().length === 10) {
+								$phone.val($phone.val() + '-');
+							}
+						}
+
+
+						// Allow numeric (and tab, backspace, delete) keys only
+						return (key == 8 ||
+						key == 9 ||
+						key == 46 ||
+						(key >= 48 && key <= 57) ||
+						(key >= 96 && key <= 105));
+					})
+					.keyup(function(e){
+						if ($(this).val().length === 14) {
+							$('.phone-input').unbind("keyup");
+						}
+					})
+
+
+					.bind('focus click', function () {
+						var $phone = $(this);
+
+						if ($phone.val().length === 0) {
+							$phone.val('1(');
+						}
+						else {
+							var val = $phone.val();
+							$phone.val('').val(val); // Ensure cursor remains at the end
+						}
+					})
+
+					.blur(function () {
+						var $phone = $(this);
+
+						if ($phone.val() === '1(') {
+							$phone.val('');
+						}
+					});
+
+	},
+
 	AutoGrowTextArea: function(textField){
 	    if (textField.clientHeight < textField.scrollHeight)
 	    {

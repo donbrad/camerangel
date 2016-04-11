@@ -475,41 +475,42 @@
 		</h3>
 	</div>
     <div class="clearfix"></div>
-	 <div class="feature-card preMotion hidden">
+	 <div class="feature-card preMotion" id="featureCard1">
 		 <div class="featureList">
+			 <div class="icon-feature-img">
+				 <img src="images/icon-feature-secure.svg"  />
+			 </div>
+
 			 <div class="icon-feature-body">
-				 <div class="icon-feature-img">
-					 <img src="images/icon-feature-secure.svg"  />
-				 </div>
 				 <h3>Secure</h3>
 				 <p class="feature-body-text">Stay connected to the people, places and topics that matter to you.</p>
 			 </div>
 		 </div>
 		 <div class="featureList">
+			 <div class="icon-feature-img">
+				 <img src="images/icon-feature-savings.svg"  />
+			 </div>
 			 <div class="icon-feature-body">
-				 <div class="icon-feature-img">
-					 <img src="images/icon-feature-savings.svg"  />
-				 </div>
 				 <h3>Convenient</h3>
 				 <p class="feature-body-text">Don't waste your money receiving andstoring stuff you didn't ask for or don't need in the future. Offer photos to friends. You decide if they can keep a copy or just have quick peek.
 				 </p>
 			 </div>
 		 </div>
 		 <div class="featureList">
+			 <div class="icon-feature-img">
+				 <img src="images/icon-feature-trusted.svg" />
+			 </div>
 			 <div class="icon-feature-body">
-				 <div class="icon-feature-img">
-					 <img src="images/icon-feature-trusted.svg" />
-				 </div>
 				 <h3>Trusted</h3>
 				 <p class="feature-body-text">Share your passion, opinion and secrets with confidence. You know who's on the other end and no one else can snoop or ease drop.
 				 </p>
 			 </div>
 		 </div>
 		 <div class="featureList">
+			 <div class="icon-feature-img">
+				 <img src="images/icon-feature-smart.svg"  />
+			 </div>
 			 <div class="icon-feature-body">
-				 <div class="icon-feature-img">
-					 <img src="images/icon-feature-smart.svg"  />
-				 </div>
 				 <h3>Automated</h3>
 				 <p class="feature-body-text">Communicate, collaborate and coordinate easily with intelligrams: set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
 				 </p>
@@ -519,7 +520,7 @@
 
 
 
-    <div class="loginBox card preMotion" id="featureCard1">
+    <div class="loginBox card preMotion hidden">
         <h3>
             Join ghostgrams!
         </h3>
@@ -670,7 +671,7 @@
         	<li>
                 <label class="left" for="home-signup-phone"> Mobile Phone</label>
                 	<div class="mobile-countryCode">+1</div>
-                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" maxlength="14" required />
+                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" maxlength="14" placholder="(•••) •••-••••"required />
                 	<div class="mobile-helper"> Important! Your mobile number is how friends and family will add you. </div>
                 	<div class="clearfix"></div>
             </li>
@@ -1715,7 +1716,9 @@
 		</div>
 	</div>
 	<div id="addChatNoContacts" class="hidden">
-		<p class="helper"><img src="images/help.svg" /> Chat members must be existing contacts. You don't have any ghostgrams contacts yet. </p>
+		<p class="helper">
+			<img src="images/help.svg" /> Chat members must be existing contacts. You don't have any ghostgrams contacts yet.
+		</p>
 		<a class="btnClear" data-role="button" href="#contacts">Go to ghostgram contacts</a>
 	</div>
 	<div id="addChatHasContacts">
@@ -1727,7 +1730,7 @@
 		</div>
 		<form id="addChat-step1">
 			<h3>
-				<img src="images/flag.svg" id="start-chat-img"/> Create a New Chat
+				<img src="images/flag.svg" class="icon-sm"/> Create a New Chat
 			</h3>
 			<p>Chat with friends and family around shared interests.</p>
 
@@ -2029,7 +2032,7 @@
 <div data-role="view" data-title="Import Contacts" id="contactImport"  data-model="contactModel" data-init="contactImportView.onInit" data-show="contactImportView.onShow" data-hide="contactImportView.onHide" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
-			<a data-role="backbutton" data-align="left"><img src="images/nav-back.svg" /></a>
+			<a data-role="button" href="#:back" data-align="left"><img src="images/nav-back.svg" /></a>
 			<span data-role="view-title"></span>
 		</div>
 	</div>
@@ -2039,7 +2042,7 @@
 			<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
-				<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-sm" src="images/close.svg" /></a></span>
+				<span class="enterSearch hidden"><a class="btnClear-grey"><img class="icon-md" src="images/close.svg" /></a></span>
 			</div>
 		</div>
 		<div id="contactImport-noResults" class="hidden">No results found</div>
@@ -2079,8 +2082,8 @@
 		</div>
 		<div class="clearfix"></div>
 		<ul data-role="listview" data-style="inset" class="inviteContactInfo">
-			<li>
-				<div class="panel" id="vaildMobileNumberError">
+			<li id="vaildMobileNumberError">
+				<div class="panel">
 					<h3><img src="images/icon-warning.svg" class="icon-sm" /> Oh no!</h3>
 					<p>You will not be able import <span id="addContactName-blank"><span id="addContactName-error"></span>'s </span>info without a vaild mobile phone number. Try another number or go to your device's Contact app and add a mobile number.</p> 
 				</div>	
@@ -2186,7 +2189,7 @@
 				</li>
 				<li id="contactEdit-phone-edit" class="hidden">
 					<label>Phone
-						<input id="editContactPhone" type="tel" data-bind="value:phone" name="Phone" />
+						<input id="editContactPhone" type="tel"  class="phone-input phone" name="Phone" />
 					</label>
 				</li>
 				<li id="editContact-email-read">
@@ -2203,10 +2206,7 @@
 						<input id="editContactEmail" type="email" data-bind="value: email" name="Email" />
 					</label>
 				</li>
-				<li><a class="btnClear" data-role="button">Add Address</a></li>
-				<li id="editContact-address-read" class="hidden">
-					<label>Address: <span data-bind="text: address"></span></label>
-				</li>
+				<li data-click="editContactView.toggleAddress" data-role="button" class="btn-li btnClear" id="editContact-address-btn">Add Address</li>
 				<li id="editContact-address-edit" class="hidden">
 					<label>Address
 						<input type="text" id="editContactAddress" data-bind="value: address"/>
@@ -2217,10 +2217,8 @@
 						<input type="checkbox" data-role="switch"  data-bind="checked: isBlocked"/>
 					</label>
 				</li>
-				<li>
-					<a data-role="button" class="btnClear-red" data-click="editContactView.deleteContact">
-						Delete Contact
-					</a>
+				<li data-role="button" class="btnClear-red btn-li" data-click="editContactView.deleteContact" id="editContact-delete-btn">
+					Delete Contact
 				</li>
 			</ul>
 

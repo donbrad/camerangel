@@ -1036,8 +1036,6 @@ var signUpView = {
                         $phone.val('');
                     }
                 });
-        } else {
-            $("#home-signup-phone").mask("(999) 999-9999", {placeholder: "•"});
         }
 
         // Confirm password events

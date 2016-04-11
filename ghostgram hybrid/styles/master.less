@@ -648,9 +648,9 @@ form {
 .btnStyle {
   text-decoration: none;
   font-size: 1em;
-  font-weight: 400;
   padding: 0.25em 0.5em;
-  margin: 0px;
+  margin: 0;
+  font-weight: 400;
 }
 
 .km-root .km-button,
@@ -686,7 +686,7 @@ form {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
   background: @primary-100 !important;
-    :hover {
+   /* :hover {
     	background: #E5A545 !important;
     	text-decoration: none;
 	}
@@ -698,7 +698,7 @@ form {
 	}
 	:disabled {
     	background: #A4A4A4 !important;
-	}
+	}*/
 }
 
 .btnBlack {
@@ -785,6 +785,10 @@ form {
     color: #A4A4A4 !important;
     background: transparent !important;
   }
+}
+
+.btn-li {
+  text-align: left;
 }
 
 .btnClear-light {
@@ -960,13 +964,15 @@ form {
 .btnSpan-btm {
   width: 100%;
   margin: 0 !important;
-  padding: 0px;
-  border-radius: 0px !important;
+  padding: 0;
+  border-radius: 0 !important;
   overflow-x: hidden;
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
 }
 
 .btnFull-modal {
@@ -974,6 +980,8 @@ form {
   border-radius: 0px !important;
   height: 3rem;
   padding-top: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
   :hover {
     background: transparent !important;
   }
@@ -2871,6 +2879,10 @@ a:hover {
   }
 }
 
+#addChatHasContacts {
+  margin-top: 1em;
+}
+
 #addChannelBtn {
   .shadow;
   position: fixed;
@@ -4456,6 +4468,7 @@ div.contactListBox.activeContact > div > div > ul {
   width: 25%;
   float: left;
   text-align: center;
+  margin-top: -1em;
 }
 
 .topHalfRight {
@@ -6304,7 +6317,8 @@ table.k-editor {
 }
 
 .icon-feature-img {
-  width: 100%;
+  float: left;
+  width: 20%;
   text-align: center;
   > img {
     width: 3.5em;
@@ -6313,8 +6327,11 @@ table.k-editor {
 }
 
 .icon-feature-body {
-  width: 100%;
-  text-align: center;
+  float: left;
+  width: 80%;
+  h3 {
+    font-weight: 600;
+  }
 }
 
 .featureList {
@@ -6324,9 +6341,13 @@ table.k-editor {
 }
 
 .feature-card {
-  padding: 0.5em;
+  padding: 1em 0.5em;
   background-color: @shade-400;
-  width: 100%;
+  width: 95%%;
   height: 100%;
   margin-bottom: 3em;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  border-radius: 3px;
+  margin-top: 1em;
 }

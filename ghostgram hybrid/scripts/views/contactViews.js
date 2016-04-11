@@ -1075,32 +1075,46 @@ var editContactView = {
             // Hide the status update div
         });
 
-       // Set verified inputs
-       if(editContactView._activeContact.phoneValidated){
+        // Set verified inputs
+        if(editContactView._activeContact.phoneValidated){
        		$("#contactEdit-phone-read").removeClass("hidden");
             $("#contactEdit-phone-edit").addClass('hidden');
-       } else {
+        } else {
        		$("#contactEdit-phone-read").addClass("hidden");
             $("#contactEdit-phone-edit").removeClass('hidden');
-       }
+        }
 
-       if(editContactView._activeContact.emailValidated){
+        if(editContactView._activeContact.emailValidated){
            $("#editContact-email-edit").addClass("hidden");
            $("#editContact-email-read").removeClass("hidden");
-       } else {
+        } else {
            $("#editContact-email-edit").removeClass("hidden");
            $("#editContact-email-read").addClass("hidden");
-       }
+        }
 
-        $("#editContactPhone").mask('9(999) 999-9999');
+        if(editContactView._activeContact.address === null){
+            $("#editContact-address-btn").removeClass('hidden');
+            $("#editContact-address-edit").addClass('hidden');
+        } else {
+            $("#editContact-address-btn").addClass('hidden');
+            $("#editContact-address-edit").removeClass('hidden');
+        }
+
         var phoneVal = ux.showCleanPhone(editContactView._activeContact.phone);
         $('#editContact-phone-input').text(phoneVal);
 
+        $("#editContactPhone").val(editContactView._activeContact.phone);
+        ux.showFormatedPhone();
+        ux.formatPhoneInput();
+    },
 
-        var groupsHtml = ux.showGroups(editContactView._activeContact.group);
-        $("#contactEdit-group").html(groupsHtml);
-
-
+    toggleAddress: function(){
+        console.log(editContactView._activeContact);
+        var contact = editContactView._activeContact;
+        if(contact.address === null){
+            $("#editContact-address-btn").addClass('hidden');
+            $("#editContact-address-edit").removeClass('hidden');
+        }
     },
 
     validate: function(){
@@ -1143,9 +1157,7 @@ var editContactView = {
         _preventDefault(e);
 
         contactModel.deleteContact(editContactView._activeContact.uuid);
-
         mobileNotify("Deleting " + editContactView._activeContact.name);
-
         editContactView.onDone();
     }
 };
