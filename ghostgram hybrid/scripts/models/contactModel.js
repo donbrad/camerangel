@@ -222,6 +222,9 @@ var contactModel = {
 
     createIdenticon: function (hash) {
         var url;
+        if (hash === undefined || hash === null) {
+            return null;
+        }
         hash = hash.replace(/-/g,'');
         jdenticon.update("#identiconCanvas", hash);
         var canvas = document.getElementById("identiconCanvas");
