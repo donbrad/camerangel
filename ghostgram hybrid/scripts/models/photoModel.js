@@ -793,12 +793,13 @@ var photoModel = {
         }
 
         photoModel.photosDS.remove(photo);
-        var Id = photo.Id;
+        photoModel.photosDS.sync();
+       /* var Id = photo.Id;
         if (Id !== undefined){
             everlive.deleteOne(photoModel._cloudClass, Id, function (error, data) {
                
             });
-        }
+        }*/
         
     },
 
