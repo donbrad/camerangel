@@ -2051,48 +2051,46 @@
 </div>
 
 <!-- Modal add contact -->
-<div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-init="addContactView.doInit" class="appearance" style="width: 90%; min-height: 100%; display: none;">
-	
-		<div class="inviteTop hidden">
-			<img src="images/invite.svg" height="16" />
+<div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-init="addContactView.doInit" class="appearance" style="width: 95%; min-height: 100%; display: none;">
+		<div data-role="header">
+			<div data-role="navbar">
+				<a data-align="left" class="btnClear-grey" data-click="addContactView.closeModal" data-role="button">Cancel</a>
+				<span data-role="view-title"><img src="images/invite.svg" height="16" /></span>
+			</div>
 		</div>
-    	<span class="right closeBox">
-    		<a data-role="button" data-click="addContactView.closeModal">
-				<img src="images/close.svg"/>
-			</a>
-    	</span>
     	<form id="addContactForm">
 		<div class="topHalf">
 			<div class="topHalfLeft">
-				<img class="circle-img-lg shadow" id="addContactPhoto" src="images/ghostgramcontact.png" />
+				<img class="circle-img-lg shadow" id="addContactPhoto" src="images/default-img.png" />
 			</div>
-			<div class="topHalfRight">
+			<div class="topHalfRight" style="margin-top: -2em;">
 				<div>
 					<label>Full Name</label>
-					<input class="input-text-md" id="addContactName" type="search" placeholder="Contact full name" name="Full Name" required />
+					<input class="input-text-md" id="addContactName" type="search" placeholder="" name="Full Name" required />
 				</div>
 				<div>
 					<span class="caption">aka</span>
 					<input class="input-text-sm " id="addContactAlias" type="search" placeholder="Add a nickname"/>
 				</div>
-				<div>
-					<input class="input-text-sm" id="addContactGroup" type="search" placeholder="Add Group (optional)"/>
-				</div>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 		<ul data-role="listview" data-style="inset" class="inviteContactInfo">
+			<li>
+				<label>Add to Group</label>
+				<input id="addContactGroup" type="search" />
+			</li>
 			<li id="vaildMobileNumberError">
 				<div class="panel">
-					<h3><img src="images/icon-warning.svg" class="icon-sm" /> Oh no!</h3>
-					<p>You will not be able import <span id="addContactName-blank"><span id="addContactName-error"></span>'s </span>info without a vaild mobile phone number. Try another number or go to your device's Contact app and add a mobile number.</p> 
+					<h3><img src="images/icon-warning.svg" class="icon-sm" /> Invalid Mobile Number</h3>
+					<p>Try another number or go to your device's Contact app and add a mobile number.</p>
 				</div>	
 			</li>
 			<li>
 				<label>Phone
 					<div class="select-lg">
 						<select id="addContactPhone"
-								data-text-field="number"
+								data-text-field="ux.showCleanPhone(number)"
 								data-value-field="number"
 								data-bind="source: phoneDS"
 								auto-bind="false">

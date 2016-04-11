@@ -603,7 +603,7 @@ var addContactView = {
 
 
         if (data.photo === null) {
-            $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
+            $("#addContactPhoto").attr("src","images/default-img.png");
 
         } else {
             returnValidPhoto(data.photo, function(validUrl) {
@@ -1109,7 +1109,6 @@ var editContactView = {
     },
 
     toggleAddress: function(){
-        console.log(editContactView._activeContact);
         var contact = editContactView._activeContact;
         if(contact.address === null){
             $("#editContact-address-btn").addClass('hidden');
