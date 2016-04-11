@@ -107,6 +107,10 @@ var photoModel = {
        
         var urlCloud= photo.cloudUrl, urlDevice = photo.deviceUrl;
 
+        if (urlCloud !== null && urlDevice !== null) {
+            return(true);
+        }
+
         if (urlCloud !== null && urlDevice === null) {
         // Photo is on the cloud but not the local device
             var store = deviceModel.fileDirectory;
@@ -129,6 +133,9 @@ var photoModel = {
             console.log("Uploading Photo to cloud : " + photo.uuid);
             photoModel.uploadPhotoToCloud(photo);
         }
+
+        return(false);
+
     },
 
     addToLocalCache : function (url, localUrl, photo) {
@@ -137,7 +144,6 @@ var photoModel = {
         fileTransfer.download(url, localUrl,
             function(entry) {
                 photo.deviceUrl =  entry;
-                photo.isDirty = true;
                 console.log("Cached local copy of " + name);
             },
             function(err) {
@@ -145,6 +151,9 @@ var photoModel = {
             });
     },
 
+    syncLocal : function () {
+        photoModel.photosDS.sync();    
+    },
     
     uploadPhotoToCloud : function (photo) {
         
@@ -165,7 +174,7 @@ var photoModel = {
                     photoObj.cloudUrl = photoData.url;
                     photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                     photoObj.publicId = photoData.public_id;
-                    photoModel.updateCloud(photoObj);
+                    photoModel.syncLocal();
                     
                 }
             });
@@ -728,7 +737,7 @@ var photoModel = {
             }
 
         } else {
-            var dateStr = devicePhoto.date +  " " + devicePhoto.time;
+            var dateStr = devicePhoto.timeStamp;
             timeStamp = moment(dateStr, "YYYY:MM:DD HH:mm:ss");
             photo.set("timestamp", timeStamp);
             timeStr = moment(timeStamp).format('MMMM Do YYYY, h:mm:ss A');
@@ -736,6 +745,7 @@ var photoModel = {
             photo.set('addressString', null);
             photo.set('placeUUID', null);
             photo.set('placeString', null);
+            photo.set('placeName', null);
         }
        
         // For perf reasons add the photo before it's stored on everlive
@@ -770,7 +780,7 @@ var photoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(photoModel._cloudClass);
-        data.update({uuid: photoObj.uuid}, photoObj, function (error, data) {
+        data.updateOne(photoObj, function (error, data) {
             if (error !== null) {
                 ggError("Cloud Photo Update Error : " + JSON.stringify(error));
             }
@@ -785,12 +795,13 @@ var photoModel = {
         }
 
         photoModel.photosDS.remove(photo);
-        var Id = photo.Id;
+        photoModel.photosDS.sync();
+       /* var Id = photo.Id;
         if (Id !== undefined){
             everlive.deleteOne(photoModel._cloudClass, Id, function (error, data) {
                
             });
-        }
+        }*/
         
     },
 

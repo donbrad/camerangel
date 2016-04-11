@@ -179,7 +179,7 @@ var galleryView = {
         }
 
         // set result count
-        var photoCount = photoModel.photosDS._total;
+        var photoCount = photoModel.photosDS.total();
         if(photoCount > 0){
             $(".results").css("visibility", "visible");
             $("#resultCount").text(photoCount);

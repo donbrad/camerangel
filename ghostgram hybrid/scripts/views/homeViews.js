@@ -493,7 +493,9 @@ var userStatusView = {
 
 
        // Parse.User.logOut();
-
+        appDataChannel.closeChannel();
+        userDataChannel.closeChannel();
+        
         everlive.logout(function (status) {
             if (!status) {
                 mobileNotify("Signout Error....");

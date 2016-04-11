@@ -3,7 +3,7 @@
 <head>
     <title></title>
     <meta charset="utf-8" />
-	<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval';   img-src * data: blob: filesystem:; style-src  'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;">
+	<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval';   img-src * data: blob: filesystem: file: content: ; style-src  'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;">
     <!-- Styles -->
 
 	<link href="styles/strength.css" rel="stylesheet" />
@@ -951,7 +951,7 @@
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.sendEmail">
-					<img src="images/icon-send.svg" /> Send Email</a>
+					<img src="images/icon-ghostMail.svg" /> Send Email</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.callPhone">
@@ -3462,7 +3462,7 @@
 </script>
 
 <script type="text/x-kendo-template" id="gallery-template">
-	# photoUrl = deviceUrl; #
+	# photoUrl = deviceUrl;  console.log("Photo Url :  " + photoUrl);#
 
 	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
 

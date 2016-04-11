@@ -17,11 +17,11 @@ var devicePhoto = {
     _cloudinaryThumb: 'http://res.cloudinary.com/ghostgrams/image/upload/c_scale,h_512,w_512/v1454612367/',
     _cloudinaryImage: 'http://res.cloudinary.com/ghostgrams/image/upload/v1454612367/',
 
-    cloudinaryUpload : function (photoUUID, photoId, photoData, folder, callback) {
+    cloudinaryUpload : function (photoUUID, filename, photoData, folder, callback) {
         var formData = new FormData();
         formData.append('file', photoData);
         formData.append('api_key', 169985831568325);
-        formData.append('public_id', photoId);
+        formData.append('public_id', filename);
         formData.append('folder', folder);
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserphoto');
@@ -48,6 +48,59 @@ var devicePhoto = {
                 }
             });
     },
+
+
+    processGPS : function (gpsData) {
+        var gpsObj = {
+            hasData : false,
+            lat : 0,
+            latRef : null,
+            lng: 0,
+            lngRef: null,
+            alt: 0,
+            timestamp:  moment().format("YYYY:MM:DD HH:mm:ss")
+        };
+
+        if (device.platform === 'iOS') {
+            if (gpsData === undefined || gpsData === null) {
+                return (gpsObj);
+            }
+            gpsObj.hasData = true;
+            gpsObj.lat = gpsData.Latitude;
+            gpsObj.latRef = gpsData.LatitudeRef;
+            if (gpsObj.latRef === 'S') {
+                gpsObj.lat = -gpsObj.lat;
+            }
+            gpsObj.lng = gpsData.Longitude;
+            gpsObj.lngRef = gpsData.LongitudeRef;
+            if (gpsObj.lngRef === 'W') {
+                gpsObj.lng = -gpsObj.lng;
+            }
+            gpsObj.alt = gpsData.Altitude;
+            gpsObj.timestamp = gpsData.DateStamp + " " + gpsData.TimeStamp;
+
+            return (gpsObj);
+        } else {
+            // Assume android for now...
+            if (gpsData.gpsLatitude !== null) {
+                gpsObj.hasData = true;
+                gpsObj.lat = gpsData.gpsLatitude;
+                gpsObj.latRef = gpsData.gpsLatitudeRef;
+                if (gpsObj.latRef === 'S') {
+                    gpsObj.lat = -gpsObj.lat;
+                }
+                gpsObj.lng = gpsData.gpsLongitude;
+                gpsObj.lngRef = gpsData.gpsLongitudeRef;
+                if (gpsObj.lngRef === 'W') {
+                    gpsObj.lng = -gpsObj.lng;
+                }
+                gpsObj.alt = gpsData.gpsAltitude;
+                gpsObj.timestamp = gpsData.gpsDateStamp + " " + gpsData.gpsTimeStamp;
+            }
+            return(gpsObj);
+        }
+    },
+
 
     deviceCamera : function (resolution, quality, isChat, channelUUID,  displayCallback) {
         if (resolution === undefined) {
@@ -78,10 +131,14 @@ var devicePhoto = {
                 var photouuid = uuid.v4();
                 var imageObj = JSON.parse(imageData);
                 var metaObj = JSON.parse(imageObj.json_metadata);
-                var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
+    //            var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
+                var gpsObj = null;
                 if (device.platform === 'iOS') {
                     imageUrl = imageUrl.replace('file://', '');
+                    gpsObj = devicePhoto.processGPS(metaObj.GPS);
+                } else {
+                    gpsObj =  devicePhoto.processGPS(metaObj);
                 }
                 var localUrl = null;
                 // convert uuid into valid file name;
@@ -107,11 +164,11 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
                             devicePhoto.currentPhoto.imageUrl = nativeUrl;
                             devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
-                            devicePhoto.currentPhoto.lat = lat;
-                            devicePhoto.currentPhoto.lng = -lng;
-                            devicePhoto.currentPhoto.alt = altitude;
-                            devicePhoto.currentPhoto.date = date;
-                            devicePhoto.currentPhoto.time = time;
+                            devicePhoto.currentPhoto.lat = gpsObj.lat;
+                            devicePhoto.currentPhoto.lng = gpsObj.lng;
+                            devicePhoto.currentPhoto.alt = gpsObj.alt;
+
+
 
 
                             mobileNotify("Processing Photo...");
@@ -162,7 +219,7 @@ var devicePhoto = {
                                                 photoObj.cloudUrl = photoData.url;
                                                 photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                                 photoObj.publicId = photoData.public_id;
-                                                photoModel.updateCloud(photoObj);
+                                                photoModel.syncLocal();
                                             }
 
                                             devicePhoto._uploadActive = false;
@@ -232,10 +289,20 @@ var devicePhoto = {
                 var photouuid = uuid.v4();
                 var imageObj = JSON.parse(imageData);
                 var metaObj = JSON.parse(imageObj.json_metadata);
-                var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
+                var gpsObj = null;
+              //  var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
-               if (device.platform === 'iOS') {
+                var imageFile = imageObj.filename;
+                if (device.platform === 'iOS') {
                     imageUrl = imageUrl.replace('file://', '');
+                    gpsObj = devicePhoto.processGPS(metaObj.GPS);
+                } else {
+                    if (imageFile.substring(0,21)=="content://com.android") {
+                        var photo_split=imageFile.split("%3A");
+                        imageFile="content://media/external/images/media/"+photo_split[1];
+                    }
+                    //imageFile = imageFile.replace('content://', '');
+                    gpsObj =  devicePhoto.processGPS(metaObj);
                 }
 
             /*    if (device.platform === 'Android') {
@@ -245,7 +312,7 @@ var devicePhoto = {
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
 
-                window.resolveLocalFileSystemURL(imageObj.filename, function fileEntrySuccess(fileEntry) {
+                window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
@@ -262,11 +329,10 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
                             devicePhoto.currentPhoto.imageUrl = nativeUrl;
                             devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
-                            devicePhoto.currentPhoto.lat = lat;
-                            devicePhoto.currentPhoto.lng = -lng;
-                            devicePhoto.currentPhoto.alt = altitude;
-                            devicePhoto.currentPhoto.date = date;
-                            devicePhoto.currentPhoto.time = time;
+                            devicePhoto.currentPhoto.lat = gpsObj.lat;
+                            devicePhoto.currentPhoto.lng = gpsObj.lng;
+                            devicePhoto.currentPhoto.alt = gpsObj.alt;
+                            devicePhoto.currentPhoto.timeStamp = gpsObj.timestamp;
 
 
                             mobileNotify("Processing Photo...");
@@ -320,7 +386,7 @@ var devicePhoto = {
                                                 photoObj.cloudUrl = photoData.url;
                                                 photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                                 photoObj.publicId = photoData.public_id;
-                                                photoModel.updateCloud(photoObj);
+                                                photoModel.syncLocal();
                                                 devicePhoto._uploadActive = false;
                                                 devicePhoto.currentPhoto.uploadComplete = true;
                                                 
@@ -336,14 +402,14 @@ var devicePhoto = {
                                 });
 
 
-                        }, function(){
-
+                        }, function(error){
+                                console.log(JSON.stringify(error));
                         });
-                    }, function(){
-
+                    }, function(error){
+                        console.log(JSON.stringify(error));
                     });
-                }, function(){
-
+                }, function(error){
+                    console.log(JSON.stringify(error));
                 });
 
   /*              devicePhoto.currentPhoto.photoId = photouuid;

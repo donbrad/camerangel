@@ -69,6 +69,12 @@ var appDataChannel = {
        // appDataChannel.history();
     },
 
+    closeChannel : function () {
+        APP.pubnub.unsubscribe({
+            channel: appDataChannel.channelUUID
+        });
+    },
+
     updateTimeStamp : function () {
         appDataChannel.lastAccess = ggTime.currentTime();
         localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
