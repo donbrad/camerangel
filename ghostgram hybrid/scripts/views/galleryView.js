@@ -251,10 +251,13 @@ var galleryView = {
         $("#gallerySearch").attr("placeholder", "Search All");
     },
 
-    getDisplayUrl : function (photouuid, device, image, thumb) {
+    getDisplayUrl : function (photouuid, device, cloud, thumb) {
+        if (cloud === null) {
+            return(device);
+        }
         var filename = photouuid.replace(/-/g,'');
         var uniqueNewFilename = "photo_" + filename + ".jpg";
-        var store = cordova.file.dataDirectory;
+        var store = deviceModel.fileDirectory;
         var localUrl = store +  uniqueNewFilename;
 
         window.resolveLocalFileSystemURL(localUrl, 
@@ -263,17 +266,16 @@ var galleryView = {
             },
             function () {
                 var fileTransfer = new FileTransfer();
-                fileTransfer.download(image, localUrl,
+                fileTransfer.download(cloud, localUrl,
                     function(entry) {
                         photoModel.updateLocalUrl(photouuid, localUrl);
                     },
                     function(err) {
-                        mobileNotify("Photo cache error " + JSON.stringify(err));
-                        console.dir(err);
+                        ggError("Photo cache error " + JSON.stringify(err));
                     });
             });
         
-        return(image);
+        return(device);
     },
 
 

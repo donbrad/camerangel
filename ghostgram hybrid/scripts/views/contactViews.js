@@ -1424,6 +1424,18 @@ var contactActionView = {
         );
     },
 
+    sendEmail : function (e) {
+        _preventDefault(e);
+
+        var email = contactActionView._activeContact.get('email');
+        var properties = {
+            to: email
+        };
+        cordova.plugins.email.open(properties, function () {
+            mobileNotify("Email sent...");
+        }, this);
+    },
+
     sendSMS : function (e) {
         _preventDefault(e);
 

@@ -128,7 +128,8 @@ var everlive = {
     isUserSignedIn : function () {
         everlive.checkAuthStatus(function (error, status) {
             if (error === null) {
-                if (status === "unauthenticated" || status === "invalidAuthentication" || status === "expiredAuthentication") {
+                if (status === "unauthenticated" || status === "invalidAuthentication" ||
+                    status === "expiredAuthentication" ) {
                     everlive._authenticating = false;
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
@@ -186,6 +187,9 @@ var everlive = {
                 } else if (data.status === "authenticating") {
                     everlive._status = data.status;
                     everlive._isAuthenticated = false;
+                } else if (data.status === "invalidAuthentication" ){
+                    everlive._status = data.status;
+                    everlive._isAuthenticated = false;
                 }
                 callback(null, data.status);
             }, 
@@ -218,7 +222,7 @@ var everlive = {
     },
 
     login : function (username, password, callback) {
-        APP.everlive.users.login(username, password,
+        APP.everlive.authentication.login(username, password,
             function (data) {
                 everlive._token = data.result.access_token;
                 everlive._tokenType = data.result.token_type;
@@ -265,7 +269,7 @@ var everlive = {
     },
     
     logout : function (callback) {
-        APP.everlive.users.logout().then(function () {
+        APP.everlive.authentication.logout().then(function () {
                 everlive._signedIn = false;
                 everlive._isAuthenticated = false;
                 callback(true);
@@ -288,6 +292,20 @@ var everlive = {
         );
     },
 
+    recoverPassword : function (email, callback) {
+        var attrs = {
+            Email: email
+        };
+        APP.everlive.users.resetPassword(attrs,
+            function (data) {
+                callback(null, true);
+            },
+            function (error) {
+                callback(error, false);
+            }
+        );
+
+    },
 
     updateUser : function () {
         var updateObj = userModel._user;
@@ -504,9 +522,9 @@ var everlive = {
 
     clearAuthentication : function () {
 
-        APP.everlive.authentication.clearAuthorization();
-        APP.everlive.authentication.clearPersistedAuthentication();
-        APP.everlive.users.logout();
+     /*   APP.everlive.authentication.clearAuthorization();
+        APP.everlive.authentication.clearPersistedAuthentication();*/
+        APP.everlive.authentication.logout();
        
     },
 

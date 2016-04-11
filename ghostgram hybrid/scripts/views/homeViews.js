@@ -1675,3 +1675,37 @@ var verifyPhoneModal = {
 
     }
 }
+
+var recoverPasswordView = {
+    openModal: function (e) {
+        var email = $("#home-signin-username").val();
+
+        // ux helper for quick user input
+        if(email !== ''){
+            $("#home-recoverPassword-email").val(email);
+        } else{
+            $("#home-recoverPassword-email").val('');
+        }
+        $("#modalview-recoverPassword").data("kendoMobileModalView").open();
+    },
+
+    closeModal: function (e) {
+        $("#modalview-recoverPassword").data("kendoMobileModalView").close();
+    },
+
+    recoverPassword : function (e) {
+
+        var emailAddress = $("#home-recoverPassword-email").val();
+        
+        everlive.recoverPassword(emailAddress, function(error, data) {
+            if (error !== null) {
+                mobileNotify ("Password recovery error : " + JSON.stringify(error));
+            } else {
+                mobileNotify ("Password recovery instructions send to " + emailAddress);
+                recoverPasswordView.closeModal();
+            }
+        })
+
+
+    }
+}

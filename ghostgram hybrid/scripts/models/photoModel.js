@@ -12,6 +12,9 @@ var photoModel = {
     _version : 1,
     _cloudClass : 'photos',
     _ggClass: 'Photo',
+    _iosPrefix: "/var",
+    _androidPrefix: "/",
+    _emulatorPrefix: "",
     currentPhoto: {},
     currentOffer: null,
     previewSize: "33%",
@@ -87,32 +90,6 @@ var photoModel = {
 
 
 
-    _filterEverlive : function (photo) {
-        var elPhoto = photo;
-
-         delete elPhoto.ACL;
-
-         delete elPhoto.__proto__;
-
-         delete elPhoto.image;
-
-         delete elPhoto.thumbnail;
-
-         delete elPhoto.objectId;
-
-         delete elPhoto.geoPoint.__type;
-
-         delete elPhoto.geoPoint.__proto__;
-
-         elPhoto.modifiedAt = elPhoto.updatedAt;
-
-         elPhoto.uuid = elPhoto.photoId;
-
-        return(elPhoto);
-
-    },
-
-
     updateLocalUrl : function (uuid, localUrl) {
         var photo = photoModel.findPhotoById(uuid);
 
@@ -121,31 +98,81 @@ var photoModel = {
         }
     },
 
-    isPhotoCached : function (photo) {
-        var store = deviceModel.fileDirectory;
-        var url = photo.imageUrl;
-        var filename = photo.photoId.replace(/-/g, '');
-
-        //Check for the file.
-        window.resolveLocalFileSystemURL(store + filename, function(){}, function() {photoModel.addToLocalCache(url, filename, photo)});
+    createPhotoLocalName : function (photoId) {
+        var filename = 'photo_' + photoId.replace(/-/g, '') + '.jpg';
+        return (filename);
     },
 
-    addToLocalCache : function (url, name, photo) {
-        var store = deviceModel.fileDirectory;
+    isPhotoCached : function (photo) {
+       
+        var urlCloud= photo.cloudUrl, urlDevice = photo.deviceUrl;
+
+        if (urlCloud !== null && urlDevice === null) {
+        // Photo is on the cloud but not the local device
+            var store = deviceModel.fileDirectory;
+            var filename = photoModel.createPhotoLocalName(photo.photoId);
+            var localUrl = store + filename;
+
+            //Check for the file.
+            window.resolveLocalFileSystemURL(localUrl,
+                function () {
+
+                },
+                function () {
+                    photoModel.addToLocalCache(urlCloud, localUrl, photo);
+                    console.log("Caching photo on device :  " + photo.uuid);
+                });
+        }
+
+        if (urlCloud === null && urlDevice !== null) {
+            // Photo is on the device but not stored in the cloud
+            console.log("Uploading Photo to cloud : " + photo.uuid);
+            photoModel.uploadPhotoToCloud(photo);
+        }
+    },
+
+    addToLocalCache : function (url, localUrl, photo) {
 
         var fileTransfer = new FileTransfer();
-        fileTransfer.download(url, store + name,
+        fileTransfer.download(url, localUrl,
             function(entry) {
                 photo.deviceUrl =  entry;
                 photo.isDirty = true;
                 console.log("Cached local copy of " + name);
             },
             function(err) {
-                console.log("Error");
-                console.dir(err);
+              ggError("Local Cache Error " + JSON.stringify(err));
             });
     },
 
+    
+    uploadPhotoToCloud : function (photo) {
+        
+        var url = photo.deviceUrl, photouuid = photo.uuid;
+        
+        if (url === null) {
+            return;
+        }
+        devicePhoto.convertImgToDataURL(url, function (dataUrl) {
+            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+            var folder = devicePhoto._userPhoto;
+            var filename = photouuid.replace(/-/g,'');
+            devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
+                var photoObj = photoModel.findPhotoById(photouuid);
+
+                if (photoObj !== undefined) {
+                    photoObj.imageUrl = photoData.url;
+                    photoObj.cloudUrl = photoData.url;
+                    photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
+                    photoObj.publicId = photoData.public_id;
+                    photoModel.updateCloud(photoObj);
+                    
+                }
+            });
+        }); 
+    },
+    
+    
     queryPhoto: function (query) {
         if (query === undefined)
             return(undefined);
@@ -199,6 +226,10 @@ var photoModel = {
         return(offer);
     },
 
+    getUploadList : function () {
+        var uploadList = photoModel.queryPhotos({ field: "cloudUrl", operator: "eq", value: 'null' });
+        return (uploadList);
+    },
 
     findOfferById : function (offerId) {
 
@@ -616,22 +647,18 @@ var photoModel = {
 
     },
 
-    addDevicePhoto: function (devicePhoto, callback) {
+    addDevicePhoto: function (devicePhoto, isCamera, callback) {
         mobileNotify("Adding  photo....");
-        // Todo: add additional processing to create Parse photoOffer
-      /*  var Photos = Parse.Object.extend(photoModel._cloudClass);
-        var photo = new Photos();
-*/
         var photo = new kendo.data.ObservableObject();
 
         //photo.setACL(userModel.parseACL);
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
-
+        photo.set('Id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
-        photo.set('deviceUrl', devicePhoto.phoneUrl);
+        photo.set('deviceUrl', devicePhoto.deviceUrl);
 
         photo.set('imageUrl', devicePhoto.imageUrl);
         if (devicePhoto.imageFile !== null) {
@@ -639,7 +666,7 @@ var photoModel = {
         }
 
         photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
-        photo.set('thumbnail', devicePhoto.thumbnailFile);
+        photo.set('cloudUrl', devicePhoto.cloudUrl);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel._user.userUUID);
@@ -665,32 +692,52 @@ var photoModel = {
             photo.set('channelName', null);
         }
 
-        var timeStamp = new Date().getTime();
-        photo.set("timestamp", timeStamp);
-        var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
-        photo.set("dateString", timeStr);
-
-        var lat = '0.0', lng ='0.0';
-        if (mapModel.lat !== null) {
-            lat = mapModel.lat.toString();
+        var lat = 0.0, lng =0.0;
+        if (devicePhoto.lat !== null) {
+            lat = devicePhoto.lat;
         }
-        if (mapModel.lng !== null) {
-            lng = mapModel.lng.toString();
+        if (devicePhoto.lng !== null) {
+            lng = devicePhoto.lng;
         }
         photo.set('lat', lat);
         photo.set('lng', lng);
         photo.set('geoPoint', {longitude: parseFloat(lng), latitude: parseFloat(lat)});  // everlive format for geoPoint
 
-        if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
-            var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
-            photo.set('addressString', addressStr);
+        var alt = 0;
+        if (devicePhoto.alt !== undefined && devicePhoto.alt !== null) {
+           alt = devicePhoto.alt;
         }
+        photo.set('alt',alt);
+        var timeStamp = new Date().getTime();
+        photo.set("timestamp", timeStamp);
+        var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
+        photo.set("dateString", timeStr);
 
-        if (userModel._user.currentPlaceUUID !== null) {
-            photo.set('placeUUID', userModel._user.currentPlaceUUID);
-            photo.set('placeString', userModel._user.currentPlace);
+
+        if (isCamera) {
+
+            // If source is camera than we can use real time location information (not accurate for photos from gallery...)
+            if (mapModel.currentAddress !== null && mapModel.currentAddress.city !== undefined) {
+                var addressStr = mapModel.currentAddress.city + ', ' + mapModel.currentAddress.state + '  ' + mapModel.currentAddress.zipcode;
+                photo.set('addressString', addressStr);
+            }
+
+            if (userModel._user.currentPlaceUUID !== null) {
+                photo.set('placeUUID', userModel._user.currentPlaceUUID);
+                photo.set('placeString', userModel._user.currentPlace);
+            }
+
+        } else {
+            var dateStr = devicePhoto.date +  " " + devicePhoto.time;
+            timeStamp = moment(dateStr, "YYYY:MM:DD HH:mm:ss");
+            photo.set("timestamp", timeStamp);
+            timeStr = moment(timeStamp).format('MMMM Do YYYY, h:mm:ss A');
+            photo.set("dateString", timeStr);
+            photo.set('addressString', null);
+            photo.set('placeUUID', null);
+            photo.set('placeString', null);
         }
-
+       
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
@@ -721,6 +768,14 @@ var photoModel = {
         
     },
 
+    updateCloud : function (photoObj)  {
+        var data = APP.everlive.data(photoModel._cloudClass);
+        data.update({uuid: photoObj.uuid}, photoObj, function (error, data) {
+            if (error !== null) {
+                ggError("Cloud Photo Update Error : " + JSON.stringify(error));
+            }
+        });
+    },
 
     deletePhoto: function (photoId) {
         var photo = this.findPhotoById(photoId);
