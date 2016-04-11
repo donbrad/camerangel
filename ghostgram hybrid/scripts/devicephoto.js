@@ -136,7 +136,7 @@ var devicePhoto = {
                                 displayCallback(photouuid, nativeUrl);
                             }
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, function (error, photo) {
-                                if (error === null) {
+                                if (error !== null) {
                                     mobileNotify("Photo Save Error : " + JSON.stringify(error));
                                 }
                             });
@@ -305,7 +305,7 @@ var devicePhoto = {
                             }
 
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, function (error, photo) {
-                                if (error === null) {
+                                if (error !== null) {
                                     mobileNotify("Photo Save Error : " + JSON.stringify(error));
                                 }
                             });
