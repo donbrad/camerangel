@@ -17,11 +17,11 @@ var devicePhoto = {
     _cloudinaryThumb: 'http://res.cloudinary.com/ghostgrams/image/upload/c_scale,h_512,w_512/v1454612367/',
     _cloudinaryImage: 'http://res.cloudinary.com/ghostgrams/image/upload/v1454612367/',
 
-    cloudinaryUpload : function (photoUUID, photoId, photoData, folder, callback) {
+    cloudinaryUpload : function (photoUUID, filename, photoData, folder, callback) {
         var formData = new FormData();
         formData.append('file', photoData);
         formData.append('api_key', 169985831568325);
-        formData.append('public_id', photoId);
+        formData.append('public_id', filename);
         formData.append('folder', folder);
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserphoto');
