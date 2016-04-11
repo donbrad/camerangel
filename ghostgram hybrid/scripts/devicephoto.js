@@ -58,7 +58,7 @@ var devicePhoto = {
             lng: 0,
             lngRef: null,
             alt: 0,
-            timestamp: 0
+            timestamp:  moment().format("YYYY:MM:DD HH:mm:ss")
         };
 
         if (device.platform === 'iOS') {
@@ -86,12 +86,12 @@ var devicePhoto = {
                 gpsObj.hasData = true;
                 gpsObj.lat = gpsData.gpsLatitude;
                 gpsObj.latRef = gpsData.gpsLatitudeRef;
-                if (gps.latRef === 'S') {
+                if (gpsObj.latRef === 'S') {
                     gpsObj.lat = -gpsObj.lat;
                 }
                 gpsObj.lng = gpsData.gpsLongitude;
                 gpsObj.lngRef = gpsData.gpsLongitudeRef;
-                if (gps.lngRef === 'W') {
+                if (gpsObj.lngRef === 'W') {
                     gpsObj.lng = -gpsObj.lng;
                 }
                 gpsObj.alt = gpsData.gpsAltitude;
@@ -167,7 +167,8 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.lat = gpsObj.lat;
                             devicePhoto.currentPhoto.lng = gpsObj.lng;
                             devicePhoto.currentPhoto.alt = gpsObj.alt;
-                            devicePhoto.currentPhoto.timeStamp = gpsObj.timestamp;
+
+
 
 
                             mobileNotify("Processing Photo...");
