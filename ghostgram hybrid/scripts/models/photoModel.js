@@ -107,6 +107,10 @@ var photoModel = {
        
         var urlCloud= photo.cloudUrl, urlDevice = photo.deviceUrl;
 
+        if (urlCloud !== null && urlDevice !== null) {
+            return(true);
+        }
+
         if (urlCloud !== null && urlDevice === null) {
         // Photo is on the cloud but not the local device
             var store = deviceModel.fileDirectory;
@@ -129,6 +133,9 @@ var photoModel = {
             console.log("Uploading Photo to cloud : " + photo.uuid);
             photoModel.uploadPhotoToCloud(photo);
         }
+
+        return(false);
+
     },
 
     addToLocalCache : function (url, localUrl, photo) {
