@@ -292,11 +292,12 @@ var devicePhoto = {
                 var gpsObj = null;
               //  var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
+                var imageFile = imageObj.filename;
                 if (device.platform === 'iOS') {
                     imageUrl = imageUrl.replace('file://', '');
                     gpsObj = devicePhoto.processGPS(metaObj.GPS);
                 } else {
-                    imageUrl = imageUrl.replace('content://', '');
+                    imageFile = imageFile.replace('content://', '');
                     gpsObj =  devicePhoto.processGPS(metaObj);
                 }
 
@@ -307,7 +308,7 @@ var devicePhoto = {
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
 
-                window.resolveLocalFileSystemURL(imageObj.filename, function fileEntrySuccess(fileEntry) {
+                window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
