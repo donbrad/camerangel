@@ -68,12 +68,12 @@ var devicePhoto = {
             gpsObj.hasData = true;
             gpsObj.lat = gpsData.Latitude;
             gpsObj.latRef = gpsData.LatitudeRef;
-            if (gps.latRef === 'S') {
+            if (gpsObj.latRef === 'S') {
                 gpsObj.lat = -gpsObj.lat;
             }
             gpsObj.lng = gpsData.Longitude;
             gpsObj.lngRef = gpsData.LongitudeRef;
-            if (gps.lngRef === 'W') {
+            if (gpsObj.lngRef === 'W') {
                 gpsObj.lng = -gpsObj.lng;
             }
             gpsObj.alt = gpsData.Altitude;
