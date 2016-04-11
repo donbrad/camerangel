@@ -603,7 +603,7 @@ var addContactView = {
 
 
         if (data.photo === null) {
-            $("#addContactPhoto").attr("src","images/ghostgramcontact.png");
+            $("#addContactPhoto").attr("src","images/default-img.png");
 
         } else {
             returnValidPhoto(data.photo, function(validUrl) {
@@ -1070,24 +1070,50 @@ var editContactView = {
         //Show the status update div
         contactModel.updateContactDetails(contactId, function(contact) {
             editContactView.setActiveContact(contact);
-            editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
+            //editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
             editContactView.updateContact();
             // Hide the status update div
         });
 
-       // Set verified inputs
-       if(editContactView._activeContact.phoneValidated){
-       		$("#edit-verified-phone").addClass("hidden");
-       } else {
-       		$("#edit-verified-phone").addClass("hidden");
-       }
+        // Set verified inputs
+        if(editContactView._activeContact.phoneValidated){
+       		$("#contactEdit-phone-read").removeClass("hidden");
+            $("#contactEdit-phone-edit").addClass('hidden');
+        } else {
+       		$("#contactEdit-phone-read").addClass("hidden");
+            $("#contactEdit-phone-edit").removeClass('hidden');
+        }
 
-       if(editContactView._activeContact.emailValidated){
-       		$("#edit-verified-email").addClass("hidden");
-       } else {
-       		$("#edit-verified-email").addClass("hidden");
-       }
+        if(editContactView._activeContact.emailValidated){
+           $("#editContact-email-edit").addClass("hidden");
+           $("#editContact-email-read").removeClass("hidden");
+        } else {
+           $("#editContact-email-edit").removeClass("hidden");
+           $("#editContact-email-read").addClass("hidden");
+        }
 
+        if(editContactView._activeContact.address === null){
+            $("#editContact-address-btn").removeClass('hidden');
+            $("#editContact-address-edit").addClass('hidden');
+        } else {
+            $("#editContact-address-btn").addClass('hidden');
+            $("#editContact-address-edit").removeClass('hidden');
+        }
+
+        var phoneVal = ux.showCleanPhone(editContactView._activeContact.phone);
+        $('#editContact-phone-input').text(phoneVal);
+
+        $("#editContactPhone").val(editContactView._activeContact.phone);
+        ux.showFormatedPhone();
+        ux.formatPhoneInput();
+    },
+
+    toggleAddress: function(){
+        var contact = editContactView._activeContact;
+        if(contact.address === null){
+            $("#editContact-address-btn").addClass('hidden');
+            $("#editContact-address-edit").removeClass('hidden');
+        }
     },
 
     validate: function(){
@@ -1113,7 +1139,7 @@ var editContactView = {
     onDone : function (e) {
         _preventDefault(e);
 
-       // contactModel.currentContact.unbind('change' , syncCurrentContact);
+        // contactModel.currentContact.unbind('change' , syncCurrentContact);
         APP.kendo.navigate("#contacts");
         // reset UI
         $("#contactEditList").velocity("fadeIn");
@@ -1130,9 +1156,7 @@ var editContactView = {
         _preventDefault(e);
 
         contactModel.deleteContact(editContactView._activeContact.uuid);
-
         mobileNotify("Deleting " + editContactView._activeContact.name);
-
         editContactView.onDone();
     }
 };

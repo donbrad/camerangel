@@ -246,7 +246,7 @@ function deviceFindContacts(query, callback) {
 
 function returnValidPhoto(url,callback) {
     if (url === '') {
-        callback("images/ghostgramcontact.png");
+        callback("images/default-img.png");
     }
 
     var img = new Image();
@@ -256,7 +256,7 @@ function returnValidPhoto(url,callback) {
     };
     img.onerror = function(err) {
         //Returning a default image for users without photo
-        callback("images/ghostgramcontact.png");
+        callback("images/default-img.png");
     };
     img.src = url;
 }

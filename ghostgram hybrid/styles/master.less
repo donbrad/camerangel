@@ -250,6 +250,12 @@ p {
   margin: 0px;
   line-height: 1.5;
 }
+
+.caption-sm {
+  font-size: 13px;
+  color: @shade-100;
+}
+
 .caption {
   .font-size(16);
   color: #979797;
@@ -509,6 +515,11 @@ form {
   line-height: 2;
 }
 
+.zero {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .badge {
   border-radius: 4px;
   background: @shade-200;
@@ -542,8 +553,10 @@ form {
 }
 
 .icon-smart {
-  &:extend(.icon-sm);
+  height: 1.5em;
+  width: 1.5em;
   margin-right: 0.3em;
+  vertical-align: middle;
 }
 
 .icon-md {
@@ -634,10 +647,10 @@ form {
 
 .btnStyle {
   text-decoration: none;
-  .font-size(16);
-  font-weight: 400;
+  font-size: 1em;
   padding: 0.25em 0.5em;
-  margin: 0px;
+  margin: 0;
+  font-weight: 400;
 }
 
 .km-root .km-button,
@@ -645,8 +658,22 @@ form {
   .btnStyle;
 }
 
+.km-root .km-material .km-button.km-state-disabled {
+  //background: rgba(0,0,0,0.3) !important;
+}
+
 .km-material .km-navbar .km-button.km-state-active, .km-material .k-toolbar .km-button.km-state-active {
   background: none;
+}
+
+.gg-read-value {
+  font-size: 1.2em;
+}
+
+.btnIncomplete {
+  &:extend(.btnStyle);
+  background-color: rgba(0,0,0,0.3) !important;
+  color: #fff !important;
 }
 
 .btnPrimary {
@@ -659,8 +686,7 @@ form {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
   background: @primary-100 !important;
-  /*
-    :hover {
+   /* :hover {
     	background: #E5A545 !important;
     	text-decoration: none;
 	}
@@ -672,8 +698,7 @@ form {
 	}
 	:disabled {
     	background: #A4A4A4 !important;
-	}
-	*/
+	}*/
 }
 
 .btnBlack {
@@ -760,6 +785,10 @@ form {
     color: #A4A4A4 !important;
     background: transparent !important;
   }
+}
+
+.btn-li {
+  text-align: left;
 }
 
 .btnClear-light {
@@ -935,13 +964,15 @@ form {
 .btnSpan-btm {
   width: 100%;
   margin: 0 !important;
-  padding: 0px;
-  border-radius: 0px !important;
+  padding: 0;
+  border-radius: 0 !important;
   overflow-x: hidden;
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
 }
 
 .btnFull-modal {
@@ -949,6 +980,8 @@ form {
   border-radius: 0px !important;
   height: 3rem;
   padding-top: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
   :hover {
     background: transparent !important;
   }
@@ -1444,12 +1477,20 @@ div.footerMenu.km-footer > ul > li > a:active {
   right: 10px;
 }
 .helper-verified {
-  color: #43A047 !important;
+  margin-left: 0.25em;
+  color: #fff;
+  border-radius: 3px;
+  background-color: #65BBB3 !important;
   vertical-align: baseline;
   //.font-size(11);
+  font-size: 10px;
+  padding: 0.1em;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  text-transform: uppercase;
 }
 .helper-verified-img {
-  margin-right: -3px;
+  //margin-right: 3px;
   padding-top: 3px;
   height: 14px;
 }
@@ -2442,6 +2483,15 @@ div.footerMenu.km-footer > ul > li > a:active {
   right: 1em;
 }
 
+.edit-contact-group {
+  font-size: 1em;
+  color: #fff;
+  background: @primary-200;
+  border-radius: 3px;
+  padding: 0.1em 0.5em;
+  margin-right: 0.5em;
+}
+
 .listTag {
   //font-size: 0.85em;
   border-radius: 3px;
@@ -2829,6 +2879,10 @@ a:hover {
   }
 }
 
+#addChatHasContacts {
+  margin-top: 1em;
+}
+
 #addChannelBtn {
   .shadow;
   position: fixed;
@@ -2982,29 +3036,24 @@ a:hover {
   margin-left: 0.25rem;
 }
 
-#channelPresence > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
-  background: @darkBk;
-}
-
 #channelPresence-listview > li > div > div.memberTempName > h4 {
-  color: #fff;
+  color: @black;
 }
 
 .memberTempName {
   color: @black;
 }
 
-#channelPresence > div.km-header > div > div.km-view-title {
-  background: @darkBk;
-  color: #fff !important;
-}
-
-#channelPresence-listview > li {
-  border-top: 1px solid @shade-100;
-  .gone {
-    opacity: 0.4;
+#channelPresence-listview {
+  background: #fff;
+  li {
+    border-bottom: 1px solid @shade-200;
+    .gone {
+      opacity: 1;
+    }
   }
 }
+
 
 #channels-listview > li > div > a > div > img {
   margin-left: 1.25rem;
@@ -3106,8 +3155,8 @@ a:hover {
 }
 
 div.footerMenu.km-footer > ul > li > a {
-  padding: 0.75em;
-  margin: 0px;
+  padding: 0.7em;
+  margin: 0;
 }
 
 .actionBtn {
@@ -3121,13 +3170,14 @@ div.footerMenu.km-footer > ul > li > a {
   position: absolute;
   bottom: 4rem;
   p {
-    width: 8.75em;
+    width: auto;
     position: absolute;
     right: 0rem;
     top: 1rem;
     opacity:0;
     text-align: right;
-    padding-right: 5px;
+    padding-right: 10px;
+    white-space: nowrap;
   }
   img {
     height:1.25rem;
@@ -3218,6 +3268,12 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   fill: @primary-200;
 }
 
+#network-offline {
+  width: 100%;
+  padding: 0 1em;
+  background: @shade-100;
+  color: #fff;
+}
 
 #status-profile-img {
   .circle-img-md;
@@ -4409,15 +4465,17 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 .topHalfLeft {
-  width: 30%;
+  width: 25%;
   float: left;
   text-align: center;
+  margin-top: -1em;
 }
 
 .topHalfRight {
-  width: 70%;
+  width: 75%;
   float: left;
   padding-top: 0.5rem;
+  padding-left: 0.5em;
 }
 
 #testing {
@@ -4609,7 +4667,7 @@ div.contactListBox.activeContact > div > div > ul {
   float: left;
   position: absolute;
   top: 28px;
-  left: -16px;
+  left: -0.6em;
 }
 
 .mobile-input {
@@ -4667,7 +4725,7 @@ div.contactListBox.activeContact > div > div > ul {
   li:first-child {
     border: none !important;
   }
-  margin-top: 1rem;
+  //margin-top: 1rem;
 }
 
 #editContact-deleteBtn img {
@@ -6259,7 +6317,8 @@ table.k-editor {
 }
 
 .icon-feature-img {
-  width: 100%;
+  float: left;
+  width: 20%;
   text-align: center;
   > img {
     width: 3.5em;
@@ -6268,8 +6327,11 @@ table.k-editor {
 }
 
 .icon-feature-body {
-  width: 100%;
-  text-align: center;
+  float: left;
+  width: 80%;
+  h3 {
+    font-weight: 600;
+  }
 }
 
 .featureList {
@@ -6279,9 +6341,13 @@ table.k-editor {
 }
 
 .feature-card {
-  padding: 0.5em;
+  padding: 1em 0.5em;
   background-color: @shade-400;
-  width: 100%;
+  width: 95%%;
   height: 100%;
   margin-bottom: 3em;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  border-radius: 3px;
+  margin-top: 1em;
 }
