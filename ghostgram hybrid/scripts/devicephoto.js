@@ -306,9 +306,9 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.cloudUrl = null;
                             devicePhoto.currentPhoto.thumbnailUrl = thumbNail;
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto, false, function (error, photo) {
-                                if (error === null) {
+                                if (error !== null) {
                                     ggError("Photo Cloud Save Error " + JSON.stringify(error));
-                                }
+                                } 
                             });
                             if (displayCallback !== undefined) {
                                 displayCallback(photouuid, imageUrl);

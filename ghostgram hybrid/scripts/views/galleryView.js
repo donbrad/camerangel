@@ -252,6 +252,9 @@ var galleryView = {
     },
 
     getDisplayUrl : function (photouuid, device, cloud, thumb) {
+        if (cloud === null) {
+            return(device);
+        }
         var filename = photouuid.replace(/-/g,'');
         var uniqueNewFilename = "photo_" + filename + ".jpg";
         var store = deviceModel.fileDirectory;
