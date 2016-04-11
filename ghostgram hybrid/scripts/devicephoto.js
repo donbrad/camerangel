@@ -162,7 +162,7 @@ var devicePhoto = {
                                                 photoObj.cloudUrl = photoData.url;
                                                 photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                                 photoObj.publicId = photoData.public_id;
-                                                photoModel.updateCloud(photoObj);
+                                                photoModel.syncLocal();
                                             }
 
                                             devicePhoto._uploadActive = false;
@@ -320,7 +320,7 @@ var devicePhoto = {
                                                 photoObj.cloudUrl = photoData.url;
                                                 photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                                                 photoObj.publicId = photoData.public_id;
-                                                photoModel.updateCloud(photoObj);
+                                                photoModel.syncLocal();
                                                 devicePhoto._uploadActive = false;
                                                 devicePhoto.currentPhoto.uploadComplete = true;
                                                 

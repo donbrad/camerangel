@@ -144,7 +144,6 @@ var photoModel = {
         fileTransfer.download(url, localUrl,
             function(entry) {
                 photo.deviceUrl =  entry;
-                photo.isDirty = true;
                 console.log("Cached local copy of " + name);
             },
             function(err) {
@@ -152,6 +151,9 @@ var photoModel = {
             });
     },
 
+    syncLocal : function () {
+        photoModel.photosDS.sync();    
+    },
     
     uploadPhotoToCloud : function (photo) {
         
@@ -172,7 +174,7 @@ var photoModel = {
                     photoObj.cloudUrl = photoData.url;
                     photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                     photoObj.publicId = photoData.public_id;
-                    photoModel.updateCloud(photoObj);
+                    photoModel.syncLocal();
                     
                 }
             });
@@ -662,7 +664,6 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
-        photo.set('Id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
@@ -777,7 +778,7 @@ var photoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(photoModel._cloudClass);
-        data.update({uuid: photoObj.uuid}, photoObj, function (error, data) {
+        data.updateOne(photoObj, function (error, data) {
             if (error !== null) {
                 ggError("Cloud Photo Update Error : " + JSON.stringify(error));
             }
