@@ -633,7 +633,7 @@ var photoModel = {
         photo.set('ggType', photoModel._ggClass);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
-        photo.set('deviceUrl', devicePhoto.phoneUrl);
+        photo.set('deviceUrl', devicePhoto.deviceUrl);
 
         photo.set('imageUrl', devicePhoto.imageUrl);
         if (devicePhoto.imageFile !== null) {
