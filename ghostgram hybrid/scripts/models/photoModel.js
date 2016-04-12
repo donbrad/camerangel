@@ -153,7 +153,6 @@ var photoModel = {
 
     syncLocal : function () {
         photoModel.photosDS.sync();
-        APP.everlive.sync();
     },
     
     uploadPhotoToCloud : function (photo) {

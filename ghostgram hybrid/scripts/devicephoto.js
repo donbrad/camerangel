@@ -323,6 +323,7 @@ var devicePhoto = {
 
                             var uri = nativeUrl;
                             if (device.platform === 'iOS') {
+                                
                              nativeUrl = nativeUrl.replace('file://', '');
                              }
                             devicePhoto.currentPhoto.photoId = photouuid;
