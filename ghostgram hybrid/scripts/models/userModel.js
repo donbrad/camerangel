@@ -701,6 +701,8 @@ var userStatus = {
         /* if (lng !== null)
          lng = lng.toFixed(6);*/
         status.set('lng', userModel._user.lng);
+        var gp = {Longitude : parseFloat(userModel._user.lng), Latitude : parseFloat(userModel._user.lat)};
+        status.set("geoPoint", gp);
         status.set('googlePlaceId', userModel._user.googlePlaceId);
         status.set('currentPlaceUUID', userModel._user.currentPlaceUUID);
         status.set('isCheckedIn', userModel._user.isCheckedIn);
