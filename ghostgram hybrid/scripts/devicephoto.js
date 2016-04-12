@@ -336,10 +336,12 @@ var devicePhoto = {
 
 
                             mobileNotify("Processing Photo...");
-
+                            /*  if (device.platform === 'iOS') {
+                             uri = uri.replace('file://', '');
+                             }*/
                             var scaleOptions = {
                                 uri: uri,
-                                filename: "photo_"+filename,
+                                filename: "photo_"+filename + '.jpg',
                                 quality: 75,
                                 width: 1600,
                                 height: 1600
@@ -369,9 +371,9 @@ var devicePhoto = {
                                 function (image) {
 
                                     var thumbNail = image;
-                                    if (device.platform === 'iOS') {
+                                  /*  if (device.platform === 'iOS') {
                                         thumbNail = image.replace('file://', '');
-                                    }
+                                    }*/
 
                                     devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                                         var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
