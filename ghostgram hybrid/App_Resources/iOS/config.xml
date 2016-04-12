@@ -21,11 +21,6 @@
     <!--
     <preference name="UIWebViewBounce" value="true" />
     -->
-	<key>NSAppTransportSecurity</key> 
-	<dict> 
-		<key>NSAllowsArbitraryLoads</key><true/>
-	</dict>
- 
     <content src="index.html" />
 
     <plugins>
