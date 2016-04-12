@@ -175,7 +175,7 @@ var photoModel = {
                     photoObj.set('cloudUrl', photoData.url);
                     photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                     photoObj.cloudinaryPublicId = photoData.public_id;
-                   photoModel.updateCloud(photoObj);
+                    photoModel.updateCloud(photoObj);
                     photoModel.syncLocal();
                     
                 }
@@ -785,7 +785,7 @@ var photoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(photoModel._cloudClass);
-        data.updateOne(photoObj, function (error, data) {
+        data.updateSingle(photoObj, function (error, data) {
             if (error !== null) {
                 ggError("Cloud Photo Update Error : " + JSON.stringify(error));
             }

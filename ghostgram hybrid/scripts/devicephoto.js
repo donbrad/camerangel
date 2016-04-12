@@ -150,7 +150,7 @@ var devicePhoto = {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
-                            var localUrl = newFileEntry.toUrl(), nativeUrl =  newFileEntry.nativeURL;
+                            var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
 
                             var uri = nativeUrl;
                             if (device.platform === 'iOS') {
@@ -163,6 +163,7 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
                             devicePhoto.currentPhoto.imageUrl = nativeUrl;
+                            devicePhoto.currentPhoto.cloudUrl = null;
                             devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
                             devicePhoto.currentPhoto.lat = gpsObj.lat;
                             devicePhoto.currentPhoto.lng = gpsObj.lng;
@@ -317,17 +318,18 @@ var devicePhoto = {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
-                            var localUrl = newFileEntry.toUrl(), nativeUrl =  newFileEntry.nativeURL;
+                            var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
 
-                          /*  if (device.platform === 'iOS') {
-                                nativeUrl = nativeUrl.replace('file://', '');
-                            }*/
+
                             var uri = nativeUrl;
-
+                            if (device.platform === 'iOS') {
+                             nativeUrl = nativeUrl.replace('file://', '');
+                             }
                             devicePhoto.currentPhoto.photoId = photouuid;
                             devicePhoto.currentPhoto.filename = filename;
-                            devicePhoto.currentPhoto.deviceUrl = localUrl;
+                            devicePhoto.currentPhoto.deviceUrl = nativeUrl;
                             devicePhoto.currentPhoto.imageUrl = nativeUrl;
+                            devicePhoto.currentPhoto.cloudUrl = null;
                             devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
                             devicePhoto.currentPhoto.lat = gpsObj.lat;
                             devicePhoto.currentPhoto.lng = gpsObj.lng;
