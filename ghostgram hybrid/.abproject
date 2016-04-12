@@ -90,7 +90,6 @@
     "com.telerik.feedback@2.0.0",
     "com.telerik.plugin.telerikanalytics@3.4.1",
     "com.telerik.plugins.nativepagetransitions@0.6.4",
-    "com.telerik.plugins.wkwebview@0.6.9",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
