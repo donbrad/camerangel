@@ -356,6 +356,7 @@ var smartEvent = {
         smartOb.set('version', smartEvent._version);
         smartOb.set('ggType', smartEvent._ggClass);
         smartOb.set('uuid', objectIn.uuid);
+        smartOb.set('Id', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);
         smartOb.set('channelUUID', objectIn.channelUUID);

@@ -947,6 +947,7 @@ var channelModel = {
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
         channel.set("channelUUID", channelUUID);
+        channel.set("Id", channelUUID);
 
         channel.set("ownerUUID", ownerUUID);
 

@@ -160,6 +160,7 @@ var notificationModel = {
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
 
+        notification.Id = notification.uuid;
         notificationModel.notificationDS.add(notification);
         everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
             if (error !== null) {

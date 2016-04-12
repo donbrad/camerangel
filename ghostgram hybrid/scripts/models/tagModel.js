@@ -157,6 +157,7 @@ var tagModel = {
         var tag = {};
 
         tag.uuid = uuid.v4();
+        tag.Id = tag.uuid;
         tag.version = tagModel._version;
         tag.ggType = tagModel._ggClass;
         tag.name = null;
