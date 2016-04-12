@@ -453,10 +453,12 @@ var photoModel = {
 
        // var photoObj = photo.toJSON();
         photoModel.photosDS.add(photo);
+        photoModel.syncLocal();
+
         if (callback !== undefined)
             callback(photo);
 
-        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+        /*everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
@@ -475,7 +477,7 @@ var photoModel = {
 
             }
         });
-
+*/
        /* photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();*/
 
