@@ -319,9 +319,9 @@ var devicePhoto = {
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
                             var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
 
-                            if (device.platform === 'iOS') {
+                          /*  if (device.platform === 'iOS') {
                                 nativeUrl = nativeUrl.replace('file://', '');
-                            }
+                            }*/
                             var uri = nativeUrl;
 
                             devicePhoto.currentPhoto.photoId = photouuid;

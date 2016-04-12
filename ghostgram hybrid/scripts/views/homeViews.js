@@ -492,6 +492,7 @@ var userStatusView = {
         _preventDefault(e);
 
 
+        everlive.syncCloud();
        // Parse.User.logOut();
         appDataChannel.closeChannel();
         userDataChannel.closeChannel();

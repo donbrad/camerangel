@@ -831,9 +831,9 @@ var modalPhotoView = {
         }
 
 
-        // Date
-        var createdDate = moment(photo.createdAt).format("MMM Do, YYYY");
-        $("#photoTitle-date").text(createdDate);
+        // Date  -- this doesnt work for gallery photos...
+      /*  var createdDate = moment(photo.createdAt).format("MMM Do, YYYY");
+        $("#photoTitle-date").text(createdDate);*/
 
         $("#modalPhotoView").data("kendoMobileModalView").open();
 

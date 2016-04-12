@@ -721,7 +721,7 @@ var photoModel = {
         photo.set('alt',alt);
         var timeStamp = new Date().getTime();
         photo.set("timestamp", timeStamp);
-        var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
+        var timeStr = moment().format('MMMM Do YYYY, h:mm A'); // October 7th 2015, 10:26 am
         photo.set("dateString", timeStr);
 
 
@@ -757,7 +757,8 @@ var photoModel = {
         if (callback !== undefined) {
             callback(null, photo);
         }
-        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+        
+        /*everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
 
@@ -776,7 +777,7 @@ var photoModel = {
                 }
 
             }
-        });
+        });*/
         
     },
 
