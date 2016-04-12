@@ -16,7 +16,7 @@
     <preference name="SuppressesIncrementalRendering" value="false" />
     <preference name="TopActivityIndicator" value="white" />
 	<preference name="CameraUsesGeolocation" value="true" />
-
+    <preference name="iosPersistentFileLocation" value="Library" />
     <!-- legacy preferences -->
     <!--
     <preference name="UIWebViewBounce" value="true" />
