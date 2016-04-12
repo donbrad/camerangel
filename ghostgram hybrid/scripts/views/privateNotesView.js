@@ -98,7 +98,7 @@ var privateNotesView = {
     noteInit : function () {
 
         privateNotesView.noteObjects = [];
-        privateNotesView.activeNote = {objects: [], photos:[]};
+        privateNotesView.activeNote = {objects: [], photos:[], tags: []};
         privateNotesView._editView = false;
         privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
@@ -150,14 +150,10 @@ var privateNotesView = {
 
             var photoObj  = {
                 photoId : photo.photoId,
-                channelUUID: null,
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 deviceUrl : photo.deviceUrl,
                 cloudUrl : photo.cloudUrl,
-                canCopy: true,
-                ownerId: userModel._user.userUUID,
-                ownerName: userModel._user.name
             };
         }
 
@@ -183,7 +179,6 @@ var privateNotesView = {
         }
 
     },
-
 
     saveNote: function () {
         var validNote = false; // If message is valid, send is enabled
@@ -277,7 +272,6 @@ var privateNotesView = {
         var content = text;
         var contentData = JSON.stringify(data);
         data = JSON.parse(contentData);
-        var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
         var uuidNote = uuid.v4();
 
@@ -288,13 +282,13 @@ var privateNotesView = {
         }
         var message = {
             Id: uuidNote,
+            noteId: uuidNote,
             type: 'Note',
             ggType: ggType,
-            noteId: uuidNote,
-            title: _cleanString(data.title),
-            tagString: _cleanString(data.tagString),
+            title: _data.title,
+            tagString: _data.tagString,
             tags: data.tags,
-            content: _cleanString(content),
+            content: content,
             data: contentData,
             dataObject: data,
             time: currentTime,
