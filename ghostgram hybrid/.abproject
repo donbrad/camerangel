@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams mobile",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.24",
+  "BundleVersion": "0.0.25",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -90,6 +90,7 @@
     "com.telerik.feedback@2.0.0",
     "com.telerik.plugin.telerikanalytics@3.4.1",
     "com.telerik.plugins.nativepagetransitions@0.6.4",
+    "com.telerik.plugins.wkwebview@0.6.9",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
