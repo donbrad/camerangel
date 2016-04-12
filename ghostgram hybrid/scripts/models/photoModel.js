@@ -152,7 +152,8 @@ var photoModel = {
     },
 
     syncLocal : function () {
-        photoModel.photosDS.sync();    
+        photoModel.photosDS.sync();
+        APP.everlive.sync();
     },
     
     uploadPhotoToCloud : function (photo) {
@@ -170,10 +171,11 @@ var photoModel = {
                 var photoObj = photoModel.findPhotoById(photouuid);
 
                 if (photoObj !== undefined) {
-                    photoObj.imageUrl = photoData.url;
-                    photoObj.cloudUrl = photoData.url;
+                    photoObj.set('imageUrl', photoData.url);
+                    photoObj.set('cloudUrl', photoData.url);
                     photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                     photoObj.publicId = photoData.public_id;
+                   // photoModel.updateCloud(photoObj);
                     photoModel.syncLocal();
                     
                 }
