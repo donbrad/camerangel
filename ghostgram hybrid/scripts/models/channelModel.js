@@ -240,6 +240,10 @@ var channelModel = {
         if (query === undefined)
             return([]);
         var dataSource = channelModel.channelsDS;
+        if (dataSource === null) {
+            console.log("Channels not initialized!");
+            return ([]);
+        }
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};

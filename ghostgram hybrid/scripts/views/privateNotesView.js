@@ -287,7 +287,7 @@ var privateNotesView = {
             ggType = data.ggType;
         }
         var message = {
-            id: uuidNote,
+            Id: uuidNote,
             type: 'Note',
             ggType: ggType,
             noteId: uuidNote,
