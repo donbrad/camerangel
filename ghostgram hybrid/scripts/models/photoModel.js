@@ -174,7 +174,7 @@ var photoModel = {
                     photoObj.set('imageUrl', photoData.url);
                     photoObj.set('cloudUrl', photoData.url);
                     photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
-                    photoObj.publicId = photoData.public_id;
+                    photoObj.cloudinaryPublicId = photoData.public_id;
                    // photoModel.updateCloud(photoObj);
                     photoModel.syncLocal();
                     
