@@ -784,9 +784,9 @@ var photoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(photoModel._cloudClass);
-        data.updateSingle(photoObj, function (error, data) {
-            if (error !== null) {
-                ggError("Cloud Photo Update Error : " + JSON.stringify(error));
+        data.updateSingle(photoObj, function (data) {
+            if (data.result === 0) {
+                ggError("Unable to update Cloud Photo : " + photoObj.photoId);
             }
         });
     },
