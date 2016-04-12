@@ -183,7 +183,7 @@ var privateNotesView = {
         }
 
     },
-    
+
 
     saveNote: function () {
         var validNote = false; // If message is valid, send is enabled
@@ -232,7 +232,6 @@ var privateNotesView = {
             } else if (smartObject.ggType === 'Movie') {
                 text = privateNotesView.addSmartMovieToNote(smartObject, text);
             }
-
         }
 
         if (validNote === true ) {
