@@ -384,11 +384,12 @@ var devicePhoto = {
                                             var photoObj = photoModel.findPhotoById(photouuid);
 
                                             if (photoObj !== undefined) {
-                                                photoObj.imageUrl = photoData.url;
-                                                photoObj.cloudUrl = photoData.url;
-                                                photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
-                                                photoObj.publicId = photoData.public_id;
+                                                photoObj.set('imageUrl',photoData.url);
+                                                photoObj.set('cloudUrl',photoData.url);
+                                                photoObj.set('thumbnailUrl', photoData.url.replace('upload//','upload//c_scale,h_512,w_512//'));
+                                                photoObj.set('cloudinaryPublicId',photoData.public_id);
                                                 photoModel.syncLocal();
+                                                photoModel.updateCloud(photoObj);
                                                 devicePhoto._uploadActive = false;
                                                 devicePhoto.currentPhoto.uploadComplete = true;
                                                 
