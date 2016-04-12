@@ -115,11 +115,15 @@ var everlive = {
 
 
     syncCloud : function (){
+        if (!deviceModel.isOnline()) {
+            return;
+        }
         var time = ggTime.currentTimeInSeconds();
 
         if (everlive._lastSync < time) {
 
             everlive.updateTimeStamp();
+            APP.everlive.online();
             APP.everlive.sync();
 
         }
