@@ -183,13 +183,9 @@ var privateNotesView = {
         }
 
     },
-
-
-
+    
 
     saveNote: function () {
-
-
         var validNote = false; // If message is valid, send is enabled
         if (privateNotesView._editMode) {
             validNote = true;
@@ -292,6 +288,7 @@ var privateNotesView = {
             ggType = data.ggType;
         }
         var message = {
+            id: uuidNote,
             type: 'Note',
             ggType: ggType,
             noteId: uuidNote,
@@ -305,14 +302,15 @@ var privateNotesView = {
             ttl: ttl
         };
 
-
+        privateNoteModel.notesDS.add(message);
+        privateNoteModel.notesDS.sync();
 
         everlive.createOne(privateNoteModel._cloudClass, message, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Private Note " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                privateNoteModel.notesDS.add(message);
+
             }
         });
 

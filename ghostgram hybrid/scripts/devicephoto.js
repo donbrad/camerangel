@@ -169,9 +169,7 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.lng = gpsObj.lng;
                             devicePhoto.currentPhoto.alt = gpsObj.alt;
 
-
-
-
+                            
                             mobileNotify("Processing Photo...");
                             var scaleOptions = {
                                 uri: uri,
@@ -214,17 +212,18 @@ var devicePhoto = {
                                         devicePhoto._uploadActive = true;
                                         devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                                             var photoObj = photoModel.findPhotoById(photouuid);
-                                            
-                                            if (photoObj !== undefined) {
-                                                photoObj.imageUrl = photoData.url;
-                                                photoObj.cloudUrl = photoData.url;
-                                                photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
-                                                photoObj.publicId = photoData.public_id;
-                                                photoModel.syncLocal();
-                                            }
 
-                                            devicePhoto._uploadActive = false;
-                                            devicePhoto.currentPhoto.uploadComplete = true;
+                                            if (photoObj !== undefined) {
+                                                photoObj.set('imageUrl',photoData.url);
+                                                photoObj.set('cloudUrl',photoData.url);
+                                                photoObj.set('thumbnailUrl', photoData.url.replace('upload//','upload//c_scale,h_512,w_512//'));
+                                                photoObj.set('cloudinaryPublicId',photoData.public_id);
+                                                photoModel.syncLocal();
+                                                photoModel.updateCloud(photoObj);
+                                                devicePhoto._uploadActive = false;
+                                                devicePhoto.currentPhoto.uploadComplete = true;
+
+                                            }
                                         });
                                     });
 
@@ -314,6 +313,7 @@ var devicePhoto = {
                 var filename = photouuid.replace(/-/g,'');
 
                 window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
+                    
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
