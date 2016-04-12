@@ -326,7 +326,7 @@ var devicePhoto = {
 
                             devicePhoto.currentPhoto.photoId = photouuid;
                             devicePhoto.currentPhoto.filename = filename;
-                            devicePhoto.currentPhoto.deviceUrl = nativeUrl;
+                            devicePhoto.currentPhoto.deviceUrl = localUrl;
                             devicePhoto.currentPhoto.imageUrl = nativeUrl;
                             devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
                             devicePhoto.currentPhoto.lat = gpsObj.lat;
