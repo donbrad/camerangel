@@ -85,11 +85,12 @@
   "CorePlugins": [
     "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
-    "com.phonegap.plugins.barcodescanner@2.0.0",
+    "com.phonegap.plugins.barcodescanner@2.0.1",
     "com.phonegap.plugins.PushPlugin@3.1.1",
     "com.telerik.feedback@2.0.0",
     "com.telerik.plugin.telerikanalytics@3.4.1",
     "com.telerik.plugins.nativepagetransitions@0.6.4",
+    "com.telerik.plugins.wkwebview@0.6.9",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
