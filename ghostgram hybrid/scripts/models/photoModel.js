@@ -15,6 +15,7 @@ var photoModel = {
     _iosPrefix: "/var",
     _androidPrefix: "/",
     _emulatorPrefix: "",
+    _totalPhotos: 0,
     currentPhoto: {},
     currentOffer: null,
     previewSize: "33%",
@@ -46,42 +47,50 @@ var photoModel = {
         });
 
 
-    photoModel.offersDS = new kendo.data.DataSource({  // this is the gallery datasource
-        // offlineStorage: "photos",
-        type: 'everlive',
-        transport: {
-            typeName: 'photooffers'/*,
-             dataProvider: APP.everlive*/
-        },
-        schema: {
-            model: { Id:  Everlive.idField}
-        },
-        sort: {
-            field: "timestamp",
-            dir: "desc"
-        }
-    });
+        photoModel.offersDS = new kendo.data.DataSource({  // this is the gallery datasource
+            // offlineStorage: "photos",
+            type: 'everlive',
+            transport: {
+                typeName: 'photooffers'/*,
+                 dataProvider: APP.everlive*/
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
+            sort: {
+                field: "timestamp",
+                dir: "desc"
+            }
+        });
 
 
-    photoModel.deletedPhotosDS = new kendo.data.DataSource({  // this is the gallery datasource
-        // offlineStorage: "photos",
-        type: 'everlive',
-        transport: {
-            typeName: 'deletedphotos'/*,
-             dataProvider: APP.everlive*/
-        },
-        schema: {
-            model: { Id:  Everlive.idField}
-        },
-        sort: {
-            field: "timestamp",
-            dir: "desc"
-        }
-    });
+        photoModel.deletedPhotosDS = new kendo.data.DataSource({  // this is the gallery datasource
+            // offlineStorage: "photos",
+            type: 'everlive',
+            transport: {
+                typeName: 'deletedphotos'/*,
+                 dataProvider: APP.everlive*/
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
+            sort: {
+                field: "timestamp",
+                dir: "desc"
+            }
+        });
 
 
-    photoModel.photosDS.fetch();
+        photoModel.photosDS.fetch();
         deviceModel.setAppState('hasPhotos', true);
+
+        photoModel.photosDS.bind("change", function (e) {
+            var changedPhoto = e.items;
+            
+            photoModel._totalPhotos = photoModel.photosDS.total();
+        });
+        
+        
         /*deviceModel.isParseSyncComplete();*/
     },
 

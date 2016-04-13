@@ -54,6 +54,16 @@ var galleryView = {
     },
 
 
+    updateTotalPhotos : function () {
+        // set result count
+        var photoCount = photoModel._totalPhotos;
+        if(photoCount > 0){
+            $(".results").css("visibility", "visible");
+            $("#resultCount").text(photoCount);
+        } else {
+            $(".results").css("visibility", "hidden");
+        }
+    },
 
     onShow : function (e) {
 
@@ -122,7 +132,7 @@ var galleryView = {
                 	photoModel.photosDS.filter([]);
                 }
 
-            })
+            });
            
             // bind clear search btn
 			$("#gallery .enterSearch").on("click", function(){
@@ -162,6 +172,7 @@ var galleryView = {
         ux.changeActionBtnImg("#gallery", "icon-camera");
         ux.showActionBtnText("#gallery", "3.5rem", "Camera");
 
+        galleryView.updateTotalPhotos();
 
 
         $("#gallery > div.footerMenu.km-footer > a").removeAttr("href").on("click", function(e){
@@ -178,14 +189,9 @@ var galleryView = {
 
         }
 
-        // set result count
-        var photoCount = photoModel.photosDS.total();
-        if(photoCount > 0){
-            $(".results").css("visibility", "visible");
-            $("#resultCount").text(photoCount);
-        } else {
-            $(".results").css("visibility", "hidden");
-        }
+
+
+
         // set filter count
         var filterCount = 0;
         $("#filterCount").text(filterCount);
@@ -311,7 +317,7 @@ var galleryView = {
         photoModel.deletePhoto(galleryView._currentPhotoId);
 
         mobileNotify("Deleted current photo");
-
+        galleryView.updateTotalPhotos();
         // Navigate to previous page as the photo is gone...
         APP.kendo.navigate('#:back');
     },
@@ -339,7 +345,7 @@ var galleryView = {
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null, // Current channel Id for offers
             function (photoUUID, displayUrl) {
-                
+                galleryView.updateTotalPhotos();
             }
         );
     },
