@@ -102,7 +102,7 @@ var devicePhoto = {
     },
 
 
-    deviceCamera : function (resolution, quality, isChat, channelUUID,  displayCallback) {
+    deviceCamera : function (resolution, quality, isChat, channelUUID,  displayCallback, shareCallback) {
         if (resolution === undefined) {
             resolution = devicePhoto._resolution;  // default resolution for ghostgrams
         }
@@ -217,6 +217,9 @@ var devicePhoto = {
                                         photoObj.set('cloudinaryPublicId',photoData.public_id);
                                         photoModel.syncLocal();
                                         photoModel.updateCloud(photoObj);
+                                        if (shareCallback !== undefined) {
+                                            shareCallback(photoObj.photoId, photoObj.cloudUrl);
+                                        }
                                         devicePhoto._uploadActive = false;
                                         devicePhoto.currentPhoto.uploadComplete = true;
 
@@ -285,7 +288,7 @@ var devicePhoto = {
     },
 
 
-    deviceGallery : function (resolution, quality, isChat, channelUUID, displayCallback) {
+    deviceGallery : function (resolution, quality, isChat, channelUUID, displayCallback, shareCallback) {
         if (resolution === undefined) {
             resolution = devicePhoto._resolution;  // default resolution for ghostgrams
         }
@@ -421,6 +424,9 @@ var devicePhoto = {
                                                 photoObj.set('cloudinaryPublicId',photoData.public_id);
                                                 photoModel.syncLocal();
                                                 photoModel.updateCloud(photoObj);
+                                                if (shareCallback !== undefined) {
+                                                    shareCallback(photoObj.photoId, photoObj.cloudUrl);
+                                                }
                                                 devicePhoto._uploadActive = false;
                                                 devicePhoto.currentPhoto.uploadComplete = true;
                                                 
