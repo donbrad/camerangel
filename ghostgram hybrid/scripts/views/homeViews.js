@@ -294,8 +294,11 @@ var homeView = {
         // set verified ui for start screen
         if(userModel._user.phoneValidated) {
             $("#startPhoneVerified").addClass("hidden");
+            notificationModel.addVerifyPhoneNotification();
         }
-
+        if (!userModel._user.isValidated) {
+            notificationModel.addVerifyEmailNotification();
+        }
         // Set user availability
         ux.updateHeaderStatusImages();
 
@@ -303,8 +306,8 @@ var homeView = {
         // Hide action button on home
         ux.showActionBtn(false, "#home");
 
-        // Display Unread Chat Notifications
-        notificationModel.processUnreadChannels();
+        // Todo:Don schedule unread channel notifications after sync complete
+        //notificationModel.processUnreadChannels();
     },
 
     onHide: function(e){
@@ -1082,6 +1085,7 @@ var signUpView = {
 
     onShow : function (e) {
         _preventDefault(e);
+
 
 
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});

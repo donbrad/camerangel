@@ -277,13 +277,7 @@ var userModel = {
         var emailValidated = user.isValidated;
         userModel._user.set('emailValidated', emailValidated);
         userModel._user.set('phoneValidated',user.phoneValidated);
-        if (!user.phoneValidated) {
-            notificationModel.addVerifyPhoneNotification();
-        }
-        if (!emailValidated) {
-            notificationModel.addVerifyEmailNotification();
-        }
-        
+      
         userModel._user.set('addressValidated',user.addressValidated);
         userModel._user.set('availImgUrl', 'images/status-away.svg');
         var isAvailable  = userModel._user.get('isAvailable');
