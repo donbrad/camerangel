@@ -755,13 +755,13 @@ var photoModel = {
        
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
-      //  photoModel.photosDS.sync();
+        photoModel.photosDS.sync();
         
         if (callback !== undefined) {
             callback(null, photo);
         }
         
-        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+       /* everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
 
@@ -780,7 +780,7 @@ var photoModel = {
                 }
 
             }
-        });
+        });*/
         
     },
 
