@@ -214,17 +214,19 @@ var userDataChannel = {
     removeExpiredMessages : function () {
         var dataSource = userDataChannel.messagesDS;
         
-        if (dataSource === null || dataSource.total() === 0) {
+        if (dataSource === null ) {
             return;
         }
+        if (dataSource.total() === 0) {
+            return;
+        }
+
         var yesterday = ggTime.lastDay();
        
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
             queryCache = [];
         }
-
-
         dataSource.filter({ field: "time", operator: "lt", value:  yesterday});
         var messageList = dataSource.view();
         dataSource.filter(queryCache);
