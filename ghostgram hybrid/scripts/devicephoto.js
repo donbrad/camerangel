@@ -201,7 +201,30 @@ var devicePhoto = {
                                 }
                             });
 
-                            window.ImageResizer.resize(scaleOptions,
+
+                            devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
+                                var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+
+                                devicePhoto.currentPhoto.uploadComplete = false;
+                                devicePhoto._uploadActive = true;
+                                devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
+                                    var photoObj = photoModel.findPhotoById(photouuid);
+
+                                    if (photoObj !== undefined) {
+                                        photoObj.set('imageUrl',photoData.url);
+                                        photoObj.set('cloudUrl',photoData.url);
+                                        photoObj.set('thumbnailUrl', photoData.url.replace('upload//','upload//c_scale,h_512,w_512//'));
+                                        photoObj.set('cloudinaryPublicId',photoData.public_id);
+                                        photoModel.syncLocal();
+                                        photoModel.updateCloud(photoObj);
+                                        devicePhoto._uploadActive = false;
+                                        devicePhoto.currentPhoto.uploadComplete = true;
+
+                                    }
+                                });
+                            });
+
+                          /*  window.ImageResizer.resize(scaleOptions,
                                 function (image) {
 
                                     var thumbNail = image;
@@ -236,7 +259,7 @@ var devicePhoto = {
                                     mobileNotify("Error resizing image...");
 
                                 });
-
+*/
 
                             navigator.camera.cleanup(function(){}, function(){});
                         }, function(){});
