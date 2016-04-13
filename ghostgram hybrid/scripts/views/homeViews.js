@@ -294,11 +294,11 @@ var homeView = {
         // set verified ui for start screen
         if(userModel._user.phoneValidated) {
             $("#startPhoneVerified").addClass("hidden");
-            notificationModel.addVerifyPhoneNotification();
+           // notificationModel.addVerifyPhoneNotification();
         }
-        if (!userModel._user.isValidated) {
+      /*  if (!userModel._user.isValidated) {
             notificationModel.addVerifyEmailNotification();
-        }
+        }*/
         // Set user availability
         ux.updateHeaderStatusImages();
 
