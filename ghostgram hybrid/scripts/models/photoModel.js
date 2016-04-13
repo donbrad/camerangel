@@ -417,6 +417,7 @@ var photoModel = {
 
         var ownerId = photoObj.ownerId, ownerName = photoObj.ownerName;
 
+        photo.set('Id', photoObj.photoId);
         photo.set('photoId', photoObj.photoId);  // use the original photo id from sender to enable recall
         photo.set('uuid', photoObj.photoId);
         photo.set('channelUUID', channelUUID);
@@ -455,7 +456,7 @@ var photoModel = {
 
        // var photoObj = photo.toJSON();
         photoModel.photosDS.add(photo);
-        photoModel.syncLocal();
+      //  photoModel.syncLocal();
 
         if (callback !== undefined)
             callback(photo);
@@ -754,13 +755,13 @@ var photoModel = {
        
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
-        photoModel.photosDS.sync();
+      //  photoModel.photosDS.sync();
         
         if (callback !== undefined) {
             callback(null, photo);
         }
         
-        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+        /*everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
 
@@ -779,7 +780,7 @@ var photoModel = {
                 }
 
             }
-        });
+        });*/
         
     },
 
