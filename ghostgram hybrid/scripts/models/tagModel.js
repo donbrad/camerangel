@@ -30,12 +30,13 @@ var tagModel = {
                 dataProvider: APP.everlive*/
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
             sort: {
                 field: "tagName",
                 dir: "asc"
-            }
+            },
+            autoSync : true
         });
 
 

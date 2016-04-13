@@ -132,12 +132,13 @@ var smartEvent = {
                 //dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
             sort: {
                 field: "date",
                 dir: "desc"
-            }
+            },
+            autoSync: true
         });
     },
     

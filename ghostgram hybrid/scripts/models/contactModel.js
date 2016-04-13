@@ -64,7 +64,8 @@ var contactModel = {
             sort: {
                 field: "name",
                 dir: "asc"
-            }
+            },
+            autoSync: true
         });
 
 

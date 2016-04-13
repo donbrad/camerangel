@@ -45,7 +45,8 @@ var notificationModel = {
            sort: {
                field: "date",
                dir: "desc"
-           }
+           },
+           autoSync: true
        });
 
         notificationModel.notificationDS.fetch();

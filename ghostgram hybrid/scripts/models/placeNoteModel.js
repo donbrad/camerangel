@@ -21,8 +21,9 @@ var placeNoteModel = {
                 //dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  Everlive.idField}
-            }
+                model: { Id:  Everlive.idField}
+            },
+            autoSync: true
         });
 
         placeNoteModel.notesDS.bind("change", function (e) {

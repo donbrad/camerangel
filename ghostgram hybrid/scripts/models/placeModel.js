@@ -62,7 +62,8 @@ var placesModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            autoSync: true
         });
         
         // Reflect any core contact changes to contactList

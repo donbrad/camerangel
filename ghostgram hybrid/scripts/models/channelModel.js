@@ -43,7 +43,8 @@ var channelModel = {
             sort: {
                 field: "lastAccess",
                 dir: "desc"
-            }
+            },
+            autoSync: true
         });
         
         channelModel.privateChannelsDS = new kendo.data.DataSource({
@@ -54,7 +55,8 @@ var channelModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            autoSync: true
         });
 
         channelModel.recalledMessagesDS = new kendo.data.DataSource({
@@ -66,7 +68,8 @@ var channelModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            autoSync : true
         });
 
         channelModel.groupMessagesDS = new kendo.data.DataSource({
@@ -77,7 +80,8 @@ var channelModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            autoSync: true
         });
 
         // Reflect any core channel changes to channelList

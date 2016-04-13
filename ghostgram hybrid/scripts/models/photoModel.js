@@ -41,7 +41,8 @@ var photoModel = {
             sort: {
                 field: "timestamp",
                 dir: "desc"
-            }
+            },
+            autoSync: true
         });
 
 
