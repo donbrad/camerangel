@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams mobile",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.27",
+  "BundleVersion": "0.0.28",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -30,6 +30,7 @@
     "android.permission.BIND_NOTIFICATION_LISTENER_SERVICE",
     "android.permission.BLUETOOTH",
     "android.permission.CALL_PHONE",
+    "android.permission.CALL_PRIVILEGED",
     "android.permission.CAMERA",
     "android.permission.CAPTURE_AUDIO_OUTPUT",
     "android.permission.CAPTURE_VIDEO_OUTPUT",
@@ -50,7 +51,6 @@
     "android.permission.SEND_SMS",
     "android.permission.STATUS_BAR",
     "android.permission.TRANSMIT_IR",
-    "android.permission.WAKE_LOCK",
     "android.permission.WRITE_CALENDAR",
     "android.permission.WRITE_CONTACTS",
     "android.permission.WRITE_EXTERNAL_STORAGE",
