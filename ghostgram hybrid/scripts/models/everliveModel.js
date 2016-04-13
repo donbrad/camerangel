@@ -129,6 +129,24 @@ var everlive = {
         }
     },
 
+    resendEmailValidation : function (email) {
+        var updateObject = {Id: userModel.currentUser.Id, Email : email};
+
+        APP.everlive.Users.updateSingle(updateObj,
+            function (data) {
+                var result = data.result;
+                mobileNotify("Email verification instructtions were sent to " + email);
+            },
+            function (error) {
+                if (error.code === 107) {
+                    mobileNotify("Emall Validation Resend - Deferring User Update...");
+                } else {
+                    console.log("Emall Validation Resend Error : " + JSON.stringify(error));
+                }
+
+            });
+    },
+
     isUserSignedIn : function () {
         everlive.checkAuthStatus(function (error, status) {
             if (error === null) {

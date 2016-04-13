@@ -1584,12 +1584,37 @@ var changePasswordView = {
     }
 };
 
-var verifyPhoneModal = {
+var verifyEmailModal = {
 
     onOpen: function (e) {
         _preventDefault(e);
     },
     
+    onDone: function (e) {
+        _preventDefault(e);
+    },
+
+    openModal: function (e) {
+        
+        $("#modalview-verifyEmail").data("kendoMobileModalView").open();
+    },
+    
+    closeModal: function (e) {
+        $("#modalview-verifyEmail").data("kendoMobileModalView").close();
+    },
+
+    sendEmail : function (e) {
+        var email = userModel._user.get('email');
+        everlive.resendEmailValidation(email);
+        
+    }
+};
+var verifyPhoneModal = {
+
+    onOpen: function (e) {
+        _preventDefault(e);
+    },
+
     onDone: function (e) {
         _preventDefault(e);
     },
@@ -1630,7 +1655,7 @@ var verifyPhoneModal = {
         });
         $("#modalview-verifyPhone").data("kendoMobileModalView").open();
     },
-    
+
     closeModal: function (e) {
         $("#verifyPhone-code").unbind('keyup').val('');
         $("#modalview-verifyPhone").data("kendoMobileModalView").close();
@@ -1677,8 +1702,7 @@ var verifyPhoneModal = {
         }
 
     }
-}
-
+};
 var recoverPasswordView = {
     openModal: function (e) {
         var email = $("#home-signin-username").val();

@@ -649,7 +649,33 @@
 		<a class="btnIncomplete btnFull-modal" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" id="modalview-verifyPhone-btn">Cancel</a>
 	</div>
 </div>
-    
+
+
+
+<div data-role="modalview" id="modalview-verifyEmail" style="width: 90%; display: none;" class="appearance">
+	<div class="appBox">
+		<h3>
+			Verify Your Email Address
+			<a class="right closeBox" data-click="verifyEmailModal.closeModal" data-role="button">
+				<img src="images/close.svg" />
+			</a>
+		</h3>
+		<p class="zero"> Sent From: <strong>The ghostgrams Team</strong>.</p>
+		<p class="zero"> If it's not in your inbox, please check your junk mail folder for email from <em>support@ghostgrams.com</em>.</p>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<div>Click the button below to resend the validation </div>
+	              	<span class="helper helper-right btnClear-grey" data-click="verifyEmailModal.sendEmail" data-role="button">
+	              		Resend Verification Email
+	              	</span>
+			</li>
+		</ul>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnIncomplete btnFull-modal" data-click="verifyEmailModal.closeModal" type="button" data-role="button" >Done</a>
+	</div>
+</div>
+
 <div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="signUpView.onInit" data-show="signUpView.onShow">
 
    	<div data-role="header">

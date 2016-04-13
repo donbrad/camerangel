@@ -187,7 +187,11 @@ var notificationModel = {
     },
 
     addVerifyPhoneNotification : function () {
-        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", launchVerifyPhone , null, false);
+        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", verifyPhoneModal.openModal , null, false);
+    },
+    
+    addVerifyEmailNotification : function () {
+        this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", launchVerifyPhone , null, false);
     },
 
 
