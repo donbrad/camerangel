@@ -168,8 +168,8 @@
 				// Show the page header
 
 			});
-			// hiding the accessory bar
-			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+			// hiding the accessory bar -- Apple will reject all apps that do this!!!!!!
+			//cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 		}
 		
 		APP.emailAvailable = false;
