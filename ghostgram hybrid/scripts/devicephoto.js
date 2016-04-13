@@ -125,7 +125,10 @@ var devicePhoto = {
         if (saveToAlbum === undefined) {
             saveToAlbum = false;
         }
-
+        var allowEdit = false;
+        if (device.platform === 'iOS') {
+            allowEdit = true;
+        }
         navigator.camera.getPicture(
             function (imageData) {
                 var photouuid = uuid.v4();
@@ -134,6 +137,7 @@ var devicePhoto = {
     //            var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
                 var gpsObj = null;
+
                 if (device.platform === 'iOS') {
                     imageUrl = imageUrl.replace('file://', '');
                     gpsObj = devicePhoto.processGPS(metaObj.GPS);
@@ -246,11 +250,12 @@ var devicePhoto = {
                 mobileNotify("Camera error " + error);
             }, {
                 correctOrientation: true,
-                allEdit: true,
+                allowEdit: allowEdit,
                 saveToPhotoAlbum: saveToAlbum,
                 pictureSource : pictureSource.CAMERA,
                 encodingType: encodingType.JPEG,
                 targetWidth: resolution,
+                targetHeight: resolution,
                 destinationType: destinationType.FILE_URI
             }
         );
