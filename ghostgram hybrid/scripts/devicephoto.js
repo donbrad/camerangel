@@ -215,8 +215,8 @@ var devicePhoto = {
                                         photoObj.set('cloudUrl',photoData.url);
                                         photoObj.set('thumbnailUrl', photoData.url.replace('upload//','upload//c_scale,h_512,w_512//'));
                                         photoObj.set('cloudinaryPublicId',photoData.public_id);
-                                        /*photoModel.syncLocal();
-                                        photoModel.updateCloud(photoObj);*/
+                                        photoModel.syncLocal();
+                                        photoModel.updateCloud(photoObj);
                                         devicePhoto._uploadActive = false;
                                         devicePhoto.currentPhoto.uploadComplete = true;
 

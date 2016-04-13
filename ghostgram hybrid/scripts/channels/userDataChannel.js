@@ -212,12 +212,13 @@ var userDataChannel = {
 
 
     removeExpiredMessages : function () {
-
+        var dataSource = userDataChannel.messagesDS;
+        
         if (dataSource === null || dataSource.total() === 0) {
             return;
         }
         var yesterday = ggTime.lastDay();
-        var dataSource = userDataChannel.messagesDS;
+       
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
             queryCache = [];
