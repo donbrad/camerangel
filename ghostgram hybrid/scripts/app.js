@@ -59,6 +59,52 @@
 
 	};
 
+	(function() {
+		// You'll need to insert your own custom values for these variables,
+		// and you'll get those values in steps 3 and 4.
+		var projectKey = "7a8cc314b41f44299fd03db24685b341",
+			version = "%BundleVersion%";
+
+		window.analytics = {
+			start: function() {
+				var factory = window.plugins.EqatecAnalytics.Factory,
+					monitor = window.plugins.EqatecAnalytics.Monitor,
+					settings = factory.CreateSettings( projectKey, version );
+
+				settings.LoggingInterface = factory.CreateTraceLogger();
+				factory.CreateMonitorWithSettings( settings,
+					function() {
+						console.log( "Monitor created" );
+						monitor.Start(function() {
+							console.log( "Monitor started" );
+						});
+					},
+					function( msg ) {
+						console.log( "Error creating monitor: " + msg );
+					});
+			},
+			stop: function() {
+				var monitor = window.plugins.EqatecAnalytics.Monitor;
+				monitor.Stop();
+			},
+			monitor: function() {
+				return window.plugins.EqatecAnalytics.Monitor;
+			}
+		};
+
+		document.addEventListener( "deviceready", function() {
+			window.analytics.start();
+			document.addEventListener( "pause", function() {
+				window.analytics.stop();
+			});
+			document.addEventListener( "resume", function() {
+				window.analytics.start();
+			});
+		});
+		window.onerror = function( message, url, lineNumber, columnNumber, error ) {
+			window.analytics.monitor().TrackExceptionMessage( error, message );
+		};
+	}());
 
 	// this function is called by Cordova when the application is loaded by the device
 	document.addEventListener('deviceready', function() {

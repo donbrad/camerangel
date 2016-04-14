@@ -22,7 +22,7 @@ var smartEventView = {
     userAccepted : null,
 
     onInit: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
 
     },
@@ -274,7 +274,7 @@ var smartEventView = {
     },
 
     onShow: function(e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         smartEventView._placeUUID = null;
         smartEventView._geoObj = null;
 
@@ -928,7 +928,7 @@ var smartNoteView = {
     _redactorActive : false,
 
     onInit: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
     },
 
     findTag: function (tag) {
@@ -1129,7 +1129,7 @@ var movieListView = {
     },
 
     onInit: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         $("#movieListView-query").kendoAutoComplete({
             dataSource: movieListView.moviesDS,
@@ -1197,14 +1197,14 @@ var movieListView = {
    },
 
     onShowMovieList: function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);
         ux.hideKeyboard();
         $('#movieListView').removeClass('hidden');
         $('#movieDetailView').addClass('hidden')
     },
 
     onShow: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         movieListView.moviesDS.data([]);
         movieListView.showtimesDS.data([]);
 
@@ -1584,7 +1584,7 @@ var smartMovieEdit = {
     },
 
     onInit: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
 
 
@@ -1776,7 +1776,7 @@ var smartMovieEdit = {
     },
 
     onShow: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         $("#smartMovieEditor").data("kendoMobileModalView").open();
 
     },
@@ -1951,7 +1951,7 @@ var smartMovieView = {
 
 
     onInit: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         $("#smartMovieView-listview").kendoMobileListView({
                 dataSource: smartMovieView.showtimesDS,
@@ -2276,7 +2276,7 @@ var smartMovieView = {
     },
 
     onShow: function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);
 
         $("#smartMovieModal").data("kendoMobileModalView").open();
 

@@ -240,7 +240,7 @@ var homeView = {
     },
 
     onInit: function(e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         if (userModel._user.currentPlace !== '') {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
@@ -287,8 +287,7 @@ var homeView = {
     },
 
     onShow: function (e) {
-        _preventDefault(e);
-
+//
         ux.setSearchPlaceholder("Search notifications");
 
         // set verified ui for start screen
@@ -625,7 +624,7 @@ var userStatusView = {
 
     // Important to put all jquery and other event handlers here so created only once...
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         userStatusView.statusCharCount(e);
 
@@ -766,7 +765,7 @@ var ghostEditView = {
 
     onInit: function (e) {
 
-        _preventDefault(e);
+        //_preventDefault(e);
         //autosize($('#ghostEmailEditor'));
 
         $("#ghostEmailEditor").kendoEditor({
@@ -783,7 +782,7 @@ var ghostEditView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
         if (e.view.params.callback !== undefined) {
             ghostEditView._callback = e.view.params.callback;
         } else {
@@ -920,12 +919,12 @@ var editProfilePhotoView = {
     _contactId : null,
 
     onInit : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
     },
 
@@ -981,7 +980,7 @@ var editProfilePhotoView = {
 
 var signUpView = {
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
        // Add strength meter to password
         //$("#home-signup-password").strength();
@@ -1084,7 +1083,7 @@ var signUpView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);
 
 
 
@@ -1396,7 +1395,7 @@ var newUserView = {
 	_introRun : false,
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
 
     },
@@ -1405,7 +1404,7 @@ var newUserView = {
     onShow : function (e) {
 
         newUserView._introRun = false;
-        _preventDefault(e);
+       // _preventDefault(e);
 
         if(!newUserView._introRun){
         	
@@ -1434,7 +1433,7 @@ var newUserView = {
 var signInView = {
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         $("#home-signin-username").on("input", function(e) {
 
@@ -1454,7 +1453,7 @@ var signInView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         ux.hideKeyboard();
 
@@ -1539,7 +1538,7 @@ var signInView = {
 var changePasswordView = {
 
     onInit : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         $('#newPassword1').strength({
         	strengthClass: 'strength',
         	strengthMeterClass: 'strength_meter',
@@ -1551,7 +1550,7 @@ var changePasswordView = {
     },
 
     onShow: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         $("#newPassword1").val('');
         ux.hideKeyboard();
 
