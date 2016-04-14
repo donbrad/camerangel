@@ -58,15 +58,10 @@
 		map: {}
 
 	};
-	
+
 	// this function is called by Cordova when the application is loaded by the device
 	document.addEventListener('deviceready', function() {
-
-		if (window.navigator.simulator === undefined) {
-			// Initialize AppBuilder App Feedback Plugin
-			feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
-			window.open = cordova.InAppBrowser.open;
-		}
+		
 		// Add event listeners
 		document.addEventListener("pause", deviceModel.onPause, false);
 		document.addEventListener("resume", deviceModel.onResume, false);
@@ -79,47 +74,6 @@
 		document.addEventListener("resign", deviceModel.onResign, false);
 		document.addEventListener("active", deviceModel.onActive, false);
 
-		var projectKey = "7a8cc314b41f44299fd03db24685b341",
-			version = "%BundleVersion%";
-
-		window.analytics = {
-			start: function() {
-				var factory = window.plugins.EqatecAnalytics.Factory,
-					monitor = window.plugins.EqatecAnalytics.Monitor,
-					settings = factory.CreateSettings( projectKey, version );
-
-				settings.LoggingInterface = factory.CreateTraceLogger();
-				factory.CreateMonitorWithSettings( settings,
-					function() {
-						console.log( "Monitor created" );
-						monitor.Start(function() {
-							console.log( "Monitor started" );
-						});
-					},
-					function( msg ) {
-						console.log( "Error creating monitor: " + msg );
-					});
-			},
-			stop: function() {
-				var monitor = window.plugins.EqatecAnalytics.Monitor;
-				monitor.Stop();
-			},
-			monitor: function() {
-				return window.plugins.EqatecAnalytics.Monitor;
-			}
-		};
-
-		window.analytics.start();
-		document.addEventListener( "pause", function() {
-			window.analytics.stop();
-		});
-		document.addEventListener( "resume", function() {
-			window.analytics.start();
-		});
-
-		window.onerror = function( message, url, lineNumber, columnNumber, error ) {
-			window.analytics.monitor().TrackExceptionMessage( error, message );
-		};
 
 		deviceModel.getAppState();
 
@@ -160,12 +114,10 @@
 		//contactModel.importDeviceContacts();
 
 
-	
+		deviceModel.appVersion = "emulator: 0.0.28";
+		userModel._user.set('appVersion', deviceModel.appVersion);
 		// Provide basic functionality in the simulator and deployable simulator
-		if (window.navigator.simulator !== undefined) {
-			deviceModel.appVersion = "emulator: 0.0.10";
-			userModel._user.set('appVersion', deviceModel.appVersion);
-		} else {
+		if (window.navigator.simulator === undefined) {
 			cordova.getAppVersion.getVersionCode(function(version) {
 
 				if (typeof version === 'number') {
@@ -192,9 +144,53 @@
 					});
 				});
 
-
-
 			});
+
+			// Initialize AppBuilder App Feedback Plugin
+			feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
+			window.open = cordova.InAppBrowser.open;
+
+			var projectKey = "7a8cc314b41f44299fd03db24685b341";
+
+
+			window.analytics = {
+				start: function() {
+					var factory = window.plugins.EqatecAnalytics.Factory,
+						monitor = window.plugins.EqatecAnalytics.Monitor,
+						settings = factory.CreateSettings( projectKey, version );
+
+					settings.LoggingInterface = factory.CreateTraceLogger();
+					factory.CreateMonitorWithSettings( settings,
+						function() {
+							console.log( "Monitor created" );
+							monitor.Start(function() {
+								console.log( "Monitor started" );
+							});
+						},
+						function( msg ) {
+							console.log( "Error creating monitor: " + msg );
+						});
+				},
+				stop: function() {
+					var monitor = window.plugins.EqatecAnalytics.Monitor;
+					monitor.Stop();
+				},
+				monitor: function() {
+					return window.plugins.EqatecAnalytics.Monitor;
+				}
+			};
+
+			window.analytics.start();
+			document.addEventListener( "pause", function() {
+				window.analytics.stop();
+			});
+			document.addEventListener( "resume", function() {
+				window.analytics.start();
+			});
+
+			window.onerror = function( message, url, lineNumber, columnNumber, error ) {
+				window.analytics.monitor().TrackExceptionMessage( error, message );
+			};
 
 			/*cordova.plugins.notification.local.ontrigger = function(id, state, json) {
 				var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
