@@ -517,8 +517,11 @@ var addContactView = {
 
         $( "#addContactPhone" ).on('input', function() {
             var phone = $("#addContactPhone").val();
+            var PNF = libphonenumber.PhoneNumberFormat;
 
             var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
+            var phoneNumber = phoneUtil.parse(phone, 'US');
+            
             if (phoneUtil.isValidNumber(phone)) {
                 isValidMobileNumber(phone, function (result) {
                     if (result.status === 'ok') {
