@@ -58,12 +58,7 @@
 		map: {}
 
 	};
-
-
-
-
-
-
+	
 	// this function is called by Cordova when the application is loaded by the device
 	document.addEventListener('deviceready', function() {
 
@@ -125,7 +120,7 @@
 		window.onerror = function( message, url, lineNumber, columnNumber, error ) {
 			window.analytics.monitor().TrackExceptionMessage( error, message );
 		};
-		
+
 		deviceModel.getAppState();
 
 		deviceModel.getNetworkState();
