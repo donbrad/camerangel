@@ -61,7 +61,7 @@
 
 	// this function is called by Cordova when the application is loaded by the device
 	document.addEventListener('deviceready', function() {
-		
+
 		// Add event listeners
 		document.addEventListener("pause", deviceModel.onPause, false);
 		document.addEventListener("resume", deviceModel.onResume, false);
@@ -150,7 +150,7 @@
 			feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
 			window.open = cordova.InAppBrowser.open;
 
-			var projectKey = "7a8cc314b41f44299fd03db24685b341";
+/*			var projectKey = "7a8cc314b41f44299fd03db24685b341";
 
 
 			window.analytics = {
@@ -190,7 +190,7 @@
 
 			window.onerror = function( message, url, lineNumber, columnNumber, error ) {
 				window.analytics.monitor().TrackExceptionMessage( error, message );
-			};
+			};*/
 
 			/*cordova.plugins.notification.local.ontrigger = function(id, state, json) {
 				var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
