@@ -518,6 +518,7 @@ var addContactView = {
         $( "#addContactPhone" ).on('input', function() {
             var phone = $("#addContactPhone").val();
 
+            var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
             if (phoneUtil.isValidNumber(phoneUtil.parse(phone))) {
                 isValidMobileNumber(phone, function (result) {
                     if (result.status === 'ok') {
