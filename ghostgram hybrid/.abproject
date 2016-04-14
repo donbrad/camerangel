@@ -3,7 +3,7 @@
   "ProjectGuid": "73905311-744c-48f9-9909-d427fe5ad083",
   "projectVersion": 1,
   "AppIdentifier": "com.kendo.ghostgram",
-  "DisplayName": "ghostgrams mobile",
+  "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
   "BundleVersion": "0.0.31",
@@ -18,7 +18,7 @@
     "remote-notification"
   ],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "FrameworkVersion": "5.0.0",
+  "FrameworkVersion": "4.0.0",
   "AndroidPermissions": [
     "android.permission.ACCESS_COARSE_LOCATION",
     "android.permission.ACCESS_FINE_LOCATION",
