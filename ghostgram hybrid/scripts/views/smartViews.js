@@ -1899,11 +1899,11 @@ var smartMovieView = {
 
             var phone = thisObj.theatrePhone;
 
-            if (phoneUtil.isValidNumber(phoneUtil.parse(phone))) {
-                mobileNotify(phone + "isn't a valid phone number");
+            if (addContactView.isValidPhone(phone) === null) {
+                mobileNotify(phone + " is not valid US phone number");
                 return;
             }
-            
+
             mobileNotify("Calling  " + thisObj.theatreName);
 
             window.plugins.CallNumber.callNumber(

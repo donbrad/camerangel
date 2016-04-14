@@ -511,16 +511,37 @@ var addContactView = {
 	_closeModal: false,
     _emailValid: false,
     _phoneValid : false,
+    phoneUtil : null,
+    PNF : null,
+    
+    isValidPhone : function (phone) {
+        var phoneNumber = addContactView.phoneUtil.parse(phone, 'US');
+        if (phoneNumber.length < 10 || phoneNumber.length > 11) {
+            return (null);
+        }
+        if (phoneNumber.length === 10) {
+            phoneNumber = '1'+phoneNumber;
+        }
+        
+        return(phoneNumber);
 
+    },
+    
     doInit: function (e) {
         _preventDefault(e);
 
+        addContactView.PNF = libphonenumber.PhoneNumberFormat;
+
+        addContactView.phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
+        
         $( "#addContactPhone" ).on('input', function() {
             var phone = $("#addContactPhone").val();
-            var PNF = libphonenumber.PhoneNumberFormat;
-
-            var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
-            var phoneNumber = phoneUtil.parse(phone, 'US');
+            
+           if (addContactView.isValidPhone(phone) === null) {
+                mobileNotify(phone + " is not valid US phone number");
+                return;
+            }
+            
             
             if (phoneUtil.isValidNumber(phone)) {
                 isValidMobileNumber(phone, function (result) {
@@ -539,7 +560,7 @@ var addContactView = {
                 });
             }
         });
-
+        
         $("#addContactForm").kendoValidator({
         	errorTemplate: '<span class="error-msg">#=message#</span>'
         });
