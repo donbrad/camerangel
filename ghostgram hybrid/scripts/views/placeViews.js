@@ -14,7 +14,7 @@ var placesView = {
 
 
     onInit: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         placesModel.locatorActive = false;
 
@@ -80,7 +80,7 @@ var placesView = {
     },
 
     onShow: function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);
 
         placesView.isActive = true;
 
@@ -273,7 +273,7 @@ var searchPlacesView = {
     }),
 
     onInit : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
 
        /* // Filter current places and query google places on keyup
@@ -349,7 +349,7 @@ var searchPlacesView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);
 
         var ds = searchPlacesView.placesDS;
 
@@ -574,7 +574,7 @@ var findPlacesView = {
     }),
 
     onInit : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
 
         // Filter current places and query google places on keyup
@@ -650,7 +650,7 @@ var findPlacesView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);
 
         var ds = findPlacesView.placesDS;
 
@@ -860,7 +860,7 @@ var addPlaceView = {
     _returnModal : null,
 
     onInit : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         $("#addplace-typeBtns").data("kendoMobileButtonGroup");
 
@@ -870,7 +870,7 @@ var addPlaceView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         //$('#addPlaceCreateChat').attr('checked', false);
 
@@ -1055,13 +1055,13 @@ var editPlaceView = {
 
 
     onInit : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         if (e.view.params !== undefined) {
             if (e.view.params.place !== undefined) {
@@ -1270,7 +1270,7 @@ var placeView = {
 
     onInit : function (e) {
 
-        _preventDefault(e);
+        //_preventDefault(e);
         $("#placeView-listview").kendoMobileListView({
             dataSource: placeView._memoriesDS,
             template: $("#placeViewMemories-template").html(),
@@ -1391,7 +1391,7 @@ var placeView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         ux.hideKeyboard();
 
         placeView.topOffset = $("#placeView-listview").data("kendoMobileListView").scroller().scrollTop;
@@ -1925,7 +1925,7 @@ var checkInView = {
     }),
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
         $("#checkin-listview").kendoMobileListView({
             dataSource: checkInView.placesDS,
             template: $("#checkinPlacesTemplate").html(),
@@ -2038,11 +2038,11 @@ var mapView = {
     _returnView : '#:back',   // Default return is just calling view
 
     onInit: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
     },
 
     onShow: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         var valid = false;
 
         if (e.view.params !== undefined) {
@@ -2173,7 +2173,7 @@ var smartEventPlacesView = {
     }),
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         $("#smartEventPlaces-listview").kendoMobileListView({
                 dataSource: smartEventPlacesView.placesDS,
@@ -2590,7 +2590,7 @@ var smartLocationView = {
     }),
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         $("#smartLocation-listview").kendoMobileListView({
                 dataSource: smartLocationView.placesDS,

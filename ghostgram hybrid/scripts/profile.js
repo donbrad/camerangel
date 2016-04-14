@@ -190,7 +190,7 @@ function doProfileGallery(e) {
 }*/
 
 function onInitProfile(e) {
-	e.preventDefault();
+	//e.preventDefault();
     
     if (userModel._user.emailValidated){
         $("#verified-email").removeClass("hidden");

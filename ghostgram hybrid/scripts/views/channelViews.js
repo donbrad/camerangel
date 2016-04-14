@@ -20,7 +20,7 @@ var channelsView = {
 
 
     onInit : function (e) {
-        e.preventDefault();
+        //e.preventDefault();
 
         
         channelsView._channelListDS =  new kendo.data.DataSource({
@@ -117,7 +117,7 @@ var channelsView = {
 
 
     onShow : function(e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         channelsView.updateChannelListDS();
 
@@ -261,7 +261,7 @@ var channelsView = {
 var addChannelView = {
    
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
         $("#channels-addChannel-name").keyup(function(){
             if($("#channels-addChannel-name").val !== ""){
                 $("#addChat-createBtn").velocity({opacity: 1}, {duration: 500, easing: "spring"});
@@ -272,7 +272,7 @@ var addChannelView = {
     },
 
      onShow: function (e) {
-       _preventDefault(e);
+      // _preventDefault(e);
        /* currentChannelModel.potentialMembersDS.data([]);
         currentChannelModel.potentialMembersDS.data(contactModel.contactsDS.data());
         currentChannelModel.membersDS.data([]);*/
@@ -935,7 +935,7 @@ var channelView = {
 
     onInit: function (e) {
 
-        e.preventDefault();
+       // e.preventDefault();
 
         channelView.initDataSources();
 
@@ -1083,7 +1083,7 @@ var channelView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         var name = '';
         ux.hideKeyboard();

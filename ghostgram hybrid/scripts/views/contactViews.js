@@ -19,7 +19,7 @@ var contactsView = {
     updateInterval: null,
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         contactModel.deviceQueryActive = false;
 
@@ -127,7 +127,7 @@ var contactsView = {
     },
 
     onShow : function (e) {
-       _preventDefault(e);
+      // _preventDefault(e);
 
         $("#contacts-listview").data("kendoMobileListView").scroller().reset();
 
@@ -324,7 +324,7 @@ var contactsView = {
 var contactImportView = {
 
     onInit: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         
 
         $("#contactimport-listview").kendoMobileListView({
@@ -396,7 +396,7 @@ var contactImportView = {
     },
 
     onShow: function (e) {
-       _preventDefault(e);
+      // _preventDefault(e);
         var query = null;
         query = e.view.params.query;
         
@@ -935,7 +935,7 @@ var editContactView = {
     _activeContact : new kendo.data.ObservableObject(),
 
     onInit: function (e) {
-       _preventDefault(e);
+      // _preventDefault(e);
 
        $("#editContactForm").kendoValidator({
        		errorTemplate: "<span class='error-msg'>#=message#</span>"
@@ -1081,7 +1081,7 @@ var editContactView = {
 
     onShow: function (e) {
 
-       _preventDefault(e);
+      // _preventDefault(e);
 
         var contactId = e.view.params.contact, contact = null;
 

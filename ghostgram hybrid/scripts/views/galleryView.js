@@ -23,7 +23,7 @@ var galleryView = {
     _viewInitialized : false,
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         archiveView.init();
 
@@ -67,7 +67,7 @@ var galleryView = {
 
     onShow : function (e) {
 
-        _preventDefault(e);
+       // _preventDefault(e);
 
         ux.hideKeyboard();
 
@@ -403,12 +403,12 @@ var photoView = {
     _activePhotoUrl: null,
 
     onInit: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         if (e.view.params.photo !== undefined) {
             photoView._activePhotoId = LZString.decompressFromEncodedURIComponent(e.view.params.photo);
@@ -485,12 +485,12 @@ var photoEditor = {
     _source: null,
 
     onInit: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         photoEditor._source = e.view.params.source;
         if (photoEditor._source === 'profile') {
@@ -1005,7 +1005,7 @@ var galleryPicker = {
     _isGridView: true,
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         $('#galleryPickerSearch').on('input', function() {
             var query = this.value;
