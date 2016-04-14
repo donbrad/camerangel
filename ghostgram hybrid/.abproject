@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams mobile",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.28",
+  "BundleVersion": "0.0.29",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -87,8 +87,6 @@
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.phonegap.plugins.barcodescanner@2.0.1",
     "com.phonegap.plugins.PushPlugin@3.1.1",
-    "com.telerik.feedback@2.0.0",
-    "com.telerik.plugin.telerikanalytics@3.4.1",
     "com.telerik.plugins.nativepagetransitions@0.6.4",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
@@ -105,7 +103,7 @@
     "cordova-plugin-media",
     "cordova-plugin-media-capture",
     "cordova-plugin-network-information",
-    "cordova-plugin-safariviewcontroller@1.4.1",
+    "cordova-plugin-safariviewcontroller@1.4.2",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "cordova-plugin-vibration",
