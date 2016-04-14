@@ -518,20 +518,22 @@ var addContactView = {
         $( "#addContactPhone" ).on('input', function() {
             var phone = $("#addContactPhone").val();
 
-            isValidMobileNumber(phone, function(result){
-                if (result.status === 'ok') {
-                    if (result.valid === false) {
-                    mobileNotify(phone + ' is not a valid mobile number');
-                    $("#vaildMobileNumberError").velocity("slideDown");
-                    $("#addContacViewAddButton").text("Close");
-                    addContactView._closeModal = true;
-                } else {
-                    $("#vaildMobileNumberError").velocity("slideUp");
-                    $("#addContacViewAddButton").text("Add Contact");
-                    addContactView._closeModal = false;
-                }
-                }
-            });
+            if (phoneUtil.isValidNumber(phoneUtil.parse(phone))) {
+                isValidMobileNumber(phone, function (result) {
+                    if (result.status === 'ok') {
+                        if (result.valid === false) {
+                            mobileNotify(phone + ' is not a valid mobile number');
+                            $("#vaildMobileNumberError").velocity("slideDown");
+                            $("#addContacViewAddButton").text("Close");
+                            addContactView._closeModal = true;
+                        } else {
+                            $("#vaildMobileNumberError").velocity("slideUp");
+                            $("#addContacViewAddButton").text("Add Contact");
+                            addContactView._closeModal = false;
+                        }
+                    }
+                });
+            }
         });
 
         $("#addContactForm").kendoValidator({
