@@ -59,9 +59,31 @@
 
 	};
 
-	(function() {
-		// You'll need to insert your own custom values for these variables,
-		// and you'll get those values in steps 3 and 4.
+
+
+
+
+
+	// this function is called by Cordova when the application is loaded by the device
+	document.addEventListener('deviceready', function() {
+
+		if (window.navigator.simulator === undefined) {
+			// Initialize AppBuilder App Feedback Plugin
+			feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
+			window.open = cordova.InAppBrowser.open;
+		}
+		// Add event listeners
+		document.addEventListener("pause", deviceModel.onPause, false);
+		document.addEventListener("resume", deviceModel.onResume, false);
+
+
+		document.addEventListener("online", deviceModel.onOnline, false);
+		document.addEventListener("offline", deviceModel.onOffline, false);
+
+		// special Pause / Resume for iOS related to locked and unlocked modes for the phone...
+		document.addEventListener("resign", deviceModel.onResign, false);
+		document.addEventListener("active", deviceModel.onActive, false);
+
 		var projectKey = "7a8cc314b41f44299fd03db24685b341",
 			version = "%BundleVersion%";
 
@@ -92,40 +114,18 @@
 			}
 		};
 
-		document.addEventListener( "deviceready", function() {
-			window.analytics.start();
-			document.addEventListener( "pause", function() {
-				window.analytics.stop();
-			});
-			document.addEventListener( "resume", function() {
-				window.analytics.start();
-			});
+		window.analytics.start();
+		document.addEventListener( "pause", function() {
+			window.analytics.stop();
 		});
+		document.addEventListener( "resume", function() {
+			window.analytics.start();
+		});
+
 		window.onerror = function( message, url, lineNumber, columnNumber, error ) {
 			window.analytics.monitor().TrackExceptionMessage( error, message );
 		};
-	}());
-
-	// this function is called by Cordova when the application is loaded by the device
-	document.addEventListener('deviceready', function() {
-
-		if (window.navigator.simulator === undefined) {
-			// Initialize AppBuilder App Feedback Plugin
-			feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
-			window.open = cordova.InAppBrowser.open;
-		}
-		// Add event listeners
-		document.addEventListener("pause", deviceModel.onPause, false);
-		document.addEventListener("resume", deviceModel.onResume, false);
-
-
-		document.addEventListener("online", deviceModel.onOnline, false);
-		document.addEventListener("offline", deviceModel.onOffline, false);
-
-		// special Pause / Resume for iOS related to locked and unlocked modes for the phone...
-		document.addEventListener("resign", deviceModel.onResign, false);
-		document.addEventListener("active", deviceModel.onActive, false);
-
+		
 		deviceModel.getAppState();
 
 		deviceModel.getNetworkState();
