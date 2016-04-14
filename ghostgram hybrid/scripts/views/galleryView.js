@@ -56,7 +56,7 @@ var galleryView = {
 
     updateTotalPhotos : function () {
         // set result count
-        var photoCount = photoModel._totalPhotos;
+        var photoCount = photoModel.photosDS.total();
         if(photoCount > 0){
             $(".results").css("visibility", "visible");
             $("#resultCount").text(photoCount);
@@ -331,8 +331,12 @@ var galleryView = {
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null,  // Current channel Id for offers
             function (photoUUID, displayUrl) {
+                galleryView.updateTotalPhotos();
+            },
+            function (photoUUID, displayUrl) {
 
             }
+
         );
     },
 
@@ -346,6 +350,9 @@ var galleryView = {
             null, // Current channel Id for offers
             function (photoUUID, displayUrl) {
                 galleryView.updateTotalPhotos();
+            },
+            function (photoUUID, displayUrl) {
+                // share callback -- photo is stored in the cloud
             }
         );
     },

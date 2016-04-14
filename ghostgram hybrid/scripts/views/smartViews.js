@@ -1890,11 +1890,20 @@ var smartMovieView = {
         if (thisObj.theatrePhone === undefined || thisObj.theatrePhone === null) {
             mobileNotify("No phone number for " + thisObj.theatreName);
         } else {
+
+
             if (window.navigator.simulator === true){
                 mobileNotify("Phone Calls are't supported in the emulator");
                 return;
             }
 
+            var phone = thisObj.theatrePhone;
+
+            if (phoneUtil.isValidNumber(phoneUtil.parse(phone))) {
+                mobileNotify(phone + "isn't a valid phone number");
+                return;
+            }
+            
             mobileNotify("Calling  " + thisObj.theatreName);
 
             window.plugins.CallNumber.callNumber(

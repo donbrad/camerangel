@@ -209,8 +209,8 @@ var devicePhoto = {
                                 devicePhoto._uploadActive = true;
                                 devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                                     var photoObj = photoModel.findPhotoById(photouuid);
-
-                                    if (photoObj !== undefined) {
+                                    
+                                    if (photoObj !== undefined && photoData !== null) {
                                         photoObj.set('imageUrl',photoData.url);
                                         photoObj.set('cloudUrl',photoData.url);
                                         photoObj.set('thumbnailUrl', photoData.url.replace('upload//','upload//c_scale,h_512,w_512//'));
@@ -223,6 +223,10 @@ var devicePhoto = {
                                         devicePhoto._uploadActive = false;
                                         devicePhoto.currentPhoto.uploadComplete = true;
 
+                                    } else {
+                                        if (shareCallback !== undefined) {
+                                            shareCallback(photoObj.photoId, null);
+                                        }
                                     }
                                 });
                             });
@@ -417,7 +421,7 @@ var devicePhoto = {
                                         devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                                             var photoObj = photoModel.findPhotoById(photouuid);
 
-                                            if (photoObj !== undefined) {
+                                            if (photoObj !== undefined && photoData !== null) {
                                                 photoObj.set('imageUrl',photoData.url);
                                                 photoObj.set('cloudUrl',photoData.url);
                                                 photoObj.set('thumbnailUrl', photoData.url.replace('upload//','upload//c_scale,h_512,w_512//'));
@@ -430,6 +434,10 @@ var devicePhoto = {
                                                 devicePhoto._uploadActive = false;
                                                 devicePhoto.currentPhoto.uploadComplete = true;
                                                 
+                                            } else {
+                                                if (shareCallback !== undefined) {
+                                                    shareCallback(photoObj.photoId, null);
+                                                }
                                             }
 
                                         });

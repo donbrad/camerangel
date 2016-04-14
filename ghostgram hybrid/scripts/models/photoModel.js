@@ -179,7 +179,7 @@ var photoModel = {
             devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                 var photoObj = photoModel.findPhotoById(photouuid);
 
-                if (photoObj !== undefined) {
+                if (photoObj !== undefined && photoData !== null) {
                     photoObj.set('imageUrl', photoData.url);
                     photoObj.set('cloudUrl', photoData.url);
                     photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
