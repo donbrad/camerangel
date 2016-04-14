@@ -415,7 +415,7 @@ var editChannelView = {
     membersDeletedDS: new kendo.data.DataSource(),
 
     onInit: function (e) {
-       _preventDefault(e);
+     //  _preventDefault(e);
 
         editChannelView.membersDS.data([]);
         editChannelView.potentialMembersDS.data([]);
@@ -429,7 +429,7 @@ var editChannelView = {
     },
 
     onShow : function (e) {
-       _preventDefault(e);
+      // _preventDefault(e);
 
         //Simplifying the logic here. If there's a channel passed, load the new channel data,
         //If there's no channel id assume, it's a return from the new add members view and just use the cached data

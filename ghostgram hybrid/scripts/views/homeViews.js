@@ -254,7 +254,7 @@ var homeView = {
          });
          */
 
-        $(".home-status").kendoTouch(
+        /*$(".home-status").kendoTouch(
 
             { doubletap: function (e) { mobileNotify("Double Tap: Open Hot Buttons!"); }
         });
@@ -264,7 +264,7 @@ var homeView = {
             gesturestart: function (e) {
                 mobileNotify("Two Finger: Open Hot Buttons!");
             }
-        });
+        });*/
 
 
 
