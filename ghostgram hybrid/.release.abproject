@@ -13,5 +13,24 @@
       "PRODUCT_ID": "7a8cc314b41f44299fd03db24685b341"
     }
   },
-  "CorePlugins": []
+  "CorePlugins": [
+    "cordova-plugin-battery-status",
+    "cordova-plugin-contacts",
+    "cordova-plugin-device",
+    "cordova-plugin-device-motion",
+    "cordova-plugin-device-orientation",
+    "cordova-plugin-dialogs",
+    "cordova-plugin-file",
+    "cordova-plugin-file-transfer",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-globalization",
+    "cordova-plugin-media",
+    "cordova-plugin-media-capture",
+    "cordova-plugin-network-information",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
+    "cordova-plugin-vibration",
+    "cordova-plugin-whitelist",
+    "org.apache.cordova.labs.keyboard"
+  ]
 }

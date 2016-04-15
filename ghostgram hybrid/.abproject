@@ -82,26 +82,6 @@
     "ID_RESOLUTION_WXGA",
     "ID_RESOLUTION_HD720P"
   ],
-  "CorePlugins": [
-    "cordova-plugin-battery-status",
-    "cordova-plugin-console",
-    "cordova-plugin-contacts",
-    "cordova-plugin-device",
-    "cordova-plugin-device-motion",
-    "cordova-plugin-device-orientation",
-    "cordova-plugin-dialogs",
-    "cordova-plugin-file",
-    "cordova-plugin-file-transfer",
-    "cordova-plugin-geolocation",
-    "cordova-plugin-globalization",
-    "cordova-plugin-media",
-    "cordova-plugin-media-capture",
-    "cordova-plugin-network-information",
-    "cordova-plugin-splashscreen",
-    "cordova-plugin-statusbar",
-    "cordova-plugin-vibration",
-    "cordova-plugin-whitelist",
-    "org.apache.cordova.labs.keyboard"
-  ],
+  "CorePlugins": [],
   "iOSDeploymentTarget": "8.0"
 }
