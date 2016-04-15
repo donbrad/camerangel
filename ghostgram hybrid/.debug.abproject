@@ -14,11 +14,9 @@
     }
   },
   "CorePlugins": [
-    "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
     "cordova-plugin-device",
-    "cordova-plugin-device-motion",
     "cordova-plugin-device-orientation",
     "cordova-plugin-dialogs",
     "cordova-plugin-file",
@@ -32,6 +30,7 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-vibration",
     "cordova-plugin-whitelist",
-    "org.apache.cordova.labs.keyboard"
+    "org.apache.cordova.labs.keyboard",
+    "uk.co.whiteoctober.cordova.appversion@0.1.7"
   ]
 }
