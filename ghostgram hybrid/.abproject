@@ -83,6 +83,8 @@
     "ID_RESOLUTION_HD720P"
   ],
   "CorePlugins": [
+    "com.ohh2ahh.plugins.appavailability@0.3.1",
+    "com.phonegap.plugins.barcodescanner@2.1.0",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
