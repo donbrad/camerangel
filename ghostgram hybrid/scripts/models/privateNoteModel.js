@@ -19,8 +19,8 @@ var privateNoteModel = {
             type: 'everlive',
            // offlineStorage: "privatenote",
             transport: {
-                typeName: 'privatenote'/*,
-                dataProvider: APP.everlive*/
+                typeName: 'privatenote',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
