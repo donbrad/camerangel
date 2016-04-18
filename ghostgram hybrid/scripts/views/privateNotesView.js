@@ -63,35 +63,7 @@ var privateNotesView = {
             }
         });
 
-        $.Redactor.prototype.clear = function()
-        {
-            return {
-                init: function ()
-                {
-                    var button = this.button.add('clear', 'Clear');
-                    this.button.addCallback(button, this.clear.clear);
-                },
-                clear: function()
-                {
-                   privateNotesView.noteInit();
-                }
-            };
-        };
 
-        $.Redactor.prototype.save = function()
-        {
-            return {
-                init: function ()
-                {
-                    var button = this.button.add('save', 'Save');
-                    this.button.addCallback(button, this.save.save);
-                },
-                save: function()
-                {
-                    privateNotesView.saveNote();
-                }
-            };
-        };
     },
 
     // Initialize the channel specific view data sources.
@@ -153,7 +125,7 @@ var privateNotesView = {
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 deviceUrl : photo.deviceUrl,
-                cloudUrl : photo.cloudUrl,
+                cloudUrl : photo.cloudUrl
             };
         }
 
@@ -237,13 +209,14 @@ var privateNotesView = {
 
                 var contentData = JSON.stringify(activeNote.dataObject);
                 var dataObj = JSON.parse(contentData);
-                note.set('title', _cleanString(title));
-                note.set('tagString', _cleanString(tagString));
+                note.set('title', title);
+                note.set('tagString', tagString);
                 note.set('tags', tags);
-                note.set('content', _cleanString(text));
+                note.set('content', text);
                 note.set('data', contentData);
                 note.set('dataObject', dataObj);
                 note.set('time',ggTime.currentTime());
+
 
                 var Id = note.Id;
                 if (Id !== undefined){
@@ -251,8 +224,6 @@ var privateNotesView = {
                         //placeNoteModel.notesDS.remove(note);
                     });
                 }
-
-
 
             } else {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
@@ -407,6 +378,36 @@ var privateNotesView = {
                 buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
                 toolbarExternal: '#privateNoteToolbar'
             });
+
+            $.Redactor.prototype.clear = function()
+            {
+                return {
+                    init: function ()
+                    {
+                        var button = this.button.add('clear', 'Clear');
+                        this.button.addCallback(button, this.clear.clear);
+                    },
+                    clear: function()
+                    {
+                        privateNotesView.noteInit();
+                    }
+                };
+            };
+
+            $.Redactor.prototype.save = function()
+            {
+                return {
+                    init: function ()
+                    {
+                        var button = this.button.add('save', 'Save');
+                        this.button.addCallback(button, this.save.save);
+                    },
+                    save: function()
+                    {
+                        privateNotesView.saveNote();
+                    }
+                };
+            };
         }
 
     },
