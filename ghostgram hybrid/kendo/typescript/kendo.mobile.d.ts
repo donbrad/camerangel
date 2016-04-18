@@ -240,6 +240,8 @@ declare module kendo {
         };
     };
 
+    var version: string;
+
     interface TemplateOptions {
         paramName?: string;
         useWithBlock?: boolean;
@@ -295,7 +297,7 @@ declare module kendo {
 
     class Layout extends View {
         containers: { [selector: string]: ViewContainer; };
-        showIn(selector: string, view: View): void;
+        showIn(selector: string, view: View, transitionClass?: string): void;
     }
 
     class History extends Observable {
@@ -311,8 +313,13 @@ declare module kendo {
 
     interface RouterOptions {
         init?: (e: RouterEvent) => void;
-        routeMissing?: (e: RouterEvent) => void;
-        change?: (e: RouterEvent) => void;
+        pushState?: boolean;
+        hashBang?: boolean;
+        root?: string;
+        ignoreCase?: boolean;
+        change?(e: RouterChangeEvent): void;
+        routeMissing?(e: RouterRouteMissingEvent): void;
+        same?(e: RouterEvent): void;
     }
 
     interface RouterEvent {
@@ -320,6 +327,15 @@ declare module kendo {
         url: string;
         preventDefault: Function;
         isDefaultPrevented(): boolean;
+    }
+
+    interface RouterChangeEvent extends RouterEvent {
+        params: any;
+        backButtonPressed: boolean;
+    }
+
+    interface RouterRouteMissingEvent extends RouterEvent {
+        params: any;
     }
 
     class Route extends Class {
@@ -342,6 +358,9 @@ declare module kendo {
 }
 
 declare module kendo.effects {
+    function enable(): void;
+    function disable(): void;
+
     interface Element {
         expand(direction: string): effects.Expand;
         expandHorizontal(): effects.Expand;
@@ -926,6 +945,7 @@ declare module kendo.data {
     interface DataSourceSchemaModel {
         id?: string;
         fields?: any;
+        [index: string]: any;
     }
 
     interface DataSourceSchemaModelWithFieldsArray extends DataSourceSchemaModel {
@@ -1046,6 +1066,31 @@ declare module kendo.data {
         total(): number;
         totalPages(): number;
         view(): kendo.data.ObservableArray;
+    }
+
+    class Query {
+        data: any[];
+
+        static process(data: any[], options: DataSourceTransportReadOptionsData): QueryResult;
+
+        constructor(data: any[]);
+        toArray(): any[];
+        range(intex: number, count: number): kendo.data.Query;
+        skip(count: number): kendo.data.Query;
+        take(count: number): kendo.data.Query;
+        select(selector: Function): kendo.data.Query;
+        order(selector: string, dir?: string): kendo.data.Query;
+        order(selector: Function, dir?: string): kendo.data.Query;
+        filter(filters: DataSourceFilterItem): kendo.data.Query;
+        filter(filters: DataSourceFilterItem[]): kendo.data.Query;
+        filter(filters: DataSourceFilters): kendo.data.Query;
+        group(descriptors: DataSourceGroupItem): kendo.data.Query;
+        group(descriptors: DataSourceGroupItem[]): kendo.data.Query;
+    }
+
+    interface QueryResult {
+        total?: number;
+        data?: any[];
     }
 
     interface DataSourceAggregateItem {
@@ -3508,7 +3553,7 @@ Supported types (case insensitive):
 - svg
 - canvas
 - vmlThis option will be ignored if not supported by the browser.
-See Supported Browsers
+See Supported Browsers.
         @member {string}
         */
         type?: string;
@@ -9908,7 +9953,7 @@ Supported types (case insensitive):
 - svg
 - canvas
 - vmlThis option will be ignored if not supported by the browser.
-See Supported Browsers
+See Supported Browsers.
         @member {string}
         */
         type?: string;
