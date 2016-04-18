@@ -4190,7 +4190,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="backbutton"  data-align="left">
+			<a data-role="backbutton" data-align="left">
 				<img src="images/nav-back.svg" />
 			</a>
 		</div>
@@ -4286,7 +4286,7 @@
 	var tagString = "";
 	if (tagString !== undefined && tagString !== null) { tagString = tagString;}
 	var sender = 'Me';
-	var dateString = moment(time).fromNow();
+	var dateString = moment(time).format("ddd, M/D/YY, h:mm a");
 	#
 	# if (ggType === 'Note') { #
 		<div class="private-note" data-objectId="#:noteId#">
