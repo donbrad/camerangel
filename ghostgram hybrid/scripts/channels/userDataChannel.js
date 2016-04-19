@@ -61,7 +61,7 @@ var userDataChannel = {
        /* userDataChannel.messagesDS.online(false);*/
         userDataChannel.messagesDS.fetch();
        // userDataChannel.history();
-
+        //userDataChannel.removeExpiredMessages();
         userDataChannel.expireMessages = setInterval(function(){  userDataChannel.removeExpiredMessages(); }, 60000);
 
     },
@@ -212,9 +212,17 @@ var userDataChannel = {
 
 
     removeExpiredMessages : function () {
+        var dataSource = userDataChannel.messagesDS;
+        
+        if (dataSource === null ) {
+            return;
+        }
+        if (dataSource.total() === 0) {
+            return;
+        }
 
         var yesterday = ggTime.lastDay();
-        var dataSource = userDataChannel.messagesDS;
+       
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
             queryCache = [];

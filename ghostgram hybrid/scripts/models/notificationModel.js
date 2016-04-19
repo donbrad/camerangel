@@ -45,7 +45,8 @@ var notificationModel = {
            sort: {
                field: "date",
                dir: "desc"
-           }
+           },
+           autoSync: true
        });
 
         notificationModel.notificationDS.fetch();
@@ -160,6 +161,7 @@ var notificationModel = {
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
 
+        notification.Id = notification.uuid;
         notificationModel.notificationDS.add(notification);
         everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
             if (error !== null) {
@@ -186,7 +188,11 @@ var notificationModel = {
     },
 
     addVerifyPhoneNotification : function () {
-        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", launchVerifyPhone , null, false);
+        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", verifyPhoneModal.openModal , null, false);
+    },
+    
+    addVerifyEmailNotification : function () {
+        this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", launchVerifyPhone , null, false);
     },
 
 

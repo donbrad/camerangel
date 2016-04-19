@@ -5,13 +5,13 @@
 
 var profileView = {
     onInit: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
 
     },
 
     onShow: function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);
         if (userModel._user.emailValidated){
             $("#verified-email").removeClass("hidden");
         }
@@ -29,13 +29,13 @@ var profileEditView = {
     _activeProfile : new kendo.data.ObservableObject(),
 
     onInit: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
          $("#editProfile").kendoValidator();
     },
 
     onShow: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         profileEditView._activeProfile.set('name', userModel._user.get('name'));
         profileEditView._activeProfile.set('username', userModel._user.get('username'));

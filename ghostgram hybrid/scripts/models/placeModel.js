@@ -62,7 +62,8 @@ var placesModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            autoSync: true
         });
         
         // Reflect any core contact changes to contactList
@@ -293,6 +294,7 @@ var placesModel = {
 
         //placeObj.setACL(userModel.parseACL);
         placeObj.set('uuid', place.uuid);
+        placeObj.set('Id', place.uuid);
         placeObj.set('ggType', placesModel._ggClass);
         placeObj.set('version', placesModel._version);
         placeObj.set('category', place.category);
@@ -330,14 +332,14 @@ var placesModel = {
 
         // update the distance value for the local object...
         placeObj.set('distance', distance);
+
+        placesModel.placesDS.add(place);
         // Get a json object to add to kendo (strip the parse specific stuff)
       //  var placeObj = placeObj.toJSON();
         everlive.createOne(placesModel._cloudClass, place, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating place " + JSON.stringify(error));
-            } else {
-                placesModel.placesDS.add(place);
-            }
+            } 
         });
 
 
@@ -385,6 +387,7 @@ var placesModel = {
 
        // placeObj.setACL(userModel.parseACL);
         placeObj.set('uuid', guid);
+        placeObj.set('Id', guid);
         placeObj.set('ggType', placesModel._ggClass);
         placeObj.set('version', placesModel._version);
         placeObj.set('category', place.category);
@@ -432,13 +435,11 @@ var placesModel = {
         placeObj.distance = distance.toFixed(2);
         placeObj.isDirty = true;
 
+        placesModel.placesDS.add(placeObj);
         everlive.createOne(placesModel._cloudClass, placeObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating place " + JSON.stringify(error));
-            } else {
-                // Add the everlive object with everlive created Id to the datasource
-                placesModel.placesDS.add(placeObj);
-            }
+            } 
         });
 
        // placesModel.placesDS.add(placeObj);

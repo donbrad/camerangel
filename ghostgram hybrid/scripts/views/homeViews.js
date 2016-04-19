@@ -240,7 +240,7 @@ var homeView = {
     },
 
     onInit: function(e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         if (userModel._user.currentPlace !== '') {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
@@ -254,7 +254,7 @@ var homeView = {
          });
          */
 
-        $(".home-status").kendoTouch(
+        /*$(".home-status").kendoTouch(
 
             { doubletap: function (e) { mobileNotify("Double Tap: Open Hot Buttons!"); }
         });
@@ -264,7 +264,7 @@ var homeView = {
             gesturestart: function (e) {
                 mobileNotify("Two Finger: Open Hot Buttons!");
             }
-        });
+        });*/
 
 
 
@@ -287,15 +287,17 @@ var homeView = {
     },
 
     onShow: function (e) {
-        _preventDefault(e);
-
+//
         ux.setSearchPlaceholder("Search notifications");
 
         // set verified ui for start screen
         if(userModel._user.phoneValidated) {
             $("#startPhoneVerified").addClass("hidden");
+           // notificationModel.addVerifyPhoneNotification();
         }
-
+      /*  if (!userModel._user.isValidated) {
+            notificationModel.addVerifyEmailNotification();
+        }*/
         // Set user availability
         ux.updateHeaderStatusImages();
 
@@ -303,8 +305,8 @@ var homeView = {
         // Hide action button on home
         ux.showActionBtn(false, "#home");
 
-        // Display Unread Chat Notifications
-        notificationModel.processUnreadChannels();
+        // Todo:Don schedule unread channel notifications after sync complete
+        //notificationModel.processUnreadChannels();
     },
 
     onHide: function(e){
@@ -492,6 +494,7 @@ var userStatusView = {
         _preventDefault(e);
 
 
+        everlive.syncCloud();
        // Parse.User.logOut();
         appDataChannel.closeChannel();
         userDataChannel.closeChannel();
@@ -621,7 +624,7 @@ var userStatusView = {
 
     // Important to put all jquery and other event handlers here so created only once...
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         userStatusView.statusCharCount(e);
 
@@ -762,7 +765,7 @@ var ghostEditView = {
 
     onInit: function (e) {
 
-        _preventDefault(e);
+        //_preventDefault(e);
         //autosize($('#ghostEmailEditor'));
 
         $("#ghostEmailEditor").kendoEditor({
@@ -779,7 +782,7 @@ var ghostEditView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
         if (e.view.params.callback !== undefined) {
             ghostEditView._callback = e.view.params.callback;
         } else {
@@ -916,12 +919,12 @@ var editProfilePhotoView = {
     _contactId : null,
 
     onInit : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
     },
 
@@ -977,7 +980,7 @@ var editProfilePhotoView = {
 
 var signUpView = {
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
        // Add strength meter to password
         //$("#home-signup-password").strength();
@@ -1080,7 +1083,8 @@ var signUpView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);
+
 
 
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
@@ -1391,7 +1395,7 @@ var newUserView = {
 	_introRun : false,
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
 
     },
@@ -1400,7 +1404,7 @@ var newUserView = {
     onShow : function (e) {
 
         newUserView._introRun = false;
-        _preventDefault(e);
+       // _preventDefault(e);
 
         if(!newUserView._introRun){
         	
@@ -1429,7 +1433,7 @@ var newUserView = {
 var signInView = {
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         $("#home-signin-username").on("input", function(e) {
 
@@ -1449,7 +1453,7 @@ var signInView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         ux.hideKeyboard();
 
@@ -1534,7 +1538,7 @@ var signInView = {
 var changePasswordView = {
 
     onInit : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         $('#newPassword1').strength({
         	strengthClass: 'strength',
         	strengthMeterClass: 'strength_meter',
@@ -1546,7 +1550,7 @@ var changePasswordView = {
     },
 
     onShow: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         $("#newPassword1").val('');
         ux.hideKeyboard();
 
@@ -1583,12 +1587,37 @@ var changePasswordView = {
     }
 };
 
-var verifyPhoneModal = {
+var verifyEmailModal = {
 
     onOpen: function (e) {
         _preventDefault(e);
     },
     
+    onDone: function (e) {
+        _preventDefault(e);
+    },
+
+    openModal: function (e) {
+        
+        $("#modalview-verifyEmail").data("kendoMobileModalView").open();
+    },
+    
+    closeModal: function (e) {
+        $("#modalview-verifyEmail").data("kendoMobileModalView").close();
+    },
+
+    sendEmail : function (e) {
+        var email = userModel._user.get('email');
+        everlive.resendEmailValidation(email);
+        
+    }
+};
+var verifyPhoneModal = {
+
+    onOpen: function (e) {
+        _preventDefault(e);
+    },
+
     onDone: function (e) {
         _preventDefault(e);
     },
@@ -1629,7 +1658,7 @@ var verifyPhoneModal = {
         });
         $("#modalview-verifyPhone").data("kendoMobileModalView").open();
     },
-    
+
     closeModal: function (e) {
         $("#verifyPhone-code").unbind('keyup').val('');
         $("#modalview-verifyPhone").data("kendoMobileModalView").close();
@@ -1676,8 +1705,7 @@ var verifyPhoneModal = {
         }
 
     }
-}
-
+};
 var recoverPasswordView = {
     openModal: function (e) {
         var email = $("#home-signin-username").val();

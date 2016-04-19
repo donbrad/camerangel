@@ -102,7 +102,7 @@ var devicePhoto = {
     },
 
 
-    deviceCamera : function (resolution, quality, isChat, channelUUID,  displayCallback) {
+    deviceCamera : function (resolution, quality, isChat, channelUUID,  displayCallback, shareCallback) {
         if (resolution === undefined) {
             resolution = devicePhoto._resolution;  // default resolution for ghostgrams
         }
@@ -125,7 +125,10 @@ var devicePhoto = {
         if (saveToAlbum === undefined) {
             saveToAlbum = false;
         }
-
+        var allowEdit = false;
+        if (device.platform === 'iOS') {
+            allowEdit = true;
+        }
         navigator.camera.getPicture(
             function (imageData) {
                 var photouuid = uuid.v4();
@@ -134,6 +137,7 @@ var devicePhoto = {
     //            var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
                 var gpsObj = null;
+
                 if (device.platform === 'iOS') {
                     imageUrl = imageUrl.replace('file://', '');
                     gpsObj = devicePhoto.processGPS(metaObj.GPS);
@@ -163,14 +167,13 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
                             devicePhoto.currentPhoto.imageUrl = nativeUrl;
+                            devicePhoto.currentPhoto.cloudUrl = null;
                             devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
                             devicePhoto.currentPhoto.lat = gpsObj.lat;
                             devicePhoto.currentPhoto.lng = gpsObj.lng;
                             devicePhoto.currentPhoto.alt = gpsObj.alt;
 
-
-
-
+                            
                             mobileNotify("Processing Photo...");
                             var scaleOptions = {
                                 uri: uri,
@@ -198,7 +201,37 @@ var devicePhoto = {
                                 }
                             });
 
-                            window.ImageResizer.resize(scaleOptions,
+
+                            devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
+                                var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+
+                                devicePhoto.currentPhoto.uploadComplete = false;
+                                devicePhoto._uploadActive = true;
+                                devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
+                                    var photoObj = photoModel.findPhotoById(photouuid);
+                                    
+                                    if (photoObj !== undefined && photoData !== null) {
+                                        photoObj.set('imageUrl',photoData.url);
+                                        photoObj.set('cloudUrl',photoData.url);
+                                        photoObj.set('thumbnailUrl', photoData.url.replace('upload//','upload//c_scale,h_512,w_512//'));
+                                        photoObj.set('cloudinaryPublicId',photoData.public_id);
+                                        photoModel.syncLocal();
+                                        photoModel.updateCloud(photoObj);
+                                        if (shareCallback !== undefined) {
+                                            shareCallback(photoObj.photoId, photoObj.cloudUrl);
+                                        }
+                                        devicePhoto._uploadActive = false;
+                                        devicePhoto.currentPhoto.uploadComplete = true;
+
+                                    } else {
+                                        if (shareCallback !== undefined) {
+                                            shareCallback(photoObj.photoId, null);
+                                        }
+                                    }
+                                });
+                            });
+
+                          /*  window.ImageResizer.resize(scaleOptions,
                                 function (image) {
 
                                     var thumbNail = image;
@@ -213,17 +246,18 @@ var devicePhoto = {
                                         devicePhoto._uploadActive = true;
                                         devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                                             var photoObj = photoModel.findPhotoById(photouuid);
-                                            
-                                            if (photoObj !== undefined) {
-                                                photoObj.imageUrl = photoData.url;
-                                                photoObj.cloudUrl = photoData.url;
-                                                photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
-                                                photoObj.publicId = photoData.public_id;
-                                                photoModel.syncLocal();
-                                            }
 
-                                            devicePhoto._uploadActive = false;
-                                            devicePhoto.currentPhoto.uploadComplete = true;
+                                            if (photoObj !== undefined) {
+                                                photoObj.set('imageUrl',photoData.url);
+                                                photoObj.set('cloudUrl',photoData.url);
+                                                photoObj.set('thumbnailUrl', photoData.url.replace('upload//','upload//c_scale,h_512,w_512//'));
+                                                photoObj.set('cloudinaryPublicId',photoData.public_id);
+                                                photoModel.syncLocal();
+                                                photoModel.updateCloud(photoObj);
+                                                devicePhoto._uploadActive = false;
+                                                devicePhoto.currentPhoto.uploadComplete = true;
+
+                                            }
                                         });
                                     });
 
@@ -232,7 +266,7 @@ var devicePhoto = {
                                     mobileNotify("Error resizing image...");
 
                                 });
-
+*/
 
                             navigator.camera.cleanup(function(){}, function(){});
                         }, function(){});
@@ -246,18 +280,19 @@ var devicePhoto = {
                 mobileNotify("Camera error " + error);
             }, {
                 correctOrientation: true,
-                allEdit: true,
+                allowEdit: allowEdit,
                 saveToPhotoAlbum: saveToAlbum,
                 pictureSource : pictureSource.CAMERA,
                 encodingType: encodingType.JPEG,
                 targetWidth: resolution,
+                targetHeight: resolution,
                 destinationType: destinationType.FILE_URI
             }
         );
     },
 
 
-    deviceGallery : function (resolution, quality, isChat, channelUUID, displayCallback) {
+    deviceGallery : function (resolution, quality, isChat, channelUUID, displayCallback, shareCallback) {
         if (resolution === undefined) {
             resolution = devicePhoto._resolution;  // default resolution for ghostgrams
         }
@@ -313,21 +348,24 @@ var devicePhoto = {
                 var filename = photouuid.replace(/-/g,'');
 
                 window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
+                    
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
                             var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
 
-                            if (device.platform === 'iOS') {
-                                nativeUrl = nativeUrl.replace('file://', '');
-                            }
-                            var uri = nativeUrl;
 
+                            var uri = nativeUrl;
+                            if (device.platform === 'iOS') {
+                                
+                             nativeUrl = nativeUrl.replace('file://', '');
+                             }
                             devicePhoto.currentPhoto.photoId = photouuid;
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
                             devicePhoto.currentPhoto.imageUrl = nativeUrl;
+                            devicePhoto.currentPhoto.cloudUrl = null;
                             devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
                             devicePhoto.currentPhoto.lat = gpsObj.lat;
                             devicePhoto.currentPhoto.lng = gpsObj.lng;
@@ -336,10 +374,12 @@ var devicePhoto = {
 
 
                             mobileNotify("Processing Photo...");
-
+                            /*  if (device.platform === 'iOS') {
+                             uri = uri.replace('file://', '');
+                             }*/
                             var scaleOptions = {
                                 uri: uri,
-                                filename: "photo_"+filename,
+                                filename: "photo_"+filename + '.jpg',
                                 quality: 75,
                                 width: 1600,
                                 height: 1600
@@ -369,9 +409,9 @@ var devicePhoto = {
                                 function (image) {
 
                                     var thumbNail = image;
-                                    if (device.platform === 'iOS') {
+                                  /*  if (device.platform === 'iOS') {
                                         thumbNail = image.replace('file://', '');
-                                    }
+                                    }*/
 
                                     devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                                         var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
@@ -381,15 +421,23 @@ var devicePhoto = {
                                         devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                                             var photoObj = photoModel.findPhotoById(photouuid);
 
-                                            if (photoObj !== undefined) {
-                                                photoObj.imageUrl = photoData.url;
-                                                photoObj.cloudUrl = photoData.url;
-                                                photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
-                                                photoObj.publicId = photoData.public_id;
+                                            if (photoObj !== undefined && photoData !== null) {
+                                                photoObj.set('imageUrl',photoData.url);
+                                                photoObj.set('cloudUrl',photoData.url);
+                                                photoObj.set('thumbnailUrl', photoData.url.replace('upload//','upload//c_scale,h_512,w_512//'));
+                                                photoObj.set('cloudinaryPublicId',photoData.public_id);
                                                 photoModel.syncLocal();
+                                                photoModel.updateCloud(photoObj);
+                                                if (shareCallback !== undefined) {
+                                                    shareCallback(photoObj.photoId, photoObj.cloudUrl);
+                                                }
                                                 devicePhoto._uploadActive = false;
                                                 devicePhoto.currentPhoto.uploadComplete = true;
                                                 
+                                            } else {
+                                                if (shareCallback !== undefined) {
+                                                    shareCallback(photoObj.photoId, null);
+                                                }
                                             }
 
                                         });

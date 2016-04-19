@@ -119,6 +119,8 @@ function _createBitlyUrl (url, callBack) {
 		}
 	});
 }
+
+
 /*
 function updateParseObject(objectName, idField, idFieldValue, newField, newFieldValue) {
 	var object = Parse.Object.extend(objectName);

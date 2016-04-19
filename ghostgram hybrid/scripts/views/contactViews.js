@@ -19,7 +19,7 @@ var contactsView = {
     updateInterval: null,
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         contactModel.deviceQueryActive = false;
 
@@ -127,7 +127,7 @@ var contactsView = {
     },
 
     onShow : function (e) {
-       _preventDefault(e);
+      // _preventDefault(e);
 
         $("#contacts-listview").data("kendoMobileListView").scroller().reset();
 
@@ -324,7 +324,7 @@ var contactsView = {
 var contactImportView = {
 
     onInit: function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         
 
         $("#contactimport-listview").kendoMobileListView({
@@ -396,7 +396,7 @@ var contactImportView = {
     },
 
     onShow: function (e) {
-       _preventDefault(e);
+      // _preventDefault(e);
         var query = null;
         query = e.view.params.query;
         
@@ -511,29 +511,56 @@ var addContactView = {
 	_closeModal: false,
     _emailValid: false,
     _phoneValid : false,
+    phoneUtil : null,
+    PNF : null,
+    
+    isValidPhone : function (phone) {
+        var phoneNumber = addContactView.phoneUtil.parse(phone, 'US');
+        if (phoneNumber.length < 10 || phoneNumber.length > 11) {
+            return (null);
+        }
+        if (phoneNumber.length === 10) {
+            phoneNumber = '1'+phoneNumber;
+        }
+        
+        return(phoneNumber);
 
+    },
+    
     doInit: function (e) {
         _preventDefault(e);
 
+        addContactView.PNF = libphonenumber.PhoneNumberFormat;
+
+        addContactView.phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
+        
         $( "#addContactPhone" ).on('input', function() {
             var phone = $("#addContactPhone").val();
-
-            isValidMobileNumber(phone, function(result){
-                if (result.status === 'ok') {
-                    if (result.valid === false) {
-                    mobileNotify(phone + ' is not a valid mobile number');
-                    $("#vaildMobileNumberError").velocity("slideDown");
-                    $("#addContacViewAddButton").text("Close");
-                    addContactView._closeModal = true;
-                } else {
-                    $("#vaildMobileNumberError").velocity("slideUp");
-                    $("#addContacViewAddButton").text("Add Contact");
-                    addContactView._closeModal = false;
-                }
-                }
-            });
+            
+           if (addContactView.isValidPhone(phone) === null) {
+                mobileNotify(phone + " is not valid US phone number");
+                return;
+            }
+            
+            
+            if (phoneUtil.isValidNumber(phone)) {
+                isValidMobileNumber(phone, function (result) {
+                    if (result.status === 'ok') {
+                        if (result.valid === false) {
+                            mobileNotify(phone + ' is not a valid mobile number');
+                            $("#vaildMobileNumberError").velocity("slideDown");
+                            $("#addContacViewAddButton").text("Close");
+                            addContactView._closeModal = true;
+                        } else {
+                            $("#vaildMobileNumberError").velocity("slideUp");
+                            $("#addContacViewAddButton").text("Add Contact");
+                            addContactView._closeModal = false;
+                        }
+                    }
+                });
+            }
         });
-
+        
         $("#addContactForm").kendoValidator({
         	errorTemplate: '<span class="error-msg">#=message#</span>'
         });
@@ -908,7 +935,7 @@ var editContactView = {
     _activeContact : new kendo.data.ObservableObject(),
 
     onInit: function (e) {
-       _preventDefault(e);
+      // _preventDefault(e);
 
        $("#editContactForm").kendoValidator({
        		errorTemplate: "<span class='error-msg'>#=message#</span>"
@@ -1054,7 +1081,7 @@ var editContactView = {
 
     onShow: function (e) {
 
-       _preventDefault(e);
+      // _preventDefault(e);
 
         var contactId = e.view.params.contact, contact = null;
 

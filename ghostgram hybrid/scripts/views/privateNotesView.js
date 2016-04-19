@@ -24,7 +24,7 @@ var privateNotesView = {
     _editorView: false,
 
     onInit : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         $("#privateNotesView-listview").kendoMobileListView({
             dataSource: privateNoteModel.notesDS,
@@ -63,42 +63,14 @@ var privateNotesView = {
             }
         });
 
-        $.Redactor.prototype.clear = function()
-        {
-            return {
-                init: function ()
-                {
-                    var button = this.button.add('clear', 'Clear');
-                    this.button.addCallback(button, this.clear.clear);
-                },
-                clear: function()
-                {
-                   privateNotesView.noteInit();
-                }
-            };
-        };
 
-        $.Redactor.prototype.save = function()
-        {
-            return {
-                init: function ()
-                {
-                    var button = this.button.add('save', 'Save');
-                    this.button.addCallback(button, this.save.save);
-                },
-                save: function()
-                {
-                    privateNotesView.saveNote();
-                }
-            };
-        };
     },
 
     // Initialize the channel specific view data sources.
     noteInit : function () {
 
         privateNotesView.noteObjects = [];
-        privateNotesView.activeNote = {objects: [], photos:[]};
+        privateNotesView.activeNote = {objects: [], photos:[], tags: []};
         privateNotesView._editView = false;
         privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
@@ -109,7 +81,7 @@ var privateNotesView = {
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+      //  _preventDefault(e);
         ux.hideKeyboard();
         privateNotesView.topOffset = $("#privateNotesView-listview").data("kendoMobileListView").scroller().scrollTop;
         privateNotesView.openEditor();
@@ -150,14 +122,10 @@ var privateNotesView = {
 
             var photoObj  = {
                 photoId : photo.photoId,
-                channelUUID: null,
                 thumbnailUrl: photo.thumbnailUrl,
                 imageUrl: photo.imageUrl,
                 deviceUrl : photo.deviceUrl,
-                cloudUrl : photo.cloudUrl,
-                canCopy: true,
-                ownerId: userModel._user.userUUID,
-                ownerName: userModel._user.name
+                cloudUrl : photo.cloudUrl
             };
         }
 
@@ -184,12 +152,7 @@ var privateNotesView = {
 
     },
 
-
-
-
     saveNote: function () {
-
-
         var validNote = false; // If message is valid, send is enabled
         if (privateNotesView._editMode) {
             validNote = true;
@@ -236,7 +199,6 @@ var privateNotesView = {
             } else if (smartObject.ggType === 'Movie') {
                 text = privateNotesView.addSmartMovieToNote(smartObject, text);
             }
-
         }
 
         if (validNote === true ) {
@@ -247,13 +209,14 @@ var privateNotesView = {
 
                 var contentData = JSON.stringify(activeNote.dataObject);
                 var dataObj = JSON.parse(contentData);
-                note.set('title', _cleanString(title));
-                note.set('tagString', _cleanString(tagString));
+                note.set('title', title);
+                note.set('tagString', tagString);
                 note.set('tags', tags);
-                note.set('content', _cleanString(text));
+                note.set('content', text);
                 note.set('data', contentData);
                 note.set('dataObject', dataObj);
                 note.set('time',ggTime.currentTime());
+
 
                 var Id = note.Id;
                 if (Id !== undefined){
@@ -261,8 +224,6 @@ var privateNotesView = {
                         //placeNoteModel.notesDS.remove(note);
                     });
                 }
-
-
 
             } else {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
@@ -282,7 +243,6 @@ var privateNotesView = {
         var content = text;
         var contentData = JSON.stringify(data);
         data = JSON.parse(contentData);
-        var encryptMessage = '', encryptData = '';
         var currentTime =  ggTime.currentTime();
         var uuidNote = uuid.v4();
 
@@ -292,27 +252,29 @@ var privateNotesView = {
             ggType = data.ggType;
         }
         var message = {
+            Id: uuidNote,
+            noteId: uuidNote,
             type: 'Note',
             ggType: ggType,
-            noteId: uuidNote,
-            title: _cleanString(data.title),
-            tagString: _cleanString(data.tagString),
+            title: data.title,
+            tagString: data.tagString,
             tags: data.tags,
-            content: _cleanString(content),
+            content: content,
             data: contentData,
             dataObject: data,
             time: currentTime,
             ttl: ttl
         };
 
-
+        privateNoteModel.notesDS.add(message);
+        privateNoteModel.notesDS.sync();
 
         everlive.createOne(privateNoteModel._cloudClass, message, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Private Note " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                privateNoteModel.notesDS.add(message);
+
             }
         });
 
@@ -416,6 +378,36 @@ var privateNotesView = {
                 buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
                 toolbarExternal: '#privateNoteToolbar'
             });
+
+            $.Redactor.prototype.clear = function()
+            {
+                return {
+                    init: function ()
+                    {
+                        var button = this.button.add('clear', 'Clear');
+                        this.button.addCallback(button, this.clear.clear);
+                    },
+                    clear: function()
+                    {
+                        privateNotesView.noteInit();
+                    }
+                };
+            };
+
+            $.Redactor.prototype.save = function()
+            {
+                return {
+                    init: function ()
+                    {
+                        var button = this.button.add('save', 'Save');
+                        this.button.addCallback(button, this.save.save);
+                    },
+                    save: function()
+                    {
+                        privateNotesView.saveNote();
+                    }
+                };
+            };
         }
 
     },

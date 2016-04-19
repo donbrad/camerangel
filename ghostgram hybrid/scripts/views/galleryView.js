@@ -23,7 +23,7 @@ var galleryView = {
     _viewInitialized : false,
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         archiveView.init();
 
@@ -54,10 +54,20 @@ var galleryView = {
     },
 
 
+    updateTotalPhotos : function () {
+        // set result count
+        var photoCount = photoModel.photosDS.total();
+        if(photoCount > 0){
+            $(".results").css("visibility", "visible");
+            $("#resultCount").text(photoCount);
+        } else {
+            $(".results").css("visibility", "hidden");
+        }
+    },
 
     onShow : function (e) {
 
-        _preventDefault(e);
+       // _preventDefault(e);
 
         ux.hideKeyboard();
 
@@ -122,7 +132,7 @@ var galleryView = {
                 	photoModel.photosDS.filter([]);
                 }
 
-            })
+            });
            
             // bind clear search btn
 			$("#gallery .enterSearch").on("click", function(){
@@ -162,6 +172,7 @@ var galleryView = {
         ux.changeActionBtnImg("#gallery", "icon-camera");
         ux.showActionBtnText("#gallery", "3.5rem", "Camera");
 
+        galleryView.updateTotalPhotos();
 
 
         $("#gallery > div.footerMenu.km-footer > a").removeAttr("href").on("click", function(e){
@@ -178,14 +189,9 @@ var galleryView = {
 
         }
 
-        // set result count
-        var photoCount = photoModel.photosDS.total();
-        if(photoCount > 0){
-            $(".results").css("visibility", "visible");
-            $("#resultCount").text(photoCount);
-        } else {
-            $(".results").css("visibility", "hidden");
-        }
+
+
+
         // set filter count
         var filterCount = 0;
         $("#filterCount").text(filterCount);
@@ -311,7 +317,7 @@ var galleryView = {
         photoModel.deletePhoto(galleryView._currentPhotoId);
 
         mobileNotify("Deleted current photo");
-
+        galleryView.updateTotalPhotos();
         // Navigate to previous page as the photo is gone...
         APP.kendo.navigate('#:back');
     },
@@ -325,8 +331,12 @@ var galleryView = {
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null,  // Current channel Id for offers
             function (photoUUID, displayUrl) {
+                galleryView.updateTotalPhotos();
+            },
+            function (photoUUID, displayUrl) {
 
             }
+
         );
     },
 
@@ -339,7 +349,10 @@ var galleryView = {
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null, // Current channel Id for offers
             function (photoUUID, displayUrl) {
-                
+                galleryView.updateTotalPhotos();
+            },
+            function (photoUUID, displayUrl) {
+                // share callback -- photo is stored in the cloud
             }
         );
     },
@@ -390,12 +403,12 @@ var photoView = {
     _activePhotoUrl: null,
 
     onInit: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         if (e.view.params.photo !== undefined) {
             photoView._activePhotoId = LZString.decompressFromEncodedURIComponent(e.view.params.photo);
@@ -472,12 +485,12 @@ var photoEditor = {
     _source: null,
 
     onInit: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
     },
 
     onShow : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
 
         photoEditor._source = e.view.params.source;
         if (photoEditor._source === 'profile') {
@@ -831,9 +844,9 @@ var modalPhotoView = {
         }
 
 
-        // Date
-        var createdDate = moment(photo.createdAt).format("MMM Do, YYYY");
-        $("#photoTitle-date").text(createdDate);
+        // Date  -- this doesnt work for gallery photos...
+      /*  var createdDate = moment(photo.createdAt).format("MMM Do, YYYY");
+        $("#photoTitle-date").text(createdDate);*/
 
         $("#modalPhotoView").data("kendoMobileModalView").open();
 
@@ -992,7 +1005,7 @@ var galleryPicker = {
     _isGridView: true,
 
     onInit : function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
         $('#galleryPickerSearch').on('input', function() {
             var query = this.value;

@@ -22,12 +22,13 @@ var smartMovie = {
                 //dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
             sort: {
                 field: "date",
                 dir: "desc"
-            }
+            },
+            autoSync: true
         });
     },
 
@@ -125,6 +126,7 @@ var smartMovie = {
         smartOb.set('version', smartMovie._version);
         smartOb.set('ggType', smartMovie._ggClass);
         smartOb.set('uuid', objectIn.uuid);
+        smartOb.set('Id', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);
         smartOb.set('movieTitle', objectIn.movieTitle);

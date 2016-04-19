@@ -274,10 +274,10 @@ var userModel = {
         if (photo === undefined || photo === null) {
             userModel._user.photo =  userModel.identiconUrl;
         }
-
-
-        var phoneValidated = user.phoneValidated;
-        userModel._user.set('phoneValidated',phoneValidated);
+        var emailValidated = user.isValidated;
+        userModel._user.set('emailValidated', emailValidated);
+        userModel._user.set('phoneValidated',user.phoneValidated);
+      
         userModel._user.set('addressValidated',user.addressValidated);
         userModel._user.set('availImgUrl', 'images/status-away.svg');
         var isAvailable  = userModel._user.get('isAvailable');
@@ -645,41 +645,6 @@ var userStatus = {
             });
     },
 
-   /* update : function () {
-        var status = userStatus.parseUserStatus;
-
-        status.set('userUUID', userModel._user.userUUID);
-        status.set('isAvailable', userModel._user.isAvailable);
-        status.set('isVisible', userModel._user.isVisible);
-        status.set('statusMessage', userModel._user.statusMessage);
-        status.set('currentPlace', userModel._user.currentPlace);
-        var lat = userModel._user.lat;
-       /!* if (lat !== null)
-            lat = lat.toFixed(6);*!/
-        status.set('lat', userModel._user.lat);
-        var lng = userModel._user.lng;
-       /!* if (lng !== null)
-            lng = lng.toFixed(6);*!/
-        status.set('lng', userModel._user.lng);
-        status.set('googlePlaceId', userModel._user.googlePlaceId);
-        status.set('currentPlaceUUID', userModel._user.currentPlaceUUID);
-        status.set('isCheckedIn', userModel._user.isCheckedIn);
-        status.set('lastUpdate', ggTime.currentTime());
-        status.save(null, {
-            success: function(status) {
-                // Execute any logic that should take place after the object is saved.
-
-            },
-            error: function(status, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                mobileNotify('Failed to create new object, with error code: ' + error.message);
-            }
-        });
-
-
-    },*/
-
     update : function () {
         var status = userStatus._statusObj;
 
@@ -701,6 +666,8 @@ var userStatus = {
         /* if (lng !== null)
          lng = lng.toFixed(6);*/
         status.set('lng', userModel._user.lng);
+        var gp = {Longitude : parseFloat(userModel._user.lng), Latitude : parseFloat(userModel._user.lat)};
+        status.set("geoPoint", gp);
         status.set('googlePlaceId', userModel._user.googlePlaceId);
         status.set('currentPlaceUUID', userModel._user.currentPlaceUUID);
         status.set('isCheckedIn', userModel._user.isCheckedIn);

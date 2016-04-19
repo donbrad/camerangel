@@ -16,6 +16,17 @@ var tagModel = {
     _user : 'user',
     _version: 1,
     _tagsSynced : false,
+    _group: 'group',
+    _contact: 'contact',
+    _ice: 'ice',
+    _icefamily : 'icefamily',
+    _iceneighbor : 'iceneighbor',
+    _place: 'place',
+    _event: 'event',
+    _movie: 'movie',
+    _family : 'family',
+    _friend : 'friend',
+
 
     tagsDS: null,
 
@@ -30,12 +41,13 @@ var tagModel = {
                 dataProvider: APP.everlive*/
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
             sort: {
                 field: "tagName",
                 dir: "asc"
-            }
+            },
+            autoSync : true
         });
 
 
@@ -54,7 +66,8 @@ var tagModel = {
 
 
         tagObj.name = tag;
-        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.tagName = tagModel.normalizeTag(tag)
+        tagObj.tagHash = category + tagObj.tagName;
         tagObj.description = description;
         tagObj.category = category;
         tagObj.categoryId = categoryId;
@@ -84,19 +97,23 @@ var tagModel = {
         tagObj.categoryId = null;
         tagObj.semanticCategory = 'Group';
 
+        tagModel.tagsDS.add(tagObj);
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                tagModel.tagsDS.add(tagObj);
+
 
             }
         });
     },
 
     addContactTag : function (tag, alias, description, categoryId) {
-        var tagExists = tagModel.findTagByCategoryId(categoryId);
+
+        var normTag = tagModel.normalizeTag(tag);
+        var hash = tagModel._contact+normTag;
+        var tagExists = tagModel.findTagByHash(hash);
 
         if (tagExists.length > 0) {
             return;
@@ -104,27 +121,33 @@ var tagModel = {
 
         var tagObj = tagModel.newTag();
 
+        tagObj.Id = tagObj.uuid;
         tagObj.name = tag;
         tagObj.alias = alias;
         tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.tagHash  = tagModel._contact + tagObj.tagName;
         tagObj.description = description;
         tagObj.category = 'Contact';
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Contact';
+
+        tagModel.tagsDS.add(tagObj);
 
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                tagModel.tagsDS.add(tagObj);
+
 
             }
         });
     },
 
     addPlaceTag : function (tag, alias, description, categoryId) {
-        var tagExists = tagModel.findTagByCategoryId(categoryId);
+        var normTag = tagModel.normalizeTag(tag);
+        var hash = tagModel._place+normTag;
+        var tagExists = tagModel.findTagByHash(hash);
 
         if (tagExists.length > 0) {
             return;
@@ -136,6 +159,7 @@ var tagModel = {
         tagObj.name = tag;
         tagObj.alias = alias;
         tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.tagHash = tagModel._place + tagObj.tagName;
         tagObj.description = description;
         tagObj.category = 'Place';
         tagObj.categoryId = categoryId;
@@ -157,11 +181,13 @@ var tagModel = {
         var tag = {};
 
         tag.uuid = uuid.v4();
+        tag.Id = tag.uuid;
         tag.version = tagModel._version;
         tag.ggType = tagModel._ggClass;
         tag.name = null;
         tag.alias = null;
         tag.tagName = null;
+        tag.tagHash = null;
         tag.category = tagModel._user;
         tag.categoryId = null;
         tag.semanticCategory = null;
@@ -256,9 +282,16 @@ var tagModel = {
         return (tags);
     },
 
-    findContactTag : function (tag, alias) {
+    findTagByHash : function (hash) {
+        var tags = tagModel.queryTags({field: "tagHash", operator: "eq", value: hash});
+
+        return (tags);
+    },
+
+    findContactTags : function (tag, alias) {
         var normTag = tagModel.normalizeTag(tag);
-        var tags = tagModel.queryTags({field: "tagName", operator: "eq", value: normTag});
+        var tags = tagModel.queryTags([{field: "tagName", operator: "eq", value: normTag},
+            {field: "category", operator: "eq", value: tagModel._contact}]);
 
         return (tags);
     },

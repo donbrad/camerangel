@@ -15,6 +15,7 @@ var photoModel = {
     _iosPrefix: "/var",
     _androidPrefix: "/",
     _emulatorPrefix: "",
+    _totalPhotos: 0,
     currentPhoto: {},
     currentOffer: null,
     previewSize: "33%",
@@ -41,46 +42,55 @@ var photoModel = {
             sort: {
                 field: "timestamp",
                 dir: "desc"
+            },
+            autoSync: true
+        });
+
+
+        photoModel.offersDS = new kendo.data.DataSource({  // this is the gallery datasource
+            // offlineStorage: "photos",
+            type: 'everlive',
+            transport: {
+                typeName: 'photooffers'/*,
+                 dataProvider: APP.everlive*/
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
+            sort: {
+                field: "timestamp",
+                dir: "desc"
             }
         });
 
 
-    photoModel.offersDS = new kendo.data.DataSource({  // this is the gallery datasource
-        // offlineStorage: "photos",
-        type: 'everlive',
-        transport: {
-            typeName: 'photooffers'/*,
-             dataProvider: APP.everlive*/
-        },
-        schema: {
-            model: { Id:  Everlive.idField}
-        },
-        sort: {
-            field: "timestamp",
-            dir: "desc"
-        }
-    });
+        photoModel.deletedPhotosDS = new kendo.data.DataSource({  // this is the gallery datasource
+            // offlineStorage: "photos",
+            type: 'everlive',
+            transport: {
+                typeName: 'deletedphotos'/*,
+                 dataProvider: APP.everlive*/
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
+            sort: {
+                field: "timestamp",
+                dir: "desc"
+            }
+        });
 
 
-    photoModel.deletedPhotosDS = new kendo.data.DataSource({  // this is the gallery datasource
-        // offlineStorage: "photos",
-        type: 'everlive',
-        transport: {
-            typeName: 'deletedphotos'/*,
-             dataProvider: APP.everlive*/
-        },
-        schema: {
-            model: { Id:  Everlive.idField}
-        },
-        sort: {
-            field: "timestamp",
-            dir: "desc"
-        }
-    });
-
-
-    photoModel.photosDS.fetch();
+        photoModel.photosDS.fetch();
         deviceModel.setAppState('hasPhotos', true);
+
+        photoModel.photosDS.bind("change", function (e) {
+            var changedPhoto = e.items;
+            
+            photoModel._totalPhotos = photoModel.photosDS.total();
+        });
+        
+        
         /*deviceModel.isParseSyncComplete();*/
     },
 
@@ -152,7 +162,7 @@ var photoModel = {
     },
 
     syncLocal : function () {
-        photoModel.photosDS.sync();    
+        photoModel.photosDS.sync();
     },
     
     uploadPhotoToCloud : function (photo) {
@@ -169,11 +179,12 @@ var photoModel = {
             devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData) {
                 var photoObj = photoModel.findPhotoById(photouuid);
 
-                if (photoObj !== undefined) {
-                    photoObj.imageUrl = photoData.url;
-                    photoObj.cloudUrl = photoData.url;
+                if (photoObj !== undefined && photoData !== null) {
+                    photoObj.set('imageUrl', photoData.url);
+                    photoObj.set('cloudUrl', photoData.url);
                     photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
-                    photoObj.publicId = photoData.public_id;
+                    photoObj.cloudinaryPublicId = photoData.public_id;
+                    photoModel.updateCloud(photoObj);
                     photoModel.syncLocal();
                     
                 }
@@ -415,6 +426,7 @@ var photoModel = {
 
         var ownerId = photoObj.ownerId, ownerName = photoObj.ownerName;
 
+        photo.set('Id', photoObj.photoId);
         photo.set('photoId', photoObj.photoId);  // use the original photo id from sender to enable recall
         photo.set('uuid', photoObj.photoId);
         photo.set('channelUUID', channelUUID);
@@ -453,10 +465,12 @@ var photoModel = {
 
        // var photoObj = photo.toJSON();
         photoModel.photosDS.add(photo);
+      //  photoModel.syncLocal();
+
         if (callback !== undefined)
             callback(photo);
 
-        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+        /*everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
@@ -475,7 +489,7 @@ var photoModel = {
 
             }
         });
-
+*/
        /* photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();*/
 
@@ -719,7 +733,7 @@ var photoModel = {
         photo.set('alt',alt);
         var timeStamp = new Date().getTime();
         photo.set("timestamp", timeStamp);
-        var timeStr = moment().format('MMMM Do YYYY, h:mm'); // October 7th 2015, 10:26 am
+        var timeStr = moment().format('MMMM Do YYYY, h:mm A'); // October 7th 2015, 10:26 am
         photo.set("dateString", timeStr);
 
 
@@ -755,7 +769,8 @@ var photoModel = {
         if (callback !== undefined) {
             callback(null, photo);
         }
-        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+        
+       everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
 
@@ -780,9 +795,9 @@ var photoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(photoModel._cloudClass);
-        data.updateOne(photoObj, function (error, data) {
-            if (error !== null) {
-                ggError("Cloud Photo Update Error : " + JSON.stringify(error));
+        data.updateSingle(photoObj, function (data) {
+            if (data.result === 0) {
+                ggError("Unable to update Cloud Photo : " + photoObj.photoId);
             }
         });
     },
