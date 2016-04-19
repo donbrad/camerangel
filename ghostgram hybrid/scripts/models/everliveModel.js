@@ -546,7 +546,7 @@ var everlive = {
 
      /*   APP.everlive.authentication.clearAuthorization();
         APP.everlive.authentication.clearPersistedAuthentication();*/
-        APP.everlive.authentication.logout();
+        //APP.everlive.authentication.logout();
        
     },
 
