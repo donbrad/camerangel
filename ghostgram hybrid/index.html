@@ -3871,7 +3871,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="backbutton" data-align="left"><img src="images/nav-back.svg"/></a>
-			<a data-role="button"  data-click="profileEditView.validate" data-align="right">Save</a>
+			<a data-role="button" data-align="right"  data-rel="actionsheet" href="#profileEditOptions">Options</a>
 		</div>
 	</div>
 	<div class="profileEdit">
@@ -3935,32 +3935,35 @@
 					</label>
 				</li>
 				
-				<li>
-					<div>
-						<a class="btnClear" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
-					</div>
 
-				</li>
-				<li>
-					<div>
-						<a data-role="button" class="btnClear" href="#settings">
-							Settings
-						</a>
-					</div>
-
-				</li>
-				<li>
-					<div>
-						<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
-							Sign Out
-						</a>
-					</div>
-
-				</li>
 			</ul>
 			
 		</form>
 	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-role="button"  data-click="profileEditView.validate">Save</a>
+	</div>
+
+	<ul id="profileEditOptions" data-role="actionsheet" data-cancel="Cancel">
+		<li>
+			<div>
+				<a data-action="profileEditView.doChangePassword">Change Password</a>
+			</div>
+
+		</li>
+		<li>
+			<div>
+				<a  data-action="profileEditView.doSettings"> Edit Settings </a>
+			</div>
+
+		</li>
+		<li>
+			<div>
+				<a  data-action='userStatusView.doSignOut'>Sign Out </a>
+			</div>
+
+		</li>
+	</ul>
 </div>
 
 <!-- Ghost selection modal -->

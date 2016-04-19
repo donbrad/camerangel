@@ -1581,6 +1581,11 @@ var changePasswordView = {
 
     },
 
+    openModal : function (e) {
+        _preventDefault(e);
+        $("#modalview-changePassword").kendoMobileModalView("open");
+    },
+    
     closeModal : function (e) {
         _preventDefault(e);
         $("#modalview-changePassword").kendoMobileModalView("close");
