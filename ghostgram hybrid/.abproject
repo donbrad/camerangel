@@ -83,6 +83,7 @@
     "ID_RESOLUTION_HD720P"
   ],
   "CorePlugins": [
+    "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.phonegap.plugins.barcodescanner@2.1.0",
     "cordova-plugin-battery-status",
@@ -104,7 +105,6 @@
     "cordova-plugin-vibration",
     "cordova-plugin-whitelist",
     "de.appplant.cordova.plugin.local-notification@0.8.4",
-    "org.apache.cordova.labs.keyboard",
     "uk.co.whiteoctober.cordova.appversion@0.1.7"
   ],
   "iOSDeploymentTarget": "8.0"
