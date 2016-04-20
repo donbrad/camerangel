@@ -108,9 +108,15 @@ var editProfilePhotoView = {
 
     },
 
+    initPhoto : function () {
+        editProfilePhotoView.photo.url = null;
+        editProfilePhotoView.photo.photoId = null;
+    },
+
     onShow : function (e) {
         // _preventDefault(e);
 
+        $("#profilePhotoEdit-save").addClass('hidden');
         var isUserProfile =  e.view.params.isUserProfile !== undefined,
             contactId = e.view.params.contactId,
             isContact = contactId !== undefined;
@@ -145,6 +151,7 @@ var editProfilePhotoView = {
 
     updatePhoto : function (photoId, photoUrl) {
 
+        mobileNotify("Processing Profile photo....");
         if (photoUrl !== null)
             editProfilePhotoView.setPhotoUrl(photoUrl);
 
@@ -153,6 +160,16 @@ var editProfilePhotoView = {
         }
         
     },
+
+    finalizePhoto : function (photoId, photoUrl) {
+        mobileNotify("Profile Photo rendered!");
+
+        if (photoUrl !== null)
+            editProfilePhotoView.setPhotoUrl(photoUrl);
+
+        $("#profilePhotoEdit-save").removeClass('hidden');
+    },
+
     
     doCamera : function (e) {
         _preventDefault(e);
@@ -164,8 +181,9 @@ var editProfilePhotoView = {
         devicePhoto.deviceCamera(
             512, // max resolution in pixels
             75,  // quality: 1-99.
-            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            editProfilePhotoView.updatePhoto // Optional preview callback
+            false,  // isChat is false so it's a profile photo
+            editProfilePhotoView.updatePhoto,
+            editProfilePhotoView.finalizePhoto
         )
     },
 
@@ -173,14 +191,15 @@ var editProfilePhotoView = {
         _preventDefault(e);
 
         if (window.navigator.simulator !== undefined) {
-            mobileNotify("Camera not supported in emulator...");
+            mobileNotify("Phone Gallery not supported in emulator...");
             return;
         }
         devicePhoto.deviceGallery(
             512, // max resolution in pixels
             75,  // quality: 1-99.
-            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            editProfilePhotoView.updatePhoto  // Optional preview callback
+            false,  //
+            editProfilePhotoView.updatePhoto,
+            editProfilePhotoView.finalizePhoto
         );
     },
 
