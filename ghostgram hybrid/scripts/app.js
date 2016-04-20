@@ -211,9 +211,12 @@
 		
 		APP.emailAvailable = false;
 
-		shake.startWatch(function () {
-			hotButtonView.openModal();
-		}, 40 /*, onError */);
+		if (window.navigator.simulator === undefined) {
+			shake.startWatch(function () {
+				hotButtonView.openModal();
+			}, 40 /*, onError */);
+		}
+
 		
 		/* $(".email-Autocomplete").emailautocomplete({
 		     domains: _emailDomainList //additional domains (optional)
