@@ -3881,7 +3881,7 @@
 		<div class="profileTopBox">
 			<div class="profileEditPrivate">
 				<div class="profilePrivateImg">
-					<img src="images/default-private.svg" data-bind="attr: {src: photo}"/>
+				<a data-role="button" href="#profilePhotoEdit?isUserProfile=true">	<img src="images/default-private.svg" data-bind="attr: {src: photo}"/> </a>
 				</div>
 				<div class="profilePrivateImgBtn">
 					<label>Profile photo</label>
@@ -3958,6 +3958,33 @@
 			<a  data-role="button" data-action="userStatusView.doSignOut"> Sign Out </a>
 		</li>
 	</ul>
+</div>
+
+<!-- Profile Edit -->
+<div data-role="view" id="profilePhotoEdit" data-show="editProfilePhotoView.onShow" data-init="editProfilePhotoView.onInit" data-model="editProfilePhotoView.photo" style="display: none;"  class="appearance">
+    <div data-role="header">
+        <div data-role="navbar">
+            <a data-role="backbutton"  data-align="left"  ><img src="images/nav-back.svg" /></a>
+            <span>Profile Photo</span>
+        </div>
+    </div>
+
+    <div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
+        <p> Choose a photo from your phone's gallery or ghostgram Memories.  Or take a new one with your phone's camera!</p>
+        <div style="display: inline-block;">
+            <a type="button" data-role="button" data-click="editProfilePhotoView.doCamera" class="btnClearLine-grey-sm">Phone Camera</a>
+            <a type="button" data-role="button" data-click="editProfilePhotoView.doPhotoGallery" class="btnClearLine-grey-sm">Phone Photos</a>
+            <a type="button" data-role="button" data-click="editProfilePhotoView.doMemories" class="btnClearLine-grey-sm">Memories</a>
+        </div>
+    </div>
+
+    <div style="margin:24px; height: 50%; width: auto; text-align: center">
+        <img id="profilePhotoImage" data-bind="attr: {src: url}" style="max-height: 128px; max-width: 128px; vertical-align: middle;">
+    </div>
+
+    <div class="footer" data-role="footer">
+        <a class="btnFull-modal btnPrimary" data-role="button"  data-click="editProfilePhotoView.onDone">Save</a>
+    </div>
 </div>
 
 <!-- Ghost selection modal -->
@@ -4055,29 +4082,6 @@
 	</div>
 </div>
 
-<div data-role="view" id="profilePhotoEdit" data-show="editProfilePhotoView.onShow" data-init="editProfilePhotoView.onInit" style="display: none;"  class="appearance">
-	<div data-role="header">
-		<div data-role="navbar">
-			<a data-role="backbutton"  data-align="left"  ><img src="images/nav-back.svg" /></a>
-			<span>Change Profile Photo</span>
-			<a data-click="onDone"  type="button" data-role="button" data-align="right">Update</a>
-		</div>
-	</div>
-
-	<div style="text-align: center; padding-top: 6px;" id="profilePhotoImportDiv">
-		<p> Choose a photo from your phone's gallery or ghostgram Memories.  Or take a new one with your phone's camera!</p>
-		<div style="display: inline-block;">
-			<a type="button" data-role="button" data-click="editProfilePhotoView.doCamera" class="btnClearLine-grey-sm">Phone Camera</a>
-			<a type="button" data-role="button" data-click="editProfilePhotoView.doPhotoGallery" class="btnClearLine-grey-sm">Phone Photos</a>
-			<a type="button" data-role="button" data-click="editProfilePhotoView.doMemories" class="btnClearLine-grey-sm">Memories</a>
-		</div>
-	</div>
-
-	<div style="margin:8px; height: 50%; width: auto; text-align: center">
-		<img id="profilePhotoImage" class="wraption"  style="max-height: 100%; max-width:100%; vertical-align: middle;">
-	</div>
-
-</div>
 
 
 

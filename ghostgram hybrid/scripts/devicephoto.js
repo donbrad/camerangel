@@ -129,6 +129,7 @@ var devicePhoto = {
         if (device.platform === 'iOS') {
             allowEdit = true;
         }
+
         navigator.camera.getPicture(
             function (imageData) {
                 var photouuid = uuid.v4();
@@ -187,8 +188,8 @@ var devicePhoto = {
 
                             if (isChat === false) {
                                 // This must be a profile photo so need to adjust scale and target userprofile photo store
-                                scaleOptions.width = 256;
-                                scaleOptions.height = 256;
+                                scaleOptions.width = 512;
+                                scaleOptions.height = 512;
                                 folder = devicePhoto._userProfile;
                             }
 
@@ -389,8 +390,8 @@ var devicePhoto = {
 
                             if (isChat === false) {
                                 // This must be a profile photo so need to adjust scale and target userprofile photo store
-                                scaleOptions.width = 256;
-                                scaleOptions.height = 256;
+                                scaleOptions.width = 512;
+                                scaleOptions.height = 512;
 
                                 folder = devicePhoto._userProfile;
                             }
