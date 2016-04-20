@@ -259,7 +259,7 @@ var serverPush = {
     },
 
     setBadge: function(count) {
-        serverPush.setApplicationIconBadgeNumber(function () {}, function () {mobileNotify("Error setting badge count....");}, count)
+        serverPush.setApplicationIconBadgeNumber(function () {}, function () {mobileNotify("Error setting badge count....");}, count);
     },
 
     provisionDataChannels : function () {

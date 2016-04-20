@@ -56,6 +56,7 @@
 	<script src="scripts/libs/lz-string.js"></script>
 	<script src="scripts/libs/cropper.js"></script>
 	<script src="scripts/libs/redactor.js"></script>
+	<script src="scripts/libs/shake.js"></script>
 	<script src="scripts/libs/strength.js"></script>
 	<script src="scripts/libs/jdenticon-1.3.0.js"></script>
 
@@ -244,8 +245,11 @@
 
 </div>
 
-<div data-role="drawer" id="ggDrawer" style="width: 50%;" data-title="Hot Buttons"  data-use-native-scrolling="true">
-	<ul data-role="listview"  style="padding-left: 8px;">
+<div data-role="modalview" id="hotbuttonModal" style="width: 100%; height: 100%; display: none;" data-title="Hot Buttons"  data-use-native-scrolling="true">
+	<div class="modal-top">
+		<a data-role="button" class="modal-close" data-click="hotButtonView.closeModal"><img src="images/close.svg"/></a>
+	</div>
+		<ul data-role="listview"  style="padding-left: 8px;">
 		<li>
 			<div>
 				<h3 class="gg-drawer-header">Shortcuts</h3>
@@ -548,8 +552,6 @@
 <!-- home - for new users -->
 <div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
-
-
 		<p>Welcome back to</p>
 		<p><img src="images/logo.svg" class="icon-logo"/></p>
 	</div>
