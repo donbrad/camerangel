@@ -1748,7 +1748,7 @@ var recoverPasswordView = {
 var hotButtonView = {
     openModal : function (e) {
         _preventDefault(e);
-        $("hotButtonModal").data("kendoMobileModalView").open();
+        $("#hotButtonModal").data("kendoMobileModalView").open();
     },
 
     doCamera : function (e) {
@@ -1765,6 +1765,6 @@ var hotButtonView = {
 
     closeModal : function (e) {
         _preventDefault(e);
-        $("hotButtonModal").data("kendoMobileModalView").close();
+        $("#hotButtonModal").data("kendoMobileModalView").close();
     }
 };
