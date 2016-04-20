@@ -166,7 +166,7 @@ var everlive = {
                     everlive._signedIn = true;
                     everlive._syncComplete = false;
                     everlive.loadUserData();
-                    deviceModel.syncEverlive();
+                    //deviceModel.syncEverlive();
                     userModel.initialView = '#home';
                     //APP.kendo.navigate(userModel.initialView);
 
@@ -544,8 +544,8 @@ var everlive = {
 
     clearAuthentication : function () {
 
-     /*   APP.everlive.authentication.clearAuthorization();
-        APP.everlive.authentication.clearPersistedAuthentication();*/
+     /*   APP.everlive.authentication.clearAuthorization(); */
+        APP.everlive.authentication.clearPersistedAuthentication();
         //APP.everlive.authentication.logout();
        
     },
