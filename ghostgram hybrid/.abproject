@@ -85,6 +85,7 @@
   "CorePlugins": [
     "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
+    "com.phonegap.plugins.PushPlugin@3.1.1",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
