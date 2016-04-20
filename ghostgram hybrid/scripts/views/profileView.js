@@ -144,6 +144,13 @@ var editProfilePhotoView = {
     },
 
     updatePhoto : function (photoId, photoUrl) {
+
+        if (photoUrl !== null)
+            editProfilePhotoView.setPhotoUrl(photoUrl);
+
+        if (photoId !== null) {
+            editProfilePhotoView.photo.photoId = photoId;
+        }
         
     },
     
