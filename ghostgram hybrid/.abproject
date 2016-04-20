@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.39",
+  "BundleVersion": "0.0.44",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -83,8 +83,9 @@
     "ID_RESOLUTION_HD720P"
   ],
   "CorePlugins": [
+    "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
-    "com.phonegap.plugins.barcodescanner@2.1.0",
+    "com.phonegap.plugins.PushPlugin@3.1.1",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
@@ -96,6 +97,7 @@
     "cordova-plugin-file-transfer",
     "cordova-plugin-geolocation",
     "cordova-plugin-globalization",
+    "cordova-plugin-inappbrowser",
     "cordova-plugin-media",
     "cordova-plugin-media-capture",
     "cordova-plugin-network-information",
@@ -103,6 +105,7 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-vibration",
     "cordova-plugin-whitelist",
+    "de.appplant.cordova.plugin.local-notification@0.8.4",
     "org.apache.cordova.labs.keyboard",
     "uk.co.whiteoctober.cordova.appversion@0.1.7"
   ],

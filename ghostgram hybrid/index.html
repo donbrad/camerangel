@@ -244,8 +244,13 @@
 
 </div>
 
-<div data-role="drawer" id="ggDrawer" style="width: 50%;" data-title="Hot Buttons"  data-use-native-scrolling="true">
-	<ul data-role="listview"  style="padding-left: 8px;">
+<div data-role="modalview" id="hotButtonModal" style="width: 100%; height: 100%; display: none;" data-title="Hot Buttons"  data-use-native-scrolling="true">
+	<div data-role="header">
+		<div data-role="navbar">
+			<a data-role="button" class="modal-close" data-click="hotButtonView.closeModal" data-align="right"><img src="images/close.svg"/></a>
+		</div>
+	</div>
+		<ul data-role="listview"  style="padding-left: 8px;">
 		<li>
 			<div>
 				<h3 class="gg-drawer-header">Shortcuts</h3>
@@ -548,8 +553,6 @@
 <!-- home - for new users -->
 <div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
-
-
 		<p>Welcome back to</p>
 		<p><img src="images/logo.svg" class="icon-logo"/></p>
 	</div>
@@ -3488,7 +3491,7 @@
 </script>
 
 <script type="text/x-kendo-template" id="gallery-template">
-	# var photoUrl = cloudUrl; if (photoUrl === null) {  if (navigator.simlator === undefined) { photoUrl = deviceUrl;}  else {photoUrl = null;}}#
+	# var photoUrl = cloudUrl; if (photoUrl === null) {   photoUrl = deviceUrl; }#
 
 	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
 
@@ -3871,7 +3874,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="backbutton" data-align="left"><img src="images/nav-back.svg"/></a>
-			<a data-role="button"  data-click="profileEditView.validate" data-align="right">Save</a>
+			<a data-role="button" data-align="right"  data-rel="actionsheet" href="#profileEditOptions">Options</a>
 		</div>
 	</div>
 	<div class="profileEdit">
@@ -3935,32 +3938,26 @@
 					</label>
 				</li>
 				
-				<li>
-					<div>
-						<a class="btnClear" href="#modalview-changePassword" data-rel="modalview" id="profile-changePassword" data-role="button" >Change Password</a>
-					</div>
 
-				</li>
-				<li>
-					<div>
-						<a data-role="button" class="btnClear" href="#settings">
-							Settings
-						</a>
-					</div>
-
-				</li>
-				<li>
-					<div>
-						<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
-							Sign Out
-						</a>
-					</div>
-
-				</li>
 			</ul>
 			
 		</form>
 	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-role="button"  data-click="profileEditView.validate">Save</a>
+	</div>
+
+	<ul id="profileEditOptions" data-role="actionsheet" data-cancel="Cancel">
+		<li>
+			<a data-role="button" data-action="profileEditView.doChangePassword">Change Password</a>
+		</li>
+		<li>
+			<a  data-role="button" data-action="profileEditView.doSettings"> Edit Settings </a>
+		</li>
+		<li>
+			<a  data-role="button" data-action="userStatusView.doSignOut"> Sign Out </a>
+		</li>
+	</ul>
 </div>
 
 <!-- Ghost selection modal -->

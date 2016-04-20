@@ -1581,6 +1581,11 @@ var changePasswordView = {
 
     },
 
+    openModal : function (e) {
+        _preventDefault(e);
+        $("#modalview-changePassword").kendoMobileModalView("open");
+    },
+    
     closeModal : function (e) {
         _preventDefault(e);
         $("#modalview-changePassword").kendoMobileModalView("close");
@@ -1738,4 +1743,28 @@ var recoverPasswordView = {
 
 
     }
-}
+};
+
+var hotButtonView = {
+    openModal : function (e) {
+        _preventDefault(e);
+        $("#hotButtonModal").data("kendoMobileModalView").open();
+    },
+
+    doCamera : function (e) {
+
+    },
+
+    doMyNotes : function (e) {
+
+    },
+
+    doSignOut : function (e) {
+
+    },
+
+    closeModal : function (e) {
+        _preventDefault(e);
+        $("#hotButtonModal").data("kendoMobileModalView").close();
+    }
+};

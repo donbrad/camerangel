@@ -1963,7 +1963,7 @@ var channelView = {
        // channelView.messageAddPhoto(photoModel.currentOffer);
         if (photoObj !== undefined) {
 
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" />';
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" onError="this.src=\'ghost.svg\';" />';
 
             $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
            /* editor.paste(imgUrl);

@@ -211,6 +211,13 @@
 		
 		APP.emailAvailable = false;
 
+		if (window.navigator.simulator === undefined) {
+			shake.startWatch(function () {
+				hotButtonView.openModal();
+			}, 25 /*, onError */);
+		}
+
+		
 		/* $(".email-Autocomplete").emailautocomplete({
 		     domains: _emailDomainList //additional domains (optional)
 		 }); */
