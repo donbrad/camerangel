@@ -214,7 +214,7 @@
 		if (window.navigator.simulator === undefined) {
 			shake.startWatch(function () {
 				hotButtonView.openModal();
-			}, 40 /*, onError */);
+			}, 25 /*, onError */);
 		}
 
 		
