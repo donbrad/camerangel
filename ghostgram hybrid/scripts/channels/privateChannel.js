@@ -251,10 +251,11 @@ var privateChannel = {
 
                     };
 
-
                     channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
+                    // Need to toggle the channelId for our sent message -- should be recipient and this user
+                    message.channelUUID = message.recipient;
                     userDataChannel.addMessage(message);
 
                     channelView.scrollToBottom();
