@@ -130,7 +130,7 @@ var editProfilePhotoView = {
             } else {
                 editProfilePhotoView._isIdenticon = false;
             }
-            that.displayIdenticonSwitch(that.isIdenticon);
+            that.displayIdenticonSwitch(that._isIdenticon);
         }
         
         editProfilePhotoView.setPhotoUrl(photoUrl);
@@ -138,13 +138,18 @@ var editProfilePhotoView = {
 
     displayIdenticonSwitch : function (checked) {
         $("#profilePhotoEdit-switch").data("kendoMobileSwitch").check(checked);
+        if (checked) {
+            $("#profilePhotoImportDiv").addClass('hidden');
+        } else {
+            $("#profilePhotoImportDiv").removeClass('hidden');
+        }
     },
 
     toggleIdenticon : function (e) {
         var that = editProfilePhotoView;
 
-        that.isIdenticon = !that.isIdenticon;
-        that.displayIdenticonSwitch(that.isIdenticon);
+        that._isIdenticon = !that._isIdenticon;
+        that.displayIdenticonSwitch(that._isIdenticon);
 
     },
 
