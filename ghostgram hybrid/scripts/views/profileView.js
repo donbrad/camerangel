@@ -115,6 +115,7 @@ var editProfilePhotoView = {
 
     onShow : function (e) {
         // _preventDefault(e);
+        var that = editProfilePhotoView;
 
         $("#profilePhotoEdit-save").addClass('hidden');
         var isUserProfile =  e.view.params.isUserProfile !== undefined,
@@ -129,9 +130,22 @@ var editProfilePhotoView = {
             } else {
                 editProfilePhotoView._isIdenticon = false;
             }
+            that.displayIdenticonSwitch(that.isIdenticon);
         }
         
         editProfilePhotoView.setPhotoUrl(photoUrl);
+    },
+
+    displayIdenticonSwitch : function (checked) {
+        $("#profilePhotoEdit-switch").data("kendoMobileSwitch").check(checked);
+    },
+
+    toggleIdenticon : function (e) {
+        var that = editProfilePhotoView;
+
+        that.isIdenticon = !that.isIdenticon;
+        that.displayIdenticonSwitch(that.isIdenticon);
+
     },
 
     onDone : function (e) {
