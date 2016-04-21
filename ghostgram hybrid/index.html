@@ -1252,6 +1252,9 @@
 <div data-role="view" id="editPlace" data-title="Edit Place" data-model="editPlaceView._activePlace" class="appearance" data-layout="main" data-init="editPlaceView.onInit" data-show="editPlaceView.onShow" data-hide="editPlaceView.onHide" data-transition="slide:up">
 	<div data-role="header">
 		<div data-role="navbar">
+			<a data-role="backbutton" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
 			<span data-role="view-title"></span>
 		</div>
 	</div>
@@ -1292,7 +1295,7 @@
 
 	</form>
 	<div class="footer" data-role="footer">
-		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="editPlaceView.onDone"> Done </a>
+		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="editPlaceView.onDone"> Save </a>
 	</div>
 </div>
 
@@ -1941,15 +1944,12 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="backbutton"  data-align="left">
-				<img src="images/nav-back.svg" />
-			</a>
 		</div>
 	</div>
 	<div class="addedChatMember" style="display: none"></div>
 	<ul style="padding-bottom: 48px;" id="channelMembers-listview"></ul>
 	<div class="footerBk" data-role="footer">
-		<a class="btnSpan-btm btnSecondary" type="button" data-role="button" href="#editChannel?updateMembers=true">Done</a>
+		<a class="btnSpan-btm btnPrimary" type="button" data-role="button" href="#editChannel?updateMembers=true">Done</a>
 	</div>
 </div>
 
@@ -2165,7 +2165,9 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="button" data-click="editContactView.onDone" data-align="left" >Done</a>
+			<a data-role="button" data-click="editContactView.onDone" data-align="left" >
+				<img src="images/nav-back.svg" />
+			</a>
 		</div>
 	</div>
 	<div>
@@ -2264,7 +2266,7 @@
 		</form>
 	</div>
 	<div class="footerBk" data-role="footer">
-		<a data-role="button" class="btnPrimary btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.validate">Update Contact
+		<a data-role="button" class="btnPrimary btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.validate">Save
 		</a>
 
 	</div>
@@ -4197,7 +4199,6 @@
 			<span class="hidden">
 				<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
 			</span>
-
 		</p>
 		<div class="clearfix"></div>
 		<ul id="privateNotesView-listview"></ul>
