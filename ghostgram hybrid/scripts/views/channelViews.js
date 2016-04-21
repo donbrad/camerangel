@@ -1222,6 +1222,7 @@ var channelView = {
 
                 channelView.preprocessMessages(messages);
 
+                privateChannel.decryptMessage()
                 thisChannel.messagesArray = messages;
 
                 channelView.messagesDS.data(messages);

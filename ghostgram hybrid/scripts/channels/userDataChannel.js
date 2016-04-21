@@ -14,6 +14,7 @@ var userDataChannel = {
     lastAccess: 0,   // last access time stamp
     messagesDS : null,
     _cloudClass : 'privatemessages',
+    RSAKey : null,
     
 
     init: function (channelUUID) {
@@ -105,10 +106,19 @@ var userDataChannel = {
         if (message.Id === undefined) {
             message.Id = message.msgID;
         }
+        var publicKey = userModel._user.publicKey;
+        var encryptContent = cryptico.encrypt(message.content, publicKey);
+        message.content = encryptContent;
+
+       
+        var encryptData = cryptico.encrypt(JSON.stringify(message.data), publicKey);
+        message.data = encryptData;
+        
         userDataChannel.messagesDS.add(message);
         everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating private message " + JSON.stringify(error));
+                debugger;
             }
         });
     },
@@ -140,7 +150,10 @@ var userDataChannel = {
                     userDataChannel.updateTimeStamp();
                     return;
                 }
-                var RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
+                if (userDataChannel.RSAKey === null) {
+                    userDataChannel.RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
+                }
+              
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
 
@@ -156,9 +169,9 @@ var userDataChannel = {
                         }
 */
                         var data = null;
-                        var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
+                        var content = cryptico.decrypt(msg.content.cipher, userDataChannel.RSAKey).plaintext;
                         if (msg.data !== undefined && msg.data !== null) {
-                            data = cryptico.decrypt(msg.data.cipher, RSAKey).plaintext;
+                            data = cryptico.decrypt(msg.data.cipher, userDataChannel.RSAKey).plaintext;
                             if (data !== undefined) {
                                 data = JSON.parse(data);
                             } else {
@@ -210,8 +223,7 @@ var userDataChannel = {
     },
 
     channelRead : function (m) {
-
-
+        
         switch(m.type) {
 
             case 'privateMessage' : {

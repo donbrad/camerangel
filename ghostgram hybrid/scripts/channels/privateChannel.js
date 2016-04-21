@@ -16,6 +16,8 @@ var privateChannel = {
     contactKey: '',
     contactName : '',
     last24hours : 0,
+    RSAKey : null,
+
 
 
     close: function () {
@@ -42,6 +44,7 @@ var privateChannel = {
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelUUID = contactUUID;
+        privateChannel.RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
         privateChannel.last24Hours = ggTime.lastDay();
 
     },
@@ -92,11 +95,11 @@ var privateChannel = {
     },
 
     decryptMessage : function (msg) {
-        var RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
+
         var data = null;
-        var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
+        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
         if (msg.data !== undefined && msg.data !== null) {
-            data = cryptico.decrypt(msg.data.cipher, RSAKey).plaintext;
+            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
             data = JSON.parse(data);
         }
 
@@ -262,6 +265,8 @@ var privateChannel = {
 
     getMessageHistory: function (callBack) {
 
+        userDataChannel.removeExpiredMessages();
+
         var dataSource = userDataChannel.messagesDS;
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
@@ -288,20 +293,19 @@ var privateChannel = {
                 if (!channelModel.isMessageRecalled(msg.msgID))
                     clearMessageArray.push(msg);
             }
-            if (callBack)
-                callBack(clearMessageArray);
-        } else {
-            // No recalled messages so return full list
-            if (callBack)
-                callBack(messages);
+            messages = clearMessageArray;
         }
 
+        for (var m=0; m<messages.length; m++) {
+            messages[m] = privateChannel.decryptMessage(messages[m]);
+        }
+
+        if (callBack)
+            callBack(messages);
 
         dataSource.filter(queryCache);
 
 
-
-        userDataChannel.removeExpiredMessages();
 
      }
 };
