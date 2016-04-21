@@ -192,7 +192,7 @@ var userDataChannel = {
                         };
 
                         channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
-                        userDataChannel.messagesDS.add(parsedMsg);
+                        userDataChannel.addMessage(msg);
 
                     }
                 }
