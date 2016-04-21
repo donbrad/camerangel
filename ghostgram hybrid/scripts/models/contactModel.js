@@ -45,7 +45,6 @@ var contactModel = {
     emailArray: [],
     photoArray: [],
     addressArray: [],
-    contactList: [],
 
 
     init : function () {
@@ -154,27 +153,10 @@ var contactModel = {
     buildContactList : function () {
         var array = contactModel.contactsDS.data();
         contactModel.contactListDS.data([]);
-        contactModel.contactList = [];
+
 
         for (var i=0; i<array.length; i++) {
             var contact = (array[i]).toJSON();
-            if (contact.contactUUID !== undefined && contact.contactUUID !== null) {
-                contactModel.contactList[contact.contactUUID] = {
-                    uuid: contact.uuid,
-                    contactId: contact.contactUUID,
-                    name: contact.name,
-                    alias: contact.alias,
-                    phone: contact.phone,
-                    address: contact.address,
-                    category: contact.category,
-                    identicon: contact.identicon,
-                    email: contact.email,
-                    photo: contact.photo,
-                    isDeleted: contact.isDeleted,
-                    isBlocked: contact.isBlocked
-                };
-            }
-
             contact.identicon = contactModel.createIdenticon(contact.uuid);
             contact.photo = contact.identicon;
             contactModel.contactListDS.add(contact);
@@ -187,29 +169,6 @@ var contactModel = {
         if (contact.identicon === undefined || contact.identicon === null) {
             contact.identicon = contactModel.createIdenticon(contact.uuid);
         }
-    },
-    
-    addContactToContactList : function (contact) {
-        var newContact = {
-            uuid: contact.uuid,
-            contactId: contact.contactUUID,
-            name: contact.name,
-            alias: contact.alias,
-            phone: contact.phone,
-            address: contact.address,
-            category: contact.category,
-            identicon: contact.identicon,
-            email: contact.email,
-            photo: contact.photo,
-            isDeleted: contact.isDeleted,
-            isBlocked: contact.isBlocked
-        };
-
-        contactModel.contactList[contact.contactUUID] = newContact;
-    },
-
-    inContactList : function (contactUUID) {
-        return(contactModel.contactList[contactUUID]);
     },
 
     totalContacts : function () {
