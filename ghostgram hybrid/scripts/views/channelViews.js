@@ -1382,11 +1382,11 @@ var channelView = {
     },
 
     // Quick access to contact data for display.
-    getContactData : function (uuid) {
+    getContactData : function (contactUUID) {
         var contact = {isContact: true};
         //var data = channelView.contactData[uuid];x
 
-       if (uuid === userModel._user.userUUID) {
+       if (contactUUID === userModel._user.userUUID) {
            contact.isContact = false;
            contact.uuid = userModel._user.userUUID;
            contact.alias = userModel._user.alias;
@@ -1401,17 +1401,17 @@ var channelView = {
            return (contact);
        }
 
-        var data = contactModel.inContactList(uuid);
+        var data = contactModel.inContactList(contactUUID);
 
         if (data === undefined) {
-            contact.uuid = uuid;
+            contact.uuid = contactUUID;
             contact.alias = 'New!';
             contact.name = 'Chat Member';
             contact.contactId = uuid.v4();
             contact.photoUrl = contactModel.createIdenticon(contact.contactId);
 
-            if (channelView.newMembers[uuid] === undefined) {
-                channelView.newMembers[uuid] = uuid;
+            if (channelView.newMembers[contactUUID] === undefined) {
+                channelView.newMembers[contactUUID] = contactUUID;
                 mobileNotify("New Chat Member - Looking Up Info...");
                 contactModel.createChatContact(uuid, contact.contactId, function (contact) {
                     mobileNotify(contact.name + " Added -- Refreshing Chat...");
