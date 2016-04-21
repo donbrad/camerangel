@@ -29,9 +29,9 @@ var placesView = {
         	enableSwipe: true,
         	tap: function(e){
         		var place = e.touch.target[0].dataset["uuid"];
-                var placeUUID = LZString.compressToEncodedURIComponent(place);
+                var placeId = LZString.compressToEncodedURIComponent(place);
 
-                APP.kendo.navigate("#placeView?place="+placeUUID+"&returnview=places");
+                APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
 
         	},
         	swipe: function(e) {
@@ -1370,24 +1370,6 @@ var placeView = {
                 ds.add(photoList[p]);
             }
         }
-
-       /* if (zipcode !== undefined && zipcode !== null) {
-            var zipList = photoModel.findPhotosByAddressString(zipcode);
-
-            if (zipList !== undefined && zipList.length > 0) {
-
-                for (var z = 0; z < zipList.length; z++) {
-                    var zip = zipList[z];
-                    // If the photo isn't already in the list -- add it
-                    if (placeView.findPhotoMemory(zip.photoId) === undefined) {
-                        zip.ggType = 'Photo';
-                        zip.date = new Date(zip.updatedAt);
-                        ds.add(zip);
-                    }
-
-                }
-            }
-        }*/
     },
 
     onShow : function (e) {
@@ -1740,6 +1722,7 @@ var placeView = {
            //noteModel.saveParseNote(newNote);
 
            placeView._memoriesDS.add(newNote.toJSON());
+           placeView._memoriesDS.sync();
 
            placeView._initTextArea();
            placeView.noteInit()
@@ -2311,7 +2294,7 @@ var smartEventPlacesView = {
                 ds.data([]);
                 predictions.forEach( function (prediction) {
                     var desObj = {category:"Place",description: prediction.description};
-                    desObj.placeUUID = prediction.place_id;
+                    desObj.placeId = prediction.place_id;
                     if (prediction.types[0] === 'establishment') {
                         desObj.title = prediction.terms[0].value;
                         desObj.address = prediction.terms[1].value + " " + prediction.terms[2].value + ", " + prediction.terms[3].value;

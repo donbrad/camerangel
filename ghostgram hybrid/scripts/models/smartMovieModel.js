@@ -15,11 +15,10 @@ var smartMovie = {
 
     init : function () {
         smartMovie.moviesDS = new kendo.data.DataSource({
-            //offlineStorage: "smartMovie",
             type: 'everlive',
             transport: {
-                typeName: 'smartMovie'
-                //dataProvider: APP.everlive
+                typeName: 'smartMovie',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -30,6 +29,8 @@ var smartMovie = {
             },
             autoSync: true
         });
+        
+        smartMovie.moviesDS.fetch();
     },
 
     /*fetch : function () {

@@ -55,10 +55,9 @@ var placesModel = {
     init : function () {
         placesModel.placesDS = new kendo.data.DataSource({
             type: 'everlive',
-           // offlineStorage: "places",
             transport: {
-                typeName: 'places'/*,
-                dataProvider: APP.everlive*/
+                typeName: 'places',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -436,6 +435,8 @@ var placesModel = {
         placeObj.isDirty = true;
 
         placesModel.placesDS.add(placeObj);
+        placesModel.placesDS.sync();
+        
         everlive.createOne(placesModel._cloudClass, placeObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating place " + JSON.stringify(error));

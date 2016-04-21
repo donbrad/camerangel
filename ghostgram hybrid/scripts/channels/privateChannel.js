@@ -16,6 +16,8 @@ var privateChannel = {
     contactKey: '',
     contactName : '',
     last24hours : 0,
+    RSAKey : null,
+
 
 
     close: function () {
@@ -42,13 +44,15 @@ var privateChannel = {
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelUUID = contactUUID;
+        privateChannel.RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
         privateChannel.last24Hours = ggTime.lastDay();
 
     },
 
     // archive the message in the private channel with this user's public key and send to user.
     // this provides a secure roamable private sent folder without localstorage and parse...
-    archiveMessage : function (msg) {
+   /* archiveMessage : function (msg) {
+        
         var archiveMsg = {};
         archiveMsg.type = 'privateMessage';
         archiveMsg.msgID = msg.msgID;
@@ -81,22 +85,21 @@ var privateChannel = {
         });
 
     },
-
+*/
     receiveHandler : function (msg) {
 
-        var parsedMsg = privateChannel.decryptMessage(msg);
 
-        privateChannel.receiveMessage(parsedMsg);
+        privateChannel.receiveMessage(msg);
        // deleteMessage(msg.sender, msg.msgID, msg.ttl);
 
     },
 
     decryptMessage : function (msg) {
-        var RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
+
         var data = null;
-        var content = cryptico.decrypt(msg.content.cipher, RSAKey).plaintext;
+        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
         if (msg.data !== undefined && msg.data !== null) {
-            data = cryptico.decrypt(msg.data.cipher, RSAKey).plaintext;
+            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
             data = JSON.parse(data);
         }
 
@@ -116,16 +119,18 @@ var privateChannel = {
     },
 
 
-    receiveMessage : function (message) {
+    receiveMessage : function (msg) {
 
         // Ensure that new messages get the timer
-        if (message.fromHistory === undefined) {
-            message.fromHistory = false;
+        if (msg.fromHistory === undefined) {
+            msg.fromHistory = false;
         }
 
-        channelView.preprocessMessage(message);
         // If this message is for the current channel, then display immediately
-        if (channelView._active && message.channelUUID === channelView._channelUUID) {
+        if (channelView._active && msg.channelUUID === channelView._channelUUID) {
+            var message = privateChannel.decryptMessage(msg);
+
+            channelView.preprocessMessage(message);
             channelModel.updateLastAccess(channelView._channelUUID, null);
             channelView.messagesDS.add(message);
 
@@ -144,20 +149,22 @@ var privateChannel = {
             } else {
                 channelView.scrollToBottom();
             }
+            
+            channelView.scrollToBottom();
+
+            if (channelView.privacyMode) {
+                kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(6000).play();
+            }
+
         } else {
             // Is there a private channel for this sender?
-            channelModel.confirmPrivateChannel(message.channelUUID);
-            channelModel.incrementUnreadCount(message.channelUUID, 1, null);
+            channelModel.confirmPrivateChannel(msg.channelUUID);
+            channelModel.incrementUnreadCount(msg.channelUUID, 1, null);
         }
 
-        userDataChannel.messagesDS.add(message);
-        userDataChannel.messagesDS.sync();
+        // Add the encrypted message to cloud and offline storage
+        userDataChannel.addMessage(msg);
 
-        channelView.scrollToBottom();
-
-        if (channelView.privacyMode) {
-            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(6000).play();
-        }
     },
 
 
@@ -214,9 +221,12 @@ var privateChannel = {
                 data: encryptData,        // publish the encryptedData.
                 time: currentTime,
                 fromHistory: false,
+                wasSent: false,
                 ttl: ttl
             };
 
+          
+            
             APP.pubnub.publish({
                 channel: recipient,
                 message: message,
@@ -245,12 +255,13 @@ var privateChannel = {
 
                     };
 
-
                     channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
-                    userDataChannel.messagesDS.add(parsedMsg);
-                    userDataChannel.messagesDS.sync();
+                    userDataChannel.archiveMessage(message);
+                    // Archive the sent message in the could and offline
+                    
+
                     channelView.scrollToBottom();
 
                 }
@@ -261,6 +272,8 @@ var privateChannel = {
 
 
     getMessageHistory: function (callBack) {
+
+        userDataChannel.removeExpiredMessages();
 
         var dataSource = userDataChannel.messagesDS;
         var queryCache = dataSource.filter();
@@ -288,20 +301,19 @@ var privateChannel = {
                 if (!channelModel.isMessageRecalled(msg.msgID))
                     clearMessageArray.push(msg);
             }
-            if (callBack)
-                callBack(clearMessageArray);
-        } else {
-            // No recalled messages so return full list
-            if (callBack)
-                callBack(messages);
+            messages = clearMessageArray;
         }
 
+        for (var m=0; m<messages.length; m++) {
+            messages[m] = privateChannel.decryptMessage(messages[m]);
+        }
+
+        if (callBack)
+            callBack(messages);
 
         dataSource.filter(queryCache);
 
 
-
-        userDataChannel.removeExpiredMessages();
 
      }
 };

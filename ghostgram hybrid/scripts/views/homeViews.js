@@ -907,77 +907,6 @@ var ghostEditView = {
     }
 };
 
-/*
- * Profile Photo Capture / Edit
- * parameterized for user profile and contact profile
- */
-
-var editProfilePhotoView = {
-    _callback : null,
-    _photoUrl: null,
-    _isUserProfile : true,
-    _contactId : null,
-
-    onInit : function (e) {
-       // _preventDefault(e);
-
-    },
-
-    onShow : function (e) {
-       // _preventDefault(e);
-
-    },
-
-    onDone : function (e) {
-
-    },
-
-    setCallback : function (callback) {
-        if (callback !== undefined) {
-            editProfilePhotoView._callback = callback;
-        }
-    },
-
-    setPhotoUrl : function (url) {
-        editProfilePhotoView._photoUrl = url;
-        $("#profilePhotoImage").attr('src', url);
-    },
-
-    doCamera : function (e) {
-      _preventDefault(e);
-
-        devicePhoto.deviceCamera(
-            512, // max resolution in pixels
-            75,  // quality: 1-99.
-            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-           editProfilePhotoView.setPhotoUrl  // Optional preview callback
-        )
-    },
-
-    doPhotoGallery : function(e) {
-        _preventDefault(e);
-
-        devicePhoto.deviceGallery(
-            512, // max resolution in pixels
-            75,  // quality: 1-99.
-            false,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
-            editProfilePhotoView.setPhotoUrl  // Optional preview callback
-        );
-    },
-
-    doMemories : function (e) {
-       _preventDefault(e);
-        galleryPicker.openModal(function (photo) {
-
-        });
-    },
-
-    updateUserPhotoUrl : function (e) {
-        _preventDefault(e);
-        userModel._user.set("photo", editProfilePhotoView._photoUrl);
-    }
-};
-
 var signUpView = {
     onInit : function (e) {
         //_preventDefault(e);
@@ -986,7 +915,7 @@ var signUpView = {
         //$("#home-signup-password").strength();
 
         // phone mask
-        if (window.navigator.simulator === true) {
+     //   if (window.navigator.simulator === true) {
             $('#home-signup-phone')
 
                 .keydown(function (e) {
@@ -1016,8 +945,41 @@ var signUpView = {
             })
             .keyup(function(e){
                 if ($(this).val().length === 14) {
-                    signUpView.continueSignUp();
-                    $('#home-signup-phone').unbind("keyup");
+                    mobileNotify("Please wait - validating mobiile phone number");
+                    var phone  = $(this).val();
+                    var validPhone  = addContactView.isValidPhone(phone);
+
+                    if (validPhone === null) {
+                        mobileNotify("Couldn't validate this phone number - please correct");
+                        return;
+                    }
+
+                    var phoneString =  unformatPhoneNumber(phone);
+
+                    isValidMobileNumber(phoneString, function (result) {
+                        if (result.status === 'ok') {
+                            if (result.valid === true) {
+                                mobileNotify("Please wait - checking member directory...");
+                                memberdirectory.findMemberByPhone(phoneString, function (member) {
+                                    if (member === null) {
+                                        // It's a valid mobile number and doesnt match an existing member
+                                        mobileNotify(phone + " is confirmed!");
+                                        signUpView.continueSignUp();
+                                     } else {
+                                        mobileNotify(phone + " matches an existing ghostgrams member!");
+                                        //Todo:  we should a link to login / signin...
+                                    }
+
+                                });
+
+                                $('#home-signup-phone').unbind("keyup");
+                            } else {
+                                mobileNotify(phone + "isn't a recognized mobile number");
+                            }
+                        }
+
+                    });
+                    
                 }
             })
 
@@ -1041,7 +1003,7 @@ var signUpView = {
                         $phone.val('');
                     }
                 });
-        }
+      //  }
 
         // Confirm password events
         $("#home-signup-password").on("keyup", function(){

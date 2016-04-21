@@ -166,7 +166,6 @@ var everlive = {
                     everlive._signedIn = true;
                     everlive._syncComplete = false;
                     everlive.loadUserData();
-                    //deviceModel.syncEverlive();
                     userModel.initialView = '#home';
                     //APP.kendo.navigate(userModel.initialView);
 
@@ -282,7 +281,6 @@ var everlive = {
                 deviceModel.setAppState('phoneValidated', true);
                 notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
             } else {
-
                 mobileNotify("Please verify your phone number");
                 verifyPhoneModal.openModal();
 

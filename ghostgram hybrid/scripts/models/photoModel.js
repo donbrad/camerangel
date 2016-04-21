@@ -68,8 +68,8 @@ var photoModel = {
             // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'deletedphotos'/*,
-                 dataProvider: APP.everlive*/
+                typeName: 'deletedphotos',
+                 dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -447,6 +447,8 @@ var photoModel = {
         }
         photo.set('tags', photoObj.tags);
 
+        photo.set('isProfilePhoto', false);
+
        /* photo.set('title', photoObj.title);
         photo.set('description',  photoObj.description);
         photo.set('eventId', photoObj.eventId);
@@ -670,7 +672,7 @@ var photoModel = {
 
     },
 
-    addDevicePhoto: function (devicePhoto, isCamera, callback) {
+    addDevicePhoto: function (devicePhoto, isCamera, isProfilePhoto,  callback) {
         mobileNotify("Adding  photo....");
         var photo = new kendo.data.ObservableObject();
 
@@ -703,7 +705,7 @@ var photoModel = {
         photo.set('placeName', null);
         photo.set('address', null);
         photo.set('offerId', null);
-
+        photo.set('isProfilePhoto', isProfilePhoto);
 
         if (channelView._active) {
             var channelUUID = channelView._channelUUID;

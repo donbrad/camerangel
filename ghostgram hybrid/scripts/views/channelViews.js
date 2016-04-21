@@ -1184,6 +1184,8 @@ var channelView = {
           } else {
               channelView.privateContact = thisContact;
           }
+            //Build the members datasource and quick access list
+            channelView.buildMemberDS();
 
             // *** Private Channel ***
             var contactKey = thisChannel.contactKey;
@@ -1219,7 +1221,7 @@ var channelView = {
             privateChannel.getMessageHistory(function (messages) {
 
                 channelView.preprocessMessages(messages);
-
+                
                 thisChannel.messagesArray = messages;
 
                 channelView.messagesDS.data(messages);
@@ -1307,8 +1309,8 @@ var channelView = {
         var name = contactData.name;
         var alias = contactData.alias;
         var contactPhotoUrl = contactData.photoUrl;
-        message.isContact = contactData.isContact;
-        message.contactPhotoUrl = contactPhotoUrl;
+       /* message.isContact = contactData.isContact;
+        message.contactPhotoUrl = contactPhotoUrl;*/
         if (message.sender === userModel._user.userUUID) {
             message.displayName = "Me";
         } else {
@@ -1382,11 +1384,11 @@ var channelView = {
     },
 
     // Quick access to contact data for display.
-    getContactData : function (uuid) {
+    getContactData : function (contactUUID) {
         var contact = {isContact: true};
         //var data = channelView.contactData[uuid];x
 
-       if (uuid === userModel._user.userUUID) {
+       if (contactUUID === userModel._user.userUUID) {
            contact.isContact = false;
            contact.uuid = userModel._user.userUUID;
            contact.alias = userModel._user.alias;
@@ -1401,18 +1403,19 @@ var channelView = {
            return (contact);
        }
 
-        var data = contactModel.inContactList(uuid);
+        var data = contactModel.findContact(contactUUID);
 
         if (data === undefined) {
-            contact.uuid = uuid;
+            contact.uuid = contactUUID;
             contact.alias = 'New!';
             contact.name = 'Chat Member';
-            contact.photoUrl = contactModel.createIdenticon(uuid);
+            contact.contactId = uuid.v4();
+            contact.photoUrl = contactModel.createIdenticon(contact.contactId);
 
-            if (channelView.newMembers[uuid] === undefined) {
-                channelView.newMembers[uuid] = uuid;
+            if (channelView.newMembers[contactUUID] === undefined) {
+                channelView.newMembers[contactUUID] = contactUUID;
                 mobileNotify("New Chat Member - Looking Up Info...");
-                contactModel.createChatContact(uuid, function (contact) {
+                contactModel.createChatContact(uuid, contact.contactId, function (contact) {
                     mobileNotify(contact.name + " Added -- Refreshing Chat...");
                     $("#messages-listview").data("kendoMobileListView").refresh();
                 });
@@ -1429,6 +1432,22 @@ var channelView = {
         }
 
         return(contact);
+    },
+
+    getContactPhotoUrl : function (contactUUID) {
+        var contact = channelView.memberList[contactUUID]
+        if (contact === undefined) {
+            console.err("Contact Undefined!!!");
+            debugger;
+        }
+        var photoUrl = null;
+        if (contact !== undefined) {
+            photoUrl = contact.photo;
+            if (photoUrl === null) {
+                photoUrl = contact.identicon;
+            }
+        }
+        return (photoUrl);
     },
 
     // Build a member list for this channel
@@ -1454,7 +1473,7 @@ var channelView = {
                 contact.alias = userModel._user.alias;
                 contact.name = userModel._user.name;
                 contact.photo = userModel._user.photo;
-                contact.identicon = userModel._user.identicon;
+                contact.identicon = userModel.identiconUrl;
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
                 channelView.memberList[contact.uuid] = contact;
@@ -1466,12 +1485,12 @@ var channelView = {
                     // Need to create a contact and then add to channels member list
                     var contactId = contactArray[i];
                     contact.isContact = false;
-                    contact.uuid = guid.v4();
-                    contact.contactId = null;
+                    contact.uuid = null;
+                    contact.contactId = uuid.v4();
                     contact.alias = "new";
                     contact.name = "New contact...";
-                    contact.photo = null;
-                    contact.identicon = contactModel.createIdenticon(contact.uuid);
+                    contact.identicon = contactModel.createIdenticon(contact.contactId);
+                    contact.photo =  contact.identicon;
                     contact.publicKey = null;
                     contact.isPresent = false;
                     contact.processing = true;

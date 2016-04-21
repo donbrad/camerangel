@@ -27,15 +27,17 @@ var appDataChannel = {
 
         appDataChannel.messagesDS = new kendo.data.DataSource({
             type: 'everlive',
-            // offlineStorage: "places",
             transport: {
-                typeName: 'appmessages'/*,
-                 dataProvider: APP.everlive*/
+                typeName: 'appmessages',
+                 dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            autoSync : true
         });
+        
+        appDataChannel.messagesDS.fetch();
         
         appDataChannel.channelUUID = channel;
 
@@ -136,6 +138,9 @@ var appDataChannel = {
     },
 
     archiveMessage : function (message) {
+        if (message.Id === undefined) {
+            message.Id = message.msgID;
+        }
         message.processed = true;
         message.processTime = ggTime.currentTime();
         appDataChannel.messagesDS.add(message);
