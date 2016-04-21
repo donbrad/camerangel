@@ -2,11 +2,11 @@
   "ProjectName": "ghostgram hybrid",
   "ProjectGuid": "73905311-744c-48f9-9909-d427fe5ad083",
   "projectVersion": 1,
-  "AppIdentifier": "com.kendo.ghostgram",
+  "AppIdentifier": "com.kyburzcodeworks.ghostgram",
   "DisplayName": "ghostgrams",
   "Author": "don bradford",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.45",
+  "BundleVersion": "0.0.46",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
