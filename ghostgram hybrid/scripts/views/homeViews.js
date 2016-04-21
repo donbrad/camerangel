@@ -951,14 +951,23 @@ var signUpView = {
                     isValidMobileNumber(phone, function (result) {
                         if (result.status === 'ok') {
                             if (result.valid === true) {
-                                mobileNotify(phone + " is confirmed!");
-                                signUpView.continueSignUp();
+                                mobileNotify("Please wait - checking member directory...");
+                                memberdirectory.findMemberByEmail(phone, function (member) {
+                                    if (member === null) {
+                                        mobileNotify(phone + " is confirmed!");
+                                        signUpView.continueSignUp();
+                                     } else {
+                                        mobileNotify(phone + " matches an existing ghostgrams member!");
+                                    }
+
+                                });
+
                                 $('#home-signup-phone').unbind("keyup");
                             } else {
                                 mobileNotify(phone + "isn't a recognized mobile number");
                             }
                         }
-                        
+
                     });
                     
                 }
