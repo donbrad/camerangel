@@ -87,9 +87,8 @@ var privateChannel = {
 
     receiveHandler : function (msg) {
 
-        var parsedMsg = privateChannel.decryptMessage(msg);
 
-        privateChannel.receiveMessage(parsedMsg);
+        privateChannel.receiveMessage(msg);
        // deleteMessage(msg.sender, msg.msgID, msg.ttl);
 
     },
@@ -119,16 +118,18 @@ var privateChannel = {
     },
 
 
-    receiveMessage : function (message) {
+    receiveMessage : function (msg) {
 
         // Ensure that new messages get the timer
-        if (message.fromHistory === undefined) {
-            message.fromHistory = false;
+        if (msg.fromHistory === undefined) {
+            msg.fromHistory = false;
         }
 
-        channelView.preprocessMessage(message);
         // If this message is for the current channel, then display immediately
-        if (channelView._active && message.channelUUID === channelView._channelUUID) {
+        if (channelView._active && msg.channelUUID === channelView._channelUUID) {
+            var message = privateChannel.decryptMessage(msg);
+
+            channelView.preprocessMessage(message);
             channelModel.updateLastAccess(channelView._channelUUID, null);
             channelView.messagesDS.add(message);
 
@@ -147,20 +148,22 @@ var privateChannel = {
             } else {
                 channelView.scrollToBottom();
             }
+
+            userDataChannel.addMessage(msg);
+
+
+            channelView.scrollToBottom();
+
+            if (channelView.privacyMode) {
+                kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(6000).play();
+            }
+
         } else {
             // Is there a private channel for this sender?
-            channelModel.confirmPrivateChannel(message.channelUUID);
-            channelModel.incrementUnreadCount(message.channelUUID, 1, null);
+            channelModel.confirmPrivateChannel(msg.channelUUID);
+            channelModel.incrementUnreadCount(msg.channelUUID, 1, null);
         }
 
-        userDataChannel.addMessage(message);
-
-
-        channelView.scrollToBottom();
-
-        if (channelView.privacyMode) {
-            kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(6000).play();
-        }
     },
 
 
