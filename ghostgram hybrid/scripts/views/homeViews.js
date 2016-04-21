@@ -915,7 +915,7 @@ var signUpView = {
         //$("#home-signup-password").strength();
 
         // phone mask
-        if (window.navigator.simulator === true) {
+     //   if (window.navigator.simulator === true) {
             $('#home-signup-phone')
 
                 .keydown(function (e) {
@@ -945,8 +945,22 @@ var signUpView = {
             })
             .keyup(function(e){
                 if ($(this).val().length === 14) {
-                    signUpView.continueSignUp();
-                    $('#home-signup-phone').unbind("keyup");
+                    // Todo -- need to validate phone number here
+                    mobileNotify("Please wait - validating mobiile phone number");
+                    var phone  = $(this).val();
+                    isValidMobileNumber(phone, function (result) {
+                        if (result.status === 'ok') {
+                            if (result.valid === true) {
+                                mobileNotify(phone + " is confirmed!");
+                                signUpView.continueSignUp();
+                                $('#home-signup-phone').unbind("keyup");
+                            } else {
+                                mobileNotify(phone + "isn't a recognized mobile number");
+                            }
+                        }
+                        
+                    });
+                    
                 }
             })
 
@@ -970,7 +984,7 @@ var signUpView = {
                         $phone.val('');
                     }
                 });
-        }
+      //  }
 
         // Confirm password events
         $("#home-signup-password").on("keyup", function(){

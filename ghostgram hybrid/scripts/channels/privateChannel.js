@@ -51,7 +51,8 @@ var privateChannel = {
 
     // archive the message in the private channel with this user's public key and send to user.
     // this provides a secure roamable private sent folder without localstorage and parse...
-    archiveMessage : function (msg) {
+   /* archiveMessage : function (msg) {
+        
         var archiveMsg = {};
         archiveMsg.type = 'privateMessage';
         archiveMsg.msgID = msg.msgID;
@@ -84,7 +85,7 @@ var privateChannel = {
         });
 
     },
-
+*/
     receiveHandler : function (msg) {
 
 
@@ -148,10 +149,7 @@ var privateChannel = {
             } else {
                 channelView.scrollToBottom();
             }
-
-            userDataChannel.addMessage(msg);
-
-
+            
             channelView.scrollToBottom();
 
             if (channelView.privacyMode) {
@@ -163,6 +161,9 @@ var privateChannel = {
             channelModel.confirmPrivateChannel(msg.channelUUID);
             channelModel.incrementUnreadCount(msg.channelUUID, 1, null);
         }
+
+        // Add the encrypted message to cloud and offline storage
+        userDataChannel.addMessage(msg);
 
     },
 
@@ -220,9 +221,12 @@ var privateChannel = {
                 data: encryptData,        // publish the encryptedData.
                 time: currentTime,
                 fromHistory: false,
+                wasSent: false,
                 ttl: ttl
             };
 
+          
+            
             APP.pubnub.publish({
                 channel: recipient,
                 message: message,
@@ -254,9 +258,9 @@ var privateChannel = {
                     channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
-                    // Need to toggle the channelId for our sent message -- should be recipient and this user
-                    message.channelUUID = message.recipient;
-                    userDataChannel.addMessage(message);
+                    userDataChannel.archiveMessage(message);
+                    // Archive the sent message in the could and offline
+                    
 
                     channelView.scrollToBottom();
 

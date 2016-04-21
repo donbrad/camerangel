@@ -101,6 +101,29 @@ var userDataChannel = {
             return(true);
         }
     },
+    
+    archiveMessage : function (message) {
+      // remap channelUUID to recipient id
+        message.channelUUID = message.recipient;
+        message.Id === uuid.v4();
+
+        var publicKey = userModel._user.publicKey;
+        var encryptContent = cryptico.encrypt(message.content, publicKey);
+        message.content = encryptContent;
+        message.wasSent = true;
+
+        var encryptData = cryptico.encrypt(JSON.stringify(message.data), publicKey);
+        message.data = encryptData;
+
+        userDataChannel.messagesDS.add(message);
+        everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating private message " + JSON.stringify(error));
+                debugger;
+            }
+        });
+        
+    },
 
     addMessage : function (message) {
         if (message.Id === undefined) {

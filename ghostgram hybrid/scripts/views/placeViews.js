@@ -1370,24 +1370,6 @@ var placeView = {
                 ds.add(photoList[p]);
             }
         }
-
-       /* if (zipcode !== undefined && zipcode !== null) {
-            var zipList = photoModel.findPhotosByAddressString(zipcode);
-
-            if (zipList !== undefined && zipList.length > 0) {
-
-                for (var z = 0; z < zipList.length; z++) {
-                    var zip = zipList[z];
-                    // If the photo isn't already in the list -- add it
-                    if (placeView.findPhotoMemory(zip.photoId) === undefined) {
-                        zip.ggType = 'Photo';
-                        zip.date = new Date(zip.updatedAt);
-                        ds.add(zip);
-                    }
-
-                }
-            }
-        }*/
     },
 
     onShow : function (e) {
@@ -1740,6 +1722,7 @@ var placeView = {
            //noteModel.saveParseNote(newNote);
 
            placeView._memoriesDS.add(newNote.toJSON());
+           placeView._memoriesDS.sync();
 
            placeView._initTextArea();
            placeView.noteInit()

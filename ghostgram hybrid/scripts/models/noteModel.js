@@ -121,6 +121,7 @@ var noteModel = {
         noteObj.set('version', noteModel._version);
         noteObj.set('ggType', noteModel._ggClass);
         noteObj.set('uuid', note.uuid);
+        noteObj.set('Id', note.uuid);
         noteObj.set('userUUID', note.userUUID);
         noteObj.set('objectType', note.objectType);
         noteObj.set('objectUUID', note.objectUUID);
@@ -128,6 +129,7 @@ var noteModel = {
         noteObj.set('tagString', note.tagString);
         noteObj.set('metaTagString',  note.metaTagString);
         noteObj.set('content', note.content);
+        
         noteObj.set('tags', note.tags);
         var dateString = new Date().toISOString();
         //var d = {"__type":"Date","iso":dateString};
@@ -191,7 +193,7 @@ var noteModel = {
         var note = new Notes();*/
         var note = new kendo.data.ObservableObject();
         note.set('uuid',uuid.v4());
-
+        note.set('Id',uuid.v4());
         note.set('ggType',noteModel._ggClass);
         note.set('version',noteModel._version);
         note.set('userUUID',  userModel._user.userUUID);
