@@ -1403,7 +1403,7 @@ var channelView = {
            return (contact);
        }
 
-        var data = contactModel.inContactList(contactUUID);
+        var data = contactModel.findContact(contactUUID);
 
         if (data === undefined) {
             contact.uuid = contactUUID;
@@ -1473,7 +1473,7 @@ var channelView = {
                 contact.alias = userModel._user.alias;
                 contact.name = userModel._user.name;
                 contact.photo = userModel._user.photo;
-                contact.identicon = userModel._user.identicon;
+                contact.identicon = userModel.identiconUrl;
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
                 channelView.memberList[contact.uuid] = contact;
