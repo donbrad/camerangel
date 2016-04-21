@@ -150,8 +150,8 @@ var privateChannel = {
             channelModel.incrementUnreadCount(message.channelUUID, 1, null);
         }
 
-        userDataChannel.messagesDS.add(message);
-        userDataChannel.messagesDS.sync();
+        userDataChannel.addMessage(message);
+
 
         channelView.scrollToBottom();
 
@@ -249,8 +249,8 @@ var privateChannel = {
                     channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
-                    userDataChannel.messagesDS.add(parsedMsg);
-                    userDataChannel.messagesDS.sync();
+                    userDataChannel.addMessage(parsedMsg);
+
                     channelView.scrollToBottom();
 
                 }

@@ -13,6 +13,8 @@ var userDataChannel = {
     channelUUID: null,   // channelUUID is users uuid
     lastAccess: 0,   // last access time stamp
     messagesDS : null,
+    _cloudClass : 'privatemessages',
+    
 
     init: function (channelUUID) {
 
@@ -98,6 +100,18 @@ var userDataChannel = {
         } else {
             return(true);
         }
+    },
+
+    addMessage : function (message) {
+        if (message.Id === undefined) {
+            message.Id = message.msgID;
+        }
+        userDataChannel.messagesDS.add(message);
+        everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating private message " + JSON.stringify(error));
+            }
+        });
     },
 
     updateTimeStamp : function () {
