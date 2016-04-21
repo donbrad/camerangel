@@ -55,10 +55,9 @@ var placesModel = {
     init : function () {
         placesModel.placesDS = new kendo.data.DataSource({
             type: 'everlive',
-           // offlineStorage: "places",
             transport: {
-                typeName: 'places'/*,
-                dataProvider: APP.everlive*/
+                typeName: 'places',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

@@ -20,10 +20,9 @@ var userDataChannel = {
 
         userDataChannel.messagesDS = new kendo.data.DataSource({
             type: 'everlive',
-            // offlineStorage: "places",
             transport: {
-                typeName: 'privatemessages'/*,
-                 dataProvider: APP.everlive*/
+                typeName: 'privatemessages',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

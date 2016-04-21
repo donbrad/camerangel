@@ -68,8 +68,8 @@ var photoModel = {
             // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'deletedphotos'/*,
-                 dataProvider: APP.everlive*/
+                typeName: 'deletedphotos',
+                 dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

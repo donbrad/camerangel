@@ -34,10 +34,9 @@ var notificationModel = {
     init : function () {
        notificationModel.notificationDS = new kendo.data.DataSource({
            type: 'everlive',
-           // offlineStorage: "channels",
            transport: {
-               typeName: 'notifications'
-               //dataProvider: APP.everlive
+               typeName: 'notifications',
+               dataProvider: APP.everlive
            },
            schema: {
                model: { Id:  Everlive.idField}

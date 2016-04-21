@@ -128,8 +128,8 @@ var smartEvent = {
             //offlineStorage: "smartEvent",
             type: 'everlive',
             transport: {
-                typeName: 'smartEvent'
-                //dataProvider: APP.everlive
+                typeName: 'smartEvent',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -140,6 +140,8 @@ var smartEvent = {
             },
             autoSync: true
         });
+
+        smartEvent.eventsDS.fetch();
     },
     
     queryTerm: function (query) {
