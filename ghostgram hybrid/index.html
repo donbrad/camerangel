@@ -1898,11 +1898,11 @@
 			<div class="clearfix"></div>
 		</div>
 
-		# if (channelView.isPrivateNote !== undefined && channelView.isPrivateNote) { contactPhotoUrl = ''; } else {#
+		# var contactPhotoUrl = channelView.getContactPhotoUrl(sender); #
 		<div class="chat-message-user-img">
 			<img class="chat-message-profileImg circle-img-sm" src="#: contactPhotoUrl #" alt="" />
 		</div>
-		# } #
+
 
 		# if (content !== "") {#
 			# if (isContact ) {#

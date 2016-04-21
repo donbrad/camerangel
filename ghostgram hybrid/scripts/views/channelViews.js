@@ -1434,6 +1434,22 @@ var channelView = {
         return(contact);
     },
 
+    getContactPhotoUrl : function (contactUUID) {
+        var contact = channelView.memberList[contactUUID]
+        if (contact === undefined) {
+            console.err("Contact Undefined!!!");
+            debugger;
+        }
+        var photoUrl = null;
+        if (contact !== undefined) {
+            photoUrl = contact.photo;
+            if (photoUrl === null) {
+                photoUrl = contact.identicon;
+            }
+        }
+        return (photoUrl);
+    },
+
     // Build a member list for this channel
     buildMemberDS : function () {
 
@@ -1473,8 +1489,8 @@ var channelView = {
                     contact.contactId = uuid.v4();
                     contact.alias = "new";
                     contact.name = "New contact...";
-                    contact.photo = null;
                     contact.identicon = contactModel.createIdenticon(contact.contactId);
+                    contact.photo =  contact.identicon;
                     contact.publicKey = null;
                     contact.isPresent = false;
                     contact.processing = true;
