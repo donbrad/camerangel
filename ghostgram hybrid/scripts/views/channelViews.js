@@ -1407,7 +1407,7 @@ var channelView = {
             contact.uuid = uuid;
             contact.alias = 'New!';
             contact.name = 'Chat Member';
-             contact.contactId = guid.v4();
+            contact.contactId = uuid.v4();
             contact.photoUrl = contactModel.createIdenticon(contact.contactId);
 
             if (channelView.newMembers[uuid] === undefined) {
@@ -1468,7 +1468,7 @@ var channelView = {
                     var contactId = contactArray[i];
                     contact.isContact = false;
                     contact.uuid = null;
-                    contact.contactId = guid.v4();
+                    contact.contactId = uuid.v4();
                     contact.alias = "new";
                     contact.name = "New contact...";
                     contact.photo = null;
