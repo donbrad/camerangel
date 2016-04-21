@@ -537,7 +537,7 @@ var contactModel = {
         if (thisContact.contactUUID === undefined || thisContact.contactUUID === null) {
             var phone  = thisContact.phone;
             memberdirectory.findMemberByPhone(phone, function (result) {
-                var contact = result.user;
+                var contact = result;
                 
                 contactModel._syncContactDetails(contact, thisContact, thisContactList);
                 
@@ -549,7 +549,7 @@ var contactModel = {
 
            memberdirectory.findMemberByUUID(thisContact.contactUUID, function (result) {
                
-                var contact = result.user;
+                var contact = result;
     
                 contactModel._syncContactDetails(contact, thisContact, thisContactList);
     
