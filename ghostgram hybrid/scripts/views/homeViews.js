@@ -954,11 +954,13 @@ var signUpView = {
                         return;
                     }
 
-                    isValidMobileNumber(phone, function (result) {
+                    var phoneString =  unformatPhoneNumber(phone);
+
+                    isValidMobileNumber(phoneString, function (result) {
                         if (result.status === 'ok') {
                             if (result.valid === true) {
                                 mobileNotify("Please wait - checking member directory...");
-                                memberdirectory.findMemberByEmail(phone, function (member) {
+                                memberdirectory.findMemberByPhone(phoneString, function (member) {
                                     if (member === null) {
                                         // It's a valid mobile number and doesnt match an existing member
                                         mobileNotify(phone + " is confirmed!");
