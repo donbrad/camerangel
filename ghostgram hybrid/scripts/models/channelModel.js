@@ -431,6 +431,7 @@ var channelModel = {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
             mobileNotify('incrementUnreadCount: unknown channel ' + channelUUID);
+            debugger;
         } else {
 
             if (lastAccess === undefined || lastAccess === null) {

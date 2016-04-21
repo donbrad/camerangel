@@ -1184,6 +1184,8 @@ var channelView = {
           } else {
               channelView.privateContact = thisContact;
           }
+            //Build the members datasource and quick access list
+            channelView.buildMemberDS();
 
             // *** Private Channel ***
             var contactKey = thisChannel.contactKey;
@@ -1307,8 +1309,8 @@ var channelView = {
         var name = contactData.name;
         var alias = contactData.alias;
         var contactPhotoUrl = contactData.photoUrl;
-        message.isContact = contactData.isContact;
-        message.contactPhotoUrl = contactPhotoUrl;
+       /* message.isContact = contactData.isContact;
+        message.contactPhotoUrl = contactPhotoUrl;*/
         if (message.sender === userModel._user.userUUID) {
             message.displayName = "Me";
         } else {
