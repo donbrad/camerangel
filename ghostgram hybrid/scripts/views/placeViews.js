@@ -29,9 +29,9 @@ var placesView = {
         	enableSwipe: true,
         	tap: function(e){
         		var place = e.touch.target[0].dataset["uuid"];
-                var placeUUID = LZString.compressToEncodedURIComponent(place);
+                var placeId = LZString.compressToEncodedURIComponent(place);
 
-                APP.kendo.navigate("#placeView?place="+placeUUID+"&returnview=places");
+                APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
 
         	},
         	swipe: function(e) {
@@ -2311,7 +2311,7 @@ var smartEventPlacesView = {
                 ds.data([]);
                 predictions.forEach( function (prediction) {
                     var desObj = {category:"Place",description: prediction.description};
-                    desObj.placeUUID = prediction.place_id;
+                    desObj.placeId = prediction.place_id;
                     if (prediction.types[0] === 'establishment') {
                         desObj.title = prediction.terms[0].value;
                         desObj.address = prediction.terms[1].value + " " + prediction.terms[2].value + ", " + prediction.terms[3].value;
