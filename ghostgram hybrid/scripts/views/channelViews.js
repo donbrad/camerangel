@@ -1407,12 +1407,13 @@ var channelView = {
             contact.uuid = uuid;
             contact.alias = 'New!';
             contact.name = 'Chat Member';
-            contact.photoUrl = contactModel.createIdenticon(uuid);
+             contact.contactId = guid.v4();
+            contact.photoUrl = contactModel.createIdenticon(contact.contactId);
 
             if (channelView.newMembers[uuid] === undefined) {
                 channelView.newMembers[uuid] = uuid;
                 mobileNotify("New Chat Member - Looking Up Info...");
-                contactModel.createChatContact(uuid, function (contact) {
+                contactModel.createChatContact(uuid, contact.contactId, function (contact) {
                     mobileNotify(contact.name + " Added -- Refreshing Chat...");
                     $("#messages-listview").data("kendoMobileListView").refresh();
                 });
@@ -1466,12 +1467,12 @@ var channelView = {
                     // Need to create a contact and then add to channels member list
                     var contactId = contactArray[i];
                     contact.isContact = false;
-                    contact.uuid = guid.v4();
-                    contact.contactId = null;
+                    contact.uuid = null;
+                    contact.contactId = guid.v4();
                     contact.alias = "new";
                     contact.name = "New contact...";
                     contact.photo = null;
-                    contact.identicon = contactModel.createIdenticon(contact.uuid);
+                    contact.identicon = contactModel.createIdenticon(contact.contactId);
                     contact.publicKey = null;
                     contact.isPresent = false;
                     contact.processing = true;
