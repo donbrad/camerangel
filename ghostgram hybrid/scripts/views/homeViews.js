@@ -945,19 +945,27 @@ var signUpView = {
             })
             .keyup(function(e){
                 if ($(this).val().length === 14) {
-                    // Todo -- need to validate phone number here
                     mobileNotify("Please wait - validating mobiile phone number");
                     var phone  = $(this).val();
+                    var validPhone  = addContactView.isValidPhone(phone);
+
+                    if (validPhone === null) {
+                        mobileNotify("Couldn't validate this phone number - please correct");
+                        return;
+                    }
+
                     isValidMobileNumber(phone, function (result) {
                         if (result.status === 'ok') {
                             if (result.valid === true) {
                                 mobileNotify("Please wait - checking member directory...");
                                 memberdirectory.findMemberByEmail(phone, function (member) {
                                     if (member === null) {
+                                        // It's a valid mobile number and doesnt match an existing member
                                         mobileNotify(phone + " is confirmed!");
                                         signUpView.continueSignUp();
                                      } else {
                                         mobileNotify(phone + " matches an existing ghostgrams member!");
+                                        //Todo:  we should a link to login / signin...
                                     }
 
                                 });
