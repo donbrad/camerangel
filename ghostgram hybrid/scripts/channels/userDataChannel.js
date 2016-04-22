@@ -107,7 +107,7 @@ var userDataChannel = {
 
     encryptBlock : function (block) {
 
-        return (userDataChannel.encryptBlockWithKey(block, userModel.publicKey));
+        return (userDataChannel.encryptBlockWithKey(block, userModel._user.publicKey));
     },
 
     encryptBlockWithKey : function (block, publicKey) {
