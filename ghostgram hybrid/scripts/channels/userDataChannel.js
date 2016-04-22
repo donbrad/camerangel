@@ -27,7 +27,8 @@ var userDataChannel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            autoSync: true
         });
 
         if (channelUUID !== undefined) {
@@ -131,7 +132,7 @@ var userDataChannel = {
     addMessage : function (message) {
         if (userDataChannel.isDuplicateMessage(message.msgID))
             return;
-        
+
         if (message.Id === undefined) {
             message.Id = message.msgID;
         }
