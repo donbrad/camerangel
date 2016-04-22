@@ -12,8 +12,14 @@
  */
 var privateNotesView = {
     topOffset: 0,
-   
-    notesDS : null,
+    
+    notesDS : new kendo.data.DataSource(  {
+        sort: {
+                field: "time",
+                dir: "desc"
+            }
+        }
+    ),
     activeNote: {objects: [], photos: []},
     noteObjects: [],
     notePhotos: [],
@@ -218,12 +224,6 @@ var privateNotesView = {
                 note.set('time',ggTime.currentTime());
 
 
-                var Id = note.Id;
-                if (Id !== undefined){
-                    everlive.updateOne(privateNoteModel._cloudClass, note, function (error, data) {
-                        //placeNoteModel.notesDS.remove(note);
-                    });
-                }
 
             } else {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
@@ -251,7 +251,7 @@ var privateNotesView = {
         if (data.ggType !== undefined) {
             ggType = data.ggType;
         }
-        var message = {
+        var note = {
             Id: uuidNote,
             noteId: uuidNote,
             type: 'Note',
@@ -266,17 +266,7 @@ var privateNotesView = {
             ttl: ttl
         };
 
-        privateNoteModel.notesDS.add(message);
-        privateNoteModel.notesDS.sync();
-
-        everlive.createOne(privateNoteModel._cloudClass, message, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating Private Note " + JSON.stringify(error));
-            } else {
-                // Add the everlive object with everlive created Id to the datasource
-
-            }
-        });
+       privateNoteModel.addNote(note);
 
       //  privateNoteModel.notesDS.sync();
         privateNotesView.scrollToBottom();

@@ -67,6 +67,47 @@ var privateNoteModel = {
 
     },
 
+    addNote : function (note) {
+        privateNoteModel.notesDS.add(note);
+        privateNoteModel.notesDS.sync();
+
+        everlive.createOne(privateNoteModel._cloudClass, note, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating Private Note " + JSON.stringify(error));
+            } else {
+                // Add the everlive object with everlive created Id to the datasource
+
+            }
+        });
+    },
+
+    updateNote : function (note) {
+
+        var Id = note.Id;
+        if (Id !== undefined){
+            everlive.updateOne(privateNoteModel._cloudClass, note, function (error, data) {
+                //placeNoteModel.notesDS.remove(note);
+            });
+        }
+    },
+
+    encryptNote : function (note) {
+        var content = userDataChannel.encryptBlock(note.content);
+        var data = userDataChannel.encryptBlock(JSON.stringify(note.dataObject));
+        
+        note.content = content;
+        note.data = data;
+    },
+
+    decryptNote : function (note) {
+        var content = userDataChannel.decryptBlock(note.content);
+        var data = userDataChannel.decryptBlock(note.data);
+        
+        note.content = content;
+        note.data = JSON.parse(data);
+        note.dataObject = note.data;
+    },
+
     queryNotes: function (query) {
         if (query === undefined)
             return(undefined);
@@ -86,7 +127,6 @@ var privateNoteModel = {
     isDuplicateNote : function (noteId) {
 
         var notes = privateNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
-
 
         if (notes === undefined) {
             return (false);
