@@ -254,6 +254,7 @@ var privateChannel = {
                     // for the recipient, its this users uuid.
                     // for the sender, it's the recipients uuid
                     var parsedMsg = {
+                        Id: message.msgID,
                         type: 'privateMessage',
                         recipient: message.recipient,
                         sender: userModel._user.userUUID,
@@ -261,7 +262,8 @@ var privateChannel = {
                         channelUUID: message.recipient,
                         content: content,
                         data: contentData,
-                        time: currentTime,
+                        time: message.time,
+                        wasSent: true,
                         fromHistory: false,
                         ttl: ttl
 
@@ -270,8 +272,8 @@ var privateChannel = {
                     channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
-                    // Need to toggle the channelId for our sent message -- should be recipient and this user
-                    userDataChannel.archiveMessage(message);
+                    // archive sedn message
+                    userDataChannel.archiveMessage(parsedMsg);
 
                     channelView.scrollToBottom();
 
