@@ -112,7 +112,7 @@ var userDataChannel = {
 
     encryptBlockWithKey : function (block, publicKey) {
         var encryptContent = cryptico.encrypt(block, publicKey);
-        if (encryptContent.status === success) {
+        if (encryptContent.status === "success") {
             return (encryptContent.cipher);
         }
 
