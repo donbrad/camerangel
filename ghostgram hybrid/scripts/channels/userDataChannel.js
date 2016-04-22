@@ -143,12 +143,12 @@ var userDataChannel = {
         
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-      /*  everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+        everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating private message " + JSON.stringify(error));
                 debugger;
             }
-        });*/
+        });
     },
 
     archiveMessage : function (message) {
@@ -168,13 +168,12 @@ var userDataChannel = {
 
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-        /*everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
-         if (error !== null) {
-         mobileNotify ("Error creating private message " + JSON.stringify(error));
-         debugger;
-         }
-         });*/
-
+        everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+             if (error !== null) {
+                 mobileNotify ("Error archiving private message " + JSON.stringify(error));
+                 debugger;
+             }
+        });
     },
 
     updateTimeStamp : function () {
