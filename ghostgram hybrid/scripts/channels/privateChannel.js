@@ -53,6 +53,7 @@ var privateChannel = {
 
     // archive the message in the private channel with this user's public key and send to user.
     // this provides a secure roamable private sent folder without localstorage and parse...
+/*
     archiveMessage : function (msg) {
         var archiveMsg = {};
         archiveMsg.type = 'privateMessage';
@@ -86,6 +87,7 @@ var privateChannel = {
         });
 
     },
+*/
 
     receiveHandler : function (msg) {
 
@@ -98,12 +100,23 @@ var privateChannel = {
     decryptMessage : function (msg) {
 
         var data = null;
-        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
-        if (msg.data !== undefined && msg.data !== null) {
-            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
-            data = JSON.parse(data);
+        
+        var content = null;
+        
+        if (msg.content.cipher !== undefined) {
+            content = userDataChannel.decryptBlock(msg.content.cipher);
+        } else {
+            content = userDataChannel.decryptBlock(msg.content);
         }
 
+        if (msg.data.cipher !== undefined) {
+            data = userDataChannel.decryptBlock(msg.data.cipher);
+        } else {
+            data = userDataChannel.decryptBlock(msg.data);
+        }
+
+        data = JSON.parse(data);
+        
         var parsedMsg = {
             type: 'privateMessage',
             msgID: msg.msgID,
@@ -152,8 +165,7 @@ var privateChannel = {
             }
 
             userDataChannel.addMessage(msg);
-
-
+            
             channelView.scrollToBottom();
 
             if (channelView.privacyMode) {
@@ -180,9 +192,11 @@ var privateChannel = {
 
         if (text === undefined || text === null)
             text = '';
-        encryptMessage = cryptico.encrypt(text, privateChannel.contactKey);
+        
+        encryptMessage = userDataChannel.encryptBlockWithKey(text, privateChannel.contactKey);
+        
         if (data !== undefined && data !== null)
-            encryptData = cryptico.encrypt(JSON.stringify(data), privateChannel.contactKey);
+            encryptData =userDataChannel.encryptBlockWithKey(JSON.stringify(data), privateChannel.contactKey);
         else
             encryptData = null;
 
@@ -302,7 +316,8 @@ var privateChannel = {
         }
 
         for (var m=0; m<messages.length; m++) {
-            messages[m] = privateChannel.decryptMessage(messages[m]);
+            var message  = privateChannel.decryptMessage(messages[m]);
+            messages[m] = message;
         }
 
         if (callBack)
