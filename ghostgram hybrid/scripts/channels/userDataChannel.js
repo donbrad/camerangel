@@ -104,8 +104,11 @@ var userDataChannel = {
     
     archiveMessage : function (message) {
       // remap channelUUID to recipient id
+        if (userDataChannel.isDuplicateMessage(message.msgID))
+            return;
+
         message.channelUUID = message.recipient;
-        message.Id === uuid.v4();
+        message.Id =  message.msgID;
 
         var publicKey = userModel._user.publicKey;
         var encryptContent = cryptico.encrypt(message.content, publicKey);
@@ -126,6 +129,9 @@ var userDataChannel = {
     },
 
     addMessage : function (message) {
+        if (userDataChannel.isDuplicateMessage(message.msgID))
+            return;
+        
         if (message.Id === undefined) {
             message.Id = message.msgID;
         }
