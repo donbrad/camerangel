@@ -257,11 +257,7 @@ var privateChannel = {
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
                     // Need to toggle the channelId for our sent message -- should be recipient and this user
-                    message.channelUUID = message.recipient;
-                    // Encrypt sent message with use
-                    message.content = cryptico.encrypt(content, privateChannel.publicKey);
-                    message.data =  cryptico.encrypt(contentData, privateChannel.publicKey);
-                    userDataChannel.addMessage(message);
+                    userDataChannel.archiveMessage(message);
 
                     channelView.scrollToBottom();
 
