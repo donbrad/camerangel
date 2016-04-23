@@ -1004,7 +1004,6 @@ var channelView = {
                  }
                  },*/
                 buttons: ['bold', 'italic', 'lists', 'horizontalrule'],
-                plugins: ['source'],
                 toolbarExternal: '#messageComposeToolbar'
             });
         }
