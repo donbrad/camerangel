@@ -8,11 +8,12 @@
 'use strict';
 
 /*
- * placesView
+ * privateNotesView
  */
 var privateNotesView = {
     topOffset: 0,
-    
+
+    // Future expansion -- these notes would be unencrypted
     notesDS : new kendo.data.DataSource(  {
         sort: {
                 field: "time",
@@ -20,7 +21,8 @@ var privateNotesView = {
             }
         }
     ),
-    activeNote: {objects: [], photos: []},
+
+    activeNote: new kendo.data.ObservableObject(),
     noteObjects: [],
     notePhotos: [],
     _titleTagActive: false,
@@ -52,10 +54,10 @@ var privateNotesView = {
 
 
         $("#privateNoteTags").kendoMultiSelect({
-            placeholder: "Add tags...",
             dataTextField: "name",
             dataValueField: "uuid",
             autoBind: false,
+            autoClose: false,
             tagMode: "multiple",
             ignoreCase: true,
             dataSource: tagModel.tagsDS,
@@ -72,11 +74,18 @@ var privateNotesView = {
 
     },
 
+
     // Initialize the channel specific view data sources.
     noteInit : function () {
 
         privateNotesView.noteObjects = [];
-        privateNotesView.activeNote = {objects: [], photos:[], tags: []};
+        privateNotesView.notePhotos = [];
+        privateNotesView.activeNote.data.photos = [];
+        privateNotesView.activeNote.data.objects = [];
+        privateNotesView.activeNote.title = '';
+        privateNotesView.activeNote.tagString = '';
+        privateNotesView.activeNote.tags= [];
+        privateNotesView.activeNote.content = '';
         privateNotesView._editView = false;
         privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
@@ -135,7 +144,7 @@ var privateNotesView = {
             };
         }
 
-        privateNotesView.notePhotos.push(photoObj);
+        privateNotesView.activeNote.data.photos.push(photoObj);
         // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
@@ -162,9 +171,6 @@ var privateNotesView = {
         var validNote = false; // If message is valid, send is enabled
         if (privateNotesView._editMode) {
             validNote = true;
-        } else {
-            // Initialize the activeNote if we're not editing.
-            privateNotesView.activeNote = {objects: [], photos: []};
         }
 
 
@@ -199,7 +205,7 @@ var privateNotesView = {
         if (privateNotesView.noteObjects.length > 0) {
             validNote = true;
 
-            var smartObject = channelView.messageObjects[0];
+            var smartObject = privateNotesView.noteObjects[0];
             if (smartObject.ggType === 'Event') {
                 text = privateNotesView.addSmartEventToNote(smartObject, text);
             } else if (smartObject.ggType === 'Movie') {
@@ -213,7 +219,7 @@ var privateNotesView = {
                 var activeNote = privateNotesView.activeNote;
                 var note = privateNoteModel.findNote(activeNote.noteId);
 
-                var contentData = JSON.stringify(activeNote.dataObject);
+                var contentData = JSON.stringify(activeNote.data);
                 var dataObj = JSON.parse(contentData);
                 note.set('title', title);
                 note.set('tagString', tagString);
@@ -325,7 +331,7 @@ var privateNotesView = {
 
             $('#privateNoteTextArea').redactor({
                 minHeight: 36,
-                maxHeight: 380,
+                maxHeight: 340,
                 focus: false,
                 imageEditable: false, // disable image edit mode on click
                 imageResizable: false, // disable image resize mode on click
@@ -562,7 +568,7 @@ var privateNotesView = {
 
         var fullMessage = note + objectUrl;
 
-        privateNotesView.activeNote.objects.push(smartEvent);
+        privateNotesView.activeNote.data.objects.push(smartEvent);
 
         return (fullMessage);
 
@@ -593,7 +599,7 @@ var privateNotesView = {
 
         var fullMessage = note + objectUrl;
 
-        privateNotesView.activeNote.objects.push(smartMovie);
+        privateNotesView.activeNote.data.objects.push(smartMovie);
 
         return (fullMessage);
 
@@ -638,16 +644,14 @@ var privateNotesView = {
 
 
     noteAddLocation : function  () {
-        channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
-        channelView.activeMessage.address = mapModel.currentAddress;
+        privateNotesView.activeNote.data.geo= {lat: mapModel.lat, lng: mapModel.lng};
+        privateNotesView.activeNote.data.address = mapModel.currentAddress;
         if (userModel._user.currentPlaceUUID !== null) {
-            channelView.activeMessage.place = {name: userModel._user.currentPlace, uuid: userModel._user.currentPlaceUUID};
+            privateNotesView.activeNote.place = {name: userModel._user.currentPlace, uuid: userModel._user.currentPlaceUUID};
         }
     },
 
-
     noteAddSmartEvent : function (smartObj) {
-
 
         smartEvent.smartAddEvent(smartObj);
 
