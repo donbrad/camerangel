@@ -48,7 +48,6 @@ var privateNotesView = {
         $('#privateNoteTextArea').click(function() {
             if (privateNotesView._editorExpanded)
                 return;
-
             privateNotesView.expandEditor();
         });
 
@@ -80,6 +79,7 @@ var privateNotesView = {
 
         privateNotesView.noteObjects = [];
         privateNotesView.notePhotos = [];
+        privateNotesView.activeNote.data = {};
         privateNotesView.activeNote.data.photos = [];
         privateNotesView.activeNote.data.objects = [];
         privateNotesView.activeNote.title = '';
@@ -87,7 +87,7 @@ var privateNotesView = {
         privateNotesView.activeNote.tags= [];
         privateNotesView.activeNote.content = '';
         privateNotesView._editView = false;
-        privateNotesView.deactivateEditor();
+       // privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
         $('#privateNoteTags').val("");
         $('#privateNoteTextArea').val('');
@@ -100,6 +100,7 @@ var privateNotesView = {
         ux.hideKeyboard();
         privateNotesView.topOffset = $("#privateNotesView-listview").data("kendoMobileListView").scroller().scrollTop;
         privateNotesView.openEditor();
+        privateNotesView.noteInit();
     },
 
     onHide : function (e) {
@@ -235,12 +236,13 @@ var privateNotesView = {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
 
-            //privateNotesView._initTextArea();
-
+            privateNotesView._initTextArea();
             privateNotesView.noteInit();
+
         }
 
     },
+
 
     _saveNote: function (text, data, ttl) {
         if (ttl === undefined || ttl < 60)
@@ -298,7 +300,7 @@ var privateNotesView = {
 */
     activateEditor : function () {
 
-        $(".redactor-editor").velocity({height: "15em"},{duration: 300});
+        $(".redactor-editor").velocity({height: "360px"},{duration: 300});
         privateNotesView._editorView = true;
         $("#privateNoteToolbar").removeClass('hidden');
         $('#privateNoteTitleTag').removeClass('hidden');
@@ -309,10 +311,12 @@ var privateNotesView = {
     },
 
     deactivateEditor : function () {
-
         privateNotesView._editorView = false;
-       privateNotesView.hideEditor();
-
+      // privateNotesView.hideEditor();
+        $(".redactor-editor").velocity({height: "36px"},{duration: 300});
+        $("#privateNoteToolbar").addClass('hidden');
+        $('#privateNoteTitleTag').addClass('hidden');
+        ux.hideKeyboard();
 
     },
 
@@ -331,7 +335,7 @@ var privateNotesView = {
 
             $('#privateNoteTextArea').redactor({
                 minHeight: 36,
-                maxHeight: 340,
+                maxHeight: 360,
                 focus: false,
                 imageEditable: false, // disable image edit mode on click
                 imageResizable: false, // disable image resize mode on click
