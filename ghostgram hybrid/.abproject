@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.50",
+  "BundleVersion": "0.0.51",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -86,6 +86,7 @@
     "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.phonegap.plugins.PushPlugin@3.1.1",
+    "com.telerik.plugins.wkwebview@0.6.9",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
