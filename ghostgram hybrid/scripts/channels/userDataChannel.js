@@ -130,10 +130,6 @@ var userDataChannel = {
         if (userDataChannel.isDuplicateMessage(message.msgID))
             return;
 
-        if (message.Id === undefined) {
-            message.Id = message.msgID;
-        }
-        
         /*var content = userDataChannel.encryptBlock(message.content);
         message.content = content;
 
@@ -157,7 +153,6 @@ var userDataChannel = {
             return;
 
         message.channelUUID = message.recipient;
-        message.Id =  message.msgID;
 
         var content = userDataChannel.encryptBlock(message.content);
         message.content = content;
@@ -322,7 +317,7 @@ var userDataChannel = {
     },
 
     channelError : function (error) {
-        mobileNotify('Data Channel Error : ' + error)
+        mobileNotify('Data Channel Error : ' + JSON.stringify(error));
     }
 };
 
