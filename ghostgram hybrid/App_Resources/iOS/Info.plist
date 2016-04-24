@@ -38,6 +38,45 @@
             <true/>
         </dict>
     </dict>
+    <key>NSExceptionDomains</key>
+    <dict>
+        <key>com</key>
+        <dict>
+            <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+        </dict>
+        <key>net</key>
+        <dict>
+            <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+        </dict>
+        <key>org</key>
+        <dict>
+            <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+        </dict>
+		<key>file:</key>
+        <dict>
+            <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+        </dict>
+		<dict>
+       <key>localhost</key>
+       <dict>
+        <key>NSTemporaryExceptionAllowsInsecureHTTPSLoads</key>
+           <false/>           
+           <key>NSIncludesSubdomains</key>
+           <true/>
+           <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+           <true/>
+           <key>NSTemporaryExceptionMinimumTLSVersion</key>
+           <string>1.0</string>
+           <key>NSTemporaryExceptionRequiresForwardSecrecy</key>
+           <false/>
+       </dict>
+   </dict>
+    </dict>
+
     <key>CFBundleIdentifier</key>
     <string>$AppIdentifier$</string>
     <key>CFBundleName</key>
@@ -159,12 +198,6 @@
             <string>{768, 1024}</string>
         </dict>
     </array>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-      <!--Allow all connections -->
-      <key>NSAllowsArbitraryLoads</key>
-          <true/>
-    </dict>
     <!-- Opt out of "Slide Over and Split View" -->
     <key>UIRequiresFullScreen</key>
     <true/>

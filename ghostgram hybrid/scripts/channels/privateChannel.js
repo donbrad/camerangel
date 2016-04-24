@@ -14,6 +14,7 @@ var privateChannel = {
     channelUUID: '',
     contactId : '',
     contactKey: '',
+    publicKey : null,
     contactName : '',
     last24hours : 0,
     RSAKey : null,
@@ -44,6 +45,7 @@ var privateChannel = {
         privateChannel.users = new Array();
         privateChannel.users[userUUID] = privateChannel.thisUser;
         privateChannel.channelUUID = contactUUID;
+        privateChannel.publicKey = userModel._user.get('publicKey');
         privateChannel.RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
         privateChannel.last24Hours = ggTime.lastDay();
 
@@ -51,8 +53,8 @@ var privateChannel = {
 
     // archive the message in the private channel with this user's public key and send to user.
     // this provides a secure roamable private sent folder without localstorage and parse...
-   /* archiveMessage : function (msg) {
-        
+/*
+    archiveMessage : function (msg) {
         var archiveMsg = {};
         archiveMsg.type = 'privateMessage';
         archiveMsg.msgID = msg.msgID;
@@ -86,6 +88,7 @@ var privateChannel = {
 
     },
 */
+
     receiveHandler : function (msg) {
 
 
@@ -97,12 +100,23 @@ var privateChannel = {
     decryptMessage : function (msg) {
 
         var data = null;
-        var content = cryptico.decrypt(msg.content.cipher, privateChannel.RSAKey).plaintext;
-        if (msg.data !== undefined && msg.data !== null) {
-            data = cryptico.decrypt(msg.data.cipher, privateChannel.RSAKey).plaintext;
-            data = JSON.parse(data);
+        
+        var content = null;
+        
+        if (msg.content.cipher !== undefined) {
+            content = userDataChannel.decryptBlock(msg.content.cipher);
+        } else {
+            content = userDataChannel.decryptBlock(msg.content);
         }
 
+        if (msg.data.cipher !== undefined) {
+            data = userDataChannel.decryptBlock(msg.data.cipher);
+        } else {
+            data = userDataChannel.decryptBlock(msg.data);
+        }
+
+        data = JSON.parse(data);
+        
         var parsedMsg = {
             type: 'privateMessage',
             msgID: msg.msgID,
@@ -149,6 +163,8 @@ var privateChannel = {
             } else {
                 channelView.scrollToBottom();
             }
+
+            userDataChannel.addMessage(msg);
             
             channelView.scrollToBottom();
 
@@ -161,9 +177,6 @@ var privateChannel = {
             channelModel.confirmPrivateChannel(msg.channelUUID);
             channelModel.incrementUnreadCount(msg.channelUUID, 1, null);
         }
-
-        // Add the encrypted message to cloud and offline storage
-        userDataChannel.addMessage(msg);
 
     },
 
@@ -179,9 +192,11 @@ var privateChannel = {
 
         if (text === undefined || text === null)
             text = '';
-        encryptMessage = cryptico.encrypt(text, privateChannel.contactKey);
+        
+        encryptMessage = userDataChannel.encryptBlockWithKey(text, privateChannel.contactKey);
+        
         if (data !== undefined && data !== null)
-            encryptData = cryptico.encrypt(JSON.stringify(data), privateChannel.contactKey);
+            encryptData =userDataChannel.encryptBlockWithKey(JSON.stringify(data), privateChannel.contactKey);
         else
             encryptData = null;
 
@@ -221,12 +236,9 @@ var privateChannel = {
                 data: encryptData,        // publish the encryptedData.
                 time: currentTime,
                 fromHistory: false,
-                wasSent: false,
                 ttl: ttl
             };
 
-          
-            
             APP.pubnub.publish({
                 channel: recipient,
                 message: message,
@@ -242,6 +254,7 @@ var privateChannel = {
                     // for the recipient, its this users uuid.
                     // for the sender, it's the recipients uuid
                     var parsedMsg = {
+                        Id: message.msgID,
                         type: 'privateMessage',
                         recipient: message.recipient,
                         sender: userModel._user.userUUID,
@@ -249,7 +262,8 @@ var privateChannel = {
                         channelUUID: message.recipient,
                         content: content,
                         data: contentData,
-                        time: currentTime,
+                        time: message.time,
+                        wasSent: true,
                         fromHistory: false,
                         ttl: ttl
 
@@ -258,9 +272,8 @@ var privateChannel = {
                     channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
-                    userDataChannel.archiveMessage(message);
-                    // Archive the sent message in the could and offline
-                    
+                    // archive sedn message
+                    userDataChannel.archiveMessage(parsedMsg);
 
                     channelView.scrollToBottom();
 
@@ -305,7 +318,8 @@ var privateChannel = {
         }
 
         for (var m=0; m<messages.length; m++) {
-            messages[m] = privateChannel.decryptMessage(messages[m]);
+            var message  = privateChannel.decryptMessage(messages[m]);
+            messages[m] = message;
         }
 
         if (callBack)

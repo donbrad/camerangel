@@ -14,7 +14,7 @@
 	<link href="styles/redactor.css" rel="stylesheet" />
 
 	<link href="kendo/styles/kendo.common.css" rel="stylesheet" />
-	<!--<link href="kendo/styles/kendo.material.min.css" rel="stylesheet" />-->
+	<link href="kendo/styles/kendo.material.css" rel="stylesheet" />
 	<!--<link href="kendo/styles/kendo.material.mobile.min.css" rel="stylesheet" />-->
 	<link href="kendo/styles/kendo.mobile.all.css" rel="stylesheet" />
 
@@ -27,7 +27,7 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places"></script>
 
 	<!-- bower components -->
-	<script src="bower_components/everlive/src/everlive.all.js"></script>
+	<script src="bower_components/everlive/min/everlive.all.min.js"></script>
 	<script src="bower_components/google-libphonenumber/dist/browser/libphonenumber.js"></script>
 	<script src="bower_components/eventEmitter/EventEmitter.js"></script>
 	<script src="bower_components/q/q.js"></script>
@@ -4217,7 +4217,7 @@
 		<div class="messageCompose">
 			<div id="privateNoteTitleTag" class="hidden">
 				<input style="font-weight: 600;"  type="search" id="privateNoteTitle" placeholder="Add Title...">
-				<input type="search" id="privateNoteTags" placeholder="Add Tags...">
+				<select id="privateNoteTags"  placeholder="Add Tags..."> </select>
 			</div>
 			<div id="privateNoteToolbar" class="hidden"></div>
 			<textarea id="privateNoteTextArea" type='text'></textarea>

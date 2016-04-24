@@ -8,13 +8,21 @@
 'use strict';
 
 /*
- * placesView
+ * privateNotesView
  */
 var privateNotesView = {
     topOffset: 0,
-   
-    notesDS : null,
-    activeNote: {objects: [], photos: []},
+
+    // Future expansion -- these notes would be unencrypted
+    notesDS : new kendo.data.DataSource(  {
+        sort: {
+                field: "time",
+                dir: "desc"
+            }
+        }
+    ),
+
+    activeNote: new kendo.data.ObservableObject(),
     noteObjects: [],
     notePhotos: [],
     _titleTagActive: false,
@@ -22,6 +30,8 @@ var privateNotesView = {
     _editorExpanded : false,
     _editMode: false,
     _editorView: false,
+    _editorMin : 36,
+    _editorMax : 240,
 
     onInit : function (e) {
        // _preventDefault(e);
@@ -40,16 +50,16 @@ var privateNotesView = {
         $('#privateNoteTextArea').click(function() {
             if (privateNotesView._editorExpanded)
                 return;
-
-            privateNotesView.expandEditor();
+            privateNotesView._editorExpanded = true;
+            privateNotesView.activateEditor();
         });
 
 
         $("#privateNoteTags").kendoMultiSelect({
-            placeholder: "Add tags...",
             dataTextField: "name",
             dataValueField: "uuid",
             autoBind: false,
+            autoClose: false,
             tagMode: "multiple",
             ignoreCase: true,
             dataSource: tagModel.tagsDS,
@@ -66,13 +76,21 @@ var privateNotesView = {
 
     },
 
+
     // Initialize the channel specific view data sources.
     noteInit : function () {
 
         privateNotesView.noteObjects = [];
-        privateNotesView.activeNote = {objects: [], photos:[], tags: []};
+        privateNotesView.notePhotos = [];
+        privateNotesView.activeNote.data = {};
+        privateNotesView.activeNote.data.photos = [];
+        privateNotesView.activeNote.data.objects = [];
+        privateNotesView.activeNote.title = '';
+        privateNotesView.activeNote.tagString = '';
+        privateNotesView.activeNote.tags= [];
+        privateNotesView.activeNote.content = '';
         privateNotesView._editView = false;
-        privateNotesView.deactivateEditor();
+       // privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
         $('#privateNoteTags').val("");
         $('#privateNoteTextArea').val('');
@@ -85,6 +103,7 @@ var privateNotesView = {
         ux.hideKeyboard();
         privateNotesView.topOffset = $("#privateNotesView-listview").data("kendoMobileListView").scroller().scrollTop;
         privateNotesView.openEditor();
+        privateNotesView.noteInit();
     },
 
     onHide : function (e) {
@@ -93,12 +112,12 @@ var privateNotesView = {
     },
 
     expandEditor : function () {
-        $('#privateNoteTextArea').css( "height","360" );
+        $('#privateNoteTextArea').css( "height", privateNotesView._editorMax + 'px' );
         privateNotesView._editorExpanded = true;
     },
 
     shrinkEditor : function ()  {
-        $('#privateNoteTextArea').css( "height","36" );
+        $('#privateNoteTextArea').css( "height", privateNotesView._editorMin + 'px' );
         privateNotesView._editorExpanded = false;
     },
 
@@ -133,7 +152,7 @@ var privateNotesView = {
             };
         }
 
-        privateNotesView.notePhotos.push(photoObj);
+        privateNotesView.activeNote.data.photos.push(photoObj);
         // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
@@ -160,9 +179,6 @@ var privateNotesView = {
         var validNote = false; // If message is valid, send is enabled
         if (privateNotesView._editMode) {
             validNote = true;
-        } else {
-            // Initialize the activeNote if we're not editing.
-            privateNotesView.activeNote = {objects: [], photos: []};
         }
 
 
@@ -197,7 +213,7 @@ var privateNotesView = {
         if (privateNotesView.noteObjects.length > 0) {
             validNote = true;
 
-            var smartObject = channelView.messageObjects[0];
+            var smartObject = privateNotesView.noteObjects[0];
             if (smartObject.ggType === 'Event') {
                 text = privateNotesView.addSmartEventToNote(smartObject, text);
             } else if (smartObject.ggType === 'Movie') {
@@ -211,7 +227,7 @@ var privateNotesView = {
                 var activeNote = privateNotesView.activeNote;
                 var note = privateNoteModel.findNote(activeNote.noteId);
 
-                var contentData = JSON.stringify(activeNote.dataObject);
+                var contentData = JSON.stringify(activeNote.data);
                 var dataObj = JSON.parse(contentData);
                 note.set('title', title);
                 note.set('tagString', tagString);
@@ -222,23 +238,18 @@ var privateNotesView = {
                 note.set('time',ggTime.currentTime());
 
 
-                var Id = note.Id;
-                if (Id !== undefined){
-                    everlive.updateOne(privateNoteModel._cloudClass, note, function (error, data) {
-                        //placeNoteModel.notesDS.remove(note);
-                    });
-                }
 
             } else {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
 
-            //privateNotesView._initTextArea();
-
+            privateNotesView._initTextArea();
             privateNotesView.noteInit();
+
         }
 
     },
+
 
     _saveNote: function (text, data, ttl) {
         if (ttl === undefined || ttl < 60)
@@ -255,7 +266,7 @@ var privateNotesView = {
         if (data.ggType !== undefined) {
             ggType = data.ggType;
         }
-        var message = {
+        var note = {
             Id: uuidNote,
             noteId: uuidNote,
             type: 'Note',
@@ -270,17 +281,7 @@ var privateNotesView = {
             ttl: ttl
         };
 
-        privateNoteModel.notesDS.add(message);
-        privateNoteModel.notesDS.sync();
-
-        everlive.createOne(privateNoteModel._cloudClass, message, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating Private Note " + JSON.stringify(error));
-            } else {
-                // Add the everlive object with everlive created Id to the datasource
-
-            }
-        });
+       privateNoteModel.addNote(note);
 
       //  privateNoteModel.notesDS.sync();
         privateNotesView.scrollToBottom();
@@ -306,7 +307,7 @@ var privateNotesView = {
 */
     activateEditor : function () {
 
-        $(".redactor-editor").velocity({height: "15em"},{duration: 300});
+        $(".redactor-editor").velocity({height: privateNotesView._editorMax + 'px'},{duration: 300});
         privateNotesView._editorView = true;
         $("#privateNoteToolbar").removeClass('hidden');
         $('#privateNoteTitleTag').removeClass('hidden');
@@ -317,10 +318,12 @@ var privateNotesView = {
     },
 
     deactivateEditor : function () {
-
         privateNotesView._editorView = false;
-       privateNotesView.hideEditor();
-
+      // privateNotesView.hideEditor();
+        $(".redactor-editor").velocity({height: privateNotesView._editorMin + 'px'},{duration: 300});
+        $("#privateNoteToolbar").addClass('hidden');
+        $('#privateNoteTitleTag').addClass('hidden');
+        ux.hideKeyboard();
 
     },
 
@@ -338,13 +341,13 @@ var privateNotesView = {
             privateNotesView._editorActive = true;
 
             $('#privateNoteTextArea').redactor({
-                minHeight: 36,
-                maxHeight: 380,
+                minHeight: privateNotesView._editorMin,
+                maxHeight: privateNotesView._editorMin,
                 focus: false,
                 imageEditable: false, // disable image edit mode on click
                 imageResizable: false, // disable image resize mode on click
                 placeholder: 'Add Note...',
-                plugins: ['clear', 'save'],
+
                 callbacks: {
                      paste: function(content)
                      {
@@ -372,14 +375,15 @@ var privateNotesView = {
                         }
 
 
-                    },
+                    }/*,
                     click : function (e) {
 
-                    }
+                    }*/
                  },
 
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
                 buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
+                plugins: ['clear', 'save'],
                 toolbarExternal: '#privateNoteToolbar'
             });
 
@@ -576,7 +580,7 @@ var privateNotesView = {
 
         var fullMessage = note + objectUrl;
 
-        privateNotesView.activeNote.objects.push(smartEvent);
+        privateNotesView.activeNote.data.objects.push(smartEvent);
 
         return (fullMessage);
 
@@ -607,7 +611,7 @@ var privateNotesView = {
 
         var fullMessage = note + objectUrl;
 
-        privateNotesView.activeNote.objects.push(smartMovie);
+        privateNotesView.activeNote.data.objects.push(smartMovie);
 
         return (fullMessage);
 
@@ -652,16 +656,14 @@ var privateNotesView = {
 
 
     noteAddLocation : function  () {
-        channelView.activeMessage.geo= {lat: mapModel.lat, lng: mapModel.lng};
-        channelView.activeMessage.address = mapModel.currentAddress;
+        privateNotesView.activeNote.data.geo= {lat: mapModel.lat, lng: mapModel.lng};
+        privateNotesView.activeNote.data.address = mapModel.currentAddress;
         if (userModel._user.currentPlaceUUID !== null) {
-            channelView.activeMessage.place = {name: userModel._user.currentPlace, uuid: userModel._user.currentPlaceUUID};
+            privateNotesView.activeNote.place = {name: userModel._user.currentPlace, uuid: userModel._user.currentPlaceUUID};
         }
     },
 
-
     noteAddSmartEvent : function (smartObj) {
-
 
         smartEvent.smartAddEvent(smartObj);
 

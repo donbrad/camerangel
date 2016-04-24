@@ -31,8 +31,7 @@ var tagModel = {
     tagsDS: null,
 
     init : function () {
-
-
+        
         tagModel.tagsDS = new kendo.data.DataSource({
             type: 'everlive',
          //   offlineStorage: "tags",

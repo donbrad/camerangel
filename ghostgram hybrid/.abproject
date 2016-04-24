@@ -4,9 +4,9 @@
   "projectVersion": 1,
   "AppIdentifier": "com.kyburzcodeworks.ghostgrams",
   "DisplayName": "ghostgrams",
-  "Author": "don bradford",
+  "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.47",
+  "BundleVersion": "0.0.52",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -14,6 +14,7 @@
   "iOSBackgroundMode": [
     "location",
     "external-accessory",
+    "bluetooth-central",
     "fetch",
     "remote-notification"
   ],
@@ -86,9 +87,11 @@
     "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.phonegap.plugins.PushPlugin@3.1.1",
+    "com.telerik.plugins.wkwebview@0.6.9",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
+    "cordova-plugin-crosswalk-webview@1.5.0",
     "cordova-plugin-device",
     "cordova-plugin-device-motion",
     "cordova-plugin-device-orientation",
@@ -97,6 +100,7 @@
     "cordova-plugin-file-transfer",
     "cordova-plugin-geolocation",
     "cordova-plugin-globalization",
+    "cordova-plugin-inappbrowser",
     "cordova-plugin-media",
     "cordova-plugin-media-capture",
     "cordova-plugin-network-information",
@@ -106,6 +110,8 @@
     "cordova-plugin-vibration",
     "cordova-plugin-whitelist",
     "de.appplant.cordova.plugin.local-notification@0.8.4",
+    "default",
+    "nl.x-services.plugins.launchmyapp@4.1.4",
     "org.apache.cordova.labs.keyboard",
     "uk.co.whiteoctober.cordova.appversion@0.1.7"
   ],

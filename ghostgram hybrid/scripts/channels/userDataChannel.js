@@ -27,7 +27,8 @@ var userDataChannel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            autoSync: true
         });
 
         if (channelUUID !== undefined) {
@@ -102,47 +103,71 @@ var userDataChannel = {
         }
     },
     
-    archiveMessage : function (message) {
-      // remap channelUUID to recipient id
-        message.channelUUID = message.recipient;
-        message.Id === uuid.v4();
 
-        var publicKey = userModel._user.publicKey;
-        var encryptContent = cryptico.encrypt(message.content, publicKey);
-        message.content = encryptContent;
-        message.wasSent = true;
 
-        var encryptData = cryptico.encrypt(JSON.stringify(message.data), publicKey);
-        message.data = encryptData;
+    encryptBlock : function (block) {
 
+        return (userDataChannel.encryptBlockWithKey(block, userModel._user.publicKey));
+    },
+
+    encryptBlockWithKey : function (block, publicKey) {
+        var encryptContent = cryptico.encrypt(block, publicKey);
+        if (encryptContent.status === "success") {
+            return (encryptContent.cipher);
+        }
+
+        return (null);
+    },
+
+    decryptBlock : function (block) {
+        var RSAKey = userModel.RSAKey;
+        var decryptContent = cryptico.decrypt(block, RSAKey);
+        
+        return (decryptContent.plaintext);
+    },
+    
+    addMessage : function (message) {
+        if (userDataChannel.isDuplicateMessage(message.msgID))
+            return;
+
+        /*var content = userDataChannel.encryptBlock(message.content);
+        message.content = content;
+
+       
+        var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
+        message.data = data;*/
+        
         userDataChannel.messagesDS.add(message);
+        userDataChannel.messagesDS.sync();
         everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating private message " + JSON.stringify(error));
                 debugger;
             }
         });
-        
     },
 
-    addMessage : function (message) {
-        if (message.Id === undefined) {
-            message.Id = message.msgID;
-        }
-        var publicKey = userModel._user.publicKey;
-        var encryptContent = cryptico.encrypt(message.content, publicKey);
-        message.content = encryptContent;
+    archiveMessage : function (message) {
+        // remap channelUUID to recipient id
+        if (userDataChannel.isDuplicateMessage(message.msgID))
+            return;
 
-       
-        var encryptData = cryptico.encrypt(JSON.stringify(message.data), publicKey);
-        message.data = encryptData;
-        
+        message.channelUUID = message.recipient;
+
+        var content = userDataChannel.encryptBlock(message.content);
+        message.content = content;
+
+
+        var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
+        message.data = data;
+
         userDataChannel.messagesDS.add(message);
+        userDataChannel.messagesDS.sync();
         everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating private message " + JSON.stringify(error));
-                debugger;
-            }
+             if (error !== null) {
+                 mobileNotify ("Error archiving private message " + JSON.stringify(error));
+                 debugger;
+             }
         });
     },
 
@@ -179,41 +204,11 @@ var userDataChannel = {
               
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-
-
+                    
 
                     var msg  =  messages[i];
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
-
-                        // Add the last 24 hours worth of messages to the private channel archive
-                       /* if (msg.sender !== userModel._user.userUUID) {
-                            // if the sender isn't this user, update the channel list
-                            channelList[msg.sender] = channelList[msg.sender]++;
-                        }
-*/
-                        var data = null;
-                        var content = cryptico.decrypt(msg.content.cipher, userDataChannel.RSAKey).plaintext;
-                        if (msg.data !== undefined && msg.data !== null) {
-                            data = cryptico.decrypt(msg.data.cipher, userDataChannel.RSAKey).plaintext;
-                            if (data !== undefined) {
-                                data = JSON.parse(data);
-                            } else {
-                                data = {};
-                            }
-                        }
-
-                        var parsedMsg = {
-                            type: 'privateMessage',
-                            msgID: msg.msgID,
-                            channelUUID: msg.sender,   // Private channelUUID is just contacts UUID...
-                            content: content,
-                            data: data,
-                            TTL: msg.ttl,
-                            time: msg.time,
-                            sender: msg.sender,
-                            recipient: msg.recipient
-                        };
-
+                        
                         channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
                         userDataChannel.addMessage(msg);
 
@@ -322,7 +317,7 @@ var userDataChannel = {
     },
 
     channelError : function (error) {
-        mobileNotify('Data Channel Error : ' + error)
+        mobileNotify('Data Channel Error : ' + JSON.stringify(error));
     }
 };
 
