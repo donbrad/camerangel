@@ -483,16 +483,6 @@
 	 <div class="feature-card preMotion" id="featureCard1">
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <img src="images/icon-feature-secure.svg"  />
-			 </div>
-
-			 <div class="icon-feature-body">
-				 <h3>Secure</h3>
-				 <p class="feature-body-text">Stay connected to the people, places and topics that matter to you.</p>
-			 </div>
-		 </div>
-		 <div class="featureList">
-			 <div class="icon-feature-img">
 				 <img src="images/icon-feature-savings.svg"  />
 			 </div>
 			 <div class="icon-feature-body">
@@ -699,7 +689,15 @@
         <ul data-role="listview" data-style="inset">
         	<li>
                 <label class="left" for="home-signup-phone"> Mobile Phone</label>
-                	<div class="mobile-countryCode">+1</div>
+                	<div class="mobile-countryCode">
+						<span id="signup-contryCode">+1</span>
+						<span id="signup-confirmed">
+							<img src="images/icon-success.svg" class="icon-sm" />
+						</span>
+						<span id="signup-error">
+							<img src="images/icon-error.svg" class="icon-sm" />
+						</span>
+					</div>
                 	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" maxlength="14" placholder="(•••) •••-••••"required />
                 	<div class="mobile-helper"> Important! Your mobile number is how friends and family will add you. </div>
                 	<div class="clearfix"></div>
@@ -1252,6 +1250,9 @@
 <div data-role="view" id="editPlace" data-title="Edit Place" data-model="editPlaceView._activePlace" class="appearance" data-layout="main" data-init="editPlaceView.onInit" data-show="editPlaceView.onShow" data-hide="editPlaceView.onHide" data-transition="slide:up">
 	<div data-role="header">
 		<div data-role="navbar">
+			<a data-role="backbutton" data-align="left">
+				<img src="images/nav-back.svg" />
+			</a>
 			<span data-role="view-title"></span>
 		</div>
 	</div>
@@ -1292,7 +1293,7 @@
 
 	</form>
 	<div class="footer" data-role="footer">
-		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="editPlaceView.onDone"> Done </a>
+		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="editPlaceView.onDone"> Save </a>
 	</div>
 </div>
 
@@ -1941,15 +1942,12 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="backbutton"  data-align="left">
-				<img src="images/nav-back.svg" />
-			</a>
 		</div>
 	</div>
 	<div class="addedChatMember" style="display: none"></div>
 	<ul style="padding-bottom: 48px;" id="channelMembers-listview"></ul>
 	<div class="footerBk" data-role="footer">
-		<a class="btnSpan-btm btnSecondary" type="button" data-role="button" href="#editChannel?updateMembers=true">Done</a>
+		<a class="btnSpan-btm btnPrimary" type="button" data-role="button" href="#editChannel?updateMembers=true">Done</a>
 	</div>
 </div>
 
@@ -2165,7 +2163,9 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="button" data-click="editContactView.onDone" data-align="left" >Done</a>
+			<a data-role="button" data-click="editContactView.onDone" data-align="left" >
+				<img src="images/nav-back.svg" />
+			</a>
 		</div>
 	</div>
 	<div>
@@ -2264,7 +2264,7 @@
 		</form>
 	</div>
 	<div class="footerBk" data-role="footer">
-		<a data-role="button" class="btnPrimary btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.validate">Update Contact
+		<a data-role="button" class="btnPrimary btnSpan-btm" id="editContact-saveBtn" data-click="editContactView.validate">Save
 		</a>
 
 	</div>
@@ -4206,13 +4206,12 @@
 			<span class="hidden">
 				<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
 			</span>
-
 		</p>
 		<div class="clearfix"></div>
 		<ul id="privateNotesView-listview"></ul>
 
 	</div>
-	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=privateNoteEditor" style="min-height: 48px; max-height: 60%;">
+	<div data-role="footer" id=privateNoteEditor" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
 			<div id="privateNoteTitleTag" class="hidden">
 				<input style="font-weight: 600;"  type="search" id="privateNoteTitle" placeholder="Add Title...">
@@ -4245,6 +4244,11 @@
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
 							<img src="images/icon-smartMenu.svg" height="24">
+						</a>
+					</li>
+					<li id="privateNote-hideKeyboard" class="hidden">
+						<a data-role="button" data-align="right" data-click="privateNotesView.closeEditor">
+							<img src="images/icon-keyboard-active.svg" height="20">
 						</a>
 					</li>
 					<li class="right">
@@ -4292,16 +4296,26 @@
 	var tagString = "";
 	if (tagString !== undefined && tagString !== null) { tagString = tagString;}
 	var sender = 'Me';
-	var dateString = moment(time).format("ddd, M/D/YY, h:mm a");
+	var noteDate = moment(time);
+	var today = moment();
+
+	if(moment().isSame(noteDate, 'day')){
+		var dateString = moment(noteDate).fromNow();
+	} else {
+		var dateString = moment(noteDate).format('M/D');
+	}
+
 	#
 	# if (ggType === 'Note') { #
 		<div class="private-note" data-objectId="#:noteId#">
 			<h3 class="textClamp">
-				<img src="images/smart-note-inline.svg" class="icon-md" />
+				<img src="images/smart-note-inline.svg" class="icon-sm" />
 				<span>#: titleStr #</span>
-				<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 			</h3>
-			<p>#: tagString #</p>
+			<p class="helper" style="font-size: 0.85em;">
+				<span>#:dateString#</span>
+				<span> #: tagString #</span>
+			</p>
 			<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
 		</div>
 	# } #

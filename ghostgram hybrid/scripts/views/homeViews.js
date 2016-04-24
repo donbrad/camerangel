@@ -964,6 +964,7 @@ var signUpView = {
                                     if (member === null) {
                                         // It's a valid mobile number and doesnt match an existing member
                                         mobileNotify(phone + " is confirmed!");
+                                        signUpView.signUpPhoneValid();
                                         signUpView.continueSignUp();
                                      } else {
                                         mobileNotify(phone + " matches an existing ghostgrams member!");
@@ -975,6 +976,7 @@ var signUpView = {
                                 $('#home-signup-phone').unbind("keyup");
                             } else {
                                 mobileNotify(phone + "isn't a recognized mobile number");
+                                signUpView.signUpPhoneError();
                             }
                         }
 
@@ -1052,7 +1054,19 @@ var signUpView = {
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
 
+    signUpPhoneValid: function(){
+        $("#signup-contryCode").css("display", "none");
+        $("#signup-confirmed").velocity("slideDown");
+        $("#signup-error").css("display", "none");
+        $(".mobile-countryCode").addClass("gg-success");
+    },
 
+    signUpPhoneError: function(){
+        $("#signup-contryCode").css("display", "none");
+        $("#signup-error").velocity("slideDown");
+        $("#signup-success").css("display", "none");
+        $(".mobile-countryCode").addClass("gg-error");
+    },
 
     _createAccount : function (username, password, name, phone) {
         var userUUID = uuid.v4(); var user = userModel._user;
@@ -1371,19 +1385,19 @@ var newUserView = {
         if(!newUserView._introRun){
         	
          // Animation
-        	$("#messageIntro").velocity({opacity: 1}).velocity({left: "50%"},{delay: 1300});
+        	/*$("#messageIntro").velocity({opacity: 1}).velocity({left: "50%"},{delay: 1300});
         	
         	$("#feature1").velocity({opacity: 1, translateY: "0%"}, {delay: 2000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
         	$("#feature2").velocity({opacity: 1, translateY: "0%"}, {delay: 3000, duration: 1000}).velocity({opacity: 0, translateY: "100%"});
         	$("#feature3").velocity({opacity: 1, translateY: "0%"}, {delay: 4000, duration: 1000}) .velocity({opacity: 0, translateY: "100%"});
-        	$("#messageIntro").velocity({opacity: 0, translateY: "-100%"}, {delay: 3000});
+        	$("#messageIntro").velocity({opacity: 0, translateY: "-100%"}, {delay: 3000});*/
 
 
-        	$("#newWelcome").velocity("fadeIn", {delay: 5500});
-        	$("#newLogo").velocity({opacity: 1}, {delay: 6000, duration: 500, easing: "easeIn"});
+        	$("#newWelcome").velocity("fadeIn", {delay: 300});
+        	$("#newLogo").velocity({opacity: 1}, {delay: 600, duration: 500, easing: "easeIn"});
         	
-        	$("#featureCard1").velocity({opacity: 1, translateY: "-10px"}, {delay: 6000, duration: 1000});
-        	$("#newUserHomeBtn").velocity({opacity: 1}, {delay: 6000,duration: 1000});
+        	$("#featureCard1").velocity({opacity: 1, translateY: "-10px"}, {delay: 1000, duration: 1000});
+        	$("#newUserHomeBtn").velocity({opacity: 1}, {delay: 1000,duration: 1000});
     		newUserView._introRun = true;
     		
         }

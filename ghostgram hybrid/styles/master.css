@@ -2935,6 +2935,14 @@ textarea {
   padding: 1em;
   vertical-align: middle;
 }
+.km-root .km-pane .km-view .km-back:after,
+.km-root .km-pane .km-view .km-back:before {
+  display: none;
+}
+.km-material .km-navbar .km-back .km-text,
+.km-material .k-toolbar .km-back .km-text {
+  display: inline-block;
+}
 .k-popup.k-group {
   border-color: transparent !important;
 }
@@ -4887,6 +4895,14 @@ div.contactListBox.activeContact > div > div > ul {
 .notify-invite-img {
   margin-right: 1rem;
 }
+.gg-success {
+  background-color: #009688 !important;
+  color: #fff;
+}
+.gg-error {
+  background-color: #E57373 !important;
+  color: #fff;
+}
 /* sign up */
 .mobile-countryCode {
   background-color: #D4ABC4;
@@ -4898,6 +4914,10 @@ div.contactListBox.activeContact > div > div > ul {
   position: absolute;
   top: 28px;
   left: -0.6em;
+}
+#signup-confirmed,
+#signup-error {
+  display: none;
 }
 .mobile-input {
   float: left;
@@ -6466,6 +6486,13 @@ table.k-editor {
 #privateNotesView-listview li {
   background: #fff;
   border-bottom: 1px solid #E0E0E0;
+}
+.privateNote-title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 60%;
 }
 #privateNoteTags option {
   background-color: #fff;
