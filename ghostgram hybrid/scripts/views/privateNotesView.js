@@ -102,6 +102,10 @@ var privateNotesView = {
         privateNotesView._editorExpanded = false;
     },
 
+    hideKeyboardBtn: function(){
+
+    },
+
     _initTextArea : function () {
 
         $('#privateNoteTextArea').val('');

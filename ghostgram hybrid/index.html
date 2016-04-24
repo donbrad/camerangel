@@ -4213,7 +4213,7 @@
 		<ul id="privateNotesView-listview"></ul>
 
 	</div>
-	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=privateNoteEditor" style="min-height: 48px; max-height: 60%;">
+	<div data-role="footer" id=privateNoteEditor" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
 			<div id="privateNoteTitleTag" class="hidden">
 				<input style="font-weight: 600;"  type="search" id="privateNoteTitle" placeholder="Add Title...">
@@ -4248,8 +4248,13 @@
 							<img src="images/icon-smartMenu.svg" height="24">
 						</a>
 					</li>
+					<li>
+						<a data-role="button" data-align="right" data-click="privateNotesView.closeEditor">
+							<img src="images/icon-keyboard-active.svg" height="20">
+						</a>
+					</li>
 					<li class="right">
-						<a data-role="button" class="btnClear"  data-click="privateNotesView.saveNote">Save</a>
+						<a data-role="button" class="btnClear"  data-click="privateNotesView.shrinkEditor">Save</a>
 					</li>
 				</ul>
 			</div>
@@ -4293,7 +4298,14 @@
 	var tagString = "";
 	if (tagString !== undefined && tagString !== null) { tagString = tagString;}
 	var sender = 'Me';
-	var dateString = moment(time).format("ddd, M/D/YY, h:mm a");
+	var noteDate = moment(time);
+	var today = moment();
+	if(noteDate.isBefore(today)){
+		var dateString = moment(noteDate).format('M/D');
+	} else {
+		var dateString = moment(noteDate).fromNow();
+	}
+
 	#
 	# if (ggType === 'Note') { #
 		<div class="private-note" data-objectId="#:noteId#">
