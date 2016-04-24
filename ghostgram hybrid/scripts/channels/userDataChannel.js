@@ -317,7 +317,7 @@ var userDataChannel = {
     },
 
     channelError : function (error) {
-        mobileNotify('Data Channel Error : ' + error)
+        mobileNotify('Data Channel Error : ' + JSON.stringify(error));
     }
 };
 
