@@ -1996,6 +1996,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   filter: blur(5px) opacity(0.2);
   -webkit-filter: blur(5px) opacity(0.2);
 }
+
 .user-content {
   width: 100% !important;
   height: 100% !important;
@@ -2419,6 +2420,14 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-material .km-view .km-navbar .km-button {
   padding: 1em;
   vertical-align: middle;
+}
+
+.km-root .km-pane .km-view .km-back:after, .km-root .km-pane .km-view .km-back:before {
+  display: none;
+}
+
+.km-material .km-navbar .km-back .km-text, .km-material .k-toolbar .km-back .km-text {
+  display: inline-block;
 }
 
 .k-popup.k-group {
@@ -4658,6 +4667,16 @@ div.contactListBox.activeContact > div > div > ul {
   margin-right: 1rem;
 }
 
+.gg-success {
+  background-color: @success-100 !important;
+  color: #fff;
+}
+
+.gg-error {
+  background-color: @warning-100 !important;
+  color: #fff;
+}
+
 /* sign up */
 .mobile-countryCode {
   background-color: @highlight-200;
@@ -4668,6 +4687,10 @@ div.contactListBox.activeContact > div > div > ul {
   position: absolute;
   top: 28px;
   left: -0.6em;
+}
+
+#signup-confirmed, #signup-error {
+  display: none;
 }
 
 .mobile-input {
@@ -6229,6 +6252,16 @@ table.k-editor {
     border-bottom: 1px solid @shade-200;
   }
 }
+
+
+.privateNote-title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 60%;
+}
+
 
 #privateNoteTags option {
   background-color: #fff;
