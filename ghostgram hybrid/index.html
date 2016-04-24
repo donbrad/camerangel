@@ -483,16 +483,6 @@
 	 <div class="feature-card preMotion" id="featureCard1">
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <img src="images/icon-feature-secure.svg"  />
-			 </div>
-
-			 <div class="icon-feature-body">
-				 <h3>Secure</h3>
-				 <p class="feature-body-text">Stay connected to the people, places and topics that matter to you.</p>
-			 </div>
-		 </div>
-		 <div class="featureList">
-			 <div class="icon-feature-img">
 				 <img src="images/icon-feature-savings.svg"  />
 			 </div>
 			 <div class="icon-feature-body">
@@ -699,7 +689,15 @@
         <ul data-role="listview" data-style="inset">
         	<li>
                 <label class="left" for="home-signup-phone"> Mobile Phone</label>
-                	<div class="mobile-countryCode">+1</div>
+                	<div class="mobile-countryCode">
+						<span id="signup-contryCode">+1</span>
+						<span id="signup-confirmed">
+							<img src="images/icon-success.svg" class="icon-sm" />
+						</span>
+						<span id="signup-error">
+							<img src="images/icon-error.svg" class="icon-sm" />
+						</span>
+					</div>
                 	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" maxlength="14" placholder="(•••) •••-••••"required />
                 	<div class="mobile-helper"> Important! Your mobile number is how friends and family will add you. </div>
                 	<div class="clearfix"></div>
@@ -4248,13 +4246,13 @@
 							<img src="images/icon-smartMenu.svg" height="24">
 						</a>
 					</li>
-					<li>
+					<li id="privateNote-hideKeyboard" class="hidden">
 						<a data-role="button" data-align="right" data-click="privateNotesView.closeEditor">
 							<img src="images/icon-keyboard-active.svg" height="20">
 						</a>
 					</li>
 					<li class="right">
-						<a data-role="button" class="btnClear"  data-click="privateNotesView.shrinkEditor">Save</a>
+						<a data-role="button" class="btnClear"  data-click="privateNotesView.saveNote">Save</a>
 					</li>
 				</ul>
 			</div>
@@ -4300,21 +4298,24 @@
 	var sender = 'Me';
 	var noteDate = moment(time);
 	var today = moment();
-	if(noteDate.isBefore(today)){
-		var dateString = moment(noteDate).format('M/D');
-	} else {
+
+	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
+	} else {
+		var dateString = moment(noteDate).format('M/D');
 	}
 
 	#
 	# if (ggType === 'Note') { #
 		<div class="private-note" data-objectId="#:noteId#">
 			<h3 class="textClamp">
-				<img src="images/smart-note-inline.svg" class="icon-md" />
+				<img src="images/smart-note-inline.svg" class="icon-sm" />
 				<span>#: titleStr #</span>
-				<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 			</h3>
-			<p>#: tagString #</p>
+			<p class="helper" style="font-size: 0.85em;">
+				<span>#:dateString#</span>
+				<span> #: tagString #</span>
+			</p>
 			<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
 		</div>
 	# } #

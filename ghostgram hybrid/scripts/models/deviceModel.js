@@ -216,12 +216,14 @@ var deviceModel = {
 
     onOffline: function() {
         deviceModel.setAppState('isOnline', false);
+        $("#network-offline").removeClass('hidden');
         // Take all data sources offline
         if (APP.everlive !== null)
             APP.everlive.offline();
     },
 
     isOnline : function () {
+        $("#network-offline").addClass('hidden');
         return(deviceModel.state.isOnline);
     },
     

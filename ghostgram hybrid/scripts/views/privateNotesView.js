@@ -311,7 +311,7 @@ var privateNotesView = {
         privateNotesView._editorView = true;
         $("#privateNoteToolbar").removeClass('hidden');
         $('#privateNoteTitleTag').removeClass('hidden');
-
+        $("#privateNote-hideKeyboard").removeClass('hidden');
         /*$("#privateNoteToolbar").removeClass('hidden');
         $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");*/
 
@@ -323,6 +323,7 @@ var privateNotesView = {
         $(".redactor-editor").velocity({height: privateNotesView._editorMin + 'px'},{duration: 300});
         $("#privateNoteToolbar").addClass('hidden');
         $('#privateNoteTitleTag').addClass('hidden');
+        $("#privateNote-hideKeyboard").addClass('hidden');
         ux.hideKeyboard();
 
     },
