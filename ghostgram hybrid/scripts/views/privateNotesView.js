@@ -778,6 +778,10 @@ var privateNotesView = {
 
     },
 
+    updateImageUrl : function (photoId, shareUrl) {
+        $('#notephoto_' + photoId).attr('src', shareUrl);
+    },
+
     addCamera : function (e) {
         _preventDefault(e);
 
@@ -786,10 +790,8 @@ var privateNotesView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
            null,  // Current channel Id for offers
-            function (photoId, url) {
-                mobileNotify("Adding photo...");
-            },
-            privateNotesView.addImageToNote  // Optional preview callback
+            privateNotesView.addImageToNote,  // Optional preview callback
+            privateNotesView.updateImageUrl
         );
     },
 
@@ -801,10 +803,8 @@ var privateNotesView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null,  // Current channel Id for offers
-            function (photoId, url) {
-                mobileNotify("Adding photo...");
-            },
-            privateNotesView.addImageToNote  // Optional preview callback
+            privateNotesView.addImageToNote,  // Optional preview callback
+            privateNotesView.updateImageUrl
         );
     },
 
