@@ -125,7 +125,7 @@ var privateNotesView = {
 
     checkEditor : function () {
         if (! privateNotesView._editorExpanded) {
-            privateNotesView.checkEditor();
+            privateNotesView.expandEditor();
         }
     },
 
