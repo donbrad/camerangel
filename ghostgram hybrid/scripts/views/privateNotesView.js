@@ -442,17 +442,7 @@ var privateNotesView = {
         privateNotesView.deactivateEditor();
 
     },
-
-
-
-    addEvent : function (e) {
-        _preventDefault(e);
-    },
-
-    addMovie : function (e) {
-        _preventDefault(e);
-    },
-
+    
 
     deleteNote : function (e) {
         _preventDefault(e);
