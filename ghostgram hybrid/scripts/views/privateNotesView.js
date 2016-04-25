@@ -95,6 +95,7 @@ var privateNotesView = {
         $('#privateNoteTags').val("");
         $('#privateNoteTextArea').val('');
         $('#privateNoteTextArea').redactor('code.set', "");
+       // $('#privateNote-SaveBtn').addClass('hidden');
 
     },
 
@@ -765,7 +766,7 @@ var privateNotesView = {
         var photoObj = photoModel.findPhotoById(photoId);
 
         if (photoObj !== undefined) {
-
+            $('#privateNote-SaveBtn').addClass('hidden');
             privateNotesView.checkEditor();
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
@@ -780,6 +781,7 @@ var privateNotesView = {
 
     updateImageUrl : function (photoId, shareUrl) {
         $('#notephoto_' + photoId).attr('src', shareUrl);
+        $('#privateNote-SaveBtn').removeClass('hidden');
     },
 
     addCamera : function (e) {
