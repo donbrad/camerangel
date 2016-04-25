@@ -237,12 +237,11 @@ var privateNotesView = {
                 note.set('dataObject', dataObj);
                 note.set('time',ggTime.currentTime());
 
-
+                privateNoteModel.updateNote(note);
 
             } else {
                 
                 privateNotesView.noteAddLocation();
-                
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
 
