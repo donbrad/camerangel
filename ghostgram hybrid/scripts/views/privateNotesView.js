@@ -442,7 +442,7 @@ var privateNotesView = {
         privateNotesView.deactivateEditor();
 
     },
-    
+
 
     deleteNote : function (e) {
         _preventDefault(e);
@@ -466,12 +466,13 @@ var privateNotesView = {
 
         if (privateNotesView.activeNote.noteId !== undefined) {
             var content='<p></p>';
-            if (privateNotesView.activeNote.content !== undefined) {
-               content =  privateNotesView.activeNote.content;
-            }
+           
             privateNotesView._editMode = true;
             $('#privateNoteTitle').val(privateNotesView.activeNote.title);
             $('#privateNoteTags').val(privateNotesView.activeNote.tagString);
+            if (privateNotesView.activeNote.content !== undefined) {
+                content =  privateNotesView.activeNote.content;
+            }
             $('#privateNoteTextArea').redactor('code.set', content);
 
             privateNotesView.activateEditor();
@@ -566,6 +567,11 @@ var privateNotesView = {
             placeName = "";
         }
 
+        privateNotesView.activeNote.type = privateNoteModel._event;
+        if (privateNotesView.activeNote.title === '') {
+            privateNotesView.activeNote.title = smartEvent.title;
+        }
+        
         var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="privateNotesView.onObjectClick" >' +
@@ -593,6 +599,12 @@ var privateNotesView = {
         var date = smartMovie.showtime, objectId = smartMovie.uuid;
 
         var dateStr = moment(date).format('ddd MMM Do h:mm A');
+
+        privateNotesView.activeNote.type = privateNoteModel._movie;
+        
+        if (privateNotesView.activeNote.title === '') {
+            privateNotesView.activeNote.title = smartMovie.movieTitle;
+        }
 
         var objectUrl = '<div><span class="btnSmart-movie" data-role="button" data-objectid="' + objectId +
             '" id="movieobject_' + objectId + '"'+
