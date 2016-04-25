@@ -123,6 +123,12 @@ var privateNotesView = {
         privateNotesView._editorExpanded = false;
     },
 
+    checkEditor : function () {
+        if (! privateNotesView._editorExpanded) {
+            privateNotesView.checkEditor();
+        }
+    },
+
     hideKeyboardBtn: function(){
 
     },
@@ -760,13 +766,16 @@ var privateNotesView = {
 
         if (photoObj !== undefined) {
 
+            privateNotesView.checkEditor();
+
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 
+            privateNotesView.notePhotos.push(photoId);
+
         }
 
-        privateNotesView.notePhotos.push(photoId);
     },
 
     addCamera : function (e) {
