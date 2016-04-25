@@ -511,6 +511,10 @@ var userStatusView = {
             userModel._user.set('alias', null);
             userModel._user.set('userUUID', null);
             userModel._user.set('rememberUsername', false);
+            // The user is signed out - so unprovision all push notifications
+            serverPush.unprovisionGroupChannels();
+            serverPush.unprovisionDataChannels();
+            
             deviceModel.resetDeviceState();
             everlive.clearLocalStorage();
             userStatusView.closeModal();
