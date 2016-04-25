@@ -15,6 +15,7 @@ var channelModel = {
     intervalTimer : undefined,
     _sentMessages : "sentMessages",
     activeChannels: [],
+    _syncingChannels : false,
 
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
 
@@ -832,9 +833,6 @@ var channelModel = {
 
         var channel = new kendo.data.ObservableObject();
 
-        /* var ChannelMap = Parse.Object.extend('channelmap');
-         var channelMap = new ChannelMap();*/
-
         var addTime = ggTime.currentTime();
         var name = placeName,
             description = "Place Chat: " + placeName;
@@ -1105,14 +1103,17 @@ var channelModel = {
 
     createChannelMap : function (channel) {
         var mapObj = {};
+        mapObj.Id = channel.channelUUID;
         mapObj.channelUUID = channel.channelUUID;
-        mapObj.channelName = channel.channelName;
+        mapObj.channelName = channel.name;
+        mapObj.description = channel.description;
         mapObj.isPlace = channel.isPlace;
         mapObj.isPrivatePlace = channel.isPrivatePlace;
         mapObj.placeUUID = channel.placeUUID;
         mapObj.placeName = channel.placeName;
         mapObj.category = channel.category;
         mapObj.ownerUUID = channel.ownerUUID;
+        mapObj.ownerName = channel.ownerName;
         mapObj.members = channel.members;
         mapObj.invitedMembers = channel.invitedMembers;
 
@@ -1179,6 +1180,24 @@ var channelModel = {
                 });
     },
 
+    syncMemberChannels : function () {
+        if (channelModel._syncingChannels === true) {
+            return;
+        }
+        channelModel._syncingChannels = true;
+       channelModel.queryChannelMapMember(userModel._user.userUUID, function (error, data) {
+
+           if (error !== null) {
+               var channels = data.result;
+           } else {
+               ggError ("Channel Sync Error " + JSON.stringify (error));
+           }
+
+
+           channelModel._syncingChannels = false;
+       }) ;
+    },
+    
     queryChannelMapMember : function (memberId, callback) {
         var query = new Everlive.Query();
         query.where().eq('members', memberId).done();

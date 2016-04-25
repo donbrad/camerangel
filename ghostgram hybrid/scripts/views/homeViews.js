@@ -1368,6 +1368,8 @@ var signInView = {
                 $("#home-signin-username, #home-signin-password").val("");
 
                 everlive.loadUserData();
+            
+                channelModel.syncMemberChannels();
                 
         });
 
