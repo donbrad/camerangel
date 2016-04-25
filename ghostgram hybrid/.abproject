@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.53",
+  "BundleVersion": "0.0.54",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -48,6 +48,7 @@
     "android.permission.READ_INPUT_STATE",
     "android.permission.READ_PHONE_STATE",
     "android.permission.READ_PROFILE",
+    "android.permission.RECEIVE_WAP_PUSH",
     "android.permission.RECORD_AUDIO",
     "android.permission.SEND_SMS",
     "android.permission.STATUS_BAR",
@@ -56,8 +57,7 @@
     "android.permission.WRITE_CONTACTS",
     "android.permission.WRITE_EXTERNAL_STORAGE",
     "android.permission.WRITE_SMS",
-    "com.android.launcher.permission.INSTALL_SHORTCUT",
-    "com.android.voicemail.permission.READ_VOICEMAIL"
+    "com.android.launcher.permission.INSTALL_SHORTCUT"
   ],
   "DeviceOrientations": [
     "Portrait"
@@ -99,7 +99,6 @@
     "cordova-plugin-file-transfer",
     "cordova-plugin-geolocation",
     "cordova-plugin-globalization",
-    "cordova-plugin-inappbrowser",
     "cordova-plugin-media",
     "cordova-plugin-media-capture",
     "cordova-plugin-network-information",
