@@ -113,6 +113,7 @@ var deviceModel = {
 
     isPushProvisioned : function ()  {
         if (deviceModel.state.pubnubInit && deviceModel.state.isDeviceRegistered) {
+            mobileNotify("Provisioning Server Push");
             serverPush.provisionDataChannels();
             serverPush.provisionGroupChannels();
             deviceModel.setAppState('devicePushEnabled', true);

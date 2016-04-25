@@ -185,7 +185,7 @@ var serverPush = {
 
     onSuccess : function (e) {
         // e.message
-       // mobileNotify("Server push : " + e.message);
+        mobileNotify("Server push : " + e.message);
     },
 
     onError : function (e) {
@@ -311,7 +311,7 @@ var serverPush = {
 
     _error : function (error) {
         if (error !== undefined)
-            mobileNotify("Pubnub Push Channel Error " + error);
+            mobileNotify("Pubnub Push Channel Error " + JSON.stringify(error));
     }
 
 

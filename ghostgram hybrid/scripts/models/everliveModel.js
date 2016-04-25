@@ -271,7 +271,7 @@ var everlive = {
             userModel.initCloudModels();
             userModel.initPubNub();
             userStatus.update();
-            deviceModel.isPushProvisioned();
+           
 
             APP.kendo.navigate('#home');
             userModel._user.bind('change', userModel.sync);
