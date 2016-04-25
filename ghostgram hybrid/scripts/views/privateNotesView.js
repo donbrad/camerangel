@@ -108,6 +108,8 @@ var privateNotesView = {
 
     onHide : function (e) {
         _preventDefault(e);
+        ux.hideKeyboard();
+        privateNotesView.noteInit();
         privateNotesView.closeEditor();
     },
 
