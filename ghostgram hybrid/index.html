@@ -4302,7 +4302,7 @@
 	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
 	} else {
-		var dateString = moment(noteDate).format('M/D');
+		var dateString = moment(noteDate).format("ddd, MMM D YYYY, h:mm a");
 	}
 
 	#

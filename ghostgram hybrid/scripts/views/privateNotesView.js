@@ -200,7 +200,7 @@ var privateNotesView = {
         privateNotesView.activeNote.tags = tags;
 
 
-        privateNotesView.noteAddLocation();
+       
 
         // Are there any photos in the current message
         if (privateNotesView.notePhotos.length > 0) {
@@ -240,6 +240,9 @@ var privateNotesView = {
 
 
             } else {
+                
+                privateNotesView.noteAddLocation();
+                
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
 
@@ -343,7 +346,7 @@ var privateNotesView = {
 
             $('#privateNoteTextArea').redactor({
                 minHeight: privateNotesView._editorMin,
-                maxHeight: privateNotesView._editorMin,
+                maxHeight: privateNotesView._editorMax,
                 focus: false,
                 imageEditable: false, // disable image edit mode on click
                 imageResizable: false, // disable image resize mode on click
@@ -488,8 +491,7 @@ var privateNotesView = {
         } else {
 
             _socialShare(privateNotesView.activeNote.content, privateNotesView.activeNote.title, null, null);
-
-            // _socialShare(null, null,  null, photoView._activePhoto.image);
+            
         }
     },
 
