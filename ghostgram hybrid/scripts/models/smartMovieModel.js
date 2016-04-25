@@ -33,28 +33,6 @@ var smartMovie = {
         smartMovie.moviesDS.fetch();
     },
 
-    /*fetch : function () {
-        var smartMovies = Parse.Object.extend(smartMovie._cloudClass);
-        var query = new Parse.Query(smartMovies);
-        query.limit(1000);
-        query.find({
-            success: function(collection) {
-                var models = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var smartObj = collection[i];
-
-                    models.push(smartObj.toJSON());
-                }
-                deviceModel.setAppState('hasSmartMovies', true);
-                smartMovie.moviesDS.data(models);
-                deviceModel.isParseSyncComplete();
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-    },*/
-
     queryMovie: function (query) {
         if (query === undefined)
             return(undefined);
@@ -111,6 +89,10 @@ var smartMovie = {
         return (null);
     },
 
+    deleteMovie : function (movie) {
+        
+    },
+    
     addMovie : function (objectIn, callback) {
        /* var smartMovies = Parse.Object.extend(smartMovie._cloudClass);
         var smartOb = new smartMovies();*/
@@ -164,29 +146,7 @@ var smartMovie = {
                 
             }
         });
-       
-
-       
-
-        /*smartOb.save(null, {
-            success: function(thisObject) {
-                // Execute any logic that should take place after the object is saved.;
-
-                if (callback !== undefined && callback !== null) {
-                    callback(thisObject.toJSON());
-                }
-
-
-            },
-            error: function(contact, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
-                if (callback !== undefined && callback !== null) {
-                    callback(null);
-                }
-            }
-        });*/
+        
     }
 
 };

@@ -450,6 +450,17 @@ var privateNotesView = {
 
            var note = privateNotesView.activeNote;
            var Id = note.Id;
+           
+           var noteObject = null;
+           
+           if (note.data.objects.length > 0) {
+                noteObject =   note.data.objects; 
+           }
+           if (note.type === privateNoteModel._movie) {
+               
+           } else if (note.type === privateNoteModel._event) {
+               
+           }
 
            if (Id !== undefined){
                everlive.deleteOne(privateNoteModel._cloudClass, Id, function (error, data) {
@@ -473,6 +484,7 @@ var privateNotesView = {
             if (privateNotesView.activeNote.content !== undefined) {
                 content =  privateNotesView.activeNote.content;
             }
+            
             $('#privateNoteTextArea').redactor('code.set', content);
 
             privateNotesView.activateEditor();
