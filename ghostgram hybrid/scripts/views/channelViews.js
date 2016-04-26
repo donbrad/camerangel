@@ -1473,10 +1473,13 @@ var channelView = {
 
         for (var i=0; i< contactArray.length; i++) {
             var contact = {};
+
             var contactIndex = contactArray[i];
-            if (contactArray[i] === userId) {
+
+            if (contactIndex === userId) {
+                // This is our user
                 contact.isContact = false;
-                contact.uuid = null;
+                contact.uuid = null;    // The user isn't in the contactList
                 contact.contactUUID = userId;
                 contact.alias = userModel._user.alias;
                 contact.name = userModel._user.name;
@@ -1485,10 +1488,10 @@ var channelView = {
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
 
-
-                // this is our user.
             } else {
+                // Not our user - must be a contact
                 var thisContact = contactModel.findContact(contactArray[i]);
+
                 if (thisContact === undefined) {
                     // No contact entry for this contact...
                     // Need to create a contact and then add to channels member list
@@ -1506,6 +1509,7 @@ var channelView = {
 
                     });
                 } else {
+                    // Found a matching contact
                     contact.isContact = true;
                     contact.uuid = thisContact.uuid;
                     contact.contactUUID = thisContact.contactUUID;
