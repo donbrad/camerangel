@@ -644,8 +644,14 @@ var contactModel = {
     // Create a contact for channel member that this user isn't connected to
     // The contact is a valid member and connected to the channel owner
     createChatContact : function (userId, guid, callback) {
+        var contact = contactModel.findContact(userId);
+        var create = false;
 
-        var contact = new kendo.data.ObservableObject();
+        if (contact === undefined) {
+            contact = new kendo.data.ObservableObject();
+            create = true;
+        }
+
         contact.set('version', contactModel._version);
         contact.set('ggType', contactModel._ggClass);
         contact.set("name", "New Member" );
@@ -697,8 +703,7 @@ var contactModel = {
     updateChatContact : function (guid, name, alias, contactUUID, contactPhone, contactEmail, contactKey) {
 
 
-
-        var contact = contactModel.findContactByUUID(uuid);
+        var contact = contactModel.findContact(contactUUID);
         var create = false;
 
         if (contact === undefined || contact === null) {

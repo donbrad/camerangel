@@ -573,7 +573,7 @@ var channelModel = {
                 var contact = contactModel.findContact(members[i]);
                 if (contact === undefined) {
 
-                    contactModel.createChatContact(members[i]);
+                    contactModel.createChatContact(members[i], null);
 
                 }
             }
@@ -729,7 +729,7 @@ var channelModel = {
             var contactUUID = memberList[i];
             var contact = contactModel.findContact(contactUUID);
             if (contact === undefined) {
-                contactModel.createChatContact(contactUUID, function (data, error){
+                contactModel.createChatContact(contactUUID, null, function (data, error){
                     if (error !== null) {
                         mobileNotify ("Error creating Chat contact " + JSON.stringify(error));
                     }
