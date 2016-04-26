@@ -511,6 +511,10 @@ var userStatusView = {
             userModel._user.set('alias', null);
             userModel._user.set('userUUID', null);
             userModel._user.set('rememberUsername', false);
+            // The user is signed out - so unprovision all push notifications
+            serverPush.unprovisionGroupChannels();
+            serverPush.unprovisionDataChannels();
+
             deviceModel.resetDeviceState();
             everlive.clearLocalStorage();
             userStatusView.closeModal();
@@ -1214,148 +1218,8 @@ var signUpView = {
                     }
 
                 });
-    /*            Parse.Cloud.run('preflightPhone', {phone: phone}, { //Todo:  replace with memberdirectory search for phone.
-                    success: function (data) {
-                        if (data.status !== 'ok' || data.count !== 0) {
-                            mobileNotify("Your phone number matches existing user.");
-                            return;
-                        } else {
 
-                            window.localStorage.setItem('ggRecoveryPassword', password);
-                            window.localStorage.setItem('ggUsername', username);
-                            //Phone number isn't a duplicate -- create user
-                            user.set("username", username);
-                            user.set("password", password);
-                            user.set("email", username);
-                            user.set("name", name);
-                            user.set("phone", phone);
-                            user.set("alias", alias);
-                            user.set("aliasPublic", "ghostgram user");
-                            user.set("currentPlace", "");
-                            user.set("currentPlaceUUID", "");
-                            user.set('photo', null);
-                            user.set('aliasPhoto', null);
-                            user.set("isAvailable", true);
-                            user.set("isVisible", true);
-                            user.set("isCheckedIn", false);
-                            user.set("availImgUrl", "images/status-available.svg");
-                            user.set("phoneValidated", false);
-                            user.set("useIdenticon", true);
-                            user.set("useLargeView", false);
-                            user.set("rememberUsername", false);
-                            user.set("userUUID", userUUID);
-                            user.set('addressList', []);
-                            user.set('emailList', []);
-                            user.set('phoneList', []);
-                            user.set('archiveIntro', false);
-                            user.set('homeIntro', false);
-                            user.set('chatIntro', false);
-                            user.set('contactIntro', false);
-                            user.set('galleryIntro', false);
-                            user.set('identiconIntro', false);
-                            user.set('placesIntro', false);
-                            user.set('firstMessage', false);
-                            user.set('recoveryPassword', password);
-                            //user.set("publicKey", publicKey);
-                            //user.set("privateKey", privateKey);
-
-                            user.signUp(null, {
-                                success: function (user) {
-
-                                    userModel.parseUser = user;
-                                    userModel.generateUserKey();
-                                    // Hooray! Let them use the app now.
-                                    userModel._user.set('username', user.get('username'));
-                                    userModel._user.set('recoveryPassword', user.get('recoveryPassword'));
-                                    userModel._user.set('name', user.get('name'));
-                                    userModel._user.set('email', user.get('email'));
-                                    userModel._user.set('phone', user.get('phone'));
-                                    userModel._user.set('alias', user.get('alias'));
-                                    userModel._user.set('currentPlace', user.get('currentPlace'));
-                                    userModel._user.set('currentPlaceUUID', user.get('currentPlaceUUID'));
-                                    userModel._user.set('photo', user.get('photo'));
-                                    userModel._user.set('isAvailable', user.get('isAvailable'));
-                                    userModel._user.set('isVisible', user.get('isVisible'));
-                                    userModel._user.set('isRetina', user.get('isRetina'));
-                                    userModel._user.set('isWIFIOnly', user.get('isWIFIOnly'));
-                                    userModel._user.set('isPhotoStored', user.get('isPhotoStored'));
-                                    userModel._user.set('saveToPhotoAlbum', user.get('saveToPhotoAlbum'));
-                                    userModel._user.set('aliasPhoto', user.get('aliasPhoto'));
-                                    userModel._user.set('userUUID', user.get('userUUID'));
-                                    userModel._user.set('phoneValidated', false);
-                                    userModel._user.set('useLargeView', false);
-                                    userModel._user.set('useIdenticon', user.get('useIdenticon'));
-                                    userModel._user.set('emailValidated', user.get('emailValidated'));
-                                    userModel.generateNewPrivateKey(user);
-
-                                    userModel.createIdenticon(userUUID);
-
-                                    var photo = user.get('photo');
-                                    if (photo === undefined || photo === null) {
-                                        userModel._user.photo = userModel.identiconUrl;
-                                    }
-
-                                    //userModel._user.set('publicKey',user.get('publicKey'));
-                                    //userModel._user.set('privateKey',user.get('privateKey'));
-                                    userModel._user.bind('change', userModel.sync);
-                                    userModel.parseACL = new Parse.ACL(Parse.User.current());
-                                    mobileNotify('Welcome to ghostgrams!');
-                                    userModel.initPubNub();
-                                    window.localStorage.setItem('ggHasAccount', true);
-                                    if (window.navigator.simulator === undefined) {
-
-                                        cordova.plugins.notification.local.add({
-                                            id: 'userWelcome',
-                                            title: 'Welcome to ghostgrams',
-                                            message: 'You have a secure connection to your family, friends and favorite places',
-                                            autoCancel: true,
-                                            date: new Date(new Date().getTime() + 120)
-                                        });
-                                    }
-
-                                    sendPhoneVerificationCode(phone, function (result) {
-                                        if (result.status === 'ok') {
-                                            userModel._user.set('phoneVerificationCode', result.code);
-                                            mobileNotify("Phone Verification Code sent.  Please check your messages");
-                                            if (window.navigator.simulator === undefined) {
-
-                                                cordova.plugins.notification.local.add({
-                                                    id: 'verifyPhone',
-                                                    title: 'Welcome to ghostgrams',
-                                                    message: 'Please verify your phone',
-                                                    autoCancel: true,
-                                                    date: new Date(new Date().getTime() + 30)
-                                                });
-                                            }
-                                        }
-                                    });
-
-                                   /!* Parse.Cloud.run('sendPhoneVerificationCode', {phoneNumber: phone}, {
-                                        success: function (result) {
-                                            mobileNotify('Please verify your phone');
-                                            $("#modalview-verifyPhone").data("kendoMobileModalView").open();
-                                        },
-                                        error: function (result, error) {
-                                            mobileNotify('Error sending verification code ' + error);
-                                        }
-                                    });
-*!/
-                                    APP.kendo.navigate('#home');
-                                },
-
-                                error: function (user, error) {
-                                    // Show the error message somewhere and let the user try again.
-                                    mobileNotify("Error: " + error.code + " " + error.message);
-                                }
-                            });
-
-                        }
-                    },
-                    error: function (error) {
-                        mobileNotify("Error checking phone number" + error);
-                    }
-                });
-*/            } else {
+            } else {
                 mobileNotify("This phone number is not a valid mobile number.");
                 return;
             }
@@ -1504,6 +1368,8 @@ var signInView = {
                 $("#home-signin-username, #home-signin-password").val("");
 
                 everlive.loadUserData();
+            
+                channelModel.syncMemberChannels();
                 
         });
 

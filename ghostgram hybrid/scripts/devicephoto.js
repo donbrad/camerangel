@@ -227,12 +227,13 @@ var devicePhoto = {
                                 isProfilePhoto = true;
                             }
 
-                            if (displayCallback !== undefined) {
-                                displayCallback(photouuid, nativeUrl);
-                            }
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, isProfilePhoto,  function (error, photo) {
                                 if (error !== null) {
                                     mobileNotify("Photo Save Error : " + JSON.stringify(error));
+                                }
+
+                                if (displayCallback !== undefined) {
+                                    displayCallback(photouuid, nativeUrl);
                                 }
                             });
 
@@ -459,13 +460,14 @@ var devicePhoto = {
                                 isProfilePhoto = true;
                             }
 
-                            if (displayCallback !== undefined) {
-                                displayCallback(photouuid, nativeUrl);
-                            }
+
 
                             photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, isProfilePhoto,  function (error, photo) {
                                 if (error !== null) {
                                     mobileNotify("Photo Save Error : " + JSON.stringify(error));
+                                }
+                                if (displayCallback !== undefined) {
+                                    displayCallback(photouuid, nativeUrl);
                                 }
                             });
 

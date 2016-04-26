@@ -119,6 +119,7 @@ var channelsView = {
     onShow : function(e) {
        // _preventDefault(e);
 
+        channelModel.syncMemberChannels();
         channelsView.updateChannelListDS();
 
         if (!channelsView._viewInitialized) {
@@ -1385,11 +1386,11 @@ var channelView = {
     // Quick access to contact data for display.
     getContactData : function (contactUUID) {
         var contact = {isContact: true};
-        //var data = channelView.contactData[uuid];x
 
        if (contactUUID === userModel._user.userUUID) {
            contact.isContact = false;
-           contact.uuid = userModel._user.userUUID;
+           contact.contactUUID = userModel._user.userUUID;
+           contact.uuid = null;
            contact.alias = userModel._user.alias;
            contact.name = userModel._user.name;
            contact.photoUrl = userModel._user.photo;
@@ -1405,23 +1406,30 @@ var channelView = {
         var data = contactModel.findContact(contactUUID);
 
         if (data === undefined) {
-            contact.uuid = contactUUID;
+            contact.contactUUID = contactUUID;
             contact.alias = 'New!';
             contact.name = 'Chat Member';
-            contact.contactId = uuid.v4();
+            contact.uuid = uuid.v4();
             contact.photoUrl = contactModel.createIdenticon(contact.contactId);
 
-            if (channelView.newMembers[contactUUID] === undefined) {
-                channelView.newMembers[contactUUID] = contactUUID;
+            channelView.membersDS.add(contact);
+            channelView.membersDS.sync();
+
+            if (channelView.memberList[contactUUID] === undefined) {
+                channelView.memberList[contactUUID] = contact;
                 mobileNotify("New Chat Member - Looking Up Info...");
-                contactModel.createChatContact(uuid, contact.contactId, function (contact) {
-                    mobileNotify(contact.name + " Added -- Refreshing Chat...");
+                contactModel.createChatContact(uuid, contact.contactUUID, function (contactIn) {
+                    mobileNotify(contactIn.name + " Added -- Refreshing Chat...");
+                    var updateContact =  channelView.memberList[contactIn.contactUUID];
+                    updateContact.name = contactIn.name;
+                    updateContact.alias = contactIn.alias;
                     $("#messages-listview").data("kendoMobileListView").refresh();
                 });
             }
 
         } else {
-            contact.uuid = data.userUUID;
+            contact.contactUUID = data.contactUUID;
+            contact.uuid = data.uuid;
             contact.alias = data.alias;
             contact.name = data.name;
             contact.photoUrl = data.identicon;
@@ -1436,7 +1444,7 @@ var channelView = {
     getContactPhotoUrl : function (contactUUID) {
         var contact = channelView.memberList[contactUUID]
         if (contact === undefined) {
-            console.err("Contact Undefined!!!");
+           ggError("Contact Undefined!!!");
             debugger;
         }
         var photoUrl = null;
@@ -1467,15 +1475,15 @@ var channelView = {
 
             if (contactArray[i] === userId) {
                 contact.isContact = false;
-                contact.uuid = userId;
-                contact.contactId = null;
+                contact.uuid = null;
+                contact.contactUUID = userId;
                 contact.alias = userModel._user.alias;
                 contact.name = userModel._user.name;
                 contact.photo = userModel._user.photo;
                 contact.identicon = userModel.identiconUrl;
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
-                channelView.memberList[contact.uuid] = contact;
+                channelView.memberList[contact.contactUUID] = contact;
                 // this is our user.
             } else {
                 var thisContact = contactModel.findContact(contactArray[i]);
@@ -1484,11 +1492,11 @@ var channelView = {
                     // Need to create a contact and then add to channels member list
                     var contactId = contactArray[i];
                     contact.isContact = false;
-                    contact.uuid = null;
-                    contact.contactId = uuid.v4();
+                    contact.uuid = uuid.v4();
+                    contact.contactUUID = contactId;
                     contact.alias = "new";
                     contact.name = "New contact...";
-                    contact.identicon = contactModel.createIdenticon(contact.contactId);
+                    contact.identicon = contactModel.createIdenticon(contact.uuid);
                     contact.photo =  contact.identicon;
                     contact.publicKey = null;
                     contact.isPresent = false;
@@ -1503,8 +1511,8 @@ var channelView = {
                     });
                 } else {
                     contact.isContact = true;
-                    contact.uuid = contactArray[i];
-                    contact.contactId = thisContact.uuid;
+                    contact.uuid = thisContact.uuid;
+                    contact.contactUUID = contact.contactUUID;
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
                     contact.photo = thisContact.photo;
@@ -1516,8 +1524,8 @@ var channelView = {
                     }
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
-                       channelView.memberList[contact.uuid] = contact;
-                       channelView.membersDS.add(contact);
+                   channelView.memberList[contact.contactUUID] = contact;
+                   channelView.membersDS.add(contact);
                     channelView.membersDS.sync();
                 }
             }
@@ -1766,6 +1774,14 @@ var channelView = {
         //var text = $('#messageTextArea').val();
         //var text = $('#messageTextArea').data("kendoEditor").value();
         var text = $('#messageTextArea').redactor('code.get');
+
+        if (text.length > 0) {
+            var newText = emojify.replace(text);
+            text = newText;
+        }
+
+        $('#messageTextArea').redactor('code.set', newText);
+
 
         if (text.length > 0) {
             validMessage = true;

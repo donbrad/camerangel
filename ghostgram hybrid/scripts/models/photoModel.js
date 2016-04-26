@@ -804,6 +804,22 @@ var photoModel = {
         });
     },
 
+    deleteCloudinaryPhoto : function (photoid) {
+        $.ajax({
+            url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/deleteCloudinaryPhoto?photoid='+photoid,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function(result) {
+
+            },
+            error: function(error) {
+                ggError("Error deleting photo " + JSON.stringify(error));
+
+            }
+        });
+    },
+
+
     deletePhoto: function (photoId) {
         var photo = this.findPhotoById(photoId);
         // Delete from local datasource
@@ -811,6 +827,10 @@ var photoModel = {
             mobileNotify("deletePhoto - can't find photo!");
         }
 
+        if (photo.cloudinaryPublicId !== null) {
+            photoModel.deleteCloudinaryPhoto(photo.cloudinaryPublicId);
+        }
+        
         photoModel.photosDS.remove(photo);
         photoModel.photosDS.sync();
        /* var Id = photo.Id;

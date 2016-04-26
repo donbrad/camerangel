@@ -467,6 +467,13 @@ var userModel = {
         // Initialize the user's data channel with the user's UUID...
         userDataChannel.init(uuid);
 
+        if (!deviceModel.state.pubnubInit) {
+            
+            userModel.initPubNub();
+            deviceModel.setAppState('pubnubInit', true);
+
+            deviceModel.isPushProvisioned();
+        }
     },
 
     fetchParseData: function() {

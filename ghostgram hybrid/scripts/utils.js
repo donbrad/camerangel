@@ -617,6 +617,7 @@ function isMemberPhone(phone, callback) {
 }
 
 
+
 function isMemberEmail(email, callback) {
 	$.ajax({
 		url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/isMemberEmail?email='+email,

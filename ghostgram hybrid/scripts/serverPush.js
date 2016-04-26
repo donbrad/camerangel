@@ -185,7 +185,7 @@ var serverPush = {
 
     onSuccess : function (e) {
         // e.message
-       // mobileNotify("Server push : " + e.message);
+        //mobileNotify("Server push : " + e.message);
     },
 
     onError : function (e) {
@@ -206,6 +206,24 @@ var serverPush = {
                     var channel = channels[i];
 
                     serverPush.provisionGroupChannel(channel.channelUUID)
+                }
+            }
+        }
+    },
+
+    unprovisionGroupChannels : function () {
+
+        if (!serverPush._channelsProvisioned) {
+
+            serverPush._channelsProvisioned = true;
+
+            var channels = channelModel.queryChannels({ field: "isPrivate", operator: "eq", value: false });
+
+            if (channels !== undefined && channels.length > 0) {
+                for (var i=0; i< channels.length; i++) {
+                    var channel = channels[i];
+
+                    serverPush.unprovisionGroupChannel(channel.channelUUID)
                 }
             }
         }
@@ -305,13 +323,56 @@ var serverPush = {
         }
     },
 
+    unprovisionDataChannels : function () {
+
+        if (serverPush._dataChannelsProvisioned) {
+
+            if (APP.pubnub === undefined || APP.pubnub === null ) {
+                mobileNotify("Provision Push - Pubnub not initialized");
+                return;
+            }
+
+            var type = 'apns';
+
+            if (device.platform === "Android") {
+                type = 'gcm';
+            }
+
+            var regId = serverPush._regId;
+            var dataChannel = appDataChannel.channelUUID, userChannel = userDataChannel.channelUUID;
+
+            APP.pubnub.mobile_gw_provision ({
+                device_id: regId,
+                op    : 'remove',
+                gw_type  : type,
+                channel  :  dataChannel,
+                callback : serverPush._success,
+                error  : serverPush._error
+            });
+
+            APP.pubnub.mobile_gw_provision ({
+                device_id: regId,
+                op    : 'remove',
+                gw_type  :type,
+                channel  : userChannel,
+                callback : serverPush._success,
+                error  : serverPush._error
+            });
+
+            serverPush._dataChannelsProvisioned = false;
+
+            //mobileNotify("pubnub push provisioned!!!");
+
+        }
+    },
+
     _success : function (data) {
         mobileNotify("Data channel server push enabled!");
     },
 
     _error : function (error) {
         if (error !== undefined)
-            mobileNotify("Pubnub Push Channel Error " + error);
+            mobileNotify("Pubnub Push Channel Error " + JSON.stringify(error));
     }
 
 

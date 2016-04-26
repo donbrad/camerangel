@@ -344,6 +344,11 @@ var smartEvent = {
         }
     },
 
+    deleteEvent : function (event) {
+
+    },
+    
+
     addEvent : function (objectIn, callback) {
       /*  var smartEvents = Parse.Object.extend(smartEvent._cloudClass);
         var smartOb = new smartEvents();*/

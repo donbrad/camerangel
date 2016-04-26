@@ -13,6 +13,11 @@
 var privateNoteModel = {
     notesDS: null,
     _cloudClass : 'privatenote',
+    _note : 'Note',
+    _movie : 'Movie',
+    _event : 'Event',
+    _link : 'Link',
+    _account : 'Account',
     
     init: function () {
         privateNoteModel.notesDS = new kendo.data.DataSource({

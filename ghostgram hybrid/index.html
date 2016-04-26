@@ -11,6 +11,8 @@
 	<link href="bower_components/pickadate/lib/themes/default.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.time.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
+	<link href="bower_components/emojify.js/dist/css/sprites/emojify.css" rel="stylesheet" />
+	<link href="bower_components/emojify.js/dist/css/sprites/emojify-emoticons.css" rel="stylesheet" />
 	<link href="styles/redactor.css" rel="stylesheet" />
 
 	<link href="kendo/styles/kendo.common.css" rel="stylesheet" />
@@ -30,11 +32,11 @@
 	<script src="bower_components/everlive/min/everlive.all.min.js"></script>
 	<script src="bower_components/google-libphonenumber/dist/browser/libphonenumber.js"></script>
 	<script src="bower_components/eventEmitter/EventEmitter.js"></script>
+	<script src="bower_components/emojify.js/dist/js/emojify.js"></script>
 	<script src="bower_components/q/q.js"></script>
 	<script src="bower_components/underscore/underscore.js"></script>
 	<script src="bower_components/moment/moment.js"></script>
 	<script src="bower_components/velocity/velocity.js"></script>
-	<script src="bower_components/lodash/lodash.js"></script>
 	<script src="bower_components/pickadate/lib/picker.js"></script>
 	<script src="bower_components/pickadate/lib/picker.date.js"></script>
 	<script src="bower_components/pickadate/lib/picker.time.js"></script>
@@ -4192,7 +4194,7 @@
 <!--/*
  * Private Notes
  */-->
-<div data-role="view" id="privateNotes" data-title="My Notes" data-layout="main" class="appearance" data-init="privateNotesView.onInit" data-show="privateNotesView.onShow" style="display: none;">
+<div data-role="view" id="privateNotes" data-title="My Notes" data-layout="main" class="appearance" data-init="privateNotesView.onInit" data-show="privateNotesView.onShow"  data-hide="privateNotesView.onHide" style="display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -4252,7 +4254,7 @@
 						</a>
 					</li>
 					<li class="right">
-						<a data-role="button" class="btnClear"  data-click="privateNotesView.saveNote">Save</a>
+						<a data-role="button" class="btnClear" id="privateNote-SaveBtn"  data-click="privateNotesView.saveNote">Save</a>
 					</li>
 				</ul>
 			</div>
@@ -4260,9 +4262,9 @@
 	</div>
 
 	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
-		<li><a data-action="privateNotesView.addEvent"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
+		<li><a data-action="privateNotesView.noteCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
 		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
-		<li><a data-action="privateNotesView.addMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
+		<li><a data-action="privateNotesView.noteMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
@@ -4302,7 +4304,7 @@
 	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
 	} else {
-		var dateString = moment(noteDate).format('M/D');
+		var dateString = moment(noteDate).format("ddd, MMM D YYYY, h:mm a");
 	}
 
 	#

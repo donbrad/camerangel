@@ -95,6 +95,7 @@ var privateNotesView = {
         $('#privateNoteTags').val("");
         $('#privateNoteTextArea').val('');
         $('#privateNoteTextArea').redactor('code.set', "");
+       // $('#privateNote-SaveBtn').addClass('hidden');
 
     },
 
@@ -108,6 +109,8 @@ var privateNotesView = {
 
     onHide : function (e) {
         _preventDefault(e);
+        ux.hideKeyboard();
+        privateNotesView.noteInit();
         privateNotesView.closeEditor();
     },
 
@@ -119,6 +122,12 @@ var privateNotesView = {
     shrinkEditor : function ()  {
         $('#privateNoteTextArea').css( "height", privateNotesView._editorMin + 'px' );
         privateNotesView._editorExpanded = false;
+    },
+
+    checkEditor : function () {
+        if (! privateNotesView._editorExpanded) {
+            privateNotesView.expandEditor();
+        }
     },
 
     hideKeyboardBtn: function(){
@@ -200,7 +209,7 @@ var privateNotesView = {
         privateNotesView.activeNote.tags = tags;
 
 
-        privateNotesView.noteAddLocation();
+       
 
         // Are there any photos in the current message
         if (privateNotesView.notePhotos.length > 0) {
@@ -237,9 +246,11 @@ var privateNotesView = {
                 note.set('dataObject', dataObj);
                 note.set('time',ggTime.currentTime());
 
-
+                privateNoteModel.updateNote(note);
 
             } else {
+                
+                privateNotesView.noteAddLocation();
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
 
@@ -343,7 +354,7 @@ var privateNotesView = {
 
             $('#privateNoteTextArea').redactor({
                 minHeight: privateNotesView._editorMin,
-                maxHeight: privateNotesView._editorMin,
+                maxHeight: privateNotesView._editorMax,
                 focus: false,
                 imageEditable: false, // disable image edit mode on click
                 imageResizable: false, // disable image resize mode on click
@@ -433,22 +444,23 @@ var privateNotesView = {
     },
 
 
-
-    addEvent : function (e) {
-        _preventDefault(e);
-    },
-
-    addMovie : function (e) {
-        _preventDefault(e);
-    },
-
-
     deleteNote : function (e) {
         _preventDefault(e);
        if (privateNotesView.activeNote.noteId !== undefined) {
 
            var note = privateNotesView.activeNote;
            var Id = note.Id;
+           
+           var noteObject = null;
+           
+           if (note.data.objects.length > 0) {
+                noteObject =   note.data.objects; 
+           }
+           if (note.type === privateNoteModel._movie) {
+               
+           } else if (note.type === privateNoteModel._event) {
+               
+           }
 
            if (Id !== undefined){
                everlive.deleteOne(privateNoteModel._cloudClass, Id, function (error, data) {
@@ -465,12 +477,14 @@ var privateNotesView = {
 
         if (privateNotesView.activeNote.noteId !== undefined) {
             var content='<p></p>';
-            if (privateNotesView.activeNote.content !== undefined) {
-               content =  privateNotesView.activeNote.content;
-            }
+           
             privateNotesView._editMode = true;
             $('#privateNoteTitle').val(privateNotesView.activeNote.title);
             $('#privateNoteTags').val(privateNotesView.activeNote.tagString);
+            if (privateNotesView.activeNote.content !== undefined) {
+                content =  privateNotesView.activeNote.content;
+            }
+            
             $('#privateNoteTextArea').redactor('code.set', content);
 
             privateNotesView.activateEditor();
@@ -488,8 +502,7 @@ var privateNotesView = {
         } else {
 
             _socialShare(privateNotesView.activeNote.content, privateNotesView.activeNote.title, null, null);
-
-            // _socialShare(null, null,  null, photoView._activePhoto.image);
+            
         }
     },
 
@@ -566,6 +579,11 @@ var privateNotesView = {
             placeName = "";
         }
 
+        privateNotesView.activeNote.type = privateNoteModel._event;
+        if (privateNotesView.activeNote.title === '') {
+            privateNotesView.activeNote.title = smartEvent.title;
+        }
+        
         var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="privateNotesView.onObjectClick" >' +
@@ -593,6 +611,12 @@ var privateNotesView = {
         var date = smartMovie.showtime, objectId = smartMovie.uuid;
 
         var dateStr = moment(date).format('ddd MMM Do h:mm A');
+
+        privateNotesView.activeNote.type = privateNoteModel._movie;
+        
+        if (privateNotesView.activeNote.title === '') {
+            privateNotesView.activeNote.title = smartMovie.movieTitle;
+        }
 
         var objectUrl = '<div><span class="btnSmart-movie" data-role="button" data-objectid="' + objectId +
             '" id="movieobject_' + objectId + '"'+
@@ -756,14 +780,22 @@ var privateNotesView = {
         var photoObj = photoModel.findPhotoById(photoId);
 
         if (photoObj !== undefined) {
+            $('#privateNote-SaveBtn').addClass('hidden');
+            privateNotesView.checkEditor();
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 
+            privateNotesView.notePhotos.push(photoId);
+
         }
 
-        privateNotesView.notePhotos.push(photoId);
+    },
+
+    updateImageUrl : function (photoId, shareUrl) {
+        $('#notephoto_' + photoId).attr('src', shareUrl);
+        $('#privateNote-SaveBtn').removeClass('hidden');
     },
 
     addCamera : function (e) {
@@ -774,7 +806,8 @@ var privateNotesView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
            null,  // Current channel Id for offers
-            privateNotesView.addImageToNote  // Optional preview callback
+            privateNotesView.addImageToNote,  // Optional preview callback
+            privateNotesView.updateImageUrl
         );
     },
 
@@ -786,7 +819,8 @@ var privateNotesView = {
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null,  // Current channel Id for offers
-            privateNotesView.addImageToNote  // Optional preview callback
+            privateNotesView.addImageToNote,  // Optional preview callback
+            privateNotesView.updateImageUrl
         );
     },
 
