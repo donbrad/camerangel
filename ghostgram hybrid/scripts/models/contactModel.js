@@ -650,39 +650,41 @@ var contactModel = {
         if (contact === undefined) {
             contact = new kendo.data.ObservableObject();
             create = true;
+
+
+            contact.set('version', contactModel._version);
+            contact.set('ggType', contactModel._ggClass);
+            contact.set("name", "New Member");
+            contact.set("alias", "new");
+            contact.set('category', "member");
+            contact.set("address", null);
+            contact.set("group", null);
+            contact.set("priority", 0);
+            contact.set("isFavorite", false);
+            contact.set("isBlocked", false);
+            contact.set('Id', guid);
+            contact.set("uuid", guid);
+            contact.set("contactUUID", userId);
+            contact.set("processing", true);
+
+            var url = contactModel.createIdenticon(guid);
+            contact.photo = null;
+            contact.identicon = url;
+
+            contactModel.contactsDS.add(contact);
+            contactModel.contactsDS.sync();
+
+            everlive.createOne(contactModel._cloudClass, contact, function (error, data) {
+                if (error !== null) {
+                    mobileNotify("Error creating Chat Contact " + JSON.stringify(error));
+                } else {
+
+                    contactModel._cleanDupContacts(contact.uuid);
+
+                }
+            });
         }
-
-        contact.set('version', contactModel._version);
-        contact.set('ggType', contactModel._ggClass);
-        contact.set("name", "New Member" );
-        contact.set("alias", "new");
-        contact.set('category', "member");
-        contact.set("address", null);
-        contact.set("group", null);
-        contact.set("priority", 0);
-        contact.set("isFavorite", false);
-        contact.set("isBlocked", false);
-        contact.set('Id', guid);
-        contact.set("uuid", guid);
-        contact.set("processing",true);
-
-        var url = contactModel.createIdenticon(guid);
-        contact.photo = null;
-        contact.identicon = url;
-
-        contactModel.contactsDS.add(contact);
-        contactModel.contactsDS.sync();
-
-        everlive.createOne(contactModel._cloudClass, contact, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating Chat Contact " + JSON.stringify(error));
-            } else {
-
-                contactModel._cleanDupContacts(contact.uuid);
-
-            }
-        });
-
+        
         memberdirectory.findMemberByUUID(userId,  function (result) {
             if (result !== null) {
 
