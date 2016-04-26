@@ -1414,7 +1414,7 @@ var channelView = {
 
             channelView.membersDS.add(contact);
             channelView.membersDS.sync();
-            
+
             if (channelView.memberList[contactUUID] === undefined) {
                 channelView.memberList[contactUUID] = contact;
                 mobileNotify("New Chat Member - Looking Up Info...");
@@ -1770,7 +1770,7 @@ var channelView = {
         var validMessage = false; // If message is valid, send is enabled
         channelView.activeMessage = {canCopy: !channelView.messageLock, photos: [], objects: []};
 
-
+        emojify.run($('#messageTextArea'));
         //var text = $('#messageTextArea').val();
         //var text = $('#messageTextArea').data("kendoEditor").value();
         var text = $('#messageTextArea').redactor('code.get');
