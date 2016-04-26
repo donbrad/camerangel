@@ -1470,9 +1470,10 @@ var channelView = {
 
         var userId = userModel._user.userUUID;
 
+
         for (var i=0; i< contactArray.length; i++) {
             var contact = {};
-
+            var contactIndex = contactArray[i];
             if (contactArray[i] === userId) {
                 contact.isContact = false;
                 contact.uuid = null;
@@ -1491,10 +1492,9 @@ var channelView = {
                 if (thisContact === undefined) {
                     // No contact entry for this contact...
                     // Need to create a contact and then add to channels member list
-                    var contactId = contactArray[i];
                     contact.isContact = false;
                     contact.uuid = uuid.v4();
-                    contact.contactUUID = contactId;
+                    contact.contactUUID = contactIndex;
                     contact.alias = "new";
                     contact.name = "New contact...";
                     contact.identicon = contactModel.createIdenticon(contact.uuid);
@@ -1502,9 +1502,7 @@ var channelView = {
                     contact.publicKey = null;
                     contact.isPresent = false;
                     contact.processing = true;
-
-
-                    contactModel.createChatContact(contactId, contact.uuid,  function (newContact) {
+                    contactModel.createChatContact(contactIndex, contact.uuid,  function (newContact) {
 
                     });
                 } else {
@@ -1525,7 +1523,7 @@ var channelView = {
                 }
             }
 
-            channelView.memberList[contactId] = contact;
+            channelView.memberList[contactIndex] = contact;
             channelView.membersDS.add(contact);
             channelView.membersDS.sync();
         }
