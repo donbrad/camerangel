@@ -1483,7 +1483,8 @@ var channelView = {
                 contact.identicon = userModel.identiconUrl;
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
-                channelView.memberList[contact.contactUUID] = contact;
+
+
                 // this is our user.
             } else {
                 var thisContact = contactModel.findContact(contactArray[i]);
@@ -1502,17 +1503,14 @@ var channelView = {
                     contact.isPresent = false;
                     contact.processing = true;
 
-                    channelView.memberList[contactId] = contact;
-                    channelView.membersDS.add(contact);
-                    channelView.membersDS.sync();
-                    
+
                     contactModel.createChatContact(contactId, contact.uuid,  function (newContact) {
 
                     });
                 } else {
                     contact.isContact = true;
                     contact.uuid = thisContact.uuid;
-                    contact.contactUUID = contact.contactUUID;
+                    contact.contactUUID = thisContact.contactUUID;
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
                     contact.photo = thisContact.photo;
@@ -1524,11 +1522,12 @@ var channelView = {
                     }
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
-                   channelView.memberList[contact.contactUUID] = contact;
-                   channelView.membersDS.add(contact);
-                    channelView.membersDS.sync();
                 }
             }
+
+            channelView.memberList[contactId] = contact;
+            channelView.membersDS.add(contact);
+            channelView.membersDS.sync();
         }
     },
 
