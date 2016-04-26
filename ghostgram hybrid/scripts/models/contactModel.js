@@ -90,8 +90,12 @@ var contactModel = {
                         break;
 
                     case "remove" :
+                        var contact = e.items[0];
                         // delete from contact list
-
+                        var contactList = contactModel.findContactList(contact.uuid);
+                        if (contactList !== undefined) {
+                            contactModel.contactListDS.remove(contactList);
+                        }
                         break;
 
                     case "add" :
@@ -640,39 +644,47 @@ var contactModel = {
     // Create a contact for channel member that this user isn't connected to
     // The contact is a valid member and connected to the channel owner
     createChatContact : function (userId, guid, callback) {
+        var contact = contactModel.findContact(userId);
+        var create = false;
 
-        var contact = new kendo.data.ObservableObject();
-        contact.set('version', contactModel._version);
-        contact.set('ggType', contactModel._ggClass);
-        contact.set("name", "New Member" );
-        contact.set("alias", "new");
-        contact.set('category', "member");
-        contact.set("address", null);
-        contact.set("group", null);
-        contact.set("priority", 0);
-        contact.set("isFavorite", false);
-        contact.set("isBlocked", false);
-        contact.set('Id', guid);
-        contact.set("uuid", guid);
-        contact.set("processing",true);
+        if (contact === undefined) {
+            contact = new kendo.data.ObservableObject();
+            create = true;
 
-        var url = contactModel.createIdenticon(guid);
-        contact.photo = null;
-        contact.identicon = url;
 
-        contactModel.contactsDS.add(contact);
-        contactModel.contactsDS.sync();
+            contact.set('version', contactModel._version);
+            contact.set('ggType', contactModel._ggClass);
+            contact.set("name", "New Member");
+            contact.set("alias", "new");
+            contact.set('category', "member");
+            contact.set("address", null);
+            contact.set("group", null);
+            contact.set("priority", 0);
+            contact.set("isFavorite", false);
+            contact.set("isBlocked", false);
+            contact.set('Id', guid);
+            contact.set("uuid", guid);
+            contact.set("contactUUID", userId);
+            contact.set("processing", true);
 
-        everlive.createOne(contactModel._cloudClass, contact, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating Chat Contact " + JSON.stringify(error));
-            } else {
+            var url = contactModel.createIdenticon(guid);
+            contact.photo = null;
+            contact.identicon = url;
 
-                contactModel._cleanDupContacts(contact.uuid);
+            contactModel.contactsDS.add(contact);
+            contactModel.contactsDS.sync();
 
-            }
-        });
+            everlive.createOne(contactModel._cloudClass, contact, function (error, data) {
+                if (error !== null) {
+                    mobileNotify("Error creating Chat Contact " + JSON.stringify(error));
+                } else {
 
+                    contactModel._cleanDupContacts(contact.uuid);
+
+                }
+            });
+        }
+        
         memberdirectory.findMemberByUUID(userId,  function (result) {
             if (result !== null) {
 
@@ -693,8 +705,7 @@ var contactModel = {
     updateChatContact : function (guid, name, alias, contactUUID, contactPhone, contactEmail, contactKey) {
 
 
-
-        var contact = contactModel.findContactByUUID(uuid);
+        var contact = contactModel.findContact(contactUUID);
         var create = false;
 
         if (contact === undefined || contact === null) {
