@@ -265,7 +265,7 @@ var channelModel = {
             return(undefined);
         var dataSource = channelModel.channelsDS;
         if (dataSource === null) {
-            console.err('queryChannel: ds is null!!!');
+            ggError('queryChannel: ds is null!!!');
             debugger;
         }
         var cacheFilter = dataSource.filter();

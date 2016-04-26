@@ -102,7 +102,7 @@
                 only_crawl_id: null,
                 img_dir: 'images/emoji',
                 ignore_emoticons: false,
-                mode: 'img'
+                mode: 'sprite'
             };
 
             /* Returns true if the given char is whitespace */

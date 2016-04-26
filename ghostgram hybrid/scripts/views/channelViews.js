@@ -1444,7 +1444,7 @@ var channelView = {
     getContactPhotoUrl : function (contactUUID) {
         var contact = channelView.memberList[contactUUID]
         if (contact === undefined) {
-            console.err("Contact Undefined!!!");
+           ggError("Contact Undefined!!!");
             debugger;
         }
         var photoUrl = null;
