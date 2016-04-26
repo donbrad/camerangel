@@ -185,7 +185,7 @@ var serverPush = {
 
     onSuccess : function (e) {
         // e.message
-        mobileNotify("Server push : " + e.message);
+        //mobileNotify("Server push : " + e.message);
     },
 
     onError : function (e) {
