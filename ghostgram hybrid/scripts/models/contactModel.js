@@ -90,8 +90,12 @@ var contactModel = {
                         break;
 
                     case "remove" :
+                        var contact = e.items[0];
                         // delete from contact list
-
+                        var contactList = contactModel.findContactList(contact.uuid);
+                        if (contactList !== undefined) {
+                            contactModel.contactListDS.remove(contactList);
+                        }
                         break;
 
                     case "add" :

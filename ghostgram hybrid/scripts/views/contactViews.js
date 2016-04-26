@@ -51,7 +51,10 @@ var contactsView = {
                 var contact = contactModel.findContactByUUID(contactId);
                 if (contact === undefined) {
                     mobileNotify('Contact List: no matching Contact in ContactsDS');
-                    return;
+                    var contactList = contactModel.findContactListUUID(contactId);
+                    if (contactList !== undefined) {
+                        contactModel.contactListDS.remove(contactList);
+                    }
                 }
 
 
