@@ -1185,15 +1185,14 @@ var channelModel = {
             return;
         }
         channelModel._syncingChannels = true;
-       channelModel.queryChannelMapMember(userModel._user.userUUID, function (error, data) {
+        channelModel.queryChannelMapMember(userModel._user.userUUID, function (error, data) {
 
-           if (error !== null) {
+           if (error === null) {
                var channels = data.result;
+                // Todo: proocess and sync channels
            } else {
                ggError ("Channel Sync Error " + JSON.stringify (error));
            }
-
-
            channelModel._syncingChannels = false;
        }) ;
     },
