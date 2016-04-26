@@ -213,6 +213,7 @@
 		emojify.setConfig({
 
 			emojify_tag_type : 'textarea',           // Only run emojify.js on this element
+			mode: 'sprite',
 			img_dir          : 'bower_components/emojify.js/dist/images/emoji' // Directory for emoji images
 			
 		});

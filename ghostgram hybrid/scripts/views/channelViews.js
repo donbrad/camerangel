@@ -1770,10 +1770,18 @@ var channelView = {
         var validMessage = false; // If message is valid, send is enabled
         channelView.activeMessage = {canCopy: !channelView.messageLock, photos: [], objects: []};
 
-        emojify.run(document.getElementById('messageTextArea'));
+
         //var text = $('#messageTextArea').val();
         //var text = $('#messageTextArea').data("kendoEditor").value();
         var text = $('#messageTextArea').redactor('code.get');
+
+        if (text.length > 0) {
+            var newText = emojify.replace(text);
+            text = newText;
+        }
+
+        $('#messageTextArea').redactor('code.set', newText);
+
 
         if (text.length > 0) {
             validMessage = true;
