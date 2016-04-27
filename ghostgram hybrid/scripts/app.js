@@ -210,6 +210,11 @@
 		}
 		
 		APP.emailAvailable = false;
+
+		emojione.imageType = 'svg';
+		emojione.sprites = true;
+		emojione.imagePathSVGSprites = 'bower_components/emojione/assets/sprites/emojione.sprites.svg';
+
 		emojify.setConfig({
 
 			emojify_tag_type : 'textarea',           // Only run emojify.js on this element
