@@ -558,8 +558,8 @@ var addContactView = {
                 return;
             }
 
-            addContactView._validPhone = validPhone;
-            var contact = contactModel.findContactByPhone(validPhone);
+            addContactView._validPhone = phone;
+            var contact = contactModel.findContactByPhone(phone);
             if (contact !== undefined) {
                 mobileNotify("Contact : " + contact.name + " has phone " + contact.phone);
                 $("#vaildMobileNumberError").velocity("slideDown");
