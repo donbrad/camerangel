@@ -677,13 +677,16 @@ var addContactView = {
 
         addContactView._emailValid = false;
         addContactView._phoneValid = false;
-        addContactView._nameValid = false;
 
-        if(name !== ''){
+
+        if(name === '' || name.length < 2){
         	$("#addContactName-blank").removeClass("hidden");
         	$("#addContactName, #addContactName-error").val(name);
+            addContactView._nameValid = false;
+
         } else {
         	$("#addContactName-blank").addClass("hidden");
+            addContactView._nameValid = true;
         }
 
 
