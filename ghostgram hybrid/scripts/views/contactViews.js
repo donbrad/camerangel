@@ -532,7 +532,15 @@ var addContactView = {
 
     },
 
+
+    // Are name and phone number valid?
     isValidContact : function () {
+        var name =  $('#addContactName').val();
+        if (name.length > 1) {
+            addContactView._nameValid = true;
+        } else {
+            addContactView._nameValid = false;
+        }
         if (addContactView._emailValid && addContactView._nameValid) {
            return (true);
         }
