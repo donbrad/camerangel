@@ -1777,8 +1777,8 @@ var channelView = {
         var text = $('#messageTextArea').redactor('code.get');
 
         if (text.length > 0) {
-            var newText = emojione.toShort(text);
-            text = emojione.shortnameToImage(newText);
+            var newText = emojione.toImage(text);
+            text = newText;
         }
 
         $('#messageTextArea').redactor('code.set', text);
