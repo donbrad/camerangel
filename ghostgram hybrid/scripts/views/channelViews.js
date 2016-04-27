@@ -1777,11 +1777,11 @@ var channelView = {
         var text = $('#messageTextArea').redactor('code.get');
 
         if (text.length > 0) {
-            var newText = emojify.replace(text);
-            text = newText;
+            var newText = emojione.toShort(text);
+            text = emojione.shortnameToImage(newText);
         }
 
-        $('#messageTextArea').redactor('code.set', newText);
+        $('#messageTextArea').redactor('code.set', text);
 
 
         if (text.length > 0) {
