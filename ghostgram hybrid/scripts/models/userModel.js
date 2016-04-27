@@ -416,15 +416,15 @@ var userModel = {
             userModel._user.set('currentPlace', place.name);
             userModel._user.set('currentPlaceUUID', place.uuid);
             userModel._user.set('googlePlaceId', place.googleId);
-            userModel._user.set('lat', place.lat.toFixed(6));
-            userModel._user.set('lng', place.lng.toFixed(6));
+            userModel._user.set('lat', place.lat.toFixed(9));
+            userModel._user.set('lng', place.lng.toFixed(9));
 
         } else {
             userModel._user.set('currentPlace', locationName);
             userModel._user.set('currentPlaceUUID', null);
             userModel._user.set('googlePlaceId', googlePlaceId);
-            userModel._user.set('lat', lat.toFixed(6));
-            userModel._user.set('lng', lng.toFixed(6));
+            userModel._user.set('lat', lat.toFixed(9));
+            userModel._user.set('lng', lng.toFixed(9));
         }
 
         userModel._user.set('isCheckedIn', true);

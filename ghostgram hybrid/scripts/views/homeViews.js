@@ -490,6 +490,12 @@ var userStatusView = {
         APP.kendo.navigate('#settings');
     },
 
+    doChangePassword : function (e) {
+        userStatusView.closeModal();
+        changePasswordView.openModal();
+    },
+
+
     doSignOut : function (e) {
         _preventDefault(e);
 
@@ -522,6 +528,7 @@ var userStatusView = {
         });
 
     },
+
 
     // Main entry point for userstatus modal
     openModal : function (e) {
@@ -1358,7 +1365,8 @@ var signInView = {
 
                 if (error !== null) {
                     mobileNotify ("Sign In error : " + error.message);
-                    return;
+                    http://res.cloudinary.com/ghostgrams/image/upload/v1461774012/userphoto/755c477043ab4bb394922aacb9ab76ed.jpg
+                        return;
 
                 }
                 window.localStorage.setItem('ggHasAccount', true);
