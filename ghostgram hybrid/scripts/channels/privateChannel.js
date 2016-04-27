@@ -47,7 +47,7 @@ var privateChannel = {
         privateChannel.channelUUID = contactUUID;
         privateChannel.publicKey = userModel._user.get('publicKey');
         privateChannel.RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
-        privateChannel.last24Hours = ggTime.lastDay();
+        privateChannel.last72Hours = ggTime.last72Hours();
 
     },
 
@@ -294,11 +294,11 @@ var privateChannel = {
             queryCache = {};
         }
 
-        privateChannel.last24Hours = ggTime.lastDay();
+        privateChannel.last72Hours = ggTime.last72Hours();
         dataSource.filter(
             [
             { field: "channelUUID", operator: "eq", value: privateChannel.channelUUID },
-            { field: "time", operator: "gte", value:  privateChannel.last24Hours}
+            { field: "time", operator: "gte", value:  privateChannel.last72Hours}
         ]);
 
         var messages = dataSource.view();
