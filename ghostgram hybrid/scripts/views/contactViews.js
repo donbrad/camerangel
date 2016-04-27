@@ -621,7 +621,7 @@ var addContactView = {
         // Generate a contact alias on blur if the user hasn't already added one...
         $('#addContactName').on('blur', function () {
             var alias =  $('#addContactAlias').val();
-            var name =  $('#addContactAlias').val();
+            var name =  $('#addContactName').val();
 
             if (name.length > 1) {
                 if (addContactView.isValidContact()) {
