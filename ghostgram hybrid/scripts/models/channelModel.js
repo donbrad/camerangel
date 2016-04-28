@@ -804,6 +804,7 @@ var channelModel = {
 
         channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
+        serverPush.provisionGroupChannel(channel.channelUUID);
 
         channelModel.syncChatContacts(channelMembers);
 
@@ -967,14 +968,14 @@ var channelModel = {
 
 
         channelModel.createChannelMap(channel);
-        
+        channelModel.channelsDS.add(channel);
+        serverPush.provisionGroupChannel(channel.channelUUID);
+        mobileNotify('Added Chat : ' + channel.get('name'));
+        APP.kendo.navigate('#editChannel?channel=' + channelUUID);
+
         everlive.createOne(channelModel._cloudClass, channel, function (error, data) {
             if (error !== null) {
                 mobileNotify ("Error creating Channel " + JSON.stringify(error));
-            } else {
-                channelModel.channelsDS.add(channel);
-                mobileNotify('Added Chat : ' + channel.get('name'));
-                APP.kendo.navigate('#editChannel?channel=' + channelUUID);
             }
         });
         

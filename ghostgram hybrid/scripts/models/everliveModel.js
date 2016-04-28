@@ -108,7 +108,7 @@ var everlive = {
 
         if (everlive._lastSync === undefined || everlive._lastSync === null) {
             everlive.updateTimeStamp();
-            everlive._syncComplete = false;
+            everlive._syncComplete = true;
         }
     },
 
@@ -272,7 +272,7 @@ var everlive = {
             userModel.initPubNub();
             userStatus.update();
            
-
+            deviceModel.syncEverlive();
             APP.kendo.navigate('#home');
             userModel._user.bind('change', userModel.sync);
             
@@ -577,7 +577,6 @@ var everlive = {
             appDataChannel.history();
             userDataChannel.history();
             notificationModel.processUnreadChannels();
-
         }
       
         if (err ) {
