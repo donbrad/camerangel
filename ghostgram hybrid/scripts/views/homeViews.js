@@ -987,6 +987,14 @@ var signUpView = {
                                                 unifyContacts(contactList);
                                                 $('.signup-userEntry').addClass('hidden');
                                                 $('.signup-contactPrefill').removeClass('hidden');
+                                                if (contactModel.addressDS.total() === 0) {
+                                                    $('#signup-addressSelect').addClass('hidden');
+                                                    $('#create-user-address').removeClass('hidden');
+                                                }
+                                                if (contactModel.emailDS.total() === 0) {
+                                                    $('#signup-emailSelect').addClass('hidden');
+                                                    $('#create-user-email').removeClass('hidden');
+                                                }
                                                 signUpView.continueContactSignUp();
                                             } else {
                                                 $('.signup-userEntry').removeClass('hidden');
@@ -1050,21 +1058,41 @@ var signUpView = {
             $(".create-user-password2").css("display", "none");
         });
 
-
-
         $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password, .create-user-password2").css("display", "none");
         
+    },
+
+
+    onEmailChange : function (e) {
+        var email = this.value();
+        mobileNotify("Please wait - validating your email...");
+        isValidEmail(email, function (result) {
+            if (result.status === 'ok' && result.valid === true){
+                if (result.correctedEmail !== null) {
+                    mobileNotify("Corrected " + email + " to " + result.correctedEmail);
+                    $('#create-user-name').val(result.correctedEmail);
+                } else {
+                    mobileNotify("Your email address is confirmed!!!");
+                    $('#create-user-name').val(email);
+                }
+
+                $("#signup-emailSelect").addClass('hidden');
+                $('#create-user-name').removeClass('hidden');
+            }
+        });
     },
 
     // Display a custom signup form with data collected from device contacts...
     continueContactSignUp : function () {
         //Todo: don - write some code here...
+        $("#home-signup-welcomebanner").addClass('hidden');
         $("#signup-emailSelect, #signup-addressSelect, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
 
     },
 
     continueSignUp : function () {
         // Todo: jordan you'll need to tweak this to handle the flexible form layout
+        $("#home-signup-welcomebanner").addClass('hidden');
         $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
         
         // ToDo - jordan - we should move Create Account button display to validation success
@@ -1083,7 +1111,7 @@ var signUpView = {
 
     onShow : function (e) {
       //  _preventDefault(e);
-
+        $("#home-signup-welcomebanner").removeClass('hidden');
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
 

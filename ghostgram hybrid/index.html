@@ -678,7 +678,7 @@
       </div>
 	</div>
 
-	<div class="banner-welcome">
+	<div class="banner-welcome" id="home-signup-welcomebanner">
 		<h2>
 			<img src="images/sign-up-icon.svg" class="icon-md" /> Welcome
 		</h2>
@@ -716,7 +716,7 @@
 						<select id="signupEmail"
 								data-text-field="address"
 								data-value-field="address"
-								data-bind="source: emailDS"
+								data-bind="source: emailDS, events: { change: signUpView.onEmailChange}"
 								auto-bind="false">
 						</select>
 					</div>
