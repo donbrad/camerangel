@@ -93,6 +93,7 @@ function unifyContacts(contacts) {
 
     //Build histograms for email, phone and address
     for (var i=0; i<contacts.length; i++) {
+        
         for (var e=0; e<contacts[i].emails.length; e++) {
             emailArray[contacts[i].emails[e].address] = contacts[i].emails[e].name ? contacts[i].emails[e].name : '';
 
@@ -107,13 +108,20 @@ function unifyContacts(contacts) {
             if (contacts[i].addresses[a].fullAddress.indexOf('null') == -1 && contacts[i].addresses[a].name == -1)
                 addressArray[contacts[i].addresses[a].fullAddress] = contacts[i].addresses[a].name ? contacts[i].addresses[a].name : '';
         }
+        
+        if (contacts[i].photo !== null) {
+            photoArray[contacts[i].photo] = contacts[i].photo;
+        }
 
     }
 
     emails = Object.keys(emailArray);
     phones = Object.keys(phoneArray);
     addresses = Object.keys(addressArray);
+    photos = Object.keys(photoArray);
 
+    contactModel.currentDeviceContact.photos = photos;
+    
     contactModel.emailArray = [];
     for (e = 0; e<emails.length; e++) {
         var email = {};
