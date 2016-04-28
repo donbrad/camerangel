@@ -6497,6 +6497,19 @@ table.k-editor {
 #privateNoteTags option {
   background-color: #fff;
 }
+.btnSmartList {
+  width: 100% !important;
+}
+.privateNote-event {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.privateNote-event h3 {
+  float: left;
+  width: 70%;
+  margin-left: 0;
+  margin-right: 0;
+}
 #startUpView {
   width: 100%;
   height: 100%;
