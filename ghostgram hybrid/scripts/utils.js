@@ -775,6 +775,7 @@ function ggAddDays(startDate,numberOfDays)
 var ggTime = {
 
 	_day : 60 * 60 * 24 * 1000,
+	_72hours : 60 * 60 * 24 * 3 * 1000,
 	_week: 60 * 60 * 24 * 7 * 1000,
 	_month: 60 * 60 * 24 * 30 * 1000,
 
@@ -799,6 +800,11 @@ var ggTime = {
 
 	lastDay : function () {
 		return(ggTime.currentTime() - ggTime._day);
+
+	},
+
+	last72Hours : function () {
+		return(ggTime.currentTime() - ggTime._72hours);
 
 	},
 

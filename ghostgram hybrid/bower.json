@@ -12,7 +12,7 @@
     "everlive": "~1.6.9",
     "jquery.maskedinput": "~1.4.1",
     "google-libphonenumber": "~1.0.16",
-    "emojify.js": "~1.1.0"
+    "emojione": "~2.1.4"
   },
   "homepage": "https://github.com/donbrad/ghostgram",
   "authors": [

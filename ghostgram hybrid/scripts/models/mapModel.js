@@ -270,7 +270,7 @@ var mapModel = {
             var options = mapModel.gpsOptions;
             navigator.geolocation.getCurrentPosition(function (position) {
                 // Mask lat / lng to 6 digits to standardize comparison results
-                var lat = parseFloat(position.coords.latitude.toFixed(6)), lng = parseFloat(position.coords.longitude.toFixed(6));
+                var lat = parseFloat(position.coords.latitude.toFixed(9)), lng = parseFloat(position.coords.longitude.toFixed(9));
                 mapModel._updatePosition(lat, lng);
                 callback(lat, lng);
             }, function (error) {

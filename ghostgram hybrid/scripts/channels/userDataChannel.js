@@ -181,7 +181,7 @@ var userDataChannel = {
     // we have full 24 hours for all contactc
     _fetchHistory : function (timeStamp) {
 
-        var start = ggTime.toPubNubTime(ggTime.lastDay());    // Need to fetch the last 24 hours of private messages
+        var start = ggTime.toPubNubTime(ggTime.last72Hours());    // Need to fetch the last 24 hours of private messages
 
         // Get any messages in the channel
         APP.pubnub.history({
@@ -264,7 +264,7 @@ var userDataChannel = {
             return;
         }
 
-        var yesterday = ggTime.lastDay();
+        var yesterday = ggTime.last72Hours();
        
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {

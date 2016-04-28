@@ -490,6 +490,12 @@ var userStatusView = {
         APP.kendo.navigate('#settings');
     },
 
+    doChangePassword : function (e) {
+        userStatusView.closeModal();
+        changePasswordView.openModal();
+    },
+
+
     doSignOut : function (e) {
         _preventDefault(e);
 
@@ -522,6 +528,7 @@ var userStatusView = {
         });
 
     },
+
 
     // Main entry point for userstatus modal
     openModal : function (e) {
@@ -912,6 +919,8 @@ var ghostEditView = {
 };
 
 var signUpView = {
+    _emaiValid : false,
+    
     onInit : function (e) {
         //_preventDefault(e);
 
@@ -925,7 +934,10 @@ var signUpView = {
                 .keydown(function (e) {
                     var key = e.charCode || e.keyCode || 0;
                     var $phone = $(this);
-
+                    if ($phone.val().length === 0) {
+                        //user has deleted over the ( so add it back
+                        $phone.val('(');
+                    }
                     // Auto-format- do not expose the mask as the user begins to type
                     if (key !== 8 && key !== 9) {
                         if ($phone.val().length === 4) {
@@ -969,7 +981,31 @@ var signUpView = {
                                         // It's a valid mobile number and doesnt match an existing member
                                         mobileNotify(phone + " is confirmed!");
                                         signUpView.signUpPhoneValid();
-                                        signUpView.continueSignUp();
+                                        mobileNotify ("Looking up phone contacts....");
+                                        deviceFindContacts(phone, function (contactList) {
+                                            if (contactList.length > 0) {
+                                                mobileNotify('Found Me Card!');
+                                                $("#home-signup-fullname").val(contactList[0].name);
+                                                unifyContacts(contactList);
+                                                $('.signup-userEntry').addClass('hidden');
+                                                $('.signup-contactPrefill').removeClass('hidden');
+                                                if (contactModel.addressDS.total() === 0) {
+                                                    $('#signup-addressSelect').addClass('hidden');
+                                                    $('#create-user-address').removeClass('hidden');
+                                                }
+                                                if (contactModel.emailDS.total() === 0) {
+                                                    $('#signup-emailSelect').addClass('hidden');
+                                                    $('#create-user-email').removeClass('hidden');
+                                                }
+                                                signUpView.continueContactSignUp();
+                                            } else {
+                                                $('.signup-userEntry').removeClass('hidden');
+                                                $('.signup-contactPrefill').addClass('hidden');
+                                                signUpView.continueSignUp();
+                                            }
+
+                                        });
+
                                      } else {
                                         mobileNotify(phone + " matches an existing ghostgrams member!");
                                         //Todo:  we should a link to login / signin...
@@ -988,8 +1024,6 @@ var signUpView = {
                     
                 }
             })
-
-
                 .bind('focus click', function () {
                     var $phone = $(this);
 
@@ -1001,7 +1035,6 @@ var signUpView = {
                         $phone.val('').val(val); // Ensure cursor remains at the end
                     }
                 })
-
                 .blur(function () {
                     var $phone = $(this);
 
@@ -1027,16 +1060,62 @@ var signUpView = {
             $(".create-user-password2").css("display", "none");
         });
 
+        $("#home-signup-username").on("blur", function() {
+            var email =  $("#home-signup-username").val();
+            mobileNotify("Please wait - validating your email...");
+            isValidEmail(email, function (result) {
+                if (result.status === 'ok' && result.valid === true){
+                    if (result.correctedEmail !== null) {
+                        mobileNotify("Corrected " + email + " to " + result.correctedEmail);
+                        $('#create-user-name').val(result.correctedEmail);
+                    } else {
+                        mobileNotify("Your email address is confirmed!!!");
+                        $('#create-user-name').val(email);
+                    }
+                }
+            });
+
+        });
 
 
         $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password, .create-user-password2").css("display", "none");
         
     },
 
-    continueSignUp : function () {
 
+    onEmailChange : function (e) {
+        var email = this.value();
+        mobileNotify("Please wait - validating your email...");
+        isValidEmail(email, function (result) {
+            if (result.status === 'ok' && result.valid === true){
+                if (result.correctedEmail !== null) {
+                    mobileNotify("Corrected " + email + " to " + result.correctedEmail);
+                    $('#create-user-name').val(result.correctedEmail);
+                } else {
+                    mobileNotify("Your email address is confirmed!!!");
+                    $('#create-user-name').val(email);
+                }
+
+                $("#signup-emailSelect").addClass('hidden');
+                $('#create-user-name').removeClass('hidden');
+            }
+        });
+    },
+
+    // Display a custom signup form with data collected from device contacts...
+    continueContactSignUp : function () {
+        //Todo: don - write some code here...
+        $("#home-signup-welcomebanner").addClass('hidden');
+        $("#signup-emailSelect, #signup-addressSelect, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
+
+    },
+
+    continueSignUp : function () {
+        // Todo: jordan you'll need to tweak this to handle the flexible form layout
+        $("#home-signup-welcomebanner").addClass('hidden');
         $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
-        // ToDo - Add step form validation
+        
+        // ToDo - jordan - we should move Create Account button display to validation success
         $("#createAccountBtn").velocity("fadeIn", {delay: 800});
 
     },
@@ -1052,9 +1131,7 @@ var signUpView = {
 
     onShow : function (e) {
       //  _preventDefault(e);
-
-
-
+        $("#home-signup-welcomebanner").removeClass('hidden');
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
 
@@ -1075,8 +1152,7 @@ var signUpView = {
     _createAccount : function (username, password, name, phone) {
         var userUUID = uuid.v4(); var user = userModel._user;
 
-
-
+        
         window.localStorage.setItem('ggUsername', username);
         window.localStorage.setItem('ggUserUUID', userUUID);
 
@@ -1358,7 +1434,8 @@ var signInView = {
 
                 if (error !== null) {
                     mobileNotify ("Sign In error : " + error.message);
-                    return;
+                    http://res.cloudinary.com/ghostgrams/image/upload/v1461774012/userphoto/755c477043ab4bb394922aacb9ab76ed.jpg
+                        return;
 
                 }
                 window.localStorage.setItem('ggHasAccount', true);

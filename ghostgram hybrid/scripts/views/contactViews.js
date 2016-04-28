@@ -514,6 +514,8 @@ var addContactView = {
 	_closeModal: false,
     _emailValid: false,
     _phoneValid : false,
+    _nameValid : false,
+    _validPhone : null,
     phoneUtil : null,
     PNF : null,
     
@@ -529,7 +531,23 @@ var addContactView = {
         return(phoneNumber);
 
     },
-    
+
+
+    // Are name and phone number valid?
+    isValidContact : function () {
+        var name =  $('#addContactName').val();
+        if (name.length > 1) {
+            addContactView._nameValid = true;
+        } else {
+            addContactView._nameValid = false;
+        }
+        if (addContactView._emailValid && addContactView._nameValid) {
+           return (true);
+        }
+
+        return (false);
+    },
+
     doInit: function (e) {
         _preventDefault(e);
 
@@ -539,29 +557,58 @@ var addContactView = {
         
         $( "#addContactPhone" ).on('input', function() {
             var phone = $("#addContactPhone").val();
+            var validPhone = addContactView.isValidPhone(phone);
             
-           if (addContactView.isValidPhone(phone) === null) {
+           if  (validPhone === null) {
                 mobileNotify(phone + " is not valid US phone number");
+               $("#vaildMobileNumberError").velocity("slideDown");
+               addContactView._phoneValid = false;
                 return;
             }
-            
-            
-            if (phoneUtil.isValidNumber(phone)) {
-                isValidMobileNumber(phone, function (result) {
-                    if (result.status === 'ok') {
-                        if (result.valid === false) {
-                            mobileNotify(phone + ' is not a valid mobile number');
-                            $("#vaildMobileNumberError").velocity("slideDown");
-                            $("#addContacViewAddButton").text("Close");
-                            addContactView._closeModal = true;
-                        } else {
-                            $("#vaildMobileNumberError").velocity("slideUp");
-                            $("#addContacViewAddButton").text("Add Contact");
-                            addContactView._closeModal = false;
-                        }
-                    }
-                });
+
+            addContactView._validPhone = phone;
+            var contact = contactModel.findContactByPhone(phone);
+            if (contact !== undefined) {
+                mobileNotify("Contact : " + contact.name + " has phone " + contact.phone);
+                $("#vaildMobileNumberError").velocity("slideDown");
+                addContactView._phoneValid = false;
+                return;
             }
+
+            memberdirectory.findMemberByPhone(phone, function (user) {
+                if (user !== null) {
+                    mobileNotify(user.name + "is a ghostgrams member");
+                    addContactView._phoneValid = true;
+                    $('#addContactName').val(user.name);
+                    $('#addContactAlias').val(user.alias);
+                    if (addContactView.isValidContact()) {
+                        $("#addContacViewAddButton").removeClass('hidden');
+                    } else {
+                        $("#addContacViewAddButton").addClass('hidden');
+                    }
+
+                } else {
+                    isValidMobileNumber(phone, function (result) {
+                        addContactView._phoneValid = true;
+                        if (addContactView.isValidContact()) {
+                            $("#addContacViewAddButton").removeClass('hidden');
+                        } else {
+                            $("#addContacViewAddButton").addClass('hidden');
+                        }
+                        if (result.status === 'ok') {
+                            if (result.valid === false) {
+                                mobileNotify(phone + ' is not a valid mobile number');
+                                $("#vaildMobileNumberError").velocity("slideDown");
+
+                            } else {
+                                $("#vaildMobileNumberError").velocity("slideUp");
+
+                            }
+                        }
+                    });
+                }
+            });
+
         });
         
         $("#addContactForm").kendoValidator({
@@ -582,6 +629,15 @@ var addContactView = {
         // Generate a contact alias on blur if the user hasn't already added one...
         $('#addContactName').on('blur', function () {
             var alias =  $('#addContactAlias').val();
+            var name =  $('#addContactName').val();
+
+            if (name.length > 1) {
+                if (addContactView.isValidContact()) {
+                    $("#addContacViewAddButton").removeClass('hidden');
+                } else {
+                    $("#addContacViewAddButton").addClass('hidden');
+                }
+            }
 
             if (alias.length === 0) {
                 var name = $('#addContactName').val();
@@ -597,7 +653,6 @@ var addContactView = {
                         for (var i=0; i<nameArray.length; i++) {
                             newAlias += nameArray[i] + ' ';
                         }
-
                         newAlias.trim();
                         $('#addContactAlias').val(newAlias);
 
@@ -614,7 +669,7 @@ var addContactView = {
 
 
         // Hide the Add Contact Button until the mobile number is validated...
-        //$('#addContacViewAddButton').addClass('hidden');
+        $('#addContacViewAddButton').addClass('hidden');
         var data = contact;
 
         // Set name
@@ -623,14 +678,20 @@ var addContactView = {
         addContactView._emailValid = false;
         addContactView._phoneValid = false;
 
-        if(name !== ''){
+        $("#addContactAlias").val("");
+        
+        if(name === '' || name.length < 2){
         	$("#addContactName-blank").removeClass("hidden");
         	$("#addContactName, #addContactName-error").val(name);
+            addContactView._nameValid = false;
+
         } else {
         	$("#addContactName-blank").addClass("hidden");
+            addContactView._nameValid = true;
         }
-        
 
+
+        $("#vaildMobileNumberError").addClass("hidden");
 
         if (data.photo === null) {
             $("#addContactPhoto").attr("src","images/default-img.png");
@@ -750,12 +811,7 @@ var addContactView = {
                 }
             }
         });
-    	/*if(form.validate() && addContactView._closeModal === false){
-    		addContactView.addContact();
-    	} else {
-    		addContactView.closeModal();
-    	}
-*/
+
     },
 
     addContact : function (e) {

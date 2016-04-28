@@ -1470,12 +1470,16 @@ var channelView = {
 
         var userId = userModel._user.userUUID;
 
+
         for (var i=0; i< contactArray.length; i++) {
             var contact = {};
 
-            if (contactArray[i] === userId) {
+            var contactIndex = contactArray[i];
+
+            if (contactIndex === userId) {
+                // This is our user
                 contact.isContact = false;
-                contact.uuid = null;
+                contact.uuid = null;    // The user isn't in the contactList
                 contact.contactUUID = userId;
                 contact.alias = userModel._user.alias;
                 contact.name = userModel._user.name;
@@ -1483,17 +1487,17 @@ var channelView = {
                 contact.identicon = userModel.identiconUrl;
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
-                channelView.memberList[contact.contactUUID] = contact;
-                // this is our user.
+
             } else {
+                // Not our user - must be a contact
                 var thisContact = contactModel.findContact(contactArray[i]);
+
                 if (thisContact === undefined) {
                     // No contact entry for this contact...
                     // Need to create a contact and then add to channels member list
-                    var contactId = contactArray[i];
                     contact.isContact = false;
                     contact.uuid = uuid.v4();
-                    contact.contactUUID = contactId;
+                    contact.contactUUID = contactIndex;
                     contact.alias = "new";
                     contact.name = "New contact...";
                     contact.identicon = contactModel.createIdenticon(contact.uuid);
@@ -1501,18 +1505,14 @@ var channelView = {
                     contact.publicKey = null;
                     contact.isPresent = false;
                     contact.processing = true;
-
-                    channelView.memberList[contactId] = contact;
-                    channelView.membersDS.add(contact);
-                    channelView.membersDS.sync();
-                    
-                    contactModel.createChatContact(contactId, contact.uuid,  function (newContact) {
+                    contactModel.createChatContact(contactIndex, contact.uuid,  function (newContact) {
 
                     });
                 } else {
+                    // Found a matching contact
                     contact.isContact = true;
                     contact.uuid = thisContact.uuid;
-                    contact.contactUUID = contact.contactUUID;
+                    contact.contactUUID = thisContact.contactUUID;
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
                     contact.photo = thisContact.photo;
@@ -1524,11 +1524,12 @@ var channelView = {
                     }
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
-                   channelView.memberList[contact.contactUUID] = contact;
-                   channelView.membersDS.add(contact);
-                    channelView.membersDS.sync();
                 }
             }
+
+            channelView.memberList[contactIndex] = contact;
+            channelView.membersDS.add(contact);
+            channelView.membersDS.sync();
         }
     },
 
@@ -1776,11 +1777,11 @@ var channelView = {
         var text = $('#messageTextArea').redactor('code.get');
 
         if (text.length > 0) {
-            var newText = emojify.replace(text);
+            var newText = emojione.toImage(text);
             text = newText;
         }
 
-        $('#messageTextArea').redactor('code.set', newText);
+        $('#messageTextArea').redactor('code.set', text);
 
 
         if (text.length > 0) {
