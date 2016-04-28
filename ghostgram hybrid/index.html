@@ -702,7 +702,7 @@
                 	<div class="mobile-helper"> Important! Your mobile number is how friends and family will add you. </div>
                 	<div class="clearfix"></div>
             </li>
-            <li id="create-user-email">
+            <li class="signup-userEntry" id="create-user-email">
                 <label for="home-signup-username">Email Address</label>
                     <input type="email" id="home-signup-username" name="Email" default="Enter your email" required/>
             </li>
@@ -710,6 +710,30 @@
                 <label for="home-signup-fullname">Full Name</label>
                     <input type="text" id="home-signup-fullname" name="Full Name" default="Enter your full name" required/>
             </li>
+			<li class="signup-contactPrefill hidden" id="signup-emailSelect">
+				<label>Email
+					<div class="select-lg">
+						<select id="signupEmail"
+								data-text-field="address"
+								data-value-field="address"
+								data-bind="source: contactModel.emailDS"
+								auto-bind="false">
+						</select>
+					</div>
+				</label>
+			</li>
+			<li class="signup-contactPrefill hidden" id="signup-addressSelect">
+				<label>Address
+					<div class="select-lg">
+						<select id="signupAddress"
+								data-text-field="address"
+								data-value-field="address"
+								data-bind="source: contactModel.addressDS"
+								auto-bind="false">
+						</select>
+					</div>
+				</label>
+			</li>
             <li class="create-user-password">
                 <label for="home-signup-password">Password</label>
                 <input type="password" id="home-signup-password" name="Password" value="" required />
@@ -717,6 +741,10 @@
 			<li class="create-user-password2">
 				<label for="home-signup-password2">Double check your password</label>
 				<input type="text" id="home-signup-password2" name="Password" value="" readonly />
+			</li>
+			<li class="signup-userEntry" id="create-user-address">
+				<label for="home-signup-address">Address</label>
+				<input type="email" id="home-signup-address" name="Address" default="Enter your address"/>
 			</li>
         </ul>
     </form>
@@ -2111,7 +2139,7 @@
 				<div class="panel">
 					<h3><img src="images/icon-warning.svg" class="icon-sm" /> Invalid Mobile Number</h3>
 					<p>Try another number or go to your device's Contact app and add a mobile number.</p>
-				</div>	
+				</div>
 			</li>
 			<li>
 				<label>Phone
@@ -2151,7 +2179,7 @@
 			</li>
 		</ul>
 		</form>
-	
+
 	<div class="footer" data-role="footer">
 		<a class="btnPrimary btnFull-modal hidden" data-role="button" data-click="addContactView.addContact" id="addContacViewAddButton">Add Contact</a>
 	</div>

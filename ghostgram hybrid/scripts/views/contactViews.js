@@ -678,7 +678,8 @@ var addContactView = {
         addContactView._emailValid = false;
         addContactView._phoneValid = false;
 
-
+        $("#addContactAlias").val("");
+        
         if(name === '' || name.length < 2){
         	$("#addContactName-blank").removeClass("hidden");
         	$("#addContactName, #addContactName-error").val(name);

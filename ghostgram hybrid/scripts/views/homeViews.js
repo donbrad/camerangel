@@ -932,7 +932,10 @@ var signUpView = {
                 .keydown(function (e) {
                     var key = e.charCode || e.keyCode || 0;
                     var $phone = $(this);
-
+                    if ($phone.val().length === 0) {
+                        //user has deleted over the ( so add it back
+                        $phone.val('(');
+                    }
                     // Auto-format- do not expose the mask as the user begins to type
                     if (key !== 8 && key !== 9) {
                         if ($phone.val().length === 4) {
@@ -980,7 +983,13 @@ var signUpView = {
                                         deviceFindContacts(phone, function (contactList) {
                                             if (contactList.length > 0) {
                                                 mobileNotify('Found Me Card!');
+                                                $("#home-signup-fullname").val(contactList[0].name);
+                                                unifyContacts(contactList);
+                                                $('.signup-userEntry').addClass('hidden');
+                                                $('.signup-contactPrefill').removeClass('hidden');
                                             } else {
+                                                $('.signup-userEntry').removeClass('hidden');
+                                                $('.signup-contactPrefill').addClass('hidden');
                                                 signUpView.continueSignUp();
                                             }
 
@@ -1052,9 +1061,10 @@ var signUpView = {
     },
 
     continueSignUp : function () {
-
+        // Todo: jordan you'll need to tweak this to handle the flexible form layout
         $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
-        // ToDo - Add step form validation
+        
+        // ToDo - jordan - we should move Create Account button display to validation success
         $("#createAccountBtn").velocity("fadeIn", {delay: 800});
 
     },
@@ -1070,8 +1080,6 @@ var signUpView = {
 
     onShow : function (e) {
       //  _preventDefault(e);
-
-
 
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
     },
@@ -1093,8 +1101,7 @@ var signUpView = {
     _createAccount : function (username, password, name, phone) {
         var userUUID = uuid.v4(); var user = userModel._user;
 
-
-
+        
         window.localStorage.setItem('ggUsername', username);
         window.localStorage.setItem('ggUserUUID', userUUID);
 
