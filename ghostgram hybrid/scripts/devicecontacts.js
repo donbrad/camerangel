@@ -149,7 +149,7 @@ function unifyContacts(contacts) {
 }
 
 function deviceFindContacts(query, callback) {
-    //   var query = $('#contactSearchQuery').val();
+    
 
     if (contactModel.deviceQueryActive) {
         return;
