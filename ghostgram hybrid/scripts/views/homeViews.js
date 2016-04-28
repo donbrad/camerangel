@@ -987,6 +987,7 @@ var signUpView = {
                                                 unifyContacts(contactList);
                                                 $('.signup-userEntry').addClass('hidden');
                                                 $('.signup-contactPrefill').removeClass('hidden');
+                                                signUpView.continueContactSignUp();
                                             } else {
                                                 $('.signup-userEntry').removeClass('hidden');
                                                 $('.signup-contactPrefill').addClass('hidden');
@@ -1056,8 +1057,10 @@ var signUpView = {
     },
 
     // Display a custom signup form with data collected from device contacts...
-    meSignUp : function () {
+    continueContactSignUp : function () {
         //Todo: don - write some code here...
+        $("#signup-emailSelect, #signup-addressSelect, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
+
     },
 
     continueSignUp : function () {
