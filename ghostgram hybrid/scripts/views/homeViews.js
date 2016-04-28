@@ -392,9 +392,18 @@ var homeView = {
                 if (checkChannel === undefined || checkChannel === null) {
                     mobileNotify("Creating  : " + notification.title + "...");
                     var contact = contactModel.findContact(channelId);
-                    if (contact !== null) {
+                    if (contact !== undefined && contact !== null) {
                         channelModel.addPrivateChannel(channelId, contact.publicKey, contact.name);
                         APP.kendo.navigate(href);
+                    } else {
+                        mobileNotify("Finding member for new private chat...");
+                        contactModel.createChatContact(channelId, function (result) {
+                            if (result !== null) {
+                                mobileNotify("Adding private chat for " + result.name);
+                                channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);
+                                APP.kendo.navigate(href);
+                            }
+                        });
                     }
 
                 } else {

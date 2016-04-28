@@ -539,26 +539,7 @@ var contactModel = {
             }
         }
     },
-
-   /* getContactStatusObject : function(contactUUID, callback) {
-        var UserStatusModel = Parse.Object.extend("userStatus");
-        var query = new Parse.Query(UserStatusModel);
-        query.equalTo("userUUID", contactUUID);
-        query.find({
-            success: function(results) {
-                if (results.length > 0) {
-                    callback( results[0]);
-                } else {
-                    callback(null);
-                }
-
-            },
-            error: function(error) {
-                mobileNotify("Get Contact Status Error: " + error.code + " " + error.message);
-                callback(null);
-            }
-        });
-    },*/
+    
 
     // force defined and === true overrides the timer
     updateContactListStatus : function (force) {
@@ -665,6 +646,7 @@ var contactModel = {
             contact.set('Id', guid);
             contact.set("uuid", guid);
             contact.set("contactUUID", userId);
+            contact.set("contactPublcKey", null);
             contact.set("processing", true);
 
             var url = contactModel.createIdenticon(guid);
@@ -693,8 +675,11 @@ var contactModel = {
 
                 if (callback !== undefined) {
                     callback(result);
-                }
+                } 
 
+            } else {
+                ggError("Can't find member " + userId);
+                callback(null);
             }
 
         });

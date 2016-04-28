@@ -457,6 +457,15 @@ var channelModel = {
            var contact = contactModel.findContactByUUID(channelUUID);
             if (contact !== undefined && contact.contactUUID !== undefined) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
+            } else {
+                // No contact for this user yet.
+                mobileNotify("Finding member for new private chat...");
+                contactModel.createChatContact(channelUUID, function (result) {
+                    if (result !== null) {
+                        mobileNotify("Adding private chat for " + result.name);
+                        channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);
+                    }
+                });
             }
         }
     },
@@ -668,6 +677,13 @@ var channelModel = {
             return;
         }
 
+        var contactCheck = contactModel.findContact(contactUUID);
+
+        if (contactCheck === undefined) {
+
+            channelModel.syncChatContacts([contactUUID]);
+        }
+
        /* var Channels = Parse.Object.extend(channelModel._cloudClass);*/
         var channel = new kendo.data.ObservableObject();
         var addTime = ggTime.currentTime();
@@ -805,7 +821,6 @@ var channelModel = {
         channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
         serverPush.provisionGroupChannel(channel.channelUUID);
-
         channelModel.syncChatContacts(channelMembers);
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
