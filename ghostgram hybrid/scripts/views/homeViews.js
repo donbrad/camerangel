@@ -976,7 +976,16 @@ var signUpView = {
                                         // It's a valid mobile number and doesnt match an existing member
                                         mobileNotify(phone + " is confirmed!");
                                         signUpView.signUpPhoneValid();
-                                        signUpView.continueSignUp();
+                                        mobileNotify ("Looking up phone contacts....");
+                                        deviceFindContacts(phone, function (contactList) {
+                                            if (contactList.length > 0) {
+                                                mobileNotify('Found Me Card!');
+                                            } else {
+                                                signUpView.continueSignUp();
+                                            }
+
+                                        });
+
                                      } else {
                                         mobileNotify(phone + " matches an existing ghostgrams member!");
                                         //Todo:  we should a link to login / signin...
@@ -995,8 +1004,6 @@ var signUpView = {
                     
                 }
             })
-
-
                 .bind('focus click', function () {
                     var $phone = $(this);
 
@@ -1008,7 +1015,6 @@ var signUpView = {
                         $phone.val('').val(val); // Ensure cursor remains at the end
                     }
                 })
-
                 .blur(function () {
                     var $phone = $(this);
 
@@ -1038,6 +1044,11 @@ var signUpView = {
 
         $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password, .create-user-password2").css("display", "none");
         
+    },
+
+    // Display a custom signup form with data collected from device contacts...
+    meSignUp : function () {
+        //Todo: don - write some code here...
     },
 
     continueSignUp : function () {
