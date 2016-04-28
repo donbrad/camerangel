@@ -669,7 +669,7 @@
 	</div>
 </div>
 
-<div data-role="view" id="signup" data-title="Sign Up" data-layout="main" style="display: none;" class="appearance" data-init="signUpView.onInit" data-show="signUpView.onShow">
+<div data-role="view" id="signup" data-title="Sign Up" data-layout="main" data-model="contactModel" style="display: none;" class="appearance" data-init="signUpView.onInit" data-show="signUpView.onShow">
 
    	<div data-role="header">
       <div data-role="navbar">
@@ -716,7 +716,7 @@
 						<select id="signupEmail"
 								data-text-field="address"
 								data-value-field="address"
-								data-bind="source: contactModel.emailDS"
+								data-bind="source: emailDS"
 								auto-bind="false">
 						</select>
 					</div>
@@ -728,7 +728,7 @@
 						<select id="signupAddress"
 								data-text-field="address"
 								data-value-field="address"
-								data-bind="source: contactModel.addressDS"
+								data-bind="source: addressDS"
 								auto-bind="false">
 						</select>
 					</div>
