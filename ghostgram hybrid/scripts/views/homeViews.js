@@ -919,6 +919,8 @@ var ghostEditView = {
 };
 
 var signUpView = {
+    _emaiValid : false,
+    
     onInit : function (e) {
         //_preventDefault(e);
 
@@ -1057,6 +1059,24 @@ var signUpView = {
             _preventDefault(e);
             $(".create-user-password2").css("display", "none");
         });
+
+        $("#home-signup-username").on("blur", function() {
+            var email =  $("#home-signup-username").val();
+            mobileNotify("Please wait - validating your email...");
+            isValidEmail(email, function (result) {
+                if (result.status === 'ok' && result.valid === true){
+                    if (result.correctedEmail !== null) {
+                        mobileNotify("Corrected " + email + " to " + result.correctedEmail);
+                        $('#create-user-name').val(result.correctedEmail);
+                    } else {
+                        mobileNotify("Your email address is confirmed!!!");
+                        $('#create-user-name').val(email);
+                    }
+                }
+            });
+
+        });
+
 
         $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password, .create-user-password2").css("display", "none");
         
