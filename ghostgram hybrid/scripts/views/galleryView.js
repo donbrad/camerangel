@@ -179,15 +179,7 @@ var galleryView = {
             _preventDefault(e);
             $("#galleryActions1").data("kendoMobileActionSheet").open();
         });
-
-
-        // if gallery photos are open, display actionBtn
-        var galleryMenuIndex = $("#galleryMenuSelect").data("kendoMobileButtonGroup").current().index();
-        if(galleryMenuIndex === 0){
-        	//$actionBtn.css("display", "inline-block");
-        } else {
-
-        }
+        
 
 
 

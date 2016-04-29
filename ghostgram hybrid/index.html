@@ -2576,18 +2576,8 @@
 <!--/*
  * gallery
  */-->
-<div data-role="view" data-title="Memories" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
+<div data-role="view" data-title="Memories Gallery" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
 	<div>
-
-		<ul data-role="buttongroup" data-index="0" id="galleryMenuSelect" data-select="galleryView.selectCategory">
-			<li>
-				Photos
-			</li>
-			<li>
-				Saved Messages
-			</li>
-		</ul>
-
 		<div class="resultsBar">
 			<div class="results">
 				<span id="resultCount"></span> Photos
@@ -2617,9 +2607,6 @@
 			</div>
 
 			<div class="clearfix"></div>
-		</div>
-		<div id="archive-listview" class="hidden" data-role="scroller">
-			<ul data-role="listview" data-source="archive.dataSource" data-template="archive-template" data-header-template="archive-header-template" data-click="archiveView.archiveClick"></ul>
 		</div>
 		<!-- Photos -->
 		<ul id="gallery-listview" class="list-inline" data-role="listview" ></ul>
