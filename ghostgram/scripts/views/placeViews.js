@@ -1059,7 +1059,7 @@ var addPlaceView = {
                 place.set('address',  address.streetNumber + " " + address.street);
                 place.set('city',  address.city);
                 place.set('state',  address.state);
-                place.set('zipcode',  address.zip);
+                place.set('zipcode',  address.zipcode);
 
             } else {
                 place.set('city',  null);
