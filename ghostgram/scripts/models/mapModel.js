@@ -329,26 +329,66 @@ var mapModel = {
     },
 
     _updateAddress : function (addressComponents) {
-        var address = {};
+        var address = {
+            streetNumber : "",
+            street : "",
+            city : "",
+            county: "",
+            state : "",
+            zipcode : "",
+            country : ""
+        };
 
-        address.streetNumber = _.findWhere(addressComponents, { 'types': 'street_number' });
+
+        for (var i=0; i<addressComponents.length; i++) {
+
+            switch (addressComponents[i].types[0]) {
+
+                case 'street_number':
+                    address.streetNumber = addressComponents[i].short_name;
+                    break;
+                case 'route':
+                    address.street = addressComponents[i].short_name;
+                    break;
+                case 'locality':
+                    address.city = addressComponents[i].short_name;
+                    break;
+
+                case 'administrative_area_level_1':
+                    address.state = addressComponents[i].short_name;
+                    break;
+
+                case 'administrative_area_level_2':
+                    address.county = addressComponents[i].short_name;
+                    break;
+
+                case 'postal_code':
+                    address.zipcode = addressComponents[i].short_name;
+                    break;
+
+                case 'country':
+                    address.country = addressComponents[i].short_name;
+                    break;
+            }
+        }
+       /* address.streetNumber = _.findWhere(addressComponents, { types: ['street_number'] });
         address.streetNumber = address.streetNumber === undefined ? '' : address.streetNumber.short_name;
 
-        address.street = _.findWhere(addressComponents, { 'types':  'route'  });
+        address.street = _.findWhere(addressComponents, { 'types':  ['route']  });
         address.street = address.street === undefined ? '' : address.street.short_name;
 
-        address.city = _.findWhere(addressComponents, { 'types': 'locality' });
+        address.city = _.findWhere(addressComponents, { 'types': ['locality'] });
         address.city = address.city === undefined ? '' : address.city.short_name;
 
-        address.state = _.findWhere(addressComponents, { 'types': 'administrative_area_level_1' });
+        address.state = _.findWhere(addressComponents, { 'types': ['administrative_area_level_1'] });
         address.state = address.state === undefined ? '' : address.state.short_name;
 
-        address.zipcode = _.findWhere(addressComponents, { 'types': 'postal_code'});
+        address.zipcode = _.findWhere(addressComponents, { 'types': ['postal_code']});
         address.zipcode = address.zipcode === undefined ? '' : address.zipcode.short_name;
 
-        address.country = _.findWhere(addressComponents, { 'types': 'country' });
+        address.country = _.findWhere(addressComponents, { 'types': ['country'] });
         address.country = address.country === undefined ? '' : address.country.short_name;
-
+*/
         mapModel.currentAddress = address;
 
         return(address);
