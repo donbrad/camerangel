@@ -498,49 +498,6 @@ var photoModel = {
     },
 
 
-    addSharedPhoto: function (photoUUID, channelUUID, imageUrl, uploadFlag, canCopy) {
-
-
-        var share = new kendo.data.ObservableObject();
-
-        var shareuuid = uuid.v4();
-
-        share.set('version', photoModel._version);
-        share.set('ggType', 'SharedPhoto');
-        share.set('Id', shareuuid);
-        share.set('uuid', shareuuid);
-        share.set('photoUUID', photoUUID);
-        share.set('channelUUID', channelUUID);
-        share.set('ownerId', userModel._user.userUUID);
-        share.set('ownerName', userModel._user.name);
-
-        share.set('imageUrl', imageUrl);
-        share.set('thumbnailUrl', thumbnailUrl);
-
-        share.set('isUploaded', uploadFlag);
-
-        if (canCopy === undefined) {
-            canCopy = false;
-        }
-        share.set('canCopy', canCopy);
-
-        photoModel.sharedPhotosDS.add(share);
-        photoModel.sharedPhotosDS.sync();
-
-        everlive.createOne('sharedphoto', share, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating photo " + JSON.stringify(error));
-
-            } else {
-
-            }
-        });
-
-    },
-
-    sharedPhotoUploaded : function (shareId) {
-        
-    },
     
     /*// Upload a device resolution photo to parse (update an outstanding offers)
     uploadPhotoImage: function (photoId) {
