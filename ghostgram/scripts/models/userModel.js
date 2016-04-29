@@ -145,6 +145,8 @@ var userModel = {
 
         photoModel.init();
 
+        sharedPhotoModel.init();
+
         channelModel.init();
 
         smartEvent.init();

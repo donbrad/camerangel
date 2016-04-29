@@ -25,6 +25,7 @@ var photoModel = {
 
     offersDS : null,
 
+    
     deletedPhotosDS: null, 
 
     init: function () {
@@ -33,8 +34,8 @@ var photoModel = {
            // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'photos'/*,
-                dataProvider: APP.everlive*/
+                typeName: 'photos',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -47,23 +48,7 @@ var photoModel = {
         });
 
 
-        photoModel.offersDS = new kendo.data.DataSource({  // this is the gallery datasource
-            // offlineStorage: "photos",
-            type: 'everlive',
-            transport: {
-                typeName: 'photooffers'/*,
-                 dataProvider: APP.everlive*/
-            },
-            schema: {
-                model: { Id:  Everlive.idField}
-            },
-            sort: {
-                field: "timestamp",
-                dir: "desc"
-            }
-        });
-
-
+      
         photoModel.deletedPhotosDS = new kendo.data.DataSource({  // this is the gallery datasource
             // offlineStorage: "photos",
             type: 'everlive',
@@ -427,7 +412,7 @@ var photoModel = {
         var ownerId = photoObj.ownerId, ownerName = photoObj.ownerName;
 
         photo.set('Id', photoObj.photoId);
-        photo.set('photoId', photoObj.photoId);  // use the original photo id from sender to enable recall
+        photo.set('photoUUID', photoObj.photoUUID);  // use the original photo id from sender to enable recall
         photo.set('uuid', photoObj.photoId);
         photo.set('channelUUID', channelUUID);
         photo.set('version', photoModel._version);
@@ -492,40 +477,6 @@ var photoModel = {
             }
         });
 */
-       /* photoModel.photosDS.add(photo);
-        photoModel.photosDS.sync();*/
-
-       /* photo.save(null, {
-            success: function(photoIn) {
-
-                // Execute any logic that should take place after the object is saved.
-
-
-            },
-            error: function(contact, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
-            }
-        });
-*/
-        /*devicePhoto.convertImgToDataURL(photoObj.thumbnailUrl, function (dataUrl) {
-            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-            var parseFile = new Parse.File("thumbnail_" + filename + ".jpg", {'base64': imageBase64});
-            parseFile.save().then(function () {
-                photo.set('thumbnail',parseFile);
-                photo.set('thumbnailUrl',parseFile._url);
-                var photoObj = photo.toJSON();
-
-                photoModel.photosDS.add(photoObj);
-                mobileNotify("Photo added to Memories!");
-                photoModel.addOfferImage(photoId, photoObj.imageUrl);
-                if (callback !== undefined)
-                    callback(photo);
-            });
-
-        });
-*/
     },
 
     addOfferImage : function (photoId, imageUrl) {
@@ -546,84 +497,51 @@ var photoModel = {
 
     },
 
-/*
 
-    getPhotoOfferACL : function () {
-        var acl = new Parse.ACL();
-        acl.setPublicReadAccess(true);
-        acl.setPublicWriteAccess(false);
-        acl.setWriteAccess(Parse.User.current().id, true);
-       return(acl);
-    },
-*/
-
-    addPhotoOffer : function (photoId, channelUUID, thumbnailUrl, imageUrl, canCopy) {
-
-        var PhotoOffer = Parse.Object.extend("photoOffer");
-        var offer = new PhotoOffer();
-
-        var uploadFlag = false;
-
-        var offeruuid = uuid.v4();
+    addSharedPhoto: function (photoUUID, channelUUID, imageUrl, uploadFlag, canCopy) {
 
 
-        offer.setACL(photoModel.getPhotoOfferACL());
-        offer.set('version', photoModel._version);
+        var share = new kendo.data.ObservableObject();
 
-        offer.set('uuid', offeruuid);
-        offer.set('photoId', photoId);
-        offer.set('channelUUID', channelUUID);
-        offer.set('ownerId', userModel._user.userUUID);
-        offer.set('ownerName', userModel._user.name);
+        var shareuuid = uuid.v4();
 
-       /* if (thumbnailUrl === undefined || thumbnailUrl === null) {
-            thumbnailUrl = null;
-            uploadFlag = false;
-        }
-*/
-        offer.set('thumbnailUrl', thumbnailUrl);
+        share.set('version', photoModel._version);
+        share.set('ggType', 'SharedPhoto');
+        share.set('Id', shareuuid);
+        share.set('uuid', shareuuid);
+        share.set('photoUUID', photoUUID);
+        share.set('channelUUID', channelUUID);
+        share.set('ownerId', userModel._user.userUUID);
+        share.set('ownerName', userModel._user.name);
 
-        if (imageUrl === undefined) {
-            imageUrl = null;
-        }
-        offer.set('imageUrl', imageUrl);
+        share.set('imageUrl', imageUrl);
+        share.set('thumbnailUrl', thumbnailUrl);
 
-        if (imageUrl !== null)
-            uploadFlag = true;
-
-        offer.set('uploaded', uploadFlag);
+        share.set('isUploaded', uploadFlag);
 
         if (canCopy === undefined) {
-            canCopy = true;
+            canCopy = false;
         }
-        offer.set('canCopy', canCopy);
+        share.set('canCopy', canCopy);
 
-        offer.save(null, {
-            success: function(offer) {
-                var offerObject = offer.toJSON();
-                // Execute any logic that should take place after the object is saved.
-                photoModel.currentOffer = offerObject;
-                photoModel.offersDS.add(offerObject);
+        photoModel.sharedPhotosDS.add(share);
+        photoModel.sharedPhotosDS.sync();
 
-                //Update the photo with offerId
-                var photo = photoModel.findPhotoById(photoId);
-                if (photo === undefined) {
-                    mobileNotify("Photo Offer with unknown photo: " + photoId);
-                } else {
-                    photo.set("offerId", offeruuid);
-                    //updateParseObject('photos', 'photoId', photoId, 'offerId', offeruuid);
-                }
+        everlive.createOne('sharedphoto', share, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
 
-            },
-            error: function(contact, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
+            } else {
+
             }
         });
 
     },
 
+    sharedPhotoUploaded : function (shareId) {
+        
+    },
+    
     /*// Upload a device resolution photo to parse (update an outstanding offers)
     uploadPhotoImage: function (photoId) {
         var photo = photoModel.findPhotoById(photoId);
