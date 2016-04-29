@@ -42,7 +42,7 @@ var sharedPhotoModel = {
         share.set('ownerName', userModel._user.name);
 
         share.set('imageUrl', imageUrl);
-        share.set('thumbnailUrl', thumbnailUrl);
+        share.set('thumbnailUrl', imageUrl.replace('upload//', 'upload//c_scale,h_512,w_512//'));
 
         share.set('isUploaded', uploadFlag);
 
