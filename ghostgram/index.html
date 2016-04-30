@@ -2145,7 +2145,7 @@
 		</div>
 		<div class="clearfix"></div>
 		<ul data-role="listview" data-style="inset" class="inviteContactInfo">
-			<li>
+			<li >
 				<label>Add to Group</label>
 				<input id="addContactGroup" type="search" />
 			</li>
@@ -2155,8 +2155,8 @@
 					<p>Try another number or go to your device's Contact app and add a mobile number.</p>
 				</div>
 			</li>
-			<li>
-				<label>Phone
+			<li id="addContact-phoneSelect">
+				<label>Phone    <span> <a data-role="button" data-click="addContactView.showPhoneEditor">Edit</a> </span>
 					<div class="select-lg">
 						<select id="addContactPhone"
 								data-text-field="ux.showCleanPhone(number)"
@@ -2167,8 +2167,12 @@
 					</div>
 				</label>
 			</li>
+			<li id="addContact-phoneEdit" class="hidden">
+				<label>Phone</label>
+				<input id="addContact-phoneInput" type="search" />
+			</li>
 			<li id="addContact-emailSelect">
-				<label>Email
+				<label>Email  <span> <a data-role="button" data-click="addContactView.showEmailEditor">Edit</a> </span>
 					<div class="select-lg">
 						<select id="addContactEmail"
 								data-text-field="address"
@@ -2179,8 +2183,12 @@
 					</div>
 				</label>
 			</li>
+			<li id="addContact-emailEdit" class="hidden">
+				<label>Phone</label>
+				<input id="addContact-emailInput" type="search" />
+			</li>
 			<li id="addContact-addressSelect">
-				<label>Address
+				<label>Address <span> <a data-role="button" data-click="addContactView.showAddressEditor">Edit</a> </span>
 					<div class="select-lg">
 						<select id="addContactAddress"
 								data-text-field="address"
@@ -2191,10 +2199,15 @@
 					</div>
 				</label>
 			</li>
+			<li id="addContact-addressEdit" class="hidden">
+				<label>Phone</label>
+				<input id="addContact-addressInput" type="search" />
+			</li>
 		</ul>
 		</form>
 
 	<div class="footer" data-role="footer">
+		<a class="btnSecondary btnFull-modal " data-role="button" data-click="addContactView.verifyContact" id="addContacViewVerifyButton">Verify Contact</a>
 		<a class="btnPrimary btnFull-modal hidden" data-role="button" data-click="addContactView.addContact" id="addContacViewAddButton">Add Contact</a>
 	</div>
 </div>

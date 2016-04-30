@@ -557,80 +557,30 @@ var addContactView = {
         
         $( "#addContactPhone" ).on('input', function() {
             var phone = $("#addContactPhone").val();
-            var validPhone = addContactView.isValidPhone(phone);
-            
-           if  (validPhone === null) {
-                mobileNotify(phone + " is not valid US phone number");
-               $("#vaildMobileNumberError").velocity("slideDown");
-               addContactView._phoneValid = false;
-                return;
-            }
-
-            addContactView._validPhone = phone;
-            var contact = contactModel.findContactByPhone(phone);
-            if (contact !== undefined) {
-                mobileNotify("Contact : " + contact.name + " has phone " + contact.phone);
-                $("#vaildMobileNumberError").velocity("slideDown");
-                addContactView._phoneValid = false;
-                return;
-            }
-
-            memberdirectory.findMemberByPhone(phone, function (user) {
-                if (user !== null) {
-                    mobileNotify(user.name + "is a ghostgrams member");
-                    addContactView._phoneValid = true;
-                    $('#addContactName').val(user.name);
-                    $('#addContactAlias').val(user.alias);
-                    if (addContactView.isValidContact()) {
-                        $("#addContacViewAddButton").removeClass('hidden');
-                    } else {
-                        $("#addContacViewAddButton").addClass('hidden');
-                    }
-
-                } else {
-                    isValidMobileNumber(phone, function (result) {
-                        addContactView._phoneValid = true;
-                        if (addContactView.isValidContact()) {
-                            $("#addContacViewAddButton").removeClass('hidden');
-                        } else {
-                            $("#addContacViewAddButton").addClass('hidden');
-                        }
-                        if (result.status === 'ok') {
-                            if (result.valid === false) {
-                                mobileNotify(phone + ' is not a valid mobile number');
-                                $("#vaildMobileNumberError").velocity("slideDown");
-
-                            } else {
-                                $("#vaildMobileNumberError").velocity("slideUp");
-
-                            }
-                        }
-                    });
-                }
-            });
-
-
-
+            addContactView.isPhoneValid(phone);
         });
+
+        $('#addContact-phoneInput').on('blur', function () {
+            var phone = $("#addContactPhone").val();
+            if (!addContactView._phoneValid) {
+                addContactView.isPhoneValid(phone);
+            }
+        });
+
         
         $("#addContactForm").kendoValidator({
         	errorTemplate: '<span class="error-msg">#=message#</span>'
         });
-
+        
+        $('#addContact-emailInput').on('blur', function () {
+            var email = $('#addContactEmail').val();
+            addContactView.isEmailValid(email);
+        });
 
         $('#addContactEmail').on('blur', function () {
+
             var email = $('#addContactEmail').val();
-            if (!addContactView.validateEmail(email)){
-                addContactView._emailValid = false;
-                mobileNotify(email + " + is not a valid email address");
-            } else {
-                addContactView._emailValid = true;
-                if (addContactView.isValidContact()) {
-                    $("#addContacViewAddButton").removeClass('hidden');
-                } else {
-                    $("#addContacViewAddButton").addClass('hidden');
-                }
-            }
+           addContactView.isEmailValid(email);
         });
 
         // Generate a contact alias on blur if the user hasn't already added one...
@@ -672,9 +622,105 @@ var addContactView = {
         });
     },
 
+    isContactValid : function () {
+        var name =  $('#addContactName').val();
+
+        if (name.length > 1) {
+            if (addContactView.isValidContact()) {
+                $("#addContacViewVerifyButton").addClass('hidden');
+                $("#addContacViewAddButton").removeClass('hidden');
+            } else {
+                $("#addContacViewAddButton").addClass('hidden');
+                $("#addContacViewVerifyButton").removeClass('hidden');
+            }
+        }
+    },
+
+    isPhoneValid : function (phone) {
+        var validPhone = addContactView.isValidPhone(phone);
+
+        if  (validPhone === null) {
+            mobileNotify(phone + " is not valid US phone number");
+            $("#vaildMobileNumberError").velocity("slideDown");
+            addContactView._phoneValid = false;
+            return;
+        }
+
+        addContactView._validPhone = phone;
+        var contact = contactModel.findContactByPhone(phone);
+        if (contact !== undefined) {
+            mobileNotify("Contact : " + contact.name + " has phone " + contact.phone);
+            $("#vaildMobileNumberError").velocity("slideDown");
+            addContactView._phoneValid = false;
+            return;
+        }
+
+        memberdirectory.findMemberByPhone(phone, function (user) {
+            if (user !== null) {
+                mobileNotify(user.name + "is a ghostgrams member");
+                addContactView._phoneValid = true;
+                $('#addContactName').val(user.name);
+                $('#addContactAlias').val(user.alias);
+                if (addContactView.isValidContact()) {
+                    $("#addContacViewAddButton").removeClass('hidden');
+                } else {
+                    $("#addContacViewAddButton").addClass('hidden');
+                }
+
+            } else {
+                isValidMobileNumber(phone, function (result) {
+                    addContactView._phoneValid = true;
+                    if (addContactView.isValidContact()) {
+                        $("#addContacViewAddButton").removeClass('hidden');
+                    } else {
+                        $("#addContacViewAddButton").addClass('hidden');
+                    }
+                    if (result.status === 'ok') {
+                        if (result.valid === false) {
+                            mobileNotify(phone + ' is not a valid mobile number');
+                            $("#vaildMobileNumberError").velocity("slideDown");
+
+                        } else {
+                            $("#vaildMobileNumberError").velocity("slideUp");
+
+                        }
+                    }
+                });
+            }
+        });
+    },
+
+    isEmailValid : function (email) {
+        if (!addContactView.validateEmail(email)){
+            addContactView._emailValid = false;
+            mobileNotify(email + " + is not a valid email address");
+        } else {
+            addContactView._emailValid = true;
+            if (addContactView.isValidContact()) {
+                $("#addContacViewAddButton").removeClass('hidden');
+            } else {
+                $("#addContacViewAddButton").addClass('hidden');
+            }
+        }
+    },
+
+    showPhoneEditor : function () {
+        $('#addContact-phoneSelect').addClass('hidden');
+        $('#addContact-phoneEdit').removeClass('hidden');
+    },
+    
+    showEmailEditor : function () {
+        $('#addContact-emailSelect').addClass('hidden');
+        $('#addContact-emailEdit').removeClass('hidden');
+    },
+    
+    showAddressEditor : function () {
+        $('#addContact-addressSelect').addClass('hidden');
+        $('#addContact-addressEdit').removeClass('hidden');
+    },
+    
     openModal : function (contact) {
-
-
+        
         // Hide the Add Contact Button until the mobile number is validated...
         $('#addContacViewAddButton').addClass('hidden');
         var data = contact;
@@ -708,39 +754,81 @@ var addContactView = {
                 $("#addContactPhoto").attr("src",validUrl);
             });
         }
-        contactModel.emailArray = new Array();
 
-        for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
-            var email = new Object();
-            email.name = contactModel.currentDeviceContact.emails[i].name;
-            email.address =  contactModel.currentDeviceContact.emails[i].address;
+        // Process phone, email and address.  if there's 0, hide select and show edit,
+        // if there's 1 hide select and prefill editor,
 
-            contactModel.emailArray.push(email);
+        if (contactModel.currentDeviceContact.emails.length  <=1) {
+            $('#addContact-emailSelect').addClass('hidden');
+            $('#addContact-emailEdit').removeClass('hidden');
 
+            if (contactModel.currentDeviceContact.emails.length  === 1) {
+                var emailText = contactModel.currentDeviceContact.emails[0];
+                $('#addContact-emailInput').val(emailText);
+                addContactView.isEmailValid(emailText);
+            }
+
+        } else {
+
+            contactModel.emailArray = new Array();
+            for (var i = 0; i<contactModel.currentDeviceContact.emails.length; i++) {
+                var email = new Object();
+                email.name = contactModel.currentDeviceContact.emails[i].name;
+                email.address =  contactModel.currentDeviceContact.emails[i].address;
+
+                contactModel.emailArray.push(email);
+
+            }
+            contactModel.emailDS.data( contactModel.emailArray);
+            $('#addContact-emailSelect').removeClass('hidden');
+            $('#addContact-emailEdit').addClass('hidden');
         }
 
-        contactModel.phoneArray = new Array();
-        for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
-            var phone = new Object();
-            phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
-            phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
+        if (contactModel.currentDeviceContact.phoneNumbers.length <= 1) {
+            $('#addContact-phoneSelect').addClass('hidden');
+            $('#addContact-phoneEdit').removeClass('hidden');
+            if (contactModel.currentDeviceContact.phoneNumbers.length  === 1) {
+                var phoneText = contactModel.currentDeviceContact.phoneNumbers[0];
+                $('#addContact-phoneInput').val(phoneText);
+                addContactView.isPhoneValid(phoneText);
 
-            contactModel.phoneArray.push(phone);
+            }
+        } else {
+            contactModel.phoneArray = new Array();
+            for (var j = 0; j<contactModel.currentDeviceContact.phoneNumbers.length; j++) {
+                var phone = new Object();
+                phone.name = contactModel.currentDeviceContact.phoneNumbers[j].name;
+                phone.number = contactModel.currentDeviceContact.phoneNumbers[j].number;
 
+                contactModel.phoneArray.push(phone);
+
+            }
+            contactModel.phoneDS.data( contactModel.phoneArray);
+            $('#addContact-phoneSelect').removeClass('hidden');
+            $('#addContact-phoneEdit').addClass('hidden');
         }
 
-        contactModel.addressArray = new Array();
-        for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
-            var address = new Object();
-            address.name = contactModel.currentDeviceContact.addresses[a].name;
-            address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
+        if ( contactModel.currentDeviceContact.addresses.length <= 1) {
+            $('#addContact-addressSelect').addClass('hidden');
+            $('#addContact-addressEdit').removeClass('hidden');
+            if (contactModel.currentDeviceContact.addresses.length  === 1) {
+                $('#addContact-addressInput').val(contactModel.currentDeviceContact.addresses[0]);
+            }
 
-            contactModel.addressArray.push(address);
+        } else {
+            contactModel.addressArray = new Array();
+            for (var a = 0; a<contactModel.currentDeviceContact.addresses.length; a++) {
+                var address = new Object();
+                address.name = contactModel.currentDeviceContact.addresses[a].name;
+                address.address =  contactModel.currentDeviceContact.addresses[a].fullAddress;
+
+                contactModel.addressArray.push(address);
+            }
+            contactModel.addressDS.data( contactModel.addressArray);
+            $('#addContact-addressSelect').removeClass('hidden');
+            $('#addContact-addresseEdit').addClass('hidden');
         }
 
-        contactModel.phoneDS.data( contactModel.phoneArray);
-        contactModel.emailDS.data( contactModel.emailArray);
-        contactModel.addressDS.data( contactModel.addressArray);
 
 
         /*
@@ -833,7 +921,7 @@ var addContactView = {
             alias = $('#addContactAlias').val(),
             phone = $('#addContactPhone').val(),
             email = $('#addContactEmail').val(),
-            //photo = $('#addContactPhoto').prop('src'),
+            photo = $('#addContactPhoto').prop('src'),
             group =  $('#addContactGroup').val(),
             address = $('#addContactAddress').val(),
             emailValid = false,
@@ -889,16 +977,7 @@ var addContactView = {
         contact.set('isValidated', false);
         contact.set('ownerUUID', userModel._user.userUUID);
 
-        //phone = phone.replace(/\+[0-9]{1-2}/,'');
 
-       
-
-      /*  if (contactModel.findContactByPhone(phone) !== undefined) {
-            mobileNotify("Existing contact with this phone number");
-            addContactView.closeModal();
-            return;
-        }
-*/
         contact.set("phone", phone);
 
         // Close modal
@@ -972,11 +1051,6 @@ var addContactView = {
                  contactModel._cleanDupContacts(contact.uuid);
               }
           });
-
-        /*  contactModel.contactsDS.add(contact);
-          contactModel.contactsDS.sync();
-          deviceModel.syncEverlive();*/
-          //contactModel.contactListDS.add(contactx);
 
 
 
