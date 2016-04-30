@@ -517,6 +517,10 @@ var addContactView = {
     _nameValid : false,
     _validPhone : null,
     _hasPhoto : false,
+    _showPhoto: false,
+    _guid: null,
+    _identicon : null,
+    _photoUrl : null,
     phoneUtil : null,
     PNF : null,
     
@@ -691,6 +695,18 @@ var addContactView = {
         });
     },
 
+    cycleProfilePhoto : function () {
+        if (addContactView._hasPhoto) {
+            if (addContactView._showPhoto) {
+                addContactView._showPhoto = false;
+                $("#addContactPhoto").attr("src", addContactView._identicon);
+            } else {
+                addContactView._showPhoto = true;
+                $("#addContactPhoto").attr("src", addContactView._photoUrl);
+            }
+        }
+    },
+
     isEmailValid : function (email) {
         if (!addContactView.validateEmail(email)){
             addContactView._emailValid = false;
@@ -702,22 +718,33 @@ var addContactView = {
     },
 
     showPhoneEditor : function () {
+        var phone = $('#addContact-phoneSelect').data("kendoMobileDropDownList").text();
+        $('#addContact-phoneInput').val(phone);
         $('#addContact-phoneSelect').addClass('hidden');
         $('#addContact-phoneEdit').removeClass('hidden');
     },
     
     showEmailEditor : function () {
+        var email = $('#addContact-emailSelect').data("kendoMobileDropDownList").text();
+        $('#addContact-emailInput').val(email);
         $('#addContact-emailSelect').addClass('hidden');
         $('#addContact-emailEdit').removeClass('hidden');
     },
     
     showAddressEditor : function () {
+        var address = $('#addContact-addressSelect').data("kendoMobileDropDownList").text();
+        $('#addContact-addressInput').val(address);
         $('#addContact-addressSelect').addClass('hidden');
         $('#addContact-addressEdit').removeClass('hidden');
     },
     
     openModal : function (contact) {
-        
+
+
+        addContactView._guid = uuid.v4();
+
+        addContactView._identicon = contactModel.createIdenticon(addContactView._guid);
+
         // Hide the Add Contact Button until the mobile number is validated...
         $("addContactView-addBtn").addClass('hidden');
         $("addContacView-verifyBtn").removeClass('hidden');
@@ -746,13 +773,16 @@ var addContactView = {
         $("#vaildMobileNumberError").addClass("hidden");
 
         if (data.photo === null) {
-            $("#addContactPhoto").attr("src","images/default-img.png");
+            $("#addContactPhoto").attr("src", addContactView._identicon);
             addContactView._hasPhoto = false;
+            addContactView._showPhoto = false;
 
         } else {
             returnValidPhoto(data.photo, function(validUrl) {
+                addContactView._photoUrl = validUrl;
                 $("#addContactPhoto").attr("src",validUrl);
                 addContactView._hasPhoto = true;
+                addContactView._showPhoto = true;
             });
         }
 
@@ -941,7 +971,7 @@ var addContactView = {
         if (phone[0] !== '1')
             phone = '1' + phone;
 
-        var guid = uuid.v4();
+
 
        if (email === undefined) {
            email = null;

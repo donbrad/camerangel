@@ -216,11 +216,7 @@
 		emojione.sprites = true;
 		emojione.imagePathSVGSprites = 'bower_components/emojione/assets/sprites/emojione.sprites.svg';
 		
-		if (window.navigator.simulator === undefined) {
-			shake.startWatch(function () {
-				hotButtonView.openModal();
-			}, 25 /*, onError */);
-		}
+		
 
 		
 		/* $(".email-Autocomplete").emailautocomplete({

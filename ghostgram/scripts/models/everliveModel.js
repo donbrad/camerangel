@@ -274,6 +274,8 @@ var everlive = {
            
             deviceModel.syncEverlive();
             APP.kendo.navigate('#home');
+
+            homeView.enableHotButtons();
             userModel._user.bind('change', userModel.sync);
             
 

@@ -2130,7 +2130,7 @@
     	<form id="addContactForm">
 		<div class="topHalf">
 			<div class="topHalfLeft">
-				<img class="circle-img-lg shadow" id="addContactPhoto" src="images/default-img.png" />
+				<a data-role="button" data-click="addContactView.cycleProfilePhoto"> <img class="circle-img-lg shadow" id="addContactPhoto" src="images/default-img.png" /> </a>
 			</div>
 			<div class="topHalfRight" style="margin-top: -2em;">
 				<div>
@@ -2156,7 +2156,7 @@
 				</div>
 			</li>
 			<li id="addContact-phoneSelect">
-				<label>Phone    <span> <a data-role="button" data-click="addContactView.showPhoneEditor">Edit</a> </span>
+				<label>Phone    <span> <a data-role="button" data-click="addContactView.showPhoneEditor" class="btnClear-grey" >Edit</a> </span>
 					<div class="select-lg">
 						<select id="addContactPhone"
 								data-text-field="ux.showCleanPhone(number)"
@@ -2172,7 +2172,7 @@
 				<input id="addContact-phoneInput" type="search" />
 			</li>
 			<li id="addContact-emailSelect">
-				<label>Email  <span> <a data-role="button" data-click="addContactView.showEmailEditor">Edit</a> </span>
+				<label>Email  <span> <a data-role="button" data-click="addContactView.showEmailEditor" class="btnClear-grey">Edit</a> </span>
 					<div class="select-lg">
 						<select id="addContactEmail"
 								data-text-field="address"
@@ -2188,7 +2188,7 @@
 				<input id="addContact-emailInput" type="search" />
 			</li>
 			<li id="addContact-addressSelect">
-				<label>Address <span> <a data-role="button" data-click="addContactView.showAddressEditor">Edit</a> </span>
+				<label>Address <span> <a data-role="button" data-click="addContactView.showAddressEditor" class="btnClear-grey">Edit</a> </span>
 					<div class="select-lg">
 						<select id="addContactAddress"
 								data-text-field="address"
@@ -2200,7 +2200,7 @@
 				</label>
 			</li>
 			<li id="addContact-addressEdit" class="hidden">
-				<label>Phone</label>
+				<label>Address </label>
 				<input id="addContact-addressInput" type="search" />
 			</li>
 		</ul>
