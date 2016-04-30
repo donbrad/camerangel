@@ -516,6 +516,7 @@ var addContactView = {
     _phoneValid : false,
     _nameValid : false,
     _validPhone : null,
+    _hasPhoto : false,
     phoneUtil : null,
     PNF : null,
     
@@ -627,11 +628,11 @@ var addContactView = {
 
         if (name.length > 1) {
             if (addContactView.isValidContact()) {
-                $("#addContacViewVerifyButton").addClass('hidden');
-                $("#addContacViewAddButton").removeClass('hidden');
+                $("#addContacView-verifyBtn").addClass('hidden');
+                $("#addContacView-addBtn").removeClass('hidden');
             } else {
-                $("#addContacViewAddButton").addClass('hidden');
-                $("#addContacViewVerifyButton").removeClass('hidden');
+                $("#addContacView-addBtn").addClass('hidden');
+                $("#addContacView-verifyBtn").removeClass('hidden');
             }
         }
     },
@@ -696,11 +697,7 @@ var addContactView = {
             mobileNotify(email + " + is not a valid email address");
         } else {
             addContactView._emailValid = true;
-            if (addContactView.isValidContact()) {
-                $("#addContacViewAddButton").removeClass('hidden');
-            } else {
-                $("#addContacViewAddButton").addClass('hidden');
-            }
+            addContactView.isContactValid();
         }
     },
 
@@ -722,7 +719,9 @@ var addContactView = {
     openModal : function (contact) {
         
         // Hide the Add Contact Button until the mobile number is validated...
-        $('#addContacViewAddButton').addClass('hidden');
+        $("addContactView-addBtn").addClass('hidden');
+        $("addContacView-verifyBtn").removeClass('hidden');
+
         var data = contact;
 
         // Set name
@@ -748,10 +747,12 @@ var addContactView = {
 
         if (data.photo === null) {
             $("#addContactPhoto").attr("src","images/default-img.png");
+            addContactView._hasPhoto = false;
 
         } else {
             returnValidPhoto(data.photo, function(validUrl) {
                 $("#addContactPhoto").attr("src",validUrl);
+                addContactView._hasPhoto = true;
             });
         }
 
@@ -830,18 +831,7 @@ var addContactView = {
         }
 
 
-
-        /*
-         $("#addNicknameBtn").removeClass("hidden");
-         $("#contactNicknameInput input").val("");*/
-
-
         $("#modalview-AddContact").data("kendoMobileModalView").open();
-
-
-        // Moved mobile number test to validate contact -- this is an expensive call in time and $$
-
-
     },
 
     closeModal : function () {
@@ -867,8 +857,20 @@ var addContactView = {
         var form = $("#addContactForm").kendoValidator().data("kendoValidator");
 
 
+        if (addContactView.isValidContact()) {
+            $("addContactView-addBtn").removeClass('hidden');
+            $("addContacView-verifyBtn").addClass('hidden');
+            return;
+        }
+
+
+        if (!addContactView._phoneValid) {
+            addContactView.isPhoneValid(phone);
+        }
+
+
         // Confirm that there not an existing contact with this phone number.
-        var contact = contactModel.findContactByPhone(phone);
+      /*  var contact = contactModel.findContactByPhone(phone);
 
         if (contact !== undefined) {
             mobileNotify('Phone: ' + phone + " matches existing contact: " + contact.name);
@@ -906,7 +908,7 @@ var addContactView = {
                 }
             }
         });
-
+*/
     },
 
     addContact : function (e) {
