@@ -547,6 +547,17 @@ var photoModel = {
 
     },
 
+    addProfilePhoto : function (photoId, url) {
+        photo.set('version', photoModel._version);
+        photo.set('ggType', photoModel._ggClass);
+        photo.set('Id', photoId);
+        photo.set('photoId', photoId);
+        photo.set('uuid', photoId);
+        photo.set('deviceUrl', url);
+
+        
+    },
+
     addDevicePhoto: function (devicePhoto, isCamera, isProfilePhoto,  callback) {
         mobileNotify("Adding  photo....");
         var photo = new kendo.data.ObservableObject();

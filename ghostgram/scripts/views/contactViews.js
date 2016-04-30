@@ -546,7 +546,7 @@ var addContactView = {
         } else {
             addContactView._nameValid = false;
         }
-        if (addContactView._emailValid && addContactView._nameValid) {
+        if (addContactView._phoneValid && addContactView._nameValid) {
            return (true);
         }
 
@@ -664,8 +664,8 @@ var addContactView = {
             if (user !== null) {
                 mobileNotify(user.name + "is a ghostgrams member");
                 addContactView._phoneValid = true;
-                $('#addContactName').val(user.name);
-                $('#addContactAlias').val(user.alias);
+              //  $('#addContactName').val(user.name);
+              //  $('#addContactAlias').val(user.alias);
                 if (addContactView.isValidContact()) {
                     $("#addContacViewAddButton").removeClass('hidden');
                 } else {
@@ -941,6 +941,10 @@ var addContactView = {
 */
     },
 
+    processContactPhoto : function (url) {
+
+    },
+
     addContact : function (e) {
         _preventDefault(e);
 
@@ -982,9 +986,12 @@ var addContactView = {
             address = null;
             addressValid = false;
         }
-        var url = contactModel.createIdenticon(guid);
-        $('#addContactPhoto').prop('src', url);
-    
+
+        if (addContactView._hasPhoto && addContactView._showPhoto) {
+            // User wants to override identicon and use contact photo from phone
+            addContactView.processContactPhoto(addContactView._photoUrl);
+        }
+
         contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
         contact.set("name", name );
