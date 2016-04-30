@@ -515,6 +515,7 @@ var addContactView = {
     _emailValid: false,
     _phoneValid : false,
     _nameValid : false,
+    _isMember : false,
     _validPhone : null,
     _hasPhoto : false,
     _showPhoto: false,
@@ -663,7 +664,10 @@ var addContactView = {
         memberdirectory.findMemberByPhone(phone, function (user) {
             if (user !== null) {
                 mobileNotify(user.name + "is a ghostgrams member");
+
                 addContactView._phoneValid = true;
+                addContactView._isMember = true;
+                addContactView._memberData = user;
               //  $('#addContactName').val(user.name);
               //  $('#addContactAlias').val(user.alias);
                 if (addContactView.isValidContact()) {
@@ -673,6 +677,7 @@ var addContactView = {
                 }
 
             } else {
+                addContactView._isMember = false;
                 isValidMobileNumber(phone, function (result) {
                     addContactView._phoneValid = true;
                     if (addContactView.isValidContact()) {
@@ -751,6 +756,8 @@ var addContactView = {
 
         var data = contact;
 
+        addContactView._isMember = false;
+        addContactView._memberData = null;
         // Set name
         var name = data.name;
 
@@ -941,7 +948,7 @@ var addContactView = {
 */
     },
 
-    processContactPhoto : function (url) {
+    processContactPhoto : function (photoId, url, contactId) {
 
     },
 
@@ -986,20 +993,23 @@ var addContactView = {
             address = null;
             addressValid = false;
         }
-
+        var photouuid =  null;
         if (addContactView._hasPhoto && addContactView._showPhoto) {
             // User wants to override identicon and use contact photo from phone
-            addContactView.processContactPhoto(addContactView._photoUrl);
+            photouuid = guid.v4();
+            addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactActionView._guid);
         }
 
         contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
+        contact.set('uuid', contactActionView._guid);
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
         contact.set("identicon", null);
+        contact.set ('photoUUID', photouuid);
         contact.set("photo", null);
         contact.set('category', "new");
         contact.set("priority", 0);
@@ -1024,12 +1034,10 @@ var addContactView = {
 
        // mobileNotify("Invite sent");
 
-        // Look up this contacts phone number in the gg directory
-      memberdirectory.findMemberByPhone(phone, function (user) {
-
-            if (user !== null) {
+            if (addContactView._isMember) {
+                
                 // The user is gg member
-                var thisContact = user;
+                var thisContact = addContactView._memberData;
                 if (thisContact.phoneValidated === undefined) {
                     thisContact.phoneValidated = false;
                 }
@@ -1090,10 +1098,6 @@ var addContactView = {
                  contactModel._cleanDupContacts(contact.uuid);
               }
           });
-
-
-
-        });
 
     }
 };
