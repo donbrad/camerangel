@@ -609,6 +609,8 @@ var addContactView = {
                 }
             });
 
+
+
         });
         
         $("#addContactForm").kendoValidator({
@@ -623,6 +625,11 @@ var addContactView = {
                 mobileNotify(email + " + is not a valid email address");
             } else {
                 addContactView._emailValid = true;
+                if (addContactView.isValidContact()) {
+                    $("#addContacViewAddButton").removeClass('hidden');
+                } else {
+                    $("#addContacViewAddButton").addClass('hidden');
+                }
             }
         });
 
