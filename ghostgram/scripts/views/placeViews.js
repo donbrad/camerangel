@@ -1214,25 +1214,15 @@ var editPlaceView = {
         model.set('name', newModel.name);
         model.set('alias', newModel.alias);
         model.set('address', newModel.address);
+        model.set('city', newModel.city);
+        model.set('state', newModel.state);
+        model.set('zipcode', newModel.zipcode);
         model.set('isPrivate', newModel.isPrivate);
         model.set('isAvailable', newModel.isAvailable);
         model.set('hasPlaceChat', newModel.hasPlaceChat);
         model.set('placeChatId', newModel.placeChatId);
 
         placesModel.placesDS.sync();
-        //deviceModel.syncEverlive();
-
-/*
-
-        updateParseObject('places', 'uuid', newModel.uuid, "name", newModel.name);
-        updateParseObject('places', 'uuid', newModel.uuid,'alias', newModel.alias);
-        updateParseObject('places', 'uuid', newModel.uuid,'address', newModel.address);
-        updateParseObject('places', 'uuid', newModel.uuid, 'isPrivate', newModel.isPrivate);
-        updateParseObject('places', 'uuid', newModel.uuid,'isAvailable', newModel.isAvailable);
-        updateParseObject('places', 'uuid', newModel.uuid,'hasPlaceChat', newModel.hasPlaceChat);
-        updateParseObject('places', 'uuid', newModel.uuid,'placeChatId', newModel.placeChatId);
-
-*/
 
         mobileNotify("Updated " + newModel.name);
 
@@ -1244,8 +1234,6 @@ var editPlaceView = {
     },
 
     validatePlace: function (e) {
-        _preventDefault(e);
-
         _preventDefault(e);
 
         if (e.field === 'name') {
@@ -1312,8 +1300,6 @@ var placeView = {
     activeNote: {objects: []},
 
     onInit : function (e) {
-
-        //_preventDefault(e);
         $("#placeView-listview").kendoMobileListView({
             dataSource: placeView._memoriesDS,
             template: $("#placeViewMemories-template").html(),
