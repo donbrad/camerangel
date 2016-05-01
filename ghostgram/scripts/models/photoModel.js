@@ -547,6 +547,40 @@ var photoModel = {
 
     },
 
+    addProfilePhoto : function (photouuid, url, contactId) {
+        photo.set('version', photoModel._version);
+        photo.set('ggType', photoModel._ggClass);
+        photo.set('Id', photouuid);
+        photo.set('photoId', photouuid);
+        photo.set('uuid', photouuid);
+        photo.set('deviceUrl', url);
+        photo.set('contactUUID', contactId);
+        photo.set('isProfilePhoto', true);
+
+        photoModel.photosDS.add(photo);
+        photoModel.photosDS.sync();
+
+        devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
+            var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
+
+
+            // It's a profile so store in profile cloud and do autoscaling and cropping
+            devicePhoto.cloudinaryUploadProfile(photouuid, filename, dataUrl, function (photoData) {
+                var photoObj = photoModel.findPhotoById(photouuid);
+
+                if (photoObj !== undefined && photoData !== null) {
+                    photoObj.set('imageUrl', photoData.url);
+                    photoObj.set('cloudUrl', photoData.url);
+                    photoObj.set('thumbnailUrl', imageUrl);  // The image is the thumbnail...
+                    photoObj.set('cloudinaryPublicId', photoData.public_id);
+                    photoModel.syncLocal();
+                    photoModel.updateCloud(photoObj);
+                }
+            });
+        });
+
+    },
+
     addDevicePhoto: function (devicePhoto, isCamera, isProfilePhoto,  callback) {
         mobileNotify("Adding  photo....");
         var photo = new kendo.data.ObservableObject();

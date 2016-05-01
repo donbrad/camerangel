@@ -17,7 +17,18 @@ var homeView = {
         // todo - wire notification action
     },
 
-
+    enableHotButtons : function () {
+        if (window.navigator.simulator === undefined) {
+            shake.startWatch(function () {
+                hotButtonView.openModal();
+            }, 30 /*, onError */);
+        }
+    },
+    
+    disableHotButtons : function () {
+        shake.stopWatch();
+    },
+    
     openLocateMeModal: function () {
         ux.hideKeyboard();
 
