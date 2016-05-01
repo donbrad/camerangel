@@ -596,9 +596,9 @@ var addContactView = {
 
             if (name.length > 1) {
                 if (addContactView.isValidContact()) {
-                    $("#addContacViewAddButton").removeClass('hidden');
+                    $("#addContactViewAddButton").removeClass('hidden');
                 } else {
-                    $("#addContacViewAddButton").addClass('hidden');
+                    $("#addContactViewAddButton").addClass('hidden');
                 }
             }
 
@@ -633,11 +633,11 @@ var addContactView = {
 
         if (name.length > 1) {
             if (addContactView.isValidContact()) {
-                $("#addContacView-verifyBtn").addClass('hidden');
-                $("#addContacView-addBtn").removeClass('hidden');
+                $("#addContactView-verifyBtn").addClass('hidden');
+                $("#addContactView-addBtn").removeClass('hidden');
             } else {
-                $("#addContacView-addBtn").addClass('hidden');
-                $("#addContacView-verifyBtn").removeClass('hidden');
+                $("#addContactView-addBtn").addClass('hidden');
+                $("#addContactView-verifyBtn").removeClass('hidden');
             }
         }
     },
@@ -741,10 +741,13 @@ var addContactView = {
         addContactView._guid = uuid.v4();
 
         addContactView._identicon = contactModel.createIdenticon(addContactView._guid);
+        addContactView._emailValid = false;
+        addContactView._phoneValid = false;
+        addContactView._nameValid = false;
 
         // Hide the Add Contact Button until the mobile number is validated...
         $("addContactView-addBtn").addClass('hidden');
-        $("addContacView-verifyBtn").removeClass('hidden');
+        $("addContactView-verifyBtn").removeClass('hidden');
 
         var data = contact;
 
@@ -752,9 +755,6 @@ var addContactView = {
         addContactView._memberData = null;
         // Set name
         var name = data.name;
-
-        addContactView._emailValid = false;
-        addContactView._phoneValid = false;
 
         $("#addContactAlias").val("");
         
@@ -767,7 +767,6 @@ var addContactView = {
         	$("#addContactName-blank").addClass("hidden");
             addContactView._nameValid = true;
         }
-
 
         $("#vaildMobileNumberError").addClass("hidden");
 
@@ -888,7 +887,7 @@ var addContactView = {
 
         if (addContactView.isValidContact()) {
             $("addContactView-addBtn").removeClass('hidden');
-            $("addContacView-verifyBtn").addClass('hidden');
+            $("addContactView-verifyBtn").addClass('hidden');
             return;
         }
 
@@ -911,13 +910,13 @@ var addContactView = {
                 if (result.valid === false) {
                     mobileNotify(phone + ' is not a valid mobile number');
                     $("#vaildMobileNumberError").velocity("slideDown");
-                    //$("#addContacViewAddButton").text("Close");
+                    //$("#addContactViewAddButton").text("Close");
                     return;
 
                 } else {
 
                     $("#vaildMobileNumberError").velocity("slideUp");
-                    $("#addContacViewAddButton").text("Add Contact");
+                    $("#addContactViewAddButton").text("Add Contact");
                     mobileNotify("Mobile phone is valid!");
                     addContactView._phoneValid = true;
 
