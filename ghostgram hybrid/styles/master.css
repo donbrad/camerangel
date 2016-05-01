@@ -6556,16 +6556,15 @@ table.k-editor {
   height: 1.25em;
   max-width: 1.25em;
   vertical-align: middle;
-  margin-right: 0.5em;
 }
 .icon-gg-drawer-lg {
-  height: 1.5em;
-  max-width: 1.5em;
+  height: 2.5em;
+  max-width: 2.5em;
   vertical-align: middle;
-  margin-right: 0.25em;
 }
 .gg-drawer-header {
   margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 #ggDrawer > div > div.km-listview-wrapper > ul > li > a {
   color: #fff !important;
@@ -6602,11 +6601,59 @@ table.k-editor {
 .feature-card {
   padding: 1em 0.5em;
   background-color: #EFF1F2;
-  width: 95%%;
+  width: 95%;
   height: 100%;
   margin-bottom: 3em;
   margin-left: 2.5%;
   margin-right: 2.5%;
   border-radius: 3px;
   margin-top: 1em;
+}
+#hotButtonModal > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background-color: #323642 !important;
+  background-image: none;
+}
+.gg-drawer-header {
+  color: white;
+}
+.gg-drawer-header-secondary {
+  text-align: left;
+  color: #fff;
+}
+#hotButtonModal > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > ul > div.line {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+#hotButtonModal > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > ul > li:nth-child(9) > div > h3 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.hotButton-icon {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 3em;
+  height: 3em;
+  padding: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hotButton-icon > img {
+  display: block;
+  min-width: 100%;
+  min-height: 100%;
+}
+.hotButton-li {
+  width: 50%;
+  float: left;
+}
+.hotButton-li-secondary {
+  text-align: left;
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
+}
+.hotButtonList li:first-child {
+  margin-top: 0.5em;
+}
+.hotButtonList > li > a {
+  color: #fff !important;
+  padding-bottom: 1.5em !important;
 }

@@ -245,66 +245,86 @@
 
 </div>
 
-<div data-role="modalview" id="hotButtonModal" style="width: 100%; height: 100%; display: none;" data-title="Hot Buttons"  data-use-native-scrolling="true">
-		<ul data-role="listview"  style="width: 220px; text-align: center;">
-		<li>
-			<div>
-				<h3 class="gg-drawer-header">Shortcuts</h3>
-			</div>
-		</li>
-		<li>
-			<a class="btnClear" data-role="button" href="#privateNotes">
-				<img src="images/icon-myNotes-light.svg" class="icon-sm" />
-				My Notes
-			</a>
-		</li>
-		<li>
-			<a data-role="button" class="btnClear" data-click='userStatusView.camera'>
-				<img src="images/icon-camera.svg" class="icon-sm" />
-					Camera
-			</a>
-		</li>
-		<li>
-			<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
-				<img src="images/icon-external.svg" class="icon-sm" />
-					Sign Out
-			</a>
-		</li>
+<div data-role="modalview" id="hotButtonModal" style="width: 95%; height: 100%; display: none;" data-title="Hot Buttons">
+		<ul data-role="listview"  style="text-align: center;" class="hotButtonList">
 		<li>
 			<div>
 				<h3 class="gg-drawer-header">Personal Safety</h3>
 			</div>
 		</li>
-		<li>
-			<a data-role="button" class="btnClear" >
-				<img src="images/gg-police.svg" class="icon-gg-drawer" /> Police (911)
-			</a>
-		</li>
-		<li>
-			<a data-role="button" class="btnClear" >
-				<img src="images/gg-fire.svg" class="icon-gg-drawer" /> Fire (911)
-			</a>
-		</li>
-		<li>
-			<a data-role="button" class="btnClear" >
-				<img src="images/gg-medical.svg" class="icon-gg-drawer" /> Medical (911)
-			</a>
-		</li>
-		<li>
+		<li class="hotButton-li">
 			<a data-role="button" class="btnClear">
-				<img src="images/gg-roadside.svg" class="icon-gg-drawer-lg" /> Roadside
+				<div class="hotButton-icon">
+					<img src="images/gg-police.svg" class="icon-gg-drawer" />
+				</div>
+				Police (911)
 			</a>
 		</li>
-		<li>
+		<li class="hotButton-li">
+			<a data-role="button" class="btnClear">
+				<div class="hotButton-icon">
+					<img src="images/gg-fire.svg" class="icon-gg-drawer" />
+				</div>
+				Fire (911)
+			</a>
+		</li>
+		<li class="hotButton-li">
+			<a data-role="button" class="btnClear">
+				<div class="hotButton-icon">
+					<img src="images/gg-medical.svg" class="icon-gg-drawer" />
+				</div>
+				Medical (911)
+			</a>
+		</li>
+		<li class="hotButton-li">
+			<a data-role="button" class="btnClear">
+				<div class="hotButton-icon">
+					<img src="images/gg-roadside.svg" class="icon-gg-drawer-lg" />
+				</div>
+				Roadside
+			</a>
+		</li>
+		<li class="hotButton-li">
 			<a data-role="button" class="btnClear" >
-				<img src="images/gg-family.svg" class="icon-gg-drawer-lg" /> Family Alert
+				<div class="hotButton-icon">
+					<img src="images/gg-family.svg" class="icon-gg-drawer-lg" />
+				</div>
+				Family Alert
 			</a>
 		</li>
-		<li>
+		<li class="hotButton-li">
 			<a data-role="button" class="btnClear" >
-				<img src="images/gg-local.svg" class="icon-gg-drawer" /> Local Alert
+				<div class="hotButton-icon">
+					<img src="images/gg-local.svg" class="icon-gg-drawer" />
+				</div>
+				Local Alert
 			</a>
 		</li>
+			<div class="clearfix"></div>
+			<div class="line"></div>
+			<li>
+				<div class="gg-drawer-header-secondary">
+					<h3>Shortcuts</h3>
+				</div>
+			</li>
+			<li class="hotButton-li-secondary">
+				<a class="btnClear" data-role="button" href="#privateNotes">
+						<img src="images/icon-myNotes-light.svg" class="icon-sm" style="margin-right: 0.5em"/>
+					My Notes
+				</a>
+			</li>
+			<li class="hotButton-li-secondary">
+				<a data-role="button" class="btnClear" data-click='userStatusView.camera'>
+						<img src="images/icon-camera.svg" class="icon-sm" style="margin-right: 0.5em"/>
+					Camera
+				</a>
+			</li>
+			<li class="hotButton-li-secondary">
+				<a data-role="button" class="btnClear" data-click='userStatusView.doSignOut'>
+						<img src="images/icon-external.svg" class="icon-sm" style="margin-right: 0.5em"/>
+					Sign Out
+				</a>
+			</li>
 	</ul>
 
 	<div data-role="footer">
@@ -698,17 +718,17 @@
 							<img src="images/icon-error.svg" class="icon-sm" />
 						</span>
 					</div>
-                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" maxlength="14" placholder="(•••) •••-••••"required />
+                	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" maxlength="14" placholder="(•••) •••-••••" required />
                 	<div class="mobile-helper"> Important! Your mobile number is how friends and family will add you. </div>
                 	<div class="clearfix"></div>
             </li>
             <li class="signup-userEntry" id="create-user-email">
                 <label for="home-signup-username">Email Address</label>
-                    <input type="email" id="home-signup-username" name="Email" default="Enter your email" required/>
+                    <input type="email" id="home-signup-username" name="Email" required/>
             </li>
 			<li id="create-user-name">
                 <label for="home-signup-fullname">Full Name</label>
-                    <input type="text" id="home-signup-fullname" name="Full Name" default="Enter your full name" required/>
+                    <input type="text" id="home-signup-fullname" name="Full Name" required/>
             </li>
 			<li class="signup-contactPrefill hidden" id="signup-emailSelect">
 				<label>Email
@@ -744,7 +764,7 @@
 			</li>
 			<li class="signup-userEntry" id="create-user-address">
 				<label for="home-signup-address">Address</label>
-				<input type="email" id="home-signup-address" name="Address" default="Enter your address"/>
+				<input type="email" id="home-signup-address" name="Address"/>
 			</li>
         </ul>
     </form>
