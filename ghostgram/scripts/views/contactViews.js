@@ -987,7 +987,7 @@ var addContactView = {
         var photouuid =  null;
         if (addContactView._hasPhoto && addContactView._showPhoto) {
             // User wants to override identicon and use contact photo from phone
-            photouuid = guid.v4();
+            photouuid = uuid.v4();
             addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactActionView._guid);
         }
 
