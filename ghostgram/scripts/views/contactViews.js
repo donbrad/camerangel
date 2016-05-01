@@ -670,21 +670,13 @@ var addContactView = {
                 addContactView._memberData = user;
               //  $('#addContactName').val(user.name);
               //  $('#addContactAlias').val(user.alias);
-                if (addContactView.isValidContact()) {
-                    $("#addContacViewAddButton").removeClass('hidden');
-                } else {
-                    $("#addContacViewAddButton").addClass('hidden');
-                }
+               addContactView.isContactValid();
 
             } else {
                 addContactView._isMember = false;
                 isValidMobileNumber(phone, function (result) {
                     addContactView._phoneValid = true;
-                    if (addContactView.isValidContact()) {
-                        $("#addContacViewAddButton").removeClass('hidden');
-                    } else {
-                        $("#addContacViewAddButton").addClass('hidden');
-                    }
+                    addContactView.isContactValid();
                     if (result.status === 'ok') {
                         if (result.valid === false) {
                             mobileNotify(phone + ' is not a valid mobile number');
