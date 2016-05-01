@@ -741,6 +741,9 @@ var addContactView = {
         addContactView._guid = uuid.v4();
 
         addContactView._identicon = contactModel.createIdenticon(addContactView._guid);
+        addContactView._emailValid = false;
+        addContactView._phoneValid = false;
+        addContactView._nameValid = false;
 
         // Hide the Add Contact Button until the mobile number is validated...
         $("addContactView-addBtn").addClass('hidden');
@@ -753,9 +756,6 @@ var addContactView = {
         // Set name
         var name = data.name;
 
-        addContactView._emailValid = false;
-        addContactView._phoneValid = false;
-
         $("#addContactAlias").val("");
         
         if(name === '' || name.length < 2){
@@ -767,7 +767,6 @@ var addContactView = {
         	$("#addContactName-blank").addClass("hidden");
             addContactView._nameValid = true;
         }
-
 
         $("#vaildMobileNumberError").addClass("hidden");
 
