@@ -182,7 +182,7 @@ function deviceFindContacts(query, callback) {
                 contactItem.name = contacts[i].name.formatted;
                 contactItem.phoneNumbers = new Array();
                 contactItem.category = 'phone';
-                if (contacts[i].phoneNumbers !== null) {
+                if (contacts[i].phoneNumbers !== undefined && contacts[i].phoneNumbers !== null) {
                     for (var j=0; j<contacts[i].phoneNumbers.length; j++){
                         var phone = {};
                         var type = contacts[i].phoneNumbers[j].type;
@@ -201,7 +201,7 @@ function deviceFindContacts(query, callback) {
                     }
                 }
                 contactItem.emails = [];
-                if (contacts[i].emails !== null) {
+                if (contacts[i].emails !== undefined && contacts[i].emails !== null) {
                     for (var k=0; k<contacts[i].emails.length; k++){
                         var email = {};
                         email.name = contacts[i].emails[k].type + " : " + contacts[i].emails[k].value;
@@ -211,7 +211,7 @@ function deviceFindContacts(query, callback) {
                 }
 
                 contactItem.addresses = [];
-                if (contacts[i].addresses !== null) {
+                if (contacts[i].addresses !== undefined && contacts[i].addresses !== null) {
                     for (var a=0; a<contacts[i].addresses.length; a++){
                         var address = {};
                         if (contacts[i].addresses[a].type === null) {
