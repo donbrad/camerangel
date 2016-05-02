@@ -574,10 +574,33 @@ var photoModel = {
                     photoObj.set('thumbnailUrl', imageUrl);  // The image is the thumbnail...
                     photoObj.set('cloudinaryPublicId', photoData.public_id);
                     photoModel.syncLocal();
-                    photoModel.updateCloud(photoObj);
+                   // photoModel.updateCloud(photoObj);
                 }
             });
         });
+
+        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+
+            } else {
+                // look up the photo (and remove duplicate local copy if there is one)
+                var photoList = photoModel.findPhotosById(data.result.photoId);
+
+                if (photoList.length > 1) {
+                    var length = photoList.length;
+
+                    for (var i=0; i<length; i++) {
+                        if (photoList[i].Id === undefined) {
+                            photoModel.photosDS.remove(photoList[i]);
+                        }
+                    }
+                }
+
+            }
+        });
+
+
 
     },
 
