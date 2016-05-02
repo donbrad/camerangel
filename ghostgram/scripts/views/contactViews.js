@@ -443,7 +443,7 @@ var contactImportView = {
         var query = e.dataItem.name;
 
         query  = query.trim()
-        
+
         mobileNotify("Unifying contact information for " + query);
 
         syncContactWithDevice(query, function (contacts) {
@@ -964,7 +964,7 @@ var addContactView = {
             emailValid = false,
             addressValid = false;
 
-
+        var contactUUID = contactActionView._guid;
 
         if (phone === null || phone.length < 10) {
             // Todo: need better UX for contacts without phone
@@ -991,12 +991,13 @@ var addContactView = {
         if (addContactView._hasPhoto && addContactView._showPhoto) {
             // User wants to override identicon and use contact photo from phone
             photouuid = uuid.v4();
-            addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactActionView._guid);
+            addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactUUID);
         }
+
 
         contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
-        contact.set('uuid', contactActionView._guid);
+        contact.set('uuid', contactUUID);
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("email", email);
@@ -1011,7 +1012,6 @@ var addContactView = {
         contact.set("isBlocked", false);
         contact.set("inviteSent", false);
         contact.set("lastInvite", 0);
-        contact.set("uuid", guid);
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
