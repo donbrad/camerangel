@@ -943,7 +943,7 @@ var addContactView = {
     },
 
     processContactPhoto : function (photoId, url, contactId) {
-
+        photoModel.addProfilePhoto(photoId, url, contactId);
     },
 
     addContact : function (e) {
