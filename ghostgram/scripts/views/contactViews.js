@@ -441,6 +441,9 @@ var contactImportView = {
         // User has picked a contact from the list --
         // sync data from  any contacts with same name
         var query = e.dataItem.name;
+
+        query  = query.trim()
+        
         mobileNotify("Unifying contact information for " + query);
 
         syncContactWithDevice(query, function (contacts) {
