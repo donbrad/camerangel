@@ -964,7 +964,7 @@ var addContactView = {
             emailValid = false,
             addressValid = false;
 
-        var contactUUID = contactActionView._guid;
+        var contactUUID = addContactView._guid;
 
         if (phone === null || phone.length < 10) {
             // Todo: need better UX for contacts without phone
