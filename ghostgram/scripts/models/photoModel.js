@@ -548,6 +548,9 @@ var photoModel = {
     },
 
     addProfilePhoto : function (photouuid, url, contactId) {
+
+        var photo = new kendo.data.ObservableObject();
+        
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
         photo.set('Id', photouuid);
