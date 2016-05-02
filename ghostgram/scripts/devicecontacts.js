@@ -90,7 +90,17 @@ function unifyContacts(contacts) {
     var emailArray = [], phoneArray = [], addressArray = [], photoArray = [],
         emails = [], phones = [], addresses = [], photos = [], photo='';
 
+    contactModel.currentDeviceContact.photos = [];
+    contactModel.currentDeviceContact.emails = [];
+    contactModel.currentDeviceContact.phoneNumbers = [];
+    contactModel.currentDeviceContact.addresses = [];
+    contactModel.emailDS.data([]);
+    contactModel.phoneDS.data([]);
 
+    if (contact.length === 0) {
+        return;
+    }
+    
     //Build histograms for email, phone and address
     for (var i=0; i<contacts.length; i++) {
         
