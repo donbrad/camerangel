@@ -550,7 +550,7 @@ var photoModel = {
     addProfilePhoto : function (photouuid, url, contactId) {
 
         var photo = new kendo.data.ObservableObject();
-        
+
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
         photo.set('Id', photouuid);
@@ -563,7 +563,7 @@ var photoModel = {
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
 
-        devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
+        devicePhoto.convertImgToDataURL(url, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
 
