@@ -820,7 +820,8 @@ var addContactView = {
             $('#addContact-phoneSelect').addClass('hidden');
             $('#addContact-phoneEdit').removeClass('hidden');
             if (contactModel.currentDeviceContact.phoneNumbers.length  === 1) {
-                var phoneText = contactModel.currentDeviceContact.phoneNumbers[0];
+                var phoneNumber =  contactModel.currentDeviceContact.phoneNumbers[0];
+                var phoneText = phoneNumber.number;
                 $('#addContact-phoneInput').val(phoneText);
                 addContactView.isPhoneValid(phoneText);
 
