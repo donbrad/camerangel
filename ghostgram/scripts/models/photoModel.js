@@ -550,6 +550,7 @@ var photoModel = {
     addProfilePhoto : function (photouuid, url, contactId) {
 
         var photo = new kendo.data.ObservableObject();
+        var filename = photouuid.replace(/-/g,'');
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
