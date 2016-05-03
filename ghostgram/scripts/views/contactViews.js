@@ -795,7 +795,7 @@ var addContactView = {
             $('#addContact-emailEdit').removeClass('hidden');
 
             if (contactModel.currentDeviceContact.emails.length  === 1) {
-                var emailText = contactModel.currentDeviceContact.emails[0];
+                var emailText = contactModel.currentDeviceContact.emails[0].address;
                 $('#addContact-emailInput').val(emailText);
                 addContactView.isEmailValid(emailText);
             }
