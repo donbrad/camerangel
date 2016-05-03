@@ -178,7 +178,8 @@ function deviceFindContacts(query, callback) {
     var options      = new ContactFindOptions();
     options.filter   = query;
     options.multiple = true;
-    var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
+    options.desiredFields = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos", "ims", 'categories', 'birthday'];
+    var fields       = ["name", "displayName", "nickName"];
 
     navigator.contacts.find(fields, function(contacts) {
             contactModel.deviceQueryActive = false;
