@@ -807,7 +807,7 @@ var contactModel = {
                     }
                     contactItem.photos = [];
                     if (contacts[i].photos !== null) {
-                        returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
+                        deviceContacts.returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
                             contactItem.photos.push(validUrl);
 
                         });

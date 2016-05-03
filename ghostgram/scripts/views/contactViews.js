@@ -405,7 +405,7 @@ var contactImportView = {
         
         if (query !== null && query !== undefined) {
             
-            deviceFindContacts(query);
+            deviceContacts.findContacts(query);
             //console.log("passed: " + query);
             // Pass query to search box
             $("#contactImport .gg_mainSearchInput").val(query);
@@ -422,7 +422,7 @@ var contactImportView = {
 
     searchContacts: function (query) {
        	//_preventDefault(e);
-		deviceFindContacts(query, function(contacts) {
+		deviceContacts.findContacts(query, function(contacts) {
 
 		});
 
@@ -494,7 +494,7 @@ var contactImportView = {
             $("#addContactName").val(name);
 
             if (data.photo !== null) {
-                returnValidPhoto(data.photo, function(validUrl) {
+                deviceContacts.returnValidPhoto(data.photo, function(validUrl) {
                     $("#addContactPhoto").attr("src",validUrl);
                 });
             } 
@@ -779,7 +779,7 @@ var addContactView = {
             addContactView._showPhoto = false;
 
         } else {
-            returnValidPhoto(data.photo, function(validUrl) {
+            deviceContacts.returnValidPhoto(data.photo, function(validUrl) {
                 addContactView._photoUrl = validUrl;
                 $("#addContactPhoto").attr("src",validUrl);
                 addContactView._hasPhoto = true;
