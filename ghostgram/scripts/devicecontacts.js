@@ -178,8 +178,8 @@ function deviceFindContacts(query, callback) {
     var options      = new ContactFindOptions();
     options.filter   = query;
     options.multiple = true;
-    options.desiredFields = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos", "ims", 'categories', 'birthday'];
-    var fields       = ["name", "displayName", "nickName"];
+    options.desiredFields = ["name", "displayName","phoneNumbers", "emails", "addresses", "photos", "ims", 'categories', 'birthday'];
+    var fields       = ["name", "displayName"];
 
     navigator.contacts.find(fields, function(contacts) {
             contactModel.deviceQueryActive = false;
@@ -260,7 +260,8 @@ function deviceFindContacts(query, callback) {
         },
         function(error){
             mobileNotify(error);
-        }, options);
+        },
+        options);
 }
 
 function returnValidPhoto(url,callback) {
