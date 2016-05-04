@@ -715,21 +715,21 @@ var addContactView = {
     },
 
     showPhoneEditor : function () {
-        var phone = $('#addContact-phoneSelect').data("kendoMobileDropDownList").text();
+        var phone = $('#addContactPhone').data("kendoMobileDropDownList").text();
         $('#addContact-phoneInput').val(phone);
         $('#addContact-phoneSelect').addClass('hidden');
         $('#addContact-phoneEdit').removeClass('hidden');
     },
     
     showEmailEditor : function () {
-        var email = $('#addContact-emailSelect').data("kendoMobileDropDownList").text();
+        var email = $('#addContactEmail').data("kendoMobileDropDownList").text();
         $('#addContact-emailInput').val(email);
         $('#addContact-emailSelect').addClass('hidden');
         $('#addContact-emailEdit').removeClass('hidden');
     },
     
     showAddressEditor : function () {
-        var address = $('#addContact-addressSelect').data("kendoMobileDropDownList").text();
+        var address = $('#addContactAddress').data("kendoMobileDropDownList").text();
         $('#addContact-addressInput').val(address);
         $('#addContact-addressSelect').addClass('hidden');
         $('#addContact-addressEdit').removeClass('hidden');
