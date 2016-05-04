@@ -2625,10 +2625,10 @@ var channelPresence = {
             click: function (e) {
                 // Click to potential member list -- add this member to channel
                 var thisMember = e.dataItem;
-                if (thisMember !== undefined && thisMember.contactId !== null) {
+                if (thisMember !== undefined && thisMember.contactUUID !== null) {
                     contactActionView.setReturnModal("#channelPresence");
                     channelPresence.closeModal();
-                    contactActionView.openModal(thisMember.contactId);
+                    contactActionView.openModal(thisMember.contactUUID);
                 }
 
 
