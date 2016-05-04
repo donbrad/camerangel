@@ -551,7 +551,7 @@ var addContactView = {
         } else {
             addContactView._nameValid = false;
         }
-        
+
         if (addContactView._phoneValid && addContactView._nameValid) {
            return (true);
         }
@@ -663,7 +663,7 @@ var addContactView = {
 
         memberdirectory.findMemberByPhone(phone, function (user) {
             if (user !== null) {
-                mobileNotify(user.name + "is a ghostgrams member");
+                mobileNotify(user.name + " is a ghostgrams member!");
 
                 addContactView._phoneValid = true;
                 addContactView._isMember = true;
@@ -883,7 +883,7 @@ var addContactView = {
             group =  $('#addContactGroup').val(),
             address = $('#addContactAddress').val();
 
-        var form = $("#addContactForm").kendoValidator().data("kendoValidator");
+      //  var form = $("#addContactForm").kendoValidator().data("kendoValidator");   Not sure we need this -- we're doing way deeper validation...
 
 
         if (addContactView.isValidContact()) {
@@ -996,7 +996,7 @@ var addContactView = {
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
-        contact.set("identicon", contactModel.createIdenticon(contactUUID));
+        contact.set("identicon", contactModel.createIdenticon(contactId));
         contact.set('photoUUID', photouuid);
         contact.set("photo", null);
         contact.set('category', "new");
