@@ -1254,14 +1254,18 @@ var editContactView = {
         }
 
 
+        contactModel.contactsDS.sync();
+
         // Zero the identicon in the contact so it's pushed to cloud.
         contact.identicon = null;
-        var Id = contact.Id;
+
+
+       /* var Id = contact.Id;
         if (Id !== undefined){
             everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
                 //placeNoteModel.notesDS.remove(note);
             });
-        }
+        }*/
 
         //$("#contacts-listview").data("kendoMobileListView").refresh();
 
