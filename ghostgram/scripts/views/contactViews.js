@@ -545,11 +545,13 @@ var addContactView = {
     // Are name and phone number valid?
     isValidContact : function () {
         var name =  $('#addContactName').val();
+
         if (name.length > 1) {
             addContactView._nameValid = true;
         } else {
             addContactView._nameValid = false;
         }
+        
         if (addContactView._phoneValid && addContactView._nameValid) {
            return (true);
         }
@@ -597,13 +599,8 @@ var addContactView = {
             var alias =  $('#addContactAlias').val();
             var name =  $('#addContactName').val();
 
-            if (name.length > 1) {
-                if (addContactView.isValidContact()) {
-                    $("#addContactViewAddButton").removeClass('hidden');
-                } else {
-                    $("#addContactViewAddButton").addClass('hidden');
-                }
-            }
+
+            addContactView.isContactValid();
 
             if (alias.length === 0) {
                 var name = $('#addContactName').val();
