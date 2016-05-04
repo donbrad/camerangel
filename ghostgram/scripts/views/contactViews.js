@@ -964,6 +964,11 @@ var addContactView = {
 
         var contactId = addContactView._guid;
 
+
+        if (contactId === undefined || contactId === null) {
+            contactId = uuid.v4();
+        }
+
         if (phone === null || phone.length < 10) {
             // Todo: need better UX for contacts without phone
             mobileNotify('Contacts must have a valid phone number!');
