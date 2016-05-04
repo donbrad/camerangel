@@ -145,6 +145,8 @@ var userModel = {
 
         photoModel.init();
 
+        profilePhotoModel.init();
+
         sharedPhotoModel.init();
 
         channelModel.init();
