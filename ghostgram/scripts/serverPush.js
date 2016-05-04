@@ -28,7 +28,7 @@ var serverPush = {
 
         if (device.platform === 'android' || device.platform === 'Android' || device.platform === 'amazon-fireos' ) {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {senderID: serverPush._googleSenderId, icon: 'icon', iconColor: 'white', ecb: 'serverPush.onNotificationECM'});
+                {senderID: serverPush._googleSenderId, icon: 'icon', iconColor: '#FFFFFF', ecb: 'serverPush.onNotificationECM', badge: true});
         } else if (device.platform === 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
                 {badge: true, clearBadge: true, sound : true, alert: true, ecb : 'serverPush.onNotificationAPN'});
