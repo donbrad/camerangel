@@ -446,7 +446,7 @@ var contactImportView = {
 
         mobileNotify("Unifying contact information for " + query);
 
-        syncContactWithDevice(query, function (contacts) {
+        deviceContacts.syncContactWithDevice(query, function (contacts) {
 
             contactModel.emailArray = [];
 
