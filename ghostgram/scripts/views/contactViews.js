@@ -442,7 +442,7 @@ var contactImportView = {
         // sync data from  any contacts with same name
         var query = e.dataItem.name;
 
-        query  = query.trim()
+        query  = query.trim();
 
         mobileNotify("Unifying contact information for " + query);
 
@@ -545,11 +545,13 @@ var addContactView = {
     // Are name and phone number valid?
     isValidContact : function () {
         var name =  $('#addContactName').val();
+
         if (name.length > 1) {
             addContactView._nameValid = true;
         } else {
             addContactView._nameValid = false;
         }
+
         if (addContactView._phoneValid && addContactView._nameValid) {
            return (true);
         }
@@ -597,13 +599,8 @@ var addContactView = {
             var alias =  $('#addContactAlias').val();
             var name =  $('#addContactName').val();
 
-            if (name.length > 1) {
-                if (addContactView.isValidContact()) {
-                    $("#addContactViewAddButton").removeClass('hidden');
-                } else {
-                    $("#addContactViewAddButton").addClass('hidden');
-                }
-            }
+
+            addContactView.isContactValid();
 
             if (alias.length === 0) {
                 var name = $('#addContactName').val();
@@ -666,7 +663,7 @@ var addContactView = {
 
         memberdirectory.findMemberByPhone(phone, function (user) {
             if (user !== null) {
-                mobileNotify(user.name + "is a ghostgrams member");
+                mobileNotify(user.name + " is a ghostgrams member!");
 
                 addContactView._phoneValid = true;
                 addContactView._isMember = true;
@@ -886,7 +883,7 @@ var addContactView = {
             group =  $('#addContactGroup').val(),
             address = $('#addContactAddress').val();
 
-        var form = $("#addContactForm").kendoValidator().data("kendoValidator");
+      //  var form = $("#addContactForm").kendoValidator().data("kendoValidator");   Not sure we need this -- we're doing way deeper validation...
 
 
         if (addContactView.isValidContact()) {
@@ -967,6 +964,11 @@ var addContactView = {
 
         var contactId = addContactView._guid;
 
+
+        if (contactId === undefined || contactId === null) {
+            contactId = uuid.v4();
+        }
+
         if (phone === null || phone.length < 10) {
             // Todo: need better UX for contacts without phone
             mobileNotify('Contacts must have a valid phone number!');
@@ -999,7 +1001,7 @@ var addContactView = {
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
-        contact.set("identicon", contactModel.createIdenticon(contactUUID));
+        contact.set("identicon", contactModel.createIdenticon(contactId));
         contact.set('photoUUID', photouuid);
         contact.set("photo", null);
         contact.set('category', "new");
