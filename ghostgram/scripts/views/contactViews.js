@@ -943,8 +943,8 @@ var addContactView = {
 */
     },
 
-    processContactPhoto : function (photoId, url, contactId) {
-        photoModel.addProfilePhoto(photoId, url, contactId);
+    processContactPhoto : function (photoId, url, contactId, contactUUID) {
+        profilePhotoModel.addProfilePhoto(photoId, url, contactId, contactUUID);
     },
 
     addContact : function (e) {
@@ -965,7 +965,7 @@ var addContactView = {
             emailValid = false,
             addressValid = false;
 
-        var contactUUID = addContactView._guid;
+        var contactId = addContactView._guid;
 
         if (phone === null || phone.length < 10) {
             // Todo: need better UX for contacts without phone
@@ -989,16 +989,11 @@ var addContactView = {
             addressValid = false;
         }
         var photouuid =  null;
-        if (addContactView._hasPhoto && addContactView._showPhoto) {
-            // User wants to override identicon and use contact photo from phone
-            photouuid = uuid.v4();
-            addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactUUID);
-        }
 
 
         contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
-        contact.set('uuid', contactUUID);
+        contact.set('uuid', contactId);
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("email", email);
@@ -1029,56 +1024,69 @@ var addContactView = {
 
        // mobileNotify("Invite sent");
 
-            if (addContactView._isMember) {
-                
-                // The user is gg member
-                var thisContact = addContactView._memberData;
-                if (thisContact.phoneValidated === undefined) {
-                    thisContact.phoneValidated = false;
-                }
-                if (thisContact.emailValidated === undefined) {
-                    thisContact.emailValidated = false;
-                }
-                contact.set("phoneValidated", thisContact.phoneValidated);
-                // Does the contact have a verified email address
-                contact.set("email", thisContact.email);
-                if (thisContact.emailValidated) {
-                    // Yes - save the email address the contact verified
-                    contact.set("emailValidated", true);
-                } else {
-                    // No - just use the email address the our user selected
-                    contact.set("emailValidated", false);
-                }
-                contact.set('contactUUID', thisContact.userUUID);
-                contact.set('contactPhone', thisContact.phone);
-                contact.set('phone', thisContact.phone);
-                contact.set('category', 'member');
-                contact.set('contactEmail', thisContact.email);
-                contact.set('photo', null);
-                contact.set('contactPhoto', thisContact.photo);
-                contact.set('publicKey', thisContact.publicKey);
+        if (addContactView._isMember) {
 
-            } else {
-                // Not a member - just use the email address the our user selected
-                contact.set("email", email);
-             /*   if (emailValid)
-                    contactSendEmailInvite(email);*/
-                contact.set("phoneValidated", false);
-                contact.set('publicKey',  null);
-                contact.set("contactUUID", null);
-                contact.set("contactPhone", null);
-                contact.set("contactEmail", null);
-
-                var userUUID = userModel._user.userUUID;
-                // Has this user already invited this contact?
-                invitedirectory.isInvited(phone, userUUID,  function (error, data) {
-                   if (error === null) {
-                       if (data === null) {
-                           invitedirectory.create(name, phone, email);
-                       }
-                   }
-                });
+            // The user is gg member
+            var thisContact = addContactView._memberData;
+            if (thisContact.phoneValidated === undefined) {
+                thisContact.phoneValidated = false;
             }
+            if (thisContact.emailValidated === undefined) {
+                thisContact.emailValidated = false;
+            }
+            contact.set("phoneValidated", thisContact.phoneValidated);
+            // Does the contact have a verified email address
+            contact.set("email", thisContact.email);
+            if (thisContact.emailValidated) {
+                // Yes - save the email address the contact verified
+                contact.set("emailValidated", true);
+            } else {
+                // No - just use the email address the our user selected
+                contact.set("emailValidated", false);
+            }
+            contact.set('contactUUID', thisContact.userUUID);
+            contact.set('contactPhone', thisContact.phone);
+            contact.set('phone', thisContact.phone);
+            contact.set('category', 'member');
+            contact.set('contactEmail', thisContact.email);
+            contact.set('photo', null);
+            contact.set('contactPhoto', thisContact.photo);
+            contact.set('publicKey', thisContact.publicKey);
+
+            if (addContactView._hasPhoto && addContactView._showPhoto) {
+                // User wants to override identicon and use contact photo from phone
+                photouuid = uuid.v4();
+                addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactId,  thisContact.userUUID);
+            }
+
+
+        } else {
+            // Not a member - just use the email address the our user selected
+            contact.set("email", email);
+         /*   if (emailValid)
+                contactSendEmailInvite(email);*/
+            contact.set("phoneValidated", false);
+            contact.set('publicKey',  null);
+            contact.set("contactUUID", null);
+            contact.set("contactPhone", null);
+            contact.set("contactEmail", null);
+
+
+            if (addContactView._hasPhoto && addContactView._showPhoto) {
+                // User wants to override identicon and use contact photo from phone
+                photouuid = uuid.v4();
+                addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactId,  null);
+            }
+            var userUUID = userModel._user.userUUID;
+            // Has this user already invited this contact?
+            invitedirectory.isInvited(phone, userUUID,  function (error, data) {
+               if (error === null) {
+                   if (data === null) {
+                       invitedirectory.create(name, phone, email);
+                   }
+               }
+            });
+        }
 
           contactModel.contactsDS.add(contact);
           contactModel.contactsDS.sync();
