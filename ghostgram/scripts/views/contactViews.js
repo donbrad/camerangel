@@ -1004,8 +1004,8 @@ var addContactView = {
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
-        contact.set("identicon", null);
-        contact.set ('photoUUID', photouuid);
+        contact.set("identicon", contactModel.createIdenticon(contactUUID));
+        contact.set('photoUUID', photouuid);
         contact.set("photo", null);
         contact.set('category', "new");
         contact.set("priority", 0);
@@ -1305,10 +1305,15 @@ var editContactView = {
             $("#editContact-address-edit").removeClass('hidden');
         }
 
-        var phoneVal = ux.showCleanPhone(editContactView._activeContact.phone);
+        var phone = editContactView._activeContact.phone;
+        if ( phone === undefined || phone === null) {
+            phone = "";
+            editContactView._activeContact.phone = phone;
+            ggError("Null or undefined phone number !");
+        }
+        var phoneVal = ux.showCleanPhone(phone);
         $('#editContact-phone-input').text(phoneVal);
-
-        $("#editContactPhone").val(editContactView._activeContact.phone);
+        $("#editContactPhone").val(phone);
         ux.showFormatedPhone();
         ux.formatPhoneInput();
     },

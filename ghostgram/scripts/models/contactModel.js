@@ -637,12 +637,13 @@ var contactModel = {
             contact.set("name", "New Member");
             contact.set("alias", "new");
             contact.set('category', "member");
+            contact.set('phone', "");
+            contact.set('email', "");
             contact.set("address", null);
             contact.set("group", null);
             contact.set("priority", 0);
             contact.set("isFavorite", false);
             contact.set("isBlocked", false);
-            contact.set('Id', guid);
             contact.set("uuid", guid);
             contact.set("contactUUID", userId);
             contact.set("contactPublcKey", null);
