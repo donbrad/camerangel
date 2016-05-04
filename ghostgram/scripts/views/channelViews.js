@@ -1179,57 +1179,103 @@ var channelView = {
           channelView.privateContactId = contactUUID;
           var thisContact = contactModel.findContact(contactUUID);
           if (thisContact === undefined) {
-              mobileNotify("ChannelView : Undefined contact for " + contactUUID);
-              return;
+              mobileNotify("ChannelView : creating Contact for Private Chat");
+              contactModel.createChatContact(contactUUID, uuid.v4(), function (result) {
+                  //Build the members datasource and quick access list
+                  channelView.buildMemberDS();
+
+                  // *** Private Channel ***
+                  var contactKey = thisChannel.contactKey;
+                  if (contactKey === undefined) {
+
+                      contactKey = thisContact.publicKey;
+                      if (contactKey === undefined) {
+                          mobileNotify("No public key for " + thisChannel.name);
+                          return;
+                      }
+                  }
+                  // Update private Chat name using combination of contact's name and alias.
+
+                  name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
+                  $("#channelName").text(name);
+                  // Show contact img in header
+
+                  if (thisContact.identicon === undefined || thisContact.identicon === null) {
+                      thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
+                  }
+
+                  var photoUrl = thisContact.identicon;
+                  if (thisContact.photo !== null) {
+                      photoUrl = thisContact.photo;
+                  }
+                  $('#channelImage').attr('src', photoUrl).removeClass("hidden");
+
+                  privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
+                  channelView.messagesDS.data([]);
+
+
+                  privateChannel.getMessageHistory(function (messages) {
+
+                      channelView.preprocessMessages(messages);
+
+                      thisChannel.messagesArray = messages;
+
+                      channelView.messagesDS.data(messages);
+
+                      channelView.loadImagesThenScroll()
+                  });
+
+              })
+
           } else {
               channelView.privateContact = thisContact;
+
+              //Build the members datasource and quick access list
+              channelView.buildMemberDS();
+
+              // *** Private Channel ***
+              var contactKey = thisChannel.contactKey;
+              if (contactKey === undefined) {
+
+                  contactKey = thisContact.publicKey;
+                  if (contactKey === undefined) {
+                      mobileNotify("No public key for " + thisChannel.name);
+                      return;
+                  }
+              }
+
+              // Update private Chat name using combination of contact's name and alias.
+
+              name = ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
+              $("#channelName").text(name);
+              // Show contact img in header
+
+              if (thisContact.identicon === undefined || thisContact.identicon === null) {
+                  thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
+              }
+
+              var photoUrl = thisContact.identicon;
+              if (thisContact.photo !== null) {
+                  photoUrl = thisContact.photo;
+              }
+              $('#channelImage').attr('src', photoUrl).removeClass("hidden");
+
+              privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
+              channelView.messagesDS.data([]);
+
+
+              privateChannel.getMessageHistory(function (messages) {
+
+                  channelView.preprocessMessages(messages);
+
+                  thisChannel.messagesArray = messages;
+
+                  channelView.messagesDS.data(messages);
+
+                  channelView.loadImagesThenScroll()
+              });
+
           }
-            //Build the members datasource and quick access list
-            channelView.buildMemberDS();
-
-            // *** Private Channel ***
-            var contactKey = thisChannel.contactKey;
-            if (contactKey === undefined) {
-
-                contactKey = thisContact.publicKey;
-                if (contactKey === undefined) {
-                    mobileNotify("No public key for " + thisChannel.name);
-                    return;
-                }
-            }
-
-          // Update private Chat name using combination of contact's name and alias.
-
-          name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
-        $("#channelName").text(name);
-          // Show contact img in header
-
-        if (thisContact.identicon === undefined || thisContact.identicon === null) {
-            thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
-        }
-
-        var photoUrl = thisContact.identicon;
-        if (thisContact.photo !== null) {
-            photoUrl = thisContact.photo;
-        }
-        $('#channelImage').attr('src', photoUrl).removeClass("hidden");
-
-          privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
-            channelView.messagesDS.data([]);
-
-
-            privateChannel.getMessageHistory(function (messages) {
-
-                channelView.preprocessMessages(messages);
-                
-                thisChannel.messagesArray = messages;
-
-                channelView.messagesDS.data(messages);
-
-                channelView.loadImagesThenScroll()
-            });
-
-
         } else {
 
             $("#channelName").text(name);
