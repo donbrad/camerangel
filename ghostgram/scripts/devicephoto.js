@@ -62,7 +62,7 @@ var devicePhoto = {
         formData.append('callback', '/cloudinary_cors.html');
 
         $.ajax({
-            url: 'https://res.cloudinary.com/v1_1/ghostgrams/image/upload/c_thumb,g_adv_faces,w_150,h_150',
+            url: 'https://res.cloudinary.com/v1_1/ghostgrams/image/upload',
             data: formData,
             type: 'POST',
             contentType: false,
