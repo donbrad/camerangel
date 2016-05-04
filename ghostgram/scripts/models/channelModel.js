@@ -126,7 +126,7 @@ var channelModel = {
        /* deviceModel.isParseSyncComplete();*/
 
         // Start the updateMessageCount async after 5 seconds...
-     /*   setTimeout(function(){
+      /* setTimeout(function(){
            // channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
             channelModel.updateChannelsMessageCount();
         }, 5000);*/
@@ -137,109 +137,6 @@ var channelModel = {
     },
 
 
-/*    fetch : function () {
-        var Channel = Parse.Object.extend(channelModel._cloudClass);
-        var query = new Parse.Query(Channel);
-        query.limit(1000);
-
-        query.find({
-            success: function(collection) {
-                var models =[];
-                for (var i = 0; i < collection.length; i++) {
-                    var object = collection[i];
-                    var dirty = false;
-
-                    if (object.get('category') === undefined) {
-                        if (object.get('isPrivate') === true) {
-                            object.set('category', "Private");
-                        } else {
-                            object.set('category', "Group");
-                        }
-
-                        if (object.get('isPlace') === true) {
-                            object.set('category', "Place");
-                        }
-                        if (object.get('isEvent') === true) {
-                            object.set('category', "Event");
-                        }
-                        dirty = true;
-                    }
-
-                    if (object.get('isMuted') === undefined) {
-                        object.set('isMuted', false);
-                        dirty = true;
-                    }
-
-                    if (object.get('ggType') === undefined) {
-                        object.set('ggType', channelModel._ggClass);
-                        dirty = true;
-                    }
-                    
-                    if (object.get('isDeleted') === undefined) {
-                        object.set('isDeleted', false);
-                        dirty = true;
-                    }
-
-                    if (object.get('isOwner')) {
-                        if (object.get('ownerId') === undefined) {
-                            object.set('ownerId', userModel._user.userUUID);
-                            dirty = true;
-                        }
-
-                        if (object.get('ownerName') === undefined) {
-                            object.set('ownerName', userModel._user.name);
-                            dirty = true;
-                        }
-                    }
-
-                    if (dirty) {
-                        object.save();
-                    }
-                    var data = object.toJSON();
-                    models.push(data);
-                }
-
-                everlive.getCount('channels', function(error, count){
-                    if (error === null && count === 0) {
-                        everlive.createAll('channels', models, function (error1, data) {
-                            if (error1 !== null) {
-                                mobileNotify("Everlive Channels error " + JSON.stringify(error1));
-                            }
-                            channelModel.channelsDS.sync();
-                            //channelModel.channelsDS.fetch();
-                            deviceModel.setAppState('hasChannels', true);
-                            deviceModel.isParseSyncComplete();
-
-                            notificationModel.processUnreadChannels();
-                        });
-                    } else {
-                        if (error !== null)
-                            mobileNotify("Everlive Channels error " + JSON.stringify(error));
-
-                        channelModel.channelsDS.fetch();
-                        deviceModel.setAppState('hasChannels', true);
-                        deviceModel.isParseSyncComplete();
-
-                        notificationModel.processUnreadChannels();
-                    }
-
-                });
-
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-
-        //Todo: load offline messages.
-        deviceModel.setAppState('hasMessages', true);
-        deviceModel.isParseSyncComplete();
-
-        deviceModel.setAppState('hasPrivateChannels', true);
-        deviceModel.isParseSyncComplete();
-
-
-    },*/
 
     queryChannels : function (query) {
         if (query === undefined)
@@ -470,43 +367,6 @@ var channelModel = {
         }
     },
 
-/*    syncParseChannels : function (callback) {
-        // Only sync channels for users with atleast email or phone validated
-
-       if (userModel._user.phoneValidated || userModel._user.emailValidated)  {
-           var uuid = userModel._user.userUUID;
-
-           getUserChannels(uuid, function (result) {
-               if (result.found) {
-                   var channels = result.channels;
-
-                   for (var i=0; i< channels.length; i++) {
-                        var channel = channels[i].attributes;
-                        // Need to ignore this users private channel in other users accounts
-                        if (channel.channelUUID !== uuid) {
-                            var channelObj = channelModel.findChannelModel(channel.channelUUID);
-                            if ( channelObj=== undefined) {
-
-                                if (channel.isPrivate) {
-                                    channelModel.addPrivateChannel(channel.contactUUID, channel.contactKey, channel.name);
-                                } else {
-
-                                    channelModel.addChannel(channel.name, channel.description);
-                                    channelModel.updateChannelMembers(channel.channelUUID, channel.members);
-                                }
-                            }
-
-                        }
-
-                   }
-               }
-               if (callback !== undefined) {
-                   callback();
-               }
-           });
-       }
-    },*/
-
     updateChannel : function (channelUUID, channelName, channelDescription, channelMembers) {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel !== undefined) {
@@ -528,10 +388,7 @@ var channelModel = {
             }
             channel.set('members', channelMembers);
             channel.set('isDirty', true);
-
-            //updateParseObject('channels', 'channelUUID', channelUUID, 'name', channelName );
-            //updateParseObject('channels', 'channelUUID', channelUUID, 'description', channelDescription );
-            //updateParseObject('channels', 'channelUUID', channelUUID, 'members', channelMembers );
+            
         }
 
     },
@@ -581,9 +438,7 @@ var channelModel = {
             if (members[i] !== userId) {
                 var contact = contactModel.findContact(members[i]);
                 if (contact === undefined) {
-
                     contactModel.createChatContact(members[i], null);
-
                 }
             }
         }

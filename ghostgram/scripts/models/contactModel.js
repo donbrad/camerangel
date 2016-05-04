@@ -126,7 +126,6 @@ var contactModel = {
         contactModel.syncContactTags();
         deviceModel.setAppState('hasContacts', true);
        /* deviceModel.isParseSyncComplete();*/
-
         contactModel.contactListDS.online(false);
 
     },
@@ -162,11 +161,12 @@ var contactModel = {
         for (var i=0; i<array.length; i++) {
             var contact = (array[i]).toJSON();
             contact.identicon = contactModel.createIdenticon(contact.uuid);
-            contact.photo = contact.identicon;
+            if (contact.photo === null)
+                contact.photo = contact.identicon;
             contactModel.contactListDS.add(contact);
         }
 
-        contactModel.contactListDS.fetch();
+
     },
 
     checkIdenticon : function (contact) {
@@ -329,7 +329,6 @@ var contactModel = {
 
         return(contact);
     },
-
 
     findContactByUUID : function(uuid) {
         var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: uuid });
