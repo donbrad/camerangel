@@ -1119,6 +1119,8 @@ var editContactView = {
     emailUpdate: false,
     memberUpdate: false,
     publicKeyUpdate : false,
+    _hasPhoto: false,
+    _showPhoto : false,
 
     _activeContact : new kendo.data.ObservableObject({mappedPhoto: null}),
 
@@ -1148,12 +1150,16 @@ var editContactView = {
     setActiveContact : function (contact) {
         if (contact !== undefined) {
             contactModel.checkIdenticon(contact);
-            
-            editContactView._activeContact.set("mappedphoto", contact.identicon);
+
+            var photoUrl = contact.identicon;
+            editContactView._hasPhoto = false;
+            editContactView._showPhoto = false;
             if (contact.photo !== null) {
-                editContactView._activeContact.set("mappedphoto", contact.photo);
+                editContactView._hasPhoto = true;
+                editContactView._showPhoto = true;
+                photoUrl = contact.photo;
             }
-            $('#editContactView.profilePhoto').attr('src',  editContactView._activeContact.get("mappedphoto"));
+            $('#editContactView-profilePhoto').attr('src', photoUrl);
             editContactView._activeContact.set("Id", contact.Id);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
@@ -1207,8 +1213,15 @@ var editContactView = {
 
     changePhoto : function (e) {
         _preventDefault(e);
-
-        mobileNotify("Change photo coming soon...");
+        if (editContactView._hasPhoto) {
+            if (editContactView._showPhoto) {
+                $('#editContactView-profilePhoto').attr('src',  editContactView._activeContact.identicon);
+                editContactView._showPhoto = false;
+            } else {
+                $('#editContactView-profilePhoto').attr('src',  editContactView._activeContact.photo);
+                editContactView._showPhoto = true;
+            }
+        }
     },
 
     updateContact : function () {
@@ -1374,6 +1387,11 @@ var editContactView = {
   
     syncWithDevice : function (e) {
         _preventDefault(e);
+        // load, search and unify contacts matching this user...
+        // Really only want email, address, birthday and photos
+        deviceContacts.syncContactWithDevice(editContactView._activeContact.name, function (contacts) {
+
+        });
 
     },
 
