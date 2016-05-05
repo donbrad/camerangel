@@ -1973,7 +1973,7 @@
 			<a data-align="left" data-role="button" data-click="channelPresence.closeModal">
 				<img src="images/close.svg" />
 			</a>
-			<span>Members</span><span class="badge primary-200" id="occupancyCount"></span>
+			<span>Members</span>
 		</div>
 	</div>
 	<div class="emptyState hidden">No Members invited</div>
@@ -1999,9 +1999,11 @@
 	var name = data.name;
 	var alias = data.alias;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
+	if (data.identicon === undefined || data.identicon === null)
+	data.identicon = contactModel.createIdenticon(data.uuid);
 	var photoUrl = data.identicon;
 	if (data.photo !== null) {
-	photoUrl = data.photo;
+		photoUrl = data.photo;
 	}
 	#
 	<div>
@@ -2026,7 +2028,10 @@
 		#}else {#
 		<div style="clear: both;">
 			#}#
-			# var photoUrl = data.identicon;
+			# if (data.identicon === undefined || data.identicon === null)
+				data.identicon = contactModel.createIdenticon(data.uuid);
+			var photoUrl = data.identicon;
+
 			   if (data.photo !== null) {
 					photoUrl = data.photo;
 				}

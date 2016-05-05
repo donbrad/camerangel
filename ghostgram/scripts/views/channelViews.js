@@ -1657,7 +1657,7 @@ var channelView = {
 
     updatePresence : function (members, occupancyCount) {
 
-        $('#occupancyCount').text(occupancyCount + 1);
+      //  $('#occupancyCount').text(occupancyCount + 1);
 
         var length = Object.keys(members).length;
 
