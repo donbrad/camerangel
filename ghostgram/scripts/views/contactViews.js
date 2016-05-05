@@ -1120,7 +1120,7 @@ var editContactView = {
     memberUpdate: false,
     publicKeyUpdate : false,
 
-    _activeContact : new kendo.data.ObservableObject(),
+    _activeContact : new kendo.data.ObservableObject({mappedPhoto: null}),
 
     onInit: function (e) {
       // _preventDefault(e);
@@ -1148,10 +1148,12 @@ var editContactView = {
     setActiveContact : function (contact) {
         if (contact !== undefined) {
             contactModel.checkIdenticon(contact);
+            
             editContactView._activeContact.set("mappedphoto", contact.identicon);
             if (contact.photo !== null) {
                 editContactView._activeContact.set("mappedphoto", contact.photo);
             }
+            $('#editContactView.profilePhoto').attr('src',  editContactView._activeContact.get("mappedphoto"));
             editContactView._activeContact.set("Id", contact.Id);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);

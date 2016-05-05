@@ -478,11 +478,14 @@ var contactModel = {
         thisContact.set('contactAddress', contact.address);
         thisContactList.set('emailValidated', contact.emailValidated);
         thisContactList.set('contactPhoto', contact.photo);
-        thisContactList.set('contactAddress', contact.address);
-        if(thisContact.address !== contact.address) {
-            thisContact.set('addressUpdate', true);
-            thisContactList.set('addressUpdate', true);
+        if (contact.address !== undefined) {
+            thisContactList.set('contactAddress', contact.address);
+            if(thisContact.address !== contact.address) {
+                thisContact.set('addressUpdate', true);
+                thisContactList.set('addressUpdate', true);
+            }
         }
+
 
         thisContact.set('publicKey', contact.publicKey);
         thisContactList.set('publicKey', contact.publicKey);
