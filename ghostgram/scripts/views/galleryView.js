@@ -601,11 +601,6 @@ var modalPhotoTag = {
                 photoObj.tags = [];
             }
 
-    /*        updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "title", photoObj.title);
-            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "description", photoObj.description);
-            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "tags", photoObj.tags);
-            updateParseObject('photos', "photoId", modalPhotoTag._activePhoto.photoId, "tagsString", photoObj.tagsString);
-*/
         } else {
             mobileNotify("Can't find photo model!!");
         }
@@ -922,6 +917,21 @@ var modalPhotoView = {
                 modalView.close();
             });
 
+    },
+
+    editPhotoData : function (e) {
+        _preventDefault(e);
+        mobileNotify("In backlog....");
+    },
+
+    viewOnMap : function (e) {
+        _preventDefault(e);
+        mobileNotify("In backlog....");
+    },
+
+    sendViaGhostgrams : function (e) {
+        _preventDefault(e);
+        mobileNotify("In backlog....");
     },
 
    sharePhoto: function (e) {

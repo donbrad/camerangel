@@ -3419,11 +3419,12 @@
 <div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit" data-zoom="true">
 	<div data-role="header">
 		<div data-role="navbar">
-
-			<a data-click="modalPhotoView.closeModal" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
-
+			<a data-click="modalPhotoView.closeModal" data-role="button" class="btnClear-grey" data-align="left"><img src='images/nav-back.svg' /></a>
+			<span>Photo View</span>
+			<a  data-role="button"  data-rel="actionsheet" href="#modalPhotoView-PhotoActions" class="btnClear-grey" data-align="right"><img src='images/nav-gear.svg' /></a>
 		</div>
 	</div>
+
 	<div class="photoViewBox">
 		<img id="modalPhotoViewImage" data-bind="attr: {src : thumbnailUrl}" />
 	</div>
@@ -3457,15 +3458,16 @@
 			</div>
 
 		</div>
-		<a class="actionBtn actionBtn-stacked primary-100" data-role="button" data-click="modalPhotoView.sharePhoto">
-			<img src="images/icon-share-light.svg"/>
-		</a>
-		<a class="actionBtn warning" data-role="button" data-click="modalPhotoView.deletePhoto">
-			<img src="images/icon-trash-light.svg"/>
-		</a>
-		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalPhotoView.closeModal" id="modalPhotoView-close">Close</a>
 		<a class="btnSpan-btm btnPrimary hidden" data-role="button" data-click="modalPhotoView.closeTagEditor" id="modalPhotoView-update">Update</a>
 	</div>
+
+	<ul data-role="actionsheet"  id="modalPhotoView-PhotoActions" >
+		<a data-role="button"  data-click="modalPhotoView.editPhotoData">Edit Title & Tags</a>
+		<a data-role="button"  data-click="modalPhotoView.viewOnMap"> View Photo On Map</a>
+		<a data-role="button" data-click="modalPhotoView.sendViaGhostgrams"> Send via Ghostgrams </a>
+		<a data-role="button" data-click="modalPhotoView.sharePhoto"> Share Photo</a>
+		<a data-role="button" data-click="modalPhotoView.deletePhoto"> Delete Photo </a>
+	</ul>
 </div>
 
 
