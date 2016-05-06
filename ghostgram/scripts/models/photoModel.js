@@ -411,7 +411,6 @@ var photoModel = {
 
         var ownerId = photoObj.ownerId, ownerName = photoObj.ownerName;
 
-        photo.set('Id', photoObj.photoId);
         photo.set('photoUUID', photoObj.photoUUID);  // use the original photo id from sender to enable recall
         photo.set('uuid', photoObj.photoId);
         photo.set('channelUUID', channelUUID);
@@ -556,7 +555,6 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
-        photo.set('Id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
