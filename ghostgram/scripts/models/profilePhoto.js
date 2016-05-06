@@ -40,6 +40,16 @@ var profilePhotoModel = {
         /*deviceModel.isParseSyncComplete();*/
     },
 
+
+    updateCloud : function (photoObj)  {
+        var data = APP.everlive.data(profilePhotoModel._cloudClass);
+        data.updateSingle(photoObj, function (data) {
+            if (data.result === 0) {
+                ggError("Unable to update Cloud Profile Photo : " + photoObj.photoId);
+            }
+        });
+    },
+
     queryPhoto: function (query) {
         if (query === undefined)
             return(undefined);
@@ -127,7 +137,7 @@ var profilePhotoModel = {
 
 
                     profilePhotoModel.photoDS.sync();
-                    // photoModel.updateCloud(photoObj);
+                    profilePhotoModel.updateCloud(photoObj);
                 }
             });
         });
@@ -152,10 +162,5 @@ var profilePhotoModel = {
 
             }
         });
-
-
-
     }
-
-
 };
