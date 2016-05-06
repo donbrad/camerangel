@@ -26,7 +26,16 @@ var sharedPhotoModel = {
 
 
     },
-
+    
+    updateCloud : function (photoObj)  {
+        var data = APP.everlive.data(sharedPhotoModel._cloudClass);
+        data.updateSingle(photoObj, function (data) {
+            if (data.result === 0) {
+                ggError("Unable to update Cloud Shared Photo : " + photoObj.photoUUID);
+            }
+        });
+    },
+    
     addSharedPhoto: function (shareuuid, photoUUID, channelUUID, canCopy) {
         var share = new kendo.data.ObservableObject();
 
