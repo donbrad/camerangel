@@ -132,13 +132,13 @@ var profilePhotoModel = {
             });
         });
 
-        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+        everlive.createOne(profilePhotoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
-                mobileNotify ("Error creating photo " + JSON.stringify(error));
+                mobileNotify ("Error creating profile photo " + JSON.stringify(error));
 
             } else {
                 // look up the photo (and remove duplicate local copy if there is one)
-                var photoList = photoModel.findPhotosById(data.result.photoId);
+                var photoList = profilePhotoModel.findPhotosById(data.result.photoId);
 
                 if (photoList.length > 1) {
                     var length = photoList.length;
