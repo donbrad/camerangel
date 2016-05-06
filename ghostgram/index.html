@@ -3461,12 +3461,12 @@
 		<a class="btnSpan-btm btnPrimary hidden" data-role="button" data-click="modalPhotoView.closeTagEditor" id="modalPhotoView-update">Update</a>
 	</div>
 
-	<ul data-role="actionsheet"  id="modalPhotoView-PhotoActions" >
-		<a data-role="button"  data-click="modalPhotoView.editPhotoData">Edit Title & Tags</a>
-		<a data-role="button"  data-click="modalPhotoView.viewOnMap"> View Photo On Map</a>
-		<a data-role="button" data-click="modalPhotoView.sendViaGhostgrams"> Send via Ghostgrams </a>
-		<a data-role="button" data-click="modalPhotoView.sharePhoto"> Share Photo</a>
-		<a data-role="button" data-click="modalPhotoView.deletePhoto"> Delete Photo </a>
+	<ul data-role="actionsheet"  id="modalPhotoView-PhotoActions" data-popup='{"direction": "left"}'>
+		<li> <a data-click="modalPhotoView.editPhotoData">Edit Title & Tags</a></li>
+		<li> <a data-click="modalPhotoView.viewOnMap"> View Photo On Map</a></li>
+		<li> <a data-click="modalPhotoView.sendViaGhostgrams"> Send via Ghostgrams </a></li>
+		<li> <a data-click="modalPhotoView.sharePhoto"> Share Photo</a></li>
+		<li> <a data-click="modalPhotoView.deletePhoto"> Delete Photo </a></li>
 	</ul>
 </div>
 
