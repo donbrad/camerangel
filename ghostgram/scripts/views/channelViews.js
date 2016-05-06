@@ -1786,7 +1786,7 @@ var channelView = {
     },
 
 
-    messageAddPhotoOffer : function (photoId, canCopy) {
+    messageAddSharedPhoto : function (photoId, canCopy) {
 
         var photo = photoModel.findPhotoById(photoId);
 
@@ -1898,7 +1898,7 @@ var channelView = {
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
-                channelView.messageAddPhotoOffer(photoId, !channelView.messageLock);
+                channelView.messageAddSharedPhoto(photoId, !channelView.messageLock);
             }
         }
 

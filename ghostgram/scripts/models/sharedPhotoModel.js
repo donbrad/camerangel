@@ -27,22 +27,38 @@ var sharedPhotoModel = {
 
     },
 
-    addSharedPhoto: function (photoUUID, channelUUID, imageUrl, uploadFlag, canCopy) {
+    addSharedPhoto: function (shareuuid, photoUUID, channelUUID, uploadFlag, canCopy) {
         var share = new kendo.data.ObservableObject();
 
-        var shareuuid = uuid.v4();
-
+        var photo = photoModel.findPhotoById(photoUUID);
+        if (photo === undefined) {
+            ggError("SharePhoto -- can't find source photo!!!");
+        }
+        
         share.set('version', sharedPhotoModel._version);
         share.set('ggType', sharedPhotoModel._ggClass);
-        share.set('Id', shareuuid);
         share.set('uuid', shareuuid);
         share.set('photoUUID', photoUUID);
         share.set('channelUUID', channelUUID);
         share.set('ownerId', userModel._user.userUUID);
         share.set('ownerName', userModel._user.name);
 
-        share.set('imageUrl', imageUrl);
-        share.set('thumbnailUrl', imageUrl.replace('upload//', 'upload//c_scale,h_512,w_512//'));
+        share.set('title', photo.title);
+        share.set('timestamp', photo.timestamp);
+        share.set('description', photo.description);
+        share.set('tagString', photo.tagString);
+        share.set('tags', photo.tags);
+        share.set('geoPoint', photo.geoPoint);
+        
+        var imageUrl = photo.cloudUrl;
+        if (imageUrl === null) {
+            share.set('imageUrl', null);
+            share.set('thumbnailUrl', null);
+        } else {
+            share.set('imageUrl',imageUrl);
+            share.set('thumbnailUrl', imageUrl.replace('upload//', 'upload//c_scale,h_512,w_512//'));
+        }
+
 
         share.set('isUploaded', uploadFlag);
 
@@ -65,6 +81,14 @@ var sharedPhotoModel = {
 
     },
 
+    getSharedPhotosByChannel : function (channelUUID) {
+        
+    },
+
+    getSharedPhotosByUser : function (userUUID) {
+
+    },
+    
     sharedPhotoUploaded : function (shareId) {
 
     },
