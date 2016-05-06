@@ -707,12 +707,14 @@ var photoModel = {
         
         photoModel.photosDS.remove(photo);
         photoModel.photosDS.sync();
-       /* var Id = photo.Id;
+        var Id = photo.Id;
         if (Id !== undefined){
-            everlive.deleteOne(photoModel._cloudClass, Id, function (error, data) {
-               
+            everlive.deleteOne(photoModel._cloudClass,  Id, function (error, data) {
+               if (error !== null) {
+                   ggError("Photo Cloud Delete Error : " + JSON.stringify(error));
+               }
             });
-        }*/
+        }
         
     },
 
