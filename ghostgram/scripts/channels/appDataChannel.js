@@ -327,6 +327,27 @@ var appDataChannel = {
         });
     },
 
+    recallPhoto : function (contactId, channelUUID, photoId, ownerId, isPrivateChat) {
+        var msg = {};
+
+        msg.msgID = uuid.v4();
+        msg.type = 'recallMessage';
+        msg.version = appDataChannel._version;
+        msg.channelUUID = channelUUID;
+        msg.photoId = photoId;
+        msg.ownerId = ownerId;
+        msg.isPrivateChat = isPrivateChat;
+        msg.time = new Date().getTime();
+        var channel = appDataChannel.getContactAppChannel(contactId);
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            success: appDataChannel.channelSuccess,
+            error: appDataChannel.channelError
+        });
+    },
+
     userValidatedMessage : function (userUUID, phone, email, publicKey) {
         var msg = new Object();
 
@@ -865,6 +886,10 @@ var appDataChannel = {
 
     processRecallMessage: function (channelUUID, messageId, ownerId, isPrivateChat) {
         channelModel.addMessageRecall(channelUUID, messageId, ownerId, isPrivateChat);
+    },
+
+    processRecallPhoto: function (channelUUID, photoId, ownerId, isPrivateChat) {
+        channelModel.addPhotoRecall(channelUUID, photoId, ownerId, isPrivateChat);
     },
 
     publishCallback : function (m) {

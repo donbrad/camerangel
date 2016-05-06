@@ -20,11 +20,15 @@ var channelModel = {
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
 
     channelsDS: null,
+    
+    photosDS: null,
 
     // List of all active private channels (those with messages)
     privateChannelsDS: null, 
 
-    recalledMessagesDS : null, 
+    recalledMessagesDS : null,
+
+    recalledPhotosDS : null,
 
     groupMessagesDS : null,
 
@@ -64,8 +68,35 @@ var channelModel = {
             type: 'everlive',
           
             transport: {
-                typeName: 'recalledmessages'
-                //dataProvider: APP.everlive
+                typeName: 'recalledMessages',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
+            autoSync : true
+        });
+
+
+        channelModel.recalledPhotosDS = new kendo.data.DataSource({
+            type: 'everlive',
+
+            transport: {
+                typeName: 'recalledPhotos',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
+            autoSync : true
+        });
+
+        channelModel.photosDS = new kendo.data.DataSource({
+            type: 'everlive',
+
+            transport: {
+                typeName: 'channelPhotos',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -76,8 +107,8 @@ var channelModel = {
         channelModel.groupMessagesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'groupmessages'
-                //dataProvider: APP.everlive
+                typeName: 'groupmessages',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -337,6 +368,7 @@ var channelModel = {
             return;
         }
         channelModel.recalledMessagesDS.add(recallObj);
+        channelModel.recalledMessagesDS.sync();
         if (channelUUID === channelView._channelUUID) {
             // need to delete from channel view too
             var liveMessage = channelView.findMessageById(msgId);
@@ -346,6 +378,85 @@ var channelModel = {
 
     },
 
+    queryRecalledPhoto : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelModel.recalledPhotosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter(cacheFilter);
+        return(channel);
+    },
+
+    isPhotoRecalled : function (photoId) {
+        var message = channelModel.queryRecalledPhoto({ field: "photoId", operator: "eq", value: photoId });
+
+        if (message === undefined) {
+            //msgID not found in recall list
+            return(false);
+        } else {
+            //msgID exists in recall list
+            return(true);
+        }
+    },
+
+    addPhotoRecall : function (channelUUID, photoId, ownerId, isPrivateChat) {
+        var recallObj = {channelUUID : channelUUID, photoId: photoId, ownerId:  ownerId,  isPrivateChat: isPrivateChat};
+
+        var channel = channelModel.findChannelModel(channelUUID);
+
+        if (channel === undefined) {
+            return;
+        }
+        channelModel.recalledPhotosDS.add(recallObj);
+        channelModel.recalledPhotosDS.sync();
+        if (channelUUID === channelView._channelUUID) {
+           // Todo -- need to decide how to handle recall in active channel, could force refresh
+        }
+
+    },
+
+
+    addPhoto : function (channelUUID, photoId, photoUrl,  ownerId, ownerName, isPrivateChat) {
+        var photoObj = {channelUUID : channelUUID, photoId: photoId, photoUrl: photoUrl,  ownerId:  ownerId,  ownerName: ownerName,  isPrivateChat: isPrivateChat};
+
+        var channel = channelModel.findChannelModel(channelUUID);
+
+        if (channel === undefined) {
+            return;
+        }
+        
+        channelModel.photosDS.add(photoObj);
+        channelModel.photosDS.sync();
+
+    },
+
+    queryPhotos : function (query) {
+        if (query === undefined)
+            return([]);
+        var dataSource = channelModel.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        dataSource.filter(cacheFilter);
+        return(view);
+
+    },
+    
+    getChannelPhotos : function (channelUUID) {
+        var photos = channelModel.queryPhotos({ field: "channelUUID", operator: "eq", value: channelUUID });
+
+        return(photos);
+    },
+    
     getUnreadChannels : function () {
         var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 });
 

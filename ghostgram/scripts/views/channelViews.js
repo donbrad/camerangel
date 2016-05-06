@@ -851,6 +851,8 @@ var channelView = {
     _editorActive: false,
     _returnview: null,
     _titleTagActive: false,
+    _currentPhoto : 0,
+
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -865,8 +867,13 @@ var channelView = {
 
     newMembers : [],
 
-    photoOffersDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
+    photos : [],
 
+    photosDS: new kendo.data.DataSource({
+        sort: {
+            field: "timestamp",
+            dir: "asc"
+        }
     }),
 
     photoUrlMap: [], // Dynamic map of photos to image urls based on offers
@@ -876,7 +883,7 @@ var channelView = {
             model: { id: 'msgID' }
         },
         sort: {
-            field: "time",
+            field: "timestamp",
             dir: "asc"
         }
     }),
@@ -1128,12 +1135,6 @@ var channelView = {
         channelView.messageInit();
         channelView._initMessageTextArea();
 
-      /*  photoModel.getChannelOffers(channelUUID, function (offers) {
-            channelView.photoOffersDS.data(offers);
-            channelView._offersLoaded = true;
-        });*/
-
-
 
         channelView._channel = thisChannel;
 
@@ -1355,13 +1356,13 @@ var channelView = {
         var name = contactData.name;
         var alias = contactData.alias;
         var contactPhotoUrl = contactData.photoUrl;
-       /* message.isContact = contactData.isContact;
-        message.contactPhotoUrl = contactPhotoUrl;*/
         if (message.sender === userModel._user.userUUID) {
             message.displayName = "Me";
         } else {
             message.displayName = ux.returnUXPrimaryName(name, alias);
         }
+
+
     },
 
     updateTimeStamps: function () {
@@ -1502,6 +1503,20 @@ var channelView = {
         }
         return (photoUrl);
     },
+
+    //build a cache of photos indexed by photoId
+    buildPhotoList : function () {
+
+        channelView.photos = [];
+        channelView._currentPhoto = 0;
+        var photos = channelModel.getChannelPhotos(channelView._channelUUID);
+
+        channelView.photosDS.data(photos);
+        for (var i=0; i<photos.length; i++) {
+            channelView.photos[photos[i].photoId] = photos[i];
+        }
+    },
+
 
     // Build a member list for this channel
     buildMemberDS : function () {
@@ -1806,10 +1821,16 @@ var channelView = {
             ownerName: photo.senderName
         };
         
+        // Add the photo to the current message
         channelView.activeMessage.photos.push(photoObj);
+        
+        // Push the photo to the channel photo store
+        channelModel.addPhoto(photoObj.channelUUID, photoObj.photoUUID, photoObj.imageUrl, photoObj.ownerUUID, photoObj.ownerName);
+        
+        // Add the photo to users shared photo list
         sharedPhotoModel.addSharedPhoto(shareId, photoObj.photoUUID, photoObj.channelUUID, canCopy);
 
-       // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
+  
     },
 
     messageAddRichText : function (text) {
@@ -2040,6 +2061,11 @@ var channelView = {
 
     },
 
+    resolveChatPhoto : function (message) {
+        
+
+    },
+
     addImageToMessage: function (photoId, displayUrl) {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
@@ -2052,7 +2078,8 @@ var channelView = {
             if (thumbUrl === null) {
                 thumbUrl = "images/missing-image.jpg";
             }
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ shareUUID + '" id="chatphoto_' + shareUUID + '" src="'+ thumbUrl +'" onError="this.src=\'images/missing-image.jpg\';" />';
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src="' + displayUrl + '"' +
+               +  'onload="this.onload=null; this.src=channelView.resolveChatPhoto(this);"' +  ' onerror="this.onerror = null; this.src=channelView.resolveChatPhoto(this);" />';
 
             $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
            /* editor.paste(imgUrl);
