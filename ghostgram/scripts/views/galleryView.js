@@ -848,6 +848,8 @@ var modalPhotoView = {
     openTagEditor : function (e) {
         _preventDefault(e);
 
+        $("#modalPhotoView-PhotoActions").data("kendoMobileActionSheet").close();
+
         $(".photoTitleBox").velocity({height: "20rem"}, {duration: 800, easing: "spring"});
         $(".photoTitleText").addClass("hidden");
         $(".photoTitleInput").removeClass("hidden");
@@ -878,11 +880,6 @@ var modalPhotoView = {
                 photoObj.tags = [];
             }
 
-            /*updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "title", photoObj.title);
-            updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "description", photoObj.description);
-            updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "tags", photoObj.tags);
-            updateParseObject('photos', "photoId", modalPhotoView._activePhoto.photoId, "tagsString", photoObj.tagsString);
-*/
         } else {
             mobileNotify("Can't find photo model!!");
         }
@@ -894,7 +891,6 @@ var modalPhotoView = {
 
         $("#modalPhotoView .actionBtn").velocity("fadeIn", {delay: 300});
 
-        $("#modalPhotoView-close").removeClass("hidden");
         $("#modalPhotoView-update").addClass("hidden");
     },
 
@@ -920,6 +916,11 @@ var modalPhotoView = {
     },
 
     editPhotoData : function (e) {
+        _preventDefault(e);
+        mobileNotify("In backlog....");
+    },
+
+    managePhoto : function (e) {
         _preventDefault(e);
         mobileNotify("In backlog....");
     },

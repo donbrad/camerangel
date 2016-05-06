@@ -3433,7 +3433,6 @@
 			<div class="photoTitleText">
 				<h3 class="textClamp">
 					<span id="modalPhotoViewTitle" data-bind="text: title">Photo Title</span>
-					<a class="btnClear-sm" data-role="button" data-click="modalPhotoView.openTagEditor">Edit</a>
 				</h3>
 				<p id="photoTitle-tags">
 					<img src="images/icon-tag-light.svg" class="icon-sm" />
@@ -3448,12 +3447,8 @@
 				<label>Tags</label>
 				<select id="photo-smartTag" multiple="multiple"></select>
 
-				<label>Location</label>
-				<input type="text" id="photo-location" data-bind="value: addressString"/>
-				<!--
 				<label>Description</label>
 				<textarea data-bind="value: description" type="text" col="80" row="2" maxlength="60"></textarea>
-				-->
 
 			</div>
 
@@ -3462,7 +3457,8 @@
 	</div>
 
 	<ul data-role="actionsheet"  id="modalPhotoView-PhotoActions" data-popup='{"direction": "left"}'>
-		<li> <a data-click="modalPhotoView.editPhotoData">Edit Title & Tags</a></li>
+		<li> <a data-click="modalPhotoView.openTagEditor">Edit</a></li>
+		<li> <a data-click="modalPhotoView.managePhoto">Manage Photo</a></li>
 		<li> <a data-click="modalPhotoView.viewOnMap"> View Photo On Map</a></li>
 		<li> <a data-click="modalPhotoView.sendViaGhostgrams"> Send via Ghostgrams </a></li>
 		<li> <a data-click="modalPhotoView.sharePhoto"> Share Photo</a></li>
