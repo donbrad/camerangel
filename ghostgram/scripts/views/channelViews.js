@@ -1355,13 +1355,13 @@ var channelView = {
         var name = contactData.name;
         var alias = contactData.alias;
         var contactPhotoUrl = contactData.photoUrl;
-       /* message.isContact = contactData.isContact;
-        message.contactPhotoUrl = contactPhotoUrl;*/
         if (message.sender === userModel._user.userUUID) {
             message.displayName = "Me";
         } else {
             message.displayName = ux.returnUXPrimaryName(name, alias);
         }
+
+        
     },
 
     updateTimeStamps: function () {

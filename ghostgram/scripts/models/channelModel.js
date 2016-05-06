@@ -346,6 +346,24 @@ var channelModel = {
 
     },
 
+    addPhotoRecall : function (channelUUID, photoId, ownerId, isPrivateChat) {
+        var recallObj = {channelUUID : channelUUID, photoId: photoId, ownerId:  ownerId, isPrivateChat: isPrivateChat};
+
+        var channel = channelModel.findChannelModel(channelUUID);
+
+        if (channel === undefined) {
+            return;
+        }
+        channelModel.recalledMessagesDS.add(recallObj);
+        if (channelUUID === channelView._channelUUID) {
+            // need to delete from channel view too
+            var liveMessage = channelView.findMessageById(msgId);
+            channelView.messagesDS.remove(liveMessage);
+            channelView.messagesDS.sync();
+        }
+
+    },
+
     getUnreadChannels : function () {
         var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 });
 
