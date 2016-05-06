@@ -1361,7 +1361,7 @@ var channelView = {
             message.displayName = ux.returnUXPrimaryName(name, alias);
         }
 
-        
+
     },
 
     updateTimeStamps: function () {
@@ -2040,6 +2040,10 @@ var channelView = {
 
     },
 
+    resolveChatPhoto : function (message) {
+
+    },
+
     addImageToMessage: function (photoId, displayUrl) {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
@@ -2052,7 +2056,8 @@ var channelView = {
             if (thumbUrl === null) {
                 thumbUrl = "images/missing-image.jpg";
             }
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ shareUUID + '" id="chatphoto_' + shareUUID + '" src="'+ thumbUrl +'" onError="this.src=\'images/missing-image.jpg\';" />';
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src="' + displayUrl + '"' +
+               +  'onload="this.onload=null; this.src=channelView.resolveChatPhoto(this);"' +  ' onerror="this.onerror = null; this.src=channelView.resolveChatPhoto(this);" />';
 
             $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
            /* editor.paste(imgUrl);
