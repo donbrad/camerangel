@@ -24,7 +24,9 @@ var channelModel = {
     // List of all active private channels (those with messages)
     privateChannelsDS: null, 
 
-    recalledMessagesDS : null, 
+    recalledMessagesDS : null,
+
+    recalledPhotosDS : null,
 
     groupMessagesDS : null,
 
@@ -64,8 +66,21 @@ var channelModel = {
             type: 'everlive',
           
             transport: {
-                typeName: 'recalledmessages'
-                //dataProvider: APP.everlive
+                typeName: 'recalledMessages',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
+            autoSync : true
+        });
+
+        channelModel.recalledPhotosDS = new kendo.data.DataSource({
+            type: 'everlive',
+
+            transport: {
+                typeName: 'recalledPhotos',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -76,8 +91,8 @@ var channelModel = {
         channelModel.groupMessagesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'groupmessages'
-                //dataProvider: APP.everlive
+                typeName: 'groupmessages',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -337,6 +352,7 @@ var channelModel = {
             return;
         }
         channelModel.recalledMessagesDS.add(recallObj);
+        channelModel.recalledMessagesDS.sync();
         if (channelUUID === channelView._channelUUID) {
             // need to delete from channel view too
             var liveMessage = channelView.findMessageById(msgId);
@@ -346,20 +362,45 @@ var channelModel = {
 
     },
 
+    queryRecalledPhoto : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelModel.recalledPhotosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var channel = view[0];
+        dataSource.filter(cacheFilter);
+        return(channel);
+    },
+
+    isPhotoRecalled : function (photoId) {
+        var message = channelModel.queryRecalledPhoto({ field: "photoId", operator: "eq", value: photoId });
+
+        if (message === undefined) {
+            //msgID not found in recall list
+            return(false);
+        } else {
+            //msgID exists in recall list
+            return(true);
+        }
+    },
+
     addPhotoRecall : function (channelUUID, photoId, ownerId, isPrivateChat) {
-        var recallObj = {channelUUID : channelUUID, photoId: photoId, ownerId:  ownerId, isPrivateChat: isPrivateChat};
+        var recallObj = {channelUUID : channelUUID, photoId: photoId, ownerId:  ownerId,  isPrivateChat: isPrivateChat};
 
         var channel = channelModel.findChannelModel(channelUUID);
 
         if (channel === undefined) {
             return;
         }
-        channelModel.recalledMessagesDS.add(recallObj);
+        channelModel.recalledPhotosDS.add(recallObj);
+        channelModel.recalledPhotosDS.sync();
         if (channelUUID === channelView._channelUUID) {
-            // need to delete from channel view too
-            var liveMessage = channelView.findMessageById(msgId);
-            channelView.messagesDS.remove(liveMessage);
-            channelView.messagesDS.sync();
+           // Todo -- need to decide how to handle recall in active channel, could force refresh
         }
 
     },
