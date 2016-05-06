@@ -1411,11 +1411,11 @@ var channelView = {
     mapPhotoUrl : function (msgID, photo) {
 
         if (photo === undefined || photo.photoId === undefined) {
-            return('images/photo-default.svg');
+            return('images/missing-image.jpg');
         }
         var photoObj = photoModel.findPhotoById(photo.photoId);
         if (photoObj !== undefined) {
-            // This is the senders photo  -- it's the in the gallery so just reutrn the thumbnail
+            // This is the senders photo  -- it's the in the gallery so just return the thumbnail
             return(photoObj.thumbnailUrl);
         } else {
             // This is a recieved photo -- need to look up current offer
@@ -1425,7 +1425,7 @@ var channelView = {
             } else {
                 return(photo.thumbnailUrl);
             }
-            return('images/photo-default.svg');
+            return('images/missing-image.jpg');
         }
     },
 
@@ -1786,25 +1786,29 @@ var channelView = {
     },
 
 
-    messageAddSharedPhoto : function (photoId, canCopy) {
+    messageAddSharedPhoto : function (photoId, shareId, canCopy) {
 
         var photo = photoModel.findPhotoById(photoId);
 
-        if (photo !== undefined) {
-
-            var photoObj  = {
-                photoId : photo.photoId,
-                channelUUID: channelView._channelUUID,
-                thumbnailUrl: photo.thumbnailUrl,
-                imageUrl: photo.imageUrl,
-                canCopy: canCopy,
-                ownerId: photo.senderUUID,
-                ownerName: photo.senderName
-            };
+        if (photo === undefined) {
+            ggError("Can't find this photo !!!");
+            return;
         }
-
-
+        
+        var photoObj  = {
+            uuid: shareId,
+            photoUUID: photo.photoId,
+            channelUUID: channelView._channelUUID,
+            thumbnailUrl: photo.thumbnailUrl,
+            imageUrl: photo.imageUrl,
+            canCopy: canCopy,
+            ownerUUID: photo.senderUUID,
+            ownerName: photo.senderName
+        };
+        
         channelView.activeMessage.photos.push(photoObj);
+        sharedPhotoModel.addSharedPhoto(shareId, photoObj.photoUUID, photoObj.channelUUID, canCopy);
+
        // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
@@ -1894,11 +1898,11 @@ var channelView = {
         var messageText = $('#messageTextArea').redactor('code.get');
 
         for (var i=0; i< channelView.messagePhotos.length; i++) {
-            var photoId = channelView.messagePhotos[i];
+            var photoId = channelView.messagePhotos[i].photoUUID, shareId = channelView.messagePhotos[i].shareUUID;
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
-                channelView.messageAddSharedPhoto(photoId, !channelView.messageLock);
+                channelView.messageAddSharedPhoto(photoId, shareId, !channelView.messageLock);
             }
         }
 
@@ -2041,17 +2045,23 @@ var channelView = {
       //  var editor = $("#messageTextArea").data("kendoEditor");
         var photoObj = photoModel.findPhotoById(photoId);
 
-       // channelView.messageAddPhoto(photoModel.currentOffer);
+       
         if (photoObj !== undefined) {
-
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + photoId + '" src="'+ photoObj.thumbnailUrl +'" onError="this.src=\'images/ghost.svg\';" />';
+            var shareUUID = uuid.v4(), shareObj = {photoUUID : photoId, shareUUID: shareUUID};
+            var thumbUrl = photoObj.thumbnailUrl;
+            if (thumbUrl === null) {
+                thumbUrl = "images/missing-image.jpg";
+            }
+            var imgUrl = '<img class="photo-chat" data-photoid="'+ shareUUID + '" id="chatphoto_' + shareUUID + '" src="'+ thumbUrl +'" onError="this.src=\'images/missing-image.jpg\';" />';
 
             $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
            /* editor.paste(imgUrl);
             editor.update();*/
+
+            channelView.messagePhotos.push(shareObj);
         }
 
-        channelView.messagePhotos.push(photoId);
+      
 
        /* $('#chatImage').attr('src', displayUrl);
         $('#chatImagePreview').show();*/

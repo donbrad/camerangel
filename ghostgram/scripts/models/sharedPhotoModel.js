@@ -27,7 +27,7 @@ var sharedPhotoModel = {
 
     },
 
-    addSharedPhoto: function (shareuuid, photoUUID, channelUUID, uploadFlag, canCopy) {
+    addSharedPhoto: function (shareuuid, photoUUID, channelUUID, canCopy) {
         var share = new kendo.data.ObservableObject();
 
         var photo = photoModel.findPhotoById(photoUUID);
@@ -54,13 +54,15 @@ var sharedPhotoModel = {
         if (imageUrl === null) {
             share.set('imageUrl', null);
             share.set('thumbnailUrl', null);
+            share.set('isUploaded', false);
         } else {
             share.set('imageUrl',imageUrl);
-            share.set('thumbnailUrl', imageUrl.replace('upload//', 'upload//c_scale,h_512,w_512//'));
+            share.set('thumbnailUrl', imageUrl.replace('upload//', 'upload//c_scale,h_512,w_512//')); 
+            share.set('isUploaded', true);
         }
 
 
-        share.set('isUploaded', uploadFlag);
+      
 
         if (canCopy === undefined) {
             canCopy = false;
@@ -81,8 +83,43 @@ var sharedPhotoModel = {
 
     },
 
+    getSharedPhoto : function (uuid, callback) {
+        var filter = new Everlive.Query();
+        filter.where().eq('uuid', uuid);
+
+        var data = APP.everlive.data(sharedPhotoModel._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        callback(null)
+                    } else {
+                        var photo = data.result[0];
+                        callback(photo);
+                    }
+
+                },
+                function(error){
+                    mobileNotify("MemberDirectory Find error : " + JSON.stringify(error));
+                });
+    },
+
     getSharedPhotosByChannel : function (channelUUID) {
-        
+        var filter = new Everlive.Query();
+        filter.where().eq('channelUUID', channelUUID);
+
+        var data = APP.everlive.data(sharedPhotoModel._ggClass);
+        data.get(filter)
+            .then(function(data){
+                    if (data.count === 0) {
+                        callback(null)
+                    } else {
+                        callback(data.result);
+                    }
+
+                },
+                function(error){
+                    mobileNotify("SharedPhoto Query error : " + JSON.stringify(error));
+                });
     },
 
     getSharedPhotosByUser : function (userUUID) {
