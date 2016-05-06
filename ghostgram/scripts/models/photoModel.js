@@ -693,6 +693,31 @@ var photoModel = {
         });
     },
 
+    findCloudinaryPhoto : function (photoid, callback) {
+        $.ajax({
+            url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/findCloudinaryPhoto?photoid='+photoid,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function(result) {
+                if (callback !== undefined) {
+                    var photos = result.resources;
+                    var photo = photos[0];
+
+                    if (callback !== undefined) {
+                        callback({found: true, publicId : photo.public_id, url: photo.secure_url});
+                    }
+                }
+
+            },
+            error: function(error) {
+
+                if (callback !== undefined) {
+                    callback({found: false, publicId: null, url: null});
+                }
+
+            }
+        });
+    },
 
     deletePhoto: function (photoId) {
         var photo = this.findPhotoById(photoId);
