@@ -851,6 +851,8 @@ var channelView = {
     _editorActive: false,
     _returnview: null,
     _titleTagActive: false,
+    _currentPhoto : 0,
+
 
     membersDS: new kendo.data.DataSource({
         sort: {
@@ -865,8 +867,13 @@ var channelView = {
 
     newMembers : [],
 
-    photoOffersDS: new kendo.data.DataSource({  // this is the list view data source for chat messages
+    photos : [],
 
+    photosDS: new kendo.data.DataSource({
+        sort: {
+            field: "timestamp",
+            dir: "asc"
+        }
     }),
 
     photoUrlMap: [], // Dynamic map of photos to image urls based on offers
@@ -876,7 +883,7 @@ var channelView = {
             model: { id: 'msgID' }
         },
         sort: {
-            field: "time",
+            field: "timestamp",
             dir: "asc"
         }
     }),
@@ -1127,12 +1134,6 @@ var channelView = {
         channelView.initDataSources();
         channelView.messageInit();
         channelView._initMessageTextArea();
-
-      /*  photoModel.getChannelOffers(channelUUID, function (offers) {
-            channelView.photoOffersDS.data(offers);
-            channelView._offersLoaded = true;
-        });*/
-
 
 
         channelView._channel = thisChannel;
@@ -1503,6 +1504,20 @@ var channelView = {
         return (photoUrl);
     },
 
+    //build a cache of photos indexed by photoId
+    buildPhotoList : function () {
+
+        channelView.photos = [];
+        channelView._currentPhoto = 0;
+        var photos = channelModel.getChannelPhotos(channelView._channelUUID);
+
+        channelView.photosDS.data(photos);
+        for (var i=0; i<photos.length; i++) {
+            channelView.photos[photos[i].photoId] = photos[i];
+        }
+    },
+
+
     // Build a member list for this channel
     buildMemberDS : function () {
 
@@ -1806,10 +1821,16 @@ var channelView = {
             ownerName: photo.senderName
         };
         
+        // Add the photo to the current message
         channelView.activeMessage.photos.push(photoObj);
+        
+        // Push the photo to the channel photo store
+        channelModel.addPhoto(photoObj.channelUUID, photoObj.photoUUID, photoObj.imageUrl, photoObj.ownerUUID, photoObj.ownerName);
+        
+        // Add the photo to users shared photo list
         sharedPhotoModel.addSharedPhoto(shareId, photoObj.photoUUID, photoObj.channelUUID, canCopy);
 
-       // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
+  
     },
 
     messageAddRichText : function (text) {
@@ -2041,6 +2062,7 @@ var channelView = {
     },
 
     resolveChatPhoto : function (message) {
+        
 
     },
 

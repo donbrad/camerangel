@@ -20,6 +20,8 @@ var channelModel = {
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
 
     channelsDS: null,
+    
+    photosDS: null,
 
     // List of all active private channels (those with messages)
     privateChannelsDS: null, 
@@ -75,11 +77,25 @@ var channelModel = {
             autoSync : true
         });
 
+
         channelModel.recalledPhotosDS = new kendo.data.DataSource({
             type: 'everlive',
 
             transport: {
                 typeName: 'recalledPhotos',
+                dataProvider: APP.everlive
+            },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
+            autoSync : true
+        });
+
+        channelModel.photosDS = new kendo.data.DataSource({
+            type: 'everlive',
+
+            transport: {
+                typeName: 'channelPhotos',
                 dataProvider: APP.everlive
             },
             schema: {
@@ -405,6 +421,42 @@ var channelModel = {
 
     },
 
+
+    addPhoto : function (channelUUID, photoId, photoUrl,  ownerId, ownerName, isPrivateChat) {
+        var photoObj = {channelUUID : channelUUID, photoId: photoId, photoUrl: photoUrl,  ownerId:  ownerId,  ownerName: ownerName,  isPrivateChat: isPrivateChat};
+
+        var channel = channelModel.findChannelModel(channelUUID);
+
+        if (channel === undefined) {
+            return;
+        }
+        
+        channelModel.photosDS.add(photoObj);
+        channelModel.photosDS.sync();
+
+    },
+
+    queryPhotos : function (query) {
+        if (query === undefined)
+            return([]);
+        var dataSource = channelModel.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        dataSource.filter(cacheFilter);
+        return(view);
+
+    },
+    
+    getChannelPhotos : function (channelUUID) {
+        var photos = channelModel.queryPhotos({ field: "channelUUID", operator: "eq", value: channelUUID });
+
+        return(photos);
+    },
+    
     getUnreadChannels : function () {
         var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 });
 
