@@ -94,7 +94,7 @@ var deviceContacts = {
                         contactItem.photo = null;
                     }
     
-                    if (contactItem.phoneNumbers.length > 0)
+                    if (contactItem.phoneNumbers.length > 0 && contactItem.name.length > 0)
                         contactModel.deviceContactsDS.add(contactItem);
                 }
     
