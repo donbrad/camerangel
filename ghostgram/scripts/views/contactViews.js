@@ -502,8 +502,11 @@ var contactImportView = {
             // Select the contact
             contactModel.deviceContactsDS.data([contacts[0]]);
 
+            var contact = contacts[0];
 
-            addContactView.openModal(contacts[0]);
+            contact.name = contact.name.trim();
+
+            addContactView.openModal(contact);
 
         });
     }
