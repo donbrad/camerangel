@@ -1061,6 +1061,7 @@ var addContactView = {
                 addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactId,  thisContact.userUUID);
             }
 
+            appDataChannel.memberAutoConnect(thisContact.userUUID);
 
         } else {
             // Not a member - just use the email address the our user selected

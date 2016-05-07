@@ -278,19 +278,23 @@ var userModel = {
         if (photo === undefined || photo === null) {
             userModel._user.photo =  userModel.identiconUrl;
         }
-        var emailValidated = user.isValidated;
+        var emailValidated = user.Verified;
         userModel._user.set('emailValidated', emailValidated);
         userModel._user.set('phoneValidated',user.phoneValidated);
       
+        if (user.addressValidated === undefined) {
+            user.addressValidated = false;
+        }
         userModel._user.set('addressValidated',user.addressValidated);
         userModel._user.set('availImgUrl', 'images/status-away.svg');
         var isAvailable  = userModel._user.get('isAvailable');
         if (isAvailable) {
             userModel._user.set('availImgUrl', 'images/status-available.svg');
         }
-
-
-        userModel._user.set('emailValidated', user.Verified);
+        
+        userModel._user.set('isValidated', user.Verified);
+        
+        memberdirectory.update();
 
     },
     

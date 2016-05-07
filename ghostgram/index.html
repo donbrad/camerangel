@@ -2229,6 +2229,8 @@
 			<a data-role="button" data-click="editContactView.onDone" data-align="left" >
 				<img src="images/nav-back.svg" />
 			</a>
+			<a  data-role="button"  data-rel="actionsheet" href="#editContact-contactActions" class="btnClear-grey" data-align="right"><img src='images/nav-gear.svg' /></a>
+
 		</div>
 	</div>
 	<div>
@@ -2307,23 +2309,7 @@
 						<input type="checkbox" data-role="switch"  data-bind="checked: isBlocked"/>
 					</label>
 				</li>
-				<li data-role="button" class="btnClear-red btn-li" data-click="editContactView.deleteContact" id="editContact-delete-btn">
-					Delete Contact
-				</li>
 			</ul>
-
-
-			<div class="edit-contacts-options hidden">
-				<!--<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="editContactView.syncWithParse">
-					<img src="images/ghost-sm.svg" />  Refresh Contact
-				</a>-->
-				<a data-role="button" class="btnClear-grey hidden" id="editContact-resyncDeviceBtn" data-click="editContactView.syncWithDevice">
-					<img src="images/icon-sync.svg" class="icon-sm" />  Sync Contact with Device
-				</a>
-				<a data-role="button" class="btnClear-red " data-click="editContactView.deleteContact">
-					Delete Contact
-				</a>
-			</div>
 		</form>
 	</div>
 	<div class="footerBk" data-role="footer">
@@ -2331,6 +2317,11 @@
 		</a>
 
 	</div>
+	<ul id="editContact-contactActions" data-role="actionsheet" data-cancel="Cancel">
+		<li><a data-role="button" data-click="editContactView.syncWithDevice"> Sync With Device </a></li>
+		<li><a data-role="button" data-action="editContactView.changePhoto"> Change Photo </a></li>
+		<li><a data-role="button" data-action="editContactView.deleteContact"> Delete Contact </a></li>
+	</ul>
 </div>
 
 
@@ -4327,7 +4318,6 @@
 		<li><a data-role="button" data-action="privateNotesView.sendNote"> Send to Contact</a></li>
 		<li><a data-role="button" data-action="privateNotesView.sendChatNote"> Share in Chat </a></li>
 		<li><a data-role="button" data-action="privateNotesView.shareNote" > Share Private Note </a></li>
-
 	</ul>
 
 
