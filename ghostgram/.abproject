@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.76",
+  "BundleVersion": "0.0.77",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
