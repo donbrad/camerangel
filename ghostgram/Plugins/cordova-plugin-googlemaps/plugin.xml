@@ -93,7 +93,7 @@
 
     <!-- ios -->
     <platform name="ios">
-        <preference name="AIzaSyBmvj1RrT6j7Fj_7KJdcGwjDhKl2ij55lQ" />
+        <preference name="API_KEY_FOR_IOS" />
 
         <info>
              In order to run this plugin, you need to obtain Google Maps API key for iOS.
@@ -186,7 +186,7 @@
         <source-file src="src/ios/GoogleMaps/MyPluginScrollView.m" />
 
         <config-file target="*-Info.plist" parent="Google Maps API Key">
-            <string>$API_KEY_FOR_IOS</string>
+            <string>AIzaSyBmvj1RrT6j7Fj_7KJdcGwjDhKl2ij55lQ</string>
         </config-file>
         <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
             <string>Show your location on the map</string>
