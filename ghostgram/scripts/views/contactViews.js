@@ -1294,6 +1294,7 @@ var editContactView = {
 
     },
 
+
     onShow: function (e) {
 
       // _preventDefault(e);
@@ -1313,7 +1314,7 @@ var editContactView = {
         contactModel.updateContactDetails(contactId, function(contact) {
             editContactView.setActiveContact(contact);
             //editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
-            editContactView.updateContact();
+            //editContactView.updateContact();
             // Hide the status update div
         });
 
