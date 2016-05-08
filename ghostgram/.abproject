@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.73",
+  "BundleVersion": "0.0.74",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -114,6 +114,7 @@
     "nl.x-services.plugins.calendar@4.4.7",
     "nl.x-services.plugins.launchmyapp@4.1.4",
     "nl.x-services.plugins.socialsharing@5.0.11",
+    "nl.x-services.plugins.toast@2.5.0",
     "org.apache.cordova.labs.keyboard",
     "org.apache.cordova.plugin.sms@0.1.1",
     "uk.co.whiteoctober.cordova.appversion@0.1.7"
