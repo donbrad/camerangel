@@ -1278,7 +1278,11 @@ var editContactView = {
         // Zero the identicon in the contact so it's pushed to cloud.
         contact.identicon = null;
 
-
+        everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
+           if (error !== null) {
+               ggError("Contact Update Error : " + JSON.stringify(error));
+           }
+        });
        /* var Id = contact.Id;
         if (Id !== undefined){
             everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
