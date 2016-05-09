@@ -941,6 +941,28 @@ var channelView = {
         return(channelView.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
     },
 
+    queryPhoto: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelView.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var message = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(message);
+    },
+
+    findPhotoById : function (photoID) {
+
+        return(channelView.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
+    },
+    
     onInit: function (e) {
 
        // e.preventDefault();

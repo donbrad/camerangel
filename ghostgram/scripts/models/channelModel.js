@@ -423,7 +423,7 @@ var channelModel = {
 
 
     addPhoto : function (channelUUID, photoId, photoUrl,  ownerId, ownerName, isPrivateChat) {
-        var photoObj = {channelUUID : channelUUID, photoId: photoId, photoUrl: photoUrl,  ownerId:  ownerId,  ownerName: ownerName,  isPrivateChat: isPrivateChat};
+        var photoObj = {channelUUID : channelUUID, photoId: photoId, photoUrl: photoUrl,  ownerId:  ownerId,  ownerName: ownerName,  isPrivateChat: isPrivateChat, timestamp: ggTime.currentTime()};
 
         var channel = channelModel.findChannelModel(channelUUID);
 
