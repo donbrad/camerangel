@@ -35,6 +35,9 @@ var deviceContacts = {
                     var contactItem = {};
                     contactItem.type = "device";
                     contactItem.name = contacts[i].name.formatted;
+                    if (contactItem.name === undefined || contactItem.name === null || contactItem.name === '') {
+                        contactItem.name = query;
+                    }
                     contactItem.phoneNumbers = new Array();
                     contactItem.category = 'phone';
                     if (contacts[i].phoneNumbers !== undefined && contacts[i].phoneNumbers !== null) {
@@ -94,7 +97,7 @@ var deviceContacts = {
                         contactItem.photo = null;
                     }
     
-                    if (contactItem.phoneNumbers.length > 0 && contactItem.name.length > 0)
+                    if (contactItem.phoneNumbers.length > 0)
                         contactModel.deviceContactsDS.add(contactItem);
                 }
     
