@@ -2084,7 +2084,7 @@ var channelView = {
     },
 
     resolveChatPhoto : function (message) {
-        
+        // Resolve the photo in the chat: 1) is it uploaded yet? 2) is it recalled? 
 
     },
 
