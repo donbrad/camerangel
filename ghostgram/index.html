@@ -2019,7 +2019,7 @@
 	if (data.identicon === undefined || data.identicon === null)
 	data.identicon = contactModel.createIdenticon(data.uuid);
 	var photoUrl = data.identicon;
-	if (data.photo !== undefined && !== null) {
+	if (data.photo !== undefined && data.photo !== null) {
 		photoUrl = data.photo;
 	}
 	#
@@ -2049,7 +2049,7 @@
 				data.identicon = contactModel.createIdenticon(data.uuid);
 			var photoUrl = data.identicon;
 
-			   if (data.photo !== undefined && !== null) {
+			   if (data.photo !== undefined &&  data.photo !== null) {
 					photoUrl = data.photo;
 				}
 			#
@@ -2413,7 +2413,7 @@
 		data.identicon = contactModel.createIdenticon(data.uuid);
 	}
 	var photoUrl = data.identicon;
-	
+
 	if (data.photo !== undefined && data.photo !== null) {
 		photoUrl = data.photo;
 	}
