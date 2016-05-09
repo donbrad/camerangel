@@ -405,7 +405,7 @@ var contactImportView = {
         
         if (query !== null && query !== undefined) {
             
-            deviceFindContacts(query);
+            deviceContacts.findContacts(query);
             //console.log("passed: " + query);
             // Pass query to search box
             $("#contactImport .gg_mainSearchInput").val(query);
@@ -422,7 +422,7 @@ var contactImportView = {
 
     searchContacts: function (query) {
        	//_preventDefault(e);
-		deviceFindContacts(query, function(contacts) {
+		deviceContacts.findContacts(query, function(contacts) {
 
 		});
 
@@ -441,9 +441,12 @@ var contactImportView = {
         // User has picked a contact from the list --
         // sync data from  any contacts with same name
         var query = e.dataItem.name;
+
+        query  = query.trim();
+
         mobileNotify("Unifying contact information for " + query);
 
-        syncContactWithDevice(query, function (contacts) {
+        deviceContacts.syncContactWithDevice(query, function (contacts) {
 
             contactModel.emailArray = [];
 
@@ -491,7 +494,7 @@ var contactImportView = {
             $("#addContactName").val(name);
 
             if (data.photo !== null) {
-                returnValidPhoto(data.photo, function(validUrl) {
+                deviceContacts.returnValidPhoto(data.photo, function(validUrl) {
                     $("#addContactPhoto").attr("src",validUrl);
                 });
             } 
@@ -499,8 +502,11 @@ var contactImportView = {
             // Select the contact
             contactModel.deviceContactsDS.data([contacts[0]]);
 
+            var contact = contacts[0];
 
-            addContactView.openModal(contacts[0]);
+            contact.name = contact.name.trim();
+
+            addContactView.openModal(contact);
 
         });
     }
@@ -542,11 +548,13 @@ var addContactView = {
     // Are name and phone number valid?
     isValidContact : function () {
         var name =  $('#addContactName').val();
+
         if (name.length > 1) {
             addContactView._nameValid = true;
         } else {
             addContactView._nameValid = false;
         }
+
         if (addContactView._phoneValid && addContactView._nameValid) {
            return (true);
         }
@@ -594,13 +602,8 @@ var addContactView = {
             var alias =  $('#addContactAlias').val();
             var name =  $('#addContactName').val();
 
-            if (name.length > 1) {
-                if (addContactView.isValidContact()) {
-                    $("#addContacViewAddButton").removeClass('hidden');
-                } else {
-                    $("#addContacViewAddButton").addClass('hidden');
-                }
-            }
+
+            addContactView.isContactValid();
 
             if (alias.length === 0) {
                 var name = $('#addContactName').val();
@@ -633,11 +636,11 @@ var addContactView = {
 
         if (name.length > 1) {
             if (addContactView.isValidContact()) {
-                $("#addContacView-verifyBtn").addClass('hidden');
-                $("#addContacView-addBtn").removeClass('hidden');
+                $("#addContactView-verifyBtn").addClass('hidden');
+                $("#addContactView-addBtn").removeClass('hidden');
             } else {
-                $("#addContacView-addBtn").addClass('hidden');
-                $("#addContacView-verifyBtn").removeClass('hidden');
+                $("#addContactView-addBtn").addClass('hidden');
+                $("#addContactView-verifyBtn").removeClass('hidden');
             }
         }
     },
@@ -663,28 +666,20 @@ var addContactView = {
 
         memberdirectory.findMemberByPhone(phone, function (user) {
             if (user !== null) {
-                mobileNotify(user.name + "is a ghostgrams member");
+                mobileNotify(user.name + " is a ghostgrams member!");
 
                 addContactView._phoneValid = true;
                 addContactView._isMember = true;
                 addContactView._memberData = user;
               //  $('#addContactName').val(user.name);
               //  $('#addContactAlias').val(user.alias);
-                if (addContactView.isValidContact()) {
-                    $("#addContacViewAddButton").removeClass('hidden');
-                } else {
-                    $("#addContacViewAddButton").addClass('hidden');
-                }
+               addContactView.isContactValid();
 
             } else {
                 addContactView._isMember = false;
                 isValidMobileNumber(phone, function (result) {
                     addContactView._phoneValid = true;
-                    if (addContactView.isValidContact()) {
-                        $("#addContacViewAddButton").removeClass('hidden');
-                    } else {
-                        $("#addContacViewAddButton").addClass('hidden');
-                    }
+                    addContactView.isContactValid();
                     if (result.status === 'ok') {
                         if (result.valid === false) {
                             mobileNotify(phone + ' is not a valid mobile number');
@@ -723,21 +718,21 @@ var addContactView = {
     },
 
     showPhoneEditor : function () {
-        var phone = $('#addContact-phoneSelect').data("kendoMobileDropDownList").text();
+        var phone = $('#addContactPhone').data("kendoMobileDropDownList").text();
         $('#addContact-phoneInput').val(phone);
         $('#addContact-phoneSelect').addClass('hidden');
         $('#addContact-phoneEdit').removeClass('hidden');
     },
     
     showEmailEditor : function () {
-        var email = $('#addContact-emailSelect').data("kendoMobileDropDownList").text();
+        var email = $('#addContactEmail').data("kendoMobileDropDownList").text();
         $('#addContact-emailInput').val(email);
         $('#addContact-emailSelect').addClass('hidden');
         $('#addContact-emailEdit').removeClass('hidden');
     },
     
     showAddressEditor : function () {
-        var address = $('#addContact-addressSelect').data("kendoMobileDropDownList").text();
+        var address = $('#addContactAddress').data("kendoMobileDropDownList").text();
         $('#addContact-addressInput').val(address);
         $('#addContact-addressSelect').addClass('hidden');
         $('#addContact-addressEdit').removeClass('hidden');
@@ -749,10 +744,13 @@ var addContactView = {
         addContactView._guid = uuid.v4();
 
         addContactView._identicon = contactModel.createIdenticon(addContactView._guid);
+        addContactView._emailValid = false;
+        addContactView._phoneValid = false;
+        addContactView._nameValid = false;
 
         // Hide the Add Contact Button until the mobile number is validated...
         $("addContactView-addBtn").addClass('hidden');
-        $("addContacView-verifyBtn").removeClass('hidden');
+        $("addContactView-verifyBtn").removeClass('hidden');
 
         var data = contact;
 
@@ -760,9 +758,6 @@ var addContactView = {
         addContactView._memberData = null;
         // Set name
         var name = data.name;
-
-        addContactView._emailValid = false;
-        addContactView._phoneValid = false;
 
         $("#addContactAlias").val("");
         
@@ -776,7 +771,6 @@ var addContactView = {
             addContactView._nameValid = true;
         }
 
-
         $("#vaildMobileNumberError").addClass("hidden");
 
         if (data.photo === null) {
@@ -785,7 +779,7 @@ var addContactView = {
             addContactView._showPhoto = false;
 
         } else {
-            returnValidPhoto(data.photo, function(validUrl) {
+            deviceContacts.returnValidPhoto(data.photo, function(validUrl) {
                 addContactView._photoUrl = validUrl;
                 $("#addContactPhoto").attr("src",validUrl);
                 addContactView._hasPhoto = true;
@@ -801,7 +795,7 @@ var addContactView = {
             $('#addContact-emailEdit').removeClass('hidden');
 
             if (contactModel.currentDeviceContact.emails.length  === 1) {
-                var emailText = contactModel.currentDeviceContact.emails[0];
+                var emailText = contactModel.currentDeviceContact.emails[0].address;
                 $('#addContact-emailInput').val(emailText);
                 addContactView.isEmailValid(emailText);
             }
@@ -826,7 +820,8 @@ var addContactView = {
             $('#addContact-phoneSelect').addClass('hidden');
             $('#addContact-phoneEdit').removeClass('hidden');
             if (contactModel.currentDeviceContact.phoneNumbers.length  === 1) {
-                var phoneText = contactModel.currentDeviceContact.phoneNumbers[0];
+                var phoneNumber =  contactModel.currentDeviceContact.phoneNumbers[0];
+                var phoneText = phoneNumber.number;
                 $('#addContact-phoneInput').val(phoneText);
                 addContactView.isPhoneValid(phoneText);
 
@@ -891,12 +886,12 @@ var addContactView = {
             group =  $('#addContactGroup').val(),
             address = $('#addContactAddress').val();
 
-        var form = $("#addContactForm").kendoValidator().data("kendoValidator");
+      //  var form = $("#addContactForm").kendoValidator().data("kendoValidator");   Not sure we need this -- we're doing way deeper validation...
 
 
         if (addContactView.isValidContact()) {
             $("addContactView-addBtn").removeClass('hidden');
-            $("addContacView-verifyBtn").addClass('hidden');
+            $("addContactView-verifyBtn").addClass('hidden');
             return;
         }
 
@@ -919,13 +914,13 @@ var addContactView = {
                 if (result.valid === false) {
                     mobileNotify(phone + ' is not a valid mobile number');
                     $("#vaildMobileNumberError").velocity("slideDown");
-                    //$("#addContacViewAddButton").text("Close");
+                    //$("#addContactViewAddButton").text("Close");
                     return;
 
                 } else {
 
                     $("#vaildMobileNumberError").velocity("slideUp");
-                    $("#addContacViewAddButton").text("Add Contact");
+                    $("#addContactViewAddButton").text("Add Contact");
                     mobileNotify("Mobile phone is valid!");
                     addContactView._phoneValid = true;
 
@@ -948,8 +943,8 @@ var addContactView = {
 */
     },
 
-    processContactPhoto : function (photoId, url, contactId) {
-
+    processContactPhoto : function (photoId, url, contactId, contactUUID) {
+        profilePhotoModel.addProfilePhoto(photoId, url, contactId, contactUUID);
     },
 
     addContact : function (e) {
@@ -970,7 +965,12 @@ var addContactView = {
             emailValid = false,
             addressValid = false;
 
+        var contactId = addContactView._guid;
 
+
+        if (contactId === undefined || contactId === null) {
+            contactId = uuid.v4();
+        }
 
         if (phone === null || phone.length < 10) {
             // Todo: need better UX for contacts without phone
@@ -994,22 +994,18 @@ var addContactView = {
             addressValid = false;
         }
         var photouuid =  null;
-        if (addContactView._hasPhoto && addContactView._showPhoto) {
-            // User wants to override identicon and use contact photo from phone
-            photouuid = guid.v4();
-            addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactActionView._guid);
-        }
+
 
         contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
-        contact.set('uuid', contactActionView._guid);
+        contact.set('uuid', contactId);
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set("email", email);
         contact.set("address", address);
         contact.set("group", group);
-        contact.set("identicon", null);
-        contact.set ('photoUUID', photouuid);
+        contact.set("identicon", contactModel.createIdenticon(contactId));
+        contact.set('photoUUID', photouuid);
         contact.set("photo", null);
         contact.set('category', "new");
         contact.set("priority", 0);
@@ -1017,7 +1013,6 @@ var addContactView = {
         contact.set("isBlocked", false);
         contact.set("inviteSent", false);
         contact.set("lastInvite", 0);
-        contact.set("uuid", guid);
         contact.set('contactUUID', null);
         contact.set('contactPhone', null);
         contact.set('contactEmail', null);
@@ -1034,56 +1029,70 @@ var addContactView = {
 
        // mobileNotify("Invite sent");
 
-            if (addContactView._isMember) {
-                
-                // The user is gg member
-                var thisContact = addContactView._memberData;
-                if (thisContact.phoneValidated === undefined) {
-                    thisContact.phoneValidated = false;
-                }
-                if (thisContact.emailValidated === undefined) {
-                    thisContact.emailValidated = false;
-                }
-                contact.set("phoneValidated", thisContact.phoneValidated);
-                // Does the contact have a verified email address
-                contact.set("email", thisContact.email);
-                if (thisContact.emailValidated) {
-                    // Yes - save the email address the contact verified
-                    contact.set("emailValidated", true);
-                } else {
-                    // No - just use the email address the our user selected
-                    contact.set("emailValidated", false);
-                }
-                contact.set('contactUUID', thisContact.userUUID);
-                contact.set('contactPhone', thisContact.phone);
-                contact.set('phone', thisContact.phone);
-                contact.set('category', 'member');
-                contact.set('contactEmail', thisContact.email);
-                contact.set('photo', null);
-                contact.set('contactPhoto', thisContact.photo);
-                contact.set('publicKey', thisContact.publicKey);
+        if (addContactView._isMember) {
 
-            } else {
-                // Not a member - just use the email address the our user selected
-                contact.set("email", email);
-             /*   if (emailValid)
-                    contactSendEmailInvite(email);*/
-                contact.set("phoneValidated", false);
-                contact.set('publicKey',  null);
-                contact.set("contactUUID", null);
-                contact.set("contactPhone", null);
-                contact.set("contactEmail", null);
-
-                var userUUID = userModel._user.userUUID;
-                // Has this user already invited this contact?
-                invitedirectory.isInvited(phone, userUUID,  function (error, data) {
-                   if (error === null) {
-                       if (data === null) {
-                           invitedirectory.create(name, phone, email);
-                       }
-                   }
-                });
+            // The user is gg member
+            var thisContact = addContactView._memberData;
+            if (thisContact.phoneValidated === undefined) {
+                thisContact.phoneValidated = false;
             }
+            if (thisContact.emailValidated === undefined) {
+                thisContact.emailValidated = false;
+            }
+            contact.set("phoneValidated", thisContact.phoneValidated);
+            // Does the contact have a verified email address
+            contact.set("email", thisContact.email);
+            if (thisContact.emailValidated) {
+                // Yes - save the email address the contact verified
+                contact.set("emailValidated", true);
+            } else {
+                // No - just use the email address the our user selected
+                contact.set("emailValidated", false);
+            }
+            contact.set('contactUUID', thisContact.userUUID);
+            contact.set('contactPhone', thisContact.phone);
+            contact.set('phone', thisContact.phone);
+            contact.set('category', 'member');
+            contact.set('contactEmail', thisContact.email);
+            contact.set('photo', null);
+            contact.set('contactPhoto', thisContact.photo);
+            contact.set('publicKey', thisContact.publicKey);
+
+            if (addContactView._hasPhoto && addContactView._showPhoto) {
+                // User wants to override identicon and use contact photo from phone
+                photouuid = uuid.v4();
+                addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactId,  thisContact.userUUID);
+            }
+
+            appDataChannel.memberAutoConnect(thisContact.userUUID);
+
+        } else {
+            // Not a member - just use the email address the our user selected
+            contact.set("email", email);
+         /*   if (emailValid)
+                contactSendEmailInvite(email);*/
+            contact.set("phoneValidated", false);
+            contact.set('publicKey',  null);
+            contact.set("contactUUID", null);
+            contact.set("contactPhone", null);
+            contact.set("contactEmail", null);
+
+
+            if (addContactView._hasPhoto && addContactView._showPhoto) {
+                // User wants to override identicon and use contact photo from phone
+                photouuid = uuid.v4();
+                addContactView.processContactPhoto(photouuid, addContactView._photoUrl, contactId,  null);
+            }
+            var userUUID = userModel._user.userUUID;
+            // Has this user already invited this contact?
+            invitedirectory.isInvited(phone, userUUID,  function (error, data) {
+               if (error === null) {
+                   if (data === null) {
+                       invitedirectory.create(name, phone, email);
+                   }
+               }
+            });
+        }
 
           contactModel.contactsDS.add(contact);
           contactModel.contactsDS.sync();
@@ -1114,8 +1123,10 @@ var editContactView = {
     emailUpdate: false,
     memberUpdate: false,
     publicKeyUpdate : false,
+    _hasPhoto: false,
+    _showPhoto : false,
 
-    _activeContact : new kendo.data.ObservableObject(),
+    _activeContact : new kendo.data.ObservableObject({mappedPhoto: null}),
 
     onInit: function (e) {
       // _preventDefault(e);
@@ -1143,10 +1154,16 @@ var editContactView = {
     setActiveContact : function (contact) {
         if (contact !== undefined) {
             contactModel.checkIdenticon(contact);
-            editContactView._activeContact.set("mappedphoto", contact.identicon);
+
+            var photoUrl = contact.identicon;
+            editContactView._hasPhoto = false;
+            editContactView._showPhoto = false;
             if (contact.photo !== null) {
-                editContactView._activeContact.set("mappedphoto", contact.photo);
+                editContactView._hasPhoto = true;
+                editContactView._showPhoto = true;
+                photoUrl = contact.photo;
             }
+            $('#editContactView-profilePhoto').attr('src', photoUrl);
             editContactView._activeContact.set("Id", contact.Id);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
@@ -1200,8 +1217,15 @@ var editContactView = {
 
     changePhoto : function (e) {
         _preventDefault(e);
-
-        mobileNotify("Change photo coming soon...");
+        if (editContactView._hasPhoto) {
+            if (editContactView._showPhoto) {
+                $('#editContactView-profilePhoto').attr('src',  editContactView._activeContact.identicon);
+                editContactView._showPhoto = false;
+            } else {
+                $('#editContactView-profilePhoto').attr('src',  editContactView._activeContact.photo);
+                editContactView._showPhoto = true;
+            }
+        }
     },
 
     updateContact : function () {
@@ -1249,18 +1273,27 @@ var editContactView = {
         }
 
 
+        contactModel.contactsDS.sync();
+
         // Zero the identicon in the contact so it's pushed to cloud.
         contact.identicon = null;
-        var Id = contact.Id;
+
+        everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
+           if (error !== null) {
+               ggError("Contact Update Error : " + JSON.stringify(error));
+           }
+        });
+       /* var Id = contact.Id;
         if (Id !== undefined){
             everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
                 //placeNoteModel.notesDS.remove(note);
             });
-        }
+        }*/
 
         //$("#contacts-listview").data("kendoMobileListView").refresh();
 
     },
+
 
     onShow: function (e) {
 
@@ -1281,7 +1314,7 @@ var editContactView = {
         contactModel.updateContactDetails(contactId, function(contact) {
             editContactView.setActiveContact(contact);
             //editContactView.updateVerifiedUX(contact.phoneValidated, contact.emailValidated);
-            editContactView.updateContact();
+            //editContactView.updateContact();
             // Hide the status update div
         });
 
@@ -1310,10 +1343,15 @@ var editContactView = {
             $("#editContact-address-edit").removeClass('hidden');
         }
 
-        var phoneVal = ux.showCleanPhone(editContactView._activeContact.phone);
+        var phone = editContactView._activeContact.phone;
+        if ( phone === undefined || phone === null) {
+            phone = "";
+            editContactView._activeContact.phone = phone;
+            ggError("Null or undefined phone number !");
+        }
+        var phoneVal = ux.showCleanPhone(phone);
         $('#editContact-phone-input').text(phoneVal);
-
-        $("#editContactPhone").val(editContactView._activeContact.phone);
+        $("#editContactPhone").val(phone);
         ux.showFormatedPhone();
         ux.formatPhoneInput();
     },
@@ -1358,6 +1396,11 @@ var editContactView = {
   
     syncWithDevice : function (e) {
         _preventDefault(e);
+        // load, search and unify contacts matching this user...
+        // Really only want email, address, birthday and photos
+        deviceContacts.syncContactWithDevice(editContactView._activeContact.name, function (contacts) {
+
+        });
 
     },
 

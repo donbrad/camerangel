@@ -20,7 +20,6 @@ var photoModel = {
     currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
-    parsePhoto: {},
     photosDS: null,
 
     offersDS : null,
@@ -411,7 +410,6 @@ var photoModel = {
 
         var ownerId = photoObj.ownerId, ownerName = photoObj.ownerName;
 
-        photo.set('Id', photoObj.photoId);
         photo.set('photoUUID', photoObj.photoUUID);  // use the original photo id from sender to enable recall
         photo.set('uuid', photoObj.photoId);
         photo.set('channelUUID', channelUUID);
@@ -548,6 +546,10 @@ var photoModel = {
     },
 
     addProfilePhoto : function (photouuid, url, contactId) {
+
+        var photo = new kendo.data.ObservableObject();
+        var filename = photouuid.replace(/-/g,'');
+
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
         photo.set('Id', photouuid);
@@ -560,7 +562,7 @@ var photoModel = {
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
 
-        devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
+        devicePhoto.convertImgToDataURL(url, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
 
@@ -574,10 +576,33 @@ var photoModel = {
                     photoObj.set('thumbnailUrl', imageUrl);  // The image is the thumbnail...
                     photoObj.set('cloudinaryPublicId', photoData.public_id);
                     photoModel.syncLocal();
-                    photoModel.updateCloud(photoObj);
+                   // photoModel.updateCloud(photoObj);
                 }
             });
         });
+
+        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+
+            } else {
+                // look up the photo (and remove duplicate local copy if there is one)
+                var photoList = photoModel.findPhotosById(data.result.photoId);
+
+                if (photoList.length > 1) {
+                    var length = photoList.length;
+
+                    for (var i=0; i<length; i++) {
+                        if (photoList[i].Id === undefined) {
+                            photoModel.photosDS.remove(photoList[i]);
+                        }
+                    }
+                }
+
+            }
+        });
+
+
 
     },
 
@@ -589,7 +614,6 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
-        photo.set('Id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
@@ -728,6 +752,31 @@ var photoModel = {
         });
     },
 
+    findCloudinaryPhoto : function (photoid, callback) {
+        $.ajax({
+            url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/findCloudinaryPhoto?photoid='+photoid,
+            // dataType:"jsonp",
+            //  contentType: 'application/json',
+            success: function(result) {
+                if (callback !== undefined) {
+                    var photos = result.resources;
+                    var photo = photos[0];
+
+                    if (callback !== undefined) {
+                        callback({found: true, publicId : photo.public_id, url: photo.secure_url});
+                    }
+                }
+
+            },
+            error: function(error) {
+
+                if (callback !== undefined) {
+                    callback({found: false, publicId: null, url: null});
+                }
+
+            }
+        });
+    },
 
     deletePhoto: function (photoId) {
         var photo = this.findPhotoById(photoId);
@@ -742,12 +791,14 @@ var photoModel = {
         
         photoModel.photosDS.remove(photo);
         photoModel.photosDS.sync();
-       /* var Id = photo.Id;
+        var Id = photo.Id;
         if (Id !== undefined){
-            everlive.deleteOne(photoModel._cloudClass, Id, function (error, data) {
-               
+            everlive.deleteOne(photoModel._cloudClass,  Id, function (error, data) {
+               if (error !== null) {
+                   ggError("Photo Cloud Delete Error : " + JSON.stringify(error));
+               }
             });
-        }*/
+        }
         
     },
 

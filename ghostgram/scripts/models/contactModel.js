@@ -478,11 +478,14 @@ var contactModel = {
         thisContact.set('contactAddress', contact.address);
         thisContactList.set('emailValidated', contact.emailValidated);
         thisContactList.set('contactPhoto', contact.photo);
-        thisContactList.set('contactAddress', contact.address);
-        if(thisContact.address !== contact.address) {
-            thisContact.set('addressUpdate', true);
-            thisContactList.set('addressUpdate', true);
+        if (contact.address !== undefined) {
+            thisContactList.set('contactAddress', contact.address);
+            if(thisContact.address !== contact.address) {
+                thisContact.set('addressUpdate', true);
+                thisContactList.set('addressUpdate', true);
+            }
         }
+
 
         thisContact.set('publicKey', contact.publicKey);
         thisContactList.set('publicKey', contact.publicKey);
@@ -638,12 +641,13 @@ var contactModel = {
             contact.set("name", "New Member");
             contact.set("alias", "new");
             contact.set('category', "member");
+            contact.set('phone', "");
+            contact.set('email', "");
             contact.set("address", null);
             contact.set("group", null);
             contact.set("priority", 0);
             contact.set("isFavorite", false);
             contact.set("isBlocked", false);
-            contact.set('Id', guid);
             contact.set("uuid", guid);
             contact.set("contactUUID", userId);
             contact.set("contactPublcKey", null);
@@ -807,7 +811,7 @@ var contactModel = {
                     }
                     contactItem.photos = [];
                     if (contacts[i].photos !== null) {
-                        returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
+                        deviceContacts.returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
                             contactItem.photos.push(validUrl);
 
                         });

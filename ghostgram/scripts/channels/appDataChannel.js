@@ -167,6 +167,11 @@ var appDataChannel = {
         switch(m.type) {
             //  { type: 'newUser',  userId: <userUUID>,  phone: <phone>, email: <email>}
             // New user joined service -- enables users to update contact info
+            
+            case 'autoConnect' : {
+                
+            } break;
+            
             case 'newUser' : {
                 // Todo:  Scan contact list to see if this new user is a contact.   haven't seen userid so scan by phone.
                 var contact = contactModel.findContactByPhone(m.phone);
@@ -314,6 +319,27 @@ var appDataChannel = {
         msg.version = appDataChannel._version;
         msg.channelUUID = channelUUID;
         msg.messageId = messageId;
+        msg.ownerId = ownerId;
+        msg.isPrivateChat = isPrivateChat;
+        msg.time = new Date().getTime();
+        var channel = appDataChannel.getContactAppChannel(contactId);
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            success: appDataChannel.channelSuccess,
+            error: appDataChannel.channelError
+        });
+    },
+
+    recallPhoto : function (contactId, channelUUID, photoId, ownerId, isPrivateChat) {
+        var msg = {};
+
+        msg.msgID = uuid.v4();
+        msg.type = 'recallMessage';
+        msg.version = appDataChannel._version;
+        msg.channelUUID = channelUUID;
+        msg.photoId = photoId;
         msg.ownerId = ownerId;
         msg.isPrivateChat = isPrivateChat;
         msg.time = new Date().getTime();
@@ -634,7 +660,48 @@ var appDataChannel = {
         });
     },
 
+    memberAutoConnect : function (contactUUID) {
+        msg.msgID = uuid.v4();
+        var notificationString = "New contact : " + userModel._user.name;
+        msg.type = 'autoConnect';
+        msg.version = appDataChannel._version;
+        msg.ownerId = userModel._user.get('userUUID');
+        msg.ownerName = userModel._user.get('name');
+        msg.message  =  msg.ownerName + " is a new ghostgrams contact." ;
+        if (options === undefined) {
+            options = null;
+        }
+        msg.options = options;
 
+        msg.time = new Date().getTime();
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            target: '#contacts'
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: msg.ownerName + " is a new ghostgrams contact.",
+                target: '#contacts',
+                image: "icon",
+                isMessage: false
+            }
+        };
+
+        var channel = appDataChannel.getContactAppChannel(contactUUID);
+
+        APP.pubnub.publish({
+            channel: channel,
+            message: msg,
+            callback: appDataChannel.publishCallback,
+            error: appDataChannel.errorCallback
+        }); 
+    },
 
     groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  members, options) {
         var msg = {};
@@ -777,6 +844,8 @@ var appDataChannel = {
 
         });
     },
+    
+    
 
     processConnectRequest : function (senderId, senderName, comment) {
         contactModel.connectReceived(senderId);
@@ -815,15 +884,28 @@ var appDataChannel = {
     processGroupInvite: function (channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request
         var channel = channelModel.findChannelModel(channelUUID);
-
+        var contact = contactModel.findContact(ownerId);
+        
+      
         if (channel === undefined && channelMembers !== undefined && channelMembers.length > 1) {
             //mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
-
-            channelModel.queryChannelMap(channelUUID, function (error, data) {
-                if (error === null && data !== null) {
-                    channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
-                }
-            });
+            if (contact === undefined) {
+                // This user has been added to group but a member who's not in their contact list 
+                contactModel.createChatContact(ownerId, uuid.v4(), function (result) {
+                    channelModel.queryChannelMap(channelUUID, function (error, data) {
+                        if (error === null && data !== null) {
+                            channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
+                        }
+                    });
+                })
+            } else {
+                channelModel.queryChannelMap(channelUUID, function (error, data) {
+                    if (error === null && data !== null) {
+                        channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
+                    }
+                });
+            }
+            
 
             
             /*getChannelDetails(channelUUID, function (result) {
@@ -865,6 +947,10 @@ var appDataChannel = {
 
     processRecallMessage: function (channelUUID, messageId, ownerId, isPrivateChat) {
         channelModel.addMessageRecall(channelUUID, messageId, ownerId, isPrivateChat);
+    },
+
+    processRecallPhoto: function (channelUUID, photoId, ownerId, isPrivateChat) {
+        channelModel.addPhotoRecall(channelUUID, photoId, ownerId, isPrivateChat);
     },
 
     publishCallback : function (m) {

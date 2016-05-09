@@ -75,7 +75,7 @@ var memberdirectory = {
     update : function () {
         var data = APP.everlive.data(memberdirectory._ggClass);
 
-        var validated = userModel._user.emailValidated || userModel._user.phoneValidated;
+        var validated = userModel._user.Validated;
 
         var dirObj = {
             Id: memberdirectory._id,
@@ -84,7 +84,8 @@ var memberdirectory = {
             alias : userModel._user.alias,
             phone : userModel._user.phone,
             email:  userModel._user.email,
-            photo: null,
+            address: userModel._user.address,
+            photo: userModel._user.photo,
             publicKey: userModel._user.publicKey,
             emailValidated: userModel._user.emailValidated,
             phoneValidated : userModel._user.phoneValidated,

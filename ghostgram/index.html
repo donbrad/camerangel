@@ -90,6 +90,9 @@
 	<script src="scripts/models/placeModel.js"></script>
 	<script src="scripts/models/placeNoteModel.js"></script>
 	<script src="scripts/models/privateNoteModel.js"></script>
+	<script src="scripts/models/profilePhoto.js"></script>
+	<script src="scripts/models/recalledMessage.js"></script>
+	<script src="scripts/models/recalledPhoto.js"></script>
 	<script src="scripts/models/smartListModel.js"></script>
 	<script src="scripts/models/smartEventModel.js"></script>
 	<script src="scripts/models/smartMovieModel.js"></script>
@@ -1992,7 +1995,7 @@
 			<a data-align="left" data-role="button" data-click="channelPresence.closeModal">
 				<img src="images/close.svg" />
 			</a>
-			<span>Members</span><span class="badge primary-200" id="occupancyCount"></span>
+			<span>Members</span>
 		</div>
 	</div>
 	<div class="emptyState hidden">No Members invited</div>
@@ -2018,9 +2021,11 @@
 	var name = data.name;
 	var alias = data.alias;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
+	if (data.identicon === undefined || data.identicon === null)
+	data.identicon = contactModel.createIdenticon(data.uuid);
 	var photoUrl = data.identicon;
 	if (data.photo !== null) {
-	photoUrl = data.photo;
+		photoUrl = data.photo;
 	}
 	#
 	<div>
@@ -2045,7 +2050,10 @@
 		#}else {#
 		<div style="clear: both;">
 			#}#
-			# var photoUrl = data.identicon;
+			# if (data.identicon === undefined || data.identicon === null)
+				data.identicon = contactModel.createIdenticon(data.uuid);
+			var photoUrl = data.identicon;
+
 			   if (data.photo !== null) {
 					photoUrl = data.photo;
 				}
@@ -2204,7 +2212,7 @@
 				</label>
 			</li>
 			<li id="addContact-emailEdit" class="hidden">
-				<label>Phone</label>
+				<label>Email</label>
 				<input id="addContact-emailInput" type="search" />
 			</li>
 			<li id="addContact-addressSelect">
@@ -2241,13 +2249,15 @@
 			<a data-role="button" data-click="editContactView.onDone" data-align="left" >
 				<img src="images/nav-back.svg" />
 			</a>
+			<a  data-role="button"  data-rel="actionsheet" href="#editContact-contactActions" class="btnClear-grey" data-align="right"><img src='images/nav-gear.svg' /></a>
+
 		</div>
 	</div>
 	<div>
 		<form id="editContactForm">
 			<div class="topHalf">
 				<div class="topHalfLeft">
-					<a data-role="button" data-click="editContactView.changePhoto"><img class="circle-img-lg shadow" data-bind="attr: {src: mappedphoto}" /> </a>
+					<a data-role="button" data-click="editContactView.changePhoto"><img class="circle-img-lg shadow" src="" id="editContactView-profilePhoto" /> </a>
 				</div>
 				<div class="contactImg">
 					<label for="editContactName">
@@ -2319,23 +2329,7 @@
 						<input type="checkbox" data-role="switch"  data-bind="checked: isBlocked"/>
 					</label>
 				</li>
-				<li data-role="button" class="btnClear-red btn-li" data-click="editContactView.deleteContact" id="editContact-delete-btn">
-					Delete Contact
-				</li>
 			</ul>
-
-
-			<div class="edit-contacts-options hidden">
-				<!--<a data-role="button" class="btnClear-grey" id="editContact-resyncBtn" data-click="editContactView.syncWithParse">
-					<img src="images/ghost-sm.svg" />  Refresh Contact
-				</a>-->
-				<a data-role="button" class="btnClear-grey hidden" id="editContact-resyncDeviceBtn" data-click="editContactView.syncWithDevice">
-					<img src="images/icon-sync.svg" class="icon-sm" />  Sync Contact with Device
-				</a>
-				<a data-role="button" class="btnClear-red " data-click="editContactView.deleteContact">
-					Delete Contact
-				</a>
-			</div>
 		</form>
 	</div>
 	<div class="footerBk" data-role="footer">
@@ -2343,6 +2337,11 @@
 		</a>
 
 	</div>
+	<ul id="editContact-contactActions" data-role="actionsheet" data-cancel="Cancel">
+		<li><a data-role="button" data-click="editContactView.syncWithDevice"> Sync With Device </a></li>
+		<li><a data-role="button" data-action="editContactView.changePhoto"> Change Photo </a></li>
+		<li><a data-role="button" data-action="editContactView.deleteContact"> Delete Contact </a></li>
+	</ul>
 </div>
 
 
@@ -3433,11 +3432,12 @@
 <div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit" data-zoom="true">
 	<div data-role="header">
 		<div data-role="navbar">
-
-			<a data-click="modalPhotoView.closeModal" data-role="button"  class="btnClear-grey" data-align="left">Cancel</a>
-
+			<a data-click="modalPhotoView.closeModal" data-role="button" class="btnClear-grey" data-align="left"><img src='images/nav-back.svg' /></a>
+			<span>Photo View</span>
+			<a  data-role="button"  data-rel="actionsheet" href="#modalPhotoView-PhotoActions" class="btnClear-grey" data-align="right"><img src='images/nav-gear.svg' /></a>
 		</div>
 	</div>
+
 	<div class="photoViewBox">
 		<img id="modalPhotoViewImage" data-bind="attr: {src : thumbnailUrl}" />
 	</div>
@@ -3446,7 +3446,6 @@
 			<div class="photoTitleText">
 				<h3 class="textClamp">
 					<span id="modalPhotoViewTitle" data-bind="text: title">Photo Title</span>
-					<a class="btnClear-sm" data-role="button" data-click="modalPhotoView.openTagEditor">Edit</a>
 				</h3>
 				<p id="photoTitle-tags">
 					<img src="images/icon-tag-light.svg" class="icon-sm" />
@@ -3461,25 +3460,23 @@
 				<label>Tags</label>
 				<select id="photo-smartTag" multiple="multiple"></select>
 
-				<label>Location</label>
-				<input type="text" id="photo-location" data-bind="value: addressString"/>
-				<!--
 				<label>Description</label>
 				<textarea data-bind="value: description" type="text" col="80" row="2" maxlength="60"></textarea>
-				-->
 
 			</div>
 
 		</div>
-		<a class="actionBtn actionBtn-stacked primary-100" data-role="button" data-click="modalPhotoView.sharePhoto">
-			<img src="images/icon-share-light.svg"/>
-		</a>
-		<a class="actionBtn warning" data-role="button" data-click="modalPhotoView.deletePhoto">
-			<img src="images/icon-trash-light.svg"/>
-		</a>
-		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalPhotoView.closeModal" id="modalPhotoView-close">Close</a>
 		<a class="btnSpan-btm btnPrimary hidden" data-role="button" data-click="modalPhotoView.closeTagEditor" id="modalPhotoView-update">Update</a>
 	</div>
+
+	<ul data-role="actionsheet"  id="modalPhotoView-PhotoActions" data-popup='{"direction": "left"}'>
+		<li> <a data-click="modalPhotoView.openTagEditor">Edit</a></li>
+		<li> <a data-click="modalPhotoView.managePhoto">Manage Photo</a></li>
+		<li> <a data-click="modalPhotoView.viewOnMap"> View Photo On Map</a></li>
+		<li> <a data-click="modalPhotoView.sendViaGhostgrams"> Send via Ghostgrams </a></li>
+		<li> <a data-click="modalPhotoView.sharePhoto"> Share Photo</a></li>
+		<li> <a data-click="modalPhotoView.deletePhoto"> Delete Photo </a></li>
+	</ul>
 </div>
 
 
@@ -4341,7 +4338,6 @@
 		<li><a data-role="button" data-action="privateNotesView.sendNote"> Send to Contact</a></li>
 		<li><a data-role="button" data-action="privateNotesView.sendChatNote"> Share in Chat </a></li>
 		<li><a data-role="button" data-action="privateNotesView.shareNote" > Share Private Note </a></li>
-
 	</ul>
 
 

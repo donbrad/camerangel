@@ -482,7 +482,7 @@ function findContactMe(query) {
             } 
             contactItem.photo = 'images/missing_profile_photo.jpg';
             if (contacts[i].photos !== null) {
-				returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
+				deviceContacts.returnValidPhoto(contacts[i].photos[0].value, function(validUrl) {
                 	contactItem.photo = validUrl;
 					if (contactItem.phoneNumbers.length > 0)
 						contactModel.deviceContactsDS.add(contactItem);

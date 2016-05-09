@@ -11,6 +11,10 @@
       "AUTO_TRACK_EXCEPTIONS": "True",
       "AUTO_TRACK_KENDO_EVENTS": "True",
       "PRODUCT_ID": "7a8cc314b41f44299fd03db24685b341"
+    },
+    "cordova-plugin-googlemaps": {
+      "API_KEY_FOR_ANDROID": "AIzaSyCp60Oq5scSpYHUjf9jEXYYL0tijwrnqKk",
+      "API_KEY_FOR_IOS": "AIzaSyBmvj1RrT6j7Fj_7KJdcGwjDhKl2ij55lQ"
     }
   }
 }
