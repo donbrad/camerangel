@@ -2833,3 +2833,105 @@ var smartLocationView = {
 
     }
 };
+
+/*
+ * mapViewModal
+ *
+ */
+
+var mapViewModal = {
+    _activePlace :  new kendo.data.ObservableObject(),
+    _activePlaceId : null,
+    _activePlaceModel : null,
+    _lat: null,
+    _lng: null,
+    _marker: null,
+    _zoom: 14,  // Default zoom for the map.
+    _returnView : '#:back',   // Default return is just calling view
+
+    onInit: function (e) {
+        //_preventDefault(e);
+    },
+
+    openModal: function (placeId, lat, lng) {
+        // _preventDefault(e);
+        var valid = false;
+
+        if (placeId !== null) {
+            mapViewModal.setActivePlace(placeId);
+        } else {
+            // No active place --
+            mapViewModal._activePlace = null;
+            mapViewModal._activePlaceModel = null;
+            mapViewModal._activePlaceId = null;
+
+
+            mapViewModal._lat = lat;
+            mapViewModal._lng = lng;
+        }
+
+        mapViewModal.displayActivePlace();
+        
+    },
+
+    displayActivePlace : function () {
+        if (mapView._lat === null || mapView._lat === null) {
+            return;
+        }
+        var point = new google.maps.LatLng(mapView._lat, mapView._lng);
+        // Center the map.
+
+        mapModel.googleMap.setZoom(mapView._zoom);
+
+        // Set a default label in case we're called with just a lat & lng.
+        var label = "Current Place";
+
+        // If there's a valid currentPlace, use the name as the marker label
+        if (mapView._activePlaceModel !== null) {
+            label = mapView._activePlaceModel.name;
+        }
+        mapView._marker = new google.maps.Marker({
+            position: point,
+            label: label,
+            map: mapModel.googleMap
+        });
+
+        // resize the map to fit the view
+        google.maps.event.trigger(mapModel.googleMap, "resize");
+        mapModel.googleMap.setCenter(point);
+    },
+
+    setActivePlace : function (placeUUID) {
+        mapView._activePlaceId = placeUUID;
+
+        var placeObj = placesModel.getPlaceModel(placeUUID);
+
+        mapView._activePlaceModel = placeObj;
+
+        mapView._lat = placeObj.lat;
+        mapView._lng = placeObj.lng;
+
+        // Todo: cull this list based on what we show in ux...
+        mapView._activePlace.set('lat', placeObj.lat);
+        mapView._activePlace.set('lng', placeObj.lng);
+        mapView._activePlace.set('placeUUID', placeUUID);
+        mapView._activePlace.set('name', placeObj.name);
+        mapView._activePlace.set('alias', placeObj.alias);
+        mapView._activePlace.set('address', placeObj.address);
+        mapView._activePlace.set('city', placeObj.city);
+        mapView._activePlace.set('state', placeObj.state);
+        mapView._activePlace.set('zipcode', placeObj.zipcode);
+        mapView._activePlace.set('isPrivate', placeObj.isPrivate);
+        mapView._activePlace.set('isAvailable', placeObj.isAvailable);
+
+    },
+
+    onDone: function (e) {
+        _preventDefault(e);
+
+        var returnUrl = '#'+ mapView._returnView;
+
+        APP.kendo.navigate(returnUrl);
+
+    }
+};

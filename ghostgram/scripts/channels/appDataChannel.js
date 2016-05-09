@@ -661,6 +661,7 @@ var appDataChannel = {
     },
 
     memberAutoConnect : function (contactUUID) {
+        var msg = {};
         msg.msgID = uuid.v4();
         var notificationString = "New contact : " + userModel._user.name;
         msg.type = 'autoConnect';
