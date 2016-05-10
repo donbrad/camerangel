@@ -587,7 +587,7 @@ var photoModel = {
 
             } else {
                 // look up the photo (and remove duplicate local copy if there is one)
-                var photoList = photoModel.findPhotosById(data.result.photoId);
+                var photoList = photoModel.findPhotosById(data.photoId);
 
                 if (photoList.length > 1) {
                     var length = photoList.length;
@@ -712,7 +712,7 @@ var photoModel = {
 
             } else {
                 // look up the photo (and remove duplicate local copy if there is one)
-                var photoList = photoModel.findPhotosById(data.result.photoId);
+                var photoList = photoModel.findPhotosById(data.photoId);
 
                 if (photoList.length > 1) {
                     var length = photoList.length;
