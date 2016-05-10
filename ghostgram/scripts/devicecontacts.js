@@ -23,7 +23,8 @@ var deviceContacts = {
       /*  options.desiredFields = [navigator.contacts.fieldType.id, navigator.contacts.fieldType.name, navigator.contacts.fieldType.displayName,  navigator.contacts.fieldType.givenName, navigator.contacts.fieldType.familyName,
             navigator.contacts.fieldType.phoneNumbers, navigator.contacts.fieldType.emails, navigator.contacts.fieldType.addresses, navigator.contacts.fieldType.photos,
             navigator.contacts.fieldType.formatted, navigator.contacts.fieldType.ims, navigator.contacts.fieldType.categories, navigator.contacts.fieldType.birthday];
-*/        var fields       = [navigator.contacts.fieldType.name, navigator.contacts.fieldType.displayName];
+*/
+        var fields  = [navigator.contacts.fieldType.name, navigator.contacts.fieldType.displayName];
     
         navigator.contacts.find(fields, function(contacts) {
                 contactModel.deviceQueryActive = false;
