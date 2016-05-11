@@ -1152,6 +1152,12 @@ form p {
   height: 1.5em;
   max-width: 50%;
 }
+.icon-action {
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: sub;
+  margin-right: 0.5em;
+}
 .loading-icon {
   height: 1rem;
   vertical-align: middle;
@@ -2335,6 +2341,10 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 #modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div > a {
   margin-bottom: 4rem;
+}
+#modalPhotoView > div.km-content.km-widget.km-scroll-wrapper {
+  background-image: none !important;
+  background-color: #000;
 }
 .photoTitleInput {
   width: 100%;
@@ -3615,6 +3625,7 @@ div.footerMenu.km-footer > ul > li > a {
   text-align: right;
   padding-right: 10px;
   white-space: nowrap;
+  text-shadow: 1px 1px 1px #C7C7C7;
 }
 .actionBtn img {
   height: 1.25rem;
@@ -6229,6 +6240,18 @@ html .km-pane-wrapper .k-header {
 #placeTypeBtns li:nth-child(2),
 #addplace-typeBtns li:nth-child(2) {
   margin-left: 0.5rem;
+}
+#placeEdit-form {
+  padding-bottom: 6em;
+}
+.placeEdit-li-sm {
+  width: 47.5%;
+  float: left;
+  margin-right: 2.5% !important;
+}
+.placeEdit-li-sm:nth-child(2) {
+  margin-left: 2.5%;
+  margin-right: 0;
 }
 .placeTypeHelpers {
   margin-top: 0.5rem;

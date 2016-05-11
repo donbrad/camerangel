@@ -137,7 +137,7 @@ var contactsView = {
         if (!contactsView._viewInitialized) {
             contactsView._viewInitialized = true;
          
-            $("#contacts .gg_mainSearchInput").on('input', function() {
+            $("#contactImport .gg_mainSearchInput").on('input', function() {
 
                 var query = this.value;
                 if (query.length > 0) {
@@ -157,7 +157,7 @@ var contactsView = {
                                 "value":query}
                         ]});
 
-                    $('#contacts .enterSearch').removeClass('hidden');
+                    $('#contactImport .enterSearch').removeClass('hidden');
 
                     if (query.length > 2) {
                         $('#btnSearchDeviceContacts').removeClass('hidden');

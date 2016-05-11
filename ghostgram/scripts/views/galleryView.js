@@ -58,10 +58,18 @@ var galleryView = {
         // set result count
         var photoCount = photoModel.photosDS.total();
         if(photoCount > 0){
+            /// single photo
+            if(photoCount == 1) {
+                $("#resultsName").text("Photo");
+            } else {
+            /// multiple photos
+                $("#resultsName").text("Photos");
+            }
             $(".results").css("visibility", "visible");
             $("#resultCount").text(photoCount);
         } else {
             $(".results").css("visibility", "hidden");
+            $("#resultsName").text("No Photos");
         }
     },
 
