@@ -2107,7 +2107,10 @@ var channelView = {
     },
 
     resolveChatPhoto : function (message) {
-        // Resolve the photo in the chat: 1) is it uploaded yet? 2) is it recalled? 
+        // Resolve the photo in the chat: 1) is it uploaded yet? 2) is it recalled?
+        var photoId = null, shareId = null;
+
+
 
     },
 
