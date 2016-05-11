@@ -428,9 +428,9 @@ function importMe(e) {
 
 function findContactMe(query) {
 	var options      = new ContactFindOptions();
-    options.filter   = query
+    options.filter   = query;
     options.multiple = true;
-    var fields       = ["name", "displayName", "nickName" ,"phoneNumbers", "emails", "addresses", "photos"];
+    var fields       = [navigator.contacts.fieldType.phoneNumbers];
      
     navigator.contacts.find(fields, function(contacts){
 

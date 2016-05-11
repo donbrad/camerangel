@@ -1384,6 +1384,29 @@ var channelView = {
             message.displayName = ux.returnUXPrimaryName(name, alias);
         }
 
+        //
+        if (message.data.photos !== undefined && message.data.photos.length > 0 ) {
+            var photos = message.data.photos;
+
+            for (var i=0; i<photos.length; i++) {
+                var photo = photos[i];
+
+                var photoItem = channelView.photos[photo.photoUUID];
+
+                if (photoItem === undefined) {
+                    // Photo isn't in the channel cache
+                    var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
+
+                    if (channelPhoto === null) {
+                        // Photos isn't in the the channel photo data source
+                        channelModel.addPhoto(photoItem.channelUUID, photoItem.photoUUID, photoItem.imageUrl, photoItem.ownerUUID, photoItem.ownerName);
+                    }
+
+                    channelView.photos[photo.photoUUID] = photo;
+                }
+            }
+        }
+
 
     },
 
@@ -2206,7 +2229,7 @@ var channelView = {
                 for (var i=0; i< photoList.length; i++) {
                     var photoObj = photoList[i];
 
-                    if (photoObj.photoId === photoId) {
+                    if (photoObj.photoUUID === photoId) {
                         modalChatPhotoView.openModal(photoObj);
                         return;
                     }

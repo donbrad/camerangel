@@ -457,6 +457,18 @@ var channelModel = {
         return(photos);
     },
     
+    findChannelPhoto : function (channelId, photoId) {
+        var photos = channelModel.queryPhotos([{ field: "channelUUID", operator: "eq", value: channelId },
+            { field: "photoUUID", operator: "eq", value: photoId }
+        ]);
+        
+        if (photos.length === 0) {
+            return (null);
+        }
+        
+        return(photos[0]);
+    },
+
     getUnreadChannels : function () {
         var channels = channelModel.queryChannels({ field: "unreadCount", operator: "gte", value: 0 });
 
