@@ -675,7 +675,7 @@ var contactModel = {
             if (result !== null) {
 
                 contactModel.updateChatContact(guid, result.name, result.alias, result.userUUID, result.phone, result.email, result.publicKey);
-                mobileNotify("Created New Contact for: " + result.name);
+                mobileNotify("Added Member Info for : " + result.name);
 
                 if (callback !== undefined) {
                     callback(result);
