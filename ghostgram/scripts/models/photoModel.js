@@ -587,7 +587,7 @@ var photoModel = {
 
             } else {
                 // look up the photo (and remove duplicate local copy if there is one)
-                var photoList = photoModel.findPhotosById(data.result.photoId);
+                var photoList = photoModel.findPhotosById(data.photoId);
 
                 if (photoList.length > 1) {
                     var length = photoList.length;
@@ -614,6 +614,7 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
+        photo.set('Id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
@@ -711,7 +712,7 @@ var photoModel = {
 
             } else {
                 // look up the photo (and remove duplicate local copy if there is one)
-                var photoList = photoModel.findPhotosById(data.result.photoId);
+                var photoList = photoModel.findPhotosById(data.photoId);
 
                 if (photoList.length > 1) {
                     var length = photoList.length;

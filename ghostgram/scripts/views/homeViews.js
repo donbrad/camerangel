@@ -408,7 +408,8 @@ var homeView = {
                         APP.kendo.navigate(href);
                     } else {
                         mobileNotify("Finding member for new private chat...");
-                        contactModel.createChatContact(channelId, function (result) {
+                        var contactUUID = uuid.v4();
+                        contactModel.createChatContact(channelId, contactUUID, function (result) {
                             if (result !== null) {
                                 mobileNotify("Adding private chat for " + result.name);
                                 channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);
@@ -1002,7 +1003,7 @@ var signUpView = {
                                         mobileNotify(phone + " is confirmed!");
                                         signUpView.signUpPhoneValid();
                                         mobileNotify ("Looking up phone contacts....");
-                                        deviceContacts.findContacts(phone, function (contactList) {
+                                        deviceContacts.findContacts(phone, true, function (contactList) {
                                             if (contactList.length > 0) {
                                                 mobileNotify('Found Me Card!');
                                                 $("#home-signup-fullname").val(contactList[0].name);

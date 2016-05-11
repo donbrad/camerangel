@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android",
-  "BundleVersion": "0.0.78",
+  "BundleVersion": "0.0.79",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -84,6 +84,7 @@
     "ID_RESOLUTION_HD720P"
   ],
   "CorePlugins": [
+    "cc.fovea.cordova.purchase@4.0.0",
     "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.phonegap.plugins.PushPlugin@3.2.0",

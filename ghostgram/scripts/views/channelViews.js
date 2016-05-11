@@ -941,6 +941,28 @@ var channelView = {
         return(channelView.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
     },
 
+    queryPhoto: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelView.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var message = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(message);
+    },
+
+    findPhotoById : function (photoID) {
+
+        return(channelView.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
+    },
+    
     onInit: function (e) {
 
        // e.preventDefault();
@@ -1362,6 +1384,29 @@ var channelView = {
             message.displayName = ux.returnUXPrimaryName(name, alias);
         }
 
+        //
+        if (message.data.photos !== undefined && message.data.photos.length > 0 ) {
+            var photos = message.data.photos;
+
+            for (var i=0; i<photos.length; i++) {
+                var photo = photos[i];
+
+                var photoItem = channelView.photos[photo.photoUUID];
+
+                if (photoItem === undefined) {
+                    // Photo isn't in the channel cache
+                    var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
+
+                    if (channelPhoto === null) {
+                        // Photos isn't in the the channel photo data source
+                        channelModel.addPhoto(photoItem.channelUUID, photoItem.photoUUID, photoItem.imageUrl, photoItem.ownerUUID, photoItem.ownerName);
+                    }
+
+                    channelView.photos[photo.photoUUID] = photo;
+                }
+            }
+        }
+
 
     },
 
@@ -1466,11 +1511,13 @@ var channelView = {
                 channelView.memberList[contactUUID] = contact;
                 mobileNotify("New Chat Member - Looking Up Info...");
                 contactModel.createChatContact(uuid, contact.contactUUID, function (contactIn) {
-                    mobileNotify(contactIn.name + " Added -- Refreshing Chat...");
-                    var updateContact =  channelView.memberList[contactIn.contactUUID];
-                    updateContact.name = contactIn.name;
-                    updateContact.alias = contactIn.alias;
-                    $("#messages-listview").data("kendoMobileListView").refresh();
+                    if (contactIn !== null) {
+                        mobileNotify(contactIn.name + " Added -- Refreshing Chat...");
+                        var updateContact =  channelView.memberList[contactIn.contactUUID];
+                        updateContact.name = contactIn.name;
+                        updateContact.alias = contactIn.alias;
+                        $("#messages-listview").data("kendoMobileListView").refresh();                    }
+                   
                 });
             }
 
@@ -2062,7 +2109,10 @@ var channelView = {
     },
 
     resolveChatPhoto : function (message) {
-        
+        // Resolve the photo in the chat: 1) is it uploaded yet? 2) is it recalled?
+        var photoId = null, shareId = null;
+
+
 
     },
 
@@ -2184,7 +2234,7 @@ var channelView = {
                 for (var i=0; i< photoList.length; i++) {
                     var photoObj = photoList[i];
 
-                    if (photoObj.photoId === photoId) {
+                    if (photoObj.photoUUID === photoId) {
                         modalChatPhotoView.openModal(photoObj);
                         return;
                     }

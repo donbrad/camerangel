@@ -9,7 +9,7 @@ var deviceContacts = {
     
     _missingProfileImg : "images/default-img.png",
     
-    findContacts : function (query, callback) {
+    findContacts : function (query, isPhone,  callback) {
         
         if (contactModel.deviceQueryActive) {
             return;
@@ -23,7 +23,13 @@ var deviceContacts = {
       /*  options.desiredFields = [navigator.contacts.fieldType.id, navigator.contacts.fieldType.name, navigator.contacts.fieldType.displayName,  navigator.contacts.fieldType.givenName, navigator.contacts.fieldType.familyName,
             navigator.contacts.fieldType.phoneNumbers, navigator.contacts.fieldType.emails, navigator.contacts.fieldType.addresses, navigator.contacts.fieldType.photos,
             navigator.contacts.fieldType.formatted, navigator.contacts.fieldType.ims, navigator.contacts.fieldType.categories, navigator.contacts.fieldType.birthday];
-*/        var fields       = [navigator.contacts.fieldType.name, navigator.contacts.fieldType.displayName];
+*/
+        var fields  = [navigator.contacts.fieldType.name, navigator.contacts.fieldType.displayName];
+
+        if (isPhone ) {
+            // Todo: don - add additional phone validation here...    
+            fields  = [navigator.contacts.fieldType.phoneNumbers];        
+        }
     
         navigator.contacts.find(fields, function(contacts) {
                 contactModel.deviceQueryActive = false;
@@ -35,6 +41,9 @@ var deviceContacts = {
                     var contactItem = {};
                     contactItem.type = "device";
                     contactItem.name = contacts[i].name.formatted;
+                    if (contactItem.name === undefined || contactItem.name === null || contactItem.name === '') {
+                        contactItem.name = query;
+                    }
                     contactItem.phoneNumbers = new Array();
                     contactItem.category = 'phone';
                     if (contacts[i].phoneNumbers !== undefined && contacts[i].phoneNumbers !== null) {
@@ -94,7 +103,7 @@ var deviceContacts = {
                         contactItem.photo = null;
                     }
     
-                    if (contactItem.phoneNumbers.length > 0 && contactItem.name.length > 0)
+                    if (contactItem.phoneNumbers.length > 0)
                         contactModel.deviceContactsDS.add(contactItem);
                 }
     

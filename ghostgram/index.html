@@ -1360,6 +1360,21 @@
 	</div>
 </div>
 
+<div data-role="modalview" data-title="Photo Map" id="mapViewModal" data-layout="main"  data-show="mapViewModal.onShow" data-init="mapViewModal.onInit" data-transition="fade" data-stretch="true">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a data-role="backbutton" data-align="left" >
+				<img src="images/nav-back.svg"/>
+			</a>
+		</div>
+	</div>
+	<div>
+		<div id="mapModalView-mapdiv" style="width:100%;"></div>
+	</div>
+</div>
+
+
 <div data-role="view" data-title="Map" id="mapView" data-layout="main"  data-show="mapView.onShow" data-init="mapView.onInit" data-transition="fade" data-stretch="true">
 	<div data-role="header">
 		<div data-role="navbar">
@@ -2022,7 +2037,7 @@
 	if (data.identicon === undefined || data.identicon === null)
 	data.identicon = contactModel.createIdenticon(data.uuid);
 	var photoUrl = data.identicon;
-	if (data.photo !== null) {
+	if (data.photo !== undefined && data.photo !== null) {
 		photoUrl = data.photo;
 	}
 	#
@@ -2052,7 +2067,7 @@
 				data.identicon = contactModel.createIdenticon(data.uuid);
 			var photoUrl = data.identicon;
 
-			   if (data.photo !== null) {
+			   if (data.photo !== undefined &&  data.photo !== null) {
 					photoUrl = data.photo;
 				}
 			#
@@ -2412,8 +2427,12 @@
 	var group = data.group;
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
+	if  (data.identicon === undefined || data.identicon === null) {
+		data.identicon = contactModel.createIdenticon(data.uuid);
+	}
 	var photoUrl = data.identicon;
-	if (data.photo !== null) {
+
+	if (data.photo !== undefined && data.photo !== null) {
 		photoUrl = data.photo;
 	}
 	#
