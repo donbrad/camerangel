@@ -405,7 +405,9 @@ var contactImportView = {
         
         if (query !== null && query !== undefined) {
             
-            deviceContacts.findContacts(query);
+            deviceContacts.findContacts(query, false, function(contacts) {
+                
+            });
             //console.log("passed: " + query);
             // Pass query to search box
             $("#contactImport .gg_mainSearchInput").val(query);
@@ -422,7 +424,7 @@ var contactImportView = {
 
     searchContacts: function (query) {
        	//_preventDefault(e);
-		deviceContacts.findContacts(query, function(contacts) {
+		deviceContacts.findContacts(query, false, function(contacts) {
 
 		});
 

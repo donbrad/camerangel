@@ -9,7 +9,7 @@ var deviceContacts = {
     
     _missingProfileImg : "images/default-img.png",
     
-    findContacts : function (query, callback) {
+    findContacts : function (query, isPhone,  callback) {
         
         if (contactModel.deviceQueryActive) {
             return;
@@ -25,6 +25,11 @@ var deviceContacts = {
             navigator.contacts.fieldType.formatted, navigator.contacts.fieldType.ims, navigator.contacts.fieldType.categories, navigator.contacts.fieldType.birthday];
 */
         var fields  = [navigator.contacts.fieldType.name, navigator.contacts.fieldType.displayName];
+
+        if (isPhone ) {
+            // Todo: don - add additional phone validation here...    
+            fields  = [navigator.contacts.fieldType.phoneNumbers];        
+        }
     
         navigator.contacts.find(fields, function(contacts) {
                 contactModel.deviceQueryActive = false;

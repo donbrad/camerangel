@@ -1002,7 +1002,7 @@ var signUpView = {
                                         mobileNotify(phone + " is confirmed!");
                                         signUpView.signUpPhoneValid();
                                         mobileNotify ("Looking up phone contacts....");
-                                        deviceContacts.findContacts(phone, function (contactList) {
+                                        deviceContacts.findContacts(phone, true, function (contactList) {
                                             if (contactList.length > 0) {
                                                 mobileNotify('Found Me Card!');
                                                 $("#home-signup-fullname").val(contactList[0].name);
