@@ -86,6 +86,14 @@ var profileEditView = {
     		profileEditView.doSave();
     	}
     	
+    },
+
+    gotoSettings : function () {
+        APP.kendo.navigate('#settings');
+    },
+
+    doChangePassword : function () {
+        changePasswordView.openModal();
     }
 };
 
