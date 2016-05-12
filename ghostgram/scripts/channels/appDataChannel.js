@@ -669,10 +669,6 @@ var appDataChannel = {
         msg.ownerId = userModel._user.get('userUUID');
         msg.ownerName = userModel._user.get('name');
         msg.message  =  msg.ownerName + " is a new ghostgrams contact." ;
-        if (options === undefined) {
-            options = null;
-        }
-        msg.options = options;
 
         msg.time = new Date().getTime();
         msg.pn_apns = {

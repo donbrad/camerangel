@@ -583,7 +583,8 @@ var channelModel = {
             } else {
                 // No contact for this user yet.
                 mobileNotify("Finding member for new private chat...");
-                contactModel.createChatContact(channelUUID, function (result) {
+                var contactUUID = uuid.v4();
+                contactModel.createChatContact(channelUUID, contactUUID, function (result) {
                     if (result !== null) {
                         mobileNotify("Adding private chat for " + result.name);
                         channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);
@@ -705,7 +706,9 @@ var channelModel = {
                 var contact = contactModel.findContact(members[i]);
                 if (contact === undefined) {
 
-                    contactModel.createChatContact(members[i], null);
+                    var contactId = uuid.v4();
+                    contactModel.createChatContact(members[i], contactId, function (result){});
+
 
                 }
             }
@@ -868,9 +871,10 @@ var channelModel = {
             var contactUUID = memberList[i];
             var contact = contactModel.findContact(contactUUID);
             if (contact === undefined) {
-                contactModel.createChatContact(contactUUID, null, function (data, error){
-                    if (error !== null) {
-                        mobileNotify ("Error creating Chat contact " + JSON.stringify(error));
+                var contactId = uuid.v4();
+                contactModel.createChatContact(contactUUID, contactId, function (result){
+                    if (result === null) {
+                        ggError ("Error creating Chat contact ");
                     }
                 })
                 

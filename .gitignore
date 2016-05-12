@@ -1,5 +1,8 @@
 */bin
 */obj
+*.ipa
+*.apk
+*.ab
 *.user-settings.xml
 ghostgram hybrid/.ab*
 ghostgram hybrid/styles/main.css

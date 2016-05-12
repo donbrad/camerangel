@@ -1511,11 +1511,13 @@ var channelView = {
                 channelView.memberList[contactUUID] = contact;
                 mobileNotify("New Chat Member - Looking Up Info...");
                 contactModel.createChatContact(uuid, contact.contactUUID, function (contactIn) {
-                    mobileNotify(contactIn.name + " Added -- Refreshing Chat...");
-                    var updateContact =  channelView.memberList[contactIn.contactUUID];
-                    updateContact.name = contactIn.name;
-                    updateContact.alias = contactIn.alias;
-                    $("#messages-listview").data("kendoMobileListView").refresh();
+                    if (contactIn !== null) {
+                        mobileNotify(contactIn.name + " Added -- Refreshing Chat...");
+                        var updateContact =  channelView.memberList[contactIn.contactUUID];
+                        updateContact.name = contactIn.name;
+                        updateContact.alias = contactIn.alias;
+                        $("#messages-listview").data("kendoMobileListView").refresh();                    }
+                   
                 });
             }
 
@@ -2107,7 +2109,10 @@ var channelView = {
     },
 
     resolveChatPhoto : function (message) {
-        // Resolve the photo in the chat: 1) is it uploaded yet? 2) is it recalled? 
+        // Resolve the photo in the chat: 1) is it uploaded yet? 2) is it recalled?
+        var photoId = null, shareId = null;
+
+
 
     },
 

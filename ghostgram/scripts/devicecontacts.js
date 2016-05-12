@@ -202,7 +202,8 @@ var deviceContacts = {
     // phone numbers, emails and addresses -- and first photo found.
     syncContactWithDevice : function (name, callback) {
 
-        deviceContacts.findContacts(name, function (contacts) {
+        var isPhone = false;
+        deviceContacts.findContacts(name, isPhone , function (contacts) {
             deviceContacts.unifyContacts(contacts);
             if (callback !== undefined) {
                 callback(contacts);

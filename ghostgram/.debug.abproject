@@ -15,6 +15,9 @@
     "cordova-plugin-googlemaps": {
       "API_KEY_FOR_ANDROID": "AIzaSyCp60Oq5scSpYHUjf9jEXYYL0tijwrnqKk",
       "API_KEY_FOR_IOS": "AIzaSyBmvj1RrT6j7Fj_7KJdcGwjDhKl2ij55lQ"
+    },
+    "cc.fovea.cordova.purchase": {
+      "BILLING_KEY": "needtoget"
     }
   }
 }

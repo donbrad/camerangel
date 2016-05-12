@@ -75,7 +75,8 @@ var profileEditView = {
         userModel._user.set('email', profileEditView._activeProfile.get('email'));
         userModel._user.set('photo', profileEditView._activeProfile.get('photo'));
 
-        // Todo Don - possible to redirect the user to last view (_returnView)
+
+        memberdirectory.update();
         APP.kendo.navigate('#home');
     }, 
 
