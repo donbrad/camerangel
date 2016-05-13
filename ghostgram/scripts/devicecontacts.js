@@ -8,8 +8,11 @@
 var deviceContacts = {
     
     _missingProfileImg : "images/default-img.png",
+    _name : 0,
+    _phone: 1,
+    _email : 2,
     
-    findContacts : function (query, isPhone,  callback) {
+    findContacts : function (query, queryType,  callback) {
         
         if (contactModel.deviceQueryActive) {
             return;
@@ -26,9 +29,11 @@ var deviceContacts = {
 */
         var fields  = [navigator.contacts.fieldType.name, navigator.contacts.fieldType.displayName];
 
-        if (isPhone ) {
+        if (queryType  === 1 ) {
             // Todo: don - add additional phone validation here...    
             fields  = [navigator.contacts.fieldType.phoneNumbers];        
+        } else if (queryType === 2) {
+            fields  = [navigator.contacts.fieldType.emails];
         }
     
         navigator.contacts.find(fields, function(contacts) {
@@ -202,7 +207,8 @@ var deviceContacts = {
     // phone numbers, emails and addresses -- and first photo found.
     syncContactWithDevice : function (name, callback) {
 
-        deviceContacts.findContacts(name, function (contacts) {
+        var isPhone = false;
+        deviceContacts.findContacts(name, isPhone , function (contacts) {
             deviceContacts.unifyContacts(contacts);
             if (callback !== undefined) {
                 callback(contacts);

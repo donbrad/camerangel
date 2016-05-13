@@ -1000,6 +1000,7 @@ var addContactView = {
 
         contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
+        contact.set('Id', contactId);
         contact.set('uuid', contactId);
         contact.set("name", name );
         contact.set("alias", alias);

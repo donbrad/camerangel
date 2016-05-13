@@ -169,6 +169,18 @@ var appDataChannel = {
             // New user joined service -- enables users to update contact info
             
             case 'autoConnect' : {
+                var contactUUID = m.ownerId, contactName = m.ownerName;
+
+                var contact = contactModel.findContact(contactUUID);
+
+                if (contact === undefined || contact === null) {
+                    var contactId = uuid.v4();
+                    contactModel.createChatContact(contactUUID,contactId, function(result) {
+                       if (result === null) {
+                           ggError("Couldn't Auto Connect with " + contactName);
+                       }
+                    });
+                }
                 
             } break;
             
@@ -669,10 +681,6 @@ var appDataChannel = {
         msg.ownerId = userModel._user.get('userUUID');
         msg.ownerName = userModel._user.get('name');
         msg.message  =  msg.ownerName + " is a new ghostgrams contact." ;
-        if (options === undefined) {
-            options = null;
-        }
-        msg.options = options;
 
         msg.time = new Date().getTime();
         msg.pn_apns = {
@@ -846,7 +854,7 @@ var appDataChannel = {
         });
     },
     
-    
+
 
     processConnectRequest : function (senderId, senderName, comment) {
         contactModel.connectReceived(senderId);
