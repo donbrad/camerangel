@@ -542,7 +542,16 @@ var channelModel = {
 
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
-            channelModel.confirmPrivateChannel(channelUUID);
+            channelModel.confirmPrivateChannel(channelUUID, function(result){
+                if (result !== null) {
+                    var lastAccess = ggTime.currentTime();
+
+                    notificationModel.updateUnreadNotification(result.channelUUID, result.name, count);
+                    channel.set('unreadCount', channel.get('unreadCount') + count);
+                    //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
+                    channelModel.updateLastAccess(result.channelUUID, lastAccess);
+                }
+            });
         } else {
 
             var lastAccess = ggTime.currentTime();
@@ -572,9 +581,9 @@ var channelModel = {
         }
 
     },
-
+    
     // confirm that there's a private channel for this sender - if not just silently create it
-    confirmPrivateChannel: function (channelUUID) {
+    confirmPrivateChannel: function (channelUUID, callback) {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
            var contact = contactModel.findContactByUUID(channelUUID);
@@ -588,8 +597,19 @@ var channelModel = {
                     if (result !== null) {
                         mobileNotify("Adding private chat for " + result.name);
                         channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);
+                        if (callback !== undefined) {
+                            callback(channelUUID);
+                        }
+                    } else {
+                        if (callback !== undefined) {
+                            callback(null);
+                        }
                     }
                 });
+            }
+        } else {
+            if (callback !== undefined) {
+                callback(channel.channelUUID);
             }
         }
     },
@@ -792,6 +812,8 @@ var channelModel = {
             }
         }
     },
+
+
 
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName, callback) {

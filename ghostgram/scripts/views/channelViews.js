@@ -1111,18 +1111,19 @@ var channelView = {
         }
     },
 
-    onShow : function (e) {
-        //_preventDefault(e);
-
+    
+    showChannel : function () {
         var name = '';
         ux.hideKeyboard();
 
 
-       /* if (window.navigator.simulator === undefined) {
-            cordova.plugins.Keyboard.disableScroll(true); // false to enable again
-        }
-*/
+        /* if (window.navigator.simulator === undefined) {
+         cordova.plugins.Keyboard.disableScroll(true); // false to enable again
+         }
+         */
 
+        var thisChannel = channelView._channel;
+        
         $("#messages-listview").data("kendoMobileListView").scroller().reset();
         channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
@@ -1131,34 +1132,14 @@ var channelView = {
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
-
-        var channelUUID = e.view.params.channelUUID;
-        // This isn't privateNote so handle as private or group channel
-        var thisChannel = channelModel.findChannelModel(channelUUID);
-        if (thisChannel === undefined || thisChannel === null) {
-            mobileNotify("Chat -- chat doesn't exist : " + channelUUID);
-            return;
-        }
-
         channelView.openEditor();
         channelView.toggleTitleTag();
-
-        if (e.view.params.returnview !== undefined){
-            channelView._returnview = unpackParameter(e.view.params.returnview);
-        } else {
-            channelView._returnview = null;
-        }
-
-        channelView._channelUUID = channelUUID;
 
         var thisUser = userModel._user;
 
         channelView.initDataSources();
         channelView.messageInit();
         channelView._initMessageTextArea();
-
-
-        channelView._channel = thisChannel;
 
         if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
             channelView.isPlaceChat = true;
@@ -1191,114 +1172,114 @@ var channelView = {
             channelView.setMessageLockIcon(channelView.messageLock);
 
 
-          $('#messagePresenceButton').hide();
+            $('#messagePresenceButton').hide();
 
 
-          var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
+            var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
 
-          contactUUID = thisChannel.channelUUID;
+            contactUUID = thisChannel.channelUUID;
 
 
-          channelView.privateContactId = contactUUID;
-          var thisContact = contactModel.findContact(contactUUID);
-          if (thisContact === undefined) {
-              mobileNotify("ChannelView : creating Contact for Private Chat");
-              contactModel.createChatContact(contactUUID, uuid.v4(), function (result) {
-                  //Build the members datasource and quick access list
-                  channelView.buildMemberDS();
+            channelView.privateContactId = contactUUID;
+            var thisContact = contactModel.findContact(contactUUID);
+            if (thisContact === undefined) {
+                mobileNotify("ChannelView : creating Contact for Private Chat");
+                contactModel.createChatContact(contactUUID, uuid.v4(), function (result) {
+                    //Build the members datasource and quick access list
+                    channelView.buildMemberDS();
 
-                  // *** Private Channel ***
-                  var contactKey = thisChannel.contactKey;
-                  if (contactKey === undefined) {
+                    // *** Private Channel ***
+                    var contactKey = thisChannel.contactKey;
+                    if (contactKey === undefined) {
 
-                      contactKey = thisContact.publicKey;
-                      if (contactKey === undefined) {
-                          mobileNotify("No public key for " + thisChannel.name);
-                          return;
-                      }
-                  }
-                  // Update private Chat name using combination of contact's name and alias.
+                        contactKey = thisContact.publicKey;
+                        if (contactKey === undefined) {
+                            mobileNotify("No public key for " + thisChannel.name);
+                            return;
+                        }
+                    }
+                    // Update private Chat name using combination of contact's name and alias.
 
-                  name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
-                  $("#channelName").text(name);
-                  // Show contact img in header
+                    name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
+                    $("#channelName").text(name);
+                    // Show contact img in header
 
-                  if (thisContact.identicon === undefined || thisContact.identicon === null) {
-                      thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
-                  }
+                    if (thisContact.identicon === undefined || thisContact.identicon === null) {
+                        thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
+                    }
 
-                  var photoUrl = thisContact.identicon;
-                  if (thisContact.photo !== null) {
-                      photoUrl = thisContact.photo;
-                  }
-                  $('#channelImage').attr('src', photoUrl).removeClass("hidden");
+                    var photoUrl = thisContact.identicon;
+                    if (thisContact.photo !== null) {
+                        photoUrl = thisContact.photo;
+                    }
+                    $('#channelImage').attr('src', photoUrl).removeClass("hidden");
 
                   privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
                   channelView.messagesDS.data([]);
 
 
-                  privateChannel.getMessageHistory(function (messages) {
+                    privateChannel.getMessageHistory(function (messages) {
 
-                      channelView.preprocessMessages(messages);
+                        channelView.preprocessMessages(messages);
 
-                      thisChannel.messagesArray = messages;
+                        thisChannel.messagesArray = messages;
 
-                      channelView.messagesDS.data(messages);
+                        channelView.messagesDS.data(messages);
 
-                      channelView.loadImagesThenScroll()
-                  });
+                        channelView.loadImagesThenScroll()
+                    });
 
-              })
+                })
 
-          } else {
-              channelView.privateContact = thisContact;
+            } else {
+                channelView.privateContact = thisContact;
 
-              //Build the members datasource and quick access list
-              channelView.buildMemberDS();
+                //Build the members datasource and quick access list
+                channelView.buildMemberDS();
 
-              // *** Private Channel ***
-              var contactKey = thisChannel.contactKey;
-              if (contactKey === undefined) {
+                // *** Private Channel ***
+                var contactKey = thisChannel.contactKey;
+                if (contactKey === undefined) {
 
-                  contactKey = thisContact.publicKey;
-                  if (contactKey === undefined) {
-                      mobileNotify("No public key for " + thisChannel.name);
-                      return;
-                  }
-              }
+                    contactKey = thisContact.publicKey;
+                    if (contactKey === undefined) {
+                        mobileNotify("No public key for " + thisChannel.name);
+                        return;
+                    }
+                }
 
-              // Update private Chat name using combination of contact's name and alias.
+                // Update private Chat name using combination of contact's name and alias.
 
-              name = ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
-              $("#channelName").text(name);
-              // Show contact img in header
+                name = ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
+                $("#channelName").text(name);
+                // Show contact img in header
 
-              if (thisContact.identicon === undefined || thisContact.identicon === null) {
-                  thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
-              }
+                if (thisContact.identicon === undefined || thisContact.identicon === null) {
+                    thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
+                }
 
-              var photoUrl = thisContact.identicon;
-              if (thisContact.photo !== null) {
-                  photoUrl = thisContact.photo;
-              }
-              $('#channelImage').attr('src', photoUrl).removeClass("hidden");
+                var photoUrl = thisContact.identicon;
+                if (thisContact.photo !== null) {
+                    photoUrl = thisContact.photo;
+                }
+                $('#channelImage').attr('src', photoUrl).removeClass("hidden");
 
-              privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
-              channelView.messagesDS.data([]);
+                privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
+                channelView.messagesDS.data([]);
 
 
-              privateChannel.getMessageHistory(function (messages) {
+                privateChannel.getMessageHistory(function (messages) {
 
-                  channelView.preprocessMessages(messages);
+                    channelView.preprocessMessages(messages);
 
-                  thisChannel.messagesArray = messages;
+                    thisChannel.messagesArray = messages;
 
-                  channelView.messagesDS.data(messages);
+                    channelView.messagesDS.data(messages);
 
-                  channelView.loadImagesThenScroll()
-              });
+                    channelView.loadImagesThenScroll()
+                });
 
-          }
+            }
         } else {
 
             $("#channelName").text(name);
@@ -1360,6 +1341,51 @@ var channelView = {
         }
 
         channelView.updateTimer = setInterval(function(){ channelView.updateTimeStamps();}, 60000);
+        
+        
+    },
+    
+    
+    onShow : function (e) {
+        // Preliminary processing prior to showing the full channel
+        if (e.view.params.returnview !== undefined){
+            channelView._returnview = unpackParameter(e.view.params.returnview);
+        } else {
+            channelView._returnview = null;
+        }
+
+        var channelUUID = e.view.params.channelUUID;
+        // This isn't privateNote so handle as private or group channel
+        var thisChannel = channelModel.findChannelModel(channelUUID);
+        channelView._channelUUID = channelUUID;
+
+
+        if (thisChannel === undefined || thisChannel === null) {
+            mobileNotify("Confirming Chat information...");
+            channelView._channelUUID = null;
+            channelModel.confirmPrivateChannel(channelUUID, function (result) {
+                if (result !== null) {
+                    thisChannel = channelModel.findChannelModel(channelUUID);
+                    if (thisChannel !== undefined && thisChannel !== null) {
+                        channelView._channelUUID = channelUUID;
+                        channelView.showChannel();
+                    } else {
+                        ggError("Sorry, couldn't locate or create this Chat...");
+                        APP.kendo.navigate("#:back");
+                    }
+
+                } else {
+                    // Couldn't create a channel (either not a member or group channel that was deleted
+                    ggError("Sorry, couldn't locate or create this Chat...");
+                    APP.kendo.navigate("#:back");
+                }
+            })
+        }
+
+        
+        channelView._channel = thisChannel;
+        channelView.showChannel();
+
     },
 
     preprocessMessages : function (messages) {

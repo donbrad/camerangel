@@ -163,7 +163,6 @@ var privateChannel = {
             } else {
                 channelView.scrollToBottom();
             }
-
             userDataChannel.addMessage(msg);
             
             channelView.scrollToBottom();
@@ -173,9 +172,8 @@ var privateChannel = {
             }
 
         } else {
-            // Is there a private channel for this sender?
-            channelModel.confirmPrivateChannel(msg.channelUUID);
-            channelModel.incrementUnreadCount(msg.channelUUID, 1, null);
+            
+            channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
         }
 
     },
