@@ -4174,12 +4174,10 @@ div.loginBox > form > div > ul > li {
   float: left;
   margin-left: 0px;
   margin-right: 0px;
-  font-size: 16px;
   font-size: 1em;
 }
 @media only screen and (max-width: 320px) {
   .card .top .senderMessage .chat-details {
-    font-size: 14px;
     font-size: 0.875em;
   }
 }

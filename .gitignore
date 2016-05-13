@@ -24,3 +24,5 @@ config.codekit
 
 
 ghostgram hybrid/css
+
+ghostgram/App_Resources/Android/drawable-nodpi/splashscreen.9.png

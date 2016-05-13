@@ -1793,22 +1793,50 @@
 	</ul>
 
 	<ul data-role="actionsheet" id="galleryActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="channelView.messageCamera"> Phone Camera</a></li>
-		<li><a data-action="channelView.messagePhoto"> Phone Gallery</a></li>
-		<li><a data-action="channelView.messageGallery"> Memories Gallery</a></li>
+		<li>
+			<a data-action="channelView.messageCamera">
+				<img src="images/action-camera.svg" class="icon-action" />
+				Camera
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messagePhoto">
+				<img src="images/action-device.svg" class="icon-action" />
+				Device Gallery
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messageGallery">
+				<img src="images/action-memories.svg" class="icon-action" />
+				Memories Gallery
+			</a>
+		</li>
 	</ul>
 
 	<ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
-		<li><a data-action="channelView.archiveMessage"><img src="images/icon-memories.svg" class="icon-sm" /> Remember Message</a></li>
+		<li>
+			<a data-action="channelView.archiveMessage">
+				<img src="images/icon-memories.svg" class="icon-sm" />
+				Remember Message
+			</a>
+		</li>
 		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
 		<!--<li><a data-action="channelView.messageEraser"><i class="fa fa-eraser"> </i> Erase Message</a></li>-->
 	</ul>
 
 	<ul data-role="actionsheet" id="messageActionsSender" data-popup='{"direction": "left"}'>
-		<li><a data-action="channelView.archiveMessage"><img src="images/icon-memories.svg" class="icon-sm" /> Remember Message</a></li>
+		<li>
+			<a data-action="channelView.archiveMessage">
+				<img src="images/action-memories.svg" class="icon-action" /> Remember Message
+			</a>
+		</li>
 		<!--<li><a data-action="channelView.addToSmartList"><img src="images/gallery-list.svg" class="icon-sm" /> Add To Smart List</a></li>-->
 		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
-		<li><a data-action="channelView.messageRecall"><img src="images/icon-trash.svg" class="icon-sm" /> Recall Message</a></li>
+		<li>
+			<a data-action="channelView.messageRecall">
+				<img src="images/action-recall.svg" class="icon-action" /> Recall Message
+			</a>
+		</li>
 	</ul>
 
 </div>
@@ -4361,18 +4389,51 @@
 	</ul>
 
 	<ul data-role="actionsheet"  id="privateNotePhotoActions" >
-		<li><a data-action="privateNotesView.addCamera"> Phone Camera</a></li>
-		<li><a data-action="privateNotesView.addPhoto"> Phone Gallery</a></li>
-		<li><a data-action="privateNotesView.addGallery"> Memories Gallery</a></li>
+		<li>
+			<a data-action="privateNotesView.addCamera">
+				<img src="images/action-camera.svg" class="icon-action"/> Camera
+			</a>
+		</li>
+		<li>
+			<a data-action="privateNotesView.addPhoto">
+				<img src="images/action-device.svg" class="icon-action">
+				Device Gallery
+			</a>
+		</li>
+		<li>
+			<a data-action="privateNotesView.addGallery">
+				<img src="images/action-memories.svg" class="icon-action"> Memories Gallery
+			</a>
+		</li>
 	</ul>
 
 
 	<ul id="privateNoteViewActions" data-role="actionsheet" data-cancel="Cancel">
-		<li><a data-role="button" data-click="privateNotesView.editNote"> Edit Private Note </a></li>
-		<li><a data-role="button" data-action="privateNotesView.deleteNote"> Delete Private Note </a></li>
-		<li><a data-role="button" data-action="privateNotesView.sendNote"> Send to Contact</a></li>
-		<li><a data-role="button" data-action="privateNotesView.sendChatNote"> Share in Chat </a></li>
-		<li><a data-role="button" data-action="privateNotesView.shareNote" > Share Private Note </a></li>
+		<li>
+			<a data-role="button" data-click="privateNotesView.editNote">
+				<img src="images/action-edit.svg" class="icon-action"/> Edit Note
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-action="privateNotesView.deleteNote">
+				<img src="images/action-delete.svg" class="icon-action"/> Delete Note
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-action="privateNotesView.sendNote">
+				<img src="images/action-contact.svg" class="icon-action" /> Send to Contact
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-action="privateNotesView.sendChatNote">
+				<img src="images/action-chat.svg" class="icon-action" /> Share in Chat
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-action="privateNotesView.shareNote">
+				<img src="images/action-share.svg" class="icon-action" /> Share Note
+			</a>
+		</li>
 	</ul>
 
 
