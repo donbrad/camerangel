@@ -1399,7 +1399,7 @@ var channelView = {
 
                     if (channelPhoto === null) {
                         // Photos isn't in the the channel photo data source
-                        channelModel.addPhoto(photoItem.channelUUID, photoItem.photoUUID, photoItem.imageUrl, photoItem.ownerUUID, photoItem.ownerName);
+                        channelModel.addPhoto(channelView._channelUUID, photoItem.photoUUID, photoItem.imageUrl, photoItem.ownerUUID, photoItem.ownerName);
                     }
 
                     channelView.photos[photo.photoUUID] = photo;
