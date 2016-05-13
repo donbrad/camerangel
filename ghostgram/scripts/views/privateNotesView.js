@@ -30,8 +30,8 @@ var privateNotesView = {
     _editorExpanded : false,
     _editMode: false,
     _editorView: false,
-    _editorMin : 36,
-    _editorMax : 240,
+    _editorMin : "3em", /// changing to relative sizing
+    _editorMax : "10em", /// changing to relative sizing
 
     onInit : function (e) {
        // _preventDefault(e);
@@ -115,12 +115,12 @@ var privateNotesView = {
     },
 
     expandEditor : function () {
-        $('#privateNoteTextArea').css( "height", privateNotesView._editorMax + 'px' );
+        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMax});
         privateNotesView._editorExpanded = true;
     },
 
     shrinkEditor : function ()  {
-        $('#privateNoteTextArea').css( "height", privateNotesView._editorMin + 'px' );
+        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMin});
         privateNotesView._editorExpanded = false;
     },
 
@@ -318,7 +318,7 @@ var privateNotesView = {
 */
     activateEditor : function () {
 
-        $(".redactor-editor").velocity({height: privateNotesView._editorMax + 'px'},{duration: 300});
+        $(".redactor-editor").velocity({height: privateNotesView._editorMax},{duration: 300});
         privateNotesView._editorView = true;
         $("#privateNoteToolbar").removeClass('hidden');
         $('#privateNoteTitleTag').removeClass('hidden');
@@ -331,7 +331,7 @@ var privateNotesView = {
     deactivateEditor : function () {
         privateNotesView._editorView = false;
       // privateNotesView.hideEditor();
-        $(".redactor-editor").velocity({height: privateNotesView._editorMin + 'px'},{duration: 300});
+        $(".redactor-editor").velocity({height: privateNotesView._editorMin},{duration: 300});
         $("#privateNoteToolbar").addClass('hidden');
         $('#privateNoteTitleTag').addClass('hidden');
         $("#privateNote-hideKeyboard").addClass('hidden');
@@ -353,8 +353,8 @@ var privateNotesView = {
             privateNotesView._editorActive = true;
 
             $('#privateNoteTextArea').redactor({
-                minHeight: privateNotesView._editorMin,
-                maxHeight: privateNotesView._editorMax,
+                //minHeight: privateNotesView._editorMin,
+                //maxHeight: (privateNotesView._editorMax * 16),
                 focus: false,
                 imageEditable: false, // disable image edit mode on click
                 imageResizable: false, // disable image resize mode on click
@@ -583,11 +583,22 @@ var privateNotesView = {
         if (privateNotesView.activeNote.title === '') {
             privateNotesView.activeNote.title = smartEvent.title;
         }
+
+
         
-        var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
+        var objectUrl = '<div class="btnSmart btnSmartList" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="privateNotesView.onObjectClick" >' +
-            '<span class="btnSmart-content">' +
+            '<div class="privateNote-event">' +
+            '<img src="images/smart-event-home.svg" class="icon-smart-home left" />' +
+            '<h3>' + smartEvent.title + '</h3>' +
+            '<p>' + dateStr + ' at ' + localTime + '</p>' +
+            '</div>' +
+            '</div>';
+
+
+
+            /*'<span class="btnSmart-content">' +
             '<span class="btnSmart-title">' + smartEvent.title + ' </span><br /> ' +
             '<span class="btnSmart-date">' + dateStr + ' at ' + localTime + '</span><br /> ' +
             '<span class="btnSmart-date">' + placeName + '</span> ' +
@@ -595,7 +606,7 @@ var privateNotesView = {
             '<span class="btnSmart-type">' +
             '<img src="images/smart-event-test.svg" class="icon-smartBtn" />' +
             '</span>' +
-            '</span></div>';
+            '</span></div>';*/
 
         var fullMessage = note + objectUrl;
 
@@ -618,7 +629,7 @@ var privateNotesView = {
             privateNotesView.activeNote.title = smartMovie.movieTitle;
         }
 
-        var objectUrl = '<div><span class="btnSmart-movie" data-role="button" data-objectid="' + objectId +
+        var objectUrl = '<div><span class="btnSmartList" data-role="button" data-objectid="' + objectId +
             '" id="movieobject_' + objectId + '"'+
             'data-click="privateNotesView.onObjectClick" >' +
             '<div class="btnSmart-poster">' +

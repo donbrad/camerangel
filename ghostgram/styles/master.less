@@ -585,6 +585,13 @@ form {
   max-width: 50%;
 }
 
+.icon-action {
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: sub;
+  margin-right: 0.5em;
+}
+
 .loading-icon {
   height: 1rem;
   vertical-align: middle;
@@ -1795,6 +1802,12 @@ div.footerMenu.km-footer > ul > li > a:active {
 #modalPhotoView > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div > a {
   margin-bottom: 4rem;
 }
+
+#modalPhotoView > div.km-content.km-widget.km-scroll-wrapper {
+  background-image: none !important;
+  background-color: #000;
+}
+
 
 .photoTitleInput {
   width: 100%;
@@ -3187,6 +3200,7 @@ div.footerMenu.km-footer > ul > li > a {
     text-align: right;
     padding-right: 10px;
     white-space: nowrap;
+    text-shadow: 1px 1px 1px #C7C7C7;
   }
   img {
     height:1.25rem;
@@ -3830,9 +3844,9 @@ div.loginBox > form > div > ul > li {
         float: left;
         margin-left: 0px;
         margin-right: 0px;
-        .font-size(16);
+        font-size: 1em;
         @media @mobile {
-          .font-size(14);
+          font-size: 0.875em;
         }
       }
     }
@@ -5949,6 +5963,21 @@ div.contactListBox.activeContact > div > div > ul {
   }
 }
 
+#placeEdit-form {
+  padding-bottom: 6em;
+}
+
+.placeEdit-li-sm {
+  width: 47.5%;
+  float: left;
+  margin-right: 2.5% !important;
+}
+
+.placeEdit-li-sm:nth-child(2){
+  margin-left: 2.5%;
+  margin-right: 0;
+}
+
 .placeTypeHelpers {
   margin-top: 0.5rem;
 }
@@ -6267,6 +6296,25 @@ table.k-editor {
   background-color: #fff;
 }
 
+.btnSmartList {
+  width: 100% !important;
+}
+
+.privateNote-event {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  h3 {
+    float: left;
+    width: 70%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  p {
+
+  }
+}
+
+
 /// Startup View
   #startUpView {
     .km-material .km-content {
@@ -6321,18 +6369,17 @@ table.k-editor {
   height: 1.25em;
   max-width: 1.25em;
   vertical-align: middle;
-  margin-right: 0.5em;
 }
 
 .icon-gg-drawer-lg {
-  height: 1.5em;
-  max-width: 1.5em;
+  height: 2.5em;
+  max-width: 2.5em;
   vertical-align: middle;
-  margin-right: 0.25em;
 }
 
 .gg-drawer-header {
   margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 #ggDrawer > div > div.km-listview-wrapper > ul > li > a {
@@ -6376,11 +6423,72 @@ table.k-editor {
 .feature-card {
   padding: 1em 0.5em;
   background-color: @shade-400;
-  width: 95%%;
+  width: 95%;
   height: 100%;
   margin-bottom: 3em;
   margin-left: 2.5%;
   margin-right: 2.5%;
   border-radius: 3px;
   margin-top: 1em;
+}
+
+//// Hot button
+#hotButtonModal > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background-color: @darkBk !important;
+  background-image: none;
+}
+
+.gg-drawer-header {
+  color: white;
+}
+
+.gg-drawer-header-secondary{
+  text-align: left;
+  color: #fff;
+}
+
+#hotButtonModal > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > ul > div.line {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#hotButtonModal > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > ul > li:nth-child(9) > div > h3{
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.hotButton-icon {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 3em;
+  height: 3em;
+  padding: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hotButton-icon > img {
+  display: block;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+
+.hotButton-li {
+  width: 50%;
+  float: left;
+}
+
+.hotButton-li-secondary {
+  text-align: left;
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
+}
+
+.hotButtonList li:first-child {
+  margin-top: 0.5em;
+}
+
+.hotButtonList > li > a {
+  color: #fff !important;
+  padding-bottom: 1.5em !important;
 }

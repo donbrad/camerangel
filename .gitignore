@@ -19,7 +19,10 @@ ghostgram hybrid/config.codekit
 
 ghostgram hybrid/App_Resources/watch*
 ghostgram hybrid/.idea
+ghostgram/.idea
 config.codekit
 
 
 ghostgram hybrid/css
+
+ghostgram/App_Resources/Android/drawable-nodpi/splashscreen.9.png
