@@ -494,7 +494,7 @@ var editChannelView = {
 
         // show action btn text
         var $editChannelP = $("#editChannel > div.footerBk.km-footer > a.actionBtn.secondary-100.km-widget.km-button > span > p")
-        $editChannelP.velocity({opacity: 1, right: "3rem"}, {easing: "spring", delay: 500});
+        $editChannelP.velocity({opacity: 1, right: "4rem"}, {easing: "spring", delay: 500});
     },
 
     setActiveChannel : function (channel) {
