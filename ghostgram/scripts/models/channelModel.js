@@ -706,10 +706,11 @@ var channelModel = {
                 var contact = contactModel.findContact(members[i]);
                 if (contact === undefined) {
 
-                    var contactId = uuid.v4();
-                    contactModel.createChatContact(members[i], contactId, function (result){});
-
-
+                    if (members[i] !== userModel._user.userUUID) {
+                        var contactId = uuid.v4();
+                        contactModel.createChatContact(members[i], contactId, function (result){});
+                    }
+                    
                 }
             }
         }
