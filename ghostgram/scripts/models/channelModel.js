@@ -869,17 +869,20 @@ var channelModel = {
         }
 
         for (var i=0; i<memberList.length; i++ ) {
-            var contactUUID = memberList[i];
-            var contact = contactModel.findContact(contactUUID);
-            if (contact === undefined) {
-                var contactId = uuid.v4();
-                contactModel.createChatContact(contactUUID, contactId, function (result){
-                    if (result === null) {
-                        ggError ("Error creating Chat contact ");
-                    }
-                })
-                
+            if (memberList[i] !== userModel._user.userUUID) {
+                var contactUUID = memberList[i];
+                var contact = contactModel.findContact(contactUUID);
+                if (contact === undefined) {
+                    var contactId = uuid.v4();
+                    contactModel.createChatContact(contactUUID, contactId, function (result){
+                        if (result === null) {
+                            ggError ("Error creating Chat contact ");
+                        }
+                    })
+
+                }
             }
+           
         }
 
 
