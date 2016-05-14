@@ -1136,7 +1136,8 @@ var channelView = {
         // This isn't privateNote so handle as private or group channel
         var thisChannel = channelModel.findChannelModel(channelUUID);
         if (thisChannel === undefined || thisChannel === null) {
-            mobileNotify("Chat -- chat doesn't exist : " + channelUUID);
+            mobileNotify("Oops -- chat doesn't exist : " + channelUUID);
+            APP.kendo.navigate("#:back");
             return;
         }
 
