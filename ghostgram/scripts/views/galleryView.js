@@ -759,7 +759,7 @@ var modalPhotoView = {
     _dummyDescription : '',
     _dummyTagsString : '',
     _activePhoto : new kendo.data.ObservableObject(),
-    _showInfo: true,
+    _showInfo: false,
 
     onInit: function(e){
     	var showInfo =  modalPhotoView._showInfo;
@@ -856,20 +856,11 @@ var modalPhotoView = {
     openTagEditor : function (e) {
         _preventDefault(e);
 
-        $("#modalPhotoView-PhotoActions").data("kendoMobileActionSheet").close();
+        if(!modalPhotoView._showInfo){
+            $("#modalPhotoView-editPhoto").velocity("slideDown");
+            modalPhotoView._showInfo = true;
+        }
 
-        $(".photoTitleBox").velocity({height: "20rem"}, {duration: 800, easing: "spring"});
-        $(".photoTitleText").addClass("hidden");
-        $(".photoTitleInput").removeClass("hidden");
-
-        modalPhotoView._showInfo = true;
-
-        // Hide actionBtn
-        $("#modalPhotoView .actionBtn").velocity("fadeOut", {duration: 0});
-
-        // bug - can't access data-click so have to have 2 btns
-        $("#modalPhotoView-close").addClass("hidden");
-        $("#modalPhotoView-update").removeClass("hidden");
 
     },
 
@@ -892,14 +883,9 @@ var modalPhotoView = {
             mobileNotify("Can't find photo model!!");
         }
 
-    	// UI reset
-    	$(".photoTitleBox").velocity({height: "10rem"}, {duration: 400});
-        $(".photoTitleText").removeClass("hidden");
-        $(".photoTitleInput").addClass("hidden");
+        $("#modalPhotoView-editPhoto").velocity("slideUp");
+        modalPhotoView._showInfo = false;
 
-        $("#modalPhotoView .actionBtn").velocity("fadeIn", {delay: 300});
-
-        $("#modalPhotoView-update").addClass("hidden");
     },
 
     deletePhoto : function (e) {

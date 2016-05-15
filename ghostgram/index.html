@@ -3496,47 +3496,66 @@
 				<img src="images/nav-gear.svg"/>
 			</a>
 		</div>
+		<div id="modalPhotoView-editPhoto" style="display: none;">
+			<ul class="list-unstyled">
+				<li style="margin-bottom: 0.5em;">
+					<p><img src="images/action-edit.svg" class="icon-sm"/> Edit Photo</p>
+				</li>
+				<li>
+					<label>Title</label>
+					<input type="text" class="input-text-md">
+				</li>
+				<li>
+					<label>Tags</label>
+					<input type="text" class="input-text-sm">
+				</li>
+			</ul>
+			<ul class="list-unstyled" style="margin-top: 1em; margin-bottom: 6em;">
+				<li>
+					<p><img src="images/icon-manage.svg" class="icon-sm"/> Manage Photo</p>
+				</li>
+				<li>
+
+				</li>
+			</ul>
+			<a class="btnSpan-btm btnPrimary" data-role="button" data-click="modalPhotoView.closeTagEditor" id="modalPhotoView-update">Update</a>
+		</div>
 	</div>
 
 	<div class="photoViewBox">
 		<img id="modalPhotoViewImage" data-bind="attr: {src : thumbnailUrl}" src="images/chat-photo.svg"/>
 	</div>
-	<div class="footer" data-role="footer">
+	<!--<div class="footer" data-role="footer">
 		<a class="btnSpan-btm btnPrimary hidden" data-role="button" data-click="modalPhotoView.closeTagEditor" id="modalPhotoView-update">Update</a>
-	</div>
+	</div>-->
 
-	<ul data-role="actionsheet"  id="modalPhotoView-PhotoActions" data-popup='{"direction": "left"}'>
+	<ul data-role="actionsheet" id="modalPhotoView-PhotoActions" data-popup='{"direction": "left"}'>
 		<li>
-			<a data-click="modalPhotoView.openTagEditor">
+			<a data-action="modalPhotoView.openTagEditor">
 				<img src="images/action-edit.svg" class="icon-action" />
 				Edit/Manage photo
 			</a>
 		</li>
-		<li class="hidden">
-			<a data-click="modalPhotoView.managePhoto">
-				Manage Photo
-			</a>
-		</li>
 		<li>
-			<a data-click="modalPhotoView.viewOnMap">
+			<a data-action="modalPhotoView.viewOnMap">
 				<img src="images/action-map.svg" class="icon-action" />
 				View Photo On Map
 			</a>
 		</li>
 		<li>
-			<a data-click="modalPhotoView.sendViaGhostgrams">
+			<a data-action="modalPhotoView.sendViaGhostgrams">
 				<img src="images/action-gg.svg" class="icon-action" />
 				Send via Ghostgrams
 			</a>
 		</li>
 		<li>
-			<a data-click="modalPhotoView.sharePhoto">
+			<a data-action="modalPhotoView.sharePhoto">
 				<img src="images/action-share.svg" class="icon-action" />
 				Share Photo
 			</a>
 		</li>
 		<li>
-			<a data-click="modalPhotoView.deletePhoto">
+			<a data-action="modalPhotoView.deletePhoto">
 				<img src="images/action-delete.svg" class="icon-action" />
 				Delete Photo
 			</a>
