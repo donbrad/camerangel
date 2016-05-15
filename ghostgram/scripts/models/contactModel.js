@@ -639,7 +639,7 @@ var contactModel = {
             contact.set('version', contactModel._version);
             contact.set('ggType', contactModel._ggClass);
             contact.set("name", "New Member");
-            contact.set("alias", "new");
+            contact.set("alias", "New");
             contact.set('category', "member");
             contact.set('phone', "");
             contact.set('email', "");
@@ -740,6 +740,7 @@ var contactModel = {
                 }
             });
         } else {
+            contactModel.contactsDS.sync();
             everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
                 if (error !== null) {
                     mobileNotify("Error updating Chat Contact " + JSON.stringify(error));
@@ -750,7 +751,6 @@ var contactModel = {
                 }
             });
         }
-
 
     },
 
