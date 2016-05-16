@@ -140,6 +140,9 @@ var privateChannel = {
             msg.fromHistory = false;
         }
 
+        // Add the message to the archive
+        userDataChannel.addMessage(msg);
+
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
             var message = privateChannel.decryptMessage(msg);
@@ -164,8 +167,7 @@ var privateChannel = {
                 channelView.scrollToBottom();
             }
 
-            userDataChannel.addMessage(msg);
-            
+
             channelView.scrollToBottom();
 
             if (channelView.privacyMode) {
@@ -174,8 +176,7 @@ var privateChannel = {
 
         } else {
             // Is there a private channel for this sender?
-            channelModel.confirmPrivateChannel(msg.channelUUID);
-            channelModel.incrementUnreadCount(msg.channelUUID, 1, null);
+            channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
         }
 
     },
