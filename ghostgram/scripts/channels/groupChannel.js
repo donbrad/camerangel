@@ -75,7 +75,8 @@ var groupChannel = {
 
         channelView.messagesDS.add(message);
         channelModel.cacheGroupMessage(message);
-        channelModel.updateLastAccess(channelView._channelUUID, null);
+        channelModel.updateLastMessage(channelView._channelUUID, null);
+        
         if (message.data.photos !== undefined && message.data.photos.length > 0) {
             var selector = '#' + message.msgID + " img";
             var $img = $(selector), n = $img.length;

@@ -142,7 +142,8 @@ var privateChannel = {
 
         // Add the message to the archive
         userDataChannel.addMessage(msg);
-
+        channelModel.updateLastMessage(channelView._channelUUID, null);
+        
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
             var message = privateChannel.decryptMessage(msg);
@@ -271,6 +272,7 @@ var privateChannel = {
                     };
 
                     channelModel.updateLastAccess(parsedMsg.channelUUID, null);
+                    channelModel.updateLastMessage(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
                     // archive sedn message

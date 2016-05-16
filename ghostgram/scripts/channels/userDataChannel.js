@@ -39,13 +39,13 @@ var userDataChannel = {
                 userDataChannel.lastAccess = parseInt(ts);
 
                 // Was last access more than 24 hours ago -- if yes set it to 24 hours ago
-                if (userDataChannel.lastAccess < ggTime.lastDay()) {
-                    userDataChannel.lastAccess = ggTime.lastDay();
+                if (userDataChannel.lastAccess < ggTime.last72hours()) {
+                    userDataChannel.lastAccess = ggTime.last72Hours();
                     localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
                 }
             } else {
                 // No lastAccess stored so set it to 24 hours
-                userDataChannel.lastAccess = ggTime.lastDay();
+                userDataChannel.lastAccess = ggTime.last72Hours();
                 localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
             }
 

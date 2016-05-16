@@ -498,6 +498,29 @@ var channelModel = {
         }
     },
 
+    updateLastMessageTime : function (channelUUID, lastMessage) {
+        var channel = channelModel.findChannelModel(channelUUID);
+        if (channel === undefined) {
+            mobileNotify('updateLastMessage: unknown channel ' + channelUUID);
+        } else {
+            if (lastMessage === undefined || lastMessage === null) {
+                lastMessage = ggTime.currentTime();
+            }
+            channel.set('lastMessage', lastMessage);
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', lastAccess);
+
+        }
+    },
+
+    getLastMessageLast : function (channelUUID) {
+        var channel = channelModel.findChannelModel(channelUUID);
+        if (channel === undefined) {
+            mobileNotify('updateLastMessage: unknown channel ' + channelUUID);
+        } else {
+            return(channel.get('lastTime'));
+        }
+    },
+
     cacheGroupMessage : function (message) {
 
 
@@ -530,7 +553,7 @@ var channelModel = {
             channel.set('unreadCount',channel.get('unreadCount') + count);
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
-            channelModel.updateLastAccess(channelUUID, lastAccess);
+            channelModel.updateLastMessage(channelUUID, lastAccess);
 
         }
     },
@@ -550,7 +573,7 @@ var channelModel = {
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
-            channelModel.updateLastAccess(channelUUID, lastAccess);
+            channelModel.updateLastMessage(channelUUID, lastAccess);
 
         }
     },
@@ -833,6 +856,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
+        channel.set("lastMessage", addTime);
         channel.set("description", "Private: " + contactName);
         channel.set("channelUUID", contactUUID);
         channel.set("contactUUID", contactUUID);
@@ -936,6 +960,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
+        channel.set("lastMessage", addTime);
 
 
         if (channelMembers === undefined || channelMembers === null) {
@@ -1022,6 +1047,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
+        channel.set("lastMessage", addTime);
         channel.set("channelUUID", channelUUID);
 
         channel.set("ownerUUID", ownerUUID);
@@ -1100,6 +1126,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
+        channel.set("lastMessage", addTime);
         channel.set("channelUUID", channelUUID);
         channel.set("Id", channelUUID);
 
