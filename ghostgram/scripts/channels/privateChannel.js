@@ -202,7 +202,7 @@ var privateChannel = {
             encryptData = null;
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Private Chat: " + userModel._user.name;
+            var notificationString = "Message from: " + userModel._user.name;
             var message = {
                 type: 'privateMessage',
                 recipient: recipient,
@@ -222,7 +222,7 @@ var privateChannel = {
                 pn_gcm : {
                     data : {
                         title: notificationString,
-                        message: 'Private Message from ' + userModel._user.name,
+                        message: 'You have an new private message from ' + userModel._user.name,
                         target: '#channel?channelUUID=' + privateChannel.userId,
                         image: "icon",
                         channelUUID : privateChannel.userId,
