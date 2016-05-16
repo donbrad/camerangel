@@ -841,6 +841,8 @@ var channelModel = {
         channel.set("version", channelModel._version);
         channel.set("name", contactName);
         channel.set("isOwner", true);
+        channel.set('ownerUUID', userModel._user.userUUID);
+        channel.set('ownerName', userModel._user.name);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
         channel.set('isPrivatePlace', false);
@@ -865,9 +867,7 @@ var channelModel = {
 
         channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
-        if (callback !== undefined) {
-            callback(null, channel);
-        }
+       
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
@@ -882,7 +882,11 @@ var channelModel = {
         });
 
 
-        notificationModel.addNewPrivateChatNotification(channel.get('channelUUID'), channel.get('name'));
+        if (callback !== undefined) {
+            callback(null, channel);
+        }
+        
+        notificationModel.addNewPrivateChatNotification(contactUUID, contactName);
 
 
     },
