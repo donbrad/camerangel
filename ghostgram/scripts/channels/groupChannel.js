@@ -75,7 +75,7 @@ var groupChannel = {
 
         channelView.messagesDS.add(message);
         channelModel.cacheGroupMessage(message);
-        channelModel.updateLastMessage(channelView._channelUUID, null);
+        channelModel.updateLastMessageTime(channelView._channelUUID, null);
         
         if (message.data.photos !== undefined && message.data.photos.length > 0) {
             var selector = '#' + message.msgID + " img";

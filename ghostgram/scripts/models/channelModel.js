@@ -501,7 +501,7 @@ var channelModel = {
     updateLastMessageTime : function (channelUUID, lastMessage) {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
-            mobileNotify('updateLastMessage: unknown channel ' + channelUUID);
+            mobileNotify('updateLastMessageTime: unknown channel ' + channelUUID);
         } else {
             if (lastMessage === undefined || lastMessage === null) {
                 lastMessage = ggTime.currentTime();
@@ -512,10 +512,10 @@ var channelModel = {
         }
     },
 
-    getLastMessageLast : function (channelUUID) {
+    getLastMessageTime: function (channelUUID) {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
-            mobileNotify('updateLastMessage: unknown channel ' + channelUUID);
+            mobileNotify('getLastMessageTime: unknown channel ' + channelUUID);
         } else {
             return(channel.get('lastTime'));
         }
@@ -553,7 +553,7 @@ var channelModel = {
             channel.set('unreadCount',channel.get('unreadCount') + count);
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
-            channelModel.updateLastMessage(channelUUID, lastAccess);
+            channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
         }
     },
@@ -573,7 +573,7 @@ var channelModel = {
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
-            channelModel.updateLastMessage(channelUUID, lastAccess);
+            channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
         }
     },
