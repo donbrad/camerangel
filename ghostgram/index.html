@@ -3430,9 +3430,17 @@
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalChatPhotoView._activePhoto" data-init="modalChatPhotoView.onInit"  data-zoom="true">
 	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Memories</div>
 	<div class="photoViewBox">
+		<div data-role="scrollview"
+			 data-auto-bind="false"
+			 data-source="channelView.photosDS"
+			 data-template="modalChatPhoto-template"
+			 data-enable-pager="false">
+		</div>
+<!--
 		<div style="width: 100%; height: 90%;">
 			<img class="centerPhoto" id="modalChatPhotoViewImage" src="" width="100%" data-bind="attr: {src : photoUrl}" />
 		</div>
+-->
 	</div>
 	<div class="footer" data-role="footer">
 
@@ -3484,6 +3492,9 @@
 	</div>
 </div>
 
+<script id="modalChatPhoto-template" type="text/x-kendo-template">
+	<div style="width: 100%; height: 100%; background-image: #=imageUrl#;"></div>
+</script>
 
 <div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit" data-zoom="true">
 	<div data-role="header">
