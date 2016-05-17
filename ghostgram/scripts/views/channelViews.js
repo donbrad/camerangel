@@ -1392,26 +1392,22 @@ var channelView = {
             for (var i=0; i<photos.length; i++) {
                 var photo = photos[i];
 
-                var photoItem = channelView.photos[photo.photoUUID];
-
-                if (photoItem === undefined) {
-                    // Photo isn't in the channel cache
+                if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
+                    var photoItem = channelView.photos[photo.photoUUID];
                     var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
-
+                    if (photoItem === undefined) {
+                        // Photo isn't in the channel cache
+                          channelView.photos[photo.photoUUID] = photo;
+                    }
                     if (channelPhoto === null) {
                         // Photos isn't in the the channel photo data source
-                        if (photoItem.photoUUID !== undefined && photoItem.photoUUID !== null) {
-                            channelModel.addPhoto(channelView._channelUUID, photoItem.photoUUID, photoItem.imageUrl, photoItem.ownerUUID, photoItem.ownerName);
-                            channelView.photos[photo.photoUUID] = photo;
-                        }
-                    }
+                        channelModel.addPhoto(channelView._channelUUID, photo.photoUUID, photo.imageUrl, photo.ownerUUID, photo.ownerName);
 
+                    }
 
                 }
             }
         }
-
-
     },
 
     updateTimeStamps: function () {
