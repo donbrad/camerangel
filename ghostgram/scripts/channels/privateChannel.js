@@ -167,19 +167,16 @@ var privateChannel = {
             } else {
                 channelView.scrollToBottom();
             }
-
-
+            
             channelView.scrollToBottom();
 
             if (channelView.privacyMode) {
                 kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(6000).play();
             }
-
         } else {
             // Is there a private channel for this sender?
             channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
         }
-
     },
 
 

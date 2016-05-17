@@ -601,13 +601,13 @@ var channelModel = {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
            var contact = contactModel.findContactByUUID(channelUUID);
-            if (contact !== undefined && contact.contactUUID !== undefined) {
+            if (contact !== undefined && contact.contactUUID !== undefined && !contact.isBlocked) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
             } else {
                 // No contact for this user yet.
+                var guid = uuid.v4();
                 mobileNotify("Finding member for new private chat...");
-                var contactUUID = uuid.v4();
-                contactModel.createChatContact(channelUUID, contactUUID, function (result) {
+                contactModel.createChatContact(channelUUID, guid, function (result) {
                     if (result !== null) {
                         mobileNotify("Adding private chat for " + result.name);
                         channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);
