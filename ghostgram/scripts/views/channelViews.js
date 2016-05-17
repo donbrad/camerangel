@@ -2113,11 +2113,13 @@ var channelView = {
         var photoId = null, shareId = null, url = null;
 
         shareId = message.id.replace('chatphoto_', '');
-        photoId = message.attributes['data-photoid'];
-        var photo = channelView.photos[photoId];
+        photoId = message.attributes['data-photoid'].value;
+        if (photoId !== undefined && photoId !== null) {
+            var photo = channelView.photos[photoId];
 
-        if (photo !== undefined)
-            url = photo.imageUrl;
+            if (photo !== undefined)
+                url = photo.imageUrl;
+        }
 
         return(url);
 
