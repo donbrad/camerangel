@@ -399,6 +399,10 @@ var homeView = {
 
             if (type === notificationModel._newPrivate) {
                 var channelId = notification.privateId;
+                if (channelId === undefined || channelId === null) {
+                    mobileNotify("Can't locate this chat...");
+                    return;
+                }
                 var checkChannel = channelModel.findChannelModel(channelId);
                 if (checkChannel === undefined || checkChannel === null) {
                     mobileNotify("Creating  : " + notification.title + "...");
