@@ -2110,9 +2110,16 @@ var channelView = {
 
     resolveChatPhoto : function (message) {
         // Resolve the photo in the chat: 1) is it uploaded yet? 2) is it recalled?
-        var photoId = null, shareId = null;
+        var photoId = null, shareId = null, url = null;
 
+        shareId = message.id.replace('chatphoto_', '');
+        photoId = message.attributes['data-photoid'];
+        var photo = channelView.photos[photoId];
 
+        if (photo !== undefined)
+            url = photo.imageUrl;
+
+        return(url);
 
     },
 
