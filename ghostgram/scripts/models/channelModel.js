@@ -845,6 +845,11 @@ var channelModel = {
             return;
         }
 
+        if (contactUUID === undefined) {
+            ggError("addPrivateChannel - contactUUID is undefined!");
+            return;
+        }
+
         var contactCheck = contactModel.findContact(contactUUID);
 
         if (contactCheck === undefined) {
@@ -1180,8 +1185,10 @@ var channelModel = {
         var channel = channelModel.findPrivateChannel(channelUUID);
 
         if (channel !== undefined) {
-            //deleteParseObject('channels', 'channelUUID', channelUUID);
             channelModel.channelsDS.remove(channel);
+            everlive.deleteOne(channelModel._cloudClass, channel.Id, function(){
+                
+            });
         }
     },
 
