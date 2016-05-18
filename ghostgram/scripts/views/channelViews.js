@@ -1968,6 +1968,8 @@ var channelView = {
         for (var i=0; i< channelView.messagePhotos.length; i++) {
             var photoId = channelView.messagePhotos[i].photoUUID, shareId = channelView.messagePhotos[i].shareUUID;
 
+            // Set the src attribute to null
+            $('#chatphoto_' + shareId).attr('src', null);
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
                 channelView.messageAddSharedPhoto(photoId, shareId, !channelView.messageLock);
@@ -2137,7 +2139,7 @@ var channelView = {
             if (thumbUrl === null) {
                 thumbUrl = "images/missing-image.jpg";
             }
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src="' + displayUrl + '"' +
+            var imgUrl = '<img class="photo-chat" alt="Processing Photo...." data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src=""' +
                +  'onload="this.onload=null; this.src=channelView.resolveChatPhoto(this);"' +  ' onerror="this.onerror = null; this.src=channelView.resolveChatPhoto(this);" />';
 
             $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
