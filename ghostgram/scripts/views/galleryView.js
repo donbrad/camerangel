@@ -644,9 +644,14 @@ var modalChatPhotoView = {
         modalChatPhotoView.updatePhotoStatus(photo);
     },
 
+    recallPhoto : function (e) {
+        
+    },
+    
 
     updatePhotoStatus : function (photo) {
-        if (photo.ownerId === userModel._user.userUUID) {
+        if (photo.ownerUUID === userModel._user.userUUID) {
+            $('#modalChatPhotoView-userhascopy').addClass('hidden');
             $("#modalChatPhotoRecipient").addClass('hidden');
             $("#modalChatPhotoSender").removeClass('hidden');
             if (photo.canCopy) {
@@ -663,6 +668,7 @@ var modalChatPhotoView = {
             }
 
         } else {
+            
             // If the user already has a copy of this photo -- hide all recipient options
             if (modalChatPhotoView._userHasCopy) {
                 $("#modalChatPhotoView-recipientlist").addClass('hidden');
@@ -777,7 +783,7 @@ var modalChatPhotoView = {
 
     closeModal : function () {
         $("#modalChatPhotoView").data("kendoMobileModalView").close();
-    },
+    }
 
 
 };
