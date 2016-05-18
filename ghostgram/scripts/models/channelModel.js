@@ -628,7 +628,8 @@ var channelModel = {
                 contactModel.createChatContact(channelUUID, guid, function (result) {
                     if (result !== null) {
                         mobileNotify("Adding private chat for " + result.name);
-                        channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);
+                        // This is a memberdirectory result so it's user data...
+                        channelModel.addPrivateChannel(result.userUUID, result.publicKey, result.name);
                     }
                 });
             }
