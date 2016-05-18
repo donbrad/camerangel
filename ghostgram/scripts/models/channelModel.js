@@ -153,6 +153,10 @@ var channelModel = {
 
 
         channelModel.channelsDS.fetch();
+        channelModel.photosDS.fetch();
+        channelModel.recalledPhotosDS.fetch();
+        channelModel.recalledMessagesDS.fetch();
+
         deviceModel.setAppState('hasChannels', true);
        /* deviceModel.isParseSyncComplete();*/
 
@@ -423,7 +427,7 @@ var channelModel = {
 
 
     addPhoto : function (channelUUID, photoId, photoUrl,  ownerId, ownerName, isPrivateChat) {
-        var photoObj = {channelUUID : channelUUID, photoId: photoId, photoUrl: photoUrl,  ownerId:  ownerId,  ownerName: ownerName,  isPrivateChat: isPrivateChat, timestamp: ggTime.currentTime()};
+        var photoObj = {Id: uuid.v4(), channelUUID : channelUUID, photoId: photoId, photoUrl: photoUrl,  ownerId:  ownerId,  ownerName: ownerName,  isPrivateChat: isPrivateChat, timestamp: ggTime.currentTime()};
 
         var channel = channelModel.findChannelModel(channelUUID);
 
@@ -433,6 +437,12 @@ var channelModel = {
         
         channelModel.photosDS.add(photoObj);
         channelModel.photosDS.sync();
+
+        everlive.createOne('channelPhotos', photoObj, function (error, data) {
+            if (error !== null) {
+                mobileNotify("Error creating Chat Shared Photo " + JSON.stringify(error));
+            } 
+        });
 
     },
 
