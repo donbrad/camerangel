@@ -1969,7 +1969,8 @@ var channelView = {
             var photoId = channelView.messagePhotos[i].photoUUID, shareId = channelView.messagePhotos[i].shareUUID;
 
             // Set the src attribute to null
-            $('#chatphoto_' + shareId).attr('src', null);
+           // $('#chatphoto_' + shareId).attr('src', null);
+            
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
                 channelView.messageAddSharedPhoto(photoId, shareId, !channelView.messageLock);
