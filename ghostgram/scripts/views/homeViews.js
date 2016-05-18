@@ -258,18 +258,18 @@ var homeView = {
             $('#checked-in-place').show();
         }
 
-        $(".home-headerBtn").kendoTouch({
+        $("#homeHeaderButton").kendoTouch({
 
             doubletap: function(e) {
                 userStatusView.openModal();
             },
             
             tap: function (e) {
-                $("#messageActionsSender").data("kendoMobileActionSheet").open();
+                $("#profilebuttonactionsheet").data("kendoMobileActionSheet").open();
             }
-
             
         });
+        
         /*
          $('#homeSearchQuery').clearSearch({
          callback: function() {

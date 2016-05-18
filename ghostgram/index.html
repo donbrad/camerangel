@@ -131,7 +131,7 @@
 <div data-role="layout" data-id="main" style="display:none;" >
     <div data-role="header">
         <div data-role="navbar">
-			<a data-role="button" data-align="left" class="home-headerBtn" >
+			<div data-align="left" class="home-headerBtn" id="homeHeaderButton">
 				<div class="user-status">
 					<div class="left">
 						<span class="home-status">
@@ -142,7 +142,7 @@
 					</div>
 					<div class="clearfix"></div>
 				</div>
-			</a>
+			</div>
 			<span data-role="view-title"></span>
             	<a data-role="button" data-align="right" class="user-settings homeToggleSearch" data-click="ux.toggleSearch">
                 	<img class="nav-search" src="images/icon-search.svg"/>
@@ -239,27 +239,8 @@
         </ul>
     </div>
 
-
-
 </div>
 
-<ul data-role="actionsheet" id="ProfileButtonActionSheet" data-popup='{"direction": "left"}'>
-	<li>
-		<a data-role="button"  data-click="go2Settings">Camera</a>
-	</li>
-	<li>
-		<a data-role="button"  data-click="go2Settings">Scanner</a>
-	</li>
-	<li>
-		<a data-role="button"  data-click="go2Settings">My Notes</a>
-	</li>
-	<li>
-		<a data-role="button"  data-click="go2Settings">Settings</a>
-	</li>
-	<li>
-		<a data-role="button"  data-click="homeSignout">Sign out</a>
-	</li>
-</ul>
 
 <div data-role="modalview" id="hotButtonModal" style="width: 95%; height: 100%; display: none;" data-title="Hot Buttons">
 		<ul data-role="listview"  style="text-align: center;" class="hotButtonList">
@@ -470,6 +451,24 @@
 			<p>Event action or update</p>
 		</div>
 	</li>
+	<ul data-role="actionsheet" id="ProfileButtonActionSheet" data-popup='{"direction": "left"}'>
+		<li>
+			<a data-role="button"  data-click="go2Settings">Camera</a>
+		</li>
+		<li>
+			<a data-role="button"  data-click="go2Settings">Scanner</a>
+		</li>
+		<li>
+			<a data-role="button"  data-click="go2Settings">My Notes</a>
+		</li>
+		<li>
+			<a data-role="button"  data-click="go2Settings">Settings</a>
+		</li>
+		<li>
+			<a data-role="button"  data-click="homeSignout">Sign out</a>
+		</li>
+	</ul>
+
 </script>
 
 <script type="text/x-kendo-template" id="notificationTemplate">
