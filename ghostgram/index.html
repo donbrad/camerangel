@@ -3428,7 +3428,7 @@
 </div>
 
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit"  data-zoom="true">
-	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Memories</div>
+	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Gallery</div>
 	<div class="photoViewBox">
 		<div id="modalChatPhotoView-scrollView"
 			 data-role="scrollview"
@@ -3489,7 +3489,7 @@
 
 <script id="modalChatPhoto-template" type="text/x-kendo-template">
 	<div style="width: 100%; height: 90%;">
-		<img class="centerPhoto"  src="#:imageUrl#" width="100%"  />
+		<img class="centerPhoto"  src="#:data.imageUrl#" width="100%"  />
 	</div>
 </script>
 
