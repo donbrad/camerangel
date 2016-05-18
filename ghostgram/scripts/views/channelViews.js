@@ -1438,21 +1438,46 @@ var channelView = {
     },
 
     // find photo offer in the list of photo offers
-    findPhotoOffer : function (photoId) {
+    findPhoto : function (photoId) {
 
-        var dataSource = channelView.photoOffersDS;
+        var dataSource = channelView.photoDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
         dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
         var view = dataSource.view();
-        var offer = view[0];
+        var photo = view[0];
         dataSource.filter(cacheFilter);
 
-        return(offer);
+        return(photo);
 
     },
+
+    // return the index of the photo in the datasource
+    // -- required to set the page for gallery / scrollview
+    getPhotoIndex : function (photoId) {
+
+        var index = -1;
+        var dataSource = channelView.photoDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
+        var view = dataSource.view();
+        var photo = view[0];
+        dataSource.filter(cacheFilter);
+
+        if (photo !== undefined) {
+            index = dataSource.indexOf(photo);
+        }
+        
+        return(index);
+
+    },
+
+
 
     mapPhotoUrl : function (msgID, photo) {
 
@@ -2250,7 +2275,8 @@ var channelView = {
                     var photoObj = photoList[i];
 
                     if (photoObj.photoUUID === photoId) {
-                        modalChatPhotoView.openModal(photoObj);
+                        var galleryMode = true;
+                        modalChatPhotoView.openModal(photoObj, galleryMode);
                         return;
                     }
                 }

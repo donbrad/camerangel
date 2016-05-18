@@ -626,6 +626,8 @@ var modalChatPhotoView = {
     _dummyDescription : '',
     _dummyTagsString : '',
     _userHasCopy: false,
+    _galleryMode: false,
+    _currentPhotoPage : 0,
     _activePhoto : new kendo.data.ObservableObject(),
 
     onInit: function(e){
@@ -633,6 +635,15 @@ var modalChatPhotoView = {
 
 
     },
+
+    // Need to update Ux when the user scrolls to a new photo
+    changePhoto : function (e) {
+        var page = e.page, photo = e.data;
+
+        modalChatPhotoView._currentPhotoPage = page;
+        modalChatPhotoView.updatePhotoStatus(photo);
+    },
+
 
     updatePhotoStatus : function (photo) {
         if (photo.ownerId === userModel._user.userUUID) {
@@ -704,21 +715,30 @@ var modalChatPhotoView = {
         _preventDefault(e);
     },
 
-     openModal : function (photo) {
+     openModal : function (photo, galleryMode) {
 
-        modalChatPhotoView._photo = photo;
-        var url = photo.thumbnailUrl;
-        if (photo.imageUrl !== null)
-            url = photo.imageUrl;
+         modalChatPhotoView._galleryMode = galleryMode;
 
-         $.ajax({
-             url:url,
-             error:
-                 function(){
-                    mobileNotify("Sender has deleted this photo...");
+         if (galleryMode) {
+
+             modalChatPhotoView._currentPhotoPage = channelView.getPhotoIndex(photo.photoId);
+             $("#modalChatPhotoView").data("kendoMobileModalView").open();
+             $("#modalChatPhotoView-scrollView").data("kendoMobileScrollView").scrollTo(modalChatPhotoView._currentPhotoPage);
+
+         } else {
+
+
+             modalChatPhotoView._photo = photo;
+             var url = photo.thumbnailUrl;
+             if (photo.imageUrl !== null)
+                 url = photo.imageUrl;
+
+             $.ajax({
+                 url: url,
+                 error: function () {
+                     mobileNotify("This Photo isn't available...");
                  },
-             success:
-                 function(){
+                 success: function () {
                      modalChatPhotoView._photoUrl = url;
                      modalChatPhotoView._activePhoto.set('photoUrl', url);
                      modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
@@ -741,7 +761,8 @@ var modalChatPhotoView = {
 
                      $("#modalChatPhotoView").data("kendoMobileModalView").open();
                  }
-         });
+             });
+         }
 
     },
 

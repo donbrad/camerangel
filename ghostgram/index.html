@@ -3430,10 +3430,12 @@
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalChatPhotoView._activePhoto" data-init="modalChatPhotoView.onInit"  data-zoom="true">
 	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Memories</div>
 	<div class="photoViewBox">
-		<div data-role="scrollview"
+		<div id="modalChatPhotoView-scrollView"
+			 data-role="scrollview"
 			 data-auto-bind="false"
 			 data-source="channelView.photosDS"
 			 data-template="modalChatPhoto-template"
+			 data-change="modalChatPhotoView.changePhoto"
 			 data-enable-pager="false">
 		</div>
 
