@@ -618,7 +618,7 @@ var channelModel = {
     confirmPrivateChannel: function (channelUUID) {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
-           var contact = contactModel.findContactByUUID(channelUUID);
+           var contact = contactModel.findContact(channelUUID);   // ChannelUUID is same as contactUUID
             if (contact !== undefined && contact.contactUUID !== undefined && !contact.isBlocked) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
             } else {
