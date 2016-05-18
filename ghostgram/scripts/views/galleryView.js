@@ -638,9 +638,10 @@ var modalChatPhotoView = {
 
     // Need to update Ux when the user scrolls to a new photo
     changePhoto : function (e) {
-        var page = e.page, photo = e.data;
+        var page = e.page, photo = null;
 
         modalChatPhotoView._currentPhotoPage = page;
+        photo = channelView.photosDS.at(page);
         modalChatPhotoView.updatePhotoStatus(photo);
     },
 
@@ -650,6 +651,9 @@ var modalChatPhotoView = {
     
 
     updatePhotoStatus : function (photo) {
+        if (photo === undefined) {
+            return;
+        }
         if (photo.ownerUUID === userModel._user.userUUID) {
             $('#modalChatPhotoView-userhascopy').addClass('hidden');
             $("#modalChatPhotoRecipient").addClass('hidden');
