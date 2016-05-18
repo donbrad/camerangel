@@ -1440,7 +1440,7 @@ var channelView = {
     // find photo offer in the list of photo offers
     findPhoto : function (photoId) {
 
-        var dataSource = channelView.photoDS;
+        var dataSource = channelView.photosDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -1459,7 +1459,7 @@ var channelView = {
     getPhotoIndex : function (photoId) {
 
         var index = -1;
-        var dataSource = channelView.photoDS;
+        var dataSource = channelView.photosDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
