@@ -727,7 +727,10 @@ var modalChatPhotoView = {
 
          if (galleryMode) {
 
-             modalChatPhotoView._currentPhotoPage = channelView.getPhotoIndex(photoId);
+             var index = channelView.getPhotoIndex(photoId);
+             if (index < 0) 
+                 index = 0;
+             modalChatPhotoView._currentPhotoPage = index;
              $("#modalChatPhotoView").data("kendoMobileModalView").open();
              $("#modalChatPhotoView-scrollView").data("kendoMobileScrollView").scrollTo(modalChatPhotoView._currentPhotoPage);
 
