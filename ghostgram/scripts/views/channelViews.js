@@ -2147,6 +2147,9 @@ var channelView = {
 
         shareId = message.id.replace('chatphoto_', '');
         photoId = message.attributes['data-photoid'].value;
+        if (channelModel.isPhotoRecalled(photoId, channelView._channelUUID)) {
+            return (null);
+        }
         if (photoId !== undefined && photoId !== null) {
             var photo = channelView.photos[photoId];
 

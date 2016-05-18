@@ -141,6 +141,7 @@ var sharedPhotoModel = {
 
     recallPhoto: function (photoId, channelId) {
 
+        
     },
 
     unsharePhoto : function (photoId) {

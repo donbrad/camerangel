@@ -646,7 +646,10 @@ var modalChatPhotoView = {
     },
 
     recallPhoto : function (e) {
+        var photo = channelView.photosDS.at(modalChatPhotoView._currentPhotoPage);
         
+        appDataChannel.recallPhoto(channelView._channelUUID, photo.photoUUID, userModel._user.userUUID, channelView.isPrivateChat);
+        sharedPhotoModel.recallPhoto(photo.photoUUID, channelView._channelUUID);
     },
     
 

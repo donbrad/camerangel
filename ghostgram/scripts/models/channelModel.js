@@ -397,8 +397,9 @@ var channelModel = {
         return(channel);
     },
 
-    isPhotoRecalled : function (photoId) {
-        var message = channelModel.queryRecalledPhoto({ field: "photoId", operator: "eq", value: photoId });
+    isPhotoRecalled : function (photoId, channelId) {
+        var message = channelModel.queryRecalledPhoto([{ field: "photoUUID", operator: "eq", value: photoId },
+            { field: "channelUUID", operator: "eq", value: photoId }]);
 
         if (message === undefined) {
             //msgID not found in recall list
@@ -410,7 +411,7 @@ var channelModel = {
     },
 
     addPhotoRecall : function (channelUUID, photoId, ownerId, isPrivateChat) {
-        var recallObj = {channelUUID : channelUUID, photoId: photoId, ownerId:  ownerId,  isPrivateChat: isPrivateChat};
+        var recallObj = {channelUUID : channelUUID, photoId: photoId, ownerId:  ownerId,  isPrivateChat: isPrivateChat, timestamp: ggTime.currentTime()};
 
         var channel = channelModel.findChannelModel(channelUUID);
 
@@ -420,8 +421,15 @@ var channelModel = {
         channelModel.recalledPhotosDS.add(recallObj);
         channelModel.recalledPhotosDS.sync();
         if (channelUUID === channelView._channelUUID) {
+
            // Todo -- need to decide how to handle recall in active channel, could force refresh
         }
+
+        everlive.createOne('recalledPhotos', recallObj, function (error, data) {
+            if (error !== null) {
+                mobileNotify("Error creating Chat Recall Photo " + JSON.stringify(error));
+            }
+        });
 
     },
 
@@ -441,7 +449,7 @@ var channelModel = {
         everlive.createOne('channelPhotos', photoObj, function (error, data) {
             if (error !== null) {
                 mobileNotify("Error creating Chat Shared Photo " + JSON.stringify(error));
-            } 
+            }
         });
 
     },
