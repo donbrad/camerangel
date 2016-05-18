@@ -960,7 +960,7 @@ var channelView = {
 
     findPhotoById : function (photoID) {
 
-        return(channelView.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
+        return(channelView.queryPhoto({ field: "photoUUID", operator: "eq", value: photoId }));
     },
     
     onInit: function (e) {
@@ -1447,7 +1447,7 @@ var channelView = {
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
-        dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
+        dataSource.filter({ field: "photoUUID", operator: "eq", value: photoId });
         var view = dataSource.view();
         var photo = view[0];
         dataSource.filter(cacheFilter);
@@ -1466,7 +1466,7 @@ var channelView = {
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
-        dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
+        dataSource.filter({ field: "photoUUID", operator: "eq", value: photoId });
         var view = dataSource.view();
         var photo = view[0];
         dataSource.filter(cacheFilter);
