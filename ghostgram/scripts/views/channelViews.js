@@ -1060,6 +1060,7 @@ var channelView = {
         channelView.newMembers = [];
         channelView.memberList = [];
         channelView.membersDS.data([]);
+        channelView.photosDS.data([]);
     },
 
    loadImagesThenScroll : function () {
