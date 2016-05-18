@@ -257,7 +257,7 @@ var homeView = {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
             $('#checked-in-place').show();
         }
-
+/*
         $("#homeHeaderButton").kendoTouch({
 
             doubletap: function(e) {
@@ -268,8 +268,8 @@ var homeView = {
                 $("#profilebuttonactionsheet").data("kendoMobileActionSheet").open();
             }
             
-        });
-        
+        });*/
+
         /*
          $('#homeSearchQuery').clearSearch({
          callback: function() {
