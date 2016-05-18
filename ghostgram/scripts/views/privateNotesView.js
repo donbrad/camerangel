@@ -939,7 +939,7 @@ var privateNotesView = {
                     var photoObj = photoList[i];
 
                     if (photoObj.photoId === photoId) {
-                        modalChatPhotoView.openModal(photoObj);
+                        modalChatPhotoView.openModal(photoObj, false);
                         return;
                     }
                 }

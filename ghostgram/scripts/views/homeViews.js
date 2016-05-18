@@ -390,15 +390,19 @@ var homeView = {
         // todo Don - refactor notifications to have a single action
         _preventDefault(e);
 
-        var uuid = e.sender.element[0].attributes['data-uuid'].value;
+        var noteuuid = e.sender.element[0].attributes['data-uuid'].value;
 
-        var notification = notificationModel.findNotificationModel(uuid);
+        var notification = notificationModel.findNotificationModel(noteuuid);
 
         if (notification !== undefined) {
             var type = notification.type, href = notification.href;
 
             if (type === notificationModel._newPrivate) {
                 var channelId = notification.privateId;
+                if (channelId === undefined || channelId === null) {
+                    mobileNotify("Can't locate this chat...");
+                    return;
+                }
                 var checkChannel = channelModel.findChannelModel(channelId);
                 if (checkChannel === undefined || checkChannel === null) {
                     mobileNotify("Creating  : " + notification.title + "...");
@@ -408,8 +412,7 @@ var homeView = {
                         APP.kendo.navigate(href);
                     } else {
                         mobileNotify("Finding member for new private chat...");
-                        var contactUUID = uuid.v4();
-                        contactModel.createChatContact(channelId, contactUUID, function (result) {
+                        contactModel.createContact(channelId,  function (result) {
                             if (result !== null) {
                                 mobileNotify("Adding private chat for " + result.name);
                                 channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);

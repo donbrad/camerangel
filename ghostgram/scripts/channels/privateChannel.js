@@ -140,6 +140,10 @@ var privateChannel = {
             msg.fromHistory = false;
         }
 
+        // Add the message to the archive
+        userDataChannel.addMessage(msg);
+        channelModel.updateLastMessageTime(channelView._channelUUID, null);
+        
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
             var message = privateChannel.decryptMessage(msg);
@@ -163,19 +167,16 @@ var privateChannel = {
             } else {
                 channelView.scrollToBottom();
             }
-            userDataChannel.addMessage(msg);
             
             channelView.scrollToBottom();
 
             if (channelView.privacyMode) {
                 kendo.fx($("#"+message.msgID)).fade("out").endValue(0.05).duration(6000).play();
             }
-
         } else {
-            
+            // Is there a private channel for this sender?
             channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
         }
-
     },
 
 
@@ -199,7 +200,7 @@ var privateChannel = {
             encryptData = null;
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Private Chat: " + userModel._user.name;
+            var notificationString = "Message from: " + userModel._user.name;
             var message = {
                 type: 'privateMessage',
                 recipient: recipient,
@@ -219,7 +220,7 @@ var privateChannel = {
                 pn_gcm : {
                     data : {
                         title: notificationString,
-                        message: 'Private Message from ' + userModel._user.name,
+                        message: 'You have an new private message from ' + userModel._user.name,
                         target: '#channel?channelUUID=' + privateChannel.userId,
                         image: "icon",
                         channelUUID : privateChannel.userId,
@@ -268,6 +269,7 @@ var privateChannel = {
                     };
 
                     channelModel.updateLastAccess(parsedMsg.channelUUID, null);
+                    channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
                     // archive sedn message

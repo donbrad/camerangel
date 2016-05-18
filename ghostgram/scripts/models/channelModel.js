@@ -153,6 +153,10 @@ var channelModel = {
 
 
         channelModel.channelsDS.fetch();
+        channelModel.photosDS.fetch();
+        channelModel.recalledPhotosDS.fetch();
+        channelModel.recalledMessagesDS.fetch();
+
         deviceModel.setAppState('hasChannels', true);
        /* deviceModel.isParseSyncComplete();*/
 
@@ -423,7 +427,7 @@ var channelModel = {
 
 
     addPhoto : function (channelUUID, photoId, photoUrl,  ownerId, ownerName, isPrivateChat) {
-        var photoObj = {channelUUID : channelUUID, photoId: photoId, photoUrl: photoUrl,  ownerId:  ownerId,  ownerName: ownerName,  isPrivateChat: isPrivateChat, timestamp: ggTime.currentTime()};
+        var photoObj = {Id: uuid.v4(), channelUUID : channelUUID, photoId: photoId, photoUrl: photoUrl,  ownerId:  ownerId,  ownerName: ownerName,  isPrivateChat: isPrivateChat, timestamp: ggTime.currentTime()};
 
         var channel = channelModel.findChannelModel(channelUUID);
 
@@ -433,6 +437,12 @@ var channelModel = {
         
         channelModel.photosDS.add(photoObj);
         channelModel.photosDS.sync();
+
+        everlive.createOne('channelPhotos', photoObj, function (error, data) {
+            if (error !== null) {
+                mobileNotify("Error creating Chat Shared Photo " + JSON.stringify(error));
+            } 
+        });
 
     },
 
@@ -498,6 +508,29 @@ var channelModel = {
         }
     },
 
+    updateLastMessageTime : function (channelUUID, lastMessage) {
+        var channel = channelModel.findChannelModel(channelUUID);
+        if (channel === undefined) {
+            mobileNotify('updateLastMessageTime: unknown channel ' + channelUUID);
+        } else {
+            if (lastMessage === undefined || lastMessage === null) {
+                lastMessage = ggTime.currentTime();
+            }
+            channel.set('lastMessage', lastMessage);
+            //updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', lastAccess);
+
+        }
+    },
+
+    getLastMessageTime: function (channelUUID) {
+        var channel = channelModel.findChannelModel(channelUUID);
+        if (channel === undefined) {
+            mobileNotify('getLastMessageTime: unknown channel ' + channelUUID);
+        } else {
+            return(channel.get('lastTime'));
+        }
+    },
+
     cacheGroupMessage : function (message) {
 
 
@@ -530,7 +563,7 @@ var channelModel = {
             channel.set('unreadCount',channel.get('unreadCount') + count);
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
-            channelModel.updateLastAccess(channelUUID, lastAccess);
+            channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
         }
     },
@@ -559,7 +592,7 @@ var channelModel = {
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
-            channelModel.updateLastAccess(channelUUID, lastAccess);
+            channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
         }
     },
@@ -587,13 +620,13 @@ var channelModel = {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
            var contact = contactModel.findContactByUUID(channelUUID);
-            if (contact !== undefined && contact.contactUUID !== undefined) {
+            if (contact !== undefined && contact.contactUUID !== undefined && !contact.isBlocked) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
             } else {
                 // No contact for this user yet.
+                var guid = uuid.v4();
                 mobileNotify("Finding member for new private chat...");
-                var contactUUID = uuid.v4();
-                contactModel.createChatContact(channelUUID, contactUUID, function (result) {
+                contactModel.createChatContact(channelUUID, guid, function (result) {
                     if (result !== null) {
                         mobileNotify("Adding private chat for " + result.name);
                         channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);
@@ -840,6 +873,8 @@ var channelModel = {
         channel.set("version", channelModel._version);
         channel.set("name", contactName);
         channel.set("isOwner", true);
+        channel.set('ownerUUID', userModel._user.userUUID);
+        channel.set('ownerName', userModel._user.name);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
         channel.set('isPrivatePlace', false);
@@ -855,6 +890,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
+        channel.set("lastMessage", addTime);
         channel.set("description", "Private: " + contactName);
         channel.set("channelUUID", contactUUID);
         channel.set("contactUUID", contactUUID);
@@ -863,9 +899,7 @@ var channelModel = {
 
         channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
-        if (callback !== undefined) {
-            callback(null, channel);
-        }
+       
 
         everlive.createOne(channelModel._cloudClass, channel, function (error, data){
             if (error !== null) {
@@ -880,7 +914,11 @@ var channelModel = {
         });
 
 
-        notificationModel.addNewPrivateChatNotification(channel.get('channelUUID'), channel.get('name'));
+        if (callback !== undefined) {
+            callback(null, channel);
+        }
+        
+        notificationModel.addNewPrivateChatNotification(contactUUID, contactName);
 
 
     },
@@ -891,17 +929,20 @@ var channelModel = {
         }
 
         for (var i=0; i<memberList.length; i++ ) {
-            var contactUUID = memberList[i];
-            var contact = contactModel.findContact(contactUUID);
-            if (contact === undefined) {
-                var contactId = uuid.v4();
-                contactModel.createChatContact(contactUUID, contactId, function (result){
-                    if (result === null) {
-                        ggError ("Error creating Chat contact ");
-                    }
-                })
-                
+            if (memberList[i] !== userModel._user.userUUID) {
+                var contactUUID = memberList[i];
+                var contact = contactModel.findContact(contactUUID);
+                if (contact === undefined) {
+                    var contactId = uuid.v4();
+                    contactModel.createChatContact(contactUUID, contactId, function (result){
+                        if (result === null) {
+                            ggError ("Error creating Chat contact ");
+                        }
+                    })
+
+                }
             }
+           
         }
 
 
@@ -955,6 +996,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
+        channel.set("lastMessage", addTime);
 
 
         if (channelMembers === undefined || channelMembers === null) {
@@ -1041,6 +1083,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
+        channel.set("lastMessage", addTime);
         channel.set("channelUUID", channelUUID);
 
         channel.set("ownerUUID", ownerUUID);
@@ -1119,6 +1162,7 @@ var channelModel = {
         channel.set("unreadCount", 0);
         channel.set("clearBefore", addTime);
         channel.set("lastAccess", addTime);
+        channel.set("lastMessage", addTime);
         channel.set("channelUUID", channelUUID);
         channel.set("Id", channelUUID);
 

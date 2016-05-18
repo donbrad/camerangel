@@ -625,6 +625,70 @@ var contactModel = {
 
     },
 
+    // Create a contact for private chat member that this user isn't connected to
+    // The contact is a valid member and callback executes with the contact is created with full information
+    // from the member directory
+    createContact : function (userId, callback) {
+
+        memberdirectory.findMemberByUUID(userId,  function (result) {
+            if (result !== null) {
+
+                var guid = uuid.v4();
+
+                var contact = new kendo.data.ObservableObject();
+
+
+                contact.set('version', contactModel._version);
+                contact.set('ggType', contactModel._ggClass);
+                contact.set("name", result.name);
+                contact.set("alias", result.alias);
+                contact.set('category', "member");
+                contact.set('phone', result.phone);
+                contact.set('email', result.email);
+                contact.set("address", result.address);
+                contact.set("group", null);
+                contact.set("priority", 0);
+                contact.set("isFavorite", false);
+                contact.set("isBlocked", false);
+                contact.set("isDeleted", false);
+                contact.set("Id", guid);
+                contact.set("uuid", guid);
+                contact.set("contactUUID", result.userUUID);
+                contact.set("contactPublcKey", result.publicKey);
+                contact.set("processing", true);
+
+                var url = contactModel.createIdenticon(guid);
+                contact.photo = null;
+                contact.identicon = url;
+
+                contactModel.contactsDS.add(contact);
+                contactModel.contactsDS.sync();
+
+                everlive.createOne(contactModel._cloudClass, contact, function (error, data) {
+                    if (error !== null) {
+                        mobileNotify("Error creating Chat Contact " + JSON.stringify(error));
+                    } else {
+
+                        contactModel._cleanDupContacts(contact.uuid);
+
+                    }
+                });
+                mobileNotify("Added New Member : " + result.name);
+
+                if (callback !== undefined) {
+                    callback(result);
+                }
+
+            } else {
+                ggError("Can't find member " + userId);
+                callback(null);
+            }
+
+        });
+
+    },
+    
+    
     // Create a contact for channel member that this user isn't connected to
     // The contact is a valid member and connected to the channel owner
     createChatContact : function (userId, guid, callback) {
@@ -639,7 +703,7 @@ var contactModel = {
             contact.set('version', contactModel._version);
             contact.set('ggType', contactModel._ggClass);
             contact.set("name", "New Member");
-            contact.set("alias", "new");
+            contact.set("alias", "New");
             contact.set('category', "member");
             contact.set('phone', "");
             contact.set('email', "");
@@ -693,7 +757,7 @@ var contactModel = {
 
     updateChatContact : function (guid, name, alias, contactUUID, contactPhone, contactEmail, contactKey) {
 
-
+        mobileNotify("Updating contact datae for : " + name);
         var contact = contactModel.findContact(contactUUID);
         var create = false;
 
@@ -703,8 +767,6 @@ var contactModel = {
             create = true;
         }
 
-        contact.set('version', contactModel._version);
-        contact.set('ggType', contactModel._ggClass);
         contact.set("name", name );
         contact.set("alias", alias);
         contact.set('category', "member");
@@ -713,6 +775,7 @@ var contactModel = {
         contact.set("priority", 0);
         contact.set("isFavorite", false);
         contact.set("isBlocked", false);
+        contact.set("isDeleted", false);
         contact.set("uuid", guid);
         var url = contactModel.createIdenticon(guid);
         contact.photo = null;
@@ -734,23 +797,16 @@ var contactModel = {
                 if (error !== null) {
                     mobileNotify("Error creating Chat Contact " + JSON.stringify(error));
                 } else {
-
                     contactModel._cleanDupContacts(contact.uuid);
-
                 }
             });
         } else {
             everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
                 if (error !== null) {
                     mobileNotify("Error updating Chat Contact " + JSON.stringify(error));
-                } else {
-
-                    contactModel._cleanDupContacts(contact.uuid);
-
                 }
             });
         }
-
 
     },
 

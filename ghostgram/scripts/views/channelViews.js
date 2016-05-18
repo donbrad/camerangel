@@ -1060,6 +1060,7 @@ var channelView = {
         channelView.newMembers = [];
         channelView.memberList = [];
         channelView.membersDS.data([]);
+        channelView.photosDS.data([]);
     },
 
    loadImagesThenScroll : function () {
@@ -1111,19 +1112,18 @@ var channelView = {
         }
     },
 
-    
-    showChannel : function () {
+    onShow : function (e) {
+        //_preventDefault(e);
+
         var name = '';
         ux.hideKeyboard();
 
 
-        /* if (window.navigator.simulator === undefined) {
-         cordova.plugins.Keyboard.disableScroll(true); // false to enable again
-         }
-         */
+       /* if (window.navigator.simulator === undefined) {
+            cordova.plugins.Keyboard.disableScroll(true); // false to enable again
+        }
+*/
 
-        var thisChannel = channelView._channel;
-        
         $("#messages-listview").data("kendoMobileListView").scroller().reset();
         channelView.topOffset = $("#messages-listview").data("kendoMobileListView").scroller().scrollTop;
         channelView._active = true;
@@ -1132,14 +1132,35 @@ var channelView = {
         // hide action btn
         ux.showActionBtn(false, "#channel");
 
+
+        var channelUUID = e.view.params.channelUUID;
+        // This isn't privateNote so handle as private or group channel
+        var thisChannel = channelModel.findChannelModel(channelUUID);
+        if (thisChannel === undefined || thisChannel === null) {
+            mobileNotify("Oops -- chat doesn't exist : " + channelUUID);
+            APP.kendo.navigate("#:back");
+            return;
+        }
+
         channelView.openEditor();
         channelView.toggleTitleTag();
+
+        if (e.view.params.returnview !== undefined){
+            channelView._returnview = unpackParameter(e.view.params.returnview);
+        } else {
+            channelView._returnview = null;
+        }
+
+        channelView._channelUUID = channelUUID;
 
         var thisUser = userModel._user;
 
         channelView.initDataSources();
         channelView.messageInit();
         channelView._initMessageTextArea();
+
+
+        channelView._channel = thisChannel;
 
         if (thisChannel.isPlace !== undefined && thisChannel.isPlace === true) {
             channelView.isPlaceChat = true;
@@ -1172,114 +1193,114 @@ var channelView = {
             channelView.setMessageLockIcon(channelView.messageLock);
 
 
-            $('#messagePresenceButton').hide();
+          $('#messagePresenceButton').hide();
 
 
-            var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
+          var userKey = thisUser.publicKey, privateKey = thisUser.privateKey, name = thisUser.name;
 
-            contactUUID = thisChannel.channelUUID;
+          contactUUID = thisChannel.channelUUID;
 
 
-            channelView.privateContactId = contactUUID;
-            var thisContact = contactModel.findContact(contactUUID);
-            if (thisContact === undefined) {
-                mobileNotify("ChannelView : creating Contact for Private Chat");
-                contactModel.createChatContact(contactUUID, uuid.v4(), function (result) {
-                    //Build the members datasource and quick access list
-                    channelView.buildMemberDS();
+          channelView.privateContactId = contactUUID;
+          var thisContact = contactModel.findContact(contactUUID);
+          if (thisContact === undefined) {
+              mobileNotify("ChannelView : creating Contact for Private Chat");
+              contactModel.createChatContact(contactUUID, uuid.v4(), function (result) {
+                  //Build the members datasource and quick access list
+                  channelView.buildMemberDS();
 
-                    // *** Private Channel ***
-                    var contactKey = thisChannel.contactKey;
-                    if (contactKey === undefined) {
+                  // *** Private Channel ***
+                  var contactKey = thisChannel.contactKey;
+                  if (contactKey === undefined) {
 
-                        contactKey = thisContact.publicKey;
-                        if (contactKey === undefined) {
-                            mobileNotify("No public key for " + thisChannel.name);
-                            return;
-                        }
-                    }
-                    // Update private Chat name using combination of contact's name and alias.
+                      contactKey = thisContact.publicKey;
+                      if (contactKey === undefined) {
+                          mobileNotify("No public key for " + thisChannel.name);
+                          return;
+                      }
+                  }
+                  // Update private Chat name using combination of contact's name and alias.
 
-                    name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
-                    $("#channelName").text(name);
-                    // Show contact img in header
+                  name =  ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
+                  $("#channelName").text(name);
+                  // Show contact img in header
 
-                    if (thisContact.identicon === undefined || thisContact.identicon === null) {
-                        thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
-                    }
+                  if (thisContact.identicon === undefined || thisContact.identicon === null) {
+                      thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
+                  }
 
-                    var photoUrl = thisContact.identicon;
-                    if (thisContact.photo !== null) {
-                        photoUrl = thisContact.photo;
-                    }
-                    $('#channelImage').attr('src', photoUrl).removeClass("hidden");
+                  var photoUrl = thisContact.identicon;
+                  if (thisContact.photo !== null) {
+                      photoUrl = thisContact.photo;
+                  }
+                  $('#channelImage').attr('src', photoUrl).removeClass("hidden");
 
                   privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
                   channelView.messagesDS.data([]);
 
 
-                    privateChannel.getMessageHistory(function (messages) {
+                  privateChannel.getMessageHistory(function (messages) {
 
-                        channelView.preprocessMessages(messages);
+                      channelView.preprocessMessages(messages);
 
-                        thisChannel.messagesArray = messages;
+                      thisChannel.messagesArray = messages;
 
-                        channelView.messagesDS.data(messages);
+                      channelView.messagesDS.data(messages);
 
-                        channelView.loadImagesThenScroll()
-                    });
+                      channelView.loadImagesThenScroll()
+                  });
 
-                })
+              })
 
-            } else {
-                channelView.privateContact = thisContact;
+          } else {
+              channelView.privateContact = thisContact;
 
-                //Build the members datasource and quick access list
-                channelView.buildMemberDS();
+              //Build the members datasource and quick access list
+              channelView.buildMemberDS();
 
-                // *** Private Channel ***
-                var contactKey = thisChannel.contactKey;
-                if (contactKey === undefined) {
+              // *** Private Channel ***
+              var contactKey = thisChannel.contactKey;
+              if (contactKey === undefined) {
 
-                    contactKey = thisContact.publicKey;
-                    if (contactKey === undefined) {
-                        mobileNotify("No public key for " + thisChannel.name);
-                        return;
-                    }
-                }
+                  contactKey = thisContact.publicKey;
+                  if (contactKey === undefined) {
+                      mobileNotify("No public key for " + thisChannel.name);
+                      return;
+                  }
+              }
 
-                // Update private Chat name using combination of contact's name and alias.
+              // Update private Chat name using combination of contact's name and alias.
 
-                name = ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
-                $("#channelName").text(name);
-                // Show contact img in header
+              name = ux.returnUXPrimaryName(thisContact.name, thisContact.alias);
+              $("#channelName").text(name);
+              // Show contact img in header
 
-                if (thisContact.identicon === undefined || thisContact.identicon === null) {
-                    thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
-                }
+              if (thisContact.identicon === undefined || thisContact.identicon === null) {
+                  thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
+              }
 
-                var photoUrl = thisContact.identicon;
-                if (thisContact.photo !== null) {
-                    photoUrl = thisContact.photo;
-                }
-                $('#channelImage').attr('src', photoUrl).removeClass("hidden");
+              var photoUrl = thisContact.identicon;
+              if (thisContact.photo !== null) {
+                  photoUrl = thisContact.photo;
+              }
+              $('#channelImage').attr('src', photoUrl).removeClass("hidden");
 
-                privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
-                channelView.messagesDS.data([]);
+              privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
+              channelView.messagesDS.data([]);
 
 
-                privateChannel.getMessageHistory(function (messages) {
+              privateChannel.getMessageHistory(function (messages) {
 
-                    channelView.preprocessMessages(messages);
+                  channelView.preprocessMessages(messages);
 
-                    thisChannel.messagesArray = messages;
+                  thisChannel.messagesArray = messages;
 
-                    channelView.messagesDS.data(messages);
+                  channelView.messagesDS.data(messages);
 
-                    channelView.loadImagesThenScroll()
-                });
+                  channelView.loadImagesThenScroll()
+              });
 
-            }
+          }
         } else {
 
             $("#channelName").text(name);
@@ -1341,51 +1362,6 @@ var channelView = {
         }
 
         channelView.updateTimer = setInterval(function(){ channelView.updateTimeStamps();}, 60000);
-        
-        
-    },
-    
-    
-    onShow : function (e) {
-        // Preliminary processing prior to showing the full channel
-        if (e.view.params.returnview !== undefined){
-            channelView._returnview = unpackParameter(e.view.params.returnview);
-        } else {
-            channelView._returnview = null;
-        }
-
-        var channelUUID = e.view.params.channelUUID;
-        // This isn't privateNote so handle as private or group channel
-        var thisChannel = channelModel.findChannelModel(channelUUID);
-        channelView._channelUUID = channelUUID;
-
-
-        if (thisChannel === undefined || thisChannel === null) {
-            mobileNotify("Confirming Chat information...");
-            channelView._channelUUID = null;
-            channelModel.confirmPrivateChannel(channelUUID, function (result) {
-                if (result !== null) {
-                    thisChannel = channelModel.findChannelModel(channelUUID);
-                    if (thisChannel !== undefined && thisChannel !== null) {
-                        channelView._channelUUID = channelUUID;
-                        channelView.showChannel();
-                    } else {
-                        ggError("Sorry, couldn't locate or create this Chat...");
-                        APP.kendo.navigate("#:back");
-                    }
-
-                } else {
-                    // Couldn't create a channel (either not a member or group channel that was deleted
-                    ggError("Sorry, couldn't locate or create this Chat...");
-                    APP.kendo.navigate("#:back");
-                }
-            })
-        }
-
-        
-        channelView._channel = thisChannel;
-        channelView.showChannel();
-
     },
 
     preprocessMessages : function (messages) {
@@ -1417,26 +1393,23 @@ var channelView = {
             for (var i=0; i<photos.length; i++) {
                 var photo = photos[i];
 
-                var photoItem = channelView.photos[photo.photoUUID];
-
-                if (photoItem === undefined) {
-                    // Photo isn't in the channel cache
+                if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
+                    var photoItem = channelView.photos[photo.photoUUID];
                     var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
-
+                    if (photoItem === undefined) {
+                        // Photo isn't in the channel cache
+                          channelView.photos[photo.photoUUID] = photo;
+                          channelView.photosDS.add(photo);
+                    }
                     if (channelPhoto === null) {
                         // Photos isn't in the the channel photo data source
-                        if (photoItem.photoUUID !== undefined && photoItem.photoUUID !== null) {
-                            channelModel.addPhoto(channelView._channelUUID, photoItem.photoUUID, photoItem.imageUrl, photoItem.ownerUUID, photoItem.ownerName);
-                            channelView.photos[photo.photoUUID] = photo;
-                        }
-                    }
+                        channelModel.addPhoto(channelView._channelUUID, photo.photoUUID, photo.imageUrl, photo.ownerUUID, photo.ownerName);
 
+                    }
 
                 }
             }
         }
-
-
     },
 
     updateTimeStamps: function () {
@@ -1467,21 +1440,46 @@ var channelView = {
     },
 
     // find photo offer in the list of photo offers
-    findPhotoOffer : function (photoId) {
+    findPhoto : function (photoId) {
 
-        var dataSource = channelView.photoOffersDS;
+        var dataSource = channelView.photosDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
         dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
         var view = dataSource.view();
-        var offer = view[0];
+        var photo = view[0];
         dataSource.filter(cacheFilter);
 
-        return(offer);
+        return(photo);
 
     },
+
+    // return the index of the photo in the datasource
+    // -- required to set the page for gallery / scrollview
+    getPhotoIndex : function (photoId) {
+
+        var index = -1;
+        var dataSource = channelView.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
+        var view = dataSource.view();
+        var photo = view[0];
+        dataSource.filter(cacheFilter);
+
+        if (photo !== undefined) {
+            index = dataSource.indexOf(photo);
+        }
+        
+        return(index);
+
+    },
+
+
 
     mapPhotoUrl : function (msgID, photo) {
 
@@ -1635,7 +1633,7 @@ var channelView = {
                     contact.isContact = false;
                     contact.uuid = uuid.v4();
                     contact.contactUUID = contactIndex;
-                    contact.alias = "new";
+                    contact.alias = "New";
                     contact.name = "New contact...";
                     contact.identicon = contactModel.createIdenticon(contact.uuid);
                     contact.photo =  contact.identicon;
@@ -1888,7 +1886,7 @@ var channelView = {
         
         var photoObj  = {
             uuid: shareId,
-            photoUUID: photo.photoId,
+            photoUUID: photoId,
             channelUUID: channelView._channelUUID,
             thumbnailUrl: photo.thumbnailUrl,
             imageUrl: photo.imageUrl,
@@ -1899,7 +1897,10 @@ var channelView = {
         
         // Add the photo to the current message
         channelView.activeMessage.photos.push(photoObj);
-        
+
+        //Push the photo to the channel photo cache
+        channelView.photos[photoObj.photoUUID] = photoObj;
+
         // Push the photo to the channel photo store
         channelModel.addPhoto(photoObj.channelUUID, photoObj.photoUUID, photoObj.imageUrl, photoObj.ownerUUID, photoObj.ownerName);
         
@@ -1996,6 +1997,9 @@ var channelView = {
 
         for (var i=0; i< channelView.messagePhotos.length; i++) {
             var photoId = channelView.messagePhotos[i].photoUUID, shareId = channelView.messagePhotos[i].shareUUID;
+
+            // Set the src attribute to null
+           $('#chatphoto_' + shareId).attr('src', null);
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
@@ -2139,9 +2143,18 @@ var channelView = {
 
     resolveChatPhoto : function (message) {
         // Resolve the photo in the chat: 1) is it uploaded yet? 2) is it recalled?
-        var photoId = null, shareId = null;
+        var photoId = null, shareId = null, url = null;
 
+        shareId = message.id.replace('chatphoto_', '');
+        photoId = message.attributes['data-photoid'].value;
+        if (photoId !== undefined && photoId !== null) {
+            var photo = channelView.photos[photoId];
 
+            if (photo !== undefined)
+                url = photo.imageUrl;
+        }
+
+        return(url);
 
     },
 
@@ -2157,7 +2170,7 @@ var channelView = {
             if (thumbUrl === null) {
                 thumbUrl = "images/missing-image.jpg";
             }
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src="' + displayUrl + '"' +
+            var imgUrl = '<img class="photo-chat" alt="Processing Photo...." data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src="'+ displayUrl + '"' +
                +  'onload="this.onload=null; this.src=channelView.resolveChatPhoto(this);"' +  ' onerror="this.onerror = null; this.src=channelView.resolveChatPhoto(this);" />';
 
             $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
@@ -2264,7 +2277,8 @@ var channelView = {
                     var photoObj = photoList[i];
 
                     if (photoObj.photoUUID === photoId) {
-                        modalChatPhotoView.openModal(photoObj);
+                        var galleryMode = true;
+                        modalChatPhotoView.openModal(photoObj, galleryMode);
                         return;
                     }
                 }
