@@ -131,7 +131,7 @@
 <div data-role="layout" data-id="main" style="display:none;" >
     <div data-role="header">
         <div data-role="navbar">
-			<a data-role="button" data-click="userStatusView.openModal" data-align="left" class="home-headerBtn" data-click-on="down">
+			<a data-role="button" data-align="left" class="home-headerBtn" >
 				<div class="user-status">
 					<div class="left">
 						<span class="home-status">
@@ -238,17 +238,28 @@
             </li>
         </ul>
     </div>
-	
-	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
-	    <li>
-	    	<a data-role="button" id="menuSettings" data-click="go2Settings">View Settings</a>
-	    </li>
-		<li>
-			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
-		</li>
-     </ul>
+
+
 
 </div>
+
+<ul data-role="actionsheet" id="ProfileButtonActionSheet" data-popup='{"direction": "left"}'>
+	<li>
+		<a data-role="button"  data-click="go2Settings">Camera</a>
+	</li>
+	<li>
+		<a data-role="button"  data-click="go2Settings">Scanner</a>
+	</li>
+	<li>
+		<a data-role="button"  data-click="go2Settings">My Notes</a>
+	</li>
+	<li>
+		<a data-role="button"  data-click="go2Settings">Settings</a>
+	</li>
+	<li>
+		<a data-role="button"  data-click="homeSignout">Sign out</a>
+	</li>
+</ul>
 
 <div data-role="modalview" id="hotButtonModal" style="width: 95%; height: 100%; display: none;" data-title="Hot Buttons">
 		<ul data-role="listview"  style="text-align: center;" class="hotButtonList">

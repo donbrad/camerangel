@@ -257,6 +257,19 @@ var homeView = {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
             $('#checked-in-place').show();
         }
+
+        $(".home-headerBtn").kendoTouch({
+
+            doubletap: function(e) {
+                userStatusView.openModal();
+            },
+            
+            tap: function (e) {
+                $("#messageActionsSender").data("kendoMobileActionSheet").open();
+            }
+
+            
+        });
         /*
          $('#homeSearchQuery').clearSearch({
          callback: function() {
