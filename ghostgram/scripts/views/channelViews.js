@@ -1870,7 +1870,10 @@ var channelView = {
         
         // Add the photo to the current message
         channelView.activeMessage.photos.push(photoObj);
-        
+
+        //Push the photo to the channel photo cache
+        channelView.photos[photoObj.photoUUID] = photoObj;
+
         // Push the photo to the channel photo store
         channelModel.addPhoto(photoObj.channelUUID, photoObj.photoUUID, photoObj.imageUrl, photoObj.ownerUUID, photoObj.ownerName);
         
@@ -1970,7 +1973,7 @@ var channelView = {
 
             // Set the src attribute to null
            // $('#chatphoto_' + shareId).attr('src', null);
-            
+
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
                 channelView.messageAddSharedPhoto(photoId, shareId, !channelView.messageLock);
