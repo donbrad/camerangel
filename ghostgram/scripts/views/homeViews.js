@@ -258,17 +258,17 @@ var homeView = {
             $('#checked-in-place').show();
         }
 /*
-        $("#homeHeaderButton").kendoTouch({
+         $("#homeHeaderButton").kendoTouch({
 
-            doubletap: function(e) {
-                userStatusView.openModal();
-            },
-            
-            tap: function (e) {
-                $("#profilebuttonactionsheet").data("kendoMobileActionSheet").open();
-            }
-            
-        });*/
+         doubletap: function(e) {
+         userStatusView.openModal();
+         },
+
+         tap: function (e) {
+         $("#profilebuttonactionsheet").data("kendoMobileActionSheet").open();
+         }
+
+         });*/
 
         /*
          $('#homeSearchQuery').clearSearch({
