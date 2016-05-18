@@ -1398,6 +1398,7 @@ var channelView = {
                     if (photoItem === undefined) {
                         // Photo isn't in the channel cache
                           channelView.photos[photo.photoUUID] = photo;
+                          channelView.photosDS.add(photo);
                     }
                     if (channelPhoto === null) {
                         // Photos isn't in the the channel photo data source
@@ -1884,7 +1885,7 @@ var channelView = {
         
         var photoObj  = {
             uuid: shareId,
-            photoUUID: photo.photoId,
+            photoUUID: photoId,
             channelUUID: channelView._channelUUID,
             thumbnailUrl: photo.thumbnailUrl,
             imageUrl: photo.imageUrl,
