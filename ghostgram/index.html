@@ -3429,7 +3429,12 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit">
+<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit" data-use-native-scrolling="true" data-zoom="true">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Chat Photo Gallery</span>
+		</div>
+	</div>
 	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Gallery</div>
 	<div style="width: 100%; height: 90%; min-height: 200px;">
 		<div id="modalChatPhotoView-scrollView"
