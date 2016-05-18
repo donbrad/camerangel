@@ -717,11 +717,17 @@ var modalChatPhotoView = {
 
      openModal : function (photo, galleryMode) {
 
+         var photoId = photo.photoId;
+         if (photoId === undefined) {
+             photoId = photo.photoUUID;
+         }
+
+
          modalChatPhotoView._galleryMode = galleryMode;
 
          if (galleryMode) {
 
-             modalChatPhotoView._currentPhotoPage = channelView.getPhotoIndex(photo.photoId);
+             modalChatPhotoView._currentPhotoPage = channelView.getPhotoIndex(photoId);
              $("#modalChatPhotoView").data("kendoMobileModalView").open();
              $("#modalChatPhotoView-scrollView").data("kendoMobileScrollView").scrollTo(modalChatPhotoView._currentPhotoPage);
 
@@ -741,9 +747,9 @@ var modalChatPhotoView = {
                  success: function () {
                      modalChatPhotoView._photoUrl = url;
                      modalChatPhotoView._activePhoto.set('photoUrl', url);
-                     modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
+                     modalChatPhotoView._activePhoto.set('photoId', photoId);
 
-                     var photoObj = photoModel.findPhotoById(photo.photoId);
+                     var photoObj = photoModel.findPhotoById(photoId);
 
                      modalChatPhotoView._userHasCopy = false;
                      $('#modalChatPhotoView-userhascopy').addClass('hidden');
