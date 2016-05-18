@@ -1972,7 +1972,7 @@ var channelView = {
             var photoId = channelView.messagePhotos[i].photoUUID, shareId = channelView.messagePhotos[i].shareUUID;
 
             // Set the src attribute to null
-           // $('#chatphoto_' + shareId).attr('src', null);
+           $('#chatphoto_' + shareId).attr('src', null);
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
@@ -2143,7 +2143,7 @@ var channelView = {
             if (thumbUrl === null) {
                 thumbUrl = "images/missing-image.jpg";
             }
-            var imgUrl = '<img class="photo-chat" alt="Processing Photo...." data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src=""' +
+            var imgUrl = '<img class="photo-chat" alt="Processing Photo...." data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src="'+ displayUrl + '"' +
                +  'onload="this.onload=null; this.src=channelView.resolveChatPhoto(this);"' +  ' onerror="this.onerror = null; this.src=channelView.resolveChatPhoto(this);" />';
 
             $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
