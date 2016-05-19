@@ -395,9 +395,7 @@ var devicePhoto = {
                 var filename = photouuid.replace(/-/g,'');
 
                 window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
-
-
-                    var localUrl = fileEntry.url(), nativeUrl =  fileEntry.nativeURL;
+                    var localUrl = fileEntry.toURL(), nativeUrl =  fileEntry.nativeURL;
 
 
                     var uri = nativeUrl;
