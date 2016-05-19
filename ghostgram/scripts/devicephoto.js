@@ -567,7 +567,7 @@ var devicePhoto = {
                         // onSuccess code
                         imageFile = result;
 
-                        imageFile = imageFile.replace('file://', '');
+                        //imageFile = imageFile.replace('file://', '');
 
                         var uri = imageFile;
                         if (device.platform === 'iOS') {
