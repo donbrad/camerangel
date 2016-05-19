@@ -88,7 +88,7 @@ var devicePhoto = {
 
         var degrees = parseFloat(dataArray[0]);
         var minutes = parseFloat(dataArray[1]) / 60;
-        var seconds = parseFloat(dataArray[2]) / 3600;
+        var seconds = parseFloat(dataArray[2]) / 36000000;
 
         var decimal = degrees + minutes + seconds;
 
