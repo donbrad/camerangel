@@ -379,6 +379,13 @@ var devicePhoto = {
                     imageUrl = imageUrl.replace('file://', '');
                     gpsObj = devicePhoto.processGPS(metaObj.GPS);
                 } else {
+
+                    window.FilePath.resolveNativePath(imageFile, function (result) {
+                        // onSuccess code
+                        imageFile = result;
+                    });
+
+                    
                     if (imageFile.substring(0,21)=="content://com.android") {
                         var photo_split=imageFile.split("%3A");
                         imageFile="content://media/external/images/media/"+photo_split[1];
@@ -394,6 +401,10 @@ var devicePhoto = {
                 // convert uuid into valid file name;
                 var filename = photouuid.replace(/-/g,'');
 
+
+
+
+
                 window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
                     var localUrl = fileEntry.toURL(), nativeUrl =  fileEntry.nativeURL;
 
@@ -403,16 +414,7 @@ var devicePhoto = {
 
                         nativeUrl = nativeUrl.replace('file://', '');
                     }
-                    devicePhoto.currentPhoto.photoId = photouuid;
-                    devicePhoto.currentPhoto.filename = filename;
-                    devicePhoto.currentPhoto.deviceUrl = nativeUrl;
-                    devicePhoto.currentPhoto.imageUrl = nativeUrl;
-                    devicePhoto.currentPhoto.cloudUrl = null;
-                    devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
-                    devicePhoto.currentPhoto.lat = gpsObj.lat;
-                    devicePhoto.currentPhoto.lng = gpsObj.lng;
-                    devicePhoto.currentPhoto.alt = gpsObj.alt;
-                    devicePhoto.currentPhoto.timeStamp = gpsObj.timestamp;
+
 
 
                     mobileNotify("Processing Photo...");
@@ -438,14 +440,7 @@ var devicePhoto = {
 
 
 
-                    photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, isProfilePhoto,  function (error, photo) {
-                        if (error !== null) {
-                            mobileNotify("Photo Save Error : " + JSON.stringify(error));
-                        }
-                        if (displayCallback !== undefined) {
-                            displayCallback(photouuid, nativeUrl);
-                        }
-                    });
+
 
                     window.ImageResizer.resize(scaleOptions,
                         function (image) {
@@ -454,6 +449,26 @@ var devicePhoto = {
                             /*  if (device.platform === 'iOS') {
                              thumbNail = image.replace('file://', '');
                              }*/
+
+                            devicePhoto.currentPhoto.photoId = photouuid;
+                            devicePhoto.currentPhoto.filename = filename;
+                            devicePhoto.currentPhoto.deviceUrl = image;
+                            devicePhoto.currentPhoto.imageUrl = image;
+                            devicePhoto.currentPhoto.cloudUrl = null;
+                            devicePhoto.currentPhoto.thumbnailUrl = image;
+                            devicePhoto.currentPhoto.lat = gpsObj.lat;
+                            devicePhoto.currentPhoto.lng = gpsObj.lng;
+                            devicePhoto.currentPhoto.alt = gpsObj.alt;
+                            devicePhoto.currentPhoto.timeStamp = gpsObj.timestamp;
+
+                            photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, isProfilePhoto,  function (error, photo) {
+                                if (error !== null) {
+                                    mobileNotify("Photo Save Error : " + JSON.stringify(error));
+                                }
+                                if (displayCallback !== undefined) {
+                                    displayCallback(photouuid, nativeUrl);
+                                }
+                            });
 
                             devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
                                 var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
