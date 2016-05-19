@@ -189,7 +189,7 @@ var devicePhoto = {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
-                            var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
+                            var localUrl = newFileEntry.toURL(), nativeUrl =  newFileEntry.nativeURL;
 
                             var uri = nativeUrl;
                             if (device.platform === 'iOS') {
@@ -419,7 +419,7 @@ var devicePhoto = {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
-                            var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
+                            var localUrl = newFileEntry.toURL(), nativeUrl =  newFileEntry.nativeURL;
 
 
                             var uri = nativeUrl;

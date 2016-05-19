@@ -960,7 +960,7 @@ var channelView = {
 
     findPhotoById : function (photoID) {
 
-        return(channelView.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
+        return(channelView.queryPhoto({ field: "photoUUID", operator: "eq", value: photoId }));
     },
     
     onInit: function (e) {
@@ -1393,6 +1393,10 @@ var channelView = {
             for (var i=0; i<photos.length; i++) {
                 var photo = photos[i];
 
+                var url = photo.imageUrl;
+
+                if (url.indexOf('http'))
+
                 if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
                     var photoItem = channelView.photos[photo.photoUUID];
                     var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
@@ -1447,7 +1451,7 @@ var channelView = {
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
-        dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
+        dataSource.filter({ field: "photoUUID", operator: "eq", value: photoId });
         var view = dataSource.view();
         var photo = view[0];
         dataSource.filter(cacheFilter);
@@ -1466,7 +1470,7 @@ var channelView = {
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
-        dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
+        dataSource.filter({ field: "photoUUID", operator: "eq", value: photoId });
         var view = dataSource.view();
         var photo = view[0];
         dataSource.filter(cacheFilter);
@@ -2147,6 +2151,10 @@ var channelView = {
 
         shareId = message.id.replace('chatphoto_', '');
         photoId = message.attributes['data-photoid'].value;
+        if (channelModel.isPhotoRecalled(photoId, channelView._channelUUID)) {
+            return (null);
+        }
+
         if (photoId !== undefined && photoId !== null) {
             var photo = channelView.photos[photoId];
 

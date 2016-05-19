@@ -24,7 +24,19 @@ var homeView = {
             }, 30 /*, onError */);
         }
     },
-    
+
+    goHome: function () {
+        APP.kendo.navigate("#home");
+    },
+
+    goSettings: function () {
+        APP.kendo.navigate("#settings");
+    },
+
+    goMyNotes: function () {
+        APP.kendo.navigate("#privateNotes");
+    },
+
     disableHotButtons : function () {
         shake.stopWatch();
     },
@@ -257,6 +269,19 @@ var homeView = {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
             $('#checked-in-place').show();
         }
+/*
+         $("#homeHeaderButton").kendoTouch({
+
+         doubletap: function(e) {
+         userStatusView.openModal();
+         },
+
+         tap: function (e) {
+         $("#profilebuttonactionsheet").data("kendoMobileActionSheet").open();
+         }
+
+         });*/
+
         /*
          $('#homeSearchQuery').clearSearch({
          callback: function() {
@@ -695,6 +720,27 @@ var userStatusView = {
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null  // Current channel Id for offers
              // Optional preview callback
+        );
+    },
+
+    scanner : function (e) {
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                mobileNotify("We got a barcode\n" +
+                    "Result: " + result.text + "\n" +
+                    "Format: " + result.format + "\n" +
+                    "Cancelled: " + result.cancelled);
+            },
+            function (error) {
+                mobileNotify("Scanning failed: " + error);
+            },
+            {
+                "preferFrontCamera" : true, // iOS and Android
+                "showFlipCameraButton" : true, // iOS and Android
+                "prompt" : "Place a barcode inside the scan area", // supported on Android only
+                "formats" : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
+                "orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
+            }
         );
     },
 
