@@ -399,7 +399,9 @@ var devicePhoto = {
                     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
-                        fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
+                        var dataDir = cordova.file.getDataDirectory();
+
+                        fileEntry.moveTo(dataDir, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
                             var localUrl = newFileEntry.url(), nativeUrl =  newFileEntry.nativeURL;
 
 
