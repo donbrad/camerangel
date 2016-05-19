@@ -140,7 +140,7 @@ var devicePhoto = {
                 if (gpsObj.lngRef === 'W') {
                     gpsObj.lng = -gpsObj.lng;
                 }
-                gpsObj.alt = parseFloat(gpsData.gpsAltitude);
+                gpsObj.alt = parseFloat(gpsData.gpsAltitude) / 1000;
                 gpsObj.timestamp = gpsData.gpsDateStamp + " " + gpsData.gpsTimeStamp;
             }
             return(gpsObj);
