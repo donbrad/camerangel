@@ -701,7 +701,7 @@ var photoModel = {
        
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
-        photoModel.photosDS.sync();
+
         
         if (callback !== undefined) {
             callback(null, photo);
@@ -729,6 +729,7 @@ var photoModel = {
                     }
 
                     photoList[0].id = data.Id;
+                    photoModel.photosDS.sync();
                 }
 
 
