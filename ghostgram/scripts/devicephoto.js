@@ -335,9 +335,15 @@ var devicePhoto = {
 */
 
                             navigator.camera.cleanup(function(){}, function(){});
-                        }, function(){});
-                    }, function(){});
-                }, function(){});
+                        }, function(error){
+                            console.log(JSON.stringify(error));
+                        });
+                    }, function(error){
+                        console.log(JSON.stringify(error));
+                    });
+                }, function(error){
+                    console.log(JSON.stringify(error));
+                });
 
 
 
