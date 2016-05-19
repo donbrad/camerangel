@@ -197,7 +197,7 @@ var devicePhoto = {
 
                 // Create a local copy of the
                 window.resolveLocalFileSystemURL(imageObj.filename, function fileEntrySuccess(fileEntry) {
-                    window.requestFileSystem(cordova.file.dataDirectory, 0, function directoryEntrySuccess(directoryEntry) {
+                    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
@@ -309,7 +309,7 @@ var devicePhoto = {
                                     });
                                 }
                             });
-
+                            
                             navigator.camera.cleanup(function(){}, function(){});
                         }, function(error){
                             console.log(JSON.stringify(error));
@@ -396,7 +396,7 @@ var devicePhoto = {
 
                 window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
 
-                    window.requestFileSystem(cordova.file.dataDirectory, 0, function directoryEntrySuccess(directoryEntry) {
+                    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
