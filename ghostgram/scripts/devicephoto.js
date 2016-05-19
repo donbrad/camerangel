@@ -417,6 +417,15 @@ var devicePhoto = {
                     imageUrl = imageUrl.replace('file://', '');
                     gpsObj = devicePhoto.processGPS(metaObj.GPS);
                 } else {
+
+                    window.FilePath.resolveNativePath(imageFile, function(result) {
+                        // onSuccess code
+                        imageFile = 'file://' + result;
+
+                    }, function (error) {
+                       console.log("Android file path error " + JSON.stringify(error));
+                    });
+                
                    /* if (imageFile.substring(0,21)=="content://com.android") {
                         var photo_split=imageFile.split("%3A");
                         imageFile="content://media/external/images/media/"+photo_split[1];
