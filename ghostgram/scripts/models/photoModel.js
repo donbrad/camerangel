@@ -48,7 +48,7 @@ var photoModel = {
 
 
       
-        photoModel.deletedPhotosDS = new kendo.data.DataSource({  // this is the gallery datasource
+        photoModel.deletedPhotosDS = new kendo.data.DataSource({
             // offlineStorage: "photos",
             type: 'everlive',
             transport: {
@@ -597,6 +597,8 @@ var photoModel = {
                             photoModel.photosDS.remove(photoList[i]);
                         }
                     }
+                } else {
+
                 }
 
             }
@@ -721,7 +723,12 @@ var photoModel = {
                             photoModel.photosDS.remove(photoList[i]);
                         }
                     }
+                } else if (photoList.length === 1) {
+                    if (photoList[0].Id === undefined) {
+                        photoList[0].Id = data.Id;
+                    }
                 }
+
 
             }
         });
