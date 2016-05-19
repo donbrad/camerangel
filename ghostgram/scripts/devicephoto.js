@@ -569,13 +569,11 @@ var devicePhoto = {
 
                         imageFile = imageFile.replace('file://', '');
 
-                        var uri = nativeUrl;
+                        var uri = imageFile;
                         if (device.platform === 'iOS') {
 
-                            nativeUrl = nativeUrl.replace('file://', '');
+                            imageFile = imageFile.replace('file://', '');
                         }
-
-
 
                         mobileNotify("Processing Photo...");
                         /*  if (device.platform === 'iOS') {
@@ -597,9 +595,6 @@ var devicePhoto = {
 
                             isProfilePhoto = true;
                         }
-
-
-
 
 
                         window.ImageResizer.resize(scaleOptions,
