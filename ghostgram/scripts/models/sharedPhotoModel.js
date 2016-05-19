@@ -46,6 +46,7 @@ var sharedPhotoModel = {
         
         share.set('version', sharedPhotoModel._version);
         share.set('ggType', sharedPhotoModel._ggClass);
+        share.set('Id', shareuuid);
         share.set('uuid', shareuuid);
         share.set('photoUUID', photoUUID);
         share.set('channelUUID', channelUUID);
@@ -69,9 +70,7 @@ var sharedPhotoModel = {
             share.set('thumbnailUrl', imageUrl.replace('upload//', 'upload//c_scale,h_512,w_512//')); 
             share.set('isUploaded', true);
         }
-
-
-      
+        
 
         if (canCopy === undefined) {
             canCopy = false;

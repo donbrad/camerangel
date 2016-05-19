@@ -1393,6 +1393,10 @@ var channelView = {
             for (var i=0; i<photos.length; i++) {
                 var photo = photos[i];
 
+                var url = photo.imageUrl;
+
+                if (url.indexOf('http'))
+
                 if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
                     var photoItem = channelView.photos[photo.photoUUID];
                     var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
@@ -2150,6 +2154,7 @@ var channelView = {
         if (channelModel.isPhotoRecalled(photoId, channelView._channelUUID)) {
             return (null);
         }
+
         if (photoId !== undefined && photoId !== null) {
             var photo = channelView.photos[photoId];
 
