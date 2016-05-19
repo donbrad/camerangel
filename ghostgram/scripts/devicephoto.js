@@ -83,6 +83,18 @@ var devicePhoto = {
         });
     },
 
+    processAndroidDatum : function (datum) {
+        var dataArray = datum.split(',');
+
+        var degrees = parseFloat(dataArray[0]);
+        var minutes = parseFloat(dataArray[1]);
+        var seconds = parseFloat(dataArray[2]);
+
+        var decimal = degrees + minutes/60 + seconds/(60*60);
+
+        return decimal;
+
+    },
 
     processGPS : function (gpsData) {
         var gpsObj = {
@@ -118,17 +130,17 @@ var devicePhoto = {
             // Assume android for now...
             if (gpsData.gpsLatitude !== null) {
                 gpsObj.hasData = true;
-                gpsObj.lat = gpsData.gpsLatitude;
+                gpsObj.lat = devicePhoto.processAndroidDatum(gpsData.gpsLatitude);
                 gpsObj.latRef = gpsData.gpsLatitudeRef;
                 if (gpsObj.latRef === 'S') {
                     gpsObj.lat = -gpsObj.lat;
                 }
-                gpsObj.lng = gpsData.gpsLongitude;
+                gpsObj.lng = devicePhoto.processAndroidDatum(gpsData.gpsLongitude);
                 gpsObj.lngRef = gpsData.gpsLongitudeRef;
                 if (gpsObj.lngRef === 'W') {
                     gpsObj.lng = -gpsObj.lng;
                 }
-                gpsObj.alt = gpsData.gpsAltitude;
+                gpsObj.alt = parseFloat(gpsData.gpsAltitude);
                 gpsObj.timestamp = gpsData.gpsDateStamp + " " + gpsData.gpsTimeStamp;
             }
             return(gpsObj);
