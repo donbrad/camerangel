@@ -566,6 +566,9 @@ var devicePhoto = {
                     window.FilePath.resolveNativePath(imageFile, function(result) {
                         // onSuccess code
                         imageFile = result;
+
+                        imageFile = imageFile.replace('file://', '');
+
                         window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
 
                             window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
@@ -713,9 +716,7 @@ var devicePhoto = {
                     gpsObj =  devicePhoto.processGPS(metaObj);
                 }
 
-            /*    if (device.platform === 'Android') {
-                  imageUrl = imageData.replace('content://', '');
-                 }*/
+
 
 
 
