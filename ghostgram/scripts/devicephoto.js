@@ -564,7 +564,7 @@ var devicePhoto = {
                 } else {
                     gpsObj =  devicePhoto.processGPS(metaObj);
                     if (imageUrl.substring(0,21)=="content://com.android") {
-                        var photo_split=imageURI.split("%3A");
+                        var photo_split=imageUrl.split("%3A");
                         imageUrl="content://media/external/images/media/"+photo_split[1];
                     }
                     window.FilePath.resolveNativePath(imageFile, function(result) {
