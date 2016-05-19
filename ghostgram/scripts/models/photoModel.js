@@ -553,7 +553,6 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
-        photo.set('Id', photouuid);
         photo.set('photoId', photouuid);
         photo.set('uuid', photouuid);
         photo.set('deviceUrl', url);
@@ -594,7 +593,7 @@ var photoModel = {
                     var length = photoList.length;
 
                     for (var i=0; i<length; i++) {
-                        if (photoList[i].Id === undefined) {
+                        if (photoList[i].id === undefined) {
                             photoModel.photosDS.remove(photoList[i]);
                         }
                     }
@@ -720,16 +719,15 @@ var photoModel = {
                     var length = photoList.length;
 
                     for (var i=0; i<length; i++) {
-                        if (photoList[i].Id === undefined) {
+                        if (photoList[i].id === undefined) {
                             photoModel.photosDS.remove(photoList[i]);
                         }
                     }
                 } else if (photoList.length === 1) {
-                    if (photoList[0].Id === undefined) {
-                        photoList[0].Id = data.Id;
+                    if (photoList[0].id === undefined) {
+                        photoList[0].id = data.dd;
                     }
 
-                    photoList[0].id = data.Id;
                     photoModel.photosDS.sync();
                 }
 
@@ -741,9 +739,7 @@ var photoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(photoModel._cloudClass);
-        if (photoObj.Id === undefined) {
-            photoObj.Id = photoObj.id;
-        }
+
         data.updateSingle(photoObj, function (data) {
             if (data.result === 0) {
                 ggError("Unable to update Cloud Photo : " + photoObj.photoId);
@@ -805,9 +801,9 @@ var photoModel = {
         
         photoModel.photosDS.remove(photo);
         photoModel.photosDS.sync();
-        var Id = photo.Id;
-        if (Id !== undefined){
-            everlive.deleteOne(photoModel._cloudClass,  Id, function (error, data) {
+        var id = photo.id;
+        if (id !== undefined){
+            everlive.deleteOne(photoModel._cloudClass,  id, function (error, data) {
                if (error !== null) {
                    ggError("Photo Cloud Delete Error : " + JSON.stringify(error));
                }
