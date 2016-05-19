@@ -309,7 +309,7 @@ var devicePhoto = {
                                     });
                                 }
                             });
-                            
+
                             navigator.camera.cleanup(function(){}, function(){});
                         }, function(error){
                             console.log(JSON.stringify(error));
@@ -400,7 +400,7 @@ var devicePhoto = {
                         var uniqueNewFilename = "photo_" + filename + ".jpg";
 
                         fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
-                            var localUrl = newFileEntry.fullPath, nativeUrl =  newFileEntry.nativeURL;
+                            var localUrl = newFileEntry.url(), nativeUrl =  newFileEntry.nativeURL;
 
 
                             var uri = nativeUrl;
