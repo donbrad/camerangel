@@ -168,8 +168,9 @@ var photoModel = {
                     photoObj.set('cloudUrl', photoData.url);
                     photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                     photoObj.cloudinaryPublicId = photoData.public_id;
-                   // photoModel.updateCloud(photoObj);
+                   //photoModel.updateCloud(photoObj);
                     photoModel.syncLocal();
+                    everlive.syncCloud();
                     
                 }
             });
