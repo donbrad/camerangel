@@ -563,13 +563,17 @@ var devicePhoto = {
 
                 } else {
                     gpsObj =  devicePhoto.processGPS(metaObj);
+                    if (imageUrl.substring(0,21)=="content://com.android") {
+                        var photo_split=imageURI.split("%3A");
+                        imageUrl="content://media/external/images/media/"+photo_split[1];
+                    }
                     window.FilePath.resolveNativePath(imageFile, function(result) {
                         // onSuccess code
                         imageFile = result;
 
                         //imageFile = imageFile.replace('file://', '');
 
-                        var uri = imageFile;
+                        var uri = imageUrl;
                         if (device.platform === 'iOS') {
 
                             imageFile = imageFile.replace('file://', '');
