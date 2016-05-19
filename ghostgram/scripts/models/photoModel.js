@@ -727,6 +727,8 @@ var photoModel = {
                     if (photoList[0].Id === undefined) {
                         photoList[0].Id = data.Id;
                     }
+
+                    photoList[0].id = data.Id;
                 }
 
 
