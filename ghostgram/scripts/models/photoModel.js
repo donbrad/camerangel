@@ -740,6 +740,9 @@ var photoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(photoModel._cloudClass);
+        if (photoObj.Id === undefined) {
+            photoObj.Id = photoObj.id;
+        }
         data.updateSingle(photoObj, function (data) {
             if (data.result === 0) {
                 ggError("Unable to update Cloud Photo : " + photoObj.photoId);
@@ -818,6 +821,15 @@ var photoModel = {
         for (var i=0; i<photoArray.length; i++) {
             this.deletePhoto(photoArray[i].photoId);
         }
+    },
+
+
+    isCloudUrl : function (url) {
+        if (url.indexOf("cloudinary") === -1) {
+            return false;
+        }
+
+        return true;
     }
 
 };
