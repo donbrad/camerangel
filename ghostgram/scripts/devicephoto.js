@@ -398,10 +398,10 @@ var devicePhoto = {
                     imageUrl = imageUrl.replace('file://', '');
                     gpsObj = devicePhoto.processGPS(metaObj.GPS);
                 } else {
-                    if (imageFile.substring(0,21)=="content://com.android") {
+                   /* if (imageFile.substring(0,21)=="content://com.android") {
                         var photo_split=imageFile.split("%3A");
                         imageFile="content://media/external/images/media/"+photo_split[1];
-                    }
+                    }*/
                     //imageFile = imageFile.replace('content://', '');
                     gpsObj =  devicePhoto.processGPS(metaObj);
                 }
