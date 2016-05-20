@@ -39,13 +39,13 @@ var userDataChannel = {
                 userDataChannel.lastAccess = parseInt(ts);
 
                 // Was last access more than 24 hours ago -- if yes set it to 24 hours ago
-                if (userDataChannel.lastAccess < ggTime.lastDay()) {
-                    userDataChannel.lastAccess = ggTime.lastDay();
+                if (userDataChannel.lastAccess < ggTime.last72Hours()) {
+                    userDataChannel.lastAccess = ggTime.last72Hours();
                     localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
                 }
             } else {
                 // No lastAccess stored so set it to 24 hours
-                userDataChannel.lastAccess = ggTime.lastDay();
+                userDataChannel.lastAccess = ggTime.last72Hours();
                 localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
             }
 
@@ -204,8 +204,6 @@ var userDataChannel = {
               
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    
-
                     var msg  =  messages[i];
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
                         
@@ -214,6 +212,7 @@ var userDataChannel = {
 
                     }
                 }
+                
                 userDataChannel.messagesDS.sync();
                 userDataChannel.updateTimeStamp();
                 /*   channelKeys = Object.keys(channelList);

@@ -37,7 +37,7 @@ var photoModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "timestamp",
@@ -48,7 +48,7 @@ var photoModel = {
 
 
       
-        photoModel.deletedPhotosDS = new kendo.data.DataSource({  // this is the gallery datasource
+        photoModel.deletedPhotosDS = new kendo.data.DataSource({
             // offlineStorage: "photos",
             type: 'everlive',
             transport: {
@@ -56,7 +56,7 @@ var photoModel = {
                  dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "timestamp",
@@ -168,8 +168,9 @@ var photoModel = {
                     photoObj.set('cloudUrl', photoData.url);
                     photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
                     photoObj.cloudinaryPublicId = photoData.public_id;
-                    photoModel.updateCloud(photoObj);
+                   //photoModel.updateCloud(photoObj);
                     photoModel.syncLocal();
+                    everlive.syncCloud();
                     
                 }
             });
@@ -552,7 +553,6 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
-        photo.set('Id', photouuid);
         photo.set('photoId', photouuid);
         photo.set('uuid', photouuid);
         photo.set('deviceUrl', url);
@@ -593,10 +593,12 @@ var photoModel = {
                     var length = photoList.length;
 
                     for (var i=0; i<length; i++) {
-                        if (photoList[i].Id === undefined) {
+                        if (photoList[i].id === undefined) {
                             photoModel.photosDS.remove(photoList[i]);
                         }
                     }
+                } else {
+
                 }
 
             }
@@ -614,7 +616,6 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
-        photo.set('Id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
@@ -700,7 +701,7 @@ var photoModel = {
        
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
-        photoModel.photosDS.sync();
+
         
         if (callback !== undefined) {
             callback(null, photo);
@@ -718,11 +719,18 @@ var photoModel = {
                     var length = photoList.length;
 
                     for (var i=0; i<length; i++) {
-                        if (photoList[i].Id === undefined) {
+                        if (photoList[i].id === undefined) {
                             photoModel.photosDS.remove(photoList[i]);
                         }
                     }
+                } else if (photoList.length === 1) {
+                    if (photoList[0].id === undefined) {
+                        photoList[0].id = data.dd;
+                    }
+
+                    photoModel.photosDS.sync();
                 }
+
 
             }
         });
@@ -731,6 +739,7 @@ var photoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(photoModel._cloudClass);
+
         data.updateSingle(photoObj, function (data) {
             if (data.result === 0) {
                 ggError("Unable to update Cloud Photo : " + photoObj.photoId);
@@ -792,9 +801,9 @@ var photoModel = {
         
         photoModel.photosDS.remove(photo);
         photoModel.photosDS.sync();
-        var Id = photo.Id;
-        if (Id !== undefined){
-            everlive.deleteOne(photoModel._cloudClass,  Id, function (error, data) {
+        var id = photo.id;
+        if (id !== undefined){
+            everlive.deleteOne(photoModel._cloudClass,  id, function (error, data) {
                if (error !== null) {
                    ggError("Photo Cloud Delete Error : " + JSON.stringify(error));
                }
@@ -809,6 +818,15 @@ var photoModel = {
         for (var i=0; i<photoArray.length; i++) {
             this.deletePhoto(photoArray[i].photoId);
         }
+    },
+
+
+    isCloudUrl : function (url) {
+        if (url.indexOf("cloudinary") === -1) {
+            return false;
+        }
+
+        return true;
     }
 
 };

@@ -247,6 +247,11 @@ var appDataChannel = {
                     appDataChannel.processRecallMessage(m.channelUUID, m.messageId, m.ownerId, m.isPrivateChat);
             } break;
 
+            case 'recallPhoto' : {
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                    appDataChannel.processRecallPhoto(m.channelUUID, m.photoId, m.ownerId, m.isPrivateChat);
+            } break;
+
             //  { type: 'eventAccept',  }
             case 'eventAccept' : {
                 if (m.version === appDataChannel._version )
@@ -344,7 +349,7 @@ var appDataChannel = {
         });
     },
 
-    recallPhoto : function (contactId, channelUUID, photoId, ownerId, isPrivateChat) {
+    recallPhoto : function (channelUUID, photoId, ownerId, isPrivateChat) {
         var msg = {};
 
         msg.msgID = uuid.v4();

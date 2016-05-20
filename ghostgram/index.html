@@ -169,7 +169,7 @@
     	<div id="network-offline" class="hidden">Offline Mode</div>
         <ul class="list-inline menuNav">
             <li>
-                <a data-role="button" href="#home" data-click-on="down">
+                <a data-role="button" data-rel="actionsheet" href="#settingsAction" >
                 	<svg width="26px" height="24px" viewBox="0 0 26 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g id="nav-home" transform="translate(-18.000000, -634.000000)" fill="#979797">
@@ -238,13 +238,25 @@
             </li>
         </ul>
     </div>
-	
+
 	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
+		<li>
+			<a data-role="button" data-click="homeView.goHome">Home</a>
+		</li>
+		<li>
+			<a data-role="button" data-click="homeView.goMyNotes">My Notes</a>
+		</li>
+		<li>
+			<a data-role="button" data-click="userStatusView.camera">Camera</a>
+		</li>
+		<li>
+			<a data-role="button" data-click="userStatusView.scanner">Scanner</a>
+		</li>
 	    <li>
-	    	<a data-role="button" id="menuSettings" data-click="go2Settings">View Settings</a>
+	    	<a data-role="button"  data-click="homeView.goSettings">Settings</a>
 	    </li>
 		<li>
-			<a data-role="button" id="menuSignOut" data-click="homeSignout">Sign out</a>
+			<a data-role="button"  data-click="userStatusView.doSignOut">Sign out</a>
 		</li>
      </ul>
 
@@ -305,6 +317,7 @@
 				Local Alert
 			</a>
 		</li>
+<!--
 			<div class="clearfix"></div>
 			<div class="line"></div>
 			<li>
@@ -330,6 +343,7 @@
 					Sign Out
 				</a>
 			</li>
+-->
 	</ul>
 
 	<div data-role="footer">
@@ -3444,20 +3458,27 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalChatPhotoView._activePhoto" data-init="modalChatPhotoView.onInit"  data-zoom="true">
-	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Memories</div>
-	<div class="photoViewBox">
-		<div style="width: 100%; height: 90%;">
-			<img class="centerPhoto" id="modalChatPhotoViewImage" src="" width="100%" data-bind="attr: {src : photoUrl}" />
+<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit" data-use-native-scrolling="true" data-zoom="true">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Chat Photo Gallery</span>
+		</div>
+	</div>
+	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Gallery</div>
+	<div style="width: 100%; height: 90%; min-height: 200px;">
+		<div id="modalChatPhotoView-scrollView"
+			 data-role="scrollview"
+			 data-source="channelView.photosDS"
+			 data-template="modalChatPhoto-template"
+			 data-change="modalChatPhotoView.changePhoto"
+			 data-enable-pager="true">
 		</div>
 	</div>
 	<div class="footer" data-role="footer">
-
 		<div style="text-align: center;" id="modalChatPhotoRecipient"  class="hidden">
-			<div style="text-align: center;" id="modalChatPhotoOwnerName"> </div>
+			<div style="text-align: center;" >  Sent by <span id="modalChatPhotoOwnerName"> </span></div>
 			<ul class="modalChatPhotoList" id="modalChatPhotoView-recipientlist">
 				<li id="modalChatPhotoViewUnlocked">
-
 					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
 						<img src="images/icon-save-memories.svg" class="modalChatPhotoListImg" />
 						<p class="modalChatPhotoListOpt">Save to Memories</p>
@@ -3477,6 +3498,12 @@
 		</div>
 		<div id="modalChatPhotoOwner" class="hidden">
 			<ul class="modalChatPhotoList" >
+				<li id="modalChatPhotoViewRecall">
+					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.recallPhoto">
+						<img src="images/action-recall.svg" class="modalChatPhotoListImg" />
+						<p class="modalChatPhotoListOpt">Recall Photo</p>
+					</a>
+				</li>
 				<li id="modalChatPhotoViewOwnerUnlocked">
 					<div>Photo is unlocked</div>
 				</li>
@@ -3501,6 +3528,11 @@
 	</div>
 </div>
 
+<script id="modalChatPhoto-template" type="text/x-kendo-template">
+	<div style="width: 100%; height: 90%; min-height: 280px; margin: 4px; ">
+		<img class="centerPhoto"  src="#:data.imageUrl#" width="100%" height="100%" />
+	</div>
+</script>
 
 <div data-role="modalview" id="modalPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal" data-model="modalPhotoView._activePhoto" data-init="modalPhotoView.onInit" data-zoom="true">
 	<div data-role="header">

@@ -626,6 +626,8 @@ var modalChatPhotoView = {
     _dummyDescription : '',
     _dummyTagsString : '',
     _userHasCopy: false,
+    _galleryMode: false,
+    _currentPhotoPage : 0,
     _activePhoto : new kendo.data.ObservableObject(),
 
     onInit: function(e){
@@ -634,8 +636,29 @@ var modalChatPhotoView = {
 
     },
 
+    // Need to update Ux when the user scrolls to a new photo
+    changePhoto : function (e) {
+        var page = e.page, photo = null;
+
+        modalChatPhotoView._currentPhotoPage = page;
+        photo = channelView.photosDS.at(page);
+        modalChatPhotoView.updatePhotoStatus(photo);
+    },
+
+    recallPhoto : function (e) {
+        var photo = channelView.photosDS.at(modalChatPhotoView._currentPhotoPage);
+        
+        appDataChannel.recallPhoto(channelView._channelUUID, photo.photoUUID, userModel._user.userUUID, channelView.isPrivateChat);
+        sharedPhotoModel.recallPhoto(photo.photoUUID, channelView._channelUUID);
+    },
+    
+
     updatePhotoStatus : function (photo) {
-        if (photo.ownerId === userModel._user.userUUID) {
+        if (photo === undefined) {
+            return;
+        }
+        if (photo.ownerUUID === userModel._user.userUUID) {
+            $('#modalChatPhotoView-userhascopy').addClass('hidden');
             $("#modalChatPhotoRecipient").addClass('hidden');
             $("#modalChatPhotoSender").removeClass('hidden');
             if (photo.canCopy) {
@@ -652,6 +675,7 @@ var modalChatPhotoView = {
             }
 
         } else {
+            
             // If the user already has a copy of this photo -- hide all recipient options
             if (modalChatPhotoView._userHasCopy) {
                 $("#modalChatPhotoView-recipientlist").addClass('hidden');
@@ -704,26 +728,44 @@ var modalChatPhotoView = {
         _preventDefault(e);
     },
 
-     openModal : function (photo) {
+     openModal : function (photo, galleryMode) {
 
-        modalChatPhotoView._photo = photo;
-        var url = photo.thumbnailUrl;
-        if (photo.imageUrl !== null)
-            url = photo.imageUrl;
+         var photoId = photo.photoId;
+         if (photoId === undefined) {
+             photoId = photo.photoUUID;
+         }
 
-         $.ajax({
-             url:url,
-             error:
-                 function(){
-                    mobileNotify("Sender has deleted this photo...");
+
+         modalChatPhotoView._galleryMode = galleryMode;
+
+         if (galleryMode) {
+
+             var index = channelView.getPhotoIndex(photoId);
+             if (index < 0) 
+                 index = 0;
+             modalChatPhotoView._currentPhotoPage = index;
+             $("#modalChatPhotoView").data("kendoMobileModalView").open();
+             $("#modalChatPhotoView-scrollView").data("kendoMobileScrollView").scrollTo(modalChatPhotoView._currentPhotoPage);
+
+         } else {
+
+
+             modalChatPhotoView._photo = photo;
+             var url = photo.thumbnailUrl;
+             if (photo.imageUrl !== null)
+                 url = photo.imageUrl;
+
+             $.ajax({
+                 url: url,
+                 error: function () {
+                     mobileNotify("This Photo isn't available...");
                  },
-             success:
-                 function(){
+                 success: function () {
                      modalChatPhotoView._photoUrl = url;
                      modalChatPhotoView._activePhoto.set('photoUrl', url);
-                     modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
+                     modalChatPhotoView._activePhoto.set('photoId', photoId);
 
-                     var photoObj = photoModel.findPhotoById(photo.photoId);
+                     var photoObj = photoModel.findPhotoById(photoId);
 
                      modalChatPhotoView._userHasCopy = false;
                      $('#modalChatPhotoView-userhascopy').addClass('hidden');
@@ -741,13 +783,14 @@ var modalChatPhotoView = {
 
                      $("#modalChatPhotoView").data("kendoMobileModalView").open();
                  }
-         });
+             });
+         }
 
     },
 
     closeModal : function () {
         $("#modalChatPhotoView").data("kendoMobileModalView").close();
-    },
+    }
 
 
 };

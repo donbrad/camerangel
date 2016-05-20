@@ -960,7 +960,7 @@ var channelView = {
 
     findPhotoById : function (photoID) {
 
-        return(channelView.queryPhoto({ field: "photoId", operator: "eq", value: photoId }));
+        return(channelView.queryPhoto({ field: "photoUUID", operator: "eq", value: photoId }));
     },
     
     onInit: function (e) {
@@ -1060,6 +1060,7 @@ var channelView = {
         channelView.newMembers = [];
         channelView.memberList = [];
         channelView.membersDS.data([]);
+        channelView.photosDS.data([]);
     },
 
    loadImagesThenScroll : function () {
@@ -1392,26 +1393,27 @@ var channelView = {
             for (var i=0; i<photos.length; i++) {
                 var photo = photos[i];
 
-                var photoItem = channelView.photos[photo.photoUUID];
+                var url = photo.imageUrl;
 
-                if (photoItem === undefined) {
-                    // Photo isn't in the channel cache
+                if (url.indexOf('http'))
+
+                if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
+                    var photoItem = channelView.photos[photo.photoUUID];
                     var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
-
+                    if (photoItem === undefined) {
+                        // Photo isn't in the channel cache
+                          channelView.photos[photo.photoUUID] = photo;
+                          channelView.photosDS.add(photo);
+                    }
                     if (channelPhoto === null) {
                         // Photos isn't in the the channel photo data source
-                        if (photoItem.photoUUID !== undefined && photoItem.photoUUID !== null) {
-                            channelModel.addPhoto(channelView._channelUUID, photoItem.photoUUID, photoItem.imageUrl, photoItem.ownerUUID, photoItem.ownerName);
-                            channelView.photos[photo.photoUUID] = photo;
-                        }
-                    }
+                        channelModel.addPhoto(channelView._channelUUID, photo.photoUUID, photo.imageUrl, photo.ownerUUID, photo.ownerName);
 
+                    }
 
                 }
             }
         }
-
-
     },
 
     updateTimeStamps: function () {
@@ -1442,21 +1444,46 @@ var channelView = {
     },
 
     // find photo offer in the list of photo offers
-    findPhotoOffer : function (photoId) {
+    findPhoto : function (photoId) {
 
-        var dataSource = channelView.photoOffersDS;
+        var dataSource = channelView.photosDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
-        dataSource.filter({ field: "photoId", operator: "eq", value: photoId });
+        dataSource.filter({ field: "photoUUID", operator: "eq", value: photoId });
         var view = dataSource.view();
-        var offer = view[0];
+        var photo = view[0];
         dataSource.filter(cacheFilter);
 
-        return(offer);
+        return(photo);
 
     },
+
+    // return the index of the photo in the datasource
+    // -- required to set the page for gallery / scrollview
+    getPhotoIndex : function (photoId) {
+
+        var index = -1;
+        var dataSource = channelView.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter({ field: "photoUUID", operator: "eq", value: photoId });
+        var view = dataSource.view();
+        var photo = view[0];
+        dataSource.filter(cacheFilter);
+
+        if (photo !== undefined) {
+            index = dataSource.indexOf(photo);
+        }
+        
+        return(index);
+
+    },
+
+
 
     mapPhotoUrl : function (msgID, photo) {
 
@@ -1863,7 +1890,7 @@ var channelView = {
         
         var photoObj  = {
             uuid: shareId,
-            photoUUID: photo.photoId,
+            photoUUID: photoId,
             channelUUID: channelView._channelUUID,
             thumbnailUrl: photo.thumbnailUrl,
             imageUrl: photo.imageUrl,
@@ -1874,7 +1901,10 @@ var channelView = {
         
         // Add the photo to the current message
         channelView.activeMessage.photos.push(photoObj);
-        
+
+        //Push the photo to the channel photo cache
+        channelView.photos[photoObj.photoUUID] = photoObj;
+
         // Push the photo to the channel photo store
         channelModel.addPhoto(photoObj.channelUUID, photoObj.photoUUID, photoObj.imageUrl, photoObj.ownerUUID, photoObj.ownerName);
         
@@ -1971,6 +2001,9 @@ var channelView = {
 
         for (var i=0; i< channelView.messagePhotos.length; i++) {
             var photoId = channelView.messagePhotos[i].photoUUID, shareId = channelView.messagePhotos[i].shareUUID;
+
+            // Set the src attribute to null
+           $('#chatphoto_' + shareId).attr('src', null);
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
@@ -2114,9 +2147,22 @@ var channelView = {
 
     resolveChatPhoto : function (message) {
         // Resolve the photo in the chat: 1) is it uploaded yet? 2) is it recalled?
-        var photoId = null, shareId = null;
+        var photoId = null, shareId = null, url = null;
 
+        shareId = message.id.replace('chatphoto_', '');
+        photoId = message.attributes['data-photoid'].value;
+        if (channelModel.isPhotoRecalled(photoId, channelView._channelUUID)) {
+            return (null);
+        }
 
+        if (photoId !== undefined && photoId !== null) {
+            var photo = channelView.photos[photoId];
+
+            if (photo !== undefined)
+                url = photo.imageUrl;
+        }
+
+        return(url);
 
     },
 
@@ -2132,7 +2178,7 @@ var channelView = {
             if (thumbUrl === null) {
                 thumbUrl = "images/missing-image.jpg";
             }
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src="' + displayUrl + '"' +
+            var imgUrl = '<img class="photo-chat" alt="Processing Photo...." data-photoid="'+ photoId + '" id="chatphoto_' + shareUUID + '" src="'+ displayUrl + '"' +
                +  'onload="this.onload=null; this.src=channelView.resolveChatPhoto(this);"' +  ' onerror="this.onerror = null; this.src=channelView.resolveChatPhoto(this);" />';
 
             $('#messageTextArea').redactor('insert.node', $('<div />').html(imgUrl));
@@ -2239,7 +2285,8 @@ var channelView = {
                     var photoObj = photoList[i];
 
                     if (photoObj.photoUUID === photoId) {
-                        modalChatPhotoView.openModal(photoObj);
+                        var galleryMode = true;
+                        modalChatPhotoView.openModal(photoObj, galleryMode);
                         return;
                     }
                 }

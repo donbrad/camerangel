@@ -24,7 +24,19 @@ var homeView = {
             }, 30 /*, onError */);
         }
     },
-    
+
+    goHome: function () {
+        APP.kendo.navigate("#home");
+    },
+
+    goSettings: function () {
+        APP.kendo.navigate("#settings");
+    },
+
+    goMyNotes: function () {
+        APP.kendo.navigate("#privateNotes");
+    },
+
     disableHotButtons : function () {
         shake.stopWatch();
     },
@@ -257,6 +269,19 @@ var homeView = {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
             $('#checked-in-place').show();
         }
+/*
+         $("#homeHeaderButton").kendoTouch({
+
+         doubletap: function(e) {
+         userStatusView.openModal();
+         },
+
+         tap: function (e) {
+         $("#profilebuttonactionsheet").data("kendoMobileActionSheet").open();
+         }
+
+         });*/
+
         /*
          $('#homeSearchQuery').clearSearch({
          callback: function() {
@@ -390,15 +415,19 @@ var homeView = {
         // todo Don - refactor notifications to have a single action
         _preventDefault(e);
 
-        var uuid = e.sender.element[0].attributes['data-uuid'].value;
+        var noteuuid = e.sender.element[0].attributes['data-uuid'].value;
 
-        var notification = notificationModel.findNotificationModel(uuid);
+        var notification = notificationModel.findNotificationModel(noteuuid);
 
         if (notification !== undefined) {
             var type = notification.type, href = notification.href;
 
             if (type === notificationModel._newPrivate) {
                 var channelId = notification.privateId;
+                if (channelId === undefined || channelId === null) {
+                    mobileNotify("Can't locate this chat...");
+                    return;
+                }
                 var checkChannel = channelModel.findChannelModel(channelId);
                 if (checkChannel === undefined || checkChannel === null) {
                     mobileNotify("Creating  : " + notification.title + "...");
@@ -408,8 +437,7 @@ var homeView = {
                         APP.kendo.navigate(href);
                     } else {
                         mobileNotify("Finding member for new private chat...");
-                        var contactUUID = uuid.v4();
-                        contactModel.createChatContact(channelId, contactUUID, function (result) {
+                        contactModel.createContact(channelId,  function (result) {
                             if (result !== null) {
                                 mobileNotify("Adding private chat for " + result.name);
                                 channelModel.addPrivateChannel(result.contactUUID, result.publicKey, result.name);
@@ -692,6 +720,26 @@ var userStatusView = {
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null  // Current channel Id for offers
              // Optional preview callback
+        );
+    },
+
+    scanner : function (e) {
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                mobileNotify("We got a barcode\n" +
+                    "Result: " + result.text + "\n" +
+                    "Format: " + result.format + "\n" +
+                    "Cancelled: " + result.cancelled);
+            },
+            function (error) {
+                mobileNotify("Scanning failed: " + error);
+            },
+            {
+                "preferFrontCamera" : false, // iOS and Android
+                "showFlipCameraButton" : true, // iOS and Android
+                "prompt" : "Place a barcode inside the scan area", // supported on Android only
+                "orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
+            }
         );
     },
 
