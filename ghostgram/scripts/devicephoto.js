@@ -378,7 +378,7 @@ var devicePhoto = {
             }
         });
 
-        devicePhoto.convertImgToDataURL(thumbNail, function (dataUrl) {
+        devicePhoto.convertImgToDataURL(imageUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
             devicePhoto._uploadActive = true;
