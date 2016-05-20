@@ -352,7 +352,7 @@ var devicePhoto = {
         var photouuid = uuid.v4();
         // convert uuid into valid file name;
         var filename = photouuid.replace(/-/g,'');
-        if (device.platform === 'android') {
+        if (device.platform !== 'iOS') {
 
             imageUrl = imageUrl.replace('file://', '');
        }
@@ -403,7 +403,7 @@ var devicePhoto = {
                         mobileNotify("Photo Save Error : " + JSON.stringify(error));
                     }
                     if (displayCallback !== undefined) {
-                        displayCallback(photouuid, nativeUrl);
+                        displayCallback(photouuid, image);
                     }
                 });
 
