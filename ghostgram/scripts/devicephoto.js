@@ -292,7 +292,7 @@ var devicePhoto = {
                                             ggError("Cloud Photo Error " + JSON.stringify(error));
                                             return;
                                         }
-                                        
+
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
                                         if (photoObj !== undefined && photoData !== null) {
@@ -352,11 +352,10 @@ var devicePhoto = {
         var photouuid = uuid.v4();
         // convert uuid into valid file name;
         var filename = photouuid.replace(/-/g,'');
-        var uri = imageUrl;
-        //if (device.platform === 'iOS') {
+        if (device.platform === 'android') {
 
             imageUrl = imageUrl.replace('file://', '');
-     //   }
+       }
 
 
         mobileNotify("Processing Photo...");
@@ -364,7 +363,7 @@ var devicePhoto = {
          uri = uri.replace('file://', '');
          }*/
         var scaleOptions = {
-            uri: uri,
+            uri: imageUrl,
             filename: "photo_"+filename + '.jpg',
             quality: 75,
             width: 1600,
@@ -376,12 +375,8 @@ var devicePhoto = {
             // This must be a profile photo so need to adjust scale and target userprofile photo store
             scaleOptions.width = 512;
             scaleOptions.height = 512;
-
             isProfilePhoto = true;
         }
-
-
-
 
 
         window.ImageResizer.resize(scaleOptions,
