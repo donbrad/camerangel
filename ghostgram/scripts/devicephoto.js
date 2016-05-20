@@ -258,7 +258,11 @@ var devicePhoto = {
 
                                 if (isProfilePhoto) {
                                     // It's a profile so store in profile cloud and do autoscaling and cropping
-                                    devicePhoto.cloudinaryUploadProfile(photouuid, filename, dataUrl, function (photoData) {
+                                    devicePhoto.cloudinaryUploadProfile(photouuid, filename, dataUrl, function (photoData, error) {
+                                        if (error !== null) {
+                                            ggError("Cloud Photo Error " + JSON.stringify(error));
+                                            return;
+                                        }
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
                                         if (photoObj !== undefined && photoData !== null) {
@@ -283,7 +287,12 @@ var devicePhoto = {
                                     });
                                 } else {
                                     // It's a chat or gallery photo...
-                                    devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, function (photoData) {
+                                    devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, function (photoData, error) {
+                                        if (error !== null) {
+                                            ggError("Cloud Photo Error " + JSON.stringify(error));
+                                            return;
+                                        }
+                                        
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
                                         if (photoObj !== undefined && photoData !== null) {
@@ -344,10 +353,10 @@ var devicePhoto = {
         // convert uuid into valid file name;
         var filename = photouuid.replace(/-/g,'');
         var uri = imageUrl;
-        if (device.platform === 'iOS') {
+        //if (device.platform === 'iOS') {
 
             imageUrl = imageUrl.replace('file://', '');
-        }
+     //   }
 
 
         mobileNotify("Processing Photo...");
