@@ -9,7 +9,7 @@
 var devicePhoto = {
     currentPhoto : {},
     _uploadActive: false,
-    _resolution : 1600,
+    _resolution : 2560,
     _quality : 75,
     _userPhoto: 'userphoto',
     _userProfile: 'userprofile',
