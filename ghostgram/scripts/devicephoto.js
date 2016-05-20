@@ -19,7 +19,7 @@ var devicePhoto = {
     _cloudinaryImage: 'http://res.cloudinary.com/ghostgrams/image/upload/v1454612367/',
 
 
-    cloudinaryUpload : function (photoUUID, filename, photoData, callback) {
+    cloudinaryUpload : function (photoUUID, filename, photoData, uploadCallback) {
         var formData = new FormData();
         formData.append('file', photoData);
         formData.append('api_key', 169985831568325);
@@ -42,11 +42,11 @@ var devicePhoto = {
 
             success: function(responseData, textStatus, jqXHR) {
                 responseData.photoUUID = photoUUID;
-                callback(responseData, null);
+                uploadCallback(responseData, null);
 
             },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    callback(null, errorThrown);
+                uploadCallback(null, errorThrown);
                 }
             });
     },
