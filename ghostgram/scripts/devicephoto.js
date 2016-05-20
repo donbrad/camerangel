@@ -352,11 +352,11 @@ var devicePhoto = {
         var photouuid = uuid.v4();
         // convert uuid into valid file name;
         var filename = photouuid.replace(/-/g,'');
-        if (device.platform !== 'iOS') {
+      /*  if (device.platform !== 'iOS') {
 
             imageUrl = imageUrl.replace('file://', '');
        }
-
+*/
 
         mobileNotify("Processing Photo...");
         /*  if (device.platform === 'iOS') {
@@ -532,11 +532,17 @@ var devicePhoto = {
                 } else {
                     // *** Android ***
                     gpsObj =  devicePhoto.processGPS(metaObj);
-                    window.FilePath.resolveNativePath(imageFile, function (result) {
+                    if (imageFile.substring(0,21)=="content://com.android") {
+                       var  photo_split=imageFile.split("%3A");
+                        imageFile="content://media/external/images/media/"+photo_split[1];
+                    }
+                    devicePhoto._processPhoto(imageFile, isChat, gpsObj, channelUUID, displayCallback, shareCallback);
+                    
+                    /*window.FilePath.resolveNativePath(imageFile, function (result) {
                         // onSuccess code
                         imageFile = result;
                         devicePhoto._processPhoto(imageFile, isChat, gpsObj, channelUUID, displayCallback, shareCallback);
-                    });
+                    });*/
 
                     
                    /* if (imageFile.substring(0,21)=="content://com.android") {
