@@ -351,22 +351,19 @@ var devicePhoto = {
         /*  if (device.platform === 'iOS') {
          uri = uri.replace('file://', '');
          }*/
-        
+
         var isProfilePhoto = false;
         if (isChat === false) {
             isProfilePhoto = true;
         }
 
 
-
-
-
         devicePhoto.currentPhoto.photoId = photouuid;
         devicePhoto.currentPhoto.filename = filename;
-        devicePhoto.currentPhoto.deviceUrl = image;
-        devicePhoto.currentPhoto.imageUrl = image;
+        devicePhoto.currentPhoto.deviceUrl = imageUrl;
+        devicePhoto.currentPhoto.imageUrl = imageUrl;
         devicePhoto.currentPhoto.cloudUrl = null;
-        devicePhoto.currentPhoto.thumbnailUrl = image;
+        devicePhoto.currentPhoto.thumbnailUrl = imageUrl;
         devicePhoto.currentPhoto.lat = gpsObj.lat;
         devicePhoto.currentPhoto.lng = gpsObj.lng;
         devicePhoto.currentPhoto.alt = gpsObj.alt;
@@ -377,7 +374,7 @@ var devicePhoto = {
                 mobileNotify("Photo Save Error : " + JSON.stringify(error));
             }
             if (displayCallback !== undefined) {
-                displayCallback(photouuid, image);
+                displayCallback(photouuid, imageUrl);
             }
         });
 
@@ -400,7 +397,7 @@ var devicePhoto = {
                     if (photoObj !== undefined && photoData !== null) {
                         photoObj.set('imageUrl', photoData.url);
                         photoObj.set('cloudUrl', photoData.url);
-                        photoObj.set('thumbnailUrl', imageUrl);  // The image is the thumbnail...
+                        photoObj.set('thumbnailUrl',  photoData.url);  // The image is the thumbnail...
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
