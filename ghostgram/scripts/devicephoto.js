@@ -512,7 +512,7 @@ var devicePhoto = {
                     window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
                         var localUrl = fileEntry.toURL(), nativeUrl =  fileEntry.nativeURL;
 
-                        devicePhoto._processPhoto(nativeUrl, filename, isChat, gpsObj, channelUUID, displayCallback, shareCallback );
+                        devicePhoto._processPhoto(nativeUrl, isChat, gpsObj, channelUUID, displayCallback, shareCallback );
                     }, function(error){
                         console.log(JSON.stringify(error));
                     });
@@ -522,7 +522,7 @@ var devicePhoto = {
                     window.FilePath.resolveNativePath(imageFile, function (result) {
                         // onSuccess code
                         imageFile = result;
-                        devicePhoto._processPhoto(imageFile, filename, isChat, gpsObj, channelUUID, displayCallback, shareCallback);
+                        devicePhoto._processPhoto(imageFile, isChat, gpsObj, channelUUID, displayCallback, shareCallback);
                     });
 
                     
@@ -533,7 +533,7 @@ var devicePhoto = {
                     //imageFile = imageFile.replace('content://', '');
 
                 }
-                
+
 
             },
             function (error) {
