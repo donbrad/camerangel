@@ -473,7 +473,7 @@ var devicePhoto = {
             destinationType: destinationType.FILE_URI,
             encodingType: encodingType.JPEG,
             targetWidth: resolution,
-            targetHeight: resolution,
+            targetHeight: resolution
         };
 
         /* if (device.platform === 'iOS') {
