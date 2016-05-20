@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android phones",
-  "BundleVersion": "0.0.92",
+  "BundleVersion": "0.0.93",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -93,6 +93,7 @@
     "com.phonegap.plugins.barcodescanner@5.0.0",
     "com.phonegap.plugins.PushPlugin@3.2.0",
     "cordova-plugin-battery-status",
+    "cordova-plugin-camera",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
     "cordova-plugin-crosswalk-webview@1.5.1",
