@@ -286,15 +286,15 @@ var devicePhoto = {
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
                                         if (photoObj !== undefined && photoData !== null) {
-                                            var secureUrl = photoData.secure_url, thumbUrl = photosData.eager[0].secure_url;
+                                            var secureUrl = photoData.secure_url, thumbUrl = photoData.eager[0].secure_url;
                                             photoObj.set('imageUrl', secureUrl);
                                             photoObj.set('cloudUrl', secureUrl);
                                             photoObj.set('thumbnailUrl', thumbUrl);
                                             photoObj.set('cloudinaryPublicId', photoData.public_id);
                                             photoObj.set('isProfilePhoto', false);
                                             photoModel.syncLocal();
-                                           // everlive.syncCloud();
-                                            photoModel.updateCloud(photoObj);
+                                            everlive.syncCloud();
+                                           // photoModel.updateCloud(photoObj);
                                             if (shareCallback !== undefined) {
                                                 shareCallback(photoObj.photoId, photoObj.cloudUrl);
                                             }
@@ -427,14 +427,15 @@ var devicePhoto = {
                     var photoObj = photoModel.findPhotoById(photouuid);
 
                     if (photoObj !== undefined && photoData !== null) {
-                        var secureUrl = photoData.secure_url, thumbUrl = photosData.eager[0].secure_url;
+                        var secureUrl = photoData.secure_url, thumbUrl = photoData.eager[0].secure_url;
                         photoObj.set('imageUrl', secureUrl);
                         photoObj.set('cloudUrl', secureUrl);
                         photoObj.set('thumbnailUrl', thumbUrl);
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
-                        photoModel.updateCloud(photoObj);
+                        everlive.syncCloud();
+                        //photoModel.updateCloud(photoObj);
                         if (shareCallback !== undefined) {
                             shareCallback(photoObj.photoId, photoObj.cloudUrl);
                         }
