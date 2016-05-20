@@ -403,7 +403,7 @@ var devicePhoto = {
                         mobileNotify("Photo Save Error : " + JSON.stringify(error));
                     }
                     if (displayCallback !== undefined) {
-                        displayCallback(photouuid, nativeUrl);
+                        displayCallback(photouuid, image);
                     }
                 });
 
