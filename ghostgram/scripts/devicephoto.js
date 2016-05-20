@@ -352,7 +352,7 @@ var devicePhoto = {
         var photouuid = uuid.v4();
         // convert uuid into valid file name;
         var filename = photouuid.replace(/-/g,'');
-        if (device.platform === 'android') {
+        if (device.platform !== 'iOS') {
 
             imageUrl = imageUrl.replace('file://', '');
        }
