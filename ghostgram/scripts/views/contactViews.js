@@ -534,14 +534,15 @@ var addContactView = {
     PNF : null,
     
     isValidPhone : function (phone) {
-        var phoneNumber = addContactView.phoneUtil.parse(phone, 'US');
+        var phoneNumber = addContactView.phoneUtil.parse(phone, "US");
+
         if (phoneNumber.length < 10 || phoneNumber.length > 11) {
             return (null);
         }
         if (phoneNumber.length === 10) {
             phoneNumber = '1'+phoneNumber;
         }
-        
+
         return(phoneNumber);
 
     },

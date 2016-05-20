@@ -940,16 +940,19 @@ var ghostEditView = {
 };
 
 var signUpView = {
-    _emaiValid : false,
-    
+    _emailValid : false,
+    _formSlideDown: true,
+
     onInit : function (e) {
         //_preventDefault(e);
 
        // Add strength meter to password
         //$("#home-signup-password").strength();
 
+
+
         // phone mask
-     //   if (window.navigator.simulator === true) {
+        //   if (window.navigator.simulator === true) {
             $('#home-signup-phone')
 
                 .keydown(function (e) {
@@ -982,7 +985,7 @@ var signUpView = {
             })
             .keyup(function(e){
                 if ($(this).val().length === 14) {
-                    mobileNotify("Please wait - validating mobiile phone number");
+                    mobileNotify("Please wait - validating mobile phone number");
                     var phone  = $(this).val();
                     var validPhone  = addContactView.isValidPhone(phone);
 
@@ -994,8 +997,10 @@ var signUpView = {
                     var phoneString =  unformatPhoneNumber(phone);
 
                     isValidMobileNumber(phoneString, function (result) {
+                        
                         if (result.status === 'ok') {
                             if (result.valid === true) {
+                                $("#home-signup-phone").prop("readonly", true);
                                 mobileNotify("Please wait - checking member directory...");
                                 memberdirectory.findMemberByPhone(phoneString, function (member) {
                                     if (member === null) {
@@ -1030,11 +1035,14 @@ var signUpView = {
                                      } else {
                                         mobileNotify(phone + " matches an existing ghostgrams member!");
                                         //Todo:  we should a link to login / signin...
+                                        $("#home-signup-phone").val('');
+                                        APP.kendo.navigate("#usersignin");
+
                                     }
 
                                 });
 
-                                $('#home-signup-phone').unbind("keyup");
+                                //$('#home-signup-phone').unbind("keyup");
                             } else {
                                 mobileNotify(phone + "isn't a recognized mobile number");
                                 signUpView.signUpPhoneError();
@@ -1099,10 +1107,14 @@ var signUpView = {
         });
 
 
-        $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password, .create-user-password2").css("display", "none");
+        $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password, .create-user-password2, #create-user-address").css("display", "none");
         
     },
 
+    unlockPhone: function(){
+        $("#home-signup-phone").prop("readonly", false);
+        signUpView.signUpPhoneReset();
+    },
 
     onEmailChange : function (e) {
         var email = this.value();
@@ -1126,15 +1138,26 @@ var signUpView = {
     // Display a custom signup form with data collected from device contacts...
     continueContactSignUp : function () {
         //Todo: don - write some code here...
-        $("#home-signup-welcomebanner").addClass('hidden');
-        $("#signup-emailSelect, #signup-addressSelect, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
+
+        if(signUpView._formSlideDown){
+            $("#signup-emailSelect, #signup-addressSelect, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
+
+            signUpView._formSlideDown = false;
+        }
+
+        $("#create-user-email, .create-user-password, #create-user-address").css("display", "none");
+
 
     },
 
     continueSignUp : function () {
-        // Todo: jordan you'll need to tweak this to handle the flexible form layout
-        $("#home-signup-welcomebanner").addClass('hidden');
-        $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
+
+        if(signUpView._formSlideDown){
+            $("#create-user-email, #create-user-name, #create-user-alias, .create-user-password, #create-user-address").velocity("slideDown", { delay: 500, duration: 300 }, [ 250, 15 ]);
+
+            signUpView._formSlideDown = false;
+        }
+
         
         // ToDo - jordan - we should move Create Account button display to validation success
         $("#createAccountBtn").velocity("fadeIn", {delay: 800});
@@ -1157,17 +1180,48 @@ var signUpView = {
     },
 
     signUpPhoneValid: function(){
-        $("#signup-contryCode").css("display", "none");
+        $("#signup-countryCode").css("display", "none");
         $("#signup-confirmed").velocity("slideDown");
         $("#signup-error").css("display", "none");
-        $(".mobile-countryCode").addClass("gg-success");
+        $(".mobile-countryCode").removeClass("gg-error").addClass("gg-success");
+
+        // fade out txt and show revalidate btn
+        $("#signup-info").velocity("fadeOut");
+        $("#signup-revalidate").velocity("fadeIn");
+        $("#signup-error-txt").velocity("slideUp");
+
+        // enable submit btn
+        $("#createAccountBtn").kendoButton({
+            enable: true
+        });
     },
 
     signUpPhoneError: function(){
-        $("#signup-contryCode").css("display", "none");
+        $("#signup-countryCode").css("display", "none");
+        $("#signup-info").velocity("slideUp");
         $("#signup-error").velocity("slideDown");
         $("#signup-success").css("display", "none");
         $(".mobile-countryCode").addClass("gg-error");
+        $("#signup-error-txt").velocity("fadeIn");
+        console.log("error");
+        // disable submit btn
+        $("#createAccountBtn").kendoButton({
+            enable: false
+        });
+    },
+
+    signUpPhoneReset: function(){
+        $(".mobile-countryCode").removeClass("gg-success gg-error");
+        $("#signup-confirmed").velocity("slideUp");
+        $("#home-signup-phone").val('');
+        $("#signup-countryCode").velocity('slideDown', {delay: 300});
+        $("#signup-info").velocity("fadeIn", {delay: 300});
+        $("#signup-revalidate").velocity('fadeOut');
+
+        // disable submit btn
+        $("#createAccountBtn").kendoButton({
+            enable: false
+        });
     },
 
     _createAccount : function (username, password, name, phone) {

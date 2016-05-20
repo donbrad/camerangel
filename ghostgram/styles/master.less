@@ -1455,6 +1455,11 @@ div.footerMenu.km-footer > ul > li > a:active {
     height: 12px;
   }
 }
+
+.helper-required {
+  font-size: 0.85em;
+}
+
 .helper-sm {
   .helper;
 }
@@ -3883,6 +3888,20 @@ div.loginBox > form > div > ul > li {
   }
 }
 
+#modalPhotoView-footer {
+  background-color: #000;
+  color: #fff;
+  padding: 0.5em 1em;
+}
+
+#modalPhotoView > div.km-header > div.km-widget.km-navbar {
+  background-color: #000 !important;
+  color: #fff;
+}
+
+#modalPhotoView-title {
+  color: #fff;
+}
 
 .photo-chat {
   height: auto;
@@ -4701,10 +4720,22 @@ div.contactListBox.activeContact > div > div > ul {
   position: absolute;
   top: 28px;
   left: -0.6em;
+  min-width: 2em;
+  min-height: 2em;
 }
 
-#signup-confirmed, #signup-error {
+#signup-confirmed, #signup-error, #signup-loading, #signup-error-txt, #signup-success-txt, #signup-revalidate {
   display: none;
+}
+
+#signup-error-txt {
+  color: @warning-100;
+}
+
+#signUp-step1 {
+  label {
+    //margin-bottom: 0.5em;
+  }
 }
 
 .mobile-input {
@@ -5423,7 +5454,7 @@ div.contactListBox.activeContact > div > div > ul {
   border-bottom: 0.4rem solid transparent;
   border-right: 0.3rem solid lighten(@primary-200, 20%);
   top: 1.5rem;
-  left: 11%;
+  left: 10.5%;
   @media @mobile {
     left: 13.5%;
   }
@@ -6080,11 +6111,15 @@ table.k-editor {
 /* User sign in */
 #newuserhome > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
 #usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container,
-#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
   background:
           url('../images/icon-bk.svg') no-repeat center bottom fixed,
           radial-gradient(100% 100%, #A5D6FA 0%, #6CADF3 50%);
   background-size: contain;
+}
+
+.km-state-disabled {
+  background-color: rgba(128, 128, 128, 1) !important;
 }
 
 #newLogo, #newWelcome {
