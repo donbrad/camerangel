@@ -51,7 +51,7 @@ var devicePhoto = {
             });
     },
 
-    cloudinaryUploadProfile : function (photoUUID, filename, photoData, callback) {
+    cloudinaryUploadProfile : function (photoUUID, filename, photoData, uploadCallback) {
         var formData = new FormData();
         formData.append('file', photoData);
         formData.append('api_key', 169985831568325);
@@ -74,11 +74,11 @@ var devicePhoto = {
 
             success: function(responseData, textStatus, jqXHR) {
                 responseData.photoUUID = photoUUID;
-                callback(responseData, null);
+                uploadCallback(responseData, null);
 
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                callback(null, errorThrown);
+                uploadCallback(null, errorThrown);
             }
         });
     },
@@ -282,12 +282,14 @@ var devicePhoto = {
                                             return;
                                         }
 
+
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
                                         if (photoObj !== undefined && photoData !== null) {
-                                            photoObj.set('imageUrl', photoData.url);
-                                            photoObj.set('cloudUrl', photoData.url);
-                                            photoObj.set('thumbnailUrl', photoData.url.replace('upload//', 'upload//c_scale,h_512,w_512//'));
+                                            var secureUrl = photoData.secure_url, thumbUrl = photosData.eager[0].secure_url;
+                                            photoObj.set('imageUrl', secureUrl);
+                                            photoObj.set('cloudUrl', secureUrl);
+                                            photoObj.set('thumbnailUrl', thumbUrl);
                                             photoObj.set('cloudinaryPublicId', photoData.public_id);
                                             photoObj.set('isProfilePhoto', false);
                                             photoModel.syncLocal();
@@ -395,9 +397,11 @@ var devicePhoto = {
                     var photoObj = photoModel.findPhotoById(photouuid);
 
                     if (photoObj !== undefined && photoData !== null) {
-                        photoObj.set('imageUrl', photoData.url);
-                        photoObj.set('cloudUrl', photoData.url);
-                        photoObj.set('thumbnailUrl',  photoData.url);  // The image is the thumbnail...
+                        var secureUrl = photoData.secure_url;
+                        photoObj.set('imageUrl', secureUrl);
+                        photoObj.set('cloudUrl', secureUrl);
+                        photoObj.set('thumbnailUrl', secureUrl);
+
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
@@ -423,9 +427,10 @@ var devicePhoto = {
                     var photoObj = photoModel.findPhotoById(photouuid);
 
                     if (photoObj !== undefined && photoData !== null) {
-                        photoObj.set('imageUrl', photoData.url);
-                        photoObj.set('cloudUrl', photoData.url);
-                        photoObj.set('thumbnailUrl', photoData.url.replace('upload//', 'upload//c_scale,h_512,w_512//'));
+                        var secureUrl = photoData.secure_url, thumbUrl = photosData.eager[0].secure_url;
+                        photoObj.set('imageUrl', secureUrl);
+                        photoObj.set('cloudUrl', secureUrl);
+                        photoObj.set('thumbnailUrl', thumbUrl);
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
