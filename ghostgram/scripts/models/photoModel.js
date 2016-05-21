@@ -763,8 +763,10 @@ var photoModel = {
     },
 
     findCloudinaryPhoto : function (photoid, callback) {
+        var guid = photoid.replace(/-/g,'');
+        var publicId = 'userphoto/'+guid;
         $.ajax({
-            url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/findCloudinaryPhoto?photoid='+photoid,
+            url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/findCloudinaryPhoto?photoid='+publicId,
             // dataType:"jsonp",
             //  contentType: 'application/json',
             success: function(result) {
@@ -773,7 +775,7 @@ var photoModel = {
                     var photo = photos[0];
 
                     if (callback !== undefined) {
-                        callback({found: true, publicId : photo.public_id, url: photo.secure_url});
+                        callback({found: true, photoId: photoid,  publicId : photo.public_id, url: photo.secure_url});
                     }
                 }
 
@@ -781,7 +783,7 @@ var photoModel = {
             error: function(error) {
 
                 if (callback !== undefined) {
-                    callback({found: false, publicId: null, url: null});
+                    callback({found: false, photoId: photoid, publicId: null, url: null});
                 }
 
             }

@@ -1399,6 +1399,17 @@ var channelView = {
 
                 if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
                     var photoItem = channelView.photos[photo.photoUUID];
+                    if (photoItem.imageUrl === null || !channelView.isAvailable(photoItem.imageUrl)) {
+                        photoModel.findCloudinaryPhoto(photo.photoUUID, function (result) {
+                            if (result.found) {
+                                var updatePhoto =  channelView.photos[photo.photoUUID];
+                                updatePhoto.imageUrl = result.url;
+                                var channelPhotoUpdate = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
+                                channelPhotoUpdate.imageUrl = result.url;
+
+                            }
+                        })
+                    }
                     var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
                     if (photoItem === undefined) {
                         // Photo isn't in the channel cache
@@ -1878,6 +1889,15 @@ var channelView = {
 
     },
 
+    isAvailable : function (url) {
+        if (url === undefined || url === null) {
+            return (false);
+        }
+        if (url.indexOf('cloudinary') !== -1) {
+            return (true);
+        }
+        return (false);
+    },
 
     messageAddSharedPhoto : function (photoId, shareId, canCopy) {
 
@@ -1887,18 +1907,26 @@ var channelView = {
             ggError("Can't find this photo !!!");
             return;
         }
-        
+
+
         var photoObj  = {
             uuid: shareId,
             photoUUID: photoId,
             channelUUID: channelView._channelUUID,
-            thumbnailUrl: photo.thumbnailUrl,
-            imageUrl: photo.imageUrl,
+            thumbnailUrl: null,
+            imageUrl: null,
             canCopy: canCopy,
             ownerUUID: photo.senderUUID,
-            ownerName: photo.senderName
+            ownerName: photo.senderName,
+            timestamp: ggTime.currentTime()
         };
-        
+
+        if (channelView.isAvailable(photo.thumbnailUrl))
+            photoObj.thumbnailUrl = photo.thumbnailUrl;
+
+        if (channelView.isAvailable(photo.imageUrl))
+            photoObj.imageUrl = photo.imageUrl;
+
         // Add the photo to the current message
         channelView.activeMessage.photos.push(photoObj);
 
