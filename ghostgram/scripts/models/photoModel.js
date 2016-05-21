@@ -147,7 +147,7 @@ var photoModel = {
             // Is there a valid cloudId?
             if (photo.cloudinaryPublicId === undefined  || photo.cloudinaryPublicId === null) {
                 // No valid cloudId.  Does the photo exist in the cloud?
-                photoModel.findCloudinaryPhoto(photo.photoUUID, function (result) {
+                photoModel.findCloudinaryPhoto(photo.photoId, function (result) {
                     var thisPhoto = photoModel.findPhoto(result.photoId);
                     if (!result.found) {
                         // Photo does not exist -- need to upload it
@@ -647,6 +647,7 @@ var photoModel = {
 
         photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
         photo.set('cloudUrl', devicePhoto.cloudUrl);
+        photo.set('cloudinaryPublicId', devicePhoto.cloudinaryPublicId);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel._user.userUUID);
