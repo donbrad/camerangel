@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android phones",
-  "BundleVersion": "0.0.93",
+  "BundleVersion": "0.0.94",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -113,7 +113,7 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-vibration",
     "cordova-plugin-whitelist",
-    "de.appplant.cordova.plugin.email-composer@0.8.2.1",
+    "de.appplant.cordova.plugin.email-composer@0.8.2.2",
     "de.appplant.cordova.plugin.local-notification@0.8.4",
     "nl.x-services.plugins.calendar@4.4.7",
     "nl.x-services.plugins.launchmyapp@4.1.4",
