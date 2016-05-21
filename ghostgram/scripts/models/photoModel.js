@@ -140,7 +140,7 @@ var photoModel = {
     },
 
     syncPhotosToCloud : function () {
-        var total = photoModel.photoDS.total();
+        var total = photoModel.photosDS.total();
 
         for (var i=0; i< total; i++ ) {
             var photo = photoModel.photosDS.at(i);
