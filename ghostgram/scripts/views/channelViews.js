@@ -1402,9 +1402,9 @@ var channelView = {
                     if (photoItem.imageUrl === null || !channelView.isAvailable(photoItem.imageUrl)) {
                         photoModel.findCloudinaryPhoto(photo.photoUUID, function (result) {
                             if (result.found) {
-                                var updatePhoto =  channelView.photos[photo.photoUUID];
+                                var updatePhoto =  channelView.photos[result.photoId];
                                 updatePhoto.imageUrl = result.url;
-                                var channelPhotoUpdate = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
+                                var channelPhotoUpdate = channelModel.findChannelPhoto(channelView._channelUUID, result.photoId);
                                 channelPhotoUpdate.imageUrl = result.url;
 
                             }
