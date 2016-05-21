@@ -1401,7 +1401,7 @@ var channelView = {
                             updatePhoto.imageUrl = result.url;
                             var channelPhotoUpdate = channelModel.findChannelPhoto(channelView._channelUUID, result.photoId);
                             if (channelPhotoUpdate !== null)
-                                channelPhotoUpdate.imageUrl = result.url;
+                                channelPhotoUpdate.set('imageUrl',result.url);
 
                         }
                     })

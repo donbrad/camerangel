@@ -304,8 +304,8 @@ var devicePhoto = {
                                             photoObj.set('cloudinaryPublicId', photoData.public_id);
                                             photoObj.set('isProfilePhoto', false);
                                             photoModel.syncLocal();
-                                            everlive.syncCloud();
-                                           // photoModel.updateCloud(photoObj);
+                                            //everlive.syncCloud();
+                                           photoModel.updateCloud(photoObj);
                                             if (shareCallback !== undefined) {
                                                 shareCallback(photoObj.photoId, photoObj.cloudUrl);
                                             }
@@ -445,8 +445,8 @@ var devicePhoto = {
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
-                        everlive.syncCloud();
-                        //photoModel.updateCloud(photoObj);
+                        //everlive.syncCloud();
+                        // photoModel.updateCloud(photoObj);
                         if (shareCallback !== undefined) {
                             shareCallback(photoObj.photoId, photoObj.cloudUrl);
                         }
