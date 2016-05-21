@@ -138,7 +138,36 @@ var photoModel = {
     syncLocal : function () {
         photoModel.photosDS.sync();
     },
-    
+
+    syncPhotosToCloud : function () {
+        var total = photoModel.photoDS.total();
+
+        for (var i=0; i< total; i++ ) {
+            var photo = photoModel.photosDS.at(i);
+            // Is there a valid cloudId?
+            if (photo.cloudinaryPublicId === undefined  || photo.cloudinaryPublicId === null) {
+                // No valid cloudId.  Does the photo exist in the cloud?
+                photoModel.findCloudinaryPhoto(photo.photoUUID, function (result) {
+                    var thisPhoto = photoModel.findPhoto(result.photoId);
+                    if (!result.found) {
+                        // Photo does not exist -- need to upload it
+                        photoModel.uploadPhotoToCloud(thisPhoto);
+                    } else {
+                        // Photo exists just need to update local photo model
+                        thisPhoto.set('imageUrl', result.url);
+                        thisPhoto.set('thumbnailUrl', result.url.replace('upload//','upload//c_scale,h_512,w_512//'));
+                        thisPhoto.set('cloudinaryPublicId', result.publicId);
+                        photoModel.photoDS.sync()
+                        
+                    }
+                });
+               
+            }
+
+        }
+    },
+
+
     uploadPhotoToCloud : function (photo) {
         
         var url = photo.deviceUrl, photouuid = photo.uuid;
@@ -146,6 +175,7 @@ var photoModel = {
         if (url === null) {
             return;
         }
+
         devicePhoto.convertImgToDataURL(url, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
             var folder = devicePhoto._userPhoto;
@@ -154,9 +184,9 @@ var photoModel = {
                 var photoObj = photoModel.findPhotoById(photouuid);
 
                 if (photoObj !== undefined && photoData !== null) {
-                    photoObj.set('imageUrl', photoData.url);
-                    photoObj.set('cloudUrl', photoData.url);
-                    photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
+                    photoObj.set('imageUrl', photoData.secure_url);
+                    photoObj.set('cloudUrl', photoData._secure_url);
+                    photoObj.thumbnailUrl = photoData.secure_url.replace('upload//','upload//c_scale,h_512,w_512//');
                     photoObj.cloudinaryPublicId = photoData.public_id;
                    //photoModel.updateCloud(photoObj);
                     photoModel.syncLocal();
