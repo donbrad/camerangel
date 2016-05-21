@@ -791,12 +791,18 @@ var photoModel = {
             // dataType:"jsonp",
             //  contentType: 'application/json',
             success: function(result) {
-                if (callback !== undefined) {
-                    var photos = result.resources;
-                    var photo = photos[0];
-
+                if (result.status === 'ok') {
                     if (callback !== undefined) {
-                        callback({found: true, photoId: photoid,  publicId : photo.public_id, url: photo.secure_url});
+                        var photos = result.result.resources;
+                        var photo = photos[0];
+
+                        if (callback !== undefined) {
+                            callback({found: true, photoId: photoid,  publicId : photo.public_id, url: photo.secure_url});
+                        }
+                    }
+                } else {
+                    if (callback !== undefined) {
+                        callback({found: false, photoId: photoid, publicId: null, url: null});
                     }
                 }
 
