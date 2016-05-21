@@ -1394,22 +1394,21 @@ var channelView = {
                 var photo = photos[i];
 
                 var url = photo.imageUrl;
-
-                if (url.indexOf('http'))
-
-                if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
-                    var photoItem = channelView.photos[photo.photoUUID];
-                    if (photoItem.imageUrl === null || !channelView.isAvailable(photoItem.imageUrl)) {
-                        photoModel.findCloudinaryPhoto(photo.photoUUID, function (result) {
-                            if (result.found) {
-                                var updatePhoto =  channelView.photos[result.photoId];
-                                updatePhoto.imageUrl = result.url;
-                                var channelPhotoUpdate = channelModel.findChannelPhoto(channelView._channelUUID, result.photoId);
+                if (url === null || !channelView.isAvailable(url)) {
+                    photoModel.findCloudinaryPhoto(photo.photoUUID, function (result) {
+                        if (result.found) {
+                            var updatePhoto =  channelView.photos[result.photoId];
+                            updatePhoto.imageUrl = result.url;
+                            var channelPhotoUpdate = channelModel.findChannelPhoto(channelView._channelUUID, result.photoId);
+                            if (channelPhotoUpdate !== null)
                                 channelPhotoUpdate.imageUrl = result.url;
 
-                            }
-                        })
-                    }
+                        }
+                    })
+                }
+                if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
+                    var photoItem = channelView.photos[photo.photoUUID];
+
                     var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
                     if (photoItem === undefined) {
                         // Photo isn't in the channel cache
