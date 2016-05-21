@@ -30,18 +30,12 @@ var photoModel = {
     init: function () {
 
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
-           // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'photos',
-                dataProvider: APP.everlive
+                typeName: 'photos'
             },
             schema: {
                 model: { id:  Everlive.idField}
-            },
-            sort: {
-                field: "timestamp",
-                dir: "desc"
             },
             autoSync: true
         });
@@ -52,16 +46,12 @@ var photoModel = {
             // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'deletedphotos',
-                 dataProvider: APP.everlive
+                typeName: 'deletedphotos'
             },
             schema: {
                 model: { id:  Everlive.idField}
             },
-            sort: {
-                field: "timestamp",
-                dir: "desc"
-            }
+            autoSync: true
         });
 
 
@@ -725,7 +715,7 @@ var photoModel = {
                     }
                 } else if (photoList.length === 1) {
                     if (photoList[0].id === undefined) {
-                        photoList[0].id = data.dd;
+                        photoList[0].id = data.id;
                     }
 
                     photoModel.photosDS.sync();
