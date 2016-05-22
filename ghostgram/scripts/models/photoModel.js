@@ -107,7 +107,7 @@ var photoModel = {
 
                 },
                 function () {
-                    photoModel.addToLocalCache(urlCloud, localUrl, photo);
+                    photoModel.addToLocalCache(urlCloud, localUrl, photo.photoId);
                     console.log("Caching photo on device :  " + photo.uuid);
                 });
         }
@@ -122,13 +122,14 @@ var photoModel = {
 
     },
 
-    addToLocalCache : function (url, localUrl, photo) {
+    addToLocalCache : function (url, localUrl, photoId) {
 
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, localUrl,
             function(entry) {
-                photo.deviceUrl =  entry;
-                console.log("Cached local copy of " + name);
+                var photo = photoModel.findPhotoById(photoId);
+                photo.set('deviceUrl',entry);
+                console.log("Cached local copy of " + photo.photoId);
             },
             function(err) {
               ggError("Local Cache Error " + JSON.stringify(err));
@@ -137,6 +138,35 @@ var photoModel = {
 
     syncLocal : function () {
         photoModel.photosDS.sync();
+    },
+
+    isValidDeviceUrl : function (url) {
+        if (url === undefined || url === null)
+            return(false);
+        
+        var testString = 'var';
+        if (device.platform === 'Android') {
+            testString = 'storage';
+        }
+        var result = url.indexOf(testString);
+
+        if (result === -1) {
+            return (false);
+        }
+
+        return(true);
+    },
+
+
+
+    syncPhotosToDevice: function () {
+        var total = photoModel.photosDS.total();
+
+        for (var i=0; i< total; i++ ) {
+            var photo = photoModel.photosDS.at(i);
+
+
+        }
     },
 
     syncPhotosToCloud : function () {
