@@ -143,7 +143,7 @@ var photoModel = {
     isValidDeviceUrl : function (url) {
         if (url === undefined || url === null)
             return(false);
-        
+
         var testString = 'var';
         if (device.platform === 'Android') {
             testString = 'storage';
@@ -165,6 +165,12 @@ var photoModel = {
         for (var i=0; i< total; i++ ) {
             var photo = photoModel.photosDS.at(i);
 
+            if (!photoModel.isValidDeviceUrl(photo.deviceUrl) && photo.cloudUrl !== null) {
+                var filename = photoModel.createPhotoLocalName(photo.photoId);
+                var localUrl = store + filename;
+                photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
+
+            }
 
         }
     },
