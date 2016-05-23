@@ -835,9 +835,10 @@ var photoModel = {
             // dataType:"jsonp",
             //  contentType: 'application/json',
             success: function(result) {
-                if (result.status === 'ok') {
+                var photos = result.result.resources;
+
+                if (result.status === 'ok' && photos.length > 0) {
                     if (callback !== undefined) {
-                        var photos = result.result.resources;
                         var photo = photos[0];
 
                         if (callback !== undefined) {
