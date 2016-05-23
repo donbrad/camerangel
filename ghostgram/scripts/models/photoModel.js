@@ -193,7 +193,7 @@ var photoModel = {
                         thisPhoto.set('imageUrl', result.url);
                         thisPhoto.set('thumbnailUrl', result.url.replace('upload//','upload//c_scale,h_512,w_512//'));
                         thisPhoto.set('cloudinaryPublicId', result.publicId);
-                        photoModel.photoDS.sync()
+                        photoModel.photosDS.sync()
                         
                     }
                 });
