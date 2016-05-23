@@ -607,6 +607,9 @@
 *[contenteditable] {
   -webkit-user-select: auto !important;
 }
+.photo-chat {
+  max-width: 50% !important;
+}
 /* elements */
 .userLgFontSize {
   font-size: 1.4em !important;
@@ -4229,7 +4232,7 @@ div.loginBox > form > div > ul > li {
 }
 .photo-chat {
   height: auto;
-  max-width: 95%;
+  max-width: 60%;
   border-radius: 3px;
   margin: 2.5% 2.5% 0 2.5%;
 }

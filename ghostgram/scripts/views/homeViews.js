@@ -339,7 +339,11 @@ var homeView = {
 
 
         // Hide action button on home
-        ux.showActionBtn(false, "#home");
+        ux.showActionBtn(true, "#home", "#settingsAction");
+        ux.changeActionBtnImg("home","nav-add-white");
+        ux.showActionBtnText("#home", "3em", "Shortcuts");
+
+        ux.addDataProp("rel", "actionsheet");
 
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();
@@ -349,6 +353,8 @@ var homeView = {
         _preventDefault (e);
         $(".homeToggleSetting").addClass("hidden");
         $(".homeToggleSearch").removeClass("hidden");
+
+        ux.removeDataProp("rel");
     },
 
     closeStatusModal: function(){
