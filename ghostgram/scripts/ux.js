@@ -114,13 +114,21 @@ var ux = {
 		$("div.footerMenu.km-footer > a > span > img").attr("src", "images/" +img+".svg");
 	},
 
+	addDataProp: function(dataKey, dataVal){
+		$("div.footerMenu.km-footer > a").data(dataKey, dataVal);
+	},
+
+	removeDataProp: function(dataKey){
+		$("div.footerMenu.km-footer > a").removeData(dataKey);
+	},
+
 	scrollUpSearch: function(e){
 		var scroller = e.view.scroller;
     	scroller.scrollTo(0,0);
 	},
 
 	returnUserFontSize: function(){
-		var user = "userLgFontSize"
+		var user = "userLgFontSize";
 		if(true){
 			return user;
 		}

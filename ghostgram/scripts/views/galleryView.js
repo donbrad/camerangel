@@ -874,6 +874,16 @@ var modalPhotoView = {
             photo.title = modalPhotoView._dummyTitle;
         }
         modalPhotoView._activePhoto.set('title', photo.title);
+
+        // set title
+        if(modalPhotoView._activePhoto.title !== ''){
+            $("#modalPhotoView-title").text(modalPhotoView._activePhoto.title);
+        } else {
+            $("#modalPhotoView-title").text("Title");
+        }
+
+
+
         modalPhotoView._activePhoto.set('thumbnailUrl', photo.thumbnailUrl);
         modalPhotoView._activePhoto.set('imageUrl', photo.imageUrl);
         if (photo.description === null) {
@@ -905,7 +915,7 @@ var modalPhotoView = {
 
 
         // Date  -- this doesnt work for gallery photos...
-      /*  var createdDate = moment(photo.createdAt).format("MMM Do, YYYY");
+        /*  var createdDate = moment(photo.createdAt).format("MMM Do, YYYY");
         $("#photoTitle-date").text(createdDate);*/
 
         $("#modalPhotoView").data("kendoMobileModalView").open();
@@ -915,6 +925,7 @@ var modalPhotoView = {
     },
 
     closeModal : function () {
+        modalPhotoView.closeTagEditor();
         $("#modalPhotoView").data("kendoMobileModalView").close();
     },
 
@@ -925,8 +936,6 @@ var modalPhotoView = {
             $("#modalPhotoView-editPhoto").velocity("slideDown");
             modalPhotoView._showInfo = true;
         }
-
-
     },
 
     closeTagEditor: function(e){

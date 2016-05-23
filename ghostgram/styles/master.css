@@ -607,6 +607,9 @@
 *[contenteditable] {
   -webkit-user-select: auto !important;
 }
+.photo-chat {
+  max-width: 50% !important;
+}
 /* elements */
 .userLgFontSize {
   font-size: 1.4em !important;
@@ -2026,6 +2029,9 @@ div.footerMenu.km-footer > ul > li > a:active {
 }
 .helper img {
   height: 12px;
+}
+.helper-required {
+  font-size: 0.85em;
 }
 .helper-sm {
   color: #979797;
@@ -4212,9 +4218,21 @@ div.loginBox > form > div > ul > li {
 .photoPreview > img {
   width: 100%;
 }
+#modalPhotoView-footer {
+  background-color: #000;
+  color: #fff;
+  padding: 0.5em 1em;
+}
+#modalPhotoView > div.km-header > div.km-widget.km-navbar {
+  background-color: #000 !important;
+  color: #fff;
+}
+#modalPhotoView-title {
+  color: #fff;
+}
 .photo-chat {
   height: auto;
-  max-width: 95%;
+  max-width: 60%;
   border-radius: 3px;
   margin: 2.5% 2.5% 0 2.5%;
 }
@@ -4923,10 +4941,19 @@ div.contactListBox.activeContact > div > div > ul {
   position: absolute;
   top: 28px;
   left: -0.6em;
+  min-width: 2em;
+  min-height: 2em;
 }
 #signup-confirmed,
-#signup-error {
+#signup-error,
+#signup-loading,
+#signup-error-txt,
+#signup-success-txt,
+#signup-revalidate {
   display: none;
+}
+#signup-error-txt {
+  color: #E57373;
 }
 .mobile-input {
   float: left;
@@ -5752,7 +5779,7 @@ html .km-pane-wrapper .k-header {
   border-bottom: 0.4rem solid transparent;
   border-right: 0.3rem solid #cae2fb;
   top: 1.5rem;
-  left: 11%;
+  left: 10.5%;
 }
 @media only screen and (max-width: 320px) {
   .chat-message-sender:after {
@@ -6332,9 +6359,12 @@ table.k-editor {
 /* User sign in */
 #newuserhome > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
 #usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container,
-#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
+#signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
   background: url('../images/icon-bk.svg') no-repeat center bottom fixed, radial-gradient(100% 100%, #A5D6FA 0%, #6CADF3 50%);
   background-size: contain;
+}
+.km-state-disabled {
+  background-color: #808080 !important;
 }
 #newLogo,
 #newWelcome {
