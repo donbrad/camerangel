@@ -847,7 +847,7 @@ var modalPhotoView = {
 
         // User is inspected / editing -- make sure the photo exists in the cloud and on the device...
         photoModel.isPhotoCached(photo);
-        var url = photo.imageUrl;
+        var url = null;
 
         if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
             url = photo.deviceUrl;
@@ -855,6 +855,11 @@ var modalPhotoView = {
             url = photo.cloudUrl;
         }
 
+        if (url === null) {
+            ggError("Can't access photo " + photo.photoId);
+            return;
+        }
+        
         modalPhotoView._photoUrl = url;
 
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
