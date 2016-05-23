@@ -189,11 +189,18 @@ var photoModel = {
                         // Photo does not exist -- need to upload it
                         photoModel.uploadPhotoToCloud(thisPhoto);
                     } else {
-                        // Photo exists just need to update local photo model
+                        // Photo exists just need to update local photo model]
+                        thisPhoto.set('cloudUrl', result.url);
                         thisPhoto.set('imageUrl', result.url);
                         thisPhoto.set('thumbnailUrl', result.url.replace('upload//','upload//c_scale,h_512,w_512//'));
                         thisPhoto.set('cloudinaryPublicId', result.publicId);
-                        photoModel.photosDS.sync()
+                        photoModel.photosDS.sync();
+                        if (!photoModel.isValidDeviceUrl(photo.deviceUrl)) {
+                            var filename = photoModel.createPhotoLocalName(photo.photoId);
+                            var localUrl = store + filename;
+                            photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
+
+                        }
                         
                     }
                 });
