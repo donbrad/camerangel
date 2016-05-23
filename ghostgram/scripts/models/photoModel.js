@@ -129,6 +129,7 @@ var photoModel = {
             function(entry) {
                 var photo = photoModel.findPhotoById(photoId);
                 photo.set('deviceUrl',entry);
+                photoModel.photosDS.sync();
                 console.log("Cached local copy of " + photo.photoId);
             },
             function(err) {
