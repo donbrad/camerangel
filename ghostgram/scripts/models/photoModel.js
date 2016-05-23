@@ -155,6 +155,12 @@ var photoModel = {
         }
         var result = url.indexOf(testString);
 
+        if (device.platform === 'iOS') {
+            // sometimes camera photos get places in the temp directory...
+            if (result !== -1) {
+                result = url.indexOf('/tmp');
+            }
+        }
         if (result === -1) {
             return (false);
         }
