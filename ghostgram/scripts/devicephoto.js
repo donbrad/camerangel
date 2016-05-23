@@ -227,8 +227,8 @@ var devicePhoto = {
                                 uri: uri,
                                 filename: "photo_"+filename,
                                 quality: 75,
-                                width: 1600,
-                                height: 1600
+                                width: devicePhoto._resolution,
+                                height: devicePhoto._resolution
                             };
 
                             var folder = devicePhoto._userPhoto;

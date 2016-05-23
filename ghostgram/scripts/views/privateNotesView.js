@@ -813,7 +813,7 @@ var privateNotesView = {
         _preventDefault(e);
 
         devicePhoto.deviceCamera(
-            1600, // max resolution in pixels
+            devicePhoto._resolution, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
            null,  // Current channel Id for offers
@@ -826,7 +826,7 @@ var privateNotesView = {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
         devicePhoto.deviceGallery(
-            1600, // max resolution in pixels
+            devicePhoto._resolution, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null,  // Current channel Id for offers
