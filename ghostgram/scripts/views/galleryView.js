@@ -849,6 +849,13 @@ var modalPhotoView = {
         photoModel.isPhotoCached(photo);
         var url = null;
 
+        var deviceUrl = photo.deviceUrl;
+
+        if (deviceUrl.indexOf('file://') === -1 ) {
+            deviceUrl = 'file://' + deviceUrl;
+            photo.set('deviceUrl', deviceUrl);
+        }
+
         if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
             url = photo.deviceUrl;
         } else if (photoModel.isValidDeviceUrl(photo.cloudUrl)){
@@ -859,7 +866,7 @@ var modalPhotoView = {
             ggError("Can't access photo " + photo.photoId);
             return;
         }
-        
+
         modalPhotoView._photoUrl = url;
 
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
