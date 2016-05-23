@@ -30,18 +30,12 @@ var photoModel = {
     init: function () {
 
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
-           // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'photos',
-                dataProvider: APP.everlive
+                typeName: 'photos'
             },
             schema: {
                 model: { id:  Everlive.idField}
-            },
-            sort: {
-                field: "timestamp",
-                dir: "desc"
             },
             autoSync: true
         });
@@ -52,16 +46,12 @@ var photoModel = {
             // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'deletedphotos',
-                 dataProvider: APP.everlive
+                typeName: 'deletedphotos'
             },
             schema: {
                 model: { id:  Everlive.idField}
             },
-            sort: {
-                field: "timestamp",
-                dir: "desc"
-            }
+            autoSync: true
         });
 
 
@@ -101,11 +91,14 @@ var photoModel = {
        
         var urlCloud= photo.cloudUrl, urlDevice = photo.deviceUrl;
 
-        if (urlCloud !== null && urlDevice !== null) {
+        var validDevice = photoModel.isValidDeviceUrl(urlDevice);
+        var validCloud = photoModel.isValidCloudUrl(urlCloud);
+        
+        if (validCound && validDevice) {
             return(true);
         }
 
-        if (urlCloud !== null && urlDevice === null) {
+        if (validCloud && !validDevice) {
         // Photo is on the cloud but not the local device
             var store = deviceModel.fileDirectory;
             var filename = photoModel.createPhotoLocalName(photo.photoId);
@@ -117,12 +110,12 @@ var photoModel = {
 
                 },
                 function () {
-                    photoModel.addToLocalCache(urlCloud, localUrl, photo);
+                    photoModel.addToLocalCache(urlCloud, localUrl, photo.photoId);
                     console.log("Caching photo on device :  " + photo.uuid);
                 });
         }
 
-        if (urlCloud === null && urlDevice !== null) {
+        if (!validCloud && validDevice) {
             // Photo is on the device but not stored in the cloud
             console.log("Uploading Photo to cloud : " + photo.uuid);
             photoModel.uploadPhotoToCloud(photo);
@@ -132,13 +125,15 @@ var photoModel = {
 
     },
 
-    addToLocalCache : function (url, localUrl, photo) {
+    addToLocalCache : function (url, localUrl, photoId) {
 
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, localUrl,
             function(entry) {
-                photo.deviceUrl =  entry;
-                console.log("Cached local copy of " + name);
+                var photo = photoModel.findPhotoById(photoId);
+                photo.set('deviceUrl',entry);
+                photoModel.photosDS.sync();
+                console.log("Cached local copy of " + photo.photoId);
             },
             function(err) {
               ggError("Local Cache Error " + JSON.stringify(err));
@@ -148,7 +143,92 @@ var photoModel = {
     syncLocal : function () {
         photoModel.photosDS.sync();
     },
+
     
+    isValidDeviceUrl : function (url) {
+        if (url === undefined || url === null)
+            return(false);
+
+        var testString = 'file:///var';
+        if (device.platform === 'Android') {
+            testString = 'file:///storage';
+        }
+        var result = url.indexOf(testString);
+
+        if (result === -1) {
+            return (false);
+        }
+
+        return(true);
+    },
+
+    isValidCloudUrl : function (url) {
+        if (url === undefined || url === null)
+            return(false);
+
+      
+        var result = url.indexOf('cloudinary');
+
+        if (result === -1) {
+            return (false);
+        }
+
+        return(true);
+    },
+
+
+    syncPhotosToDevice: function () {
+        var total = photoModel.photosDS.total();
+
+        for (var i=0; i< total; i++ ) {
+            var photo = photoModel.photosDS.at(i);
+
+            if (!photoModel.isValidDeviceUrl(photo.deviceUrl) && photo.cloudUrl !== null) {
+                var filename = photoModel.createPhotoLocalName(photo.photoId);
+                var localUrl = store + filename;
+                photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
+
+            }
+
+        }
+    },
+
+    syncPhotosToCloud : function () {
+        var total = photoModel.photosDS.total();
+
+        for (var i=0; i< total; i++ ) {
+            var photo = photoModel.photosDS.at(i);
+            // Is there a valid cloudId?
+            if (photo.cloudinaryPublicId === undefined  || photo.cloudinaryPublicId === null) {
+                // No valid cloudId.  Does the photo exist in the cloud?
+                photoModel.findCloudinaryPhoto(photo.photoId, function (result) {
+                    var thisPhoto = photoModel.findPhotoById(result.photoId);
+                    if (!result.found) {
+                        // Photo does not exist -- need to upload it
+                        photoModel.uploadPhotoToCloud(thisPhoto);
+                    } else {
+                        // Photo exists just need to update local photo model]
+                        thisPhoto.set('cloudUrl', result.url);
+                        thisPhoto.set('imageUrl', result.url);
+                        thisPhoto.set('thumbnailUrl', result.url.replace('upload//','upload//c_scale,h_512,w_512//'));
+                        thisPhoto.set('cloudinaryPublicId', result.publicId);
+                        photoModel.photosDS.sync();
+                        if (!photoModel.isValidDeviceUrl(photo.deviceUrl)) {
+                            var filename = photoModel.createPhotoLocalName(photo.photoId);
+                            var localUrl = store + filename;
+                            photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
+
+                        }
+                        
+                    }
+                });
+               
+            }
+
+        }
+    },
+
+
     uploadPhotoToCloud : function (photo) {
         
         var url = photo.deviceUrl, photouuid = photo.uuid;
@@ -156,6 +236,7 @@ var photoModel = {
         if (url === null) {
             return;
         }
+
         devicePhoto.convertImgToDataURL(url, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
             var folder = devicePhoto._userPhoto;
@@ -164,9 +245,9 @@ var photoModel = {
                 var photoObj = photoModel.findPhotoById(photouuid);
 
                 if (photoObj !== undefined && photoData !== null) {
-                    photoObj.set('imageUrl', photoData.url);
-                    photoObj.set('cloudUrl', photoData.url);
-                    photoObj.thumbnailUrl = photoData.url.replace('upload//','upload//c_scale,h_512,w_512//');
+                    photoObj.set('imageUrl', photoData.secure_url);
+                    photoObj.set('cloudUrl', photoData._secure_url);
+                    photoObj.thumbnailUrl = photoData.secure_url.replace('upload//','upload//c_scale,h_512,w_512//');
                     photoObj.cloudinaryPublicId = photoData.public_id;
                    //photoModel.updateCloud(photoObj);
                     photoModel.syncLocal();
@@ -627,6 +708,7 @@ var photoModel = {
 
         photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
         photo.set('cloudUrl', devicePhoto.cloudUrl);
+        photo.set('cloudinaryPublicId', devicePhoto.cloudinaryPublicId);
         photo.set('title', null);
         photo.set('description', null);
         photo.set('senderUUID', userModel._user.userUUID);
@@ -701,13 +783,13 @@ var photoModel = {
        
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
-
+        photoModel.photosDS.sync();
         
         if (callback !== undefined) {
             callback(null, photo);
         }
         
-       everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+       /*everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
 
@@ -725,7 +807,7 @@ var photoModel = {
                     }
                 } else if (photoList.length === 1) {
                     if (photoList[0].id === undefined) {
-                        photoList[0].id = data.dd;
+                        photoList[0].id = data.id;
                     }
 
                     photoModel.photosDS.sync();
@@ -734,7 +816,7 @@ var photoModel = {
 
             }
         });
-        
+        */
     },
 
     updateCloud : function (photoObj)  {
@@ -763,17 +845,26 @@ var photoModel = {
     },
 
     findCloudinaryPhoto : function (photoid, callback) {
+        var guid = photoid.replace(/-/g,'');
+        var publicId = 'userphoto/'+guid;
         $.ajax({
-            url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/findCloudinaryPhoto?photoid='+photoid,
+            url: 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/findCloudinaryPhoto?photoid='+publicId,
             // dataType:"jsonp",
             //  contentType: 'application/json',
             success: function(result) {
-                if (callback !== undefined) {
-                    var photos = result.resources;
-                    var photo = photos[0];
+                var photos = result.result.resources;
 
+                if (result.status === 'ok' && photos.length > 0) {
                     if (callback !== undefined) {
-                        callback({found: true, publicId : photo.public_id, url: photo.secure_url});
+                        var photo = photos[0];
+
+                        if (callback !== undefined) {
+                            callback({found: true, photoId: photoid,  publicId : photo.public_id, url: photo.secure_url});
+                        }
+                    }
+                } else {
+                    if (callback !== undefined) {
+                        callback({found: false, photoId: photoid, publicId: null, url: null});
                     }
                 }
 
@@ -781,7 +872,7 @@ var photoModel = {
             error: function(error) {
 
                 if (callback !== undefined) {
-                    callback({found: false, publicId: null, url: null});
+                    callback({found: false, photoId: photoid, publicId: null, url: null});
                 }
 
             }

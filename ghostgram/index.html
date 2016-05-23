@@ -3700,7 +3700,7 @@
 </script>
 
 <script type="text/x-kendo-template" id="gallery-template">
-	# var photoUrl = cloudUrl; if (photoUrl === null) {   photoUrl = deviceUrl; }#
+	# var photoUrl = cloudUrl; if (photoModel.isValidDeviceUrl(deviceUrl)) { photoUrl = deviceUrl; }#
 
 	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
 

@@ -1394,11 +1394,21 @@ var channelView = {
                 var photo = photos[i];
 
                 var url = photo.imageUrl;
+                if (url === null || !channelView.isAvailable(url)) {
+                    photoModel.findCloudinaryPhoto(photo.photoUUID, function (result) {
+                        if (result.found) {
+                            var updatePhoto =  channelView.photos[result.photoId];
+                            updatePhoto.imageUrl = result.url;
+                            var channelPhotoUpdate = channelModel.findChannelPhoto(channelView._channelUUID, result.photoId);
+                            if (channelPhotoUpdate !== null)
+                                channelPhotoUpdate.set('imageUrl',result.url);
 
-                if (url.indexOf('http'))
-
+                        }
+                    })
+                }
                 if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
                     var photoItem = channelView.photos[photo.photoUUID];
+
                     var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
                     if (photoItem === undefined) {
                         // Photo isn't in the channel cache
@@ -1878,6 +1888,15 @@ var channelView = {
 
     },
 
+    isAvailable : function (url) {
+        if (url === undefined || url === null) {
+            return (false);
+        }
+        if (url.indexOf('cloudinary') !== -1) {
+            return (true);
+        }
+        return (false);
+    },
 
     messageAddSharedPhoto : function (photoId, shareId, canCopy) {
 
@@ -1887,18 +1906,26 @@ var channelView = {
             ggError("Can't find this photo !!!");
             return;
         }
-        
+
+
         var photoObj  = {
             uuid: shareId,
             photoUUID: photoId,
             channelUUID: channelView._channelUUID,
-            thumbnailUrl: photo.thumbnailUrl,
-            imageUrl: photo.imageUrl,
+            thumbnailUrl: null,
+            imageUrl: null,
             canCopy: canCopy,
             ownerUUID: photo.senderUUID,
-            ownerName: photo.senderName
+            ownerName: photo.senderName,
+            timestamp: ggTime.currentTime()
         };
-        
+
+        if (channelView.isAvailable(photo.thumbnailUrl))
+            photoObj.thumbnailUrl = photo.thumbnailUrl;
+
+        if (channelView.isAvailable(photo.imageUrl))
+            photoObj.imageUrl = photo.imageUrl;
+
         // Add the photo to the current message
         channelView.activeMessage.photos.push(photoObj);
 
@@ -2554,7 +2581,7 @@ var channelView = {
        _preventDefault(e);
 
         devicePhoto.deviceCamera(
-            1600, // max resolution in pixels
+            devicePhoto._resolution, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             channelView._channelUUID,  // Current channel Id for offers
@@ -2566,7 +2593,7 @@ var channelView = {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
         devicePhoto.deviceGallery(
-            1600, // max resolution in pixels
+            devicePhoto._resolution, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             channelView._channelUUID,  // Current channel Id for offers

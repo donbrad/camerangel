@@ -79,6 +79,9 @@ var galleryView = {
 
         ux.hideKeyboard();
 
+        // Make sure all the local photos have been uploaded
+        photoModel.syncPhotosToCloud();
+
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
 
@@ -326,7 +329,7 @@ var galleryView = {
         _preventDefault(e);
 
         devicePhoto.deviceCamera(
-            1600, // max resolution in pixels
+            devicePhoto._resolution, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null,  // Current channel Id for offers
@@ -344,7 +347,7 @@ var galleryView = {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
         devicePhoto.deviceGallery(
-            1600, // max resolution in pixels
+            devicePhoto._resolution, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null, // Current channel Id for offers
@@ -842,9 +845,28 @@ var modalPhotoView = {
     openModal : function (photo) {
         modalPhotoView._photo = photo;
 
-        var url = photo.thumbnailUrl;
-        if (photo.imageUrl !== null)
-            url = photo.imageUrl;
+        // User is inspected / editing -- make sure the photo exists in the cloud and on the device...
+        photoModel.isPhotoCached(photo);
+        var url = null;
+
+        var deviceUrl = photo.deviceUrl;
+
+        if (deviceUrl.indexOf('file://') === -1 ) {
+            deviceUrl = 'file://' + deviceUrl;
+            photo.set('deviceUrl', deviceUrl);
+        }
+
+        if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
+            url = photo.deviceUrl;
+        } else if (photoModel.isValidDeviceUrl(photo.cloudUrl)){
+            url = photo.cloudUrl;
+        }
+
+        if (url === null) {
+            ggError("Can't access photo " + photo.photoId);
+            return;
+        }
+
         modalPhotoView._photoUrl = url;
 
         modalPhotoView._activePhoto.set('photoId', photo.photoId);
