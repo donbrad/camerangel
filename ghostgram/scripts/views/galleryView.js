@@ -845,9 +845,16 @@ var modalPhotoView = {
     openModal : function (photo) {
         modalPhotoView._photo = photo;
 
-        var url = photo.thumbnailUrl;
-        if (photo.imageUrl !== null)
-            url = photo.imageUrl;
+        // User is inspected / editing -- make sure the photo exists in the cloud and on the device...
+        photoModel.isPhotoCached(photo);
+        var url = photo.imageUrl;
+
+        if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
+            url = photo.deviceUrl;
+        } else if (photoModel.isValidDeviceUrl(photo.cloudUrl)){
+            url = photo.cloudUrl;
+        }
+
         modalPhotoView._photoUrl = url;
 
         modalPhotoView._activePhoto.set('photoId', photo.photoId);

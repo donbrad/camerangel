@@ -91,11 +91,14 @@ var photoModel = {
        
         var urlCloud= photo.cloudUrl, urlDevice = photo.deviceUrl;
 
-        if (urlCloud !== null && urlDevice !== null) {
+        var validDevice = photoModel.isValidDeviceUrl(urlDevice);
+        var validCloud = photoModel.isValidCloudUrl(urlCloud);
+        
+        if (validCound && validDevice) {
             return(true);
         }
 
-        if (urlCloud !== null && urlDevice === null) {
+        if (validCloud && !validDevice) {
         // Photo is on the cloud but not the local device
             var store = deviceModel.fileDirectory;
             var filename = photoModel.createPhotoLocalName(photo.photoId);
@@ -112,7 +115,7 @@ var photoModel = {
                 });
         }
 
-        if (urlCloud === null && urlDevice !== null) {
+        if (!validCloud && validDevice) {
             // Photo is on the device but not stored in the cloud
             console.log("Uploading Photo to cloud : " + photo.uuid);
             photoModel.uploadPhotoToCloud(photo);
@@ -141,6 +144,7 @@ var photoModel = {
         photoModel.photosDS.sync();
     },
 
+    
     isValidDeviceUrl : function (url) {
         if (url === undefined || url === null)
             return(false);
@@ -158,6 +162,19 @@ var photoModel = {
         return(true);
     },
 
+    isValidCloudUrl : function (url) {
+        if (url === undefined || url === null)
+            return(false);
+
+      
+        var result = url.indexOf('cloudinary');
+
+        if (result === -1) {
+            return (false);
+        }
+
+        return(true);
+    },
 
 
     syncPhotosToDevice: function () {
