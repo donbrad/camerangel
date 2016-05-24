@@ -424,7 +424,7 @@ var devicePhoto = {
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
-                        photoModel.updateCloud(photoObj);
+                      //  photoModel.updateCloud(photoObj);
                         if (shareCallback !== undefined) {
                             shareCallback(photoObj.photoId, photoObj.cloudUrl);
                         }
