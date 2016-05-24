@@ -35,7 +35,7 @@ var photoModel = {
                 typeName: 'photos'
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
             autoSync: true
         });
@@ -49,7 +49,7 @@ var photoModel = {
                 typeName: 'deletedphotos'
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
             autoSync: true
         });
