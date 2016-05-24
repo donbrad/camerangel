@@ -384,6 +384,12 @@ var devicePhoto = {
         devicePhoto.currentPhoto.alt = gpsObj.alt;
         devicePhoto.currentPhoto.timeStamp = gpsObj.timestamp;
 
+        if (device.platform === 'iOS') {
+            if (imageUrl.indexOf('/tmp') !== -1) {
+                ggError("Storing photo in temporary storage");
+            }
+        }
+
         photoModel.addDevicePhoto(devicePhoto.currentPhoto, true, isProfilePhoto,  function (error, photo) {
             if (error !== null) {
                 mobileNotify("Photo Save Error : " + JSON.stringify(error));
