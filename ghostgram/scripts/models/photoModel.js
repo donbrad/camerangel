@@ -195,6 +195,7 @@ var photoModel = {
 
             if (!photoModel.isValidDeviceUrl(photo.deviceUrl) && photo.cloudUrl !== null) {
                 var filename = photoModel.createPhotoLocalName(photo.photoId);
+                var store = deviceModel.fileDirectory;
                 var localUrl = store + filename;
                 photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
 
@@ -224,6 +225,7 @@ var photoModel = {
                         thisPhoto.set('cloudinaryPublicId', result.publicId);
                         photoModel.photosDS.sync();
                         if (!photoModel.isValidDeviceUrl(photo.deviceUrl)) {
+                            var store = deviceModel.fileDirectory;
                             var filename = photoModel.createPhotoLocalName(photo.photoId);
                             var localUrl = store + filename;
                             photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
