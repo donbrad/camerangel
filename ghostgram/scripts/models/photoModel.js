@@ -94,7 +94,7 @@ var photoModel = {
         var validDevice = photoModel.isValidDeviceUrl(urlDevice);
         var validCloud = photoModel.isValidCloudUrl(urlCloud);
         
-        if (validCound && validDevice) {
+        if (validCloud && validDevice) {
             return(true);
         }
 
