@@ -127,6 +127,11 @@ var photoModel = {
 
     addToLocalCache : function (url, localUrl, photoId) {
 
+        if (url === null || photoId === null) {
+            ggError("Local Cache Error - Null Url");
+            return;
+            
+        }
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, localUrl,
             function(entry) {
