@@ -862,6 +862,8 @@ var modalPhotoView = {
             url = photo.cloudUrl;
         }
 
+
+        // temporary fix for munged images
         if (url === null && photo.cloudinaryPublicId !== null) {
             url = photo.imageUrl;
         }
