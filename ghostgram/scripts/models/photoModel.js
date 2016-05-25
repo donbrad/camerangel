@@ -154,9 +154,9 @@ var photoModel = {
         if (url === undefined || url === null)
             return(false);
 
-        var testString = 'file:///var';
+        var testString = '/var';
         if (device.platform === 'Android') {
-            testString = 'file:///storage';
+            testString = '/storage';
         }
         var result = url.indexOf(testString);
 
