@@ -3694,7 +3694,7 @@
 </script>
 
 <script type="text/x-kendo-template" id="gallery-template">
-	# var photoUrl = cloudUrl; if (photoModel.isValidDeviceUrl(deviceUrl)) { if (deviceUrl.indexOf('file:') === -1) {deviceUrl = 'file:\/\/' + deviceUrl;} photoUrl = deviceUrl; } console.log(photoUrl);#
+	# var photoUrl = cloudUrl; if (photoModel.isValidDeviceUrl(deviceUrl)) { if (deviceUrl.indexOf('file:') !== -1) {deviceUrl =  deviceUrl.replace('file://', '';} photoUrl = deviceUrl; } console.log(photoUrl);#
 
 	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
 
