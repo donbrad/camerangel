@@ -3696,6 +3696,8 @@
 <script type="text/x-kendo-template" id="gallery-template">
 	# var photoUrl = cloudUrl;
 	if (photoModel.isValidDeviceUrl(deviceUrl)) {
+	    if (deviceUrl.indexOf('file:') === -1)
+			deviceUrl = 'file://' + deviceUrl;
 		photoUrl = deviceUrl;
 	} else if (!photoModel.isValidCloudUrl(cloudUrl)) {
 		if (cloudinaryPublicId !== undefined && cloudinaryPublicId !== null) {
