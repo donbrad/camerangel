@@ -351,8 +351,8 @@ var devicePhoto = {
         );
     },
 
-    _processPhoto : function (imageUrl, isChat, gpsObj, channelUUID, displayCallback, shareCallback) {
-        var photouuid = uuid.v4();
+    _processPhoto : function (imageUrl, photouuid, isChat, gpsObj, channelUUID, displayCallback, shareCallback) {
+
         // convert uuid into valid file name;
         var filename = photouuid.replace(/-/g,'');
       /*  if (device.platform !== 'iOS') {
@@ -360,7 +360,6 @@ var devicePhoto = {
             imageUrl = imageUrl.replace('file://', '');
        }
 */
-
         mobileNotify("Processing Photo...");
         /*  if (device.platform === 'iOS') {
          uri = uri.replace('file://', '');
@@ -371,14 +370,13 @@ var devicePhoto = {
             isProfilePhoto = true;
         }
 
-
         devicePhoto.currentPhoto.photoId = photouuid;
         devicePhoto.currentPhoto.filename = filename;
         devicePhoto.currentPhoto.deviceUrl = imageUrl;
-        devicePhoto.currentPhoto.imageUrl = imageUrl;
+        devicePhoto.currentPhoto.imageUrl = null;
         devicePhoto.currentPhoto.cloudUrl = null;
         devicePhoto.currentPhoto.cloudinaryPublicId = null;
-        devicePhoto.currentPhoto.thumbnailUrl = imageUrl;
+        devicePhoto.currentPhoto.thumbnailUrl = null;
         devicePhoto.currentPhoto.lat = gpsObj.lat;
         devicePhoto.currentPhoto.lng = gpsObj.lng;
         devicePhoto.currentPhoto.alt = gpsObj.alt;
@@ -507,23 +505,36 @@ var devicePhoto = {
 
         navigator.camera.getPicture(
             function (imageData) {
-
+                var photouuid = uuid.v4();
+                // convert uuid into valid file name;
+                var filename = photouuid.replace(/-/g,'');
                 var imageObj = JSON.parse(imageData);
                 var metaObj = JSON.parse(imageObj.json_metadata);
                 var gpsObj = null;
                 //  var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
                 var imageFile = imageObj.filename;
+                var filename = photouuid.replace(/-/g,'');
                 if (device.platform === 'iOS') {
                     // *** IOS ***
                     imageUrl = imageUrl.replace('file://', '');
                     gpsObj = devicePhoto.processGPS(metaObj.GPS);
                     window.resolveLocalFileSystemURL(imageFile, function fileEntrySuccess(fileEntry) {
-                        var localUrl = fileEntry.toURL(), nativeUrl =  fileEntry.nativeURL;
+                        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function directoryEntrySuccess(directoryEntry) {
+                            var uniqueNewFilename = "photo_" + filename + ".jpg";
+                            fileEntry.moveTo(directoryEntry.root, uniqueNewFilename, function moveFileSuccess(newFileEntry) {
+                                var localUrl = newFileEntry.toURL(), nativeUrl = newFileEntry.nativeURL;
+                               // var localUrl = fileEntry.toURL(), nativeUrl = fileEntry.nativeURL;
 
-                        devicePhoto._processPhoto(nativeUrl, isChat, gpsObj, channelUUID, displayCallback, shareCallback );
-                    }, function(error){
-                        console.log(JSON.stringify(error));
+                                devicePhoto._processPhoto(nativeUrl, photouuid,  isChat, gpsObj, channelUUID, displayCallback, shareCallback);
+                            }, function (error) {
+                                console.log(JSON.stringify(error));
+                            });
+                        }, function (error) {
+                            console.log(JSON.stringify(error));
+                        }, function (error) {
+                            console.log(JSON.stringify(error));
+                        });
                     });
                 } else {
                     // *** Android ***
