@@ -422,7 +422,8 @@ var devicePhoto = {
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
-                      //  photoModel.updateCloud(photoObj);
+                        everlive.syncCloud();
+                        //photoModel.updateCloud(photoObj);
                         if (shareCallback !== undefined) {
                             shareCallback(photoObj.photoId, photoObj.cloudUrl);
                         }
@@ -451,7 +452,7 @@ var devicePhoto = {
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
-                        //everlive.syncCloud();
+                        everlive.syncCloud();
                         // photoModel.updateCloud(photoObj);
                         if (shareCallback !== undefined) {
                             shareCallback(photoObj.photoId, photoObj.cloudUrl);
@@ -542,7 +543,7 @@ var devicePhoto = {
                        var  photo_split=imageFile.split("%3A");
                         imageFile="content://media/external/images/media/"+photo_split[1];
                     }
-                    devicePhoto._processPhoto(imageFile, isChat, gpsObj, channelUUID, displayCallback, shareCallback);
+                    devicePhoto._processPhoto(imageFile, photouuid, isChat, gpsObj, channelUUID, displayCallback, shareCallback);
 
                     /*window.FilePath.resolveNativePath(imageFile, function (result) {
                         // onSuccess code

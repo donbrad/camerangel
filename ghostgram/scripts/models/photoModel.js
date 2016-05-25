@@ -802,6 +802,7 @@ var photoModel = {
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
+        everlive.syncCloud();
         
         if (callback !== undefined) {
             callback(null, photo);
