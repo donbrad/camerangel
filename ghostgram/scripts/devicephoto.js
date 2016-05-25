@@ -514,7 +514,6 @@ var devicePhoto = {
                 //  var lat = metaObj.GPS.Latitude, lng = metaObj.GPS.Longitude, altitude = metaObj.GPS.Altitude, date = metaObj.GPS.DateStamp, time=metaObj.GPS.TimeStamp;
                 var imageUrl = imageObj.filename;
                 var imageFile = imageObj.filename;
-                var filename = photouuid.replace(/-/g,'');
                 if (device.platform === 'iOS') {
                     // *** IOS ***
                     imageUrl = imageUrl.replace('file://', '');
