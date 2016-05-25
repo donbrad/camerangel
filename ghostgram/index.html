@@ -3700,7 +3700,7 @@
 			deviceUrl =  deviceUrl.replace('file://', '');
 		}
 		photoUrl = deviceUrl;
-	} else if (!isValidCloudUrl(cloudUrl)) {
+	} else if (!photoModel.isValidCloudUrl(cloudUrl)) {
 		if (cloudinaryPublicId !== undefined && cloudinaryPublicId !== null) {
 			photoUrl = imageUrl;
 	        cloudUrl = imageUrl;
