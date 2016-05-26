@@ -17,11 +17,10 @@ var smartMovie = {
         smartMovie.moviesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'smartMovie',
-                dataProvider: APP.everlive
+                typeName: 'smartMovie'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "date",

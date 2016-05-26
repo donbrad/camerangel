@@ -12,19 +12,13 @@ var sharedPhotoModel = {
         sharedPhotoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
-                typeName: 'sharedphoto',
-                 dataProvider: APP.everlive
+                typeName: 'sharedphoto'
             },
             schema: {
-                model: { Id:  Everlive.idField}
-            },
-            sort: {
-                field: "timestamp",
-                dir: "desc"
+                model: { id:  Everlive.idField}
             }
         });
-
-
+        
     },
     
     updateCloud : function (photoObj)  {
@@ -46,7 +40,6 @@ var sharedPhotoModel = {
         
         share.set('version', sharedPhotoModel._version);
         share.set('ggType', sharedPhotoModel._ggClass);
-        share.set('Id', shareuuid);
         share.set('uuid', shareuuid);
         share.set('photoUUID', photoUUID);
         share.set('channelUUID', channelUUID);

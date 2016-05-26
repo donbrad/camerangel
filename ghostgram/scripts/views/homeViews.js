@@ -345,6 +345,8 @@ var homeView = {
 
         ux.addDataProp("rel", "actionsheet");
 
+        everlive.syncCloud();
+
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();
     },

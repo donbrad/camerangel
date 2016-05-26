@@ -36,12 +36,64 @@ var photoModel = {
             },
             schema: {
                 model: { id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
 
 
-      
+        // Reflect any core contact changes to contactList
+        photoModel.photosDS.bind("change", function (e) {
+            var changedPhotos = e.items;
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        /*  var field  =  e.field;
+                         var contact = e.items[0], contactId = contact.uuid;
+                         var contactList = contactModel.findContactListUUID(contactId);
+                         // if the contact's name or alias has been updated, need to update the tag...
+                         var tagList = tagModel.findTagByCategoryId(contact.uuid);
+
+                         if (tagList.length > 0) {
+                         var contactTag = tagList[0];
+                         contactTag.set('alias',contact.alias);
+                         contactTag.set('name', contact.name);
+                         }
+                         contactList[field] = contact [field];*/
+                        break;
+
+                    case "remove" :
+                        var photo = e.items[0];
+                        // delete from contact list
+                        /* var contactList = contactModel.findContactList(contact.uuid);
+                         if (contactList !== undefined) {
+                         contactModel.contactListDS.remove(contactList);
+                         }*/
+                        break;
+
+                    case "add" :
+                        var photo = e.items[0];
+                        var photoId = photo.uuid;
+
+                       photoModel.ensureUniquePhoto(photoId);
+                        // add to contactlist and contacttags
+                        /* var contactList = contactModel.findContactList(contact.uuid);
+                         if (contactList !== undefined) {
+                         contact.identicon = contactModel.createIdenticon(contact.uuid);
+                         if (contact.photo === null)
+                         contact.photo = contact.identicon;
+                         contactModel.contactListDS.add(contact);
+                         } else {
+                         if (contactList.photo === undefined || contactList.photo === null) {
+                         contactList.identicon = contactModel.createIdenticon(contactList.uuid);
+                         contactList.photo = contactList.identicon;
+                         }
+                         }
+                         tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);*/
+                        break;
+                }
+            }
+        });
+
         photoModel.deletedPhotosDS = new kendo.data.DataSource({
             // offlineStorage: "photos",
             type: 'everlive',
@@ -94,7 +146,7 @@ var photoModel = {
         var validDevice = photoModel.isValidDeviceUrl(urlDevice);
         var validCloud = photoModel.isValidCloudUrl(urlCloud);
         
-        if (validCound && validDevice) {
+        if (validCloud && validDevice) {
             return(true);
         }
 
@@ -125,8 +177,47 @@ var photoModel = {
 
     },
 
+    ensureUniquePhoto : function (photoId) {
+        if (photoId === undefined || photoId === null)
+            return;
+
+        var photoList = photoModel.findPhotosById(photoId);
+        var bestPhoto = -1;
+        if (photoList !== undefined && photoList.length > 1) {
+            for (var i=0; i< photoList.length; i++) {
+                var photo = photoList[i];
+                if (photo.Id === undefined) {
+                    photoModel.photosDS.remove(photo);
+                }
+                if (photo.cloudinaryPublicId !== null && photo.cloudUrl !== null) {
+                    bestPhoto = i;
+                }
+            }
+        }
+
+        if (bestPhoto !== -1) {
+            photoList = photoModel.findPhotosById(photoId);
+            if (photoList !== undefined && photoList.length > 1) {
+                for (var j=0; j< photoList.length; j++) {
+                    var photo1 = photoList[j];
+                    if (j !== bestPhoto) {
+                        photoModel.photosDS.remove(photo1);
+                    }
+
+                }
+            }
+        }
+
+        photoModel.photosDS.sync();
+    },
+
     addToLocalCache : function (url, localUrl, photoId) {
 
+        if (url === null || photoId === null) {
+            ggError("Local Cache Error - Null Url");
+            return;
+            
+        }
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, localUrl,
             function(entry) {
@@ -149,12 +240,22 @@ var photoModel = {
         if (url === undefined || url === null)
             return(false);
 
-        var testString = 'file:///var';
+        var testString = '/var';
         if (device.platform === 'Android') {
-            testString = 'file:///storage';
+            testString = '/storage';
         }
         var result = url.indexOf(testString);
 
+        if (device.platform === 'iOS') {
+            // sometimes camera photos get places in the temp directory...
+            if (result !== -1) {
+                var tempDir = url.indexOf('/tmp');
+                // if tmp is found, return invalid url
+                if (tempDir !== -1) {
+                    result = -1;
+                }
+            }
+        }
         if (result === -1) {
             return (false);
         }
@@ -185,6 +286,7 @@ var photoModel = {
 
             if (!photoModel.isValidDeviceUrl(photo.deviceUrl) && photo.cloudUrl !== null) {
                 var filename = photoModel.createPhotoLocalName(photo.photoId);
+                var store = deviceModel.fileDirectory;
                 var localUrl = store + filename;
                 photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
 
@@ -214,6 +316,7 @@ var photoModel = {
                         thisPhoto.set('cloudinaryPublicId', result.publicId);
                         photoModel.photosDS.sync();
                         if (!photoModel.isValidDeviceUrl(photo.deviceUrl)) {
+                            var store = deviceModel.fileDirectory;
                             var filename = photoModel.createPhotoLocalName(photo.photoId);
                             var localUrl = store + filename;
                             photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
@@ -697,6 +800,7 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
+        photo.set('id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
@@ -784,6 +888,7 @@ var photoModel = {
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
+        //everlive.syncCloud();
         
         if (callback !== undefined) {
             callback(null, photo);

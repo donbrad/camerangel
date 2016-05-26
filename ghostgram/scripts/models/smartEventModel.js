@@ -128,11 +128,10 @@ var smartEvent = {
             //offlineStorage: "smartEvent",
             type: 'everlive',
             transport: {
-                typeName: 'smartEvent',
-                dataProvider: APP.everlive
+                typeName: 'smartEvent'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "date",

@@ -858,8 +858,14 @@ var modalPhotoView = {
 
         if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
             url = photo.deviceUrl;
-        } else if (photoModel.isValidDeviceUrl(photo.cloudUrl)){
+        } else if (photoModel.isValidCloudUrl(photo.cloudUrl)){
             url = photo.cloudUrl;
+        }
+
+
+        // temporary fix for munged images
+        if (url === null && photo.cloudinaryPublicId !== null) {
+            url = photo.imageUrl;
         }
 
         if (url === null) {
