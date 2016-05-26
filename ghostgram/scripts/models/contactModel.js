@@ -53,8 +53,7 @@ var contactModel = {
         contactModel.contactsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'contacts',
-                dataProvider: APP.everlive
+                typeName: 'contacts'
             },
             schema: {
                 model: { Id:  Everlive.idField}
