@@ -814,6 +814,9 @@ var photoModel = {
         photo.set('cloudUrl', devicePhoto.cloudUrl);
         photo.set('cloudinaryPublicId', devicePhoto.cloudinaryPublicId);
         photo.set('title', null);
+        photo.set('width', 0);
+        photo.set('height', 0);
+        photo.set('size', 0);
         photo.set('description', null);
         photo.set('senderUUID', userModel._user.userUUID);
         photo.set('senderName', userModel._user.name);

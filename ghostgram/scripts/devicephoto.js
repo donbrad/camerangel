@@ -27,7 +27,7 @@ var devicePhoto = {
         formData.append('folder', devicePhoto._userPhoto);
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserphoto');
-        formData.append('callback', '/cloudinary_cors.html');
+        //formData.append('callback', '/cloudinary_cors.html');
 
         $.ajax({
             url: 'https://api.cloudinary.com/v1_1/ghostgrams/image/upload',
@@ -59,7 +59,7 @@ var devicePhoto = {
         formData.append('folder', devicePhoto._userProfile);
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserprofile');
-        formData.append('callback', '/cloudinary_cors.html');
+      //  formData.append('callback', '/cloudinary_cors.html');
 
         $.ajax({
             url: 'https://res.cloudinary.com/v1_1/ghostgrams/image/upload',
@@ -271,6 +271,9 @@ var devicePhoto = {
                                             photoObj.set('cloudUrl', photoData.url);
                                             photoObj.set('thumbnailUrl', imageUrl);  // The image is the thumbnail...
                                             photoObj.set('cloudinaryPublicId', photoData.public_id);
+                                            photoObj.set('width', photoData.width);
+                                            photoObj.set('height', photoData.height);
+                                            photoObj.set('size'. photoData.bytes);
                                             photoObj.set('isProfilePhoto', true);
                                             photoModel.syncLocal();
                                           //  photoModel.updateCloud(photoObj);
@@ -302,6 +305,9 @@ var devicePhoto = {
                                             photoObj.set('imageUrl', secureUrl);
                                             photoObj.set('cloudUrl', secureUrl);
                                             photoObj.set('thumbnailUrl', thumbUrl);
+                                            photoObj.set('width', photoData.width);
+                                            photoObj.set('height', photoData.height);
+                                            photoObj.set('size'. photoData.bytes);
                                             photoObj.set('cloudinaryPublicId', photoData.public_id);
                                             photoObj.set('isProfilePhoto', false);
                                             photoModel.syncLocal();
@@ -418,7 +424,9 @@ var devicePhoto = {
                         photoObj.set('imageUrl', secureUrl);
                         photoObj.set('cloudUrl', secureUrl);
                         photoObj.set('thumbnailUrl', secureUrl);
-
+                        photoObj.set('width', photoData.width);
+                        photoObj.set('height', photoData.height);
+                        photoObj.set('size'. photoData.bytes);
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
@@ -449,6 +457,9 @@ var devicePhoto = {
                         photoObj.set('imageUrl', secureUrl);
                         photoObj.set('cloudUrl', secureUrl);
                         photoObj.set('thumbnailUrl', thumbUrl);
+                        photoObj.set('width', photoData.width);
+                        photoObj.set('height', photoData.height);
+                        photoObj.set('size'. photoData.bytes);
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
