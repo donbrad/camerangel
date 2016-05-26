@@ -333,7 +333,10 @@ var photoModel = {
 
 
     uploadPhotoToCloud : function (photo) {
-        
+
+        if (photo === undefined || photo === null)
+            return;
+
         var url = photo.deviceUrl, photouuid = photo.uuid;
         
         if (url === null) {
@@ -348,13 +351,17 @@ var photoModel = {
                 var photoObj = photoModel.findPhotoById(photouuid);
 
                 if (photoObj !== undefined && photoData !== null) {
-                    photoObj.set('imageUrl', photoData.secure_url);
-                    photoObj.set('cloudUrl', photoData._secure_url);
-                    photoObj.thumbnailUrl = photoData.secure_url.replace('upload//','upload//c_scale,h_512,w_512//');
-                    photoObj.cloudinaryPublicId = photoData.public_id;
+                    var secureUrl = photoData.secure_url, thumbUrl = photoData.eager[0].secure_url;
+                    photoObj.set('imageUrl', secureUrl);
+                    photoObj.set('cloudUrl', secureUrl);
+                    photoObj.set('thumbnailUrl', thumbUrl);
+                    photoObj.set('width', photoData.width);
+                    photoObj.set('height', photoData.height);
+                    photoObj.set('size'. photoData.bytes);
+                    photoObj.set('cloudinaryPublicId', photoData.public_id);
+                    photoObj.set('isProfilePhoto', false);
                    //photoModel.updateCloud(photoObj);
                     photoModel.syncLocal();
-                    everlive.syncCloud();
                     
                 }
             });
