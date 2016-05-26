@@ -35,7 +35,7 @@ var photoModel = {
                 typeName: 'photos'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             autoSync: true
         });
@@ -49,7 +49,7 @@ var photoModel = {
                 typeName: 'deletedphotos'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             autoSync: true
         });
@@ -715,7 +715,6 @@ var photoModel = {
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
         photo.set('photoId', devicePhoto.photoId);
-        photo.set('Id', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
 
@@ -802,7 +801,7 @@ var photoModel = {
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
-        everlive.syncCloud();
+        //everlive.syncCloud();
         
         if (callback !== undefined) {
             callback(null, photo);
