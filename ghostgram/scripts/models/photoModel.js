@@ -40,7 +40,60 @@ var photoModel = {
         });
 
 
-      
+        // Reflect any core contact changes to contactList
+        photoModel.photosDS.bind("change", function (e) {
+            var changedPhotos = e.items;
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+                    case "itemchange" :
+                        /*  var field  =  e.field;
+                         var contact = e.items[0], contactId = contact.uuid;
+                         var contactList = contactModel.findContactListUUID(contactId);
+                         // if the contact's name or alias has been updated, need to update the tag...
+                         var tagList = tagModel.findTagByCategoryId(contact.uuid);
+
+                         if (tagList.length > 0) {
+                         var contactTag = tagList[0];
+                         contactTag.set('alias',contact.alias);
+                         contactTag.set('name', contact.name);
+                         }
+                         contactList[field] = contact [field];*/
+                        break;
+
+                    case "remove" :
+                        var photo = e.items[0];
+                        // delete from contact list
+                        /* var contactList = contactModel.findContactList(contact.uuid);
+                         if (contactList !== undefined) {
+                         contactModel.contactListDS.remove(contactList);
+                         }*/
+                        break;
+
+                    case "add" :
+                        var photo = e.items[0];
+                        var photoId = photo.uuid;
+
+                       photoModel.ensureUniquePhoto(photoId);
+                        // add to contactlist and contacttags
+                        /* var contactList = contactModel.findContactList(contact.uuid);
+                         if (contactList !== undefined) {
+                         contact.identicon = contactModel.createIdenticon(contact.uuid);
+                         if (contact.photo === null)
+                         contact.photo = contact.identicon;
+                         contactModel.contactListDS.add(contact);
+                         } else {
+                         if (contactList.photo === undefined || contactList.photo === null) {
+                         contactList.identicon = contactModel.createIdenticon(contactList.uuid);
+                         contactList.photo = contactList.identicon;
+                         }
+                         }
+                         tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);*/
+                        break;
+                }
+            }
+        });
+
         photoModel.deletedPhotosDS = new kendo.data.DataSource({
             // offlineStorage: "photos",
             type: 'everlive',
@@ -122,6 +175,40 @@ var photoModel = {
 
         return(false);
 
+    },
+
+    ensureUniquePhoto : function (photoId) {
+        if (photoId === undefined || photoId === null)
+            return;
+
+        var photoList = photoModel.findPhotosById(photoId);
+        var bestPhoto = -1;
+        if (photoList !== undefined && photoList.length > 1) {
+            for (var i=0; i< photoList.length; i++) {
+                var photo = photoList[i];
+                if (photo.Id === undefined) {
+                    photoModel.photosDS.remove(photo);
+                }
+                if (photo.cloudinaryPublicId !== null && photo.cloudUrl !== null) {
+                    bestPhoto = i;
+                }
+            }
+        }
+
+        if (bestPhoto !== -1) {
+            photoList = photoModel.findPhotosById(photoId);
+            if (photoList !== undefined && photoList.length > 1) {
+                for (var j=0; j< photoList.length; j++) {
+                    var photo1 = photoList[j];
+                    if (j !== bestPhoto) {
+                        photoModel.photosDS.remove(photo1);
+                    }
+
+                }
+            }
+        }
+
+        photoModel.photosDS.sync();
     },
 
     addToLocalCache : function (url, localUrl, photoId) {
