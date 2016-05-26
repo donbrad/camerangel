@@ -36,8 +36,7 @@ var photoModel = {
             },
             schema: {
                 model: { id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
 
 
