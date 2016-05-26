@@ -715,6 +715,7 @@ var photoModel = {
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
         photo.set('id', devicePhoto.photoId);
+        photo.set('Id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
