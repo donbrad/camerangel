@@ -345,6 +345,7 @@ var galleryView = {
 
     galleryPhoto : function (e) {
         _preventDefault(e);
+
         // Call the device gallery function to get a photo and get it scaled to gg resolution
         devicePhoto.deviceGallery(
             devicePhoto._resolution, // max resolution in pixels
@@ -359,6 +360,7 @@ var galleryView = {
             }
         );
     },
+
     sharePhoto: function (e)  {
         _preventDefault(e);
 

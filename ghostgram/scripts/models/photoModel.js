@@ -357,7 +357,7 @@ var photoModel = {
                     photoObj.set('thumbnailUrl', thumbUrl);
                     photoObj.set('width', photoData.width);
                     photoObj.set('height', photoData.height);
-                    photoObj.set('size'. photoData.bytes);
+                    photoObj.set('size', photoData.bytes);
                     photoObj.set('cloudinaryPublicId', photoData.public_id);
                     photoObj.set('isProfilePhoto', false);
                    //photoModel.updateCloud(photoObj);
