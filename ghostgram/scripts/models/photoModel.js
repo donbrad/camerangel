@@ -770,7 +770,7 @@ var photoModel = {
             devicePhoto.cloudinaryUploadProfile(photouuid, filename, dataUrl, function (photoData, error) {
                 var photoObj = photoModel.findPhotoById(photouuid);
                 photoObj.set('processing', false);
-                
+
                 if (error !== null) {
                     ggError("Cloud Photo Error " + JSON.stringify(error));
                     return;
@@ -823,7 +823,6 @@ var photoModel = {
 
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
-        photo.set('Id', devicePhoto.photoId);
         photo.set('photoId', devicePhoto.photoId);
         photo.set('uuid', devicePhoto.photoId);
         photo.set('deviceUrl', devicePhoto.deviceUrl);
