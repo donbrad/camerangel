@@ -127,7 +127,14 @@ var profilePhotoModel = {
 
 
             // It's a profile so store in profile cloud and do autoscaling and cropping
-            devicePhoto.cloudinaryUploadProfile(photouuid, filename, dataUrl, function (photoData) {
+            devicePhoto.cloudinaryUploadProfile(photouuid, filename, dataUrl, function (photoData, error) {
+                if (error !== null) {
+                    ggError("Cloud Photo Error " + JSON.stringify(error));
+                    return;
+                } else if (photoData === null) {
+                    // photo is already being uploaded
+                    return;
+                }
                 var photoObj = profilePhotoModel.findPhotoById(photouuid);
 
                 if (photoObj !== undefined && photoData !== null) {

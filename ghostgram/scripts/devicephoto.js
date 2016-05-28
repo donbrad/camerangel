@@ -28,6 +28,18 @@ var devicePhoto = {
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserphoto');
         //formData.append('callback', '/cloudinary_cors.html');
+        var photo = photoModel.findPhotoById(photoUUID);
+        if (photo === undefined || photo === null)  {
+            uploadCallback(null, "Undefined or null photo");
+            return;
+        }
+
+        if (photo.processing) {
+            uploadCallback(null, null);
+            return;
+
+        }
+        photo.processing = true;
 
         $.ajax({
             url: 'https://api.cloudinary.com/v1_1/ghostgrams/image/upload',
@@ -60,6 +72,17 @@ var devicePhoto = {
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserprofile');
       //  formData.append('callback', '/cloudinary_cors.html');
+        if (photo === undefined || photo === null)  {
+            uploadCallback(null, "Undefined or null photo");
+            return;
+        }
+        
+        if (photo.processing) {
+            uploadCallback(null, null);
+            return;
+
+        }
+        photo.processing = true;
 
         $.ajax({
             url: 'https://res.cloudinary.com/v1_1/ghostgrams/image/upload',
@@ -263,10 +286,14 @@ var devicePhoto = {
                                         if (error !== null) {
                                             ggError("Cloud Photo Error " + JSON.stringify(error));
                                             return;
+                                        } else if (photoData === null) {
+                                            // photo is already being uploaded
+                                            return;
                                         }
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
                                         if (photoObj !== undefined && photoData !== null) {
+                                            photoObj.set('processing', false);
                                             photoObj.set('imageUrl', photoData.url);
                                             photoObj.set('cloudUrl', photoData.url);
                                             photoObj.set('thumbnailUrl', imageUrl);  // The image is the thumbnail...
@@ -294,6 +321,9 @@ var devicePhoto = {
                                     devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, function (photoData, error) {
                                         if (error !== null) {
                                             ggError("Cloud Photo Error " + JSON.stringify(error));
+                                            return;
+                                        } else if (photoData === null) {
+                                            // photo is already being uploaded
                                             return;
                                         }
 
@@ -415,6 +445,9 @@ var devicePhoto = {
                     if (error !== null) {
                         ggError("Cloud Photo Error " + JSON.stringify(error));
                         return;
+                    } else if (photoData === null) {
+                        // photo is already being uploaded
+                        return;
                     }
 
                     var photoObj = photoModel.findPhotoById(photouuid);
@@ -448,6 +481,9 @@ var devicePhoto = {
                 devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, function (photoData, error) {
                     if (error !== null) {
                         ggError("Cloud Photo Error " + JSON.stringify(error));
+                        return;
+                    } else if (photoData === null) {
+                        // photo is already being uploaded
                         return;
                     }
                     var photoObj = photoModel.findPhotoById(photouuid);
