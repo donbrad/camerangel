@@ -803,8 +803,6 @@ var photoModel = {
         mobileNotify("Adding  photo....");
         var photo = new kendo.data.ObservableObject();
 
-        //photo.setACL(userModel.parseACL);
-
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
         photo.set('Id', devicePhoto.photoId);
