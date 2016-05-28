@@ -8,6 +8,7 @@
 
 var devicePhoto = {
     currentPhoto : {},
+    uploadList: [],
     _uploadActive: false,
     _resolution : 2560,
     _quality : 75,
@@ -28,18 +29,13 @@ var devicePhoto = {
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserphoto');
         //formData.append('callback', '/cloudinary_cors.html');
-        var photo = photoModel.findPhotoById(photoUUID);
-        if (photo === undefined || photo === null)  {
-            uploadCallback(null, "Undefined or null photo");
-            return;
-        }
 
-        if (photo.processing) {
+        if (devicePhoto.uploadList[photoId] !== undefined && devicePhoto.uploadList[photoId] === true) {
             uploadCallback(null, null);
             return;
-
         }
-        photo.processing = true;
+
+        devicePhoto.uploadList[photoId] = true;
 
         $.ajax({
             url: 'https://api.cloudinary.com/v1_1/ghostgrams/image/upload',
@@ -53,11 +49,13 @@ var devicePhoto = {
             },
 
             success: function(responseData, textStatus, jqXHR) {
+                devicePhoto.uploadList[photoUUID] = false;
                 responseData.photoUUID = photoUUID;
                 uploadCallback(responseData, null);
 
             },
                 error: function(jqXHR, textStatus, errorThrown) {
+                devicePhoto.uploadList[photoUUID] = false;
                 uploadCallback(null, errorThrown);
                 }
             });
@@ -72,17 +70,12 @@ var devicePhoto = {
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserprofile');
       //  formData.append('callback', '/cloudinary_cors.html');
-        if (photo === undefined || photo === null)  {
-            uploadCallback(null, "Undefined or null photo");
-            return;
-        }
-        
-        if (photo.processing) {
+        if (devicePhoto.uploadList[photoId] !== undefined && devicePhoto.uploadList[photoId] === true) {
             uploadCallback(null, null);
             return;
-
         }
-        photo.processing = true;
+
+        devicePhoto.uploadList[photoId] = true;
 
         $.ajax({
             url: 'https://res.cloudinary.com/v1_1/ghostgrams/image/upload',
@@ -96,11 +89,13 @@ var devicePhoto = {
             },
 
             success: function(responseData, textStatus, jqXHR) {
+                devicePhoto.uploadList[photoUUID] = false;
                 responseData.photoUUID = photoUUID;
                 uploadCallback(responseData, null);
 
             },
             error: function(jqXHR, textStatus, errorThrown) {
+                devicePhoto.uploadList[photoUUID] = false;
                 uploadCallback(null, errorThrown);
             }
         });
@@ -453,7 +448,7 @@ var devicePhoto = {
 
                     var photoObj = photoModel.findPhotoById(photouuid);
 
-                    photoObj.set('processing', false);
+
                     if (photoObj !== undefined && photoData !== null) {
                         var secureUrl = photoData.secure_url;
                         photoObj.set('imageUrl', secureUrl);
@@ -489,7 +484,7 @@ var devicePhoto = {
                         return;
                     }
                     var photoObj = photoModel.findPhotoById(photouuid);
-                    photoObj.set('processing', false);
+
                     if (photoObj !== undefined && photoData !== null) {
                         var secureUrl = photoData.secure_url, thumbUrl = photoData.eager[0].secure_url;
                         photoObj.set('imageUrl', secureUrl);

@@ -349,7 +349,7 @@ var photoModel = {
             var filename = photouuid.replace(/-/g,'');
             devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData, error) {
                 var photoObj = photoModel.findPhotoById(photouuid);
-                photoObj.set('processing', false);
+             
 
                 if (error !== null) {
                     ggError("Cloud Photo Error " + JSON.stringify(error));
@@ -769,8 +769,6 @@ var photoModel = {
             // It's a profile so store in profile cloud and do autoscaling and cropping
             devicePhoto.cloudinaryUploadProfile(photouuid, filename, dataUrl, function (photoData, error) {
                 var photoObj = photoModel.findPhotoById(photouuid);
-                photoObj.set('processing', false);
-
                 if (error !== null) {
                     ggError("Cloud Photo Error " + JSON.stringify(error));
                     return;
