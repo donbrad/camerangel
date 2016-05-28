@@ -820,7 +820,7 @@ var photoModel = {
         var photo = new kendo.data.ObservableObject();
 
         var photoCheck = photoModel.findPhotoById(devicePhoto.photoId);
-        if (photoCheck !== null) {
+        if (photoCheck !== undefined && photoCheck !== null) {
             ggError("Tried to create duplicate photo! " + devicePhoto.photoId);
             return;
         }

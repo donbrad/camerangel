@@ -149,7 +149,7 @@ var profilePhotoModel = {
             });
         });
 
-        everlive.createOne(profilePhotoModel._cloudClass, photo, function (error, data){
+      /*  everlive.createOne(profilePhotoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating profile photo " + JSON.stringify(error));
 
@@ -168,6 +168,6 @@ var profilePhotoModel = {
                 }
 
             }
-        });
+        });*/
     }
 };
