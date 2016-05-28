@@ -66,7 +66,7 @@ var galleryView = {
                 $("#resultsName").text("Photos");
             }
             $(".results").css("visibility", "visible");
-            $("#resultCount").text(photoCount);
+           // $("#resultCount").text(photoCount);
         } else {
             $(".results").css("visibility", "hidden");
             $("#resultsName").text("No Photos");
