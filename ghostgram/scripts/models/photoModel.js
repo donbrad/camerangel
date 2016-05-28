@@ -20,10 +20,10 @@ var photoModel = {
     currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
+
     photosDS: null,
 
     offersDS : null,
-
     
     deletedPhotosDS: null, 
 
@@ -36,6 +36,10 @@ var photoModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
+            },
+            sort: {
+                field: "timestamp",
+                dir: "desc"
             },
             autoSync: true
         });
@@ -832,9 +836,6 @@ var photoModel = {
         photo.set('deviceUrl', devicePhoto.deviceUrl);
 
         photo.set('imageUrl', devicePhoto.imageUrl);
-        if (devicePhoto.imageFile !== null) {
-            photo.set('image', devicePhoto.imageFile);
-        }
 
         photo.set('thumbnailUrl', devicePhoto.thumbnailUrl);
         photo.set('cloudUrl', devicePhoto.cloudUrl);
@@ -850,7 +851,6 @@ var photoModel = {
         photo.set('eventName', null);
         photo.set('tagString', null);
         photo.set('tags', []);
-        photo.set('tagsString', null);
         photo.set('placeUUID', null);
         photo.set('placeName', null);
         photo.set('address', null);
