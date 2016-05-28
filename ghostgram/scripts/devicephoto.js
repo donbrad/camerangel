@@ -35,7 +35,7 @@ var devicePhoto = {
             return;
         }
 
-        devicePhoto.uploadList[photoId] = true;
+        devicePhoto.uploadList[photoUUID] = true;
 
         $.ajax({
             url: 'https://api.cloudinary.com/v1_1/ghostgrams/image/upload',
@@ -75,7 +75,7 @@ var devicePhoto = {
             return;
         }
 
-        devicePhoto.uploadList[photoId] = true;
+        devicePhoto.uploadList[photoUUID] = true;
 
         $.ajax({
             url: 'https://res.cloudinary.com/v1_1/ghostgrams/image/upload',
