@@ -30,7 +30,7 @@ var devicePhoto = {
         formData.append('upload_preset', 'gguserphoto');
         //formData.append('callback', '/cloudinary_cors.html');
 
-        if (devicePhoto.uploadList[photoId] !== undefined && devicePhoto.uploadList[photoId] === true) {
+        if (devicePhoto.uploadList[photoUUID] !== undefined && devicePhoto.uploadList[photoUUID] === true) {
             uploadCallback(null, null);
             return;
         }
@@ -70,7 +70,7 @@ var devicePhoto = {
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserprofile');
       //  formData.append('callback', '/cloudinary_cors.html');
-        if (devicePhoto.uploadList[photoId] !== undefined && devicePhoto.uploadList[photoId] === true) {
+        if (devicePhoto.uploadList[photoUUID] !== undefined && devicePhoto.uploadList[photoUUID] === true) {
             uploadCallback(null, null);
             return;
         }
