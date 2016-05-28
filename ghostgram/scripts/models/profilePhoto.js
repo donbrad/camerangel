@@ -136,7 +136,7 @@ var profilePhotoModel = {
                     return;
                 }
                 var photoObj = profilePhotoModel.findPhotoById(photouuid);
-
+                photoObj.set('processing', false);
                 if (photoObj !== undefined && photoData !== null) {
                     photoObj.set('imageUrl', photoData.url);
                     photoObj.set('cloudUrl', photoData.url);

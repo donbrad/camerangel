@@ -348,6 +348,9 @@ var photoModel = {
             var folder = devicePhoto._userPhoto;
             var filename = photouuid.replace(/-/g,'');
             devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData, error) {
+                var photoObj = photoModel.findPhotoById(photouuid);
+                photoObj.set('processing', false);
+
                 if (error !== null) {
                     ggError("Cloud Photo Error " + JSON.stringify(error));
                     return;
@@ -355,7 +358,6 @@ var photoModel = {
                     // photo is already being uploaded
                     return;
                 }
-                var photoObj = photoModel.findPhotoById(photouuid);
 
                 if (photoObj !== undefined && photoData !== null) {
                     var secureUrl = photoData.secure_url, thumbUrl = photoData.eager[0].secure_url;
@@ -766,6 +768,9 @@ var photoModel = {
 
             // It's a profile so store in profile cloud and do autoscaling and cropping
             devicePhoto.cloudinaryUploadProfile(photouuid, filename, dataUrl, function (photoData, error) {
+                var photoObj = photoModel.findPhotoById(photouuid);
+                photoObj.set('processing', false);
+                
                 if (error !== null) {
                     ggError("Cloud Photo Error " + JSON.stringify(error));
                     return;
@@ -773,7 +778,6 @@ var photoModel = {
                     // photo is already being uploaded
                     return;
                 }
-                var photoObj = photoModel.findPhotoById(photouuid);
 
                 if (photoObj !== undefined && photoData !== null) {
                     photoObj.set('imageUrl', photoData.url);
@@ -786,7 +790,7 @@ var photoModel = {
             });
         });
 
-        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+        /*everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
 
@@ -809,7 +813,7 @@ var photoModel = {
             }
         });
 
-
+*/
 
     },
 
