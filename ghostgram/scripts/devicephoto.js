@@ -506,7 +506,7 @@ var devicePhoto = {
 
                     } else {
                         if (shareCallback !== undefined) {
-                            shareCallback(photoObj.photoId, null);
+                            shareCallback(null, null);
                         }
                     }
 
