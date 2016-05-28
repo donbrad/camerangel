@@ -821,6 +821,11 @@ var photoModel = {
         mobileNotify("Adding  photo....");
         var photo = new kendo.data.ObservableObject();
 
+        var photoCheck = photoModel.findPhotoById(devicePhoto.photoId);
+        if (photoCheck !== null) {
+            ggError("Tried to create duplicate photo! " + devicePhoto.photoId);
+            return;
+        }
         photo.set('version', photoModel._version);
         photo.set('ggType', photoModel._ggClass);
         photo.set('photoId', devicePhoto.photoId);
@@ -913,7 +918,7 @@ var photoModel = {
         // For perf reasons add the photo before it's stored on everlive
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
-        //everlive.syncCloud();
+
         
         if (callback !== undefined) {
             callback(null, photo);
