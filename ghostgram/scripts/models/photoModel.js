@@ -48,6 +48,8 @@ var photoModel = {
         // Reflect any core contact changes to contactList
         photoModel.photosDS.bind("change", function (e) {
             var changedPhotos = e.items;
+            photoModel._totalPhotos = photoModel.photosDS.total();
+            galleryView.updateTotalPhotos();
 
             if (e.action !== undefined) {
                 switch (e.action) {
@@ -115,13 +117,7 @@ var photoModel = {
         photoModel.photosDS.fetch();
         deviceModel.setAppState('hasPhotos', true);
 
-        photoModel.photosDS.bind("change", function (e) {
-            var changedPhoto = e.items;
-            
-            photoModel._totalPhotos = photoModel.photosDS.total();
-        });
-        
-        
+
         /*deviceModel.isParseSyncComplete();*/
     },
 

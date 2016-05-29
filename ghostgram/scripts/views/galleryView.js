@@ -56,10 +56,10 @@ var galleryView = {
 
     updateTotalPhotos : function () {
         // set result count
-        var photoCount = photoModel.photosDS.total();
-        if(photoCount > 0){
+      
+        if(photoModel._totalPhotos > 0){
             /// single photo
-            if(photoCount == 1) {
+            if(photoModel._totalPhotos == 1) {
                 $("#resultsName").text("Photo");
             } else {
             /// multiple photos
