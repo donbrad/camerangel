@@ -434,12 +434,14 @@ var privateNotesView = {
 
 
     closeEditor : function () {
+
+        privateNotesView.deactivateEditor()
+
         if (privateNotesView._editorActive) {
             privateNotesView._editorActive = false;
             $('#privateNoteTextArea').redactor('core.destroy');
         }
 
-        privateNotesView.deactivateEditor();
 
     },
 
