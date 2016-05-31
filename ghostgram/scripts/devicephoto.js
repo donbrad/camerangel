@@ -268,7 +268,10 @@ var devicePhoto = {
                                 }
                             });
 
-
+                            if (!deviceModel.isOnline()) {
+                                shareCallback(null, null);
+                                return;
+                            }
                             devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
                                 var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
@@ -427,6 +430,11 @@ var devicePhoto = {
                 displayCallback(photouuid, imageUrl);
             }
         });
+
+        if (!deviceModel.isOnline()) {
+            shareCallback(null, null);
+            return;
+        }
 
         devicePhoto.convertImgToDataURL(imageUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");

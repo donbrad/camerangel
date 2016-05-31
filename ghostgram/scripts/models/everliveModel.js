@@ -29,7 +29,7 @@ var everlive = {
             var provider = Everlive.Constants.StorageProvider.LocalStorage;
     /*    }*/
 
-
+        everlive.getCredentials();
         APP.everlive = new Everlive({
             appId: 's2fo2sasaubcx7qe',
             scheme: 'https',
@@ -52,6 +52,8 @@ var everlive = {
                 }
             },
 
+            token: everlive._token,
+
                /* storage: {
                     provider: provider
                     /!*,
@@ -66,8 +68,11 @@ var everlive = {
                 }*!/
             },*/
             authentication: {
-                persist: true/*,
+                persist: true,
                 onAuthenticationRequired: function() {
+                    if (everlive._token !== null) {
+                        
+                    }
                     mobileNotify("Auth Required - kendo...");
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
@@ -76,9 +81,11 @@ var everlive = {
                         userModel.initialView = '#newuserhome';
                     }
                     APP.kendo.navigate(userModel.initialView);
-                }*/
+                }
             }
         });
+
+
 
         everlive.getTimeStamp();
 
@@ -96,6 +103,22 @@ var everlive = {
 
         everlive.isUserSignedIn();
 
+    },
+
+    getCredentials : function () {
+       everlive._id =  localStorage.getItem('ggEverliveUserId');
+        if (everlive._id === undefined) {
+            everlive._id = null;
+        }
+        everlive._token =  localStorage.getItem('ggEverliveUserToken')
+        if (everlive._token === undefined) {
+            everlive._token = null;
+        }
+    },
+
+    putCredentials : function () {
+        localStorage.setItem('ggEverliveUserToken',  everlive._token);
+        localStorage.setItem('ggEverliveUserId',  everlive._id);
     },
 
     updateTimeStamp : function () {
@@ -181,12 +204,16 @@ var everlive = {
                 }
 
             } else {
-                if (error.code === 1003) {
-                    setTimeout(function(){
-                        everlive.isUserSignedIn();
-                    }, 3000);
-                } else {
-                    mobileNotify("Authentication error " + JSON.stringify(error));
+                if (error !== undefined && error !== null && error !== "") {
+                    if (error.code !== undefined) {
+                        if (error.code === 1003) {
+                            setTimeout(function () {
+                                everlive.isUserSignedIn();
+                            }, 3000);
+                        } else {
+                            mobileNotify("Authentication error " + JSON.stringify(error));
+                        }
+                    }
                 }
             }
         });
@@ -251,6 +278,7 @@ var everlive = {
                 userModel._user.Id = data.result.principal_id;
                 everlive._signedIn = true;
                 everlive._isAuthenticated = true;
+                everlive.putCredentials();
                 callback(null, userModel._user.Id);
             },
             function(error){
@@ -353,12 +381,15 @@ var everlive = {
                     var result = data.result;
                 },
                 function (error) {
-                    if (error.code === 107) {
-                        mobileNotify("Deferring User Update...");
-                    } else {
-                        console.log("User Update Error : " + JSON.stringify(error));
+                    if (error !== undefined && error !== null && error !== "") {
+                        if (error.code !== undefined) {
+                            if (error.code === 107) {
+                                mobileNotify("Deferring User Update...");
+                            } else {
+                                console.log("User Update Error : " + JSON.stringify(error));
+                            }
+                        }
                     }
-
                 });
         } else {
             userModel._needSync = true;
