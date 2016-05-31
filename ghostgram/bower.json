@@ -9,7 +9,7 @@
     "eventEmitter": "~4.3.0",
     "velocity": "~1.2.3",
     "pickadate": "~3.5.6",
-    "everlive": "~1.6.9",
+    "everlive": "~1.6.11",
     "jquery.maskedinput": "~1.4.1",
     "google-libphonenumber": "~1.0.16",
     "emojione": "~2.1.4"
