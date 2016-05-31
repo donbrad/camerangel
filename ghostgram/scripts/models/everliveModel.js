@@ -29,7 +29,6 @@ var everlive = {
             var provider = Everlive.Constants.StorageProvider.LocalStorage;
     /*    }*/
 
-        everlive.getCredentials();
         APP.everlive = new Everlive({
             appId: 's2fo2sasaubcx7qe',
             scheme: 'https',
@@ -51,9 +50,6 @@ var everlive = {
                         key : 'intelligram'
                 }
             },
-
-            token: everlive._token,
-
                /* storage: {
                     provider: provider
                     /!*,
@@ -71,16 +67,18 @@ var everlive = {
                 persist: true,
                 onAuthenticationRequired: function() {
                     if (everlive._token !== null) {
-                        
-                    }
-                    mobileNotify("Auth Required - kendo...");
-                    if (userModel.hasAccount) {
-                        everlive._signedIn = false;
-                        userModel.initialView = '#usersignin';
+                        everlive.updateCredentials();
                     } else {
-                        userModel.initialView = '#newuserhome';
+                        mobileNotify("Auth Required - kendo...");
+                        if (userModel.hasAccount) {
+                            everlive._signedIn = false;
+                            userModel.initialView = '#usersignin';
+                        } else {
+                            userModel.initialView = '#newuserhome';
+                        }
+                        APP.kendo.navigate(userModel.initialView);
                     }
-                    APP.kendo.navigate(userModel.initialView);
+
                 }
             }
         });
@@ -88,6 +86,10 @@ var everlive = {
 
 
         everlive.getTimeStamp();
+
+        everlive.getCredentials();
+
+        everlive.updateCredentials();
 
         if (deviceModel.isOnline() ) {
             APP.everlive.online();
@@ -110,7 +112,7 @@ var everlive = {
         if (everlive._id === undefined) {
             everlive._id = null;
         }
-        everlive._token =  localStorage.getItem('ggEverliveUserToken')
+        everlive._token =  localStorage.getItem('ggEverliveUserToken');
         if (everlive._token === undefined) {
             everlive._token = null;
         }
@@ -119,6 +121,13 @@ var everlive = {
     putCredentials : function () {
         localStorage.setItem('ggEverliveUserToken',  everlive._token);
         localStorage.setItem('ggEverliveUserId',  everlive._id);
+    },
+
+    updateCredentials : function () {
+        if (everlive._token !== null && everlive._id !== null) {
+            APP.everlive.authentication.setAuthorization(everlive._token, 'bearer', everlive._id)
+        }
+
     },
 
     updateTimeStamp : function () {
@@ -261,6 +270,9 @@ var everlive = {
 
                 everlive._id = data.result.Id;
                 userModel.Id =  data.result.Id;
+                everlive._token = data.result.access_token;
+                everlive._tokenType = data.result.token_type;
+                everlive.putCredentials();
                 userModel._user.Id = data.result.Id;
                 callback(null, data);
             },
