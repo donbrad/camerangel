@@ -36,7 +36,8 @@ var photoModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            autoSync: true
         });
 
 
@@ -917,7 +918,7 @@ var photoModel = {
             callback(null, photo);
         }
         
-       /*everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+       everlive.createOne(photoModel._cloudClass, photo, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
 
@@ -944,7 +945,7 @@ var photoModel = {
 
             }
         });
-        */
+
     },
 
     updateCloud : function (photoObj)  {
