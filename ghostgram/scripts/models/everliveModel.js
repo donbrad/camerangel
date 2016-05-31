@@ -388,11 +388,13 @@ var everlive = {
                   
                 },
                 function(error){
-                    if (error !== null && error !== "") {
-                        if (error.code === 107) {
-                            mobileNotify("Deferring User Status Update...");
-                        } else {
-                            console.log("User Update Status Error : " + JSON.stringify(error));
+                    if (error !== undefined && error !== null && error !== "") {
+                        if (error.code !== undefined) {
+                            if (error.code === 107) {
+                                mobileNotify("Deferring User Status Update...");
+                            } else {
+                                console.log("User Update Status Error : " + JSON.stringify(error));
+                            }
                         }
                     }
                 });
