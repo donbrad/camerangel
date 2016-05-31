@@ -37,10 +37,6 @@ var photoModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            sort: {
-                field: "timestamp",
-                dir: "desc"
-            },
             autoSync: true
         });
 
@@ -66,6 +62,10 @@ var photoModel = {
                          contactTag.set('name', contact.name);
                          }
                          contactList[field] = contact [field];*/
+                        break;
+
+                    case "sync":
+                        var photo = e.items[0];
                         break;
 
                     case "remove" :

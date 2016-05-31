@@ -1151,7 +1151,7 @@ var channelModel = {
         channel.set('version', channelModel._version);
         channel.set('ggType', channelModel._ggClass);
         channel.set('isPlace', false);
-        channel.set ('category', 'Group');
+        channel.set('category', 'Group');
         channel.set('isPrivate', false);
         channel.set('isMuted', false);
         channel.set('isDeleted', false);
