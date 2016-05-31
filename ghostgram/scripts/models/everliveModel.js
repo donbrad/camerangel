@@ -64,7 +64,7 @@ var everlive = {
                 }*!/
             },*/
             authentication: {
-                persist: true,
+                persist: true/*,
                 onAuthenticationRequired: function() {
                     if (everlive._token !== null) {
                         everlive.updateCredentials();
@@ -79,7 +79,7 @@ var everlive = {
                         APP.kendo.navigate(userModel.initialView);
                     }
 
-                }
+                }*/
             }
         });
 
