@@ -296,9 +296,9 @@ var devicePhoto = {
                                             photoObj.set('cloudUrl', photoData.url);
                                             photoObj.set('thumbnailUrl', imageUrl);  // The image is the thumbnail...
                                             photoObj.set('cloudinaryPublicId', photoData.public_id);
-                                            photoObj.set('width', photoData.width);
-                                            photoObj.set('height', photoData.height);
-                                            photoObj.set('size', photoData.bytes);
+                                            photoObj.set('width', Number(photoData.width));
+                                            photoObj.set('height', Number(photoData.height));
+                                            photoObj.set('size', Number(photoData.bytes));
                                             photoObj.set('isProfilePhoto', true);
                                             photoModel.syncLocal();
                                           //  photoModel.updateCloud(photoObj);
@@ -332,9 +332,9 @@ var devicePhoto = {
                                             photoObj.set('imageUrl', secureUrl);
                                             photoObj.set('cloudUrl', secureUrl);
                                             photoObj.set('thumbnailUrl', thumbUrl);
-                                            photoObj.set('width', photoData.width);
-                                            photoObj.set('height', photoData.height);
-                                            photoObj.set('size', photoData.bytes);
+                                            photoObj.set('width', Number(photoData.width));
+                                            photoObj.set('height', Number(photoData.height));
+                                            photoObj.set('size', Number(photoData.bytes));
                                             photoObj.set('cloudinaryPublicId', photoData.public_id);
                                             photoObj.set('isProfilePhoto', false);
                                             photoModel.syncLocal();
@@ -461,9 +461,9 @@ var devicePhoto = {
                         photoObj.set('imageUrl', secureUrl);
                         photoObj.set('cloudUrl', secureUrl);
                         photoObj.set('thumbnailUrl', secureUrl);
-                        photoObj.set('width', photoData.width);
-                        photoObj.set('height', photoData.height);
-                        photoObj.set('size', photoData.bytes);
+                        photoObj.set('width', Number(photoData.width));
+                        photoObj.set('height', Number(photoData.height));
+                        photoObj.set('size', Number(photoData.bytes));
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
@@ -497,9 +497,9 @@ var devicePhoto = {
                         photoObj.set('imageUrl', secureUrl);
                         photoObj.set('cloudUrl', secureUrl);
                         photoObj.set('thumbnailUrl', thumbUrl);
-                        photoObj.set('width', photoData.width);
-                        photoObj.set('height', photoData.height);
-                        photoObj.set('size', photoData.bytes);
+                        photoObj.set('width', Number(photoData.width));
+                        photoObj.set('height', Number(photoData.height));
+                        photoObj.set('size', Number(photoData.bytes));
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
