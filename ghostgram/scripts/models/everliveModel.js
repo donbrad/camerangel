@@ -173,7 +173,7 @@ var everlive = {
                 if (error.code === 107) {
                     mobileNotify("Emall Validation Resend - Deferring User Update...");
                 } else {
-                    console.log("Emall Validation Resend Error : " + JSON.stringify(error));
+                    ggError("Emall Validation Resend Error : " + JSON.stringify(error));
                 }
 
             });
@@ -220,7 +220,7 @@ var everlive = {
                                 everlive.isUserSignedIn();
                             }, 3000);
                         } else {
-                            mobileNotify("Authentication error " + JSON.stringify(error));
+                            ggError("Authentication error " + JSON.stringify(error));
                         }
                     }
                 }
@@ -301,8 +301,8 @@ var everlive = {
     loadUserData : function () {
         mobileNotify("Loading user information...");
         everlive.currentUser( function (err, user) {
-            if (err !== null) {
-                mobileNotify("Can't access User's Account : " + err.message);
+            if (err!== undefined && err !== null) {
+                ggError("Can't access User's Account : " + err.message);
                 return;
             }
 
