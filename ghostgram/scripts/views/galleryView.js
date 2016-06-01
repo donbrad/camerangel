@@ -651,7 +651,7 @@ var modalChatPhotoView = {
                 } else if (direction === 'left') {
                     modalChatPhotoView._currentPhotoPage--;
                     if (modalChatPhotoView._currentPhotoPage < 0) {
-                        modalChatPhotoView._currentPhotoPage = modalChatPhotoView._photoCount - 1;
+                        modalChatPhotoView._currentPhotoPage = modalChatPhotoView._photoCount - 1;  // wrap to last photo...
                     }
                 }
                 var photo = channelView.photosDS.at(modalChatPhotoView._currentPhotoPage);
@@ -659,6 +659,8 @@ var modalChatPhotoView = {
                 if (photo.imageUrl !== null)
                     url = photo.imageUrl;
                 modalChatPhotoView._photoUrl = url;
+
+                $('#modalChatPhotoView-photoView').attr('src', url);
                 modalChatPhotoView._activePhoto.set('photoUrl', url);
                 modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
                 modalChatPhotoView.updatePhotoStatus(photo);
@@ -785,6 +787,7 @@ var modalChatPhotoView = {
              modalChatPhotoView._currentPhotoPage = index;
              modalChatPhotoView._photoCount = channelView.photosDS.total();
              modalChatPhotoView._photoUrl = url;
+             $('#modalChatPhotoView-photoView').attr('src', url);
              modalChatPhotoView._activePhoto.set('photoUrl', url);
              modalChatPhotoView._activePhoto.set('photoId', photoId);
              modalChatPhotoView.updatePhotoStatus(photo);
@@ -820,6 +823,7 @@ var modalChatPhotoView = {
                          }
                      }
 
+                     $('#modalChatPhotoView-photoView').attr('src', url);
                      modalChatPhotoView.updatePhotoStatus(photo);
 
                      $("#modalChatPhotoView").data("kendoMobileModalView").open();
