@@ -231,10 +231,10 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.photoId = photouuid;
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
-                            devicePhoto.currentPhoto.imageUrl = nativeUrl;
+                            devicePhoto.currentPhoto.imageUrl = null;
                             devicePhoto.currentPhoto.cloudUrl = null;
                             devicePhoto.currentPhoto.cloudinaryPublicId = null;
-                            devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
+                            devicePhoto.currentPhoto.thumbnailUrl = null;
                             devicePhoto.currentPhoto.lat = gpsObj.lat;
                             devicePhoto.currentPhoto.lng = gpsObj.lng;
                             devicePhoto.currentPhoto.alt = gpsObj.alt;
@@ -324,7 +324,6 @@ var devicePhoto = {
                                             // photo is already being uploaded
                                             return;
                                         }
-
 
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
