@@ -239,22 +239,10 @@ var photoModel = {
         if (url === undefined || url === null)
             return(false);
 
-        var testString = '/var';
-        if (device.platform === 'Android') {
-            testString = '/storage';
-        }
-        var result = url.indexOf(testString);
+        var testString = deviceModel.fileDirectory;
 
-        if (device.platform === 'iOS') {
-            // sometimes camera photos get places in the temp directory...
-            if (result !== -1) {
-                var tempDir = url.indexOf('/tmp');
-                // if tmp is found, return invalid url
-                if (tempDir !== -1) {
-                    result = -1;
-                }
-            }
-        }
+        var result = url.indexOf(testString);
+        
         if (result === -1) {
             return (false);
         }
