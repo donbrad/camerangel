@@ -102,6 +102,9 @@ var devicePhoto = {
     },
 
     processAndroidDatum : function (datum) {
+        if (datum === undefined || datum === null) {
+            return(0.0);
+        }
         var dataArray = datum.split(',');
 
         var degrees = parseFloat(dataArray[0]);
@@ -146,7 +149,7 @@ var devicePhoto = {
             return (gpsObj);
         } else {
             // Assume android for now...
-            if (gpsData.gpsLatitude !== null) {
+            if (gpsData.gpsLatitude !== undefined && gpsData.gpsLatitude !== null) {
                 gpsObj.hasData = true;
                 gpsObj.lat = devicePhoto.processAndroidDatum(gpsData.gpsLatitude);
                 gpsObj.latRef = gpsData.gpsLatitudeRef;
