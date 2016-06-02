@@ -909,6 +909,31 @@ var channelView = {
     _channel : null,
     _channelUUID : null,
 
+    queryMember : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelView.membersDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(contact);
+    },
+
+    isMember: function (contactUUID) {
+        var member = channelView.queryMember({ field: "contactUUID", operator: "eq", value: contactUUID });
+        if (member !== undefined)
+            return(true);
+
+        return(false);
+    },
+
     queryMessage: function (query) {
         if (query === undefined)
             return(undefined);
@@ -1033,6 +1058,7 @@ var channelView = {
     },
 
     toggleTool: function(e){
+
     },
 
     openEditor : function () {
@@ -1695,8 +1721,11 @@ var channelView = {
             }
 
             channelView.memberList[contactIndex] = contact;
-            channelView.membersDS.add(contact);
-            channelView.membersDS.sync();
+
+            if (contact.contactUUID !== null && !channelView.isMember(contact.contactUUID)) {
+                channelView.membersDS.add(contact);
+                channelView.membersDS.sync();
+            }
         }
     },
 
