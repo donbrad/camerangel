@@ -1621,7 +1621,7 @@ var channelView = {
     },
 
     getContactPhotoUrl : function (contactUUID) {
-        var contact = channelView.memberList[contactUUID]
+        var contact = channelView.memberList[contactUUID];
         if (contact === undefined) {
            ggError("Contact Undefined!!!");
             debugger;
@@ -1718,14 +1718,16 @@ var channelView = {
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
                 }
+
+                if (contact.contactUUID !== null && !channelView.isMember(contact.contactUUID)) {
+                    channelView.membersDS.add(contact);
+                    channelView.membersDS.sync();
+                }
             }
 
             channelView.memberList[contactIndex] = contact;
 
-            if (contact.contactUUID !== null && !channelView.isMember(contact.contactUUID)) {
-                channelView.membersDS.add(contact);
-                channelView.membersDS.sync();
-            }
+           
         }
     },
 
