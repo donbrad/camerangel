@@ -95,7 +95,7 @@
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",
-    "cordova-plugin-crosswalk-webview@1.7.0",
+    "cordova-plugin-crosswalk-webview@1.7.2",
     "cordova-plugin-device",
     "cordova-plugin-device-motion",
     "cordova-plugin-device-orientation",
