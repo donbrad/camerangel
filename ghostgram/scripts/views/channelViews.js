@@ -412,9 +412,34 @@ var editChannelView = {
     originalMembers : [],   // Need to keep track of original members (at start of edit sessions).  as user can add and remove same member.
 
     membersAddedDS : new kendo.data.DataSource(),
-
+    
     membersDeletedDS: new kendo.data.DataSource(),
+    
+    queryMember : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = editChannelView.membersDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
 
+        dataSource.filter(cacheFilter);
+
+        return(contact);
+    },
+    
+    isMember: function (contactUUID) {
+        var member = editChannelView.queryMember({ field: "contactUUID", operator: "eq", value: contactUUID });
+        if (member !== undefined)
+            return(true);
+        
+        return(false);
+    },
+    
     onInit: function (e) {
      //  _preventDefault(e);
 
@@ -636,13 +661,6 @@ var editChannelView = {
         
         channelModel.updateChannelMap(channelObj);
         
-       /* //Update the parse object
-        updateParseObject('channels', 'channelUUID', channelUUID, 'name',  editChannelView._activeChannel.name);
-        updateParseObject('channels', 'channelUUID', channelUUID, 'description',  editChannelView._activeChannel.description);
-        updateParseObject('channels', 'channelUUID', channelUUID, 'members', memberArray);
-        updateParseObject('channels', 'channelUUID', channelUUID, 'invitedMembers', invitedMemberArray);
-*/
-
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");
     //    $("#channels-editChannel-description").css("display", "none").val("");
