@@ -17,6 +17,7 @@ var photoModel = {
     _emulatorPrefix: "",
     _totalPhotos: 0,
     currentPhoto: {},
+    cloudPushList: [],
     currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
@@ -29,6 +30,7 @@ var photoModel = {
 
     init: function () {
 
+        photoModel.cloudPushList = [];
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
@@ -802,6 +804,46 @@ var photoModel = {
 
     },
 
+    processCloudPushList : function () {
+        var len = photoModel.cloudPushList.length;
+        if (len === 0)
+            return;
+        for (var i = 0; i<len; i++ ){
+            photoModel.cloudCreate(photoModel.cloudPushList[i]);
+        }
+        photoModel.cloudPushList = [];
+    },
+
+    cloudCreate : function (photo) {
+        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+            if (error !== null) {
+                mobileNotify ("Error creating photo " + JSON.stringify(error));
+
+            } else {
+                // look up the photo (and remove duplicate local copy if there is one)
+                var photoList = photoModel.findPhotosById(data.photoId);
+
+                if (photoList.length > 1) {
+                    var length = photoList.length;
+
+                    for (var i=0; i<length; i++) {
+                        if (photoList[i].id === undefined) {
+                            photoModel.photosDS.remove(photoList[i]);
+                        }
+                    }
+                } else if (photoList.length === 1) {
+                    if (photoList[0].id === undefined) {
+                        photoList[0].id = data.id;
+                    }
+
+                    photoModel.photosDS.sync();
+                }
+
+
+            }
+        });
+    },
+
     addDevicePhoto: function (devicePhoto, isCamera, isProfilePhoto,  callback) {
         mobileNotify("Adding  photo....");
         var photo = new kendo.data.ObservableObject();
@@ -905,34 +947,12 @@ var photoModel = {
         if (callback !== undefined) {
             callback(null, photo);
         }
-        
-       everlive.createOne(photoModel._cloudClass, photo, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating photo " + JSON.stringify(error));
 
-            } else {
-                // look up the photo (and remove duplicate local copy if there is one)
-                var photoList = photoModel.findPhotosById(data.photoId);
-
-                if (photoList.length > 1) {
-                    var length = photoList.length;
-
-                    for (var i=0; i<length; i++) {
-                        if (photoList[i].id === undefined) {
-                            photoModel.photosDS.remove(photoList[i]);
-                        }
-                    }
-                } else if (photoList.length === 1) {
-                    if (photoList[0].id === undefined) {
-                        photoList[0].id = data.id;
-                    }
-
-                    photoModel.photosDS.sync();
-                }
-
-
-            }
-        });
+        if (deviceModel.isOnline()) {
+            photoModel.cloudCreate(photo);
+        } else {
+           photoModel.cloudPushList.push(photo);
+        }
 
     },
 

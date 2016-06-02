@@ -20,6 +20,7 @@ var everlive = {
     _syncInProgress: true,
     _syncComplete: false,
     _delta : 30,
+    _initialized: false,
 
     init: function () {
         
@@ -29,82 +30,80 @@ var everlive = {
             var provider = Everlive.Constants.StorageProvider.LocalStorage;
     /*    }*/
 
-        APP.everlive = new Everlive({
-            appId: 's2fo2sasaubcx7qe',
-            scheme: 'https',
-            /*caching: {
-                maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
-                enabled: true, //Global setting for enabling/disabling cache. Default is FALSE.
-                typeSettings: { //Specify content type-specific settings that override the global settings.
-                    "userstatus": {
-                        maxAge: 5
+        if (deviceModel.isOnline()) {
+            everlive._initialized = true;
+            APP.everlive = new Everlive({
+                appId: 's2fo2sasaubcx7qe',
+                scheme: 'https',
+                /*caching: {
+                 maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
+                 enabled: true, //Global setting for enabling/disabling cache. Default is FALSE.
+                 typeSettings: { //Specify content type-specific settings that override the global settings.
+                 "userstatus": {
+                 maxAge: 5
 
-                    }
-                }
-            },*/
+                 }
+                 }
+                 },*/
 
-           offline: {
-               // syncUnmodified: true,
-                encryption: {
-                    provider: Everlive.Constants.EncryptionProvider.Default,
+                offline: {
+                    // syncUnmodified: true,
+                    encryption: {
+                        provider: Everlive.Constants.EncryptionProvider.Default,
                         key : 'intelligram'
-                }
-            },
-               /* storage: {
-                    provider: provider
-                    /!*,
-                 conflicts: {
-                    strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
-                    }*!/
-                }/!*,
-
-                files: {
-                    storagePath: 'ghostgrams',
-                    metaPath: 'ghostrams_meta'
-                }*!/
-            },*/
-            authentication: {
-                persist: true/*,
-                onAuthenticationRequired: function() {
-                    if (everlive._token !== null) {
-                        everlive.updateCredentials();
-                    } else {
-                        mobileNotify("Auth Required - kendo...");
-                        if (userModel.hasAccount) {
-                            everlive._signedIn = false;
-                            userModel.initialView = '#usersignin';
-                        } else {
-                            userModel.initialView = '#newuserhome';
-                        }
-                        APP.kendo.navigate(userModel.initialView);
                     }
+                },
+                /* storage: {
+                 provider: provider
+                 /!*,
+                 conflicts: {
+                 strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
+                 }*!/
+                 }/!*,
 
-                }*/
-            }
-        });
+                 files: {
+                 storagePath: 'ghostgrams',
+                 metaPath: 'ghostrams_meta'
+                 }*!/
+                 },*/
+                authentication: {
+                    persist: true/*,
+                     onAuthenticationRequired: function() {
+                     if (everlive._token !== null) {
+                     everlive.updateCredentials();
+                     } else {
+                     mobileNotify("Auth Required - kendo...");
+                     if (userModel.hasAccount) {
+                     everlive._signedIn = false;
+                     userModel.initialView = '#usersignin';
+                     } else {
+                     userModel.initialView = '#newuserhome';
+                     }
+                     APP.kendo.navigate(userModel.initialView);
+                     }
 
-
-
-        everlive.getTimeStamp();
-
-        everlive.getCredentials();
-
-        everlive.updateCredentials();
-
-        if (deviceModel.isOnline() ) {
+                     }*/
+                }
+            });
+        
+            everlive.getTimeStamp();
+    
+            everlive.getCredentials();
+    
+            everlive.updateCredentials();
+            
             APP.everlive.online();
+
+            // Wire up the everlive sync monitors
+            APP.everlive.on('syncStart', everlive.syncStart);
+
+            APP.everlive.on('syncEnd', everlive.syncEnd);
+
+            everlive.isUserSignedIn();
+
         } else {
             APP.everlive.offline();
         }
-
-
-        // Wire up the everlive sync monitors
-        APP.everlive.on('syncStart', everlive.syncStart);
-
-        APP.everlive.on('syncEnd', everlive.syncEnd);
-
-        everlive.isUserSignedIn();
-
     },
 
     getCredentials : function () {

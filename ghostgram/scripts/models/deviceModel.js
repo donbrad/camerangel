@@ -196,13 +196,19 @@ var deviceModel = {
         // Take all data sources online
 
         if (APP.everlive !== null) {
+            if (!everlive._initialized) {
+                everlive.init();
+            }
+            
             if (userModel._needSync) {
                 everlive.updateUser();
             }
             if (userModel._needStatusSync) {
                 everlive.updateUserStatus();
             }
-           everlive.syncCloud();
+            everlive.syncCloud();
+            photoModel.processCloudPushList();
+
 
         }
 
