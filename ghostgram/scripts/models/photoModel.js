@@ -18,6 +18,7 @@ var photoModel = {
     _totalPhotos: 0,
     currentPhoto: {},
     cloudPushList: [],
+    localPushList : [],
     currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
@@ -31,6 +32,7 @@ var photoModel = {
     init: function () {
 
         photoModel.cloudPushList = [];
+        photoModel.localPushList = [];
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
@@ -219,15 +221,21 @@ var photoModel = {
             return;
             
         }
+        if (photoModel.localPushList[url] !== undefined && photoModel.localPushList[url]) {
+            return;
+        }
+        photoModel.localPushList[url] = true;
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, localUrl,
             function(entry) {
+                photoModel.localPushList[url] = false;
                 var photo = photoModel.findPhotoById(photoId);
                 photo.set('deviceUrl',entry);
                 photoModel.photosDS.sync();
                 console.log("Cached local copy of " + photo.photoId);
             },
             function(err) {
+                photoModel.localPushList[url] = false;
               ggError("Local Cache Error " + JSON.stringify(err));
             });
     },
