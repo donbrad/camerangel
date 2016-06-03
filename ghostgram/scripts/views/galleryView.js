@@ -56,17 +56,17 @@ var galleryView = {
 
     updateTotalPhotos : function () {
         // set result count
-        var photoCount = photoModel.photosDS.total();
-        if(photoCount > 0){
+      
+        if(photoModel._totalPhotos > 0){
             /// single photo
-            if(photoCount == 1) {
+            if(photoModel._totalPhotos == 1) {
                 $("#resultsName").text("Photo");
             } else {
             /// multiple photos
                 $("#resultsName").text("Photos");
             }
             $(".results").css("visibility", "visible");
-            $("#resultCount").text(photoCount);
+           // $("#resultCount").text(photoCount);
         } else {
             $(".results").css("visibility", "hidden");
             $("#resultsName").text("No Photos");
@@ -81,6 +81,7 @@ var galleryView = {
 
         // Make sure all the local photos have been uploaded
         photoModel.syncPhotosToCloud();
+        photoModel.syncPhotosToDevice();
 
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
@@ -345,6 +346,7 @@ var galleryView = {
 
     galleryPhoto : function (e) {
         _preventDefault(e);
+
         // Call the device gallery function to get a photo and get it scaled to gg resolution
         devicePhoto.deviceGallery(
             devicePhoto._resolution, // max resolution in pixels
@@ -359,6 +361,7 @@ var galleryView = {
             }
         );
     },
+
     sharePhoto: function (e)  {
         _preventDefault(e);
 
@@ -631,11 +634,43 @@ var modalChatPhotoView = {
     _userHasCopy: false,
     _galleryMode: false,
     _currentPhotoPage : 0,
+    _photoCount : 0,
     _activePhoto : new kendo.data.ObservableObject(),
 
-    onInit: function(e){
-        var showInfo =  modalPhotoView._showInfo;
+    onInit: function(e) {
 
+        $('#modalChatPhotoView-photoView').kendoTouch({
+            enableSwipe:true,
+            swipe:function (e) {
+                var direction = e.direction;
+
+                if (direction === 'right') {
+                    modalChatPhotoView._currentPhotoPage++;
+                    if (modalChatPhotoView._currentPhotoPage === modalChatPhotoView._photoCount) {
+                        modalChatPhotoView._currentPhotoPage = 0;  // wrap to first photo...
+                    }
+                } else if (direction === 'left') {
+                    modalChatPhotoView._currentPhotoPage--;
+                    if (modalChatPhotoView._currentPhotoPage < 0) {
+                        modalChatPhotoView._currentPhotoPage = modalChatPhotoView._photoCount - 1;  // wrap to last photo...
+                    }
+                }
+                var photo = channelView.photosDS.at(modalChatPhotoView._currentPhotoPage);
+                var url = photo.thumbnailUrl;
+                if (photo.imageUrl !== null)
+                    url = photo.imageUrl;
+                modalChatPhotoView._photoUrl = url;
+
+                $('#modalChatPhotoView-photoView').attr('src', url);
+                modalChatPhotoView._activePhoto.set('photoUrl', url);
+                modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
+                modalChatPhotoView.updatePhotoStatus(photo);
+            },
+            minXDelta: 50,
+            maxYDelta:40,
+            maxDuration:2000
+
+        });
 
     },
 
@@ -740,23 +775,30 @@ var modalChatPhotoView = {
 
 
          modalChatPhotoView._galleryMode = galleryMode;
+         var url = photo.thumbnailUrl;
+         if (photo.imageUrl !== null)
+             url = photo.imageUrl;
 
          if (galleryMode) {
 
              var index = channelView.getPhotoIndex(photoId);
              if (index < 0) 
                  index = 0;
+
              modalChatPhotoView._currentPhotoPage = index;
+             modalChatPhotoView._photoCount = channelView.photosDS.total();
+             modalChatPhotoView._photoUrl = url;
+             $('#modalChatPhotoView-photoView').attr('src', url);
+             modalChatPhotoView._activePhoto.set('photoUrl', url);
+             modalChatPhotoView._activePhoto.set('photoId', photoId);
+             modalChatPhotoView.updatePhotoStatus(photo);
+
              $("#modalChatPhotoView").data("kendoMobileModalView").open();
-             $("#modalChatPhotoView-scrollView").data("kendoMobileScrollView").scrollTo(modalChatPhotoView._currentPhotoPage);
 
          } else {
 
-
              modalChatPhotoView._photo = photo;
-             var url = photo.thumbnailUrl;
-             if (photo.imageUrl !== null)
-                 url = photo.imageUrl;
+
 
              $.ajax({
                  url: url,
@@ -782,6 +824,7 @@ var modalChatPhotoView = {
                          }
                      }
 
+                     $('#modalChatPhotoView-photoView').attr('src', url);
                      modalChatPhotoView.updatePhotoStatus(photo);
 
                      $("#modalChatPhotoView").data("kendoMobileModalView").open();

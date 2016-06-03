@@ -15,7 +15,6 @@ var placeNoteModel = {
     init: function () {
         placeNoteModel.notesDS = new kendo.data.DataSource({
             type: 'everlive',
-            //offlineStorage: "placenote",
             transport: {
                 typeName: 'placenote'
             },

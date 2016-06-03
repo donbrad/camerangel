@@ -20,6 +20,7 @@ var everlive = {
     _syncInProgress: true,
     _syncComplete: false,
     _delta : 30,
+    _initialized: false,
 
     init: function () {
         
@@ -29,72 +30,102 @@ var everlive = {
             var provider = Everlive.Constants.StorageProvider.LocalStorage;
     /*    }*/
 
+        if (deviceModel.isOnline()) {
+            everlive._initialized = true;
+            APP.everlive = new Everlive({
+                appId: 's2fo2sasaubcx7qe',
+                scheme: 'https',
+                /*caching: {
+                 maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
+                 enabled: true, //Global setting for enabling/disabling cache. Default is FALSE.
+                 typeSettings: { //Specify content type-specific settings that override the global settings.
+                 "userstatus": {
+                 maxAge: 5
 
-        APP.everlive = new Everlive({
-            appId: 's2fo2sasaubcx7qe',
-            scheme: 'https',
-            /*caching: {
-                maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
-                enabled: true, //Global setting for enabling/disabling cache. Default is FALSE.
-                typeSettings: { //Specify content type-specific settings that override the global settings.
-                    "userstatus": {
-                        maxAge: 5
+                 }
+                 }
+                 },*/
 
-                    }
-                }
-            },*/
-
-           offline: {
-               // syncUnmodified: true,
-                encryption: {
-                    provider: Everlive.Constants.EncryptionProvider.Default,
+                offline: {
+                    // syncUnmodified: true,
+                    encryption: {
+                        provider: Everlive.Constants.EncryptionProvider.Default,
                         key : 'intelligram'
-                }
-            },
-
-               /* storage: {
-                    provider: provider
-                    /!*,
-                 conflicts: {
-                    strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
-                    }*!/
-                }/!*,
-
-                files: {
-                    storagePath: 'ghostgrams',
-                    metaPath: 'ghostrams_meta'
-                }*!/
-            },*/
-            authentication: {
-                persist: true/*,
-                onAuthenticationRequired: function() {
-                    mobileNotify("Auth Required - kendo...");
-                    if (userModel.hasAccount) {
-                        everlive._signedIn = false;
-                        userModel.initialView = '#usersignin';
-                    } else {
-                        userModel.initialView = '#newuserhome';
                     }
-                    APP.kendo.navigate(userModel.initialView);
-                }*/
-            }
-        });
+                },
+                /* storage: {
+                 provider: provider
+                 /!*,
+                 conflicts: {
+                 strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
+                 }*!/
+                 }/!*,
 
-        everlive.getTimeStamp();
+                 files: {
+                 storagePath: 'ghostgrams',
+                 metaPath: 'ghostrams_meta'
+                 }*!/
+                 },*/
+                authentication: {
+                    persist: true/*,
+                     onAuthenticationRequired: function() {
+                     if (everlive._token !== null) {
+                     everlive.updateCredentials();
+                     } else {
+                     mobileNotify("Auth Required - kendo...");
+                     if (userModel.hasAccount) {
+                     everlive._signedIn = false;
+                     userModel.initialView = '#usersignin';
+                     } else {
+                     userModel.initialView = '#newuserhome';
+                     }
+                     APP.kendo.navigate(userModel.initialView);
+                     }
 
-        if (deviceModel.isOnline() ) {
+                     }*/
+                }
+            });
+        
+            everlive.getTimeStamp();
+    
+            everlive.getCredentials();
+    
+            everlive.updateCredentials();
+            
             APP.everlive.online();
+
+            // Wire up the everlive sync monitors
+            APP.everlive.on('syncStart', everlive.syncStart);
+
+            APP.everlive.on('syncEnd', everlive.syncEnd);
+
+            everlive.isUserSignedIn();
+
         } else {
             APP.everlive.offline();
         }
+    },
 
+    getCredentials : function () {
+       everlive._id =  localStorage.getItem('ggEverliveUserId');
+        if (everlive._id === undefined) {
+            everlive._id = null;
+        }
+        everlive._token =  localStorage.getItem('ggEverliveUserToken');
+        if (everlive._token === undefined) {
+            everlive._token = null;
+        }
+    },
 
-        // Wire up the everlive sync monitors
-        APP.everlive.on('syncStart', everlive.syncStart);
+    putCredentials : function () {
+        localStorage.setItem('ggEverliveUserToken',  everlive._token);
+        localStorage.setItem('ggEverliveUserId',  everlive._id);
+    },
 
-        APP.everlive.on('syncEnd', everlive.syncEnd);
-
-        everlive.isUserSignedIn();
+    updateCredentials : function () {
+        if (everlive._token !== null && everlive._id !== null) {
+            APP.everlive.authentication.setAuthorization(everlive._token, 'bearer', everlive._id)
+        }
 
     },
 
@@ -141,7 +172,7 @@ var everlive = {
                 if (error.code === 107) {
                     mobileNotify("Emall Validation Resend - Deferring User Update...");
                 } else {
-                    console.log("Emall Validation Resend Error : " + JSON.stringify(error));
+                    ggError("Emall Validation Resend Error : " + JSON.stringify(error));
                 }
 
             });
@@ -181,12 +212,16 @@ var everlive = {
                 }
 
             } else {
-                if (error.code === 1003) {
-                    setTimeout(function(){
-                        everlive.isUserSignedIn();
-                    }, 3000);
-                } else {
-                    mobileNotify("Authentication error " + JSON.stringify(error));
+                if (error !== undefined && error !== null && error !== "") {
+                    if (error.code !== undefined) {
+                        if (error.code === 1003) {
+                            setTimeout(function () {
+                                everlive.isUserSignedIn();
+                            }, 3000);
+                        } else {
+                            ggError("Authentication error " + JSON.stringify(error));
+                        }
+                    }
                 }
             }
         });
@@ -234,6 +269,9 @@ var everlive = {
 
                 everlive._id = data.result.Id;
                 userModel.Id =  data.result.Id;
+                everlive._token = data.result.access_token;
+                everlive._tokenType = data.result.token_type;
+                everlive.putCredentials();
                 userModel._user.Id = data.result.Id;
                 callback(null, data);
             },
@@ -251,6 +289,7 @@ var everlive = {
                 userModel._user.Id = data.result.principal_id;
                 everlive._signedIn = true;
                 everlive._isAuthenticated = true;
+                everlive.putCredentials();
                 callback(null, userModel._user.Id);
             },
             function(error){
@@ -261,8 +300,8 @@ var everlive = {
     loadUserData : function () {
         mobileNotify("Loading user information...");
         everlive.currentUser( function (err, user) {
-            if (err !== null) {
-                mobileNotify("Can't access User's Account : " + err.message);
+            if (err!== undefined && err !== null) {
+                ggError("Can't access User's Account : " + err.message);
                 return;
             }
 
@@ -353,12 +392,15 @@ var everlive = {
                     var result = data.result;
                 },
                 function (error) {
-                    if (error.code === 107) {
-                        mobileNotify("Deferring User Update...");
-                    } else {
-                        console.log("User Update Error : " + JSON.stringify(error));
+                    if (error !== undefined && error !== null && error !== "") {
+                        if (error.code !== undefined) {
+                            if (error.code === 107) {
+                                mobileNotify("Deferring User Update...");
+                            } else {
+                                console.log("User Update Error : " + JSON.stringify(error));
+                            }
+                        }
                     }
-
                 });
         } else {
             userModel._needSync = true;
@@ -388,11 +430,13 @@ var everlive = {
                   
                 },
                 function(error){
-                    if (error !== null && error !== "") {
-                        if (error.code === 107) {
-                            mobileNotify("Deferring User Status Update...");
-                        } else {
-                            console.log("User Update Status Error : " + JSON.stringify(error));
+                    if (error !== undefined && error !== null && error !== "") {
+                        if (error.code !== undefined) {
+                            if (error.code === 107) {
+                                mobileNotify("Deferring User Status Update...");
+                            } else {
+                                console.log("User Update Status Error : " + JSON.stringify(error));
+                            }
                         }
                     }
                 });

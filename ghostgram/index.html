@@ -1730,13 +1730,25 @@
 		    		<span class="placeType-list">
 		    			<img src="images/icon-private.svg" /> Private Chat
 		    		</span>
+		    		<span>
+		    			# var alias = channelsView.getPrivateChatAlias(channelUUID);#
+		    			&nbsp;  aka (#:alias#)
+		    		</span>
 		    		#} else if (isPlace) {#
 		    		<span class="placeType-list">
 		    			<img src="images/icon-place.svg" id="chatList-place-icon" /> Place Chat
 		    		</span>
+		    		<span>
+		    		# var membersCount = members.length;#
+		    			&nbsp; Owner  : #:ownerName#   &nbsp; [#:membersCount#]
+		    		</span>
 		    		#} else {#
 		    		<span class="placeType-list">
 		    			<img src="images/icon-group.svg" /> Group Chat
+		    		</span>
+		    		<span>
+		    		# var membersCount = members.length;#
+		    			&nbsp; Owner  : #:ownerName#   &nbsp; [#:membersCount#]
 		    		</span>
 		    		#}#
 		    		#if (data.isMuted) {# <span class="listTag-light">Muted</span> #} #
@@ -2768,7 +2780,7 @@
 	<div>
 		<div class="resultsBar">
 			<div class="results">
-				<span id="resultCount"></span>
+				<span id="resultCount" data-bind="text: _totalPhotos"></span>
 				<span id="resultsName">Photos</span>
 			</div>
 			<div class="photoDisplayView">
@@ -3531,14 +3543,8 @@
 		</div>
 	</div>
 	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Gallery</div>
-	<div style="width: 100%; height: 90%; min-height: 200px;">
-		<div id="modalChatPhotoView-scrollView"
-			 data-role="scrollview"
-			 data-source="channelView.photosDS"
-			 data-template="modalChatPhoto-template"
-			 data-change="modalChatPhotoView.changePhoto"
-			 data-enable-pager="true">
-		</div>
+	<div class="photoViewBox" data-role="content">
+		<img id="modalChatPhotoView-photoView"  src="" />
 	</div>
 	<div class="footer" data-role="footer">
 		<div style="text-align: center;" id="modalChatPhotoRecipient"  class="hidden">
@@ -3752,8 +3758,9 @@
 	if (photoModel.isValidDeviceUrl(deviceUrl)) {
 	    if (deviceUrl.indexOf('file:') === -1) {
 			deviceUrl = 'file:\/\/' + deviceUrl;
-			console.log(deviceUrl);
+
 		}
+
 		photoUrl = deviceUrl;
 	} else if (!photoModel.isValidCloudUrl(cloudUrl)) {
 		if (cloudinaryPublicId !== undefined && cloudinaryPublicId !== null) {
@@ -3761,6 +3768,7 @@
 	        cloudUrl = imageUrl;
 		}
 	}
+	console.log("photoUrl = " + photoUrl);
 	#
 
 	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>

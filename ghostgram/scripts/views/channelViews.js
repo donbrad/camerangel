@@ -114,7 +114,16 @@ var channelsView = {
 
     },
 
+    // Get the current alias for privateChat contact  
+    getPrivateChatAlias: function (contactUUID) {
+        var contact = contactModel.findContact(contactUUID);
+        var alias = contact.alias;
 
+        if (alias === undefined || alias === null) {
+            alias = '...';
+        }
+        return(alias);
+    },
 
     onShow : function(e) {
        // _preventDefault(e);
@@ -412,9 +421,34 @@ var editChannelView = {
     originalMembers : [],   // Need to keep track of original members (at start of edit sessions).  as user can add and remove same member.
 
     membersAddedDS : new kendo.data.DataSource(),
-
+    
     membersDeletedDS: new kendo.data.DataSource(),
+    
+    queryMember : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = editChannelView.membersDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
 
+        dataSource.filter(cacheFilter);
+
+        return(contact);
+    },
+    
+    isMember: function (contactUUID) {
+        var member = editChannelView.queryMember({ field: "contactUUID", operator: "eq", value: contactUUID });
+        if (member !== undefined)
+            return(true);
+        
+        return(false);
+    },
+    
     onInit: function (e) {
      //  _preventDefault(e);
 
@@ -605,9 +639,7 @@ var editChannelView = {
             }
 
         }
-
-
-
+        
 
         for (var m=0; m< memberArray.length; m++) {
 
@@ -628,6 +660,10 @@ var editChannelView = {
         channelObj.set('members', memberArray);
         channelObj.set('inviteMembers', invitedMemberArray);
 
+        //Compute the membercount from both members and invited members
+        var memberCount = memberArray.length + invitedMemberArray.length;
+        channelObj.set('memberCount', memberCount);
+
 
         var Id = channelObj.Id;
         if (Id !== undefined){
@@ -638,13 +674,6 @@ var editChannelView = {
         
         channelModel.updateChannelMap(channelObj);
         
-       /* //Update the parse object
-        updateParseObject('channels', 'channelUUID', channelUUID, 'name',  editChannelView._activeChannel.name);
-        updateParseObject('channels', 'channelUUID', channelUUID, 'description',  editChannelView._activeChannel.description);
-        updateParseObject('channels', 'channelUUID', channelUUID, 'members', memberArray);
-        updateParseObject('channels', 'channelUUID', channelUUID, 'invitedMembers', invitedMemberArray);
-*/
-
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");
     //    $("#channels-editChannel-description").css("display", "none").val("");
@@ -895,6 +924,31 @@ var channelView = {
     _showEmoji: true,
     emojiCategories: null,
 
+    queryMember : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = channelView.membersDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var contact = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(contact);
+    },
+
+    isMember: function (contactUUID) {
+        var member = channelView.queryMember({ field: "contactUUID", operator: "eq", value: contactUUID });
+        if (member !== undefined)
+            return(true);
+
+        return(false);
+    },
+
     queryMessage: function (query) {
         if (query === undefined)
             return(undefined);
@@ -1035,6 +1089,7 @@ var channelView = {
     },
 
     toggleTool: function(e){
+
     },
 
     openEditor : function () {
@@ -1595,7 +1650,7 @@ var channelView = {
     },
 
     getContactPhotoUrl : function (contactUUID) {
-        var contact = channelView.memberList[contactUUID]
+        var contact = channelView.memberList[contactUUID];
         if (contact === undefined) {
            ggError("Contact Undefined!!!");
             debugger;
@@ -1692,11 +1747,16 @@ var channelView = {
                     contact.publicKey = thisContact.publicKey;
                     contact.isPresent = false;
                 }
+
+                if (contact.contactUUID !== null && !channelView.isMember(contact.contactUUID)) {
+                    channelView.membersDS.add(contact);
+                    channelView.membersDS.sync();
+                }
             }
 
             channelView.memberList[contactIndex] = contact;
-            channelView.membersDS.add(contact);
-            channelView.membersDS.sync();
+
+           
         }
     },
 
@@ -2815,10 +2875,10 @@ var channelPresence = {
             click: function (e) {
                 // Click to potential member list -- add this member to channel
                 var thisMember = e.dataItem;
-                if (thisMember !== undefined && thisMember.contactUUID !== null) {
+                if (thisMember !== undefined && thisMember.uuid !== null) {
                     contactActionView.setReturnModal("#channelPresence");
                     channelPresence.closeModal();
-                    contactActionView.openModal(thisMember.contactUUID);
+                    contactActionView.openModal(thisMember.uuid);
                 }
 
 

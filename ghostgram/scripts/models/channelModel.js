@@ -40,7 +40,6 @@ var channelModel = {
             type: 'everlive',
             transport: {
                 typeName: 'channels'
-                //dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -56,7 +55,6 @@ var channelModel = {
             type: 'everlive',
             transport: {
                 typeName: 'privatechannels'
-                //dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -68,8 +66,7 @@ var channelModel = {
             type: 'everlive',
           
             transport: {
-                typeName: 'recalledMessages',
-                dataProvider: APP.everlive
+                typeName: 'recalledMessages'
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -95,8 +92,7 @@ var channelModel = {
             type: 'everlive',
 
             transport: {
-                typeName: 'channelPhotos',
-                dataProvider: APP.everlive
+                typeName: 'channelPhotos'
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -107,8 +103,7 @@ var channelModel = {
         channelModel.groupMessagesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'groupmessages',
-                dataProvider: APP.everlive
+                typeName: 'groupmessages'
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -1107,6 +1102,7 @@ var channelModel = {
 
         channel.set("isOwner", true);
         channel.set("members", [ownerUUID]);
+        channel.set("memberCount", 1);
         channel.set("invitedMembers", []);
 
         channelModel.channelsDS.add(channel);
@@ -1156,7 +1152,7 @@ var channelModel = {
         channel.set('version', channelModel._version);
         channel.set('ggType', channelModel._ggClass);
         channel.set('isPlace', false);
-        channel.set ('category', 'Group');
+        channel.set('category', 'Group');
         channel.set('isPrivate', false);
         channel.set('isMuted', false);
         channel.set('isDeleted', false);
@@ -1187,6 +1183,7 @@ var channelModel = {
 
         channel.set("isOwner", true);
         channel.set("members", [ownerUUID]);
+        channel.set("memberCount", 1);
         channel.set("invitedMembers", []);
 
 
@@ -1342,6 +1339,7 @@ var channelModel = {
         mapObj.ownerUUID = channel.ownerUUID;
         mapObj.ownerName = channel.ownerName;
         mapObj.members = channel.members;
+        mapObj.memberCount = channel.members.length;
         mapObj.invitedMembers = channel.invitedMembers;
 
         everlive.createOne('channelmap', mapObj, function (error, data){
@@ -1369,6 +1367,7 @@ var channelModel = {
                     mapObj.category = channel.category;
                     mapObj.ownerUUID = channel.ownerUUID;
                     mapObj.members = channel.members;
+                    mapObj.memberCount = channel.members.length;
                     mapObj.invitedMembers = channel.invitedMembers;
 
                     everlive.updateOne('channelmap', mapObj, function (error, data) {

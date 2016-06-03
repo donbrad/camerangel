@@ -8,6 +8,7 @@
 
 var devicePhoto = {
     currentPhoto : {},
+    uploadList: [],
     _uploadActive: false,
     _resolution : 2560,
     _quality : 75,
@@ -27,7 +28,14 @@ var devicePhoto = {
         formData.append('folder', devicePhoto._userPhoto);
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserphoto');
-        formData.append('callback', '/cloudinary_cors.html');
+        //formData.append('callback', '/cloudinary_cors.html');
+
+        if (devicePhoto.uploadList[photoUUID] !== undefined && devicePhoto.uploadList[photoUUID] === true) {
+            uploadCallback(null, null);
+            return;
+        }
+
+        devicePhoto.uploadList[photoUUID] = true;
 
         $.ajax({
             url: 'https://api.cloudinary.com/v1_1/ghostgrams/image/upload',
@@ -41,11 +49,13 @@ var devicePhoto = {
             },
 
             success: function(responseData, textStatus, jqXHR) {
+                devicePhoto.uploadList[photoUUID] = false;
                 responseData.photoUUID = photoUUID;
                 uploadCallback(responseData, null);
 
             },
                 error: function(jqXHR, textStatus, errorThrown) {
+                devicePhoto.uploadList[photoUUID] = false;
                 uploadCallback(null, errorThrown);
                 }
             });
@@ -59,7 +69,13 @@ var devicePhoto = {
         formData.append('folder', devicePhoto._userProfile);
         formData.append('unsigned_upload', true);
         formData.append('upload_preset', 'gguserprofile');
-        formData.append('callback', '/cloudinary_cors.html');
+      //  formData.append('callback', '/cloudinary_cors.html');
+        if (devicePhoto.uploadList[photoUUID] !== undefined && devicePhoto.uploadList[photoUUID] === true) {
+            uploadCallback(null, null);
+            return;
+        }
+
+        devicePhoto.uploadList[photoUUID] = true;
 
         $.ajax({
             url: 'https://res.cloudinary.com/v1_1/ghostgrams/image/upload',
@@ -73,17 +89,22 @@ var devicePhoto = {
             },
 
             success: function(responseData, textStatus, jqXHR) {
+                devicePhoto.uploadList[photoUUID] = false;
                 responseData.photoUUID = photoUUID;
                 uploadCallback(responseData, null);
 
             },
             error: function(jqXHR, textStatus, errorThrown) {
+                devicePhoto.uploadList[photoUUID] = false;
                 uploadCallback(null, errorThrown);
             }
         });
     },
 
     processAndroidDatum : function (datum) {
+        if (datum === undefined || datum === null) {
+            return(0.0);
+        }
         var dataArray = datum.split(',');
 
         var degrees = parseFloat(dataArray[0]);
@@ -128,7 +149,7 @@ var devicePhoto = {
             return (gpsObj);
         } else {
             // Assume android for now...
-            if (gpsData.gpsLatitude !== null) {
+            if (gpsData.gpsLatitude !== undefined && gpsData.gpsLatitude !== null) {
                 gpsObj.hasData = true;
                 gpsObj.lat = devicePhoto.processAndroidDatum(gpsData.gpsLatitude);
                 gpsObj.latRef = gpsData.gpsLatitudeRef;
@@ -169,7 +190,7 @@ var devicePhoto = {
         }*/
 
         if (saveToAlbum === undefined) {
-            saveToAlbum = false;
+            saveToAlbum = true;
         }
         var allowEdit = false;
         if (device.platform === 'iOS') {
@@ -213,10 +234,10 @@ var devicePhoto = {
                             devicePhoto.currentPhoto.photoId = photouuid;
                             devicePhoto.currentPhoto.filename = filename;
                             devicePhoto.currentPhoto.deviceUrl = nativeUrl;
-                            devicePhoto.currentPhoto.imageUrl = nativeUrl;
+                            devicePhoto.currentPhoto.imageUrl = null;
                             devicePhoto.currentPhoto.cloudUrl = null;
                             devicePhoto.currentPhoto.cloudinaryPublicId = null;
-                            devicePhoto.currentPhoto.thumbnailUrl = nativeUrl;
+                            devicePhoto.currentPhoto.thumbnailUrl = null;
                             devicePhoto.currentPhoto.lat = gpsObj.lat;
                             devicePhoto.currentPhoto.lng = gpsObj.lng;
                             devicePhoto.currentPhoto.alt = gpsObj.alt;
@@ -250,7 +271,10 @@ var devicePhoto = {
                                 }
                             });
 
-
+                            if (!deviceModel.isOnline()) {
+                                shareCallback(null, null);
+                                return;
+                            }
                             devicePhoto.convertImgToDataURL(nativeUrl, function (dataUrl) {
                                 var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
@@ -263,14 +287,21 @@ var devicePhoto = {
                                         if (error !== null) {
                                             ggError("Cloud Photo Error " + JSON.stringify(error));
                                             return;
+                                        } else if (photoData === null) {
+                                            // photo is already being uploaded
+                                            return;
                                         }
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
                                         if (photoObj !== undefined && photoData !== null) {
+                                            photoObj.set('processing', false);
                                             photoObj.set('imageUrl', photoData.url);
                                             photoObj.set('cloudUrl', photoData.url);
                                             photoObj.set('thumbnailUrl', imageUrl);  // The image is the thumbnail...
                                             photoObj.set('cloudinaryPublicId', photoData.public_id);
+                                            photoObj.set('width', Number(photoData.width));
+                                            photoObj.set('height', Number(photoData.height));
+                                            photoObj.set('size', Number(photoData.bytes));
                                             photoObj.set('isProfilePhoto', true);
                                             photoModel.syncLocal();
                                           //  photoModel.updateCloud(photoObj);
@@ -292,8 +323,10 @@ var devicePhoto = {
                                         if (error !== null) {
                                             ggError("Cloud Photo Error " + JSON.stringify(error));
                                             return;
+                                        } else if (photoData === null) {
+                                            // photo is already being uploaded
+                                            return;
                                         }
-
 
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
@@ -302,6 +335,9 @@ var devicePhoto = {
                                             photoObj.set('imageUrl', secureUrl);
                                             photoObj.set('cloudUrl', secureUrl);
                                             photoObj.set('thumbnailUrl', thumbUrl);
+                                            photoObj.set('width', Number(photoData.width));
+                                            photoObj.set('height', Number(photoData.height));
+                                            photoObj.set('size', Number(photoData.bytes));
                                             photoObj.set('cloudinaryPublicId', photoData.public_id);
                                             photoObj.set('isProfilePhoto', false);
                                             photoModel.syncLocal();
@@ -397,6 +433,11 @@ var devicePhoto = {
             }
         });
 
+        if (!deviceModel.isOnline()) {
+            shareCallback(null, null);
+            return;
+        }
+
         devicePhoto.convertImgToDataURL(imageUrl, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
@@ -406,19 +447,26 @@ var devicePhoto = {
             if (isProfilePhoto) {
                 // It's a profile so store in profile cloud and do autoscaling and cropping
                 devicePhoto.cloudinaryUploadProfile(photouuid, filename, dataUrl, function (photoData, error) {
+                  
                     if (error !== null) {
                         ggError("Cloud Photo Error " + JSON.stringify(error));
+                        return;
+                    } else if (photoData === null) {
+                        // photo is already being uploaded
                         return;
                     }
 
                     var photoObj = photoModel.findPhotoById(photouuid);
+
 
                     if (photoObj !== undefined && photoData !== null) {
                         var secureUrl = photoData.secure_url;
                         photoObj.set('imageUrl', secureUrl);
                         photoObj.set('cloudUrl', secureUrl);
                         photoObj.set('thumbnailUrl', secureUrl);
-
+                        photoObj.set('width', Number(photoData.width));
+                        photoObj.set('height', Number(photoData.height));
+                        photoObj.set('size', Number(photoData.bytes));
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
@@ -441,6 +489,9 @@ var devicePhoto = {
                     if (error !== null) {
                         ggError("Cloud Photo Error " + JSON.stringify(error));
                         return;
+                    } else if (photoData === null) {
+                        // photo is already being uploaded
+                        return;
                     }
                     var photoObj = photoModel.findPhotoById(photouuid);
 
@@ -449,6 +500,9 @@ var devicePhoto = {
                         photoObj.set('imageUrl', secureUrl);
                         photoObj.set('cloudUrl', secureUrl);
                         photoObj.set('thumbnailUrl', thumbUrl);
+                        photoObj.set('width', Number(photoData.width));
+                        photoObj.set('height', Number(photoData.height));
+                        photoObj.set('size', Number(photoData.bytes));
                         photoObj.set('cloudinaryPublicId', photoData.public_id);
                         photoObj.set('isProfilePhoto', true);
                         photoModel.syncLocal();
@@ -462,7 +516,7 @@ var devicePhoto = {
 
                     } else {
                         if (shareCallback !== undefined) {
-                            shareCallback(photoObj.photoId, null);
+                            shareCallback(null, null);
                         }
                     }
 
