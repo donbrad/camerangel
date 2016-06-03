@@ -1,6 +1,6 @@
 {
   "name": "emojione",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "main": [
     "assets/css/emojione.css",
     "lib/js/emojione.js"
@@ -25,14 +25,13 @@
     "emoji set"
   ],
   "homepage": "https://github.com/Ranks/emojione",
-  "_release": "2.1.4",
+  "_release": "2.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.4",
-    "commit": "c3fea224479cea82e87125f41a097d52a58d281b"
+    "tag": "v2.2.0",
+    "commit": "c2b616b19107df28c055aca002dd4db1720f6ecf"
   },
   "_source": "https://github.com/Ranks/emojione.git",
-  "_target": "~2.1.4",
-  "_originalSource": "emojione",
-  "_direct": true
+  "_target": "~2.2.0",
+  "_originalSource": "emojione"
 }

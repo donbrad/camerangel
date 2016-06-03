@@ -211,12 +211,12 @@
 		
 		APP.emailAvailable = false;
 
-		emojione.ascii = true;
-		emojione.imageType = 'svg';
+		//emojione.ascii = true;
+		emojione.imageType = 'png';
 		emojione.sprites = true;
-		emojione.imagePathSVGSprites = 'bower_components/emojione/assets/sprites/emojione.sprites.svg';
-		
-		
+		//emojione.imagePathSVGSprites = './bower_components/emojione/assets/sprites/emojione.sprites.svg';
+
+
 
 		
 		/* $(".email-Autocomplete").emailautocomplete({
