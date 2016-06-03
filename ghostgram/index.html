@@ -1738,7 +1738,8 @@
 		    			<img src="images/icon-group.svg" /> Group Chat
 		    		</span>
 		    		<span>
-		    			&nbsp; Owner  : #:ownerName#   (#:members.length#)
+		    		# var membersCount = members.length; if (memberCount !== undefined) {membersCount = memberCount;}#
+		    			&nbsp; Owner  : #:ownerName#   &nbsp; [#:membersCount#]
 		    		</span>
 		    		#}#
 		    		#if (data.isMuted) {# <span class="listTag-light">Muted</span> #} #
