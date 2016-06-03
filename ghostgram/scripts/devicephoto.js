@@ -190,7 +190,7 @@ var devicePhoto = {
         }*/
 
         if (saveToAlbum === undefined) {
-            saveToAlbum = false;
+            saveToAlbum = true;
         }
         var allowEdit = false;
         if (device.platform === 'iOS') {

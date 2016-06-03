@@ -1321,8 +1321,8 @@ var signUpView = {
         user.set('addressList', []);
         user.set('emailList', []);
         user.set('phoneList', []);
-        user.set('saveToPhotoAlbum', false);
-        user.set('isRetina', false);
+        user.set('saveToPhotoAlbum', true);
+        user.set('isRetina', true);
         user.set('homeIntro', false);
 
         userModel.generateNewPrivateKey(user);
