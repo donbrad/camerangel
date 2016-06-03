@@ -114,7 +114,10 @@ var channelsView = {
 
     },
 
-
+    // Get the current alias for privateChat contact  
+    getPrivateChatAlias: function (contactUUID) {
+        return("In Backlog");
+    },
 
     onShow : function(e) {
        // _preventDefault(e);
