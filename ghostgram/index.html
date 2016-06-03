@@ -1729,9 +1729,16 @@
 		    		<span class="placeType-list">
 		    			<img src="images/icon-private.svg" /> Private Chat
 		    		</span>
+		    		<span>
+		    			&nbsp;  (#:alias#)
+		    		</span>
 		    		#} else if (isPlace) {#
 		    		<span class="placeType-list">
 		    			<img src="images/icon-place.svg" id="chatList-place-icon" /> Place Chat
+		    		</span>
+		    		<span>
+		    		# var membersCount = members.length;#
+		    			&nbsp; Owner  : #:ownerName#   &nbsp; [#:membersCount#]
 		    		</span>
 		    		#} else {#
 		    		<span class="placeType-list">
