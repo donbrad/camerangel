@@ -628,9 +628,7 @@ var editChannelView = {
             }
 
         }
-
-
-
+        
 
         for (var m=0; m< memberArray.length; m++) {
 
