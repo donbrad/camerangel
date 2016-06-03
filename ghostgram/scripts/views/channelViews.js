@@ -651,6 +651,10 @@ var editChannelView = {
         channelObj.set('members', memberArray);
         channelObj.set('inviteMembers', invitedMemberArray);
 
+        //Compute the membercount from both members and invited members
+        var memberCount = memberArray.length + invitedMemberArray.length;
+        channelObj.set('memberCount', memberCount);
+
 
         var Id = channelObj.Id;
         if (Id !== undefined){
