@@ -1102,6 +1102,7 @@ var channelModel = {
 
         channel.set("isOwner", true);
         channel.set("members", [ownerUUID]);
+        channel.set("memberCount", 1);
         channel.set("invitedMembers", []);
 
         channelModel.channelsDS.add(channel);
@@ -1182,6 +1183,7 @@ var channelModel = {
 
         channel.set("isOwner", true);
         channel.set("members", [ownerUUID]);
+        channel.set("memberCount", 1);
         channel.set("invitedMembers", []);
 
 
@@ -1337,6 +1339,7 @@ var channelModel = {
         mapObj.ownerUUID = channel.ownerUUID;
         mapObj.ownerName = channel.ownerName;
         mapObj.members = channel.members;
+        mapObj.memberCount = channel.members.length;
         mapObj.invitedMembers = channel.invitedMembers;
 
         everlive.createOne('channelmap', mapObj, function (error, data){
@@ -1364,6 +1367,7 @@ var channelModel = {
                     mapObj.category = channel.category;
                     mapObj.ownerUUID = channel.ownerUUID;
                     mapObj.members = channel.members;
+                    mapObj.memberCount = channel.members.length;
                     mapObj.invitedMembers = channel.invitedMembers;
 
                     everlive.updateOne('channelmap', mapObj, function (error, data) {
