@@ -78,7 +78,6 @@ var memberdirectory = {
         var validated = userModel._user.Validated;
 
         var dirObj = {
-            Id: memberdirectory._id,
             userUUID : userModel._user.userUUID,
             name : userModel._user.name,
             alias : userModel._user.alias,
@@ -92,6 +91,10 @@ var memberdirectory = {
             addressValidated : userModel._user.addressValidated,
             isValidated: validated
         };
+
+
+        if (memberdirectory._id !== undefined && memberdirectory._id !== null)
+            dirObj.Id = memberdirectory._id;
 
         data.updateSingle(dirObj,
             function(data){
