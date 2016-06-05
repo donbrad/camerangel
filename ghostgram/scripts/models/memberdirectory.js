@@ -98,7 +98,10 @@ var memberdirectory = {
                 memberdirectory._id = data.result.Id;
             },
             function(error){
-                mobileNotify("Member Directory Update error : " + JSON.stringify(error));
+                if (error !== undefined && error !== null) {
+                    ggError("Member Directory Update error : " + JSON.stringify(error));
+                }
+
             });
     },
 
