@@ -73,7 +73,7 @@ var memberdirectory = {
     },
 
     update : function () {
-        var data = APP.everlive.data(memberdirectory._ggClass);
+        var everliveData = APP.everlive.data(memberdirectory._ggClass);
 
         var validated = userModel._user.Validated;
 
@@ -96,7 +96,7 @@ var memberdirectory = {
         if (memberdirectory._id !== undefined && memberdirectory._id !== null)
             dirObj.Id = memberdirectory._id;
 
-        data.update(dirObj, {userUUID : userModel._user.userUUID},
+        everliveData.update(dirObj, {userUUID : userModel._user.userUUID},
             function(data){
                 memberdirectory._id = data.result.Id;
             },
