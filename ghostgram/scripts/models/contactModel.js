@@ -501,23 +501,29 @@ var contactModel = {
         if (thisContact.contactUUID === undefined || thisContact.contactUUID === null) {
             var phone  = thisContact.phone;
             memberdirectory.findMemberByPhone(phone, function (result) {
-                var contact = result;
-                
-                contactModel._syncContactDetails(contact, thisContact, thisContactList);
-                
-                callback(thisContact);
-                
+                if (result === null) {
+                    callback(thisContact);
+                } else {
+                    var contact = result;
+
+                    contactModel._syncContactDetails(contact, thisContact, thisContactList);
+
+                    callback(thisContact);
+                }
             });
 
         } else {
 
            memberdirectory.findMemberByUUID(thisContact.contactUUID, function (result) {
-               
-                var contact = result;
-    
-                contactModel._syncContactDetails(contact, thisContact, thisContactList);
-    
-                callback(thisContact);
+               if (result === null) {
+                   callback(thisContact);
+               } else {
+                   var contact = result;
+
+                   contactModel._syncContactDetails(contact, thisContact, thisContactList);
+
+                   callback(thisContact);
+               }
                
             });
         }

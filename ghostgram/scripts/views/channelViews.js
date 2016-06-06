@@ -117,12 +117,11 @@ var channelsView = {
     // Get the current alias for privateChat contact  
     getPrivateChatAlias: function (contactUUID) {
         var contact = contactModel.findContact(contactUUID);
-        var alias = contact.alias;
 
-        if (alias === undefined || alias === null) {
-            alias = '...';
-        }
-        return(alias);
+        if (contact === undefined || contact.alias === undefined)
+            return('...');
+        
+        return(contact.alias);
     },
 
     onShow : function(e) {

@@ -73,12 +73,11 @@ var memberdirectory = {
     },
 
     update : function () {
-        var data = APP.everlive.data(memberdirectory._ggClass);
+        var everliveData = APP.everlive.data(memberdirectory._ggClass);
 
         var validated = userModel._user.Validated;
 
         var dirObj = {
-            Id: memberdirectory._id,
             userUUID : userModel._user.userUUID,
             name : userModel._user.name,
             alias : userModel._user.alias,
@@ -92,13 +91,16 @@ var memberdirectory = {
             addressValidated : userModel._user.addressValidated,
             isValidated: validated
         };
-
-        data.updateSingle(dirObj,
+        
+        everliveData.update(dirObj, {userUUID : userModel._user.userUUID},
             function(data){
-                memberdirectory._id = data.result.Id;
+                
             },
             function(error){
-                mobileNotify("Member Directory Update error : " + JSON.stringify(error));
+                if (error !== undefined && error !== null) {
+                    ggError("Member Directory Update error : " + JSON.stringify(error));
+                }
+
             });
     },
 

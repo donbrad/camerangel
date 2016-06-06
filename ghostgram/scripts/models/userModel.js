@@ -663,7 +663,7 @@ var userStatus = {
     update : function () {
         var status = userStatus._statusObj;
 
-        var data =  APP.everlive.data(userStatus._ggClass);
+        var everliveData =  APP.everlive.data(userStatus._ggClass);
 
         if (status.Id === undefined || status.Id === null) {
             status.Id = everlive._id;
@@ -689,7 +689,7 @@ var userStatus = {
         status.set('lastUpdate', ggTime.currentTime());
 
 
-        data.updateSingle( status,
+        everliveData.updateSingle( status,
             function ( data) {
                 mobileNotify("User Status Updated");
 
