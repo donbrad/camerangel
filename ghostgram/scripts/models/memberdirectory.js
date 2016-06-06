@@ -96,7 +96,7 @@ var memberdirectory = {
         if (memberdirectory._id !== undefined && memberdirectory._id !== null)
             dirObj.Id = memberdirectory._id;
 
-        data.updateSingle(dirObj,
+        data.update(dirObj, {userUUID : userModel._user.userUUID},
             function(data){
                 memberdirectory._id = data.result.Id;
             },
