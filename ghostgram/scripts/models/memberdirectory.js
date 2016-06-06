@@ -91,14 +91,10 @@ var memberdirectory = {
             addressValidated : userModel._user.addressValidated,
             isValidated: validated
         };
-
-
-        if (memberdirectory._id !== undefined && memberdirectory._id !== null)
-            dirObj.Id = memberdirectory._id;
-
+        
         everliveData.update(dirObj, {userUUID : userModel._user.userUUID},
             function(data){
-                memberdirectory._id = data.result.Id;
+                
             },
             function(error){
                 if (error !== undefined && error !== null) {
