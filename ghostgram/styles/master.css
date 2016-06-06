@@ -4247,7 +4247,8 @@ div.loginBox > form > div > ul > li {
   color: #fff;
   padding: 0.5em 1em;
 }
-#modalPhotoView > div.km-header > div.km-widget.km-navbar {
+#modalPhotoView > div.km-header > div.km-widget.km-navbar,
+#modalChatPhotoView > div.km-header > div {
   background-color: #000 !important;
   color: #fff;
 }

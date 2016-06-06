@@ -607,6 +607,9 @@
 *[contenteditable] {
   -webkit-user-select: auto !important;
 }
+.photo-chat {
+  max-width: 95% !important;
+}
 /* elements */
 .userLgFontSize {
   font-size: 1.4em !important;
@@ -1164,7 +1167,6 @@ form p {
 }
 .line {
   border: 1px solid rgba(0, 0, 0, 0.12);
-  margin: 0.5em 0;
 }
 .list-inline {
   display: inline-block;
@@ -1685,7 +1687,6 @@ div.km-header a img {
 .km-material .km-navbar {
   background-color: #fff !important;
   color: #979797;
-  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
   height: 4em;
 }
 .k-dropdown-wrap.k-state-default {
@@ -3360,8 +3361,8 @@ a:hover {
   width: 100%;
   margin-bottom: 5em;
 }
-#channels-listview li {
-  border-bottom: 1px solid #E4E4E4;
+#channels-listview > li {
+  border-bottom: 1px solid #E4E4E4 !important;
   background: #fff;
   z-index: 9999;
   padding-top: 0px;
@@ -3384,7 +3385,8 @@ a:hover {
   text-align: center;
   vertical-align: middle;
 }
-#modalPhotoViewImage {
+#modalPhotoViewImage,
+#modalChatPhotoView-photoView {
   max-width: 100%;
   max-height: 100%;
   position: absolute;
@@ -3403,6 +3405,12 @@ a:hover {
 }
 #channelNavBar > div.km-view-title > span {
   padding: 0 !important;
+}
+.km-material .km-navbar,
+.km-material .k-toolbar,
+.km-material .km-tabstrip {
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
 .chat-mainBox h4 {
   margin-left: 0px;
@@ -3518,6 +3526,25 @@ a:hover {
 }
 #channels-listview > li > div > a > div > img {
   margin-left: 1.25rem;
+}
+.emoji-list li {
+  width: 16.667%;
+  float: left;
+}
+#body > div.km-popup-overlay.km-popover-root > div {
+  top: 30% !important;
+  left: 5% !important;
+  width: 90% !important;
+}
+#body > div.km-popup-overlay.km-popover-root > div > div {
+  padding: 0 !important;
+  width: 100% !important;
+}
+#emoji-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 #modalview-requestContent > div > div.km-scroll-container > div.modal-top {
   background: #66BB6A;
@@ -4220,7 +4247,8 @@ div.loginBox > form > div > ul > li {
   color: #fff;
   padding: 0.5em 1em;
 }
-#modalPhotoView > div.km-header > div.km-widget.km-navbar {
+#modalPhotoView > div.km-header > div.km-widget.km-navbar,
+#modalChatPhotoView > div.km-header > div {
   background-color: #000 !important;
   color: #fff;
 }
@@ -4229,7 +4257,6 @@ div.loginBox > form > div > ul > li {
 }
 .photo-chat {
   height: auto;
-  max-width: 50%;
   border-radius: 3px;
   margin: 2.5% 2.5% 0 2.5%;
 }
@@ -4509,6 +4536,9 @@ div.loginBox > form > div > ul > li {
   border-top: 1px solid #E0E0E0;
   border-bottom: 1px solid #E0E0E0;
 }
+#contacts-listview li:last-child {
+  border-bottom: 1px solid #E0E0E0 !important;
+}
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
   margin-left: 0px;
   margin-right: 0px;
@@ -4665,6 +4695,9 @@ div.loginBox > form > div > ul > li {
 }
 #places-listview li {
   padding: 0px;
+}
+#places-listview {
+  border-bottom: 1px solid #E0E0E0 !important;
 }
 .contact-option-ul li {
   background: transparent !important;
@@ -4984,7 +5017,8 @@ div.contactListBox.activeContact > div > div > ul {
   vertical-align: text-top;
 }
 /* photo editor */
-#photoEditor > div.km-content.km-widget.km-scroll-wrapper {
+#photoEditor > div.km-content.km-widget.km-scroll-wrapper,
+#modalChatPhotoView > div.km-content.km-widget.km-native-scroller {
   background: rgba(0, 0, 0, 0.85);
 }
 /* Contacts */
@@ -5774,7 +5808,7 @@ html .km-pane-wrapper .k-header {
   width: 0;
   border-top: 0.4rem solid transparent;
   border-bottom: 0.4rem solid transparent;
-  border-right: 0.3rem solid #cae2fb;
+  border-right: 0.4rem solid #cae2fb;
   top: 1.5rem;
   left: 10.5%;
 }

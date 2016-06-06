@@ -884,7 +884,6 @@ var channelView = {
     _titleTagActive: false,
     _currentPhoto : 0,
 
-
     membersDS: new kendo.data.DataSource({
         sort: {
             field: "name",
@@ -1085,11 +1084,14 @@ var channelView = {
 
             );
 
-
     },
 
-    toggleTool: function(e){
+    emojiMenuOpen: function(e){
+        ux.hideKeyboard();
+    },
 
+    emojiMenuClose: function(){
+        // Handle emoji menu closing
     },
 
     openEditor : function () {
@@ -1103,6 +1105,7 @@ var channelView = {
                 focus: false,
                 placeholder: 'Message....',
                  callbacks: {
+
                  // todo - need to support native emoji keyboard
 
                  },
@@ -1865,44 +1868,13 @@ var channelView = {
 
         $("#messageComposeToolbar").removeClass('hidden');
         $("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
-      /*  //$(".k-editor-toolbar").show();
-        $("#chat-editorBtnImg").attr("src","images/icon-editor-active.svg");
-        // Hide badge
-        //$("#chat-editorBtn > span.km-badge").hide();
 
-
-        // open up editor
-        $(".k-editor .k-editable-area").velocity({height: "10em"}, {duration: 300});
-        $("#editorOptionBar").velocity("slideDown");
-
-        //$("#ghostgramMode").velocity("fadeIn", {delay: 300});*/
     },
 
     deactivateEditor : function () {
 
         $("#messageComposeToolbar").addClass('hidden');
         $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
-       /* //$(".k-editor-toolbar").hide();
-        $("#chat-editorBtnImg").attr("src","images/icon-editor.svg");
-
-       // $("#ghostgramMode").velocity("fadeOut");
-
-        // min editor
-        $(".k-editor .k-editable-area").velocity({height: "3em"}, {duration: 300});
-
-        // Show badge
-        //$("#chat-editorBtn > span.km-badge").show();
-        $("#editorOptionBar").velocity("slideUp");
-        /!*
-         var toolCount = $("#chat-editorBtn").kendoMobileButton("badge");
-         parseInt(toolCount);
-
-         if (toolCount > 0){
-         $("#chat-editorBtn > span.km-badge").show();
-         } else {
-         $("#chat-editorBtn > span.km-badge").hide();
-         }
-         *!/*/
     },
 
     toggleTitleTag : function () {
@@ -2027,6 +1999,7 @@ var channelView = {
         var shortname = e.button[0].dataset.shortname;
         var rendered = emojione.shortnameToImage(shortname);
 
+        // todo - review mixed media message
         $('#messageTextArea').redactor('insert.node', $('<span />').html(rendered));
     },
 

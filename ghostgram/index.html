@@ -1790,38 +1790,38 @@
 			</div>
 			<div id="messageComposeToolbar" class="hidden"></div>
 			<textarea id="messageTextArea" type='text' name="messageTextArea"></textarea>
-				<div id="emoji-menu" data-role="popover" data-pane='{ "layout": "emojiMenu-popover"}' data-popup='{ "width": "400", "height": "300", "direction": "down" }'>
+				<div id="emoji-menu" data-role="popover" data-pane='{ "layout": "emojiMenu-popover"}' data-popup='{ "width": "400", "height": "300", "direction": "down" }' data-open="channelView.emojiMenuOpen" data-close="channelView.emojiMenuClose">
 					<div data-role="view" id="emoji-people">
 						<ul class="list-unstyled emoji-list" id="emoji-list-people" data-role="listview" data-source="channelView.emojiCategories.people" data-template="emoji-list-template"></ul>
 					</div>
-					<div data-role="view" id="view2">
+					<div data-role="view" id="emoji-nature">
 						<ul class="list-unstyled emoji-list" id="emoji-list-nature" data-role="listview" data-source="channelView.emojiCategories.nature" data-template="emoji-list-template"></ul>
 					</div>
-					<div data-role="view" id="view3">
+					<div data-role="view" id="emoji-food">
 						<ul class="list-unstyled emoji-list" id="emoji-list-food" data-role="listview" data-source="channelView.emojiCategories.food" data-template="emoji-list-template"></ul>
 					</div>
-					<div data-role="view" id="view4">
+					<div data-role="view" id="emoji-activity">
 						<ul class="list-unstyled emoji-list" id="emoji-list-activity" data-role="listview" data-source="channelView.emojiCategories.activity" data-template="emoji-list-template"></ul>
 					</div>
-					<div data-role="view" id="view5">
+					<div data-role="view" id="emoji-travel">
 						<ul class="list-unstyled emoji-list" id="emoji-list-travel" data-role="listview" data-source="channelView.emojiCategories.travel" data-template="emoji-list-template"></ul>
 					</div>
-					<div data-role="view" id="view6">
+					<div data-role="view" id="emoji-objects">
 						<ul class="list-unstyled emoji-list" id="emoji-list-objects" data-role="listview" data-source="channelView.emojiCategories.objects" data-template="emoji-list-template"></ul>
 					</div>
-					<div data-role="view" id="view7">
+					<div data-role="view" id="emoji-flags">
 						<ul class="list-unstyled emoji-list" id="emoji-list-flags" data-role="listview" data-source="channelView.emojiCategories.flags" data-template="emoji-list-template"></ul>
 					</div>
 					<div data-role="layout" data-id="emojiMenu-popover">
 						<div data-role="footer" class="footer">
 							<div data-role="tabstrip">
 								<a href="#emoji-people"><img class="icon-lg" src="images/emoji-people.svg"/></a>
-								<a href="#view2"><img class="icon-lg" src="images/emoji-nature.svg"/></a>
-								<a href="#view3"><img class="icon-lg" src="images/emoji-food.svg"/></a>
-								<a href="#view4"><img class="icon-lg" src="images/emoji-activity.svg"/></a>
-								<a href="#view5"><img class="icon-lg" src="images/emoji-travel.svg"/></a>
-								<a href="#view6"><img class="icon-lg" src="images/emoji-objects.svg"/></a>
-								<a href="#view7"><img class="icon-lg" src="images/emoji-flags.svg"/></a>
+								<a href="#emoji-nature"><img class="icon-lg" src="images/emoji-nature.svg"/></a>
+								<a href="#emoji-food"><img class="icon-lg" src="images/emoji-food.svg"/></a>
+								<a href="#emoji-activity"><img class="icon-lg" src="images/emoji-activity.svg"/></a>
+								<a href="#emoji-travel"><img class="icon-lg" src="images/emoji-travel.svg"/></a>
+								<a href="#emoji-objects"><img class="icon-lg" src="images/emoji-objects.svg"/></a>
+								<a href="#emoji-flags"><img class="icon-lg" src="images/emoji-flags.svg"/></a>
 							</div>
 						</div>
 					</div>
@@ -1846,7 +1846,7 @@
 					</li>
 					<li>
 						<a data-role="button" data-click="channelView.messageSearch">
-							<img src="images/icon-web.svg" height="22">
+							<img src="images/icon-web.svg" height="22" id="messageSearchImg">
 						</a>
 					</li>
 					<li class="hidden">
@@ -3537,12 +3537,12 @@
 </div>
 
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit" data-use-native-scrolling="true" data-zoom="true">
-	<div data-role="header">
+	<!--<div data-role="header">
 		<div data-role="navbar">
 			<span>Chat Photo Gallery</span>
 		</div>
-	</div>
-	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Gallery</div>
+	</div>-->
+	<div style="text-align: center; margin: 1em; color: white;" id="modalChatPhotoView-userhascopy">In Gallery</div>
 	<div class="photoViewBox" data-role="content">
 		<img id="modalChatPhotoView-photoView"  src="" />
 	</div>
