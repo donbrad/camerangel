@@ -659,6 +659,11 @@ var modalChatPhotoView = {
                 var url = photo.thumbnailUrl;
                 if (photo.imageUrl !== null)
                     url = photo.imageUrl;
+                if (url === null && photo.deviceUrl !== null) {
+                    if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
+                        url = photo.deviceUrl;
+                    }
+                }
                 modalChatPhotoView._photoUrl = url;
 
                 $('#modalChatPhotoView-photoView').attr('src', url);
@@ -779,6 +784,12 @@ var modalChatPhotoView = {
          var url = photo.thumbnailUrl;
          if (photo.imageUrl !== null)
              url = photo.imageUrl;
+
+         if (url === null && photo.deviceUrl !== null) {
+             if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
+                 url = photo.deviceUrl;
+             }
+         }
 
          if (galleryMode) {
 
