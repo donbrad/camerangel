@@ -26,3 +26,11 @@ config.codekit
 ghostgram hybrid/css
 
 ghostgram/App_Resources/Android/drawable-nodpi/splashscreen.9.png
+
+ghostgram/bower_components/emojione/lib/android
+ghostgram/bower_components/emojione/lib/emojione-awesome
+ghostgram/bower_components/emojione/lib/ios
+ghostgram/bower_components/emojione/lib/meteor
+ghostgram/bower_components/emojione/lib/python
+ghostgram/bower_components/emojione/assets/other
+ghostgram/bower_components/emojione/assets/svg

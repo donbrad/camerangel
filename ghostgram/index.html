@@ -11,7 +11,7 @@
 	<link href="bower_components/pickadate/lib/themes/default.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.time.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
-	<link href="bower_components/emojione/assets/css/emojione.css" rel="stylesheet" />
+	<link href="bower_components/emojione/assets/sprites/emojione.sprites.css" rel="stylesheet"/>
 	<link href="styles/redactor.css" rel="stylesheet" />
 
 	<link href="kendo/styles/kendo.common.css" rel="stylesheet" />
@@ -32,6 +32,7 @@
 	<script src="bower_components/google-libphonenumber/dist/browser/libphonenumber.js"></script>
 	<script src="bower_components/eventEmitter/EventEmitter.js"></script>
 	<script src="bower_components/emojione/lib/js/emojione.js"></script>
+	<script src="bower_components/svg4everybody/dist/svg4everybody.js"></script>
 	<script src="bower_components/q/q.js"></script>
 	<script src="bower_components/underscore/underscore.js"></script>
 	<script src="bower_components/moment/moment.js"></script>
@@ -1789,6 +1790,43 @@
 			</div>
 			<div id="messageComposeToolbar" class="hidden"></div>
 			<textarea id="messageTextArea" type='text' name="messageTextArea"></textarea>
+				<div id="emoji-menu" data-role="popover" data-pane='{ "layout": "emojiMenu-popover"}' data-popup='{ "width": "400", "height": "300", "direction": "down" }' data-open="channelView.emojiMenuOpen" data-close="channelView.emojiMenuClose">
+					<div data-role="view" id="emoji-people">
+						<ul class="list-unstyled emoji-list" id="emoji-list-people" data-role="listview" data-source="channelView.emojiCategories.people" data-template="emoji-list-template"></ul>
+					</div>
+					<div data-role="view" id="emoji-nature">
+						<ul class="list-unstyled emoji-list" id="emoji-list-nature" data-role="listview" data-source="channelView.emojiCategories.nature" data-template="emoji-list-template"></ul>
+					</div>
+					<div data-role="view" id="emoji-food">
+						<ul class="list-unstyled emoji-list" id="emoji-list-food" data-role="listview" data-source="channelView.emojiCategories.food" data-template="emoji-list-template"></ul>
+					</div>
+					<div data-role="view" id="emoji-activity">
+						<ul class="list-unstyled emoji-list" id="emoji-list-activity" data-role="listview" data-source="channelView.emojiCategories.activity" data-template="emoji-list-template"></ul>
+					</div>
+					<div data-role="view" id="emoji-travel">
+						<ul class="list-unstyled emoji-list" id="emoji-list-travel" data-role="listview" data-source="channelView.emojiCategories.travel" data-template="emoji-list-template"></ul>
+					</div>
+					<div data-role="view" id="emoji-objects">
+						<ul class="list-unstyled emoji-list" id="emoji-list-objects" data-role="listview" data-source="channelView.emojiCategories.objects" data-template="emoji-list-template"></ul>
+					</div>
+					<div data-role="view" id="emoji-flags">
+						<ul class="list-unstyled emoji-list" id="emoji-list-flags" data-role="listview" data-source="channelView.emojiCategories.flags" data-template="emoji-list-template"></ul>
+					</div>
+					<div data-role="layout" data-id="emojiMenu-popover">
+						<div data-role="footer" class="footer">
+							<div data-role="tabstrip">
+								<a href="#emoji-people"><img class="icon-lg" src="images/emoji-people.svg"/></a>
+								<a href="#emoji-nature"><img class="icon-lg" src="images/emoji-nature.svg"/></a>
+								<a href="#emoji-food"><img class="icon-lg" src="images/emoji-food.svg"/></a>
+								<a href="#emoji-activity"><img class="icon-lg" src="images/emoji-activity.svg"/></a>
+								<a href="#emoji-travel"><img class="icon-lg" src="images/emoji-travel.svg"/></a>
+								<a href="#emoji-objects"><img class="icon-lg" src="images/emoji-objects.svg"/></a>
+								<a href="#emoji-flags"><img class="icon-lg" src="images/emoji-flags.svg"/></a>
+							</div>
+						</div>
+					</div>
+
+			</div>
 			<div class="messageMediaBar">
 				<ul>
 					<li>
@@ -1808,7 +1846,7 @@
 					</li>
 					<li>
 						<a data-role="button" data-click="channelView.messageSearch">
-							<img src="images/icon-web.svg" height="22">
+							<img src="images/icon-web.svg" height="22" id="messageSearchImg">
 						</a>
 					</li>
 					<li class="hidden">
@@ -1821,7 +1859,7 @@
 							<img src="images/icon-smartMenu.svg" height="22">
 						</a>
 					</li>
-					<li>
+					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageLockButton">
 							<img id="messageLockButtonIcon" src="images/icon-lock.svg" height="20">
 						</a>
@@ -1831,14 +1869,30 @@
 							<img src="images/privacy-off.svg" height="22"/>
 						</a>
 					</li>
+					<li>
+						<a data-role="button" class="btnClear" href="#emoji-menu" data-rel="popover">
+							<img id="emoji-icon" src="images/icon-emoji.svg" height="22"/>
+							<img class="hidden" id="emoji-active" src="images/icon-emoji-active.svg" height="22"/>
+						</a>
+					</li>
 					<li class="right">
 						<a data-role="button" class="btnClear" id="messageSend" data-click="channelView.messageSend">
 						</a>
 					</li>
 				</ul>
-			</div>
+			</div><!-- messageMediaBar -->
+		</div><!-- noteCompose -->
+	</div><!-- messageEditor -->
+
+	<script type="text/x-kendo-template" id="emoji-list-template">
+		<div>
+			<a data-click="channelView.pasteEmojiinEditor" data-role="button" data-id="#: data.unicode #" data-shortname="#: data.shortname#">
+				<span class="emojione emojione-#: data.unicode #">
+					&\\#x#: data.unicode #;
+				</span>
+			</a>
 		</div>
-	</div>
+	</script>
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
 		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
@@ -3483,12 +3537,12 @@
 </div>
 
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit" data-use-native-scrolling="true" data-zoom="true">
-	<div data-role="header">
+	<!--<div data-role="header">
 		<div data-role="navbar">
 			<span>Chat Photo Gallery</span>
 		</div>
-	</div>
-	<div style="text-align: center; margin: 16px;" id="modalChatPhotoView-userhascopy">In Gallery</div>
+	</div>-->
+	<div style="text-align: center; margin: 1em; color: white;" id="modalChatPhotoView-userhascopy">In Gallery</div>
 	<div class="photoViewBox" data-role="content">
 		<img id="modalChatPhotoView-photoView"  src="" />
 	</div>
@@ -3537,7 +3591,6 @@
 						<p class="modalChatPhotoListOpt">Respond to Copy Request</p>
 					</a>
 				</li>
-
 			</ul>
 		</div>
 

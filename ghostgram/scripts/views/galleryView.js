@@ -666,6 +666,7 @@ var modalChatPhotoView = {
                 modalChatPhotoView._activePhoto.set('photoId', photo.photoId);
                 modalChatPhotoView.updatePhotoStatus(photo);
             },
+
             minXDelta: 50,
             maxYDelta:40,
             maxDuration:2000
@@ -853,7 +854,7 @@ var modalPhotoView = {
     onInit: function(e){
     	var showInfo =  modalPhotoView._showInfo;
 
-    	$(".photoViewBox").kendoTouch({
+    	/*$(".photoViewBox").kendoTouch({
     		filter: "img",
     		tap: function(e){
     			if(!showInfo){
@@ -865,7 +866,7 @@ var modalPhotoView = {
     			}
    
     		}
-    	});
+    	});*/
         // todo - wire new photo DS
         $("#photo-smartTag").kendoMultiSelect({
             autoClose: false,

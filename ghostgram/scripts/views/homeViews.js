@@ -540,6 +540,7 @@ var userStatusView = {
         } else {
             $("#profileStatusVerified").addClass("hidden");
         }
+        
     },
 
     gotoSettings : function (e) {
@@ -1091,9 +1092,8 @@ var signUpView = {
                                      } else {
                                         mobileNotify(phone + " matches an existing ghostgrams member!");
                                         //Todo:  we should a link to login / signin...
-                                        $("#home-signup-phone").val('');
+                                        signUpView.signUpPhoneReset();
                                         APP.kendo.navigate("#usersignin");
-
                                     }
 
                                 });
