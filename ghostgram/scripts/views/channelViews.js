@@ -1569,7 +1569,7 @@ var channelView = {
     },
 
 
-
+/*
     mapPhotoUrl : function (msgID, photo) {
 
         if (photo === undefined || photo.photoId === undefined) {
@@ -1589,7 +1589,7 @@ var channelView = {
             }
             return('images/missing-image.jpg');
         }
-    },
+    },*/
 
     // Quick access to contact data for display.
     getContactData : function (contactUUID) {

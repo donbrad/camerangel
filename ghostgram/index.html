@@ -3757,19 +3757,15 @@
 	if (photoModel.isValidDeviceUrl(deviceUrl)) {
 	    if (deviceUrl.indexOf('file:') === -1) {
 			deviceUrl = 'file:\/\/' + deviceUrl;
-
 		}
-
 		photoUrl = deviceUrl;
 	} else if (!photoModel.isValidCloudUrl(cloudUrl)) {
 		if (cloudinaryPublicId !== undefined && cloudinaryPublicId !== null) {
 			photoUrl = imageUrl;
 	        cloudUrl = imageUrl;
 		}
-	}
-	console.log("photoUrl = " + photoUrl);
+	});
 	#
-
 	<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
 
 </script>
