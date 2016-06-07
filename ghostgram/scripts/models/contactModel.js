@@ -594,7 +594,7 @@ var contactModel = {
         _preventDefault(e);
     },
 
-
+/*
     syncInvitedContact : function (model) {
         if (model === undefined) {
             model = contactModel.currentContact;
@@ -628,7 +628,7 @@ var contactModel = {
 
         });
 
-    },
+    },*/
 
     // Create a contact for private chat member that this user isn't connected to
     // The contact is a valid member and callback executes with the contact is created with full information

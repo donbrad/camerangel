@@ -27,6 +27,10 @@ ghostgram hybrid/css
 
 ghostgram/App_Resources/Android/drawable-nodpi/splashscreen.9.png
 
+ghostgram/bower_components/emojione/assets/png
+ghostgram/bower_components/emojione/assets/png_128x128
+ghostgram/bower_components/emojione/assets/png_512x512
+ghostgram/bower_components/emojione/assets/sprites/emojione.sprites.svg
 ghostgram/bower_components/emojione/lib/android
 ghostgram/bower_components/emojione/lib/emojione-awesome
 ghostgram/bower_components/emojione/lib/ios
