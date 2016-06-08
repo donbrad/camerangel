@@ -343,12 +343,9 @@ var photoModel = {
 
         devicePhoto.convertImgToDataURL(url, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
-            var folder = devicePhoto._userPhoto;
             var filename = photouuid.replace(/-/g,'');
-            devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, folder,  function (photoData, error) {
+            devicePhoto.cloudinaryUpload(photouuid, filename, dataUrl, function (photoData, error) {
                 var photoObj = photoModel.findPhotoById(photouuid);
-             
-
                 if (error !== null) {
                     ggError("Cloud Photo Error " + JSON.stringify(error));
                     return;
