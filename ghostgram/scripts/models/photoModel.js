@@ -230,7 +230,8 @@ var photoModel = {
             function(entry) {
                 photoModel.localPushList[url] = false;
                 var photo = photoModel.findPhotoById(photoId);
-                photo.set('deviceUrl',entry);
+                var nativeUrl = entry.nativeUrl;
+                photo.set('deviceUrl', nativeUrl);
                 photoModel.photosDS.sync();
                 console.log("Cached local copy of " + photo.photoId);
             },
