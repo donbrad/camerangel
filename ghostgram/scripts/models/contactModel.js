@@ -160,9 +160,12 @@ var contactModel = {
 
         for (var i=0; i<array.length; i++) {
             var contact = (array[i]).toJSON();
-            contact.identicon = contactModel.createIdenticon(contact.uuid);
-            contact.photo = contact.identicon;
-            contactModel.contactListDS.add(contact);
+            if (contact.category !== 'Chat') {
+                contact.identicon = contactModel.createIdenticon(contact.uuid);
+                contact.photo = contact.identicon;
+                contactModel.contactListDS.add(contact);
+            }
+
         }
 
         contactModel.contactListDS.fetch();
@@ -716,7 +719,7 @@ var contactModel = {
             contact.set('ggType', contactModel._ggClass);
             contact.set("name", chatName);
             contact.set("alias", null);
-            contact.set('category', "chat");
+            contact.set('category', "Chat");
             contact.set('phone', null);
             contact.set('email', null);
             contact.set("address", null);
