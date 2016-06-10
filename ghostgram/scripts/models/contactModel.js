@@ -674,7 +674,7 @@ var contactModel = {
 
                 everlive.createOne(contactModel._cloudClass, contact, function (error, data) {
                     if (error !== null) {
-                        mobileNotify("Error creating Chat Contact " + JSON.stringify(error));
+                        mobileNotify("Error creating Contact " + JSON.stringify(error));
                     } else {
 
                         contactModel._cleanDupContacts(contact.uuid);
