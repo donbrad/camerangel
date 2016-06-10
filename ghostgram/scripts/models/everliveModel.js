@@ -17,11 +17,24 @@ var everlive = {
     _authenticating: false,
     _user : null,
     _lastSync: 0,
-    _syncInProgress: true,
-    _syncComplete: false,
+    _syncInProgress: false,
+    _syncComplete: true,
     _delta : 30,
     _initialized: false,
 
+    reset : function () {
+        everlive._initialized = false;
+        everlive._isAuthenticated = false;
+        everlive._signedIn = false;
+        everlive._syncInProgress = false;
+        everlive._syncComplete = false;
+        everlive._user = null;
+        everlive._id = null;
+        everlive._token = null;
+        everlive._lastSync = 0;
+        APP.everlive = null;
+    },
+    
     init: function () {
         
       /*  var provider = Everlive.Constants.StorageProvider.FileSystem;
@@ -30,6 +43,9 @@ var everlive = {
             var provider = Everlive.Constants.StorageProvider.LocalStorage;
     /*    }*/
 
+        if (everlive._initialized) 
+            return;
+        
         if (deviceModel.isOnline()) {
             everlive._initialized = true;
             APP.everlive = new Everlive({

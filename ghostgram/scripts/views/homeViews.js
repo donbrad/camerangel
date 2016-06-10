@@ -194,7 +194,7 @@ var homeView = {
         }
 
         // set status charcter count
-        statusCharCount();
+        userStatusView.statusCharCount();
 
 
     },
@@ -374,6 +374,9 @@ var homeView = {
             $("#currentAvailableTxt").text("busy");
         }
         ux.toggleIsAvailable();
+
+        userStatus.update();
+
     },
 
     closeModalViewProfileStatus: function(e){

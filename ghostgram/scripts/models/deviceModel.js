@@ -109,6 +109,8 @@ var deviceModel = {
         // Reset App and User channel timestamps (should be rare on actual devices)
         localStorage.setItem('ggUserDataTimeStamp', 0);
         localStorage.setItem('ggAppDataTimeStamp', 0);
+
+        everlive.reset();
     },
 
     isPushProvisioned : function ()  {
@@ -195,23 +197,26 @@ var deviceModel = {
         deviceModel.setAppState('isOnline', true);
         // Take all data sources online
 
-        if (APP.everlive !== null) {
-            if (!everlive._initialized) {
-                everlive.init();
-            }
-            
-            if (userModel._needSync) {
-                everlive.updateUser();
-            }
-            if (userModel._needStatusSync) {
-                everlive.updateUserStatus();
-            }
-            everlive.syncCloud();
-            photoModel.processCloudPushList();
 
-
+        if (!everlive._initialized) {
+            everlive.init();
         }
 
+        if (userModel._needSync) {
+            everlive.updateUser();
+        }
+        if (userModel._needStatusSync) {
+            everlive.updateUserStatus();
+        }
+
+        everlive.syncCloud();
+        photoModel.processCloudPushList();
+
+
+        if (everlive._isAuthenticated) {
+            // Device is online and user is authenticated -- init pubnub
+            userModel.initPubNub();
+        }
 
         deviceModel.getNetworkState();
     },
