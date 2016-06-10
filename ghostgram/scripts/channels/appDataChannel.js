@@ -174,7 +174,7 @@ var appDataChannel = {
 
                 if (contact === undefined || contact === null) {
                     var contactId = uuid.v4();
-                    contactModel.createChatContact(contactUUID,contactId, function(result) {
+                    contactModel.createChatContact(contactUUID, contactName, contactId,  function(result) {
                        if (result === null) {
                            ggError("Couldn't Auto Connect with " + contactName);
                        }
@@ -904,7 +904,7 @@ var appDataChannel = {
             //mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
             if (contact === undefined) {
                 // This user has been added to group but a member who's not in their contact list 
-                contactModel.createChatContact(ownerId, uuid.v4(), function (result) {
+                contactModel.createChatContact(ownerId, ownerName, uuid.v4(), function (result) {
                     channelModel.queryChannelMap(channelUUID, function (error, data) {
                         if (error === null && data !== null) {
                             channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
