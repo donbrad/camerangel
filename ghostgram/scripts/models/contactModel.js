@@ -751,7 +751,7 @@ var contactModel = {
        memberdirectory.findMemberByUUID(userId,  function (result) {
             if (result !== null) {
 
-                contactModel.updateChatContact(guid, result.name, result.alias, result.userUUID, result.phone, result.email, result.publicKey);
+                contactModel.updateChatContact(result.name, result.alias, result.userUUID, result.phone, result.email, result.publicKey);
                 mobileNotify("Added Member Info for : " + result.name);
 
                 if (callback !== undefined) {
@@ -768,7 +768,7 @@ var contactModel = {
     },
 
 
-    updateChatContact : function (guid, name, alias, contactUUID, contactPhone, contactEmail, contactKey) {
+    updateChatContact : function (name, alias, contactUUID, contactPhone, contactEmail, contactKey) {
 
         mobileNotify("Updating contact datae for : " + name);
         var contact = contactModel.findContact(contactUUID);
@@ -793,7 +793,7 @@ var contactModel = {
 
 
 
-        everlive.updateOne(contactModel._cloudClass, contact, function (error, data) {
+        everlive.update(contactModel._cloudClass, contact, {contactUUID : contactUUID}, function (error, data) {
             if (error !== null) {
                 mobileNotify("Error updating Chat Contact " + JSON.stringify(error));
             }

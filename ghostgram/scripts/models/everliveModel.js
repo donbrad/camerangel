@@ -515,6 +515,17 @@ var everlive = {
             });
     },
 
+    update: function (dataType, dataObject, filterObject, callback) {
+        var data = APP.everlive.data(dataType);
+        data.update(dataObject, filterObject,
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
     updateAll : function (dataType, dataList) {
         var data = APP.everlive.data(dataType);
         data.update(dataList, // filter expression
