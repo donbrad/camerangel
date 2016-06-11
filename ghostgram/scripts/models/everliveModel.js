@@ -32,7 +32,6 @@ var everlive = {
         everlive._id = null;
         everlive._token = null;
         everlive._lastSync = 0;
-        APP.everlive = null;
     },
     
     init: function () {
@@ -43,8 +42,15 @@ var everlive = {
             var provider = Everlive.Constants.StorageProvider.LocalStorage;
     /*    }*/
 
-        if (everlive._initialized) 
+        if (everlive._initialized) {
+            if (deviceModel.isOnline()){
+                APP.everlive.online();
+            } else {
+                APP.everlive.offline();
+            }
             return;
+        }
+
         
         if (deviceModel.isOnline()) {
             everlive._initialized = true;
@@ -297,7 +303,8 @@ var everlive = {
     },
 
     login : function (username, password, callback) {
-        APP.everlive.authentication.login(username, password,
+
+        APP.everlive.users.login(username, password,
             function (data) {
                 everlive._token = data.result.access_token;
                 everlive._tokenType = data.result.token_type;
@@ -346,12 +353,15 @@ var everlive = {
     },
     
     logout : function (callback) {
-        APP.everlive.authentication.logout().then(function () {
+        if (deviceModel.isOnline()) {
+            everlive.onLine
+        }
+        APP.everlive.users.logout(function (result) {
                 everlive._signedIn = false;
                 everlive._isAuthenticated = false;
                 callback(true);
             }, // success
-            function () {
+            function (error) {
                 callback(false);
             });
     },
