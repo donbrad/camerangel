@@ -197,7 +197,8 @@ var deviceModel = {
         deviceModel.setAppState('isOnline', true);
         // Take all data sources online
 
-
+        APP.everlive.online();
+        
         if (!everlive._initialized) {
             everlive.init();
         }
