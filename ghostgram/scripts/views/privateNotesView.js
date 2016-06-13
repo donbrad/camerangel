@@ -266,13 +266,15 @@ var privateNotesView = {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
         // if (recipient in users) {
-        var content = text;
+        var content = null;
         var contentData = JSON.stringify(data);
         data = JSON.parse(contentData);
         var currentTime =  ggTime.currentTime();
         var uuidNote = uuid.v4();
 
         var ggType = 'Note';
+
+        content = '<div class="privateNote" id=note_'+ uuidNote + ' data-uuid='+ uuidNote + '>' + text + '</div>';
 
         if (data.ggType !== undefined) {
             ggType = data.ggType;
