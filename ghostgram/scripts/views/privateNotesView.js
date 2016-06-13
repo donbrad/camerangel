@@ -41,7 +41,7 @@ var privateNotesView = {
             template: $("#privateNote-template").html()
 
         }).kendoTouch({
-            filter: "li",
+            filter: "div",
             tap: privateNotesView.tapNote,
             hold: privateNotesView.holdNote
         });
