@@ -84,6 +84,10 @@ var userModel = {
 
     },
 
+    reset: function () {
+
+    },
+    
     init: function () {
         var hasAccount = window.localStorage.getItem('ggHasAccount');
         userModel.rememberUsername = window.localStorage.getItem('ggRememberUsername');
@@ -294,6 +298,7 @@ var userModel = {
         
         userModel._user.set('isValidated', user.Verified);
         
+        
         memberdirectory.update();
 
     },
@@ -457,6 +462,7 @@ var userModel = {
 
         if (uuid === undefined || uuid === null) {
             mobileNotify("initPubNub : invalid UUID!!!!");
+            return;
         }
 
         APP.pubnub = PUBNUB.init({
@@ -475,13 +481,10 @@ var userModel = {
         // Initialize the user's data channel with the user's UUID...
         userDataChannel.init(uuid);
 
-        if (!deviceModel.state.pubnubInit) {
-            
-            userModel.initPubNub();
-            deviceModel.setAppState('pubnubInit', true);
+        deviceModel.setAppState('pubnubInit', true);
 
-            deviceModel.isPushProvisioned();
-        }
+        deviceModel.isPushProvisioned();
+
     },
 
     fetchParseData: function() {
