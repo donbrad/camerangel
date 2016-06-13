@@ -913,6 +913,7 @@ var privateNotesView = {
         var noteId = null;
 
 
+        // This only works if the user clicks / tpas on a bounding element
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
             noteId =  $(e.touch.currentTarget).data("uid");
@@ -922,7 +923,7 @@ var privateNotesView = {
         }
 
         if (noteId === undefined || noteId === null) {
-            mobileNotify("No Note content to display...");
+           var $div = $target.closest( "div" );
         }
 
         var note = dataSource.getByUid(noteId);
