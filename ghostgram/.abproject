@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android phones",
-  "BundleVersion": "0.0.111",
+  "BundleVersion": "0.0.112",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -108,7 +108,6 @@
     "cordova-plugin-media",
     "cordova-plugin-media-capture",
     "cordova-plugin-network-information",
-    "cordova-plugin-safariviewcontroller@1.4.3",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "cordova-plugin-vibration",
