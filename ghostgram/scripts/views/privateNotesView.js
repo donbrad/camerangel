@@ -266,7 +266,7 @@ var privateNotesView = {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
         // if (recipient in users) {
-        var content = null;
+        var content = text;
         var contentData = JSON.stringify(data);
         data = JSON.parse(contentData);
         var currentTime =  ggTime.currentTime();
@@ -274,7 +274,7 @@ var privateNotesView = {
 
         var ggType = 'Note';
 
-        content = '<div class="privateNote" id=note_'+ uuidNote + ' data-uuid='+ uuidNote + '>' + text + '</div>';
+       // content = '<div class="privateNote" id=note_'+ uuidNote + ' data-uuid='+ uuidNote + '>' + text + '</div>';
 
         if (data.ggType !== undefined) {
             ggType = data.ggType;
@@ -924,6 +924,7 @@ var privateNotesView = {
 
         if (noteId === undefined || noteId === null) {
            var $div = $target.closest( "div" );
+            noteId = $div.data('objectid');
         }
 
         var note = dataSource.getByUid(noteId);
