@@ -910,7 +910,7 @@ var privateNotesView = {
 
         var $target = $(e.touch.initialTouch);
         var dataSource = privateNoteModel.notesDS;
-        var noteId = null;
+        var noteId = null, note = null;
 
 
         // This only works if the user clicks / tpas on a bounding element
@@ -922,12 +922,16 @@ var privateNotesView = {
             noteId =   e.touch.target[0].attributes['data-uid'].value;
         }
 
+
         if (noteId === undefined || noteId === null) {
            var $div = $target.closest( "div" );
             noteId = $div.data('objectid');
+            note = privateNoteModel.findNote(noteId);
+        } else {
+            note = dataSource.getByUid(noteId);
         }
 
-        var note = dataSource.getByUid(noteId);
+
 
         if (note !== undefined) {
             privateNotesView.activeNote = note;
