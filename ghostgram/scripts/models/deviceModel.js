@@ -126,7 +126,7 @@ var deviceModel = {
     },
 
     loadGoogleMaps : function () {
-        if(deviceModel.state.googleMapsLoaded) {
+        if(deviceModel.state.googleMapsLoaded || !deviceModel.isOnline()) {
             return;
         }
         $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places&sensor=true&callback=deviceModel.onGoogleMapsLoaded');
@@ -135,7 +135,7 @@ var deviceModel = {
     onGoogleMapsLoaded : function () {
         deviceModel.state.googleMapsLoaded = true;
         mobileNotify("Maps loaded...");
-        
+
         mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.geocoder =  new google.maps.Geocoder();
