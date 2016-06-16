@@ -136,6 +136,10 @@ var deviceModel = {
         deviceModel.state.googleMapsLoaded = true;
         mobileNotify("Maps loaded...");
 
+        if (google === undefined || google === null) {
+            deviceModel.state.googleMapsLoaded = false;
+            return;
+        }
         mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.geocoder =  new google.maps.Geocoder();
