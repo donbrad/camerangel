@@ -134,6 +134,7 @@ var deviceModel = {
 
     onGoogleMapsLoaded : function () {
         deviceModel.state.googleMapsLoaded = true;
+        mobileNotify("Maps loaded...");
         
         mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
