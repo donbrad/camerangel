@@ -546,6 +546,7 @@ var userStatus = {
     _statusObj : new kendo.data.ObservableObject(),
     _status : null,
     _id : null,
+    _needsSync: false,
 
 
     init: function () {
