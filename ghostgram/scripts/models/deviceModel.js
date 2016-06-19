@@ -214,6 +214,8 @@ var deviceModel = {
        deviceModel.setAppState('inBackground', false);
 
         notificationModel.processUnreadChannels();
+
+        deviceModel.loadGoogleMaps();
         
 
     },
