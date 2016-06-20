@@ -126,7 +126,12 @@ var deviceModel = {
     },
 
     loadGoogleMaps : function () {
+        // If not online - return
         if(!deviceModel.isOnline()) {
+            return;
+        }
+        // if google maps are loaded - return
+        if (typeof google === 'object' && typeof google.maps === 'object') {
             return;
         }
         $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places&sensor=true&callback=deviceModel.onGoogleMapsLoaded');
