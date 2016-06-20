@@ -3353,8 +3353,16 @@ div.footerMenu.km-footer > ul > li:nth-child(1) > a.km-state-active #nav-home{
   fill: @primary-200;
 }
 
-#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat,
-div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat{
+#nav-chat-1, #nav-chat-2 {
+  fill: none;
+  stroke: @primary-200;
+  stroke-width: 1px;
+}
+
+#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat-1,
+div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat-1,
+#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat-2,
+div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat-2{
   fill: @primary-200;
 }
 
@@ -3473,6 +3481,10 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 .placeViewName {
   position: relative;
   top: -0.5em;
+}
+
+div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
+  display: inline-block;
 }
 
 .placeChat-headerTop {

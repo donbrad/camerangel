@@ -1664,6 +1664,7 @@
 		    			var membersCount = (members.length - 1);
 		    			var me = userModel._user.userUUID;
 		    			var ownerString = '';
+
 		    			if(me === data.ownerUUID){#
 		    				# ownerString = "Me"; #
 		    			#} else {#
@@ -1718,7 +1719,6 @@
 				    			</a>
 	    					</li>
     					#}#
-
     			</ul>
     		</div>
     	</div><!-- chat-options -->
@@ -1766,18 +1766,10 @@
 		    			</span>
 		    		#} else if (isPlace) {#
 		    			<span class="placeType-list">
-		    				<img src="images/icon-place.svg" id="chatList-place-icon" /> Place Chat
+		    				<img src="images/icon-place.svg" id="chatList-place-icon" />
+		    				Place Chat - #:ownerString#
 		    			</span>
-		    			<span>
-		    				# if(membersCount == 1){#
-		    					#memberCountText = "and " + membersCount + " other";#
-		    				#} else if(membersCount > 1){#
-		    					#memberCountText = "and " + membersCount + " others";#
-		    				#}#
-
-		    				#:ownerString# #:memberCountText#
-		    			</span>
-		    		#} else if(membersCount < 1) {#
+		    		#} else if(membersCount <= 2) {#
 		    			<span class="placeType-list">
 		    				<img src="images/icon-group.svg" />
 		    					#:ownerString#
@@ -3587,8 +3579,8 @@
 					<span id="modalChatPhotoOwnerName"></span>
 				</p>
 				<p style="font-size: 0.75em; margin-left: 0;">
-					<span id="modalChatPhotoView-userhascopy">In Gallery • </span>
-					<span>2d ago</span>
+					<span id="modalChatPhotoView-userhascopy">In Gallery</span>
+					<span class="hidden">2d ago</span>
 				</p>
 			</div>
 			<div class="right" id="modalChatPhotoView-recipientlist">

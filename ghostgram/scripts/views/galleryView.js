@@ -675,6 +675,13 @@ var modalChatPhotoView = {
 
     },
 
+    confirmRecall: function(){
+        /// close model
+        modalChatPhotoView.closeModal();
+
+        modalView.open("Are you sure?", "The photo will be removed from this chat.", "Recall", modalChatPhotoView.recallPhoto, "Cancel", modalView.close);
+    },
+
     // Need to update Ux when the user scrolls to a new photo
     changePhoto : function (e) {
         var page = e.page, photo = null;
@@ -696,11 +703,16 @@ var modalChatPhotoView = {
         if (photo === undefined) {
             return;
         }
+        //console.log(photo);
+
+        // photo owner
         if (photo.ownerUUID === userModel._user.userUUID) {
-            $('#modalChatPhotoView-userhascopy').addClass('hidden');
+            //$('#modalChatPhotoView-userhascopy').addClass('hidden');
             $("#modalChatPhotoRecipient").addClass('hidden');
             $("#modalChatPhotoSender").removeClass('hidden');
-            if (photo.canCopy) {
+
+
+            /*if (photo.canCopy) {
                 $("#modalChatPhotoViewDecline").addClass('hidden');
                 $("#modalChatPhotoViewUnlock").addClass('hidden');
                 $("#modalChatPhotoViewApprove").addClass('hidden');
@@ -711,32 +723,39 @@ var modalChatPhotoView = {
                 $("#modalChatPhotoViewUnlock").removeClass('hidden');
                 $("#modalChatPhotoViewApprove").addClass('hidden');
                 $("#modalChatPhotoViewOwnerUnlocked").addClass('hidden');
-            }
-
+            }*/
+            $("#modalChatPhotoOwnerName").text("you");
         } else {
-            
+            // user does not own the photo
+            $("#modalChatPhotoOwnerName").text(photo.ownerName);
+
+            $("#modalChatPhotoRecipient").removeClass('hidden');
+
+            $("#modalChatPhotoSender").addClass('hidden');
+
             // If the user already has a copy of this photo -- hide all recipient options
             if (modalChatPhotoView._userHasCopy) {
                 $("#modalChatPhotoView-recipientlist").addClass('hidden');
             } else {
                 $("#modalChatPhotoView-recipientlist").removeClass('hidden');
             }
-            $("#modalChatPhotoOwnerName").text(photo.ownerName + "'s Photo");
-            $("#modalChatPhotoRecipient").removeClass('hidden');
-            $("#modalChatPhotoSender").addClass('hidden');
+
+            // Copy photo allowed
+
             if (photo.canCopy) {
                 $("#modalChatPhotoViewLocked").addClass('hidden');
                 $("#modalChatPhotoViewRequestSent").addClass('hidden');
                 $("#modalChatPhotoViewUnlocked").removeClass('hidden');
             } else {
                 $("#modalChatPhotoViewUnlocked").addClass('hidden');
-                if (photo.requestSent === undefined) {
+
+                /*if (photo.requestSent === undefined) {
                     $("#modalChatPhotoViewLocked").removeClass('hidden');
                     $("#modalChatPhotoViewRequestSent").addClass('hidden');
                 } else {
                     $("#modalChatPhotoViewRequestSent").removeClass('hidden');
                     $("#modalChatPhotoViewLocked").addClass('hidden');
-                }
+                }*/
             }
         }
     },

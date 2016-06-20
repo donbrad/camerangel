@@ -610,6 +610,9 @@
 .photo-chat {
   max-width: 95% !important;
 }
+.photo-chat-lock {
+  display: none;
+}
 /* elements */
 .userLgFontSize {
   font-size: 1.4em !important;
@@ -3731,8 +3734,16 @@ div.footerMenu.km-footer > ul > li > a > span > svg {
 div.footerMenu.km-footer > ul > li:nth-child(1) > a.km-state-active #nav-home {
   fill: #6CADF3;
 }
-#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat,
-div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat {
+#nav-chat-1,
+#nav-chat-2 {
+  fill: none;
+  stroke: #6CADF3;
+  stroke-width: 1px;
+}
+#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat-1,
+div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat-1,
+#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat-2,
+div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat-2 {
   fill: #6CADF3;
 }
 #contacts > div.footerMenu.km-footer > ul > li:nth-child(3) > a #nav-contacts,
@@ -3837,6 +3848,9 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 .placeViewName {
   position: relative;
   top: -0.5em;
+}
+div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
+  display: inline-block;
 }
 .placeChat-headerTop {
   font-size: 0.5em;
