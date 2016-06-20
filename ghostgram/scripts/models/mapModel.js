@@ -61,7 +61,7 @@ var mapModel = {
         mapModel.mapOptions.center.lng =  mapModel.lng;
 
 
-        mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
+        /*mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
@@ -82,7 +82,7 @@ var mapModel = {
                     mapModel.currentZipcode = address.zipcode;
                 }
             });
-        });
+        });*/
 
     },
 

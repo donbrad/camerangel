@@ -6,7 +6,7 @@
   "DisplayName": "ghostgrams",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android phones",
-  "BundleVersion": "0.0.106",
+  "BundleVersion": "0.0.118",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -87,10 +87,10 @@
     "ID_RESOLUTION_HD720P"
   ],
   "CorePlugins": [
-    "cc.fovea.cordova.purchase@4.0.0",
+    "cc.fovea.cordova.purchase@5.0.2",
     "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
-    "com.phonegap.plugins.barcodescanner@5.0.0",
+    "com.phonegap.plugins.barcodescanner@5.0.1",
     "com.phonegap.plugins.PushPlugin@3.2.0",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
@@ -108,7 +108,6 @@
     "cordova-plugin-media",
     "cordova-plugin-media-capture",
     "cordova-plugin-network-information",
-    "cordova-plugin-safariviewcontroller@1.4.3",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "cordova-plugin-vibration",

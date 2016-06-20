@@ -40,6 +40,7 @@ var deviceModel = {
         pubnubInit: false,
         isDeviceRegistered : false,
         devicePushEnabled : false,
+        googleMapsLoaded: false,
         hasAccount : false
     },
 
@@ -103,12 +104,15 @@ var deviceModel = {
         deviceModel.state.pubnubInit = false;
         deviceModel.state.isDeviceRegistered = false;
         deviceModel.state.devicePushEnabled = false;
+        deviceModel.state.googleMapsLoaded = false;
         deviceModel.state.hasAccount = false;
         deviceModel.state.parseSyncComplete = false;
 
         // Reset App and User channel timestamps (should be rare on actual devices)
         localStorage.setItem('ggUserDataTimeStamp', 0);
         localStorage.setItem('ggAppDataTimeStamp', 0);
+
+        everlive.reset();
     },
 
     isPushProvisioned : function ()  {
@@ -119,6 +123,52 @@ var deviceModel = {
             deviceModel.setAppState('devicePushEnabled', true);
         }
 
+    },
+
+    loadGoogleMaps : function () {
+        // If not online - return
+        if(!deviceModel.isOnline()) {
+            return;
+        }
+        // if google maps are loaded - return
+        if (typeof google === 'object' && typeof google.maps === 'object') {
+            return;
+        }
+        $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places&sensor=true&callback=deviceModel.onGoogleMapsLoaded');
+    },
+
+    onGoogleMapsLoaded : function () {
+
+        mobileNotify("Maps loaded...");
+
+        if (google === undefined || google === null) {
+            deviceModel.state.googleMapsLoaded = false;
+            return;
+        }
+        mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
+        mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
+        mapModel.geocoder =  new google.maps.Geocoder();
+        mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
+
+        deviceModel.state.googleMapsLoaded = true;
+
+        mapModel.getCurrentAddress(function (isNew, address){
+
+            if (isNew) {
+                mapModel.wasPrompted = false;
+                mapModel.newLocationDetected = true;
+            }
+
+            mapModel.reverseGeoCode(mapModel.lat, mapModel.lng, function (results, error) {
+                if (results !== null) {
+                    var address = mapModel._updateAddress(results[0].address_components);
+                    mapModel.currentAddress = address;
+                    mapModel.currentCity = address.city;
+                    mapModel.currentState = address.state;
+                    mapModel.currentZipcode = address.zipcode;
+                }
+            });
+        });
     },
 
     isParseSyncComplete: function () {
@@ -171,6 +221,8 @@ var deviceModel = {
        deviceModel.setAppState('inBackground', false);
 
         notificationModel.processUnreadChannels();
+
+        deviceModel.loadGoogleMaps();
         
 
     },
@@ -195,23 +247,29 @@ var deviceModel = {
         deviceModel.setAppState('isOnline', true);
         // Take all data sources online
 
-        if (APP.everlive !== null) {
-            if (!everlive._initialized) {
-                everlive.init();
-            }
-            
-            if (userModel._needSync) {
-                everlive.updateUser();
-            }
-            if (userModel._needStatusSync) {
-                everlive.updateUserStatus();
-            }
-            everlive.syncCloud();
-            photoModel.processCloudPushList();
+        APP.everlive.online();
 
+        deviceModel.loadGoogleMaps();
 
+        if (!everlive._initialized) {
+            everlive.init();
         }
 
+        if (userModel._needSync) {
+            everlive.updateUser();
+        }
+        if (userModel._needStatusSync) {
+            everlive.updateUserStatus();
+        }
+
+        everlive.syncCloud();
+        photoModel.processCloudPushList();
+
+
+        if (everlive._isAuthenticated) {
+            // Device is online and user is authenticated -- init pubnub
+            userModel.initPubNub();
+        }
 
         deviceModel.getNetworkState();
     },

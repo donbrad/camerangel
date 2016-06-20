@@ -625,10 +625,14 @@ var channelModel = {
            var contact = contactModel.findContact(channelUUID);   // ChannelUUID is same as contactUUID
             if (contact !== undefined && contact.contactUUID !== undefined && !contact.isBlocked) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
+                if (callback !== undefined)
+                    callback(channel.channelUUID);
             } else {
-                // No contact for this user yet.
-                var guid = uuid.v4();
-                mobileNotify("Finding member for new private chat...");
+                if (callback !== undefined)
+                    callback(null);
+
+                // No contact for this .
+                /* var guid = uuid.v4();
                 contactModel.createChatContact(channelUUID, guid, function (result) {
                     if (result !== null) {
                         mobileNotify("Adding private chat for " + result.name);
@@ -642,7 +646,7 @@ var channelModel = {
                             callback(null);
                         }
                     }
-                });
+                });*/
             }
         } else {
             if (callback !== undefined) {

@@ -26,8 +26,8 @@ var memberdirectory = {
         var filter = new Everlive.Query();
         filter.where().eq('userUUID', userModel._user.userUUID);
 
-        var data = APP.everlive.data(memberdirectory._ggClass);
-        data.get(filter)
+        var query = APP.everlive.data(memberdirectory._ggClass);
+        query.get(filter)
             .then(function(data){
                     if (data.count === 0) {
                         memberdirectory.create();
@@ -44,7 +44,7 @@ var memberdirectory = {
     },
 
     create : function () {
-        var data = APP.everlive.data(memberdirectory._ggClass);
+        var query = APP.everlive.data(memberdirectory._ggClass);
 
         var validated = userModel._user.emailValidated || userModel._user.phoneValidated;
 
@@ -63,7 +63,7 @@ var memberdirectory = {
 
         };
 
-        data.create(dirObj,
+        query.create(dirObj,
             function(data){
                 memberdirectory._id = data.result.Id;
             },
@@ -105,11 +105,10 @@ var memberdirectory = {
     },
 
     findMemberByUUID : function (uuid, callback) {
-        var filter = new Everlive.Query();
-        filter.where().eq('userUUID', uuid);
+        var query = {'userUUID':  uuid};
 
-        var data = APP.everlive.data(memberdirectory._ggClass);
-        data.get(filter)
+        var mdQuery = APP.everlive.data(memberdirectory._ggClass).applyOffline(false);
+        mdQuery.get(query)
             .then(function(data){
                     if (data.count === 0) {
                         callback(null)
@@ -128,8 +127,8 @@ var memberdirectory = {
         var filter = new Everlive.Query();
         filter.where().eq('phone', phone);
 
-        var data = APP.everlive.data(memberdirectory._ggClass);
-        data.get(filter)
+        var mdQuery = APP.everlive.data(memberdirectory._ggClass);
+        mdQuery.get(filter)
             .then(function(data){
                     if (data.count === 0) {
                         callback(null)
@@ -147,8 +146,8 @@ var memberdirectory = {
     findMemberByPhoneList : function (phoneList, callback) {
         var filter = new Everlive.Query();
         filter.where().isin('phone', phoneList);
-        var data = APP.everlive.data(memberdirectory._ggClass);
-        data.get(filter)
+        var mdQuery = APP.everlive.data(memberdirectory._ggClass);
+        mdQuery.get(filter)
             .then(function(data){
                     if (data.count === 0) {
                         callback(null)
@@ -167,8 +166,8 @@ var memberdirectory = {
         var filter = new Everlive.Query();
         filter.where().eq('email', email);
 
-        var data = APP.everlive.data(memberdirectory._ggClass);
-        data.get(filter)
+        var mdQuery = APP.everlive.data(memberdirectory._ggClass);
+        mdQuery.get(filter)
             .then(function(data){
                     if (data.count === 0) {
                         callback(null)
@@ -192,7 +191,7 @@ var invitedirectory = {
     _version: 1,
 
     create : function (name, phone, email) {
-        var data = APP.everlive.data(invitedirectory._ggClass);
+        var mdQuery = APP.everlive.data(invitedirectory._ggClass);
 
         var dirObj = {
             memberUUID : userModel._user.userUUID,
@@ -206,7 +205,7 @@ var invitedirectory = {
 
         };
 
-        data.create(dirObj,
+        mdQuery.create(dirObj,
             function(data){
 
             },

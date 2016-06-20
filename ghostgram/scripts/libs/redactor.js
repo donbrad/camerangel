@@ -1,15 +1,15 @@
 /*
- Redactor II
- Version 1.2.3
- Updated: March 29, 2015
+	Redactor II
+	Version 1.2.4
+	Updated: May 21, 2015
 
- http://imperavi.com/redactor/
+	http://imperavi.com/redactor/
 
- Copyright (c) 2009-2016, Imperavi LLC.
- License: http://imperavi.com/redactor/license/
+	Copyright (c) 2009-2016, Imperavi LLC.
+	License: http://imperavi.com/redactor/license/
 
- Usage: $('#content').redactor();
- */
+	Usage: $('#content').redactor();
+*/
 
 (function($)
 {
@@ -101,14 +101,14 @@
 
 	// Options
 	$.Redactor = Redactor;
-	$.Redactor.VERSION = '1.2.3';
+	$.Redactor.VERSION = '1.2.4';
 	$.Redactor.modules = ['air', 'autosave', 'block', 'buffer', 'build', 'button', 'caret', 'clean', 'code', 'core', 'detect', 'dropdown',
-		'events', 'file', 'focus', 'image', 'indent', 'inline', 'insert', 'keydown', 'keyup',
-		'lang', 'line', 'link', 'linkify', 'list', 'marker', 'modal', 'observe', 'offset', 'paragraphize', 'paste', 'placeholder',
-		'progress', 'selection', 'shortcuts', 'storage', 'toolbar', 'upload', 'uploads3', 'utils',
+						  'events', 'file', 'focus', 'image', 'indent', 'inline', 'insert', 'keydown', 'keyup',
+						  'lang', 'line', 'link', 'linkify', 'list', 'marker', 'modal', 'observe', 'offset', 'paragraphize', 'paste', 'placeholder',
+						  'progress', 'selection', 'shortcuts', 'storage', 'toolbar', 'upload', 'uploads3', 'utils',
 
-		'browser' // deprecated
-	];
+						  'browser' // deprecated
+						  ];
 
 	$.Redactor.settings = {};
 	$.Redactor.opts = {
@@ -285,8 +285,8 @@
 		blockTags: ['pre', 'ul', 'ol', 'li', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',  'dl', 'dt', 'dd', 'div', 'td', 'blockquote', 'output', 'figcaption', 'figure', 'address', 'section', 'header', 'footer', 'aside', 'article', 'iframe'],
 		paragraphize: true,
 		paragraphizeBlocks: ['table', 'div', 'pre', 'form', 'ul', 'ol', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'dl', 'blockquote', 'figcaption',
-			'address', 'section', 'header', 'footer', 'aside', 'article', 'object', 'style', 'script', 'iframe', 'select', 'input', 'textarea',
-			'button', 'option', 'map', 'area', 'math', 'hr', 'fieldset', 'legend', 'hgroup', 'nav', 'figure', 'details', 'menu', 'summary', 'p'],
+							'address', 'section', 'header', 'footer', 'aside', 'article', 'object', 'style', 'script', 'iframe', 'select', 'input', 'textarea',
+							'button', 'option', 'map', 'area', 'math', 'hr', 'fieldset', 'legend', 'hgroup', 'nav', 'figure', 'details', 'menu', 'summary', 'p'],
 		emptyHtml: '<p>&#x200b;</p>',
 		invisibleSpace: '&#x200b;',
 		imageTypes: ['image/png', 'image/jpeg', 'image/gif'],
@@ -471,10 +471,10 @@
 			// check namespace
 			if (typeof $.Redactor.settings.namespace !== 'undefined')
 			{
-				if (this.$element.hasClass($.Redactor.settings.namespace))
-				{
-					settings = $.Redactor.settings;
-				}
+				 if (this.$element.hasClass($.Redactor.settings.namespace))
+				 {
+					 settings = $.Redactor.settings;
+				 }
 			}
 			else
 			{
@@ -1049,10 +1049,10 @@
 			return {
 				set: function(type)
 				{
-					if (typeof type === 'undefined')
-					{
-						this.buffer.clear();
-					}
+    				if (typeof type === 'undefined')
+                    {
+                        this.buffer.clear();
+                    }
 
 					if (typeof type === 'undefined' || type === 'undo')
 					{
@@ -1120,7 +1120,7 @@
 				},
 				clear: function()
 				{
-					this.opts.rebuffer = [];
+    				this.opts.rebuffer = [];
 				}
 			};
 		},
@@ -2105,8 +2105,8 @@
 					var inline = this.utils.isInlineTag(node.tagName);
 					if (node.innerHTML === '' || inline)
 					{
-						sel = window.getSelection();
-						range = document.createRange();
+                        sel = window.getSelection();
+					    range = document.createRange();
 						var textNode = document.createTextNode('\u200B');
 
 						range.setStart(node, 0);
@@ -2300,10 +2300,10 @@
 
 					range = document.createRange();
 
-					range.setStartBefore(node);
-					range.collapse(true);
+			        range.setStartBefore(node);
+			        range.collapse(true);
 
-					sel.addRange(range);
+			        sel.addRange(range);
 				},
 				next: function(node)
 				{
@@ -2501,9 +2501,9 @@
 					// if paste event
 					if (insert !== true)
 					{
-						// remove google docs markers
-						html = html.replace(/<b\sid="internal-source-marker(.*?)">([\w\W]*?)<\/b>/gi, "$2");
-						html = html.replace(/<b(.*?)id="docs-internal-guid(.*?)">([\w\W]*?)<\/b>/gi, "$3");
+    					// remove google docs markers
+                        html = html.replace(/<b\sid="internal-source-marker(.*?)">([\w\W]*?)<\/b>/gi, "$2");
+    					html = html.replace(/<b(.*?)id="docs-internal-guid(.*?)">([\w\W]*?)<\/b>/gi, "$3");
 
 						var msword = this.clean.isHtmlMsWord(html);
 						if (msword)
@@ -2551,8 +2551,8 @@
 
 					if (data.lists)
 					{
-						html = html.replace("\n", '<br>');
-					}
+    					html = html.replace("\n", '<br>');
+    				}
 
 					if (data.encode)
 					{
@@ -2681,8 +2681,8 @@
 				},
 				cleanMsWord: function(html)
 				{
-					html = html.replace(/<!--[\s\S]*?-->/g, "");
-					html = html.replace(/<o:p>[\s\S]*?<\/o:p>/gi, '');
+    				html = html.replace(/<!--[\s\S]*?-->/g, "");
+    				html = html.replace(/<o:p>[\s\S]*?<\/o:p>/gi, '');
 					html = html.replace(/\n/g, " ");
 					html = html.replace(/<br\s?\/?>|<\/p>|<\/div>|<\/li>|<\/td>/gi, '\n\n');
 
@@ -2787,15 +2787,15 @@
 					{
 						html = html.replace(new RegExp('###/' + tags[i] + '###', 'gi'), '</' + tags[i] + '>');
 						html = html.replace(new RegExp('###' + tags[i] + '###', 'gi'), '<' + tags[i] + '>');
-					}
+                    }
 
 					for (var i = 0; i < len; i++)
 					{
-						if (tags[i] === 'td' || tags[i] === 'th')
-						{
-							html = html.replace(new RegExp('###' + tags[i] + '\s?(.*?[^#])###', 'gi'), '<' + tags[i] + '$1>');
-						}
-					}
+                        if (tags[i] === 'td' || tags[i] === 'th')
+                        {
+						    html = html.replace(new RegExp('###' + tags[i] + '\s?(.*?[^#])###', 'gi'), '<' + tags[i] + '$1>');
+                        }
+                    }
 
 					return html;
 
@@ -2945,12 +2945,12 @@
 						return input.replace(/(<([^>]+)>)/gi, '');
 					}
 
-					var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+				    var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
 
-					return input.replace(tags, function ($0, $1)
-					{
-						return denied.indexOf($1.toLowerCase()) === -1 ? $0 : '';
-					});
+				    return input.replace(tags, function ($0, $1)
+				    {
+				        return denied.indexOf($1.toLowerCase()) === -1 ? $0 : '';
+				    });
 				},
 				removeMarkers: function(html)
 				{
@@ -3004,6 +3004,7 @@
 				start: function(html)
 				{
 					html = $.trim(html);
+					html = html.replace(/^(<span id="selection-marker-1" class="redactor-selection-marker">​<\/span>)/, '');
 
 					// clean
 					if (this.opts.type === 'textarea')
@@ -3048,7 +3049,7 @@
 					if (this.opts.type === 'textarea')
 					{
 						return this.core.textarea().val();
-					}
+                    }
 					else
 					{
 						var html = this.core.editor().html();
@@ -3429,14 +3430,14 @@
 					var $itemContainer = $('<li />');
 					if (typeof btnObject.classname !== 'undefined')
 					{
-						$itemContainer.addClass(btnObject.classname);
+    					$itemContainer.addClass(btnObject.classname);
 					}
 
 					if (btnName.search(/^divider/i) !== -1)
 					{
-						$itemContainer.addClass('redactor-dropdown-divider');
+    					$itemContainer.addClass('redactor-dropdown-divider');
 
-						return $itemContainer;
+    					return $itemContainer;
 					}
 
 					var $item = $('<a href="#" class="redactor-dropdown-' + btnName + '" role="button" />');
@@ -3882,11 +3883,11 @@
 				setupObserver: function()
 				{
 					this.events.observer.observe(this.core.editor()[0], {
-						attributes: true,
-						subtree: true,
-						childList: true,
-						characterData: true,
-						characterDataOldValue: true
+						 attributes: true,
+						 subtree: true,
+						 childList: true,
+						 characterData: true,
+						 characterDataOldValue: true
 					});
 				},
 				changeHandler: function()
@@ -4734,29 +4735,29 @@
 
 					this.inline.formatConvert(tag);
 
-					document.execCommand('strikethrough');
+                    document.execCommand('strikethrough');
 
-					this.selection.save();
+                    this.selection.save();
 
-					var converted = true;
+                    var converted = true;
 					var $formatted = this.core.editor().find('strike');
 					$formatted.each(function(i,s)
 					{
 						var $oldEl = $(s);
 						if (!$oldEl.hasClass('redactor-inline-converted'))
 						{
-							converted = false;
+                            converted = false;
 						}
 
-						var $newEl = self.utils.replaceToTag($oldEl, tag);
-						if (!converted)
-						{
-							$newEl = self.inline.setAttr($newEl[0], attr, value, type);
-						}
+                        var $newEl = self.utils.replaceToTag($oldEl, tag);
+                        if (!converted)
+                        {
+                            $newEl = self.inline.setAttr($newEl[0], attr, value, type);
+                        }
 
 					});
 
-					// restore del tag
+                    // restore del tag
 					if (tag !== 'del')
 					{
 						this.core.editor().find('inline').each(function(i,s)
@@ -5116,13 +5117,14 @@
 						if (inline)
 						{
 							// remove same tag inside
-							var $div = $("<div/>").html($.parseHTML(html, document, true));
+							var $div = $("<div/>").html(html);
 							$div.find(inline.tagName.toLowerCase()).each(function()
 							{
 								$(this).contents().unwrap();
 							});
 
 							html = $div.html();
+
 						}
 
 						if (this.utils.isSelectAll())
@@ -5218,16 +5220,16 @@
 					var range = this.selection.range(sel);
 					range.deleteContents();
 
-					var el = document.createElement("div");
-					el.innerHTML = html;
+		            var el = document.createElement("div");
+		            el.innerHTML = html;
 
-					var frag = document.createDocumentFragment(), node, lastNode;
-					while ((node = el.firstChild))
-					{
-						lastNode = frag.appendChild(node);
-					}
+		            var frag = document.createDocumentFragment(), node, lastNode;
+		            while ((node = el.firstChild))
+		            {
+		                lastNode = frag.appendChild(node);
+		            }
 
-					range.insertNode(frag);
+		            range.insertNode(frag);
 
 					if (lastNode)
 					{
@@ -5327,10 +5329,10 @@
 					}
 					else
 					{
-						var endOfNode = this.selection.extractEndOfNode(block);
+				        var endOfNode = this.selection.extractEndOfNode(block);
 
-						$block.after($('<li>').append(endOfNode));
-						$block.append($list);
+				        $block.after($('<li>').append(endOfNode));
+				        $block.append($list);
 						last = $list;
 					}
 
@@ -5388,26 +5390,26 @@
 					var x = e.clientX, y = e.clientY;
 					if (document.caretPositionFromPoint)
 					{
-						var pos = document.caretPositionFromPoint(x, y);
-						var sel = document.getSelection();
-						range = sel.getRangeAt(0);
-						range.setStart(pos.offsetNode, pos.offset);
-						range.collapse(true);
-						range.insertNode(node);
+					    var pos = document.caretPositionFromPoint(x, y);
+					    var sel = document.getSelection();
+					    range = sel.getRangeAt(0);
+					    range.setStart(pos.offsetNode, pos.offset);
+					    range.collapse(true);
+					    range.insertNode(node);
 					}
 					else if (document.caretRangeFromPoint)
 					{
-						range = document.caretRangeFromPoint(x, y);
-						range.insertNode(node);
+					    range = document.caretRangeFromPoint(x, y);
+					    range.insertNode(node);
 					}
 					else if (typeof document.body.createTextRange !== "undefined")
 					{
-						range = document.body.createTextRange();
-						range.moveToPoint(x, y);
-						var endRange = range.duplicate();
-						endRange.moveToPoint(x, y);
-						range.setEndPoint("EndToEnd", endRange);
-						range.select();
+				        range = document.body.createTextRange();
+				        range.moveToPoint(x, y);
+				        var endRange = range.duplicate();
+				        endRange.moveToPoint(x, y);
+				        range.setEndPoint("EndToEnd", endRange);
+				        range.select();
 					}
 
 					return node;
@@ -5445,7 +5447,7 @@
 					this.keydown.current = this.selection.current();
 					this.keydown.block = this.selection.block();
 
-					// detect tags
+			        // detect tags
 					this.keydown.pre = this.utils.isTag(this.keydown.current, 'pre');
 					this.keydown.blockquote = this.utils.isTag(this.keydown.current, 'blockquote');
 					this.keydown.figcaption = this.utils.isTag(this.keydown.current, 'figcaption');
@@ -5462,11 +5464,9 @@
 					// shortcuts setup
 					this.shortcuts.init(e, key);
 
-
-
 					// buffer
 					this.keydown.checkEvents(arrow, key);
-					this.keydown.setupBuffer(e, key);
+                    this.keydown.setupBuffer(e, key);
 
 					if (this.utils.isSelectAll() && ( key === this.keyCode.ENTER || key === this.keyCode.BACKSPACE || key === this.keyCode.DELETE))
 					{
@@ -5606,12 +5606,12 @@
 							this.line.removeOnBackspace(e);
 						}
 
-						// combine list after and before if paragraph is empty
-						if (this.list.combineAfterAndBefore(this.keydown.block))
-						{
-							e.preventDefault();
-							return;
-						}
+                        // combine list after and before if paragraph is empty
+                        if (this.list.combineAfterAndBefore(this.keydown.block))
+                        {
+                            e.preventDefault();
+                            return;
+                        }
 
 						// backspace as outdent
 						var block = this.selection.block();
@@ -5702,7 +5702,6 @@
 					// paragraphs
 					else if (this.keydown.block)
 					{
-
 						setTimeout($.proxy(function()
 						{
 							this.keydown.replaceToParagraph('DIV');
@@ -5727,13 +5726,13 @@
 								return false;
 							}
 						}
+
 					}
 					// outside
 					else if (!this.keydown.block)
 					{
 						return this.keydown.insertParagraph(e);
 					}
-
 
 					// remove inline tags in new-empty paragraph
 					setTimeout($.proxy(function()
@@ -5743,7 +5742,20 @@
 						{
 							var parent = this.selection.block();
 							$(inline).remove();
-							this.caret.start(parent);
+							//this.caret.start(parent);
+
+                            var range = document.createRange();
+                            range.setStart(parent, 0);
+
+                            var textNode = document.createTextNode('\u200B');
+
+                            range.insertNode(textNode);
+                            range.setStartAfter(textNode);
+                            range.collapse(true);
+
+                            var sel = window.getSelection();
+            				sel.removeAllRanges();
+            				sel.addRange(range);
 						}
 
 					}, this), 1);
@@ -5782,7 +5794,7 @@
 						return;
 					}
 
-					this.core.addEvent('arrow');
+				    this.core.addEvent('arrow');
 				},
 				setupBuffer: function(e, key)
 				{
@@ -5889,11 +5901,11 @@
 
 						if (element.tagName === 'FIGCAPTION')
 						{
-							$(element).parent().after(node);
+						    $(element).parent().after(node);
 						}
 						else
 						{
-							$(element).after(node);
+    						$(element).after(node);
 						}
 
 						this.caret.start(node);
@@ -6058,7 +6070,20 @@
 					{
 						var p = document.createElement('p');
 						$(blockElem).replaceWith(p);
-						this.caret.start(p);
+
+                        // caret to p
+                        var range = document.createRange();
+                        range.setStart(p, 0);
+
+                        var textNode = document.createTextNode('\u200B');
+
+                        range.insertNode(textNode);
+                        range.setStartAfter(textNode);
+                        range.collapse(true);
+
+                        var sel = window.getSelection();
+        				sel.removeAllRanges();
+        				sel.addRange(range);
 
 						return false;
 					}
@@ -6163,20 +6188,20 @@
 						return false;
 					}
 
-					// replace a prev figure to paragraph if caret is before image
-					if (key === this.keyCode.ENTER)
-					{
-						if (this.keyup.block && this.keyup.block.tagName === 'FIGURE')
-						{
-							var $prev = $(this.keyup.block).prev();
-							if ($prev.length !== 0 && $prev[0].tagName === 'FIGURE')
-							{
-								var $newTag = this.utils.replaceToTag($prev, 'p');
-								this.caret.start($newTag);
-								return;
-							}
-						}
-					}
+                    // replace a prev figure to paragraph if caret is before image
+                    if (key === this.keyCode.ENTER)
+                    {
+                        if (this.keyup.block && this.keyup.block.tagName === 'FIGURE')
+                        {
+                            var $prev = $(this.keyup.block).prev();
+                            if ($prev.length !== 0 && $prev[0].tagName === 'FIGURE')
+                            {
+                                var $newTag = this.utils.replaceToTag($prev, 'p');
+                                this.caret.start($newTag);
+                                return;
+                            }
+                        }
+                    }
 
 					// replace figure to paragraph
 					if (key === this.keyCode.BACKSPACE || key === this.keyCode.DELETE)
@@ -6188,21 +6213,21 @@
 							return;
 						}
 
-
 						// if caret before figure - delete image
 						if (this.keyup.block && this.keydown.block && this.keyup.block.tagName === 'FIGURE' && this.utils.isStartOfElement(this.keydown.block))
 						{
-							e.preventDefault();
+    						e.preventDefault();
 
-							this.selection.save();
-							$(this.keyup.block).find('img').first().remove();
-							this.utils.replaceToTag(this.keyup.block, 'p');
+                            this.selection.save();
+                            $(this.keyup.block).find('figcaption').remove();
+    						$(this.keyup.block).find('img').first().remove();
+    						this.utils.replaceToTag(this.keyup.block, 'p');
 
-							var $marker = this.marker.find();
-							$('html, body').animate({ scrollTop: $marker.position().top + 20 }, 500);
+    						var $marker = this.marker.find();
+    						$('html, body').animate({ scrollTop: $marker.position().top + 20 }, 500);
 
-							this.selection.restore();
-							return;
+    						this.selection.restore();
+    						return;
 						}
 
 
@@ -6830,6 +6855,7 @@
 					this.placeholder.hide();
 					this.buffer.set();
 
+
 					if ($list.length !== 0 && $list[0].tagName === tag && this.utils.isRedactorParent($list))
 					{
 						this.selection.save();
@@ -6845,7 +6871,6 @@
 						});
 
 						$list.find('ul, ol').remove();
-
 						$list.find('li').each(function()
 						{
 							return $(this).replaceWith(function()
@@ -6864,8 +6889,22 @@
 						return;
 					}
 
+
 					this.selection.save();
-					document.execCommand('insert' + cmd);
+
+					if ($list.length !== 0 && $list[0].tagName !== tag)
+					{
+                        $list.each($.proxy(function(i,s)
+                        {
+                            this.utils.replaceToTag(s, tag);
+
+                        }, this));
+					}
+					else
+					{
+					    document.execCommand('insert' + cmd);
+					}
+
 					this.selection.restore();
 
 					var $insertedList = this.list.get();
@@ -6912,21 +6951,21 @@
 				},
 				combineAfterAndBefore: function(block)
 				{
-					var $prev = $(block).prev();
-					var $next = $(block).next();
-					var isEmptyBlock = (block && block.tagName === 'P' && (block.innerHTML === '<br>' || block.innerHTML === ''));
-					var isBlockWrapped = ($prev.closest('ol, ul').length === 1 && $next.closest('ol, ul').length === 1);
+    				var $prev = $(block).prev();
+    				var $next = $(block).next();
+                    var isEmptyBlock = (block && block.tagName === 'P' && (block.innerHTML === '<br>' || block.innerHTML === ''));
+                    var isBlockWrapped = ($prev.closest('ol, ul').length === 1 && $next.closest('ol, ul').length === 1);
 
-					if (isEmptyBlock && isBlockWrapped)
-					{
-						$prev.children('li').last().append(this.marker.get());
-						$prev.append($next.contents());
-						this.selection.restore();
+                    if (isEmptyBlock && isBlockWrapped)
+                    {
+                        $prev.children('li').last().append(this.marker.get());
+                        $prev.append($next.contents());
+                        this.selection.restore();
 
-						return true;
-					}
+                        return true;
+                    }
 
-					return false;
+                    return false;
 
 				}
 			};
@@ -7017,67 +7056,67 @@
 					this.opts.modal = {
 						'image-edit': String()
 						+ '<div class="redactor-modal-tab redactor-group" data-title="General">'
-						+ '<div id="redactor-image-preview" class="redactor-modal-tab-side">'
-						+ '</div>'
-						+ '<div class="redactor-modal-tab-area">'
-						+ '<section>'
-						+ '<label>' + this.lang.get('title') + '</label>'
-						+ '<input type="text" id="redactor-image-title" />'
-						+ '</section>'
-						+ '<section>'
-						+ '<label>' + this.lang.get('caption') + '</label>'
-						+ '<input type="text" id="redactor-image-caption" aria-label="' + this.lang.get('caption') + '" />'
-						+ '</section>'
-						+ '<section>'
-						+ '<label>' + this.lang.get('link') + '</label>'
-						+ '<input type="text" id="redactor-image-link" aria-label="' + this.lang.get('link') + '" />'
-						+ '</section>'
-						+ '<section>'
-						+ '<label class="checkbox"><input type="checkbox" id="redactor-image-link-blank" aria-label="' + this.lang.get('link-in-new-tab') + '"> ' + this.lang.get('link-in-new-tab') + '</label>'
-						+ '</section>'
-						+ '<section>'
-						+ '<button id="redactor-modal-button-action">Insert</button>'
-						+ '<button id="redactor-modal-button-cancel">Cancel</button>'
-						+ '<button id="redactor-modal-button-delete" class="redactor-modal-button-offset">Delete</button>'
-						+ '</section>'
-						+ '</div>'
+							+ '<div id="redactor-image-preview" class="redactor-modal-tab-side">'
+							+ '</div>'
+							+ '<div class="redactor-modal-tab-area">'
+								+ '<section>'
+									+ '<label>' + this.lang.get('title') + '</label>'
+									+ '<input type="text" id="redactor-image-title" />'
+								+ '</section>'
+								+ '<section>'
+									+ '<label>' + this.lang.get('caption') + '</label>'
+									+ '<input type="text" id="redactor-image-caption" aria-label="' + this.lang.get('caption') + '" />'
+								+ '</section>'
+								+ '<section>'
+									+ '<label>' + this.lang.get('link') + '</label>'
+									+ '<input type="text" id="redactor-image-link" aria-label="' + this.lang.get('link') + '" />'
+								+ '</section>'
+								+ '<section>'
+									+ '<label class="checkbox"><input type="checkbox" id="redactor-image-link-blank" aria-label="' + this.lang.get('link-in-new-tab') + '"> ' + this.lang.get('link-in-new-tab') + '</label>'
+								+ '</section>'
+								+ '<section>'
+									+ '<button id="redactor-modal-button-action">Insert</button>'
+									+ '<button id="redactor-modal-button-cancel">Cancel</button>'
+									+ '<button id="redactor-modal-button-delete" class="redactor-modal-button-offset">Delete</button>'
+								+ '</section>'
+							+ '</div>'
 						+ '</div>',
 
 						'image': String()
 						+ '<div class="redactor-modal-tab" data-title="Upload">'
-						+ '<section>'
-						+ '<div id="redactor-modal-image-droparea"></div>'
-						+ '</section>'
-						+ '</div>',
+							+ '<section>'
+								+ '<div id="redactor-modal-image-droparea"></div>'
+	 						+ '</section>'
+ 						+ '</div>',
 
 						'file': String()
 						+ '<div class="redactor-modal-tab" data-title="Upload">'
-						+ '<section>'
-						+ '<label>' + this.lang.get('filename') + ' <span class="desc">(' + this.lang.get('optional') + ')</span></label>'
-						+ '<input type="text" id="redactor-filename" aria-label="' + this.lang.get('filename') + '" /><br><br>'
-						+ '</section>'
-						+ '<section>'
-						+ '<div id="redactor-modal-file-upload"></div>'
-						+ '</section>'
+							+ '<section>'
+								+ '<label>' + this.lang.get('filename') + ' <span class="desc">(' + this.lang.get('optional') + ')</span></label>'
+								+ '<input type="text" id="redactor-filename" aria-label="' + this.lang.get('filename') + '" /><br><br>'
+							+ '</section>'
+							+ '<section>'
+								+ '<div id="redactor-modal-file-upload"></div>'
+							+ '</section>'
 						+ '</div>',
 
 						'link': String()
 						+ '<div class="redactor-modal-tab" data-title="General">'
-						+ '<section>'
-						+ '<label>URL</label>'
-						+ '<input type="url" id="redactor-link-url" aria-label="URL" />'
-						+ '</section>'
-						+ '<section>'
-						+ '<label>' + this.lang.get('text') + '</label>'
-						+ '<input type="text" id="redactor-link-url-text" aria-label="' + this.lang.get('text') + '" />'
-						+ '</section>'
-						+ '<section>'
-						+ '<label class="checkbox"><input type="checkbox" id="redactor-link-blank"> ' + this.lang.get('link-in-new-tab') + '</label>'
-						+ '</section>'
-						+ '<section>'
-						+ '<button id="redactor-modal-button-action">Insert</button>'
-						+ '<button id="redactor-modal-button-cancel">Cancel</button>'
-						+ '</section>'
+							+ '<section>'
+								+ '<label>URL</label>'
+								+ '<input type="url" id="redactor-link-url" aria-label="URL" />'
+							+ '</section>'
+							+ '<section>'
+								+ '<label>' + this.lang.get('text') + '</label>'
+								+ '<input type="text" id="redactor-link-url-text" aria-label="' + this.lang.get('text') + '" />'
+							+ '</section>'
+							+ '<section>'
+								+ '<label class="checkbox"><input type="checkbox" id="redactor-link-blank"> ' + this.lang.get('link-in-new-tab') + '</label>'
+							+ '</section>'
+							+ '<section>'
+								+ '<button id="redactor-modal-button-action">Insert</button>'
+								+ '<button id="redactor-modal-button-cancel">Cancel</button>'
+							+ '</section>'
 						+ '</div>'
 					};
 
@@ -7491,7 +7530,7 @@
 				},
 				dropdowns: function()
 				{
-					var finded = $('<div />').html(this.selection.html()).find('a').length;
+    				var finded = $('<div />').html(this.selection.html()).find('a').length;
 					var $current = $(this.selection.current());
 					var isRedactor = this.utils.isRedactorParent($current);
 
@@ -7644,8 +7683,8 @@
 					tooltip.append(aLink).append(' | ').append(aEdit).append(' | ').append(aUnlink);
 
 					var lineHeight = parseInt($link.css('line-height'), 10);
-					var lineClicked = Math.ceil((e.pageY - pos.top)/lineHeight);
-					var top = pos.top + lineClicked * lineHeight;
+                    var lineClicked = Math.ceil((e.pageY - pos.top)/lineHeight);
+                    var top = pos.top + lineClicked * lineHeight;
 
 					tooltip.css({
 						top: top + 'px',
@@ -7696,7 +7735,7 @@
 					div.appendChild(cloned.cloneContents());
 					div.innerHTML = div.innerHTML.replace(/<img(.*?[^>])>$/gi, 'i');
 
-					var text = $.trim($(div).text()).replace(/[\t\n\r\n]/g, '').replace(/\u200B/g, '');
+			        var text = $.trim($(div).text()).replace(/[\t\n\r\n]/g, '').replace(/\u200B/g, '');
 
 					return text.length;
 
@@ -7810,7 +7849,7 @@
 					});
 
 
-					$div.find(this.opts.paragraphizeBlocks.join(', ')).each($.proxy(function(i,s)
+                    $div.find(this.opts.paragraphizeBlocks.join(', ')).each($.proxy(function(i,s)
 					{
 						this.paragraphize.z++;
 						this.paragraphize.safes[this.paragraphize.z] = s.outerHTML;
@@ -7896,7 +7935,7 @@
 				init: function(e)
 				{
 					this.rtePaste = true;
-					var pre = (this.opts.type === 'pre' || this.utils.isCurrentOrParent('pre'));
+					var pre = (this.opts.type === 'pre' || this.utils.isCurrentOrParent('pre')) ? true : false;
 
 					// clipboard event
 					if (!this.paste.pre && !this.detect.isMobile() && this.opts.clipboardImageUpload && this.opts.imageUpload && this.paste.detectClipboardUpload(e))
@@ -7926,6 +7965,7 @@
 						// buffer
 						this.buffer.set();
 						this.selection.restore();
+
 						this.utils.restoreScroll();
 
 						// paste info
@@ -7959,7 +7999,7 @@
 
 					return html;
 				},
-				createPasteBox: function(e, pre)
+				createPasteBox: function(pre)
 				{
 					var css = { position: 'fixed', width: 0, top: 0, left: '-9999px' };
 
@@ -8582,7 +8622,7 @@
 				},
 				restore: function(removeMarkers)
 				{
-					var node1 = this.marker.find(1);
+                    var node1 = this.marker.find(1);
 					var node2 = this.marker.find(2);
 
 					if (this.detect.isFirefox())
@@ -8664,11 +8704,11 @@
 					var sel = this.selection.get();
 					var range = this.selection.range(sel);
 
-					var clonedRange = range.cloneRange();
-					clonedRange.selectNodeContents(node);
-					clonedRange.setStart(range.endContainer, range.endOffset);
+			        var clonedRange = range.cloneRange();
+			        clonedRange.selectNodeContents(node);
+			        clonedRange.setStart(range.endContainer, range.endOffset);
 
-					return clonedRange.extractContents();
+			        return clonedRange.extractContents();
 				},
 
 				// #backward
@@ -8979,10 +9019,10 @@
 					var scrollTop = $(this.opts.toolbarFixedTarget).scrollTop();
 					var boxTop = this.toolbar.getBoxTop();
 
-					if (scrollTop === boxTop)
-					{
-						return;
-					}
+                    if (scrollTop === boxTop)
+                    {
+                        return;
+                    }
 
 					if ((scrollTop + this.opts.toolbarFixedTopOffset + tolerance) > boxTop)
 					{
@@ -9019,9 +9059,9 @@
 
 					if (this.opts.toolbarFixedTarget !== document)
 					{
-						position = 'absolute';
-						top = this.opts.toolbarFixedTopOffset + $(this.opts.toolbarFixedTarget).scrollTop() - boxTop;
-						left = 0;
+						 position = 'absolute';
+						 top = this.opts.toolbarFixedTopOffset + $(this.opts.toolbarFixedTarget).scrollTop() - boxTop;
+						 left = 0;
 					}
 
 					this.$toolbar.addClass('toolbar-fixed-box');
@@ -9232,9 +9272,9 @@
 					// complete
 					xhr.onreadystatechange = $.proxy(function()
 					{
-						if (xhr.readyState === 4)
-						{
-							var data = xhr.responseText;
+					    if (xhr.readyState === 4)
+					    {
+					        var data = xhr.responseText;
 
 							data = data.replace(/^\[/, '');
 							data = data.replace(/\]$/, '');
@@ -9258,7 +9298,7 @@
 							}
 
 							this.upload.callback(json, this.upload.direct, e);
-						}
+					    }
 					}, this);
 
 					xhr.send(formData);
@@ -9382,8 +9422,8 @@
 
 						if (!s3file[0])
 						{
-							// url parsing is fail
-							return false;
+							 // url parsing is fail
+							 return false;
 						}
 
 
@@ -9491,8 +9531,8 @@
 					var len = attrs.length;
 					while (len--)
 					{
-						var attr = attrs[len];
-						to.attr(attr.name, attr.value);
+					    var attr = attrs[len];
+					    to.attr(attr.name, attr.value);
 					}
 
 					return to;
@@ -9502,7 +9542,7 @@
 					var block = this.selection.block();
 					if (!block)
 					{
-						return false;
+    					return false;
 					}
 
 					var isEmpty = this.utils.isEmpty(block.innerHTML);

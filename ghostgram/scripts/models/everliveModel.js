@@ -17,11 +17,23 @@ var everlive = {
     _authenticating: false,
     _user : null,
     _lastSync: 0,
-    _syncInProgress: true,
-    _syncComplete: false,
+    _syncInProgress: false,
+    _syncComplete: true,
     _delta : 30,
     _initialized: false,
 
+    reset : function () {
+        everlive._initialized = false;
+        everlive._isAuthenticated = false;
+        everlive._signedIn = false;
+        everlive._syncInProgress = false;
+        everlive._syncComplete = false;
+        everlive._user = null;
+        everlive._id = null;
+        everlive._token = null;
+        everlive._lastSync = 0;
+    },
+    
     init: function () {
         
       /*  var provider = Everlive.Constants.StorageProvider.FileSystem;
@@ -30,6 +42,16 @@ var everlive = {
             var provider = Everlive.Constants.StorageProvider.LocalStorage;
     /*    }*/
 
+        if (everlive._initialized) {
+            if (deviceModel.isOnline()){
+                APP.everlive.online();
+            } else {
+                APP.everlive.offline();
+            }
+            return;
+        }
+
+        
         if (deviceModel.isOnline()) {
             everlive._initialized = true;
             APP.everlive = new Everlive({
@@ -281,7 +303,8 @@ var everlive = {
     },
 
     login : function (username, password, callback) {
-        APP.everlive.authentication.login(username, password,
+
+        APP.everlive.users.login(username, password,
             function (data) {
                 everlive._token = data.result.access_token;
                 everlive._tokenType = data.result.token_type;
@@ -330,12 +353,15 @@ var everlive = {
     },
     
     logout : function (callback) {
-        APP.everlive.authentication.logout().then(function () {
+        if (deviceModel.isOnline()) {
+            everlive.onLine
+        }
+        APP.everlive.users.logout(function (result) {
                 everlive._signedIn = false;
                 everlive._isAuthenticated = false;
                 callback(true);
             }, // success
-            function () {
+            function (error) {
                 callback(false);
             });
     },
@@ -507,6 +533,17 @@ var everlive = {
     updateOne: function (dataType, dataObject, callback) {
         var data = APP.everlive.data(dataType);
         data.updateSingle(dataObject,
+            function(data){
+                callback(null, data);
+            },
+            function(error){
+                callback(error, null);
+            });
+    },
+
+    update: function (dataType, dataObject, filterObject, callback) {
+        var data = APP.everlive.data(dataType);
+        data.update(dataObject, filterObject,
             function(data){
                 callback(null, data);
             },

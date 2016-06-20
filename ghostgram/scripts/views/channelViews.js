@@ -1279,7 +1279,12 @@ var channelView = {
           channelView.privateContactId = contactUUID;
           var thisContact = contactModel.findContact(contactUUID);
           if (thisContact === undefined) {
-              mobileNotify("ChannelView : creating Contact for Private Chat");
+              mobileNotify("This member isn't a contact yet...");
+              //Todo : don -- need to display the connect dialog here...
+              APP.kendo.navigate('#:back');
+              return;
+
+              /*mobileNotify("ChannelView : creating Contact for Private Chat");
               contactModel.createChatContact(contactUUID, uuid.v4(), function (result) {
                   //Build the members datasource and quick access list
                   channelView.buildMemberDS();
@@ -1325,7 +1330,7 @@ var channelView = {
                       channelView.loadImagesThenScroll()
                   });
 
-              })
+              });*/
 
           } else {
               channelView.privateContact = thisContact;
@@ -1450,7 +1455,7 @@ var channelView = {
     },
 
     preprocessMessage : function (message) {
-        var contactData = channelView.getContactData(message.sender);
+        var contactData = channelView.getContactData(message.sender, message);
         var sender = contactData.uuid;
         var name = contactData.name;
         var alias = contactData.alias;
@@ -1569,7 +1574,7 @@ var channelView = {
     },
 
 
-
+/*
     mapPhotoUrl : function (msgID, photo) {
 
         if (photo === undefined || photo.photoId === undefined) {
@@ -1589,11 +1594,11 @@ var channelView = {
             }
             return('images/missing-image.jpg');
         }
-    },
+    },*/
 
     // Quick access to contact data for display.
-    getContactData : function (contactUUID) {
-        var contact = {isContact: true};
+    getContactData : function (contactUUID, message) {
+       /* var contact = {isContact: true};
 
        if (contactUUID === userModel._user.userUUID) {
            contact.isContact = false;
@@ -1615,8 +1620,8 @@ var channelView = {
 
         if (data === undefined) {
             contact.contactUUID = contactUUID;
-            contact.alias = 'New!';
-            contact.name = 'Chat Member';
+            contact.alias = null;
+            contact.name = message.senderName;
             contact.uuid = uuid.v4();
             contact.photoUrl = contactModel.createIdenticon(contact.contactId);
 
@@ -1646,6 +1651,17 @@ var channelView = {
             if (data.photo !== null) {
                 contact.photoUrl = contact.photo;
             }
+        }
+*/
+
+        var contact = channelView.memberList[contactUUID];
+        
+        if (contact === undefined) {
+            contact = {isContact: true};
+            contact.name = message.senderName;
+            contact.contactUUID = contactUUID;
+            contact.uuid = uuid.v4();
+            contact.photoUrl = contactModel.createIdenticon(contactUUID);
         }
 
         return(contact);
@@ -1711,6 +1727,7 @@ var channelView = {
                 contact.identicon = userModel.identiconUrl;
                 contact.publicKey = userModel._user.publicKey;
                 contact.isPresent = true;
+                contact.isNew = false;
 
             } else {
                 // Not our user - must be a contact
@@ -1719,17 +1736,17 @@ var channelView = {
                 if (thisContact === undefined) {
                     // No contact entry for this contact...
                     // Need to create a contact and then add to channels member list
-                    contact.isContact = false;
+                    contact.isContact = true;
                     contact.uuid = uuid.v4();
                     contact.contactUUID = contactIndex;
                     contact.alias = "New";
-                    contact.name = "New contact...";
+                    contact.name = "New Contact...";
                     contact.identicon = contactModel.createIdenticon(contact.uuid);
                     contact.photo =  contact.identicon;
                     contact.publicKey = null;
                     contact.isPresent = false;
-                    contact.processing = true;
-                    contactModel.createChatContact(contactIndex, contact.uuid,  function (newContact) {
+                    contact.isNew = true;
+                    contactModel.createChatContact(contactIndex, 'Anonymous...', contact.uuid,  function (newContact) {
 
                     });
                 } else {
@@ -1740,6 +1757,7 @@ var channelView = {
                     contact.alias = thisContact.alias;
                     contact.name = thisContact.name;
                     contact.photo = thisContact.photo;
+                    contact.isNew = false;
                     if (thisContact.identicon === null) {
                         thisContact.identicon = contactModel.createIdenticon(thisContact.uuid);
                     }

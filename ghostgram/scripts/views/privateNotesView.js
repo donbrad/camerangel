@@ -41,7 +41,7 @@ var privateNotesView = {
             template: $("#privateNote-template").html()
 
         }).kendoTouch({
-            filter: "li",
+            filter: "div",
             tap: privateNotesView.tapNote,
             hold: privateNotesView.holdNote
         });
@@ -273,6 +273,8 @@ var privateNotesView = {
         var uuidNote = uuid.v4();
 
         var ggType = 'Note';
+
+       // content = '<div class="privateNote" id=note_'+ uuidNote + ' data-uuid='+ uuidNote + '>' + text + '</div>';
 
         if (data.ggType !== undefined) {
             ggType = data.ggType;
@@ -908,9 +910,10 @@ var privateNotesView = {
 
         var $target = $(e.touch.initialTouch);
         var dataSource = privateNoteModel.notesDS;
-        var noteId = null;
+        var noteId = null, note = null;
 
 
+        // This only works if the user clicks / tpas on a bounding element
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
             noteId =  $(e.touch.currentTarget).data("uid");
@@ -919,11 +922,16 @@ var privateNotesView = {
             noteId =   e.touch.target[0].attributes['data-uid'].value;
         }
 
+
         if (noteId === undefined || noteId === null) {
-            mobileNotify("No Note content to display...");
+           var $div = $target.closest( "div" );
+            noteId = $div.data('objectid');
+            note = privateNoteModel.findNote(noteId);
+        } else {
+            note = dataSource.getByUid(noteId);
         }
 
-        var note = dataSource.getByUid(noteId);
+
 
         if (note !== undefined) {
             privateNotesView.activeNote = note;
@@ -951,11 +959,40 @@ var privateNotesView = {
     },
 
     holdNote : function (e) {
-        _preventDefault(e);
+       /* _preventDefault(e);
         var dataSource = privateNoteModel.notesDS;
         var noteUID = $(e.touch.currentTarget).data("uid");
         var note = dataSource.getByUid(noteUID);
-        privateNotesView.activeNote = note;
+        privateNotesView.activeNote = note;*/
+
+        var $target = $(e.touch.initialTouch);
+        var dataSource = privateNoteModel.notesDS;
+        var noteId = null, note = null;
+
+
+        // This only works if the user clicks / tpas on a bounding element
+        if (e.touch.currentTarget !== undefined) {
+            // Legacy IOS
+            noteId =  $(e.touch.currentTarget).data("uid");
+        } else {
+            // New Android
+            noteId =   e.touch.target[0].attributes['data-uid'].value;
+        }
+
+
+        if (noteId === undefined || noteId === null) {
+            var $div = $target.closest( "div" );
+            noteId = $div.data('objectid');
+            note = privateNoteModel.findNote(noteId);
+        } else {
+            note = dataSource.getByUid(noteId);
+        }
+
+
+
+        if (note !== undefined) {
+            privateNotesView.activeNote = note;
+        }
 
         $("#privateNoteViewActions").data("kendoMobileActionSheet").open();
 
