@@ -179,6 +179,7 @@
 					        </g>
 					    </g>
 					</svg>
+					<span class="menuNav-text">Home</span>
                 </a>
             </li>
             <li>
@@ -193,6 +194,7 @@
 					        </g>
 					    </g>
 					</svg>
+					<span class="menuNav-text">Chats</span>
 				</a>
             </li>
             <li>
@@ -212,11 +214,12 @@
 					        </g>
 					    </g>
 					</svg>
+					<span class="menuNav-text">Contacts</span>
                 </a>
             </li>
             <li>
                 <a data-role="button" href="#places" data-click-on="down">
-                	<svg width="19px" height="27px" viewBox="0 0 19 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                	<svg width="19px" height="24px" viewBox="0 0 19 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 					    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					        <g transform="translate(-253.000000, -633.000000)" stroke="#979797">
 					            <g id="nav-places" transform="translate(254.000000, 634.000000)">
@@ -225,6 +228,7 @@
 					        </g>
 					    </g>
 					</svg>
+					<span class="menuNav-text">Places</span>
                 </a>
             </li>
             <li>
@@ -236,6 +240,7 @@
 							</g>
 						</g>
 					</svg>
+					<span class="menuNav-text">Gallery</span>
                 </a>
             </li>
         </ul>
@@ -1304,7 +1309,7 @@
 			<li>
 				<label> Address
 					<input type="text"  data-bind="value: address" name="Address" required/>
-					<div style="padding-left: 8px; font-size: 12px;">
+					<div style="padding-left: 8px; font-size: 12px;" class="hidden">
 						<span data-bind="html: city"></span>, <span data-bind="html: state"></span> &nbsp; <span data-bind="html: zipcode"></span>
 					</div>
 				</label>
@@ -1315,8 +1320,14 @@
 				</label>
 			</li>
 		</ul>
-		<label>Place Type</label>
-		<ul data-role="buttongroup" id="addplace-typeBtns" data-select="addPlaceView.placeTypeSelect" data-index="0">
+		<p> Place Type
+			<span class="place-tag place-type-add">
+				<img src="images/place-private-light.svg" />
+				Private
+			</span>
+		</p>
+
+		<!--<ul data-role="buttongroup" id="addplace-typeBtns" data-select="addPlaceView.placeTypeSelect" data-index="0">
 			<li id="placeTypePrivate">
 				<p>Private Place</p>
 				<img src="images/place-private-active.svg" class="placeIconImgBtn" id="placeTypePrivateImg"/>
@@ -1327,13 +1338,13 @@
 				<img src="images/place-public.svg" class="placeIconImgBtn" id="placeTypePublicImg" />
 
 			</li>
-		</ul>
+		</ul>-->
 		<div class="placeTypeHelpers">
 			<p id="addPlace-privateHelper" class="helper-sm">
-				Private places are shared only with your contacts. Recommended for private residences and othe important places.
+				Private places are shared only with your contacts. Recommended for private residences and other important places.
 			</p>
 			<p id="addPlace-publicHelper" class="hidden helper-sm">
-				Public places are visible to all users. Great for resturants and events!
+				Public places are visible to all users. Great for restaurants and events!
 			</p>
 		</div>
 	</form>
@@ -1371,19 +1382,23 @@
 
 			<li>
 				<label> City </label>
-				<input type="search" id="placeEdit-city" name="City" data-bind="value: city" required />
+				<input type="search" id="placeEdit-city" name="City" data-bind="value: city" class="input-text-sm" readonly/>
 			</li>
 
 			<li class="placeEdit-li-sm">
 				<label> State </label>
-				<input type="search" id="placeEdit-state" name="State" data-bind="value: state" required />
+				<input type="search" id="placeEdit-state" name="State" data-bind="value: state" class="input-text-sm" readonly/>
 			</li>
 
 			<li class="placeEdit-li-sm">
 				<label> Zipcode </label>
-				<input type="search" id="placeEdit-zipcode" name="Zipcode" data-bind="value: zipcode" required />
+				<input type="search" id="placeEdit-zipcode" name="Zipcode" data-bind="value: zipcode" class="input-text-sm" readonly/>
 			</li>
 			<div class="clearfix"></div>
+			<li>
+				<label>Place Chat</label><br />
+				<a data-role="button" class="btnClear"  id="editplace-placechat"  data-click="editPlaceView.doPlaceChat"></a>
+			</li>
 			<li>
 				<label>Place Type</label>
 				<div id="publicPlaceHelper" class="hidden">
@@ -1396,8 +1411,6 @@
 				</div>
 			</li>
 		</ul>
-
-		<a data-role="button" type="button" class="btnClearLine"  id="editplace-placechat"  data-click="editPlaceView.doPlaceChat">Add Place Chat</a>
 
 	</form>
 	<div class="footer" data-role="footer">
@@ -1476,13 +1489,19 @@
 
 				<p class="helper">
 				   <span class="left">
-				 # if (data.isPrivate === true) { #
-					<img src="images/place-private.svg" /> Private
-				 #} else {#
-					<img src="images/place-public.svg" /> Public
-				 #}#
+				 		# if (data.isPrivate === true) { #
+					   		<span class="place-tag place-type">
+								<img src="images/place-private.svg" /> Private
+							</span>
+				 		#} else {#
+					   		<span class="place-tag place-type">
+								<img src="images/place-public.svg" /> Public
+							</span>
+				 		#}#
 				   	#if (data.hasPlaceChat) {#
-					   <span class="placeChat-chatIcon"><img src="images/icon-Chat.svg" /> Place Chat</span>
+					   <span class="place-tag placeChat-chatIcon">
+						   <img src="images/icon-Chat.svg" class="icon-md" /> Chat
+					   </span>
 					#}#
 				   </span>
 					 <span class="distPlace">
@@ -1641,6 +1660,19 @@
     	<div class="chat-options">
     		<div>
     			<ul class="chat-option-ul">
+    				#
+		    			var memberCountText = '';
+		    			var membersCount = (members.length - 1);
+		    			var me = userModel._user.userUUID;
+		    			var ownerString = '';
+
+		    			if(me === data.ownerUUID){#
+		    				# ownerString = "Me"; #
+		    			#} else {#
+		    				# ownerString = ownerName; #
+		    			#}
+		    		#
+
     				# if (isPrivate){#
     					<li>
 		    				<a class="btnClear-red" data-channel="#:channelUUID #" data-role="button"  data-click="channelsView.deleteChannel">
@@ -1688,7 +1720,6 @@
 				    			</a>
 	    					</li>
     					#}#
-
     			</ul>
     		</div>
     	</div><!-- chat-options -->
@@ -1713,47 +1744,50 @@
 			}
 	    	#
 	    		<h4 class="textClamp">
-	    			<span class="chatStatusIcon">
-	    				# if(data.isMuted){#
-	    					<img src="images/icon-mute.svg" class="channelMuteImg" />
-	    				#}else {#
-	    					<img src="images/status-new.svg" class="list-status" />
-	    				#}#
-
-	    			</span>
-	        		<span class="textClamp chatNameDiv">#:name#</span>
+					<span class="chatStatusIcon">
+							# if(data.isMuted){#
+								<img src="images/icon-mute.svg" class="channelMuteImg" />
+							#}else {#
+								#if(data.unreadCount > 0){#
+									<div class="unreadBanner"></div>
+									<img src="images/icon-notify-unread-highlight.svg" class="list-status" />
+								#}#
+							#}#
+	    				</span>
+	        		<span class="textClamp chatNameDiv">
+	        			#:name#
+	        		</span>
 	        		<span class="chatActivityTime left">#:accessTime#</span>
 	    		</h4>
 	    		<div class="clearfix"></div>
 	    		<div class="chatType">
-
 		    		# if(isPrivate && members.length <= 2){#
-		    		<span class="placeType-list">
-		    			<img src="images/icon-private.svg" /> Private Chat
-		    		</span>
-		    		<span>
-		    			# var alias = channelsView.getPrivateChatAlias(channelUUID);#
-		    			&nbsp;  aka (#:alias#)
-		    		</span>
+		    			<span class="placeType-list">
+		    				<img src="images/icon-private.svg" /> Private Chat
+		    			</span>
 		    		#} else if (isPlace) {#
-		    		<span class="placeType-list">
-		    			<img src="images/icon-place.svg" id="chatList-place-icon" /> Place Chat
-		    		</span>
-		    		<span>
-		    		# var membersCount = members.length;#
-		    			&nbsp; Owner  : #:ownerName#   &nbsp; [#:membersCount#]
-		    		</span>
+		    			<span class="placeType-list">
+		    				<img src="images/icon-place.svg" id="chatList-place-icon" />
+		    				Place Chat - #:ownerString#
+		    			</span>
+		    		#} else if(membersCount <= 2) {#
+		    			<span class="placeType-list">
+		    				<img src="images/icon-group.svg" />
+		    					#:ownerString#
+		    			</span>
 		    		#} else {#
-		    		<span class="placeType-list">
-		    			<img src="images/icon-group.svg" /> Group Chat
-		    		</span>
-		    		<span>
-		    		# var membersCount = members.length;#
-		    			&nbsp; Owner  : #:ownerName#   &nbsp; [#:membersCount#]
-		    		</span>
+		    			<span class="placeType-list">
+		    				<img src="images/icon-group.svg" />
+		    					#:ownerString# and #:membersCount# others
+		    			</span>
 		    		#}#
-		    		#if (data.isMuted) {# <span class="listTag-light">Muted</span> #} #
-		    		#if (data.unreadCount > 0) {# <span class="right"><img src="images/icon-Chat.svg" class="icon-sm" /> #:unreadCount# new</span> # } #
+
+		    		#if (data.isMuted) {# <span class="listTag-light right">Muted</span> #} #
+		    		#if (data.unreadCount > 0 && !data.isMuted) {#
+		    			<span class="right unreadCount">
+		    				+#:unreadCount#
+		    			</span>
+		    		#}#
 	    		</div>
 
 	    	</div><!-- chat-mainBox -->
@@ -1826,7 +1860,6 @@
 							</div>
 						</div>
 					</div>
-
 			</div>
 			<div class="messageMediaBar">
 				<ul>
@@ -2095,9 +2128,10 @@
 	if (isContact === undefined) {
 		var isContact = false;
 	}
-	if (displayName === undefined) {
+	if (displayName === undefined || displayName === null) {
 		var displayName = "";
 	}
+
 	#
 	<div id=#:msgID# class="chat-message #=isPrivate# clearfix">
 		<div class="chat-details">
@@ -2548,7 +2582,7 @@
 		#} else if (data.value === 'new'){#
 		Invited
 		#} else if (data.value === 'member') {#
-		Member
+		Connections
 		#} else if (data.value === 'unknown') {#
 		Chat Contact
 		#} else if (data.value === 'zapped') {#
@@ -3538,18 +3572,61 @@
 </div>
 
 <div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit" data-use-native-scrolling="true" data-zoom="true">
-	<!--<div data-role="header">
-		<div data-role="navbar">
-			<span>Chat Photo Gallery</span>
+	<div data-role="header">
+		<div style="margin: 0.5em 1em;">
+			<div class="left" style="color: #fff">
+				<p style="font-size: 0.875em; margin-left: 0;">
+					<span>Sent by </span>
+					<span id="modalChatPhotoOwnerName"></span>
+				</p>
+				<p style="font-size: 0.75em; margin-left: 0;">
+					<span id="modalChatPhotoView-userhascopy">In Gallery</span>
+					<span class="hidden">2d ago</span>
+				</p>
+			</div>
+			<div class="right" id="modalChatPhotoView-recipientlist">
+				<a class="hidden" data-role="button" id="modalChatPhotoViewUnlocked" data-align="right" data-click="modalChatPhotoView.savePhoto">
+					<img src="images/icon-save.svg" class="icon-md"/>
+				</a>
+				<a data-role="button" data-align="right" data-click="modalChatPhotoView.confirmRecall">
+					<img src="images/action-recall-light.svg" class="icon-md"/>
+				</a>
+			</div>
+			<div class="clearfix"></div>
 		</div>
+	</div>
+
+	<!--<div style="text-align: center; margin: 1em; color: white;" id="modalChatPhotoView-userhascopy">
+		In Gallery
 	</div>-->
-	<div style="text-align: center; margin: 1em; color: white;" id="modalChatPhotoView-userhascopy">In Gallery</div>
 	<div class="photoViewBox" data-role="content">
-		<img id="modalChatPhotoView-photoView"  src="" />
+		<!--<div style="margin: 0.5em 1em;">
+			<div class="left" style="color: #fff">
+				<p style="font-size: 0.875em; margin-left: 0;">
+					<span>Sent by </span>
+					<span id="modalChatPhotoOwnerName"></span>
+				</p>
+				<p style="font-size: 0.75em; margin-left: 0;">
+					<span id="modalChatPhotoView-userhascopy">In Gallery • </span>
+					<span>2d ago</span>
+				</p>
+			</div>
+			<div class="right" id="modalChatPhotoView-recipientlist">
+				<a class="hidden" data-role="button" id="modalChatPhotoViewUnlocked" data-align="right" data-click="modalChatPhotoView.savePhoto">
+					<img src="images/icon-save.svg" class="icon-md"/>
+				</a>
+				<a data-role="button" data-align="right" data-click="modalChatPhotoView.confirmRecall">
+					<img src="images/action-recall-light.svg" class="icon-md"/>
+				</a>
+			</div>
+			<div class="clearfix"></div>
+		</div>-->
+		<img id="modalChatPhotoView-photoView" src="" />
 	</div>
 	<div class="footer" data-role="footer">
-		<div style="text-align: center;" id="modalChatPhotoRecipient"  class="hidden">
-			<div style="text-align: center;" >  Sent by <span id="modalChatPhotoOwnerName"> </span></div>
+
+		<!--<div style="text-align: center;" id="modalChatPhotoRecipient"  class="hidden">
+			<div style="text-align: center;">  Sent by <span id="modalChatPhotoOwnerName"> </span></div>
 			<ul class="modalChatPhotoList" id="modalChatPhotoView-recipientlist">
 				<li id="modalChatPhotoViewUnlocked">
 					<a class="btnClear-light" data-role="button" data-click="modalChatPhotoView.savePhoto">
@@ -3569,6 +3646,7 @@
 				</li>
 			</ul>
 		</div>
+
 		<div id="modalChatPhotoOwner" class="hidden">
 			<ul class="modalChatPhotoList" >
 				<li id="modalChatPhotoViewRecall">
@@ -3593,9 +3671,11 @@
 					</a>
 				</li>
 			</ul>
-		</div>
+		</div>-->
 
-		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalChatPhotoView.closeModal">Close</a>
+		<a class="btnSpan-btm btnClear glass" data-role="button" data-click="modalChatPhotoView.closeModal">
+			Close
+		</a>
 
 	</div>
 </div>
@@ -3972,8 +4052,9 @@
 				<img src="images/nav-back.svg" />
 			</a>
 			<span class="textClamp navbar-btn" data-role="button" data-click="placeView.openChat">
-				<img src="images/icon-chat-active.svg" class="icon-btn" id="placeView-gotochat" />
-				<span id="placeViewName"></span>
+				<!--<img src="images/icon-chat-active.svg" class="icon-btn" id="placeView-gotochat" />-->
+				<span id="placeViewName"></span><br/>
+				<span class="place-tag placeChat-headerTop helper">Tap to view chat</span>
 			</span>
 			<a data-role="button" data-align="right" data-click="ux.toggleSearch">
 				<img src="images/icon-search.svg" />
@@ -4009,7 +4090,7 @@
 			<span class="hidden">
 				<img src="images/icon-memories.svg" class="icon" /> No Memories here yet
 			</span>
-			<span>
+			<span style="vertical-align: sub;">
 				<img src="images/icon-memories.svg" class="icon" /> Memories
 			</span>
 			<a class="right btnClear-grey" data-role="button" data-click="placeView.togglePlaceDetails" id="placeView-showDetails">

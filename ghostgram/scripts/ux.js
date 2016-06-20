@@ -29,7 +29,7 @@ var ux = {
 	returnUXPrimaryName: function(name, alias){
 		var primaryName;
 
-		if (alias !== "" && alias !== undefined && name !== "" && name !== undefined){
+		if (alias !== "" && alias !== undefined && name !== "" && name !== undefined && alias !== 'null'){
 			primaryName = alias;
 			
 		} else if(name !== "" && name !== undefined) {

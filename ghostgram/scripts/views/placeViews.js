@@ -1034,6 +1034,8 @@ var addPlaceView = {
         addPlaceView._activePlace.bind('change',addPlaceView.onSync);
         addPlaceView._activePlace.set('name', geoPlace.name);
 
+
+
     },
 
     validate: function(e){
@@ -1133,9 +1135,9 @@ var editPlaceView = {
         }
 
         if (editPlaceView._activePlace.get('hasPlaceChat')) {
-            $("#editplace-placechat").text("Edit Place Chat");
+            $("#editplace-placechat").html("<img src='images/icon-edit-active.svg' class='icon-sm'> Edit Chat");
         } else {
-            $("#editplace-placechat").text("Add Place Chat");
+            $("#editplace-placechat").text("Add Chat");
         }
     },
 
@@ -1146,7 +1148,8 @@ var editPlaceView = {
         if (editPlaceView._activePlace.get('hasPlaceChat')) {
             var placeChatId =  editPlaceView._activePlace.get('placeChatId');
             // Already had a place chat -- jump to editChat
-            APP.kendo.navigate("#editChannel?channel=" + placeChatId);
+            console.log(placeChatId);
+            APP.kendo.navigate('#editChannel?channel=' + placeChatId);
         } else {
             // No placechat yet, create and then jump to edit
             var placeChatguid = uuid.v4(), placeUUID = editPlaceView._activePlace.get('uuid');
@@ -1286,7 +1289,7 @@ var placeView = {
     _lng: null,
     _returnView : 'places',
     _returnModal: null,
-    _showDetails: false,
+    _showDetails: true,
     _editorActive: false,
     _titleTagActive : false,
     _memoriesDS : new kendo.data.DataSource({
@@ -1567,6 +1570,12 @@ var placeView = {
         placeView._activePlace.set('hasPlaceChat', placeObj.hasPlaceChat);
         placeView._activePlace.set('placeChatId', placeObj.placeChatId);
 
+        // Show go to chat helper UI
+        if(placeView._activePlace.hasPlaceChat){
+            $(".placeChat-headerTop").velocity("fadeIn");
+        } else {
+            $(".placeChat-headerTop").css("display", "none");
+        }
 
     },
 
