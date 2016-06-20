@@ -126,14 +126,14 @@ var deviceModel = {
     },
 
     loadGoogleMaps : function () {
-        if(deviceModel.state.googleMapsLoaded || !deviceModel.isOnline()) {
+        if( (google !== undefined && google !== null) || !deviceModel.isOnline()) {
             return;
         }
         $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places&sensor=true&callback=deviceModel.onGoogleMapsLoaded');
     },
 
     onGoogleMapsLoaded : function () {
-        deviceModel.state.googleMapsLoaded = true;
+
         mobileNotify("Maps loaded...");
 
         if (google === undefined || google === null) {
@@ -144,6 +144,8 @@ var deviceModel = {
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
+
+        deviceModel.state.googleMapsLoaded = true;
 
         mapModel.getCurrentAddress(function (isNew, address){
 
