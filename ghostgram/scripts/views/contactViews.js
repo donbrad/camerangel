@@ -1717,6 +1717,10 @@ var contactActionView = {
         }
     },
 
+    showLocation : function () {
+
+    },
+    
 
     setContact : function (thisContact) {
 
