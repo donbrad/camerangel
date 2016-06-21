@@ -2871,19 +2871,18 @@ var mapViewModal = {
         if (callback !== undefined) {
             mapViewModal._returnModal = callback;
         }
-        
+
+        mapViewModal._activePlace = null;
+        mapViewModal._activePlaceModel = null;
+        mapViewModal._activePlaceId = null;
+
+
+        mapViewModal._lat = lat;
+        mapViewModal._lng = lng;
+        mapViewModal._name = name;
+
         if (placeId !== null) {
             mapViewModal.setActivePlace(placeId);
-        } else {
-            // No active place --
-            mapViewModal._activePlace = null;
-            mapViewModal._activePlaceModel = null;
-            mapViewModal._activePlaceId = null;
-
-
-            mapViewModal._lat = lat;
-            mapViewModal._lng = lng;
-            mapViewModal._name = name;
         }
 
         mapViewModal.displayActivePlace();
@@ -2923,23 +2922,27 @@ var mapViewModal = {
 
         var placeObj = placesModel.getPlaceModel(placeUUID);
 
-        mapViewModal._activePlaceModel = placeObj;
+        if (placeObj !== undefined) {
+            mapViewModal._activePlaceModel = placeObj;
 
-        mapViewModal._lat = placeObj.lat;
-        mapViewModal._lng = placeObj.lng;
+            mapViewModal._lat = placeObj.lat;
+            mapViewModal._lng = placeObj.lng;
+            mapViewModal._name= placeObj.name;
 
-        // Todo: cull this list based on what we show in ux...
-        mapViewModal._activePlace.set('lat', placeObj.lat);
-        mapViewModal._activePlace.set('lng', placeObj.lng);
-        mapViewModal._activePlace.set('placeUUID', placeUUID);
-        mapViewModal._activePlace.set('name', placeObj.name);
-        mapViewModal._activePlace.set('alias', placeObj.alias);
-        mapViewModal._activePlace.set('address', placeObj.address);
-        mapViewModal._activePlace.set('city', placeObj.city);
-        mapViewModal._activePlace.set('state', placeObj.state);
-        mapViewModal._activePlace.set('zipcode', placeObj.zipcode);
-        mapViewModal._activePlace.set('isPrivate', placeObj.isPrivate);
-        mapViewModal._activePlace.set('isAvailable', placeObj.isAvailable);
+            // Todo: cull this list based on what we show in ux...
+            mapViewModal._activePlace.set('lat', placeObj.lat);
+            mapViewModal._activePlace.set('lng', placeObj.lng);
+            mapViewModal._activePlace.set('placeUUID', placeUUID);
+            mapViewModal._activePlace.set('name', placeObj.name);
+            mapViewModal._activePlace.set('alias', placeObj.alias);
+            mapViewModal._activePlace.set('address', placeObj.address);
+            mapViewModal._activePlace.set('city', placeObj.city);
+            mapViewModal._activePlace.set('state', placeObj.state);
+            mapViewModal._activePlace.set('zipcode', placeObj.zipcode);
+            mapViewModal._activePlace.set('isPrivate', placeObj.isPrivate);
+            mapViewModal._activePlace.set('isAvailable', placeObj.isAvailable);
+
+        }
 
     },
 
