@@ -146,6 +146,7 @@ var deviceModel = {
             return;
         }
         mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
+        mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), mapModel.mapOptions);
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);

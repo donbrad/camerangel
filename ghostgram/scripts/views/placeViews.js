@@ -2898,7 +2898,7 @@ var mapViewModal = {
         var point = new google.maps.LatLng(mapViewModal._lat, mapViewModal._lng);
         // Center the map.
 
-        mapModel.googleMap.setZoom(mapViewModal._zoom);
+        mapModel.googleMapMdoal.setZoom(mapViewModal._zoom);
 
         // Set a default label in case we're called with just a lat & lng.
         var label = mapViewModal._name;
@@ -2914,8 +2914,8 @@ var mapViewModal = {
         });
 
         // resize the map to fit the view
-        google.maps.event.trigger(mapModel.googleMap, "resize");
-        mapModel.googleMap.setCenter(point);
+        google.maps.event.trigger(mapModel.googleMapModal, "resize");
+        mapModel.googleMapModal.setCenter(point);
     },
 
     setActivePlace : function (placeUUID) {
