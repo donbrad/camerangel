@@ -1562,6 +1562,13 @@ var signInView = {
 
         var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
 
+        if (!deviceModel.isOnline()) {
+            mobileNotify("Phone is offline - can't Sign In");
+            return;
+        }
+
+        APP.everlive.online();
+        
         mobileNotify("Signing you in to ghostgrams....");
 
         everlive.login(username, password , function (error, data) {
