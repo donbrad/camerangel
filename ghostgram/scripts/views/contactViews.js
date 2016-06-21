@@ -1600,6 +1600,10 @@ var contactActionView = {
     },
 
 
+    reOpenModal : function () {
+        $("#modalview-contactActions").data("kendoMobileModalView").open();
+    },
+
     closeModal : function(){
         $("#modalview-contactActions").data("kendoMobileModalView").close();
 
@@ -1718,9 +1722,18 @@ var contactActionView = {
     },
 
     showLocation : function () {
+        var locObj = {
+            lat: contactActionView._activeContact.lat,
+            lng: contactActionView._activeContact.lng,
+            name : contactActionView._activeContact.currentPlace,
+            placeUUID: contactActionView._activeContact.currentPlaceUUID
+        };
 
+        mapViewModal.openModal(locObj.placeUUID, locObj.lat, locObj,lng, locObj.name, function () {
+            contactActionView.reOpenModal();
+        });
     },
-    
+
 
     setContact : function (thisContact) {
 

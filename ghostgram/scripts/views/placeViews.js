@@ -2854,18 +2854,24 @@ var mapViewModal = {
     _activePlaceModel : null,
     _lat: null,
     _lng: null,
+    _name: null,
     _marker: null,
     _zoom: 14,  // Default zoom for the map.
     _returnView : '#:back',   // Default return is just calling view
+    _returnModal : null,
 
     onInit: function (e) {
         //_preventDefault(e);
     },
 
-    openModal: function (placeId, lat, lng) {
+    openModal: function (placeId, lat, lng, name, callback) {
         // _preventDefault(e);
         var valid = false;
 
+        if (callback !== undefined) {
+            mapViewModal._returnModal = callback;
+        }
+        
         if (placeId !== null) {
             mapViewModal.setActivePlace(placeId);
         } else {
@@ -2877,29 +2883,31 @@ var mapViewModal = {
 
             mapViewModal._lat = lat;
             mapViewModal._lng = lng;
+            mapViewModal._name = name;
         }
 
         mapViewModal.displayActivePlace();
-        
+
+        $("#mapViewModal").data("kendoMobileModalView").open();
     },
 
     displayActivePlace : function () {
-        if (mapView._lat === null || mapView._lat === null) {
+        if (mapViewModal._lat === null || mapViewModal._lat === null) {
             return;
         }
-        var point = new google.maps.LatLng(mapView._lat, mapView._lng);
+        var point = new google.maps.LatLng(mapViewModal._lat, mapViewModal._lng);
         // Center the map.
 
-        mapModel.googleMap.setZoom(mapView._zoom);
+        mapModel.googleMap.setZoom(mapViewModal._zoom);
 
         // Set a default label in case we're called with just a lat & lng.
-        var label = "Current Place";
+        var label = mapViewModal._name;
 
         // If there's a valid currentPlace, use the name as the marker label
-        if (mapView._activePlaceModel !== null) {
-            label = mapView._activePlaceModel.name;
+        if (mapViewModal._activePlaceModel !== null) {
+            label = mapViewModal._activePlaceModel.name;
         }
-        mapView._marker = new google.maps.Marker({
+        mapViewModal._marker = new google.maps.Marker({
             position: point,
             label: label,
             map: mapModel.googleMap
@@ -2911,36 +2919,43 @@ var mapViewModal = {
     },
 
     setActivePlace : function (placeUUID) {
-        mapView._activePlaceId = placeUUID;
+        mapViewModal._activePlaceId = placeUUID;
 
         var placeObj = placesModel.getPlaceModel(placeUUID);
 
-        mapView._activePlaceModel = placeObj;
+        mapViewModal._activePlaceModel = placeObj;
 
-        mapView._lat = placeObj.lat;
-        mapView._lng = placeObj.lng;
+        mapViewModal._lat = placeObj.lat;
+        mapViewModal._lng = placeObj.lng;
 
         // Todo: cull this list based on what we show in ux...
-        mapView._activePlace.set('lat', placeObj.lat);
-        mapView._activePlace.set('lng', placeObj.lng);
-        mapView._activePlace.set('placeUUID', placeUUID);
-        mapView._activePlace.set('name', placeObj.name);
-        mapView._activePlace.set('alias', placeObj.alias);
-        mapView._activePlace.set('address', placeObj.address);
-        mapView._activePlace.set('city', placeObj.city);
-        mapView._activePlace.set('state', placeObj.state);
-        mapView._activePlace.set('zipcode', placeObj.zipcode);
-        mapView._activePlace.set('isPrivate', placeObj.isPrivate);
-        mapView._activePlace.set('isAvailable', placeObj.isAvailable);
+        mapViewModal._activePlace.set('lat', placeObj.lat);
+        mapViewModal._activePlace.set('lng', placeObj.lng);
+        mapViewModal._activePlace.set('placeUUID', placeUUID);
+        mapViewModal._activePlace.set('name', placeObj.name);
+        mapViewModal._activePlace.set('alias', placeObj.alias);
+        mapViewModal._activePlace.set('address', placeObj.address);
+        mapViewModal._activePlace.set('city', placeObj.city);
+        mapViewModal._activePlace.set('state', placeObj.state);
+        mapViewModal._activePlace.set('zipcode', placeObj.zipcode);
+        mapViewModal._activePlace.set('isPrivate', placeObj.isPrivate);
+        mapViewModal._activePlace.set('isAvailable', placeObj.isAvailable);
 
     },
 
     onDone: function (e) {
         _preventDefault(e);
 
-        var returnUrl = '#'+ mapView._returnView;
+        $("#mapViewModal").data("kendoMobileModalView").close();
+        
+        if (mapViewModal._returnModal !== null) {
+            mapViewModal._returnModal();
+            
+        } else {
+            var returnUrl = '#' + mapViewModal._returnView;
 
-        APP.kendo.navigate(returnUrl);
+            APP.kendo.navigate(returnUrl);
+        }
 
     }
 };
