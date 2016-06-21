@@ -1765,6 +1765,7 @@ var verifyPhoneModal = {
     }
 };
 var recoverPasswordView = {
+
     openModal: function (e) {
         var email = $("#home-signin-username").val();
 
@@ -1781,6 +1782,7 @@ var recoverPasswordView = {
         $("#modalview-recoverPassword").data("kendoMobileModalView").close();
     },
 
+
     recoverPassword : function (e) {
 
         var emailAddress = $("#home-recoverPassword-email").val();
@@ -1789,7 +1791,7 @@ var recoverPasswordView = {
             if (error !== null) {
                 mobileNotify ("Password recovery error : " + JSON.stringify(error));
             } else {
-                mobileNotify ("Password recovery instructions send to " + emailAddress);
+                mobileNotify ("Password recovery instructions sent to " + emailAddress);
                 recoverPasswordView.closeModal();
             }
         })

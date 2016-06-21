@@ -220,9 +220,15 @@ var deviceModel = {
     onResume: function() {
        deviceModel.setAppState('inBackground', false);
 
-        notificationModel.processUnreadChannels();
+        if (deviceModel.isOnline()) {
 
-        deviceModel.loadGoogleMaps();
+            deviceModel.onOnline();
+            notificationModel.processUnreadChannels();
+        } else {
+            if (APP.everlive !== null)
+             APP.everlive.offline();
+        }
+
         
 
     },
@@ -272,6 +278,7 @@ var deviceModel = {
         }
 
         deviceModel.getNetworkState();
+        $("#network-offline").addClass('hidden');
     },
 
 
