@@ -1729,7 +1729,7 @@ var contactActionView = {
             placeUUID: contactActionView._activeContact.currentPlaceUUID
         };
 
-        mapViewModal.openModal(locObj.placeUUID, locObj.lat, locObj,lng, locObj.name, function () {
+        mapViewModal.openModal(locObj.placeUUID, locObj.lat, locObj.lng, locObj.name, function () {
             contactActionView.reOpenModal();
         });
     },
