@@ -3693,7 +3693,7 @@
 			<a data-click="modalPhotoView.closeModal" data-role="button" class="btnClear-grey" data-align="left">
 				<img src='images/nav-back-light.svg' />
 			</a>
-			<span id="modalPhotoView-title"></span>
+			<span id="modalPhotoView-title" data-bind="text: title"></span>
 			<a data-rel="actionsheet" data-role="button" href="#modalPhotoView-PhotoActions" class="btnClear-grey" data-align="right">
 				<img src="images/nav-gear-light.svg"/>
 			</a>
@@ -3765,8 +3765,8 @@
 		</li>
 	</ul>
 	<div id="modalPhotoView-footer" data-role="footer">
-		<p class="helper">Tags</p>
-		<p class="helper">Location</p>
+		<p class="helper">Tags <span data-bind="text: tagString"> </span></p>
+		<p class="helper">Location <span data-bind="text: addressString"> </span></p>
 	</div>
 </div>
 

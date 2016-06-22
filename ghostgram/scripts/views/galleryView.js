@@ -956,13 +956,13 @@ var modalPhotoView = {
         }
         modalPhotoView._activePhoto.set('title', photo.title);
 
-        // set title
-        if(modalPhotoView._activePhoto.title !== ''){
+        // set title - should be handled by data-bind and then autoupdated from edit
+        /*if(modalPhotoView._activePhoto.title !== ''){
             $("#modalPhotoView-title").text(modalPhotoView._activePhoto.title);
         } else {
             $("#modalPhotoView-title").text("Title");
         }
-
+*/
 
 
         modalPhotoView._activePhoto.set('thumbnailUrl', photo.thumbnailUrl);
