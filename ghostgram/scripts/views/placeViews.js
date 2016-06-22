@@ -2849,6 +2849,7 @@ var smartLocationView = {
  */
 
 var mapViewModal = {
+    _inited: false,
     _activePlace :  new kendo.data.ObservableObject(),
     _activePlaceId : null,
     _activePlaceModel : null,
@@ -2868,6 +2869,11 @@ var mapViewModal = {
         // _preventDefault(e);
         var valid = false;
 
+        if (!mapViewModal._inited) {
+            mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), mapModel.mapOptions);
+            mapViewModel._inited = true;
+        }
+
         if (callback !== undefined) {
             mapViewModal._returnModal = callback;
         }
@@ -2884,7 +2890,6 @@ var mapViewModal = {
         if (placeId !== null) {
             mapViewModal.setActivePlace(placeId);
         }
-
 
         $("#mapViewModal").data("kendoMobileModalView").open();
 
@@ -2911,12 +2916,14 @@ var mapViewModal = {
         mapViewModal._marker = new google.maps.Marker({
             position: point,
             label: label,
-            map: mapModel.googleMap
+            map: mapModel.googleMapModal
         });
 
         // resize the map to fit the view
-        google.maps.event.trigger(mapModel.googleMapModal, "resize");
+       
         mapModel.googleMapModal.setCenter(point);
+
+        google.maps.event.trigger(mapModel.googleMapModal, "resize");
     },
 
     setActivePlace : function (placeUUID) {
