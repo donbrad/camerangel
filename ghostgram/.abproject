@@ -3,10 +3,10 @@
   "ProjectGuid": "73905311-744c-48f9-9909-d427fe5ad083",
   "projectVersion": 1,
   "AppIdentifier": "com.kyburzcodeworks.ghostgrams",
-  "DisplayName": "ghostgrams",
+  "DisplayName": "intelligram",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android phones",
-  "BundleVersion": "0.0.118",
+  "BundleVersion": "0.0.119",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
