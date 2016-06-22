@@ -2901,7 +2901,7 @@ var mapViewModal = {
         if (mapViewModal._lat === null || mapViewModal._lat === null) {
             return;
         }
-        var point = new google.maps.LatLng(mapViewModal._lat, mapViewModal._lng);
+        var point = new google.maps.LatLng(parseFloat(mapViewModal._lat), parseFloat(mapViewModal._lng));
         // Center the map.
 
         mapModel.googleMapModal.setZoom(mapViewModal._zoom);
@@ -2913,17 +2913,20 @@ var mapViewModal = {
         if (mapViewModal._activePlaceModel !== null) {
             label = mapViewModal._activePlaceModel.name;
         }
-        mapViewModal._marker = new google.maps.Marker({
-            position: point,
-            label: label,
-            map: mapModel.googleMapModal
-        });
+
 
         // resize the map to fit the view
        
         mapModel.googleMapModal.setCenter(point);
 
         google.maps.event.trigger(mapModel.googleMapModal, "resize");
+
+
+        mapViewModal._marker = new google.maps.Marker({
+            position: point,
+            label: label,
+            map: mapModel.googleMapModal
+        });
     },
 
     setActivePlace : function (placeUUID) {
