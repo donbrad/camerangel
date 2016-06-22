@@ -875,6 +875,7 @@ var modalChatPhotoView = {
 var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
+    _address : null,
     _dummyTitle : '',
     _dummyDescription : '',
     _dummyTagsString : '',
@@ -991,8 +992,11 @@ var modalPhotoView = {
 
         if (photo.placeString !== undefined && photo.placeString !== null) {
             $("#photo-location").val(modalPhotoView._activePhoto.placeString);
+            modalPhotoView._address = photo.placeString;
         } else {
             $("#photo-location").val(modalPhotoView._activePhoto.addressString);
+            modalPhotoView._address = photo.addressString;
+
         }
 
 
