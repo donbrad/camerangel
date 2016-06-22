@@ -1051,6 +1051,11 @@ var modalPhotoView = {
     updateAddress : function (e) {
         var address = modalPhotoView._activePhoto.addressString, lat = modalPhotoView._activePhoto.lat,
             lng = modalPhotoView._activePhoto.lng;
+
+        modalPhotoView.closeModal();
+        smartEventPlacesView.openModal(address, function () {
+            $("#modalPhotoView").data("kendoMobileModalView").open();
+        });
     },
 
     deletePhoto : function (e) {
