@@ -1081,7 +1081,10 @@ var modalPhotoView = {
 
     viewOnMap : function (e) {
         _preventDefault(e);
+        var locObj = {placeId: null, lat: modalPhotoView._activePhoto.lat, lng: modalPhotoView._activePhoto.lat, name: "Photo", targetName: modalPhotoView._address};
+        modalMapView.openModal(locObj, function () {
 
+        });
     },
 
     sendViaGhostgrams : function (e) {
