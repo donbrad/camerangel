@@ -1059,7 +1059,7 @@ var modalPhotoView = {
         // Overlapping modals, need to close photoView first
         modalPhotoView.closeModal();
 
-        modalView.open("Delete Photo?", "This action will delete this photo and any offers",
+        modalView.open("Delete Photo?", "This action will delete this photo and any shares",
             "Delete" ,
             function() {
                 //User wants to delete the photo
