@@ -2865,7 +2865,7 @@ var mapViewModal = {
         //_preventDefault(e);
     },
 
-    openModal: function (placeId, lat, lng, name, callback) {
+    openModal: function (locObj, callback) {
         // _preventDefault(e);
         var valid = false;
 
@@ -2883,14 +2883,16 @@ var mapViewModal = {
         mapViewModal._activePlaceId = null;
 
 
-        mapViewModal._lat = lat;
-        mapViewModal._lng = lng;
-        mapViewModal._name = name;
+        mapViewModal._lat = locObj.lat;
+        mapViewModal._lng = locObj.lng;
+        mapViewModal._name = locObj.name;
+        mapViewModal._targetName = locObj.targetName;
 
-        if (placeId !== null) {
-            mapViewModal.setActivePlace(placeId);
+        if (locObj.placeId !== null) {
+            mapViewModal.setActivePlace(locObj.placeId);
         }
 
+        $("#mapViewModal-targetName").text(locObj.targetName + "'s Location");
         $("#mapViewModal").data("kendoMobileModalView").open();
 
         mapViewModal.displayActivePlace();
