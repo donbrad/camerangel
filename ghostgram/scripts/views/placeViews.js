@@ -2871,7 +2871,7 @@ var mapViewModal = {
 
         if (!mapViewModal._inited) {
             mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), mapModel.mapOptions);
-            mapViewModel._inited = true;
+            mapViewModal._inited = true;
         }
 
         if (callback !== undefined) {
