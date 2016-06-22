@@ -1087,8 +1087,10 @@ var modalPhotoView = {
             mobileNotify("No location information for this photo!");
             return;
         }
+        $("#modalPhotoView-PhotoActions").data("kendoMobileActionSheet").close();
+        modalPhotoView.closeModal();
         mapViewModal.openModal(locObj, function () {
-
+            $("#modalPhotoView").data("kendoMobileModalView").open();
         });
     },
 
