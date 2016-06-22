@@ -1729,6 +1729,8 @@ var contactActionView = {
             placeUUID: contactActionView._activeContact.currentPlaceUUID
         };
 
+        mobileNotify("Mapping place....");
+        $("#modalview-contactActions").data("kendoMobileModalView").close();
         mapViewModal.openModal(locObj.placeUUID, locObj.lat, locObj.lng, locObj.name, function () {
             contactActionView.reOpenModal();
         });

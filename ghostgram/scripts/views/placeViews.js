@@ -2897,7 +2897,7 @@ var mapViewModal = {
         var point = new google.maps.LatLng(mapViewModal._lat, mapViewModal._lng);
         // Center the map.
 
-        mapModel.googleMapMdoal.setZoom(mapViewModal._zoom);
+        mapModel.googleMapModal.setZoom(mapViewModal._zoom);
 
         // Set a default label in case we're called with just a lat & lng.
         var label = mapViewModal._name;
