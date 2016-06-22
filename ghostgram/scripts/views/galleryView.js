@@ -1048,6 +1048,11 @@ var modalPhotoView = {
 
     },
 
+    updateAddress : function (e) {
+        var address = modalPhotoView._activePhoto.addressString, lat = modalPhotoView._activePhoto.lat,
+            lng = modalPhotoView._activePhoto.lng;
+    },
+
     deletePhoto : function (e) {
         _preventDefault(e);
 
