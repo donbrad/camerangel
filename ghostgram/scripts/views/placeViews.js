@@ -2924,7 +2924,7 @@ var mapViewModal = {
 
 
         mapViewModal._marker = new google.maps.Marker({
-            position: point,
+            position: {lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng)},
             title: label,
             map: mapModel.googleMapModal
         });
