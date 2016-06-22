@@ -6,7 +6,7 @@
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks",
   "Description": "ghostgrams for iOS and Android phones",
-  "BundleVersion": "0.0.119",
+  "BundleVersion": "0.0.120",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
