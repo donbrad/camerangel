@@ -2893,6 +2893,7 @@ var mapViewModal = {
         }
 
         $("#mapViewModal-targetName").text(locObj.targetName + "'s Location");
+        $("#mapViewModal-locationName").text(locObj.name);
         $("#mapViewModal").data("kendoMobileModalView").open();
 
         mapViewModal.displayActivePlace();
