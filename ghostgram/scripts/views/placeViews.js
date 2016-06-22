@@ -2885,9 +2885,11 @@ var mapViewModal = {
             mapViewModal.setActivePlace(placeId);
         }
 
-        mapViewModal.displayActivePlace();
 
         $("#mapViewModal").data("kendoMobileModalView").open();
+
+        mapViewModal.displayActivePlace();
+        
     },
 
     displayActivePlace : function () {
