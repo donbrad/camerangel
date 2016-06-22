@@ -986,6 +986,8 @@ var modalPhotoView = {
         // Address
         modalPhotoView._activePhoto.set('addressString', photo.addressString);
         modalPhotoView._activePhoto.set('placeString', photo.placeString);
+        modalPhotoView._activePhoto.set('lat', photo.lat);
+        modalPhotoView._activePhoto.set('lng', photo.lng);
 
         if (photo.placeString !== undefined && photo.placeString !== null) {
             $("#photo-location").val(modalPhotoView._activePhoto.placeString);
@@ -1075,7 +1077,7 @@ var modalPhotoView = {
 
     viewOnMap : function (e) {
         _preventDefault(e);
-        mobileNotify("In backlog....");
+
     },
 
     sendViaGhostgrams : function (e) {
