@@ -2918,7 +2918,7 @@ var mapViewModal = {
 
         // resize the map to fit the view
        
-        mapModel.googleMapModal.setCenter(lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng));
+        mapModel.googleMapModal.setCenter({lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng)});
 
         google.maps.event.trigger(mapModel.googleMapModal, "resize");
 
