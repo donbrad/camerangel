@@ -2857,7 +2857,7 @@ var mapViewModal = {
     _lng: null,
     _name: null,
     _marker: null,
-    _zoom: 14,  // Default zoom for the map.
+    _zoom: 15,  // Default zoom for the map.
     _returnView : '#:back',   // Default return is just calling view
     _returnModal : null,
 
@@ -2904,8 +2904,6 @@ var mapViewModal = {
         if (mapViewModal._lat === null || mapViewModal._lat === null) {
             return;
         }
-        var point = new google.maps.LatLng(parseFloat(mapViewModal._lat), parseFloat(mapViewModal._lng));
-        // Center the map.
 
         mapModel.googleMapModal.setZoom(mapViewModal._zoom);
 
@@ -2920,7 +2918,7 @@ var mapViewModal = {
 
         // resize the map to fit the view
        
-        mapModel.googleMapModal.setCenter(point);
+        mapModel.googleMapModal.setCenter(lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng));
 
         google.maps.event.trigger(mapModel.googleMapModal, "resize");
 
