@@ -1052,10 +1052,28 @@ var modalPhotoView = {
         var address = modalPhotoView._activePhoto.addressString, lat = modalPhotoView._activePhoto.lat,
             lng = modalPhotoView._activePhoto.lng;
 
-        $("#modalPhotoView").data("kendoMobileModalView").close();
-        smartEventPlacesView.openModal(address, "Memory Photo", function (placeObj) {
-            $("#modalPhotoView").data("kendoMobileModalView").open();
-        });
+        if (lat !== undefined && lat !== null) {
+            // Reverse geocode based on lat/lng -- also need to match current places
+            mapModel.reverseGeoCode(lat, lng, function (results, error){
+                if (results !== null) {
+                    var address = mapModel._updateAddress(results[0].address_components);
+                    mapModel.currentAddress = address;
+                    mapModel.currentCity = address.city;
+                    mapModel.currentState = address.state;
+                    mapModel.currentZipcode = address.zipcode;
+                    if (callback !== undefined)
+                        callback(true, address);
+                }
+
+            });
+        } else {
+            $("#modalPhotoView").data("kendoMobileModalView").close();
+            smartEventPlacesView.openModal(address, "Memory Photo", function (placeObj) {
+                $("#modalPhotoView").data("kendoMobileModalView").open();
+            });
+        }
+
+
     },
 
     deletePhoto : function (e) {
