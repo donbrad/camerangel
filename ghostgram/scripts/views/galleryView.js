@@ -876,6 +876,7 @@ var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
     _address : null,
+   
     _dummyTitle : '',
     _dummyDescription : '',
     _dummyTagsString : '',

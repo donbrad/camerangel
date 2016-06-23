@@ -2926,6 +2926,10 @@ var mapViewModal = {
 
         google.maps.event.trigger(mapModel.googleMapModal, "resize");
 
+        if ( mapViewModal._marker !== null) {
+            mapViewModal._marker.setMap(null);
+            mapViewModal._marker = null;
+        }
 
         mapViewModal._marker = new google.maps.Marker({
             position: {lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng)},
@@ -2967,6 +2971,12 @@ var mapViewModal = {
         _preventDefault(e);
 
         $("#mapViewModal").data("kendoMobileModalView").close();
+
+
+        if ( mapViewModal._marker !== null) {
+            mapViewModal._marker.setMap(null);
+            mapViewModal._marker = null;
+        }
         
         if (mapViewModal._returnModal !== null) {
             mapViewModal._returnModal();
