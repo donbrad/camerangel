@@ -2412,7 +2412,7 @@ var smartEventPlacesView = {
 
     },
 
-    openModal : function (query, callback) {
+    openModal : function (query, title, callback) {
 
         smartEventPlacesView.initDataSource();
 
@@ -2421,6 +2421,10 @@ var smartEventPlacesView = {
 
         smartEventPlacesView.setLocationAndBounds();
 
+        if (title !== null) {
+            $('#smartEventPlacesModal-title').text(title);
+        }
+        
         smartEventPlacesView._callback = callback;
 
         if (!smartEventPlacesView._inited) {

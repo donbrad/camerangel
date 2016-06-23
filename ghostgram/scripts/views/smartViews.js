@@ -306,7 +306,7 @@ var smartEventView = {
 
         var placeStr =  $("#smartEventView-placesearch").val();
 
-           smartEventPlacesView.openModal(placeStr, function (geo) {
+           smartEventPlacesView.openModal(placeStr, null, function (geo) {
                if (geo === null) {
                    mobileNotify("Smart Place Search cancelled...");
                    return;
