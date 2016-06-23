@@ -2412,7 +2412,7 @@ var smartEventPlacesView = {
 
     },
 
-    openModal : function (query, callback) {
+    openModal : function (query, title, callback) {
 
         smartEventPlacesView.initDataSource();
 
@@ -2421,6 +2421,10 @@ var smartEventPlacesView = {
 
         smartEventPlacesView.setLocationAndBounds();
 
+        if (title !== null) {
+            $('#smartEventPlacesModal-title').text(title);
+        }
+        
         smartEventPlacesView._callback = callback;
 
         if (!smartEventPlacesView._inited) {
@@ -2849,98 +2853,129 @@ var smartLocationView = {
  */
 
 var mapViewModal = {
+    _inited: false,
     _activePlace :  new kendo.data.ObservableObject(),
     _activePlaceId : null,
     _activePlaceModel : null,
     _lat: null,
     _lng: null,
+    _name: null,
     _marker: null,
-    _zoom: 14,  // Default zoom for the map.
+    _zoom: 15,  // Default zoom for the map.
     _returnView : '#:back',   // Default return is just calling view
+    _returnModal : null,
 
     onInit: function (e) {
         //_preventDefault(e);
     },
 
-    openModal: function (placeId, lat, lng) {
+    openModal: function (locObj, callback) {
         // _preventDefault(e);
         var valid = false;
 
-        if (placeId !== null) {
-            mapViewModal.setActivePlace(placeId);
-        } else {
-            // No active place --
-            mapViewModal._activePlace = null;
-            mapViewModal._activePlaceModel = null;
-            mapViewModal._activePlaceId = null;
-
-
-            mapViewModal._lat = lat;
-            mapViewModal._lng = lng;
+        if (!mapViewModal._inited) {
+            mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), mapModel.mapOptions);
+            mapViewModal._inited = true;
         }
+
+        if (callback !== undefined) {
+            mapViewModal._returnModal = callback;
+        }
+
+        mapViewModal._activePlace = null;
+        mapViewModal._activePlaceModel = null;
+        mapViewModal._activePlaceId = null;
+
+
+        mapViewModal._lat = locObj.lat;
+        mapViewModal._lng = locObj.lng;
+        mapViewModal._name = locObj.name;
+        mapViewModal._targetName = locObj.targetName;
+
+        if (locObj.placeId !== null) {
+            mapViewModal.setActivePlace(locObj.placeId);
+        }
+
+        $("#mapViewModal-targetName").text(locObj.targetName);
+        $("#mapViewModal-locationName").text(locObj.name);
+        $("#mapViewModal").data("kendoMobileModalView").open();
 
         mapViewModal.displayActivePlace();
         
     },
 
     displayActivePlace : function () {
-        if (mapView._lat === null || mapView._lat === null) {
+        if (mapViewModal._lat === null || mapViewModal._lat === null) {
             return;
         }
-        var point = new google.maps.LatLng(mapView._lat, mapView._lng);
-        // Center the map.
 
-        mapModel.googleMap.setZoom(mapView._zoom);
+        mapModel.googleMapModal.setZoom(mapViewModal._zoom);
 
         // Set a default label in case we're called with just a lat & lng.
-        var label = "Current Place";
+        var label = mapViewModal._name;
 
         // If there's a valid currentPlace, use the name as the marker label
-        if (mapView._activePlaceModel !== null) {
-            label = mapView._activePlaceModel.name;
+        if (mapViewModal._activePlaceModel !== null) {
+            label = mapViewModal._activePlaceModel.name;
         }
-        mapView._marker = new google.maps.Marker({
-            position: point,
-            label: label,
-            map: mapModel.googleMap
-        });
+
 
         // resize the map to fit the view
-        google.maps.event.trigger(mapModel.googleMap, "resize");
-        mapModel.googleMap.setCenter(point);
+       
+        mapModel.googleMapModal.setCenter({lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng)});
+
+        google.maps.event.trigger(mapModel.googleMapModal, "resize");
+
+
+        mapViewModal._marker = new google.maps.Marker({
+            position: {lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng)},
+            title: label,
+            map: mapModel.googleMapModal
+        });
     },
 
     setActivePlace : function (placeUUID) {
-        mapView._activePlaceId = placeUUID;
+        mapViewModal._activePlaceId = placeUUID;
 
         var placeObj = placesModel.getPlaceModel(placeUUID);
 
-        mapView._activePlaceModel = placeObj;
+        if (placeObj !== undefined) {
+            mapViewModal._activePlaceModel = placeObj;
 
-        mapView._lat = placeObj.lat;
-        mapView._lng = placeObj.lng;
+            mapViewModal._lat = placeObj.lat;
+            mapViewModal._lng = placeObj.lng;
+            mapViewModal._name= placeObj.name;
 
-        // Todo: cull this list based on what we show in ux...
-        mapView._activePlace.set('lat', placeObj.lat);
-        mapView._activePlace.set('lng', placeObj.lng);
-        mapView._activePlace.set('placeUUID', placeUUID);
-        mapView._activePlace.set('name', placeObj.name);
-        mapView._activePlace.set('alias', placeObj.alias);
-        mapView._activePlace.set('address', placeObj.address);
-        mapView._activePlace.set('city', placeObj.city);
-        mapView._activePlace.set('state', placeObj.state);
-        mapView._activePlace.set('zipcode', placeObj.zipcode);
-        mapView._activePlace.set('isPrivate', placeObj.isPrivate);
-        mapView._activePlace.set('isAvailable', placeObj.isAvailable);
+            // Todo: cull this list based on what we show in ux...
+            mapViewModal._activePlace.set('lat', placeObj.lat);
+            mapViewModal._activePlace.set('lng', placeObj.lng);
+            mapViewModal._activePlace.set('placeUUID', placeUUID);
+            mapViewModal._activePlace.set('name', placeObj.name);
+            mapViewModal._activePlace.set('alias', placeObj.alias);
+            mapViewModal._activePlace.set('address', placeObj.address);
+            mapViewModal._activePlace.set('city', placeObj.city);
+            mapViewModal._activePlace.set('state', placeObj.state);
+            mapViewModal._activePlace.set('zipcode', placeObj.zipcode);
+            mapViewModal._activePlace.set('isPrivate', placeObj.isPrivate);
+            mapViewModal._activePlace.set('isAvailable', placeObj.isAvailable);
+
+        }
 
     },
 
     onDone: function (e) {
         _preventDefault(e);
 
-        var returnUrl = '#'+ mapView._returnView;
+        $("#mapViewModal").data("kendoMobileModalView").close();
+        
+        if (mapViewModal._returnModal !== null) {
+            mapViewModal._returnModal();
+            
+        } else {
+            var returnUrl = '#' + mapViewModal._returnView;
 
-        APP.kendo.navigate(returnUrl);
+            APP.kendo.navigate(returnUrl);
+        }
 
     }
 };

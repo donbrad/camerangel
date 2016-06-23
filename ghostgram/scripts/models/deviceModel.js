@@ -145,8 +145,10 @@ var deviceModel = {
             deviceModel.state.googleMapsLoaded = false;
             return;
         }
-        mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
+
         mapModel.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
+        mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
+      
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
 
@@ -220,9 +222,15 @@ var deviceModel = {
     onResume: function() {
        deviceModel.setAppState('inBackground', false);
 
-        notificationModel.processUnreadChannels();
+        if (deviceModel.isOnline()) {
 
-        deviceModel.loadGoogleMaps();
+            deviceModel.onOnline();
+            notificationModel.processUnreadChannels();
+        } else {
+            if (APP.everlive !== null)
+             APP.everlive.offline();
+        }
+
         
 
     },
@@ -272,6 +280,7 @@ var deviceModel = {
         }
 
         deviceModel.getNetworkState();
+        $("#network-offline").addClass('hidden');
     },
 
 

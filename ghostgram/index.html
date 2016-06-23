@@ -123,8 +123,8 @@
 </head>
 <body id="body">
 
-<div data-role="view" data-title="ghostgrams starting..." id="startUpView">
-	<p id="startUpView_logo">ghostgrams</p>
+<div data-role="view" data-title="intelligram starting..." id="startUpView">
+	<p id="startUpView_logo">intelligram</p>
 	<div id="startUpView_loading">
 		<img src="images/oval.svg" />
 	</div>
@@ -394,7 +394,7 @@
 </div>
    
 <!-- home - for signed in users -->
-<div data-role="view" data-title="ghostgrams" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
+<div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
 		<div class="appBox">
 		    <!-- application views will be rendered here -->
 		    <div>
@@ -526,7 +526,7 @@
 </script>
 
 <!-- home - for new users -->
- <div data-role="view" data-title="ghostgrams" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade" data-swipe-to-open="false">
+ <div data-role="view" data-title="intelligram" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade" data-swipe-to-open="false">
  	<div class="newuserBox">
 		<p id="newWelcome">Welcome to</p>
 		<p id="newLogo"><img src="images/logo.svg" class="icon-logo"/></p>
@@ -565,7 +565,7 @@
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Automated</h3>
-				 <p class="feature-body-text">Communicate, collaborate and coordinate easily with ghostgrams: set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
+				 <p class="feature-body-text">Communicate, collaborate and coordinate easily with intelligram: set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
 				 </p>
 			 </div>
 		 </div>
@@ -575,7 +575,7 @@
 
     <div class="loginBox card preMotion hidden">
         <h3>
-            Join ghostgrams!
+            Join intelligram!
         </h3>
        <div>
 		   <ul>
@@ -594,12 +594,12 @@
     </div>
 	 <a class="btnSpan testingHome" data-role="button" href="#usersignin" type="button" data-role="button"> <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>
     <div class="footer" data-role="footer" id="newuserhome-footer">
-    	<a class="btnSecondary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join ghostgrams</a>
+    	<a class="btnSecondary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
     </div>
 </div>
 
 <!-- home - for new users -->
-<div data-role="view" data-title="ghostgrams" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
+<div data-role="view" data-title="intelligram" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
 		<p>Welcome back to</p>
 		<p><img src="images/logo.svg" class="icon-logo"/></p>
@@ -640,7 +640,7 @@
 <div data-role="modalview" id="modalview-support" style="width: 90%; display: none;" class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <span>Contact ghostgrams</span>
+            <span>Contact intelligram</span>
             
         </div>
     </div>
@@ -711,7 +711,7 @@
 				<img src="images/close.svg" />
 			</a>
 		</h3>
-		<p class="zero"> Sent From: <strong>The ghostgrams Team</strong>.</p>
+		<p class="zero"> Sent From: <strong>The intelligram Team</strong>.</p>
 		<p class="zero"> If it's not in your inbox, please check your junk mail folder for email from <em>support@ghostgrams.com</em>.</p>
 		<ul data-role="listview" data-style="inset">
 			<li>
@@ -1068,7 +1068,7 @@
 
 		</p>
 		<p class="preMotionUp">
-			<a data-role="button" id="contactCurrentPlace" class="btnClear-light-sm"></a>
+			<a data-role="button"  data-click="contactActionView.showLocation" id="contactCurrentPlace" class="btnClear-light-sm" ></a>
 		</p>
 	</div>
 	<div class="modal-bottom">
@@ -1094,7 +1094,7 @@
 			</li>
 		</ul>
 		<div id="contactActionConnect">
-			<p> <strong><span data-bind="text: name "></span> </strong> is a potential new contact.  Someone you know has invited both of you to a ghostgrams chat, so you may have already chatted. Once you connect, you'll see each others status and be able to have private chats.</p>
+			<p> <strong><span data-bind="text: name "></span> </strong> is a potential new contact.  Someone you know has invited both of you to a intelligram chat, so you may have already chatted. Once you connect, you'll see each others status and be able to have private chats.</p>
 			<ul class="list-inline hasMotion"  >
 				<li >
 					<a class="btnClear" data-role="button" data-click="contactRequestConnect" >
@@ -1418,17 +1418,18 @@
 	</div>
 </div>
 
-<div data-role="modalview" data-title="Photo Map" id="mapViewModal" data-layout="main"  data-show="mapViewModal.onShow" data-init="mapViewModal.onInit" data-transition="fade" data-stretch="true">
+<div data-role="modalview" data-title="Map" id="mapViewModal" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade" data-stretch="true">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="backbutton" data-align="left" >
+			<a data-role="button" data-align="left" data-click="mapViewModal.onDone">
 				<img src="images/nav-back.svg"/>
 			</a>
 		</div>
 	</div>
 	<div>
-		<div id="mapModalView-mapdiv" style="width:100%;"></div>
+		<div style="text-align: center"> <span id="mapViewModal-targetName"></span></br><span id="mapViewModal-locationName"></span></div>
+		<div id="mapModalView-mapdiv" style="min-height: 760px; height: 90%;"></div>
 	</div>
 </div>
 
@@ -1996,7 +1997,7 @@
 	</div>
 	<div class="hidden" id="addChatNoContacts">
 		<p class="helper">
-			<img src="images/help.svg" /> Chat members must be existing contacts. You don't have any ghostgrams contacts yet.
+			<img src="images/help.svg" /> Chat members must be existing contacts. You don't have any intelligram contacts yet.
 		</p>
 		<a class="btnPrimary btnFull" data-role="button" href="#contacts">Go to ghostgram contacts</a>
 	</div>
@@ -2174,7 +2175,7 @@
 </script>
 
 
-<div data-role="modalview" id="channelPresence"  data-init="channelPresence.onInit" data-open="channelPresence.onShow"  style="width: 90%;">
+<div data-role="modalview" id="channelPresence"  data-init="channelPresence.onInit" data-open="channelPresence.onShow"  style="width: 90%; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button" data-click="channelPresence.closeModal">
@@ -3532,7 +3533,7 @@
 </script>
 
 <!-- Search Places -->
-<div data-role="modalview" data-title="Search Places" id="searchPlaces" data-open="searchPlacesView.onShow" data-init="searchPlacesView.onInit"  data-transition="slide:up">
+<div data-role="modalview" data-title="Search Places" id="searchPlaces" style="width: 100%; height: 100%; display:none;"data-open="searchPlacesView.onShow" data-init="searchPlacesView.onInit"  data-transition="slide:up">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
@@ -3692,7 +3693,7 @@
 			<a data-click="modalPhotoView.closeModal" data-role="button" class="btnClear-grey" data-align="left">
 				<img src='images/nav-back-light.svg' />
 			</a>
-			<span id="modalPhotoView-title"></span>
+			<span id="modalPhotoView-title" data-bind="text: title"></span>
 			<a data-rel="actionsheet" data-role="button" href="#modalPhotoView-PhotoActions" class="btnClear-grey" data-align="right">
 				<img src="images/nav-gear-light.svg"/>
 			</a>
@@ -3704,11 +3705,15 @@
 				</li>
 				<li>
 					<label>Title</label>
-					<input type="text" class="input-text-md" data-bind="text: title">
+					<input type="text" class="input-text-md" data-bind="value: title">
 				</li>
 				<li>
 					<label>Tags</label>
-					<input type="text" class="input-text-sm" data-bind="text: tagString">
+					<input type="text" class="input-text-sm" data-bind="value: tagString">
+				</li>
+				<li>
+					<label>Location  <a data-role="button" data-click="modalPhotoView.updateAddress">Edit</a></label>
+					<input type="text" class="input-text-sm" data-bind="value: addressString">
 				</li>
 			</ul>
 			<ul class="list-unstyled" style="margin-top: 1em; margin-bottom: 6em;">
@@ -3760,8 +3765,8 @@
 		</li>
 	</ul>
 	<div id="modalPhotoView-footer" data-role="footer">
-		<p class="helper">Tags</p>
-		<p class="helper">Location</p>
+		<p class="helper"><img  src="images/icon-tag.svg" height="28"> <span data-bind="text: tagString"> </span></p>
+		<p class="helper"><img  src="images/icon-location.svg" height="28"> <span data-bind="text: addressString"> </span></p>
 	</div>
 </div>
 
@@ -4002,7 +4007,7 @@
 <div data-role="modalview" data-title="Smart Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Smart Event Places</span>
+			<span id="smartEventPlacesModal-title">Smart Event Places</span>
 			<a data-role="button" data-align="left" data-click="smartEventPlacesView.closeModal"><img src="images/nav-back.svg" /></a>
 		</div>
 	</div>
@@ -4423,7 +4428,7 @@
 
 <!-- change password modal -->
 <div data-role="modalview" id="modalview-syncEverlive" style="width: 100%; height: 100%; display:none;">
-	<div style="text-align: center; vertical-align: middle;">Syncing the ghostgrams cloud</div>
+	<div style="text-align: center; vertical-align: middle;">Syncing the intelligram cloud</div>
 
 </div>
 

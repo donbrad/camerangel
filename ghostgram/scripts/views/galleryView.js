@@ -875,6 +875,7 @@ var modalChatPhotoView = {
 var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
+    _address : null,
     _dummyTitle : '',
     _dummyDescription : '',
     _dummyTagsString : '',
@@ -955,13 +956,13 @@ var modalPhotoView = {
         }
         modalPhotoView._activePhoto.set('title', photo.title);
 
-        // set title
-        if(modalPhotoView._activePhoto.title !== ''){
+        // set title - should be handled by data-bind and then autoupdated from edit
+        /*if(modalPhotoView._activePhoto.title !== ''){
             $("#modalPhotoView-title").text(modalPhotoView._activePhoto.title);
         } else {
             $("#modalPhotoView-title").text("Title");
         }
-
+*/
 
 
         modalPhotoView._activePhoto.set('thumbnailUrl', photo.thumbnailUrl);
@@ -986,11 +987,16 @@ var modalPhotoView = {
         // Address
         modalPhotoView._activePhoto.set('addressString', photo.addressString);
         modalPhotoView._activePhoto.set('placeString', photo.placeString);
+        modalPhotoView._activePhoto.set('lat', photo.lat);
+        modalPhotoView._activePhoto.set('lng', photo.lng);
 
         if (photo.placeString !== undefined && photo.placeString !== null) {
             $("#photo-location").val(modalPhotoView._activePhoto.placeString);
+            modalPhotoView._address = photo.placeString;
         } else {
             $("#photo-location").val(modalPhotoView._activePhoto.addressString);
+            modalPhotoView._address = photo.addressString;
+
         }
 
 
@@ -1042,13 +1048,36 @@ var modalPhotoView = {
 
     },
 
+    updateAddress : function (e) {
+        var address = modalPhotoView._activePhoto.addressString, lat = modalPhotoView._activePhoto.lat,
+            lng = modalPhotoView._activePhoto.lng;
+
+        if (lat !== undefined && lat !== null) {
+            // Reverse geocode based on lat/lng -- also need to match current places
+            mapModel.reverseGeoCode(lat, lng, function (results, error){
+                if (results !== null) {
+                    var address = mapModel._updateAddress(results[0].address_components);
+                    modalPhotoView._activePhoto.addressString = address +  ', ' + address.city + ', ' + address.state;
+                }
+
+            });
+        } else {
+            $("#modalPhotoView").data("kendoMobileModalView").close();
+            smartEventPlacesView.openModal(address, "Memory Photo", function (placeObj) {
+                $("#modalPhotoView").data("kendoMobileModalView").open();
+            });
+        }
+
+
+    },
+
     deletePhoto : function (e) {
         _preventDefault(e);
 
         // Overlapping modals, need to close photoView first
         modalPhotoView.closeModal();
 
-        modalView.open("Delete Photo?", "This action will delete this photo and any offers",
+        modalView.open("Delete Photo?", "This action will delete this photo and any shares",
             "Delete" ,
             function() {
                 //User wants to delete the photo
@@ -1075,7 +1104,17 @@ var modalPhotoView = {
 
     viewOnMap : function (e) {
         _preventDefault(e);
-        mobileNotify("In backlog....");
+        var locObj = {placeId: null, lat: modalPhotoView._activePhoto.lat, lng: modalPhotoView._activePhoto.lng, name: "Photo", targetName: modalPhotoView._address};
+
+        if (locObj.lat === undefined || locObj.lat === null) {
+            mobileNotify("No location information for this photo!");
+            return;
+        }
+        $("#modalPhotoView-PhotoActions").data("kendoMobileActionSheet").close();
+        modalPhotoView.closeModal();
+        mapViewModal.openModal(locObj, function () {
+            $("#modalPhotoView").data("kendoMobileModalView").open();
+        });
     },
 
     sendViaGhostgrams : function (e) {

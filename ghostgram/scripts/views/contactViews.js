@@ -1600,6 +1600,10 @@ var contactActionView = {
     },
 
 
+    reOpenModal : function () {
+        $("#modalview-contactActions").data("kendoMobileModalView").open();
+    },
+
     closeModal : function(){
         $("#modalview-contactActions").data("kendoMobileModalView").close();
 
@@ -1715,6 +1719,22 @@ var contactActionView = {
         } else {
             sms.send(number, message, options, success, error);
         }
+    },
+
+    showLocation : function () {
+        var locObj = {
+            lat: contactActionView._activeContact.lat,
+            lng: contactActionView._activeContact.lng,
+            name : contactActionView._activeContact.currentPlace,
+            targetName: contactActionView._activeContact.name + ' (' + contactActionView._activeContact.alias + ')',
+            placeUUID: contactActionView._activeContact.currentPlaceUUID
+        };
+
+        mobileNotify("Mapping place....");
+        $("#modalview-contactActions").data("kendoMobileModalView").close();
+        mapViewModal.openModal(locObj, function () {
+            contactActionView.reOpenModal();
+        });
     },
 
 
