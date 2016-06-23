@@ -1057,12 +1057,7 @@ var modalPhotoView = {
             mapModel.reverseGeoCode(lat, lng, function (results, error){
                 if (results !== null) {
                     var address = mapModel._updateAddress(results[0].address_components);
-                    mapModel.currentAddress = address;
-                    mapModel.currentCity = address.city;
-                    mapModel.currentState = address.state;
-                    mapModel.currentZipcode = address.zipcode;
-                    if (callback !== undefined)
-                        callback(true, address);
+                    modalPhotoView._activePhoto.addressString = address +  ', ' + address.city + ', ' + address.state;
                 }
 
             });
