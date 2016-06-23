@@ -5,8 +5,8 @@
   "AppIdentifier": "com.kyburzcodeworks.ghostgrams",
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks",
-  "Description": "ghostgrams for iOS and Android phones",
-  "BundleVersion": "0.0.120",
+  "Description": "intelligram for iOS and Android phones",
+  "BundleVersion": "0.0.121",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
