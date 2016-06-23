@@ -3712,6 +3712,10 @@
 					<input type="text" class="input-text-sm" data-bind="value: tagString">
 				</li>
 				<li>
+					<label>Place  <a data-role="button" data-click="modalPhotoView.updateAddress">Edit</a></label>
+					<input type="text" class="input-text-sm" data-bind="value: placeString">
+				</li>
+				<li>
 					<label>Location  <a data-role="button" data-click="modalPhotoView.updateAddress">Edit</a></label>
 					<input type="text" class="input-text-sm" data-bind="value: addressString">
 				</li>
@@ -3766,6 +3770,7 @@
 	</ul>
 	<div id="modalPhotoView-footer" data-role="footer">
 		<p class="helper"><img  src="images/icon-tag.svg" height="28"> <span data-bind="text: tagString"> </span></p>
+		<p class="helper"><img  src="images/icon-place.svg" height="28"> <span data-bind="text: placeString"> </span></p>
 		<p class="helper"><img  src="images/icon-location.svg" height="28"> <span data-bind="text: addressString"> </span></p>
 	</div>
 </div>
