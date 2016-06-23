@@ -1061,7 +1061,7 @@ var modalPhotoView = {
                     var addressObj = mapModel._updateAddress(results[0].address_components);
 
                     address = addressObj.streetNumber + ' ' + addressObj.street  +  ', ' + addressObj.city + ', ' + addressObj.state;
-                    modalPhotoView._activePhoto.addressString.set('addressString', address);
+                    modalPhotoView._activePhoto.set('addressString', address);
                 }
 
             });
