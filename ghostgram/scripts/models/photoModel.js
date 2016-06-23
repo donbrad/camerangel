@@ -128,7 +128,10 @@ var photoModel = {
     },
 
 
-
+    sync : function () {
+        photoModel.photosDS.sync();
+    },
+    
     updateLocalUrl : function (uuid, localUrl) {
         var photo = photoModel.findPhotoById(uuid);
 
@@ -136,7 +139,7 @@ var photoModel = {
             photo.deviceUrl = localUrl;
         }
     },
-
+    
     createPhotoLocalName : function (photoId) {
         var filename = 'photo_' + photoId.replace(/-/g, '') + '.jpg';
         return (filename);

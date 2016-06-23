@@ -1031,9 +1031,11 @@ var modalPhotoView = {
         var photoObj = photoModel.findPhotoById(modalPhotoView._activePhoto.photoId);
 
         if (photoObj !== undefined) {
-            photoObj.title = modalPhotoView._activePhoto.title;
-            photoObj.description = modalPhotoView._activePhoto.description;
-            photoObj.tagsString = modalPhotoView._activePhoto.tagsString;
+            photoObj.set('title',modalPhotoView._activePhoto.title);
+            photoObj.set('description',modalPhotoView._activePhoto.description);
+            photoObj.set('addressString', modalPhotoView._activePhoto.addressString);
+            photoObj.set('placeName', modalPhotoView._activePhoto.placeName);
+            photoObj.set('tagsString', modalPhotoView._activePhoto.tagsString);
             if (photoObj.tagsString.length > 0){
                 photoObj.tags = photoObj.tagsString.split(',');
             } else {
@@ -1043,7 +1045,8 @@ var modalPhotoView = {
         } else {
             mobileNotify("Can't find photo model!!");
         }
-
+        
+        photoModel.sync();
         $("#modalPhotoView-editPhoto").velocity("slideUp");
         modalPhotoView._showInfo = false;
 
