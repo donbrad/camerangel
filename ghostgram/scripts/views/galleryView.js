@@ -1053,7 +1053,7 @@ var modalPhotoView = {
             lng = modalPhotoView._activePhoto.lng;
 
         $("#modalPhotoView").data("kendoMobileModalView").close();
-        smartEventPlacesView.openModal(address, function () {
+        smartEventPlacesView.openModal(address, function (placeObj) {
             $("#modalPhotoView").data("kendoMobileModalView").open();
         });
     },
