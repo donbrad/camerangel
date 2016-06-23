@@ -1054,11 +1054,12 @@ var modalPhotoView = {
             lng = modalPhotoView._activePhoto.lng;
 
         if (lat !== undefined && lat !== null) {
+            mobileNotify("Looking up address...");
             // Reverse geocode based on lat/lng -- also need to match current places
             mapModel.reverseGeoCode(lat, lng, function (results, error){
                 if (results !== null) {
-                    var address = mapModel._updateAddress(results[0].address_components);
-                    modalPhotoView._activePhoto.addressString = address +  ', ' + address.city + ', ' + address.state;
+                    var addressObj = mapModel._updateAddress(results[0].address_components);
+                    modalPhotoView._activePhoto.addressString = addressObj.streetNumber + ' ' + addressObj.street  +  ', ' + addressObj.city + ', ' + addressObj.state;
                 }
 
             });
