@@ -1045,13 +1045,24 @@ var modalPhotoView = {
         } else {
             mobileNotify("Can't find photo model!!");
         }
-        
+
         photoModel.sync();
         $("#modalPhotoView-editPhoto").velocity("slideUp");
         modalPhotoView._showInfo = false;
 
     },
 
+    updatePlace : function (e) {
+        var address = modalPhotoView._activePhoto.addressString, lat = modalPhotoView._activePhoto.lat,
+            lng = modalPhotoView._activePhoto.lng;
+
+        $("#modalPhotoView").data("kendoMobileModalView").close();
+        smartEventPlacesView.openModal(address, "Memory Photo", function (placeObj) {
+            $("#modalPhotoView").data("kendoMobileModalView").open();
+        });
+        
+    },
+    
     updateAddress : function (e) {
         var address = modalPhotoView._activePhoto.addressString, lat = modalPhotoView._activePhoto.lat,
             lng = modalPhotoView._activePhoto.lng;
@@ -1065,6 +1076,7 @@ var modalPhotoView = {
 
                     address = addressObj.streetNumber + ' ' + addressObj.street  +  ', ' + addressObj.city + ', ' + addressObj.state;
                     modalPhotoView._activePhoto.set('addressString', address);
+
                 }
 
             });
@@ -1252,7 +1264,6 @@ var galleryPicker = {
         ux.setSearchPlaceholder("Search photos...");
 
     },
-
 
     onOpen : function (e) {
         _preventDefault(e);
