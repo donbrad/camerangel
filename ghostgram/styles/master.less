@@ -1012,6 +1012,9 @@ form {
     margin-left: 0px;
     margin-right: 0px;
   }
+  h3 {
+    font-weight: 600;
+  }
 }
 
 div.km-content.km-widget.km-scroll-wrapper {
@@ -1690,7 +1693,7 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 
 #profileStatusMessage {
-  display:inline-block;
+  //display:none;
   font-style: italic;
 }
 
@@ -2938,6 +2941,11 @@ a:hover {
   bottom: 0;
 }
 
+#modalPhotoViewImage {
+  top: -67px;
+}
+
+
 .chat-option-ul {
   li {
     background: transparent !important;
@@ -3359,11 +3367,10 @@ div.footerMenu.km-footer > ul > li:nth-child(1) > a.km-state-active #nav-home{
   stroke-width: 1px;
 }
 
-#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat-1,
-div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat-1,
-#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat-2,
-div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat-2{
+#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat,
+div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat {
   fill: @primary-200;
+  //stroke: @primary-200;
 }
 
 #contacts > div.footerMenu.km-footer > ul > li:nth-child(3) > a #nav-contacts,
@@ -4024,9 +4031,15 @@ div.loginBox > form > div > ul > li {
 }
 
 #modalPhotoView-footer {
-  background-color: #000;
+  background-color: #242424;
   color: #fff;
   padding: 0.5em 1em;
+  p {
+    font-size: 0.75em;
+  }
+  img {
+    height: 0.875em;
+  }
 }
 
 #modalPhotoView > div.km-header > div.km-widget.km-navbar,
@@ -6063,12 +6076,12 @@ div.contactListBox.activeContact > div > div > ul {
   height: 150px;
 }
 
-#map-mapdiv {
+#mapModalView-mapdiv {
   position: absolute;
-  top: -55px;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 90vh;
 }
 
 .map-placeLayer {

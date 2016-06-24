@@ -1563,6 +1563,9 @@ form p {
   margin-left: 0px;
   margin-right: 0px;
 }
+.modal-dialog h3 {
+  font-weight: 600;
+}
 div.km-content.km-widget.km-scroll-wrapper {
   padding-bottom: 1rem;
 }
@@ -2239,7 +2242,6 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-right: 0px !important;
 }
 #profileStatusMessage {
-  display: inline-block;
   font-style: italic;
 }
 #profilePhotoForm > div > ul > li:nth-child(1) {
@@ -3399,6 +3401,9 @@ a:hover {
   right: 0;
   bottom: 0;
 }
+#modalPhotoViewImage {
+  top: -67px;
+}
 .chat-option-ul li {
   background: transparent !important;
   border: transparent !important;
@@ -3740,10 +3745,8 @@ div.footerMenu.km-footer > ul > li:nth-child(1) > a.km-state-active #nav-home {
   stroke: #6CADF3;
   stroke-width: 1px;
 }
-#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat-1,
-div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat-1,
-#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat-2,
-div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat-2 {
+#channels > div.footerMenu.km-footer > ul > li:nth-child(2) > a #nav-chat,
+div.footerMenu.km-footer > ul > li:nth-child(2) > a.km-state-active #nav-chat {
   fill: #6CADF3;
 }
 #contacts > div.footerMenu.km-footer > ul > li:nth-child(3) > a #nav-contacts,
@@ -4323,9 +4326,15 @@ div.loginBox > form > div > ul > li {
   width: 100%;
 }
 #modalPhotoView-footer {
-  background-color: #000;
+  background-color: #242424;
   color: #fff;
   padding: 0.5em 1em;
+}
+#modalPhotoView-footer p {
+  font-size: 0.75em;
+}
+#modalPhotoView-footer img {
+  height: 0.875em;
 }
 #modalPhotoView > div.km-header > div.km-widget.km-navbar,
 #modalChatPhotoView > div.km-header {
@@ -6308,12 +6317,12 @@ html .km-pane-wrapper .k-header {
   width: 100%;
   height: 150px;
 }
-#map-mapdiv {
+#mapModalView-mapdiv {
   position: absolute;
-  top: -55px;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 90vh;
 }
 .map-placeLayer {
   background: url("../images/layer-map.png") center center fixed;

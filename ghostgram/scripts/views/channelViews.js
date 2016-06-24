@@ -286,8 +286,7 @@ var addChannelView = {
         currentChannelModel.potentialMembersDS.data(contactModel.contactsDS.data());
         currentChannelModel.membersDS.data([]);*/
          if (contactModel.totalContacts() === 0) {
-             $("#addChatNoContacts").removeClass('hidden');
-             $("#addChatHasContacts").addClass('hidden');
+             modalView.open("Here alone?", "Chats are better with friends. Add a contact and create a chat.", "Add Contacts", addChannelView.go2NewContacts, "Cancel", addChannelView.go2Channels);
          } else {
              $("#addChatNoContacts").addClass('hidden');
              $("#addChatHasContacts").removeClass('hidden');
@@ -296,13 +295,20 @@ var addChannelView = {
 
         // hide channel description
         $("#channels-addChannel-description").css("display","none");
-
-
-
         $("#addChat-step2").css("opacity", 0);
-
-
     },
+
+    go2NewContacts: function(){
+        APP.kendo.navigate('#contactImport');
+    },
+
+    go2Channels: function(){
+        modalView.close();
+        //addChannelView.onHide();
+
+        APP.kendo.navigate('#channels');
+    },
+
 
     // onHide is the ideal point to reset ux (unless you want to do first in onShow...
     onHide : function (e) {
