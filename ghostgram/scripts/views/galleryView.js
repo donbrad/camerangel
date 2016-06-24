@@ -56,7 +56,8 @@ var galleryView = {
 
     updateTotalPhotos : function () {
         // set result count
-      
+        var photoCount = photoModel._totalPhotos;
+
         if(photoModel._totalPhotos > 0){
             /// single photo
             if(photoModel._totalPhotos == 1) {
@@ -66,7 +67,7 @@ var galleryView = {
                 $("#resultsName").text("Photos");
             }
             $(".results").css("visibility", "visible");
-           // $("#resultCount").text(photoCount);
+            $("#resultCount").text(photoCount);
         } else {
             $(".results").css("visibility", "hidden");
             $("#resultsName").text("No Photos");
@@ -1059,7 +1060,6 @@ var modalPhotoView = {
                     var address = mapModel._updateAddress(results[0].address_components);
                     modalPhotoView._activePhoto.addressString = address +  ', ' + address.city + ', ' + address.state;
                 }
-
             });
         } else {
             $("#modalPhotoView").data("kendoMobileModalView").close();

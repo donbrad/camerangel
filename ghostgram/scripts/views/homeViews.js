@@ -168,8 +168,11 @@ var homeView = {
 
         ux.formatNameAlias(name, alias, "#modalview-profileStatus");
 
-        // Set profile status
-        $("#profileStatusMessage").text(status);
+        if(status !== null && status !== ""){
+            $("#profileStatusMessage").removeClass("hidden");
+        } else {
+            $("#profileStatusMessage").addClass("hidden");
+        }
 
         // Set verified
         if(verified){
