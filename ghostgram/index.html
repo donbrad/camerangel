@@ -3746,11 +3746,11 @@
 					<input type="text" class="input-text-sm" data-bind="value: tagString">
 				</li>
 				<li>
-					<label>Place  <a data-role="button" data-click="modalPhotoView.updatePlace">Edit</a></label>
+					<label>Place  <a data-role="button" data-click="modalPhotoView.updatePlace">Search</a></label>
 					<input type="text" class="input-text-sm" data-bind="value: placeName">
 				</li>
 				<li>
-					<label>Location  <a data-role="button" data-click="modalPhotoView.updateAddress">Edit</a></label>
+					<label>Location  <a data-role="button" data-click="modalPhotoView.updateAddress">Search</a></label>
 					<input type="text" class="input-text-sm" data-bind="value: addressString">
 				</li>
 			</ul>
@@ -3806,6 +3806,7 @@
 		<p><img  src="images/icon-tag.svg" height="28"> <span data-bind="text: tagString"> </span></p>
 		<p><img  src="images/icon-place.svg" height="28"> <span data-bind="text: placeName"> </span></p>
 		<p><img  src="images/icon-location.svg" height="28"> <span data-bind="text: addressString"> </span></p>
+		<p><img  src="images/icon-date.svg" height="28"> <span data-bind="text: dateString"> </span></p>
 	</div>
 
 <div data-role="view" id="photoView" class="fullPhotoModal" data-zoom="true" style="width: 100%; height: 100%; display: none;" data-model="photoView._activePhoto" data-init="photoView.onInit" data-show="photoView.onShow" data-transition="fade">

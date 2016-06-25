@@ -989,17 +989,18 @@ var modalPhotoView = {
         // Address
         modalPhotoView._activePhoto.set('addressString', photo.addressString);
         modalPhotoView._activePhoto.set('placeString', photo.placeString);
+        modalPhotoView._activePhoto.set('placeUUID', photo.placeUUID);
         modalPhotoView._activePhoto.set('lat', photo.lat);
         modalPhotoView._activePhoto.set('lng', photo.lng);
 
-        if (photo.placeString !== undefined && photo.placeString !== null) {
+        /*if (photo.placeString !== undefined && photo.placeString !== null) {
             $("#photo-location").val(modalPhotoView._activePhoto.placeString);
             modalPhotoView._address = photo.placeString;
         } else {
             $("#photo-location").val(modalPhotoView._activePhoto.addressString);
             modalPhotoView._address = photo.addressString;
 
-        }
+        }*/
 
 
         // Date  -- this doesnt work for gallery photos...
@@ -1036,6 +1037,9 @@ var modalPhotoView = {
             photoObj.set('description',modalPhotoView._activePhoto.description);
             photoObj.set('addressString', modalPhotoView._activePhoto.addressString);
             photoObj.set('placeName', modalPhotoView._activePhoto.placeName);
+            photoObj.set('lat', modalPhotoView._activePhoto.lat);
+            photoObj.set('lng', modalPhotoView._activePhoto.lng);
+            photoObj.set('placeUUID', modalPhotoView._activePhoto.placeUUID);
             photoObj.set('tagsString', modalPhotoView._activePhoto.tagsString);
             if (photoObj.tagsString.length > 0){
                 photoObj.tags = photoObj.tagsString.split(',');
@@ -1059,6 +1063,11 @@ var modalPhotoView = {
 
         $("#modalPhotoView").data("kendoMobileModalView").close();
         smartEventPlacesView.openModalTargeted(address, "Memory Photo", lat, lng, function (placeObj) {
+            modalPhotoView._activePhoto.set('addressString', placeObj.address);
+            modalPhotoView._activePhoto.set('lat', placeObj.lat);
+            modalPhotoView._activePhoto.set('lng', placeObj.lng);
+            modalPhotoView._activePhoto.set('placeName', placeObj.lng);
+
             $("#modalPhotoView").data("kendoMobileModalView").open();
         });
         

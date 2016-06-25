@@ -2560,6 +2560,7 @@ var smartEventPlacesView = {
         $("#smartEventPlacesModal").data("kendoMobileModalView").open();
 
     },
+    
     closeModal : function (e) {
         _preventDefault(e);
         if (smartEventPlacesView._callback !== null) {
