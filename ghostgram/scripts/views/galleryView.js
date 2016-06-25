@@ -989,6 +989,7 @@ var modalPhotoView = {
         // Address
         modalPhotoView._activePhoto.set('addressString', photo.addressString);
         modalPhotoView._activePhoto.set('placeString', photo.placeString);
+        modalPhotoView._activePhoto.set('dateString', photo.dateString);
         modalPhotoView._activePhoto.set('placeUUID', photo.placeUUID);
         modalPhotoView._activePhoto.set('lat', photo.lat);
         modalPhotoView._activePhoto.set('lng', photo.lng);
