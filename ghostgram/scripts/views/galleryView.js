@@ -1058,7 +1058,7 @@ var modalPhotoView = {
             lng = modalPhotoView._activePhoto.lng;
 
         $("#modalPhotoView").data("kendoMobileModalView").close();
-        smartEventPlacesView.openModal(address, "Memory Photo", function (placeObj) {
+        smartEventPlacesView.openModalTargeted(address, "Memory Photo", lat, lng, function (placeObj) {
             $("#modalPhotoView").data("kendoMobileModalView").open();
         });
         

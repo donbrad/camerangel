@@ -2486,7 +2486,80 @@ var smartEventPlacesView = {
         $("#smartEventPlacesModal").data("kendoMobileModalView").open();
 
     },
+    openModalTargeted : function (query, title, lat, lng, callback) {
 
+        smartEventPlacesView.initDataSource();
+
+        smartEventPlacesView._lat = lat;
+        smartEventPlacesView._lng = lng;
+
+        smartEventPlacesView.setLocationAndBounds();
+
+        if (title !== null) {
+            $('#smartEventPlacesModal-title').text(title);
+        }
+
+        smartEventPlacesView._callback = callback;
+
+        if (!smartEventPlacesView._inited) {
+            smartEventPlacesView._inited = true;
+
+            smartEventPlacesView._autocomplete = new google.maps.places.AutocompleteService();
+            smartEventPlacesView._autocompletePlace = new google.maps.places.AutocompleteService();
+
+
+            $('#smartEventPlaces-place').on('input', function () {
+                var query =  $('#smartEventPlaces-place').val();
+                if (query.length > 4) {
+                    smartEventPlacesView._processPlaceQuery(query);
+                }
+            });
+
+            $('#smartEventPlaces-query').on('input', function () {
+                var query =  $('#smartEventPlaces-query').val();
+                if (query.toLowerCase().indexOf('near') !== -1) {
+                    smartEventPlacesView.preprocessQuery(query);
+                }
+                if (query.length > 4) {
+
+                    smartEventPlacesView._processQuery(query);
+                }
+            });
+
+            /*smartEventPlacesView._searchBox.addListener('places_changed', function() {
+             var placesResults = smartEventPlacesView._searchBox.getPlaces();
+             var ds = smartEventPlacesView.placesDS;
+             ds.data([]);
+             placesResults.forEach( function (placeResult) {
+             var lat = placeResult.geometry.location.lat(),
+             lng = placeResult.geometry.location.lng();
+             ds.add({
+             name: placeResult.name.smartTruncate(38, true).toString(),
+             type: findPlacesView.getTypesFromComponents(placeResult.types),
+             googleId: placeResult.place_id,
+             icon: placeResult.icon,
+             address: placeResult.formatted_address,
+             reference: placeResult.reference,
+             lat: lat.toFixed(6),
+             lng: lng.toFixed(6)
+             });
+
+             });
+             });*/
+
+        }
+
+        $('#smartEventPlaces-query').val(query);
+        if (query.length > 3) {
+            smartEventPlacesView.preprocessQuery(query);
+        }
+
+        var form = $("#searchEventPlace-form").kendoValidator().data("kendoValidator");
+        form.validate();
+
+        $("#smartEventPlacesModal").data("kendoMobileModalView").open();
+
+    },
     closeModal : function (e) {
         _preventDefault(e);
         if (smartEventPlacesView._callback !== null) {
