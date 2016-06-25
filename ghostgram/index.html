@@ -2652,100 +2652,100 @@
 			<a class="contactListBox noSlide" data-contact="#:uuid#">
 		#}#
 		#if (data.category === 'member') {#
-		<div class="left listPhoto">
-			<div class="statusContactList">
+			<div class="left listPhoto">
+				<div class="statusContactList">
 
-				#if (data.isAvailable !== undefined && data.isAvailable) { #
-				<img class="circle-img-md" src="#:photoUrl#" />
-				<img src="images/status-available.svg" class="statusContactList-icon" />
-				# }
-				else { #
-				<img class="circle-img-md" src="#:photoUrl#" />
-				<img src="images/status-away.svg" class="statusContactList-icon" />
-				#}#
-				# if (data.isBlocked) {#
-					<div class="left">
-					<span class="helper helper-sm">Blocked</span>
-					</div>
+					#if (data.isAvailable !== undefined && data.isAvailable) { #
+					<img class="circle-img-md" src="#:photoUrl#" />
+					<img src="images/status-available.svg" class="statusContactList-icon" />
+					# }
+					else { #
+					<img class="circle-img-md" src="#:photoUrl#" />
+					<img src="images/status-away.svg" class="statusContactList-icon" />
+					#}#
+					# if (data.isBlocked) {#
+						<div class="left">
+						<span class="helper helper-sm">Blocked</span>
+						</div>
+					#}#
+				</div>
+			</div><!-- left -->
+
+			<div class="left listName">
+				<h4 class="textClamp">
+					#= primaryName #
+					#if (data.phoneValidated){#
+					<img src="images/user-verified.svg" class="user-status-icon" />
+					#}#
+					<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
+
+					#if(data.group !== "" && data.group !== null){#
+					<span class="contact-group">#: data.group #</span>
+					#}#
+
+				</h4>
+			</div>
+
+			<div class="left contact-status textClamp">
+				<p class="contactStatusMessage-sm">
+					# var message = "", location = "";
+					if (data.statusMessage !== undefined && data.statusMessage !== "") {
+					message = data.statusMessage;
+					}#
+
+					#:message#
+				</p>
+
+				# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
+				<p class="contactStatus-location">
+					@#:data.currentPlace#
+				</p>
 				#}#
 			</div>
-		</div><!-- left -->
 
-		<div class="left listName">
-			<h4 class="textClamp">
-				#= primaryName #
-				#if (data.phoneValidated){#
-				<img src="images/user-verified.svg" class="user-status-icon" />
-				#}#
-				<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
-
-				#if(data.group !== "" && data.group !== null){#
-				<span class="contact-group">#: data.group #</span>
-				#}#
-
-			</h4>
-		</div>
-
-		<div class="left contact-status textClamp">
-			<p class="contactStatusMessage-sm">
-				# var message = "", location = "";
-				if (data.statusMessage !== undefined && data.statusMessage !== "") {
-				message = data.statusMessage;
-				}#
-
-				#:message#
-			</p>
-
-			# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
-			<p class="contactStatus-location">
-				@#:data.currentPlace#
-			</p>
-			#}#
-		</div>
-
-		<div class="clearfix"></div>
+			<div class="clearfix"></div>
 		#} else if(data.category === 'new'){#
-		<div class="left listPhoto">
-			<div class="statusContactList">
-				<img class="circle-img-md" src="#:photoUrl#" />
+			<div class="left listPhoto">
+				<div class="statusContactList">
+					<img class="circle-img-md" src="#:photoUrl#" />
+				</div>
+			</div><!-- left -->
+			<div class="left listName">
+				<h4 class="textClamp">
+					#= primaryName #
+					<span class="contacts-alias-sm">#= secondaryName  #</span>
+				</h4>
 			</div>
-		</div><!-- left -->
-		<div class="left listName">
-			<h4 class="textClamp">
-				#= primaryName #
-				<span class="contacts-alias-sm">#= secondaryName  #</span>
-			</h4>
-		</div>
-		<div class="left contact-status">
-			<p class="left contactStatusMessage-sm">Invite Sent</p>
-		</div>
+			<div class="left contact-status">
+				<p class="left contactStatusMessage-sm">Invite Sent</p>
+			</div>
 		#} else {#
-		<div class="left listPhoto">
-			<div class="statusContactList">
-				<img class="circle-img-md" src="#:photoUrl#" />
+			<div class="left listPhoto">
+				<div class="statusContactList">
+					<img class="circle-img-md" src="#:photoUrl#" />
+				</div>
+			</div><!-- left -->
+			<div class="left listName">
+				<h4 class="textClamp">
+					#: data.name #
+					#if (data.phoneValidated){#
+					<img src="images/user-verified.svg" class="user-status-icon" />
+					#}#
+					<span class="contacts-alias-sm">#: data.alias #</span>
+				</h4>
 			</div>
-		</div><!-- left -->
-		<div class="left listName">
-			<h4 class="textClamp">
-				#: data.name #
-				#if (data.phoneValidated){#
-				<img src="images/user-verified.svg" class="user-status-icon" />
-				#}#
-				<span class="contacts-alias-sm">#: data.alias #</span>
-			</h4>
-		</div>
 
-		<div class="left contact-status">
-			<p class="left contactStatusMessage-sm">
-				# if (data.category === 'unknown' ) { #
-				New Contact - Tap to Connect!
-				# }  else { #
-				Deleted Contact - Tap to Restore !
-				#} #
-			</p>
-		</div>
+			<div class="left contact-status">
+				<p class="left contactStatusMessage-sm">
+					# if (data.category === 'unknown' ) { #
+					New Contact - Tap to Connect!
+					# }  else { #
+					Deleted Contact - Tap to Restore !
+					#} #
+				</p>
+			</div>
 		#}#
-	</a><!-- listBox -->
+		</a><!-- listBox -->
 	</div>
 </script>
 
@@ -3537,6 +3537,35 @@
 	</div>
 </script>
 
+<!--
+ * Places
+ -->
+
+<div data-role="view" data-title="Places" id="places" data-layout="main"  data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide" style="display: none;">
+	<div>
+		<div id="current-place" class="hidden">
+			<img src="images/icon-puff.svg" width="30" class="left"/>
+			<p class="left" id="current-place-name"></p>
+			<a class="btnClear whiteBtn right" data-role="button" id="checkoutBtn">
+				<img src="images/icon-checkout-light.svg" class="icon-btn"  /> Checkout</a>
+			<div class="clearfix"></div>
+		</div>
+		<div id="placeListDiv">
+			<ul id="places-listview"></ul>
+			<div class="emptyState hidden">
+				<img src="images/empty-places.svg" />
+			</div>
+		</div>
+
+	</div>
+
+	<ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
+		<li id="check-out"><a data-action="checkOut">Check Out</a></li>
+		<li id="go-to-chat"><a data-action="goToChat">Go To Chat</a></li>
+		<li><a data-action="doEditPlace">Edit Place</a></li>
+		<li><a data-action="doDeletePlace">Delete Place</a></li>
+	</ul>
+</div>
 <!-- Search Places -->
 <div data-role="modalview" data-title="Search Places" id="searchPlaces" style="width: 100%; height: 100%; display:none;"data-open="searchPlacesView.onShow" data-init="searchPlacesView.onInit"  data-transition="slide:up">
 	<div data-role="header">
@@ -3954,35 +3983,7 @@
 </div>
 
 
-<!--/*
- * Places
- */-->
 
-<div data-role="view" data-title="Places" id="places" data-layout="main" data-model="placesModel" data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide" style="display: none;">
-	<div>
-		<div id="current-place" class="hidden">
-			<img src="images/icon-puff.svg" width="30" class="left"/>
-			<p class="left" id="current-place-name"></p>
-			<a class="btnClear whiteBtn right" data-role="button" id="checkoutBtn">
-				<img src="images/icon-checkout-light.svg" class="icon-btn"  /> Checkout</a>
-			<div class="clearfix"></div>
-		</div>
-		<div id="placeListDiv">
-			<ul id="places-listview"></ul>
-			<div class="emptyState hidden">
-				<img src="images/empty-places.svg" />
-			</div>
-		</div>
-
-	</div>
-
-	<ul data-role="actionsheet" id="placesActions" data-popup='{"direction": "left"}'>
-		<li id="check-out"><a data-action="checkOut">Check Out</a></li>
-		<li id="go-to-chat"><a data-action="goToChat">Go To Chat</a></li>
-		<li><a data-action="doEditPlace">Edit Place</a></li>
-		<li><a data-action="doDeletePlace">Delete Place</a></li>
-	</ul>
-</div>
 
 <!-- Smart Event Location -->
 <div data-role="modalview" data-title="Smart Location" id="smartLocationModal" data-init="smartLocationView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
