@@ -2193,8 +2193,8 @@ var channelView = {
       //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = new Date(smartEvent.date).toLocaleString(), objectId = smartEvent.uuid;
 
-        var dateStr = moment(date).format('ddd MMM Do');
-        var localTime = moment(date).format("LT");
+        /*var dateStr = moment(date).format('ddd MMM Do');
+        var localTime = moment(date).format("LT");*/
 
         var placeName = smartEvent.placeName;
         if(placeName === null){
@@ -2206,7 +2206,7 @@ var channelView = {
             'data-click="channelView.onObjectClick" >' +
             '<span class="btnSmart-content">' +
             '<span class="btnSmart-title">' + smartEvent.title + ' </span><br /> ' +
-            '<span class="btnSmart-date">' + dateStr + ' at ' + localTime + '</span><br /> ' +
+            '<span class="btnSmart-date">' + date + '</span><br /> ' +
             '<span class="btnSmart-date">' + placeName + '</span> ' +
             '</span>' +
             '<span class="btnSmart-type">' +
