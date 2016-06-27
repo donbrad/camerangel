@@ -2021,9 +2021,9 @@ var channelView = {
     pasteEmojiinEditor: function(e){
         var shortname = e.button[0].dataset.shortname;
         var rendered = emojione.shortnameToImage(shortname);
+        var node = $('<span />').html(rendered);
 
-        // todo - review mixed media message
-        $('#messageTextArea').redactor('insert.node', $('<span />').html(rendered));
+        $('#messageTextArea').redactor('insert.node', node);
     },
 
     messageSend : function (e) {
