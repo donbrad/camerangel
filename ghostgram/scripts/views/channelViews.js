@@ -1130,9 +1130,14 @@ var channelView = {
     },
 
     emojiPasteInEditor: function(e){
+        // Close the popover
+        $("#emoji-menu").data("kendoMobilePopOver").close();
+
+
         var shortname = e.button[0].dataset.shortname;
         var rendered = emojione.shortnameToImage(shortname);
         var node = $('<span />').html(rendered);
+        var html = JSON.stringify(node);
 
         if (channelView._emojiIsSelected) {
             $('#messageTextArea').redactor('selection.restore', channelView._emojiSelection);
@@ -1140,7 +1145,7 @@ var channelView = {
             $('#messageTextArea').redactor('offset.set', channelView._emojiStart);
         }
 
-        $('#messageTextArea').redactor('insert.node', node);
+        $('#messageTextArea').redactor('insert.html', html);
     },
 
     openEditor : function () {
