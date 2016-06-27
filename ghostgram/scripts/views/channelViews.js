@@ -882,6 +882,10 @@ var channelView = {
     _insertTag: false,
     _tagStart : null,
     _tagEnd: null,
+    _emojiStart : null,
+    _emojiEnd: null,
+    _emojiRange: null,
+    _emojiSelection: null,
     _tagRange: null,
     _firstSpace: false,
     _editorActive: false,
@@ -1091,12 +1095,45 @@ var channelView = {
 
     },
 
+    emojiGetSelection   : function (e) {
+
+        // Get the current insertion point
+
+        var isSelected = $('#messageTextArea').redactor('selection.is');
+
+        if (!isSelected) {
+            // Nothing is selected
+            channelView._emojiStart = $('#messageTextArea').redactor('offset.get');
+            channelView._emojiEnd = channelView._tagStart;
+        } else {
+            var selection = $('#messageTextArea').redactor('selection.save');
+            var range = $('#messageTextArea').redactor('selection.range', selection);
+
+            channelView._emojiRange = range;
+            channelView._emojiSelection = selection;
+            channelView._emojiStart = range.startOffset;
+            channelView._emojiEnd = range.endOffset;
+        }
+
+
+    },
     emojiMenuOpen: function(e){
         ux.hideKeyboard();
+        // Need to cache the offset
+        channelView.emojiGetSelection();
     },
 
     emojiMenuClose: function(){
         // Handle emoji menu closing
+    },
+
+    emojiPasteInEditor: function(e){
+        var shortname = e.button[0].dataset.shortname;
+        var rendered = emojione.shortnameToImage(shortname);
+        var node = $('<span />').html(rendered);
+
+        $('#messageTextArea').redactor('selection.restore', channelView._emojiSelection);
+        $('#messageTextArea').redactor('insert.node', node);
     },
 
     openEditor : function () {
@@ -2018,13 +2055,6 @@ var channelView = {
         channelView.activeMessage.html = text;
     },
 
-    pasteEmojiinEditor: function(e){
-        var shortname = e.button[0].dataset.shortname;
-        var rendered = emojione.shortnameToImage(shortname);
-        var node = $('<span />').html(rendered);
-
-        $('#messageTextArea').redactor('insert.node', node);
-    },
 
     messageSend : function (e) {
         _preventDefault(e);
@@ -2713,6 +2743,8 @@ var channelView = {
             {limit:1, duration: 5}
         );
     },
+
+
 
     messageMenuTag : function (e) {
 
