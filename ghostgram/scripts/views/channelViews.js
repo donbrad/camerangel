@@ -1136,16 +1136,16 @@ var channelView = {
 
         var shortname = e.button[0].dataset.shortname;
         var rendered = emojione.shortnameToImage(shortname);
-        var node = $('<span />').html(rendered);
-        var html = JSON.stringify(node);
+        //var node = $('<span />').html(rendered);
+       // var html = JSON.stringify(node);
 
         if (channelView._emojiIsSelected) {
             $('#messageTextArea').redactor('selection.restore', channelView._emojiSelection);
         } else {
-            $('#messageTextArea').redactor('offset.set', channelView._emojiStart);
+            $('#messageTextArea').redactor('offset.set', channelView._emojiStart+1);
         }
 
-        $('#messageTextArea').redactor('insert.html', html);
+        $('#messageTextArea').redactor('insert.html', rendered);
     },
 
     openEditor : function () {
