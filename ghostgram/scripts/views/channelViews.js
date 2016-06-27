@@ -1103,12 +1103,14 @@ var channelView = {
 
         if (!isSelected) {
             // Nothing is selected
+            channelView._emojiIsSelected = false;
             channelView._emojiStart = $('#messageTextArea').redactor('offset.get');
             channelView._emojiEnd = channelView._tagStart;
         } else {
             var selection = $('#messageTextArea').redactor('selection.save');
             var range = $('#messageTextArea').redactor('selection.range', selection);
 
+            channelView._emojiIsSelected = true;
             channelView._emojiRange = range;
             channelView._emojiSelection = selection;
             channelView._emojiStart = range.startOffset;
@@ -1132,7 +1134,12 @@ var channelView = {
         var rendered = emojione.shortnameToImage(shortname);
         var node = $('<span />').html(rendered);
 
-        $('#messageTextArea').redactor('selection.restore', channelView._emojiSelection);
+        if (channelView._emojiIsSelected) {
+            $('#messageTextArea').redactor('selection.restore', channelView._emojiSelection);
+        } else {
+            $('#messageTextArea').redactor('offset.set', channelView._emojiStart);
+        }
+
         $('#messageTextArea').redactor('insert.node', node);
     },
 
