@@ -138,12 +138,12 @@ var userDataChannel = {
         
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-        everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+       /* everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating private message " + JSON.stringify(error));
                 debugger;
             }
-        });
+        });*/
     },
 
     archiveMessage : function (message) {
@@ -162,12 +162,12 @@ var userDataChannel = {
 
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-        everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+      /*  everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
              if (error !== null) {
-                 mobileNotify ("Error archiving private message " + JSON.stringify(error));
+                 ggError ("Error archiving private message " + JSON.stringify(error));
                  debugger;
              }
-        });
+        });*/
     },
 
     updateTimeStamp : function () {
@@ -180,7 +180,7 @@ var userDataChannel = {
     // we have full 24 hours for all contactc
     _fetchHistory : function (timeStamp) {
 
-        var start = ggTime.toPubNubTime(ggTime.last72Hours());    // Need to fetch the last 24 hours of private messages
+        var start = ggTime.toPubNubTime(ggTime.last72Hours());    // Need to fetch the last 72 hours of private messages
 
         // Get any messages in the channel
         APP.pubnub.history({
