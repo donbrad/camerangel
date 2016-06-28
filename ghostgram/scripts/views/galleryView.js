@@ -1231,6 +1231,7 @@ var galleryPicker = {
     _photoId : null,
     _callback : null,
     _isGridView: true,
+    _viewInitialized : false,
 
     onInit : function (e) {
         //_preventDefault(e);
@@ -1307,6 +1308,28 @@ var galleryPicker = {
             galleryPicker._callback = callback;
         }
 
+        if (!galleryPicker._viewInitialized) {
+            galleryPicker._viewInitialized = true;
+
+            $("#galleryPicker-listview").kendoMobileListView({
+                dataSource: photoModel.photosDS,
+                template: $("#galleryPicker-template").html(),
+                click: function (e) {
+                    _preventDefault(e);
+
+                    var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+                    galleryPicker.photo = photo;
+
+                    galleryPicker.closeModal();
+                    if (galleryPicker._callback !== null) {
+                        galleryPicker._callback(photo);
+                    }
+                }
+
+            });
+        }
+        
         $("#modalview-galleryPicker").kendoMobileModalView("open");
     },
 
