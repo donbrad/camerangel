@@ -907,9 +907,22 @@
 
 <!-- galleryPicker template -->
 <script type="text/x-kendo-template" id="galleryPicker-template">
+	# var photoUrl = cloudUrl;
+	if (photoModel.isValidDeviceUrl(deviceUrl)) {
+	if (deviceUrl.indexOf('file:') === -1) {
+	deviceUrl = 'file:\/\/' + deviceUrl;
+	}
+	photoUrl = deviceUrl;
+	} else if (!photoModel.isValidCloudUrl(cloudUrl)) {
+	if (cloudinaryPublicId !== undefined && cloudinaryPublicId !== null) {
+	photoUrl = imageUrl;
+	cloudUrl = imageUrl;
+	}
+	}
+	#
 	<div>
 		<div class="galleryImgBox">
-			<div class="galleryImg galleryImg-grid" style="background-image: url('#=thumbnailUrl#')"> </div>
+			<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
 		</div>
 	</div>
 </script>
