@@ -33,7 +33,17 @@ var everlive = {
         everlive._token = null;
         everlive._lastSync = 0;
     },
-    
+
+     isConnected : function () {
+         if (deviceModel.isOnline()){
+             APP.everlive.online();
+             return(true);
+         } else {
+             APP.everlive.offline();
+             return(false);
+         }
+    },
+
     init: function () {
         
       /*  var provider = Everlive.Constants.StorageProvider.FileSystem;
@@ -43,11 +53,7 @@ var everlive = {
     /*    }*/
 
         if (everlive._initialized) {
-            if (deviceModel.isOnline()){
-                APP.everlive.online();
-            } else {
-                APP.everlive.offline();
-            }
+            var online = everlive.isConnected();
             return;
         }
 
@@ -107,14 +113,14 @@ var everlive = {
                      }*/
                 }
             });
-        
+
+            APP.everlive.online();
+
             everlive.getTimeStamp();
     
             everlive.getCredentials();
     
             everlive.updateCredentials();
-            
-            APP.everlive.online();
 
             // Wire up the everlive sync monitors
             APP.everlive.on('syncStart', everlive.syncStart);
@@ -168,7 +174,7 @@ var everlive = {
 
 
     syncCloud : function (){
-        if (!deviceModel.isOnline()) {
+        if (!everlive.isConnected()) {
             return;
         }
         var time = ggTime.currentTimeInSeconds();
@@ -322,6 +328,7 @@ var everlive = {
 
     loadUserData : function () {
         mobileNotify("Loading user information...");
+
         everlive.currentUser( function (err, user) {
             if (err!== undefined && err !== null) {
                 ggError("Can't access User's Account : " + err.message);
@@ -353,8 +360,8 @@ var everlive = {
     },
     
     logout : function (callback) {
-        if (deviceModel.isOnline()) {
-            everlive.onLine
+        if (!everlive.isConnected()) {
+            callback(false);
         }
         APP.everlive.users.logout(function (result) {
                 everlive._signedIn = false;
@@ -367,6 +374,9 @@ var everlive = {
     },
 
     changePassword : function (newPassword, callback) {
+        if (!everlive.isConnected()) {
+            callback("No Connection", false);
+        }
         var username = userModel._user.get('Username');
         var password = userModel._getRecoveryPassword();
         APP.everlive.users.changePassword(username, password, newPassword, true, 
@@ -380,6 +390,9 @@ var everlive = {
     },
 
     recoverPassword : function (email, callback) {
+        if (!everlive.isConnected()) {
+            callback("No Connection", false);
+        }
         var attrs = {
             Email: email
         };
@@ -488,6 +501,10 @@ var everlive = {
 
 
     currentUser : function (callback) {
+        if (!everlive.isConnected()) {
+            callback("No Connection", null);
+        }
+
         if (!everlive._isAuthenticated) {
             callback (null, null);
             return;
