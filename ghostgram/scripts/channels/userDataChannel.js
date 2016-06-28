@@ -192,6 +192,7 @@ var userDataChannel = {
        var start = ggTime.toPubNubTime(ggTime.last72Hours());    // Need to fetch the last 72 hours of private messages
         var end = ggTime.toPubNubTime(ggTime.currentTime());
 
+        console.log("Private History from " + timeStamp + " to " + end.toString());
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelUUID,
