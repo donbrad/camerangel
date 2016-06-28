@@ -505,20 +505,12 @@ var channelModel = {
     getLastAccess : function (channelUUID) {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
-            ggError('updateLastAccess: unknown channel ' + channelUUID);
+            ggError('getLastAccess: unknown channel ' + channelUUID);
         } else {
             return(channel.get('lastAccess'));
         }
     },
 
-    getLastActivity : function (channelUUID) {
-        var channel = channelModel.findChannelModel(channelUUID);
-        if (channel === undefined) {
-            ggError('updateLastActivity: unknown channel ' + channelUUID);
-        } else {
-            return(channel.get('lastActivity'));
-        }
-    },
 
     updateLastMessageTime : function (channelUUID, lastMessage) {
         var channel = channelModel.findChannelModel(channelUUID);
@@ -529,7 +521,6 @@ var channelModel = {
                 lastMessage = ggTime.currentTime();
             }
             channel.set('lastMessageTime', lastMessage);
-            //updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', lastAccess);
 
         }
     },
@@ -558,7 +549,7 @@ var channelModel = {
             channel.set('unreadCount',0);
             //notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', 0);
-            channelModel.updateLastActivity(channelUUID, lastAccess);
+            channelModel.updateLastAccess(channelUUID, lastAccess);
 
         }
     },
