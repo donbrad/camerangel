@@ -139,12 +139,15 @@ var userDataChannel = {
         
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-       /* everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating private message " + JSON.stringify(error));
-                debugger;
-            }
-        });*/
+        if (deviceModel.isOnline()) {
+            everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+                if (error !== null) {
+                    ggError("Error creating private message " + JSON.stringify(error));
+                    debugger;
+                }
+            });
+        }
+
     },
 
     archiveMessage : function (message) {
@@ -162,13 +165,18 @@ var userDataChannel = {
         message.data = data;
 
         userDataChannel.messagesDS.add(message);
-        userDataChannel.messagesDS.sync();
-      /*  everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
-             if (error !== null) {
-                 ggError ("Error archiving private message " + JSON.stringify(error));
-                 debugger;
-             }
-        });*/
+
+        if (deviceModel.isOnline()) {
+           everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+                 if (error !== null) {
+                     ggError ("Error archiving private message " + JSON.stringify(error));
+                     debugger;
+                 }
+            });
+        } else {
+            userDataChannel.messagesDS.sync();
+        }
+
     },
 
     updateTimeStamp : function () {
@@ -181,8 +189,9 @@ var userDataChannel = {
     // we have full 72 hours for all contacts
     _fetchHistory : function (timeStamp) {
 
-       // var start = ggTime.toPubNubTime(ggTime.last72Hours());    // Need to fetch the last 72 hours of private messages
+       var start = ggTime.toPubNubTime(ggTime.last72Hours());    // Need to fetch the last 72 hours of private messages
         var end = ggTime.toPubNubTime(ggTime.currentTime());
+
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelUUID,
@@ -191,7 +200,7 @@ var userDataChannel = {
             error: userDataChannel.error,
             callback: function(messages) {
                 messages = messages[0];
-                var start = messages[1], end = messages[2];
+                var pnStart = messages[1], pnEnd = messages[2];
                 messages = messages || [];
                 if (messages.length === 0) {
                     //userDataChannel.messagesDS.sync();
@@ -218,10 +227,10 @@ var userDataChannel = {
                 /*   channelKeys = Object.keys(channelList);
                  channelModel.updatePrivateChannels(channelKeys, channelList);*/
 
-                var startTime = parseInt(start);
-                if (messages.length === 100 && startTime >= start) {
+                var startTime = parseInt(pnstart);
+                if (messages.length === 100 && startTime >= pnStart) {
 
-                    userDataChannel._fetchHistory(end);
+                    userDataChannel._fetchHistory(pnStart);
                 }
 
             }
