@@ -88,7 +88,6 @@
   ],
   "CorePlugins": [
     "cc.fovea.cordova.purchase@5.0.2",
-    "com.bit6.sdk@0.9.8",
     "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.phonegap.plugins.barcodescanner@5.0.1",
