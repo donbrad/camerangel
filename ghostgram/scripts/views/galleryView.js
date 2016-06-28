@@ -805,10 +805,19 @@ var modalChatPhotoView = {
          if (photo.imageUrl !== null)
              url = photo.imageUrl;
 
-         if (url === null && photo.deviceUrl !== null) {
-             if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
-                 url = photo.deviceUrl;
+         if (url === null  ) {
+             if (photo.deviceUrl !== null) {
+                 if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
+                     url = photo.deviceUrl;
+                 }
+             } else {
+                 // No valid cloud or local url in the photo -- need to query memories
+                 var localPhoto = photoModel.findPhotoById(photoId);
+                 if (localPhoto !== undefined && localPhoto !== null) {
+                     url = localPhoto.deviceUrl;
+                 }
              }
+
          }
 
          if (galleryMode) {
