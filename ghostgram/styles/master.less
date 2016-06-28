@@ -860,7 +860,7 @@ form {
 .btnClearLine {
   &:extend(.btnStyle);
   //background: #fff !important;
-  color: #2D93FF !important;
+  color: @primary-200 !important;
   border: 1px solid @primary-200 !important;
   border-radius: 2px;
   //.shadowHelper(1) !important;
@@ -874,6 +874,11 @@ form {
   }
 }
 
+
+.btnClearLine-sm {
+  &:extend(.btnClearLine);
+  font-size: 0.875em !important;
+}
 
 .glass {
   //color: #fff !important;
@@ -2495,6 +2500,10 @@ div.footerMenu.km-footer > ul > li > a:active {
   margin-right: 1rem;
 }
 
+#currentGroup {
+  display: none;
+}
+
 .group-contactCard {
   font-size: 0.875em;
   color: #fff;
@@ -3056,6 +3065,7 @@ a:hover {
 
 .chat-option-selection {
   //.font-size(11);
+  font-size: 0.875em;
 }
 
 .channelMuteImg {
@@ -4328,6 +4338,14 @@ div.loginBox > form > div > ul > li {
   padding: 0;
   margin: 0 1.8rem 0 0;
 }
+
+#nearby-results-template > div {
+  min-height: 38px;
+  border-radius: 9px;
+  background-color: #fff;
+  padding: 4px;
+}
+
 
 #editPlaceAddress {
   min-width: initial;
@@ -6176,6 +6194,11 @@ div.contactListBox.activeContact > div > div > ul {
   float: left;
   margin-right: 2.5% !important;
 }
+
+.placeEdit-li-sm:after {
+  &:extend(.clearfix);
+}
+
 
 .placeEdit-li-sm:nth-child(2){
   margin-left: 2.5%;

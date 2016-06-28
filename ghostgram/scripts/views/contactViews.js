@@ -1477,6 +1477,7 @@ var contactActionView = {
                 thisContact.lastUpdate = time - 150;
             }
             if ( (thisContact.lastUpdate + 150) <= time ) {
+
                 // Need to get current data for this contact
                 userStatus.getMemberStatus(thisContact.contactUUID, function (error, user) {
                     thisContact.lastUpdate = ggTime.currentTimeInSeconds();
@@ -1508,12 +1509,17 @@ var contactActionView = {
 
                         // set current place
                         if (contactPlace !== "" && contactPlace !== undefined) {
-                            $("#contactCurrentPlace").text("@" + contactPlace);
+                            $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
+                        } else {
+                            $("#contactCurrentPlace").addClass('hidden').text("");
                         }
 
                     }
                 });
+
+
             } else {
+
                 contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
                 contactActionView._activeContact.set('statusMessage', thisContact.statusMessage);
                 contactActionView._activeContact.set('currentPlace', thisContact.currentPlace);
@@ -1524,11 +1530,14 @@ var contactActionView = {
                     $(".statusContactCard-icon").attr("src", "images/status-available.svg");
                 }
 
+                // todo Don - is there a fn that exposes the user object here (for currentplace etc.)?
 
                 // set current place
-                if (thisContact.currentPlace !== "" && thisContact.currentPlace !== undefined) {
-                    $("#contactCurrentPlace").text("@" + thisContact.currentPlace);
-                }
+                /*if (thisContact.currentPlace !== "" && thisContact.currentPlace !== undefined) {
+                    $("#contactCurrentPlace").removeClass('hidden').text("@" + thisContact.currentPlace);
+                } else {
+                    $("#contactCurrentPlace").addClass('hidden').text("");
+                }*/
             }
         }
 
@@ -1580,6 +1589,7 @@ var contactActionView = {
                     $("#currentContactVerified").addClass("hidden");
                 }
 
+                $("#contactCurrentPlace").addClass('hidden');
 
 
                 contactActionView.refreshUX(contact);

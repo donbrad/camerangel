@@ -592,7 +592,8 @@
 		   </ul>
 	   </div>
     </div>
-	 <a class="btnSpan testingHome" data-role="button" href="#usersignin" type="button" data-role="button"> <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>
+	 <a class="btnSpan testingHome" href="#usersignin" type="button" data-role="button">
+		 <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>
     <div class="footer" data-role="footer" id="newuserhome-footer">
     	<a class="btnSecondary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
     </div>
@@ -867,15 +868,6 @@
 	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
 </div>
 
-
-<style>
-#galleryPicker-listview .li {
-	display: inline;
-}
-</style>
-
-
-
 <div data-role="modalview" id="modalGalleryView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal">
 
 	<ul id="modalgallery-listview" class="list-inline" data-role="listview" data-click="modalGalleryView.galleryClick" data-source="photoModel.photosDS" data-template="modalGalleryTemplate"></ul>
@@ -1049,7 +1041,6 @@
 		<img class="circle-img-lg" id="contactProfileImg" data-bind="" />
 		<img src="images/status-away.svg" class="statusContactCard-icon" id="contactStatusImg"/>
 		<h2 class="preMotionUp textClamp">
-
 			<span class="primaryName" id="contactPrimaryName"></span>
 			<span class="hidden" id="currentContactVerified">
 				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
@@ -1057,18 +1048,17 @@
 		</h2>
 		
 		<p class="preMotionUp">
-			<div id="currentGroup">
+			<span id="currentGroup">
 				<span class="group-contactCard" id="currentContactGroup"></span><br/>
-			</div>
+			</span>
 			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
-
 		</p>
 		<p class="preMotionUp">
-			<a data-role="button"  data-click="contactActionView.showLocation" id="contactCurrentPlace" class="btnClear-light-sm" ></a>
+			<a data-role="button" data-click="contactActionView.showLocation" id="contactCurrentPlace" class="btnClearLine-sm"></a>
 		</p>
 	</div>
 	<div class="modal-bottom">
-		<ul class="list-inline hasMotion" id="contactActionBtns" >
+		<ul class="list-inline hasMotion" id="contactActionBtns">
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.privateChat" >
 					<img src="images/icon-private-alt.svg" /> Private Chat
@@ -1126,7 +1116,7 @@
 			<img src="images/close.svg"/>
 		</a>
 		<div class="left" style="width: 20%; text-align: center;">
-			<img class="circle-img-md home-profile-img"/>
+			<img class="circle-img-md home-profile-img" src=""/>
 			<img src="images/status-away.svg" class="userStatusView-img userAvailable" />
 		</div>
 		<div class="left" style="width: 80%;">
@@ -1222,7 +1212,7 @@
 </script>
 
  <script type="text/x-kendo-template" id="nearby-results-template">
-     <div style="min-height: 38px; border-radius: 9px; background-color: \\#fff; padding: 4px;" data-item="#: JSON.stringify(data) #">
+     <div style="" data-item="#: JSON.stringify(data) #">
          <h4>#: data.name # </h4>
          <p>#: data.vicinity # </p>
      </div>
@@ -1390,7 +1380,7 @@
 				<label> Zipcode </label>
 				<input type="search" id="placeEdit-zipcode" name="Zipcode" data-bind="value: zipcode" class="input-text-sm" readonly/>
 			</li>
-			<div class="clearfix"></div>
+
 			<li>
 				<label>Place Chat</label><br />
 				<a data-role="button" class="btnClear"  id="editplace-placechat"  data-click="editPlaceView.doPlaceChat"></a>
@@ -1624,7 +1614,7 @@
 		<a data-role="button" class="modal-close" data-click="closeAskRequest"><img src="images/close-white.svg"/></a>
 		<div><img src="images/icon-access.svg" /></div>
 		<p class="helper">
-			<svg width="14px" height="8px" viewBox="0 0 14 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+			<svg width="14px" height="8px" viewBox="0 0 14 8" version="1.1" xmlns="http://www.w3.org/2000/svg">
 				<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 					<g  transform="translate(-32.000000, -166.000000)" stroke="#ffffff" stroke-width="0.75">
 						<g transform="translate(32.000000, 135.000000)">
@@ -4596,6 +4586,7 @@
 </script>
 	<script type="text/x-kendo-template" id="contactsTemplate">
 		#
+		var classNames;
 		var name = data.name;
 		var alias = data.alias;
 		var group = data.group;
@@ -4618,17 +4609,17 @@
 					<p class="chat-option-selection"> Resend Invite</p>
 				</a>
 				#} else {#
-				#if(data.isBlocked) {#
-				<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
-					<img src="images/icon-unblock.svg" height="24" />
-					<p class="chat-option-selection"> Unblock </p>
-				</a>
-				#} else {#
-				<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
-					<img src="images/icon-block.svg" height="24" />
-					<p class="chat-option-selection"> Block </p>
-				</a>
-				#}#
+					#if(data.isBlocked) {#
+					<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
+						<img src="images/icon-unblock.svg" height="24" />
+						<p class="chat-option-selection"> Unblock </p>
+					</a>
+					#} else {#
+					<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
+						<img src="images/icon-block.svg" height="24" />
+						<p class="chat-option-selection"> Block </p>
+					</a>
+					#}#
 				#}#
 				<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
 					<img src="images/option-edit.svg" height="18" />
@@ -4640,29 +4631,30 @@
 				</a>
 			</div><!-- contact-options -->
 
-			# if(data.category === 'member') {#
-			<a class="contactListBox member" data-contact="#:uuid#">
+				# if(data.category === 'member') {#
+					# classNames = "contactListBox member" #
 				#} else if(data.category === 'new'){#
-				<a class="contactListBox" data-contact="#:uuid#">
-					#} else {#
-					<a class="contactListBox noSlide" data-contact="#:uuid#">
-						#}#
-						#if (data.category === 'member') {#
+					# classNames = "contactListBox" #
+				#} else {#
+					 # classNames = "contactListBox noSlide" #
+				#}#
+				<a class="#: classNames #" data-contact="#:uuid#">
+				#if (data.category === 'member') {#
 						<div class="left listPhoto">
 							<div class="statusContactList">
 
 								#if (data.isAvailable !== undefined && data.isAvailable) { #
-								<img class="circle-img-md" src="#:photoUrl#" />
-								<img src="images/status-available.svg" class="statusContactList-icon" />
-								# }
-								else { #
-								<img class="circle-img-md" src="#:photoUrl#" />
-								<img src="images/status-away.svg" class="statusContactList-icon" />
+									<img class="circle-img-md" src="#:photoUrl#" />
+									<img src="images/status-available.svg" class="statusContactList-icon" />
+								#} else {#
+									<img class="circle-img-md" src="#:photoUrl#" />
+									<img src="images/status-away.svg" class="statusContactList-icon" />
 								#}#
+
 								# if (data.isBlocked) {#
-								<div class="left">
-									<span class="helper helper-sm">Blocked</span>
-								</div>
+									<div class="left">
+										<span class="helper helper-sm">Blocked</span>
+									</div>
 								#}#
 							</div>
 						</div><!-- left -->
@@ -4671,14 +4663,13 @@
 							<h4 class="textClamp">
 								#= primaryName #
 								#if (data.phoneValidated){#
-								<img src="images/user-verified.svg" class="user-status-icon" />
+									<img src="images/user-verified.svg" class="user-status-icon" />
 								#}#
-								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
+									<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 
 								#if(data.group !== "" && data.group !== null){#
-								<span class="contact-group">#: data.group #</span>
+									<span class="contact-group">#: data.group #</span>
 								#}#
-
 							</h4>
 						</div>
 
@@ -4693,14 +4684,14 @@
 							</p>
 
 							# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
-							<p class="contactStatus-location">
-								@#:data.currentPlace#
-							</p>
+								<p class="contactStatus-location">
+									@#:data.currentPlace#
+								</p>
 							#}#
 						</div>
 
 						<div class="clearfix"></div>
-						#} else if(data.category === 'new'){#
+				#} else if(data.category === 'new'){#
 						<div class="left listPhoto">
 							<div class="statusContactList">
 								<img class="circle-img-md" src="#:photoUrl#" />
@@ -4709,13 +4700,12 @@
 						<div class="left listName">
 							<h4 class="textClamp">
 								#= primaryName #
-								<span class="contacts-alias-sm">#= secondaryName  #</span>
 							</h4>
 						</div>
 						<div class="left contact-status">
 							<p class="left contactStatusMessage-sm">Invite Sent</p>
 						</div>
-						#} else {#
+				#} else {#
 						<div class="left listPhoto">
 							<div class="statusContactList">
 								<img class="circle-img-md" src="#:photoUrl#" />
@@ -4725,9 +4715,8 @@
 							<h4 class="textClamp">
 								#: data.name #
 								#if (data.phoneValidated){#
-								<img src="images/user-verified.svg" class="user-status-icon" />
+									<img src="images/user-verified.svg" class="user-status-icon" />
 								#}#
-								<span class="contacts-alias-sm">#: data.alias #</span>
 							</h4>
 						</div>
 
@@ -4740,8 +4729,8 @@
 								#} #
 							</p>
 						</div>
-						#}#
-					</a><!-- listBox -->
+				#}#
+				</a><!-- listBox -->
 		</div>
 	</script>
 

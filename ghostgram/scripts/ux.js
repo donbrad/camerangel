@@ -29,7 +29,7 @@ var ux = {
 	returnUXPrimaryName: function(name, alias){
 		var primaryName;
 
-		if (alias !== "" && alias !== undefined && name !== "" && name !== undefined && alias !== 'null'){
+		if (alias !== "" && alias !== undefined && name !== "" && name !== undefined && alias !== null){
 			primaryName = alias;
 			
 		} else if(name !== "" && name !== undefined) {
@@ -44,12 +44,11 @@ var ux = {
 
 	returnAliasName: function(alias, group){
 		var secondaryName;
-
 		// If alias and group are present
-		if(alias !== "" && alias !== undefined && group !== "" & group !== null){
+		if(alias !== "" && alias !== undefined && group !== "" && group !== null && alias !== null){
 			secondaryName = alias;
 		// if 
-		} else if(alias !== "" && alias !== undefined){
+		} else if(alias !== "" && alias !== undefined && alias !== null){
 			secondaryName = group;
 		} else {
 			secondaryName = ""

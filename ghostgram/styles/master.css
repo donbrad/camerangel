@@ -1254,6 +1254,7 @@ form p {
 .btnFull-modal,
 .twoBtn,
 .km-material .km-buttongroup .km-button,
+.btnClearLine-sm,
 .btnClear-grey-sm {
   text-decoration: none;
   font-size: 1em;
@@ -1437,8 +1438,9 @@ form p {
   color: #A4A4A4 !important;
   background: transparent !important;
 }
-.btnClearLine {
-  color: #2D93FF !important;
+.btnClearLine,
+.btnClearLine-sm {
+  color: #6CADF3 !important;
   border: 1px solid #6CADF3 !important;
   border-radius: 2px;
 }
@@ -1449,6 +1451,9 @@ form p {
 .btnClearLine :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.btnClearLine-sm {
+  font-size: 0.875em !important;
 }
 .glass {
   background: #242424 !important;
@@ -2654,7 +2659,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   font-size: 14px;
   font-size: 0.875em;
 }
-.clearfix {
+.clearfix,
+.placeEdit-li-sm:after {
   *zoom: 1;
 }
 /* For IE 6/7 */
@@ -3001,6 +3007,9 @@ textarea {
   font-size: 0.875em;
   margin-left: 1rem;
   margin-right: 1rem;
+}
+#currentGroup {
+  display: none;
 }
 .group-contactCard {
   font-size: 0.875em;
@@ -3499,6 +3508,9 @@ a:hover {
 }
 .chat-option-ul li a img {
   height: 16px;
+}
+.chat-option-selection {
+  font-size: 0.875em;
 }
 .channelMuteImg {
   vertical-align: middle;
@@ -4595,6 +4607,12 @@ div.loginBox > form > div > ul > li {
   float: right;
   padding: 0;
   margin: 0 1.8rem 0 0;
+}
+#nearby-results-template > div {
+  min-height: 38px;
+  border-radius: 9px;
+  background-color: #fff;
+  padding: 4px;
 }
 #editPlaceAddress {
   min-width: initial;
