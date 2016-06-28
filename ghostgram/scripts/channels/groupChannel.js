@@ -228,7 +228,7 @@ var groupChannel = {
 
                      };*/
 
-                    channelModel.updateLastAccess(groupChannel.channelUUID, null);
+                    channelModel.updateLastMessageTime(groupChannel.channelUUID, null);
                     channelView.scrollToBottom();
                    // groupChannel.receiveMessage(thisMessage);
 

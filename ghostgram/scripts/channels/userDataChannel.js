@@ -37,8 +37,9 @@ var userDataChannel = {
             if (ts !== undefined) {
                 userDataChannel.lastAccess = parseInt(ts);
 
-                // Was last access more than 24 hours ago -- if yes set it to 24 hours ago
-                if (userDataChannel.lastAccess < ggTime.last72Hours()) {
+                // Was last access more than 72 hours ago -- if yes set it to 24 hours ago
+                if (userDataChannel.lastAccess > ggTime.last72Hours() || userDataChannel.lastAccess) {
+
                     userDataChannel.lastAccess = ggTime.last72Hours();
                     localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
                 }
@@ -138,12 +139,12 @@ var userDataChannel = {
         
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-        everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+       /* everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating private message " + JSON.stringify(error));
                 debugger;
             }
-        });
+        });*/
     },
 
     archiveMessage : function (message) {
@@ -162,12 +163,12 @@ var userDataChannel = {
 
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-        everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
+      /*  everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
              if (error !== null) {
-                 mobileNotify ("Error archiving private message " + JSON.stringify(error));
+                 ggError ("Error archiving private message " + JSON.stringify(error));
                  debugger;
              }
-        });
+        });*/
     },
 
     updateTimeStamp : function () {
@@ -175,25 +176,25 @@ var userDataChannel = {
         localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
     },
 
-    // Iterative function to get all messages in the user data channel for the last 24 hours
+    // Iterative function to get all messages in the user data channel for the last 72 hours
     // Note: pubnubs api will only return a max of 100 messsges so need to iterate until
-    // we have full 24 hours for all contactc
+    // we have full 72 hours for all contacts
     _fetchHistory : function (timeStamp) {
 
-        var start = ggTime.toPubNubTime(ggTime.last72Hours());    // Need to fetch the last 24 hours of private messages
-
+       // var start = ggTime.toPubNubTime(ggTime.last72Hours());    // Need to fetch the last 72 hours of private messages
+        var end = ggTime.toPubNubTime(ggTime.currentTime());
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelUUID,
-            start: start.toString(),
-            end: timeStamp,
+            start: timeStamp,
+            end: end.toString(),
             error: userDataChannel.error,
             callback: function(messages) {
                 messages = messages[0];
                 var start = messages[1], end = messages[2];
                 messages = messages || [];
                 if (messages.length === 0) {
-                    userDataChannel.messagesDS.sync();
+                    //userDataChannel.messagesDS.sync();
                     userDataChannel.updateTimeStamp();
                     return;
                 }
@@ -231,12 +232,17 @@ var userDataChannel = {
 
     history : function () {
 
-        var timeStamp = ggTime.toPubNubTime(ggTime.currentTime());
+
+        if (userDataChannel.lastAccess > ggTime.last72Hours() || userDataChannel.lastAccess) {
+            userDataChannel.lastAccess = ggTime.last72Hours();
+            localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
+        }
         var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
 
-        userDataChannel._fetchHistory(timeStamp.toString());
+        userDataChannel._fetchHistory(lastAccess.toString());
 
     },
+
 
     channelRead : function (m) {
         

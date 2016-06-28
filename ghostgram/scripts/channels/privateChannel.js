@@ -16,7 +16,7 @@ var privateChannel = {
     contactKey: '',
     publicKey : null,
     contactName : '',
-    last24hours : 0,
+    last72hours : 0,
     RSAKey : null,
 
 
@@ -246,7 +246,7 @@ var privateChannel = {
                     var status = m[0], statusText = m[1];
 
                     if (status !== 1) {
-                        mobileNotify("Private Channel Publish error "  + statusText);
+                        ggError("Private Channel Publish error "  + statusText);
                     }
 
                     // Store a local copy of the sent message.  Need to update channelUUID :
@@ -268,7 +268,7 @@ var privateChannel = {
 
                     };
 
-                    channelModel.updateLastAccess(parsedMsg.channelUUID, null);
+                    //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);

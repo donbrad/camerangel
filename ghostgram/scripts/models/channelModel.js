@@ -505,21 +505,30 @@ var channelModel = {
     getLastAccess : function (channelUUID) {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
-            mobileNotify('updateLastAccess: unknown channel ' + channelUUID);
+            ggError('updateLastAccess: unknown channel ' + channelUUID);
         } else {
             return(channel.get('lastAccess'));
+        }
+    },
+
+    getLastActivity : function (channelUUID) {
+        var channel = channelModel.findChannelModel(channelUUID);
+        if (channel === undefined) {
+            ggError('updateLastActivity: unknown channel ' + channelUUID);
+        } else {
+            return(channel.get('lastActivity'));
         }
     },
 
     updateLastMessageTime : function (channelUUID, lastMessage) {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
-            mobileNotify('updateLastMessageTime: unknown channel ' + channelUUID);
+            ggError('updateLastMessageTime: unknown channel ' + channelUUID);
         } else {
             if (lastMessage === undefined || lastMessage === null) {
                 lastMessage = ggTime.currentTime();
             }
-            channel.set('lastMessage', lastMessage);
+            channel.set('lastMessageTime', lastMessage);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'lastAccess', lastAccess);
 
         }
@@ -530,13 +539,12 @@ var channelModel = {
         if (channel === undefined) {
             mobileNotify('getLastMessageTime: unknown channel ' + channelUUID);
         } else {
-            return(channel.get('lastTime'));
+            return(channel.get('lastMessageTime'));
         }
     },
 
     cacheGroupMessage : function (message) {
-
-
+        
         channelModel.groupMessagesDS.add(message);
     },
 
@@ -550,7 +558,7 @@ var channelModel = {
             channel.set('unreadCount',0);
             //notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', 0);
-            channelModel.updateLastAccess(channelUUID, lastAccess);
+            channelModel.updateLastActivity(channelUUID, lastAccess);
 
         }
     },
