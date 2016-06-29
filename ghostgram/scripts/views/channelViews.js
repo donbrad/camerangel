@@ -1002,6 +1002,12 @@ var channelView = {
         }
     },
 
+    loadMoreMessages : function () {
+        groupChannel.getMoreMessages(function (messageList){
+
+        });
+    },
+
     findMessageById : function (msgID) {
 
         return(channelView.queryMessage({ field: "msgID", operator: "eq", value: msgID }));
@@ -1248,7 +1254,7 @@ var channelView = {
         var name = '';
         ux.hideKeyboard();
 
-
+        $('#loadMoreMessages').addClass('hidden');
         /* if (window.navigator.simulator === undefined) {
             cordova.plugins.Keyboard.disableScroll(true); // false to enable again
         }
@@ -1473,6 +1479,11 @@ var channelView = {
             groupChannel.getMessageHistory(function (messages) {
                 var filteredMessages = [];
 
+                if (groupChannel.moreMessages) {
+                    $('#loadMoreMessages').removeClass('hidden');
+                } else {
+                    $('#loadMoreMessages').addClass('hidden');
+                }
                 for (var i=0; i<messages.length; i++) {
                     var message = messages[i];
                     if (hasRecalled) {

@@ -225,7 +225,7 @@ var userDataChannel = {
                 /*   channelKeys = Object.keys(channelList);
                  channelModel.updatePrivateChannels(channelKeys, channelList);*/
 
-                var endTime = parseInt(pnEnd);
+                var endTime = parseInt(pnStart);
                 if (messages.length === 100 && endTime >= start) {
 
                     userDataChannel._fetchHistory(start, endTime );

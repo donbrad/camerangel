@@ -13,6 +13,9 @@ var groupChannel = {
     userId : '',
     userName : '',
     userAlias : '',
+    start: null,
+    end: null,
+    moreMessages: false,
     messageDS: [],
     nextFetchEnd : null,
     channelFetchCallBack : null,
@@ -261,42 +264,55 @@ var groupChannel = {
     },
 
     _fetchHistory : function (start, end) {
-        
-    },
-    
-    // Todo: don - optimize this for large group chats.   initially just get more recent 100 message.
-    getMessageHistory: function (callBack) {
-        var channel = channelModel.findChannelModel(groupChannel.channelUUID);
-        var endTime = ggTime.currentTime() * 1000, lastTime = ggTime.lastMonth() * 1000;
-        groupChannel.channelFetchCallBack = callBack;
-
-        if (groupChannel.nextFetchEnd !== null) {
-            if (groupChannel.nextFetchEnd <= lastTime)
-                endTime = lastTime;
-            else
-                endTime = groupChannel.nextFetchEnd;
-        }
-
         APP.pubnub.history({
             channel: groupChannel.channelUUID,
-            start: lastTime.toString(),
-            end: endTime.toString(),
+            start: start.toString(),
+            end: end.toString(),
             error: function (error) {
 
             },
             callback: function (messages) {
                 var messageList = messages[0];
-                var start = messages[1];
-                var end = messages[2];
+                var pnStart = messages[1];
+                var pnEnd = messages[2];
                 var length = messageList.length;
                 //messages = messages || [];
-
-                groupChannel.nextFetchEnd = end;
-                if(callBack)
-                    callBack(messageList);
+                var endTime = parseInt(pnStart);
+                
+                groupChannel.end = endTime;
+                if (length < 100) {
+                    groupChannel.moreMessages = false;
+                } else if (length === 100) {
+                    if (endTime >= groupChannel.start) {
+                        groupChannel.moreMessages = true;
+                    } else {
+                        groupChannel.moreMessages = false;
+                    }
+                }
+                if(groupChannel.channelFetchCallBack !== null)
+                    groupChannel.channelFetchCallBack(messageList);
             }
 
         });
+    },
+    
+    getMoreMessages : function (callback) {
+        if (!groupChannel.moreMessages) {
+            callback([]);
+            return;
+        }
+        groupChannel.channelFetchCallBack = callBack;
+        groupChannel._fetchHistory(groupChannel.start, groupChannel.end);
+    },
+    
+    getMessageHistory: function (callBack) {
+        var channel = channelModel.findChannelModel(groupChannel.channelUUID);
+        groupChannel.end = ggTime.currentTime() * 1000;
+        groupChannel.start = ggTime.lastMonth() * 1000;
+        groupChannel.channelFetchCallBack = callBack;
+        
+        groupChannel._fetchHistory(groupChannel.start, groupChannel.end);
+
     }
 
 };
