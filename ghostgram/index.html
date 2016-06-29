@@ -1609,6 +1609,27 @@
 </script>
 
 
+
+<div data-role="modalview" id="sendViaModal" data-title="Send Via intelligram"  data-init="sendViaModal.onInit"  data-hide="sendViaModal.onHide" style="display: none; width: 100%; height: 100%;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<a data-align="left" data-role="button" data-click="sendViaModal.closeModal">
+				<img src="images/close.svg" />
+			</a>
+			<span>Send Via Intelligram</span>
+		</div>
+	</div>
+	<div id="sendViaListDiv">
+		<ul id="sendVia-listview"></ul>
+		<div class="emptyState hidden">
+			<img src="images/empty-chat.svg" />
+		</div>
+	</div>
+</div>
+
+
+
+
 <!--/*
  * channels
  */-->

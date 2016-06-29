@@ -271,6 +271,26 @@ var channelModel = {
 
     },*/
 
+    getGroupChannels : function () {
+        var query = [{ field: "category", operator: "neq", value: 'Private' },
+            { field: "isDeleted", operator: "eq", value: false }
+        ];
+        var dataSource = channelModel.channelsDS;
+        if (dataSource === null) {
+            console.log("Channels not initialized!");
+            return ([]);
+        }
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        dataSource.filter(cacheFilter);
+        return(view);
+
+    },
+
     queryChannels : function (query) {
         if (query === undefined)
             return([]);

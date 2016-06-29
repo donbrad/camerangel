@@ -250,6 +250,20 @@ var contactModel = {
         return(view);
     },
 
+    getMemberContacts : function (query) {
+        var query = { field: "category", operator: "eq", value: "member" };
+        var dataSource = contactModel.contactListDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
     syncNewMembers : function () {
         var newMembers = contactModel.queryContacts({ field: "category", operator: "eq", value: "unknown" });
     },

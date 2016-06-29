@@ -1157,7 +1157,7 @@ var modalPhotoView = {
 
     sendViaGhostgrams : function (e) {
         _preventDefault(e);
-        mobileNotify("In backlog....");
+        sendViaModal.openModal();
     },
 
    sharePhoto: function (e) {
@@ -1329,7 +1329,7 @@ var galleryPicker = {
 
             });
         }
-        
+
         $("#modalview-galleryPicker").kendoMobileModalView("open");
     },
 
@@ -1355,6 +1355,71 @@ var galleryPicker = {
             $("#galleryPicker-listview li .galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
             galleryPicker._isGridView = true;
         }
+    }
+
+};
+
+
+var sendViaModal = {
+    _contact: null,
+    _channel: null,
+    _callback : null,
+    sendListDS : new kendo.data.DataSource(),
+    _viewInitialized : false,
+
+    onInit : function (e) {
+        //_preventDefault(e);
+
+    },
+
+    onOpen : function (e) {
+        _preventDefault(e);
+    },
+
+    onClose : function (e) {
+        _preventDefault(e);
+    },
+
+    buildSendList : function () {
+        // build list of: 1) all group chats and 2) all member contacts
+        var contacts = contactModel.getMemberContacts();
+        var channels = channelModel.getGroupChannels();
+    },
+    
+    openModal : function (callback)  {
+        if (callback !== undefined) {
+            sendViaModal._callback = callback;
+        }
+
+        if (!sendViaModal._viewInitialized) {
+            sendViaModal._viewInitialized = true;
+
+            $("#sendVia-listview").kendoMobileListView({
+                dataSource: sendViaModal.sendListDS,
+                template: $("#sendVia-template").html(),
+                click: function (e) {
+                    _preventDefault(e);
+
+                    var contact = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+                    galleryPicker.photo = photo;
+
+                    galleryPicker.closeModal();
+                    if (galleryPicker._callback !== null) {
+                        galleryPicker._callback(photo);
+                    }
+                }
+
+            });
+        }
+
+        $("#sendViaModal").kendoMobileModalView("open");
+    },
+
+    closeModal : function ()  {
+
+
+        $("#sendViaModal").kendoMobileModalView("close");
     }
 
 };
