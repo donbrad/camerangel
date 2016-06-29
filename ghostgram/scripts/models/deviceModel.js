@@ -226,6 +226,7 @@ var deviceModel = {
 
             deviceModel.onOnline();
             notificationModel.processUnreadChannels();
+            userDataChannel.history();
         } else {
             if (APP.everlive !== null)
              APP.everlive.offline();
@@ -270,6 +271,7 @@ var deviceModel = {
             everlive.updateUserStatus();
         }
 
+        userDataChannel.history();
         everlive.syncCloud();
         photoModel.processCloudPushList();
 

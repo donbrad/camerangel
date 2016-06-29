@@ -187,16 +187,13 @@ var userDataChannel = {
     // Iterative function to get all messages in the user data channel for the last 72 hours
     // Note: pubnubs api will only return a max of 100 messsges so need to iterate until
     // we have full 72 hours for all contacts
-    _fetchHistory : function (timeStamp) {
+    _fetchHistory : function (start, end) {
 
-       var start = ggTime.toPubNubTime(ggTime.last72Hours());    // Need to fetch the last 72 hours of private messages
-        var end = ggTime.toPubNubTime(ggTime.currentTime());
 
-        console.log("Private History from " + timeStamp + " to " + end.toString());
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelUUID,
-            start: timeStamp,
+            start: start.toString(),
             end: end.toString(),
             error: userDataChannel.error,
             callback: function(messages) {
@@ -228,10 +225,10 @@ var userDataChannel = {
                 /*   channelKeys = Object.keys(channelList);
                  channelModel.updatePrivateChannels(channelKeys, channelList);*/
 
-                var startTime = parseInt(pnstart);
-                if (messages.length === 100 && startTime >= pnStart) {
+                var endTime = parseInt(pnEnd);
+                if (messages.length === 100 && endTime >= start) {
 
-                    userDataChannel._fetchHistory(pnStart);
+                    userDataChannel._fetchHistory(start, endTime );
                 }
 
             }
@@ -248,8 +245,9 @@ var userDataChannel = {
             localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
         }
         var lastAccess = ggTime.toPubNubTime(userDataChannel.lastAccess);
-
-        userDataChannel._fetchHistory(lastAccess.toString());
+        
+        var end = ggTime.toPubNubTime(ggTime.currentTime());
+        userDataChannel._fetchHistory(lastAccess, end);
 
     },
 
