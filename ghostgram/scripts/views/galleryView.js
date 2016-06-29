@@ -799,14 +799,13 @@ var modalChatPhotoView = {
              photoId = photo.photoUUID;
          }
 
-
          modalChatPhotoView._galleryMode = galleryMode;
          var url = photo.thumbnailUrl;
          if (photo.imageUrl !== null)
              url = photo.imageUrl;
 
          if (url === null  ) {
-             if (photo.deviceUrl !== null) {
+             if (photo.deviceUrl !== undefined && photo.deviceUrl !== null) {
                  if (photoModel.isValidDeviceUrl(photo.deviceUrl)) {
                      url = photo.deviceUrl;
                  }
