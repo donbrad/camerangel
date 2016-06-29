@@ -264,12 +264,13 @@ var groupChannel = {
     },
 
     _fetchHistory : function (start, end) {
+       
         APP.pubnub.history({
             channel: groupChannel.channelUUID,
             start: start.toString(),
             end: end.toString(),
             error: function (error) {
-
+                ggError("Group Chat History Error " + JSON.stringify(error));
             },
             callback: function (messages) {
                 var messageList = messages[0];
@@ -307,8 +308,8 @@ var groupChannel = {
     
     getMessageHistory: function (callBack) {
         var channel = channelModel.findChannelModel(groupChannel.channelUUID);
-        groupChannel.end = ggTime.currentTime() * 1000;
-        groupChannel.start = ggTime.lastMonth() * 1000;
+        groupChannel.end = ggTime.toPubNubTime(ggTime.currentTime());
+        groupChannel.start = ggTime.toPubNubTime(ggTime.lastMonth());
         groupChannel.channelFetchCallBack = callBack;
         
         groupChannel._fetchHistory(groupChannel.start, groupChannel.end);
