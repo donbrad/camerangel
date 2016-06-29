@@ -260,6 +260,11 @@ var groupChannel = {
         });
     },
 
+    _fetchHistory : function (start, end) {
+        
+    },
+    
+    // Todo: don - optimize this for large group chats.   initially just get more recent 100 message.
     getMessageHistory: function (callBack) {
         var channel = channelModel.findChannelModel(groupChannel.channelUUID);
         var endTime = ggTime.currentTime() * 1000, lastTime = ggTime.lastMonth() * 1000;
@@ -274,6 +279,7 @@ var groupChannel = {
 
         APP.pubnub.history({
             channel: groupChannel.channelUUID,
+            start: lastTime.toString(),
             end: endTime.toString(),
             error: function (error) {
 
@@ -282,6 +288,7 @@ var groupChannel = {
                 var messageList = messages[0];
                 var start = messages[1];
                 var end = messages[2];
+                var length = messageList.length;
                 //messages = messages || [];
 
                 groupChannel.nextFetchEnd = end;

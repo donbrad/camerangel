@@ -1469,7 +1469,7 @@ var channelView = {
                 hasRecalled = true;
             }
 
-            groupChannel.hereNow();
+        //    groupChannel.hereNow();
             groupChannel.getMessageHistory(function (messages) {
                 var filteredMessages = [];
 
@@ -2933,7 +2933,7 @@ var channelPresence = {
 
     onShow: function (e) {
         // Update presence count and members present
-        groupChannel.hereNow();
+      //  groupChannel.hereNow();
 
     },
 
