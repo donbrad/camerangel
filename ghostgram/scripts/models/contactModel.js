@@ -673,7 +673,6 @@ var contactModel = {
                 contact.set("isFavorite", false);
                 contact.set("isBlocked", false);
                 contact.set("isDeleted", false);
-                contact.set("Id", guid);
                 contact.set("uuid", guid);
                 contact.set("contactUUID", result.userUUID);
                 contact.set("contactPublcKey", result.publicKey);
