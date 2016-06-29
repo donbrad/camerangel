@@ -169,7 +169,7 @@ var groupChannel = {
         var currentTime =  ggTime.currentTime();
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Group Chat : " + groupChannel.channelName ;
+            var notificationString = "Group Chat : " + groupChannel.channelName;
             var thisMessage = {
                 msgID: msgID,
                 channelUUID : groupChannel.channelUUID,
@@ -206,6 +206,7 @@ var groupChannel = {
                 fromHistory: false,
                 ttl: ttl
             };
+
             APP.pubnub.publish({
                 channel: groupChannel.channelUUID,
                 message: thisMessage,

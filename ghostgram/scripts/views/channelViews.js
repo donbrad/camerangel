@@ -875,6 +875,8 @@ var channelView = {
     currentContact: null,
     activeMessage: {},
     intervalId : null,
+    hasRecalled : false,
+    recalledMessages: null,
     ghostgramActive : false,
     sendMessageHandler : null,
     _offersLoaded : false,
@@ -1003,8 +1005,29 @@ var channelView = {
     },
 
     loadMoreMessages : function () {
-        groupChannel.getMoreMessages(function (messageList){
 
+        groupChannel.getMoreMessages(function (messages){
+            if (messages.length === 0) {
+                $('#loadMoreMessages').addClass('hidden');
+                return;
+            }
+            var filteredMessages = [];
+
+            for (var i=0; i<messages.length; i++) {
+                var message = messages[i];
+                if (channelView.hasRecalled) {
+                    if (!channelView.isDuplicateMessage(message.msgID) && !channelModel.isMessageRecalled(message.msgID)) {
+                        filteredMessages.push(message);
+                    }
+                } else {
+                    if (!channelView.isDuplicateMessage(message.msgID)) {
+                        filteredMessages.push(message);
+                    }
+                }
+
+            }
+            channelView.preprocessMessages(filteredMessages);
+            channelView.messagesDS.data(filteredMessages);
         });
     },
 
@@ -1469,10 +1492,11 @@ var channelView = {
 
             mobileNotify("Loading Messages...");
             channelView.messagesDS.data([]);
-            var recalledMessages = channelModel.getRecalledMessages(channelUUID), hasRecalled = false;
+            channelView.recalledMessages = channelModel.getRecalledMessages(channelUUID);
+            channelView.hasRecalled = false;
 
-            if (recalledMessages.length > 0) {
-                hasRecalled = true;
+            if (channelView.recalledMessages.length > 0) {
+                channelView.hasRecalled = true;
             }
 
         //    groupChannel.hereNow();
@@ -1486,7 +1510,7 @@ var channelView = {
                 }
                 for (var i=0; i<messages.length; i++) {
                     var message = messages[i];
-                    if (hasRecalled) {
+                    if (channelView.hasRecalled) {
                         if (!channelView.isDuplicateMessage(message.msgID) && !channelModel.isMessageRecalled(message.msgID)) {
                             filteredMessages.push(message);
                         }
