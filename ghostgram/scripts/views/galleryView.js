@@ -1075,7 +1075,7 @@ var modalPhotoView = {
             modalPhotoView._activePhoto.set('addressString', placeObj.address);
             modalPhotoView._activePhoto.set('lat', placeObj.lat);
             modalPhotoView._activePhoto.set('lng', placeObj.lng);
-            modalPhotoView._activePhoto.set('placeName', placeObj.lng);
+            modalPhotoView._activePhoto.set('placeName', placeObj.name);
 
             $("#modalPhotoView").data("kendoMobileModalView").open();
         });
