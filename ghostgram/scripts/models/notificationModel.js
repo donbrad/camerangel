@@ -158,8 +158,7 @@ var notificationModel = {
 
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
-
-        notification.Id = notification.uuid;
+        
         notificationModel.notificationDS.add(notification);
         everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
             if (error !== null) {
@@ -309,7 +308,7 @@ var notificationModel = {
                 notObj.set('unreadCount', unreadCount);
 
                 if (Id !== undefined){
-                    everlive.updateOne(notificationModel._cloudClass, notObj, function (error, data) {
+                    everlive.update(notificationModel._cloudClass, notObj, {'uuid' : notObj.uuid}, function (error, data) {
                         //placeNoteModel.notesDS.remove(note);
                     });
                 }

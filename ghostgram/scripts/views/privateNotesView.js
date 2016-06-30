@@ -280,7 +280,6 @@ var privateNotesView = {
             ggType = data.ggType;
         }
         var note = {
-            Id: uuidNote,
             noteId: uuidNote,
             type: 'Note',
             ggType: ggType,
@@ -466,12 +465,12 @@ var privateNotesView = {
                
            }
 
-           if (Id !== undefined){
-               everlive.deleteOne(privateNoteModel._cloudClass, Id, function (error, data) {
+
+               everlive.deleteMatching(privateNoteModel._cloudClass, {'noteId': note.noteId}, function (error, data) {
                    privateNoteModel.deleteNote(privateNotesView.activeNote);
                    privateNotesView.activeNote = {objects: [], photos: []};
                });
-           }           
+
        }
 
     },

@@ -1393,7 +1393,7 @@ var channelModel = {
                     mapObj.memberCount = channel.members.length;
                     mapObj.invitedMembers = channel.invitedMembers;
 
-                    everlive.updateOne('channelmap', mapObj, function (error, data) {
+                    everlive.update('channelmap', mapObj, {'channelUUID' : mapObj.channelUUID}, function (error, data) {
                         //placeNoteModel.notesDS.remove(note);
                     });
                 }
