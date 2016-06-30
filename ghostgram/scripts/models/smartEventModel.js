@@ -144,7 +144,7 @@ var smartEvent = {
     },
     
     sync : function () {
-        smareEvent.eventsDS.sync();    
+        smartEvent.eventsDS.sync();
     },
     
     queryTerm: function (query) {
