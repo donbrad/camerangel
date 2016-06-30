@@ -1282,8 +1282,11 @@ var channelModel = {
                     }
                 }
 
-                if (window.navigator.simulator === undefined)
-                    serverPush.unprovisionGroupChannel(channelUUID);
+                if (window.navigator.simulator === undefined) {
+                    if (!channel.isPrivate)
+                        serverPush.unprovisionGroupChannel(channelUUID);
+                }
+
 
                 var Id = channel.Id;
 

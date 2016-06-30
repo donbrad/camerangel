@@ -248,8 +248,8 @@ var serverPush = {
             op    : 'add',
             gw_type  : type,
             channel  :  channelUUID,
-            callback : serverPush._success,
-            error  : serverPush._error
+            callback : serverPush._successProvision,
+            error  : serverPush._errorProvision
         });
     },
 
@@ -271,8 +271,8 @@ var serverPush = {
             op    : 'remove',
             gw_type  : type,
             channel  :  channelUUID,
-            callback : serverPush._success,
-            error  : serverPush._error
+            callback : serverPush._successProvision,
+            error  : serverPush._errorProvision
         });
     },
 
@@ -303,8 +303,8 @@ var serverPush = {
                 op    : 'add',
                 gw_type  : type,
                 channel  :  dataChannel,
-                callback : serverPush._success,
-                error  : serverPush._error
+                callback : serverPush._successProvision,
+                error  : serverPush._errorProvision
             });
 
             APP.pubnub.mobile_gw_provision ({
@@ -312,8 +312,8 @@ var serverPush = {
                 op    : 'add',
                 gw_type  :type,
                 channel  : userChannel,
-                callback : serverPush._success,
-                error  : serverPush._error
+                callback : serverPush._successProvision,
+                error  : serverPush._errorProvision
             });
 
             serverPush._dataChannelsProvisioned = true;
@@ -346,8 +346,8 @@ var serverPush = {
                 op    : 'remove',
                 gw_type  : type,
                 channel  :  dataChannel,
-                callback : serverPush._success,
-                error  : serverPush._error
+                callback : serverPush._successProvision,
+                error  : serverPush._errorProvision
             });
 
             APP.pubnub.mobile_gw_provision ({
@@ -355,8 +355,8 @@ var serverPush = {
                 op    : 'remove',
                 gw_type  :type,
                 channel  : userChannel,
-                callback : serverPush._success,
-                error  : serverPush._error
+                callback : serverPush._successProvision,
+                error  : serverPush._errorProvision
             });
 
             serverPush._dataChannelsProvisioned = false;
@@ -366,6 +366,10 @@ var serverPush = {
         }
     },
 
+    _successProvision : function (data) {
+
+    },
+
     _success : function (data) {
         mobileNotify("Data channel server push enabled!");
     },
@@ -373,6 +377,11 @@ var serverPush = {
     _error : function (error) {
         if (error !== undefined)
             mobileNotify("Pubnub Push Channel Error " + JSON.stringify(error));
+    },
+
+    _errorProvision : function (error) {
+        if (error !== undefined)
+            mobileNotify("Pubnub Provision Error " + JSON.stringify(error));
     }
 
 
