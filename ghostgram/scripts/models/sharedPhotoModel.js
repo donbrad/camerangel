@@ -18,12 +18,16 @@ var sharedPhotoModel = {
                 model: { id:  Everlive.idField}
             }
         });
-        
+        sharedPhotoModel.photosDS.fetch();
+    },
+    
+    sync: function () {
+        sharedPhotoModel.photosDS.sync();
     },
     
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(sharedPhotoModel._cloudClass);
-        data.updateSingle(photoObj, function (data) {
+        data.update(photoObj, {'uuid' : photoObj.uuid}, function (data) {
             if (data.result === 0) {
                 ggError("Unable to update Cloud Shared Photo : " + photoObj.photoUUID);
             }

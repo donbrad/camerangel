@@ -70,6 +70,10 @@ var privateNoteModel = {
 
     },
 
+    sync : function () {
+        privateNoteModel.notesDS.sync();
+    },
+    
     addNote : function (note) {
         privateNoteModel.notesDS.add(note);
         privateNoteModel.notesDS.sync();

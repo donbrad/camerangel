@@ -120,6 +120,11 @@ var placesModel = {
 
     },
 
+    sync : function () {
+        placesModel.placesDS.sync() 
+    },
+    
+    
     newPlace : function () {
         return(new Object(placesModel._placeModel));
     },

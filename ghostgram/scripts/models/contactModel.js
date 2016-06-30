@@ -130,6 +130,10 @@ var contactModel = {
 
     },
 
+    sync : function () {
+        contactModel.contactsDS.sync();
+    },
+    
     processContactUpdates : function (contacts) {
         for (var i=0; i<contacts.length; i++) {
 
