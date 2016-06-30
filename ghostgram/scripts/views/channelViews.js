@@ -924,7 +924,7 @@ var channelView = {
             model: { id: 'msgID' }
         },
         sort: {
-            field: "timestamp",
+            field: "time",
             dir: "asc"
         }
     }),
