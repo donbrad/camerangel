@@ -615,7 +615,8 @@ var everlive = {
                 callback(error, null);
             });
     },
-
+    
+    
     deleteMatching : function (dataType, query, callback) {
         var data = APP.everlive.data(dataType);
         data.destroy( query, // filter expression

@@ -32,6 +32,10 @@ var smartMovie = {
         smartMovie.moviesDS.fetch();
     },
 
+    sync: function ()  {
+        smartMovie.moviesDS.sync();
+    },
+    
     queryMovie: function (query) {
         if (query === undefined)
             return(undefined);
@@ -108,7 +112,7 @@ var smartMovie = {
         smartOb.set('version', smartMovie._version);
         smartOb.set('ggType', smartMovie._ggClass);
         smartOb.set('uuid', objectIn.uuid);
-        smartOb.set('Id', objectIn.uuid);
+        //smartOb.set('Id', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);
         smartOb.set('movieTitle', objectIn.movieTitle);
@@ -134,6 +138,7 @@ var smartMovie = {
         smartOb.set('genre', objectIn.genre);
 
         smartMovie.moviesDS.add(smartOb);
+        smartMovie.moviesDS.sync();
         if (callback !== undefined && callback !== null)
             callback(smartOb);
         

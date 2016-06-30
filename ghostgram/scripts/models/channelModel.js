@@ -149,6 +149,7 @@ var channelModel = {
 
         channelModel.channelsDS.fetch();
         channelModel.photosDS.fetch();
+        channelModel.groupMessagesDS.fetch();
         channelModel.recalledPhotosDS.fetch();
         channelModel.recalledMessagesDS.fetch();
 
@@ -162,6 +163,14 @@ var channelModel = {
         }, 5000);*/
     },
 
+    sync : function () {
+        channelModel.channelsDS.sync();
+        channelModel.photosDS.sync();
+        channelModel.recalledPhotosDS.sync();
+        channelModel.recalledMessagesDS.sync();
+        channelModel.groupMessagesDS.sync();
+    },
+    
     updateActiveChannel : function (channelUUID) {
         channelModel.activeChannels[channelUUID] = 1;
     },
@@ -1273,8 +1282,11 @@ var channelModel = {
                     }
                 }
 
-                if (window.navigator.simulator === undefined)
-                    serverPush.unprovisionGroupChannel(channelUUID);
+                if (window.navigator.simulator === undefined) {
+                    if (!channel.isPrivate)
+                        serverPush.unprovisionGroupChannel(channelUUID);
+                }
+
 
                 var Id = channel.Id;
 
@@ -1393,7 +1405,7 @@ var channelModel = {
                     mapObj.memberCount = channel.members.length;
                     mapObj.invitedMembers = channel.invitedMembers;
 
-                    everlive.updateOne('channelmap', mapObj, function (error, data) {
+                    everlive.update('channelmap', mapObj, {'channelUUID' : mapObj.channelUUID}, function (error, data) {
                         //placeNoteModel.notesDS.remove(note);
                     });
                 }

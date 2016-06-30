@@ -1001,7 +1001,6 @@ var addContactView = {
 
         contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
-        contact.set('Id', contactId);
         contact.set('uuid', contactId);
         contact.set("name", name );
         contact.set("alias", alias);
@@ -1168,7 +1167,6 @@ var editContactView = {
                 photoUrl = contact.photo;
             }
             $('#editContactView-profilePhoto').attr('src', photoUrl);
-            editContactView._activeContact.set("Id", contact.Id);
             editContactView._activeContact.set("uuid", contact.uuid);
             editContactView._activeContact.set("name", contact.name);
             editContactView._activeContact.set("alias", contact.alias);

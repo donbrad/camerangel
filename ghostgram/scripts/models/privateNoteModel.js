@@ -70,6 +70,10 @@ var privateNoteModel = {
 
     },
 
+    sync : function () {
+        privateNoteModel.notesDS.sync();
+    },
+    
     addNote : function (note) {
         privateNoteModel.notesDS.add(note);
         privateNoteModel.notesDS.sync();
@@ -88,7 +92,7 @@ var privateNoteModel = {
 
         var Id = note.Id;
         if (Id !== undefined){
-            everlive.updateOne(privateNoteModel._cloudClass, note, function (error, data) {
+            everlive.update(privateNoteModel._cloudClass, note, {'noteId' : note.noteId}, function (error, data) {
                 //placeNoteModel.notesDS.remove(note);
             });
         }

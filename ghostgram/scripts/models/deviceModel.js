@@ -272,6 +272,7 @@ var deviceModel = {
         }
 
         userDataChannel.history();
+        userModel.syncCloudModels();
         everlive.syncCloud();
         photoModel.processCloudPushList();
 

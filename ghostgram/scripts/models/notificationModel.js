@@ -50,6 +50,10 @@ var notificationModel = {
         notificationModel.notificationDS.fetch();
     },
 
+    sync: function () {
+        notificationModel.notificationDS.sync();
+    },
+
     findNotification : function (type, id) {
         var query = [
             { field: "type", operator: "eq", value: type },
@@ -158,9 +162,9 @@ var notificationModel = {
 
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
-
-        notification.Id = notification.uuid;
+        
         notificationModel.notificationDS.add(notification);
+        notificationModel.notificationDS.sync();
         everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Notification " + JSON.stringify(error));
@@ -299,20 +303,21 @@ var notificationModel = {
             var Id = notObj.Id;
             if (unreadCount === undefined || unreadCount === 0) {
 
-                if (Id !== undefined){
-                    everlive.deleteOne(notificationModel._cloudClass, Id, function (error, data) {
-                        notificationModel.notificationDS.remove(notObj);
-                    });
-                }
+                notificationModel.notificationDS.remove(notObj);
+
+                everlive.delete(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
+
+                });
+
 
             } else {
                 notObj.set('unreadCount', unreadCount);
 
-                if (Id !== undefined){
-                    everlive.updateOne(notificationModel._cloudClass, notObj, function (error, data) {
-                        //placeNoteModel.notesDS.remove(note);
-                    });
-                }
+                notificationModel.notificationDS.sync();
+                everlive.update(notificationModel._cloudClass, notObj, {'uuid' : notObj.uuid}, function (error, data) {
+                    //placeNoteModel.notesDS.remove(note);
+                });
+
             }
         }
 

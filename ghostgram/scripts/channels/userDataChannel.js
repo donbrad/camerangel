@@ -165,6 +165,7 @@ var userDataChannel = {
         message.data = data;
 
         userDataChannel.messagesDS.add(message);
+        userDataChannel.messagesDS.sync();
 
         if (deviceModel.isOnline()) {
            everlive.createOne(userDataChannel._cloudClass, message, function (error, data){

@@ -130,6 +130,10 @@ var contactModel = {
 
     },
 
+    sync : function () {
+        contactModel.contactsDS.sync();
+    },
+    
     processContactUpdates : function (contacts) {
         for (var i=0; i<contacts.length; i++) {
 
@@ -673,7 +677,6 @@ var contactModel = {
                 contact.set("isFavorite", false);
                 contact.set("isBlocked", false);
                 contact.set("isDeleted", false);
-                contact.set("Id", guid);
                 contact.set("uuid", guid);
                 contact.set("contactUUID", result.userUUID);
                 contact.set("contactPublcKey", result.publicKey);

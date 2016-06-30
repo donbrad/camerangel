@@ -253,7 +253,6 @@ var privateChannel = {
                     // for the recipient, its this users uuid.
                     // for the sender, it's the recipients uuid
                     var parsedMsg = {
-                        Id: message.msgID,
                         type: 'privateMessage',
                         recipient: message.recipient,
                         sender: userModel._user.userUUID,
