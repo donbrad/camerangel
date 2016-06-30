@@ -171,6 +171,7 @@ var userModel = {
 
 
     syncCloudModels : function () {
+        mobileNotify("Syncing Cloud Models...");
         contactModel.sync();
         channelModel.sync();
         photoModel.sync();
