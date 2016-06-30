@@ -833,6 +833,7 @@ var modalChatPhotoView = {
              modalChatPhotoView._activePhoto.set('photoId', photoId);
              modalChatPhotoView.updatePhotoStatus(photo);
 
+             $("#modalChatPhotoView-photoView").velocity("fadeIn");
              $("#modalChatPhotoView").data("kendoMobileModalView").open();
 
          } else {
