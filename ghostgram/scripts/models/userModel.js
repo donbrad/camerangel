@@ -169,6 +169,19 @@ var userModel = {
 
     },
 
+
+    syncCloudModels : function () {
+        contactModel.sync();
+        channelModel.sync();
+        photoModel.sync();
+        placesModel.sync();
+        privateNoteModel.sync();
+        sharedPhotoModel.sync();
+        smartEvent.sync();
+        smartMovie.sync();
+        notificationModel.sync();
+    },
+
     initKendo : function () {
         if (userModel.kendoInit)
             return;

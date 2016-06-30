@@ -143,6 +143,10 @@ var smartEvent = {
         smartEvent.eventsDS.fetch();
     },
     
+    sync : function () {
+        smareEvent.eventsDS.sync();    
+    },
+    
     queryTerm: function (query) {
 
         if (query === undefined)
@@ -317,8 +321,20 @@ var smartEvent = {
                 if (!found) {
                     // No response from this recipient -- need to add one
                     event.rsvpList.push(JSON.stringify(commentObj));
+                    
                 }
+                
+                
+                everlive.update(smartEvent._cloudClass, event, {'uuid' : event.uuid}, function (error, data){
+                    if (error !== null) {
+                        mobileNotify ("Error creating Smart Event " + JSON.stringify(error));
+                    } else {
+                        // Add the everlive object with everlive created Id to the datasource
 
+
+                    }
+                });
+                
                 //updateParseObject('smartobject', 'uuid', eventId, 'rsvpList', event.rsvpList);
             }
 
@@ -363,7 +379,7 @@ var smartEvent = {
         smartOb.set('version', smartEvent._version);
         smartOb.set('ggType', smartEvent._ggClass);
         smartOb.set('uuid', objectIn.uuid);
-        smartOb.set('Id', objectIn.uuid);
+       // smartOb.set('Id', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);
         smartOb.set('channelUUID', objectIn.channelUUID);
@@ -404,6 +420,7 @@ var smartEvent = {
         smartOb.set('rsvpList', objectIn.rsvpList);
 
         smartEvent.eventsDS.add(smartOb);
+        smartEvent.eventsDS.sync();
         if (callback !== undefined && callback !== null) {
             callback(smartOb);
         }

@@ -117,6 +117,7 @@ var photoModel = {
 
 
         photoModel.photosDS.fetch();
+      //  photoModel.deletedPhotosDS.fetch();
         deviceModel.setAppState('hasPhotos', true);
 
 
@@ -130,6 +131,7 @@ var photoModel = {
 
     sync : function () {
         photoModel.photosDS.sync();
+        //photoModel.deletedPhotosDS.sync();
     },
     
     updateLocalUrl : function (uuid, localUrl) {

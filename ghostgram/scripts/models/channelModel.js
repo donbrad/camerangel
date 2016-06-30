@@ -149,6 +149,7 @@ var channelModel = {
 
         channelModel.channelsDS.fetch();
         channelModel.photosDS.fetch();
+        channelModel.groupMessagesDS.fetch();
         channelModel.recalledPhotosDS.fetch();
         channelModel.recalledMessagesDS.fetch();
 
@@ -162,6 +163,14 @@ var channelModel = {
         }, 5000);*/
     },
 
+    sync : function () {
+        channelModel.channelsDS.sync();
+        channelModel.photosDS.sync();
+        channelModel.recalledPhotosDS.sync();
+        channelModel.recalledMessagesDS.sync();
+        channelModel.groupMessagesDS.sync();
+    },
+    
     updateActiveChannel : function (channelUUID) {
         channelModel.activeChannels[channelUUID] = 1;
     },
