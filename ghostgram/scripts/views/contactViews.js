@@ -1505,6 +1505,7 @@ var contactActionView = {
                         contactList.set('lng', user.lng);
                         contactList.set('isAvailable', contactIsAvailable);
 
+
                         // set current place
                         if (contactPlace !== "" && contactPlace !== undefined) {
                             $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
@@ -1531,11 +1532,11 @@ var contactActionView = {
                 // todo Don - is there a fn that exposes the user object here (for currentplace etc.)?
 
                 // set current place
-                /*if (thisContact.currentPlace !== "" && thisContact.currentPlace !== undefined) {
+                if (thisContact.currentPlace !== "" && thisContact.currentPlace !== undefined) {
                     $("#contactCurrentPlace").removeClass('hidden').text("@" + thisContact.currentPlace);
                 } else {
                     $("#contactCurrentPlace").addClass('hidden').text("");
-                }*/
+                }
             }
         }
 
@@ -1587,7 +1588,7 @@ var contactActionView = {
                     $("#currentContactVerified").addClass("hidden");
                 }
 
-                $("#contactCurrentPlace").addClass('hidden');
+                //$("#contactCurrentPlace").addClass('hidden');
 
 
                 contactActionView.refreshUX(contact);

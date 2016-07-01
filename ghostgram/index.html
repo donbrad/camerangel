@@ -1067,7 +1067,7 @@
 			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
 		</p>
 		<p class="preMotionUp">
-			<a data-role="button" data-click="contactActionView.showLocation" id="contactCurrentPlace" class="btnClearLine-sm"></a>
+			<a data-role="button" data-click="contactActionView.showLocation" id="contactCurrentPlace" class="btnClearLine-sm hidden"></a>
 		</p>
 	</div>
 	<div class="modal-bottom">
@@ -4625,6 +4625,7 @@
 		var name = data.name;
 		var alias = data.alias;
 		var group = data.group;
+
 		var primaryName = ux.returnUXPrimaryName(name, alias);
 		var secondaryName = ux.returnAliasName(name, alias);
 		if  (data.identicon === undefined || data.identicon === null) {
@@ -4677,7 +4678,6 @@
 				#if (data.category === 'member') {#
 						<div class="left listPhoto">
 							<div class="statusContactList">
-
 								#if (data.isAvailable !== undefined && data.isAvailable) { #
 									<img class="circle-img-md" src="#:photoUrl#" />
 									<img src="images/status-available.svg" class="statusContactList-icon" />
