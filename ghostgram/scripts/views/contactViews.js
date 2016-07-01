@@ -1471,11 +1471,11 @@ var contactActionView = {
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
 
-            if (thisContact.lastUpdate === undefined) {
+          /*  if (thisContact.lastUpdate === undefined) {
                 thisContact.lastUpdate = time - 150;
             }
             if ( (thisContact.lastUpdate + 150) <= time ) {
-
+*/
                 // Need to get current data for this contact
                 userStatus.getMemberStatus(thisContact.contactUUID, function (error, user) {
                     thisContact.lastUpdate = ggTime.currentTimeInSeconds();
@@ -1517,7 +1517,7 @@ var contactActionView = {
                 });
 
 
-            } else {
+            /*} else {
 
                 contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
                 contactActionView._activeContact.set('statusMessage', thisContact.statusMessage);
@@ -1537,7 +1537,7 @@ var contactActionView = {
                 } else {
                     $("#contactCurrentPlace").addClass('hidden').text("");
                 }
-            }
+            }*/
         }
 
         if (thisContact.category !== 'unknown') {
