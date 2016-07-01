@@ -17,6 +17,7 @@ var contactsView = {
 
     _viewInitialized : false,
     updateInterval: null,
+    contactCache: [],
 
     onInit : function (e) {
         //_preventDefault(e);
@@ -194,7 +195,7 @@ var contactsView = {
         $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
 
         contactModel.buildContactList();
-        contactModel.updateContactListStatus(true);
+        //contactModel.updateContactListStatus(true);
         //contactModel.updateContactListStatus();
 
         // Update the contact list every 5 minutes while the contact list view is active
@@ -1481,6 +1482,7 @@ var contactActionView = {
                     thisContact.lastUpdate = ggTime.currentTimeInSeconds();
                     if (error === null && user !== null) {
                         var contactIsAvailable = user.isAvailable;
+                        var contactPlace = user.currentPlace;
                         contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
                         contactActionView._activeContact.set('statusMessage', user.statusMessage);
                         contactActionView._activeContact.set('currentPlace', user.currentPlace);
@@ -1496,21 +1498,24 @@ var contactActionView = {
 
                         // Update the contactList object too
                         var contactList = contactModel.findContactList(thisContact.contactUUID);
-                        contactList.set('statusMessage', user.statusMessage);
-                        var contactPlace = user.currentPlace;
-                        contactList.set('currentPlace', contactPlace);
-                        contactList.set('currentPlaceUUID', user.currentPlaceUUID);
-                        contactList.set('googlePlaceId', user.googlePlaceId);
-                        contactList.set('lat', user.lat);
-                        contactList.set('lng', user.lng);
-                        contactList.set('isAvailable', contactIsAvailable);
+                        if (contactList !== undefined) {
+                            contactList.set('statusMessage', user.statusMessage);
+                            contactList.set('currentPlace', contactPlace);
+                            contactList.set('currentPlaceUUID', user.currentPlaceUUID);
+                            contactList.set('googlePlaceId', user.googlePlaceId);
+                            contactList.set('lat', user.lat);
+                            contactList.set('lng', user.lng);
+                            contactList.set('isAvailable', contactIsAvailable);
 
+                            contactsView.contactCache[thisContact.contactUUID] = contactList;
 
-                        // set current place
-                        if (contactPlace !== "" && contactPlace !== undefined) {
-                            $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
-                        } else {
-                            $("#contactCurrentPlace").addClass('hidden').text("");
+                            // set current place
+                            if (contactPlace !== "" && contactPlace !== undefined) {
+                                $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
+                            } else {
+                                $("#contactCurrentPlace").addClass('hidden').text("");
+                            }
+
                         }
 
                     }

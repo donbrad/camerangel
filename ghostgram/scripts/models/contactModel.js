@@ -169,6 +169,19 @@ var contactModel = {
                 contact.photo = contact.identicon;
                 contactModel.contactListDS.add(contact);
             }
+            
+            if (contact.category === 'Member') {
+                var contactList = contactsView.contactCache[contact.contactUUID];
+                if (contactList !== undefined) {
+                    contact.lat = contactList.lat;
+                    contact.lng = contactList.lng;
+                    contact.statusMessage = contactList.statusMessage;
+                    contact.isAvailable = contactList.isAvailable;
+                    contact.currentPlace = contactList.currentPlace;
+                    contact.currentPlaceUUID = contactList.currentPlaceUUID;
+                    contact.googlePlaceId = contactList.googlePlaceId;
+                }
+            }
 
         }
 
