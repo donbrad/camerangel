@@ -1472,6 +1472,7 @@ var contactActionView = {
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
 
+            mobileNotify("Looking up status...");
           /*  if (thisContact.lastUpdate === undefined) {
                 thisContact.lastUpdate = time - 150;
             }
