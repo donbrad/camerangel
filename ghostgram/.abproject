@@ -6,7 +6,7 @@
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks",
   "Description": "intelligram for iOS and Android phones",
-  "BundleVersion": "0.0.132",
+  "BundleVersion": "0.0.13",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -114,7 +114,7 @@
     "cordova-plugin-whitelist",
     "de.appplant.cordova.plugin.email-composer@0.8.3",
     "de.appplant.cordova.plugin.local-notification@0.8.4",
-    "nl.x-services.plugins.calendar@4.4.7",
+    "nl.x-services.plugins.calendar@4.5.1",
     "nl.x-services.plugins.launchmyapp@4.1.4",
     "nl.x-services.plugins.socialsharing@5.1.1",
     "nl.x-services.plugins.toast@2.5.2",
