@@ -739,6 +739,12 @@ var modalChatPhotoView = {
 
             $("#modalChatPhotoSender").addClass('hidden');
 
+
+            // Does the user have copy of this photo?
+            $("modalChatPhotoView-userhascopy").addClass('hidden');
+
+            $("modalChatPhotoView-confirmRecallBtn").addClass('hidden');
+            
             // If the user already has a copy of this photo -- hide all recipient options
             if (modalChatPhotoView._userHasCopy) {
                 $("#modalChatPhotoView-recipientlist").addClass('hidden');
