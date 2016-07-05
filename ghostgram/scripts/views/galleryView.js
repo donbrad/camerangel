@@ -714,12 +714,19 @@ var modalChatPhotoView = {
         if (photoId === undefined) {
             photoId = photo.photoUUID;
         }
-        
+
         modalChatPhotoView._userHasCopy = false;
         var photoObj = photoModel.findPhotoById(photoId);
         if (photoObj != undefined) {
             modalChatPhotoView._userHasCopy = true;
         }
+        // Does the user have copy of this photo?
+        if (modalChatPhotoView._userHasCopy)
+            $("modalChatPhotoView-userhascopy").addClass('hidden');
+        else
+            $("modalChatPhotoView-userhascopy").removeClass('hidden');
+
+
         // photo owner
         if (photo.ownerUUID === userModel._user.userUUID) {
             //$('#modalChatPhotoView-userhascopy').addClass('hidden');
@@ -747,13 +754,6 @@ var modalChatPhotoView = {
             $("#modalChatPhotoRecipient").removeClass('hidden');
 
             $("#modalChatPhotoSender").addClass('hidden');
-
-
-            // Does the user have copy of this photo?
-            if (modalChatPhotoView._userHasCopy)
-                $("modalChatPhotoView-userhascopy").addClass('hidden');
-            else
-                $("modalChatPhotoView-userhascopy").removeClass('hidden');
 
             $("modalChatPhotoView-confirmRecallBtn").addClass('hidden');
             
