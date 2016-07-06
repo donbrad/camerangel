@@ -721,18 +721,22 @@ var modalChatPhotoView = {
             modalChatPhotoView._userHasCopy = true;
         }
         // Does the user have copy of this photo?
-        if (modalChatPhotoView._userHasCopy)
-            $("modalChatPhotoView-inGallery").removeClass('hidden');
-        else
-            $("modalChatPhotoView-inGallery").addClass('hidden');
+        if (modalChatPhotoView._userHasCopy) {
+            $("#modalChatPhotoView-inGallery").removeClass('hidden');
+            $('#modalChatPhotoView-userhascopy').text("In Gallery");
+        } else {
+            $("#modalChatPhotoView-inGallery").addClass('hidden');
+            $('#modalChatPhotoView-userhascopy').text("Not In Gallery");
+
+        }
 
 
         // photo owner
         if (photo.ownerUUID === userModel._user.userUUID) {
-            //$('#modalChatPhotoView-userhascopy').addClass('hidden');
+
             $("#modalChatPhotoRecipient").addClass('hidden');
             $("#modalChatPhotoSender").removeClass('hidden');
-            $("modalChatPhotoView-confirmRecallBtn").removeClass('hidden');
+            $("#modalChatPhotoView-confirmRecallBtn").removeClass('hidden');
 
             /*if (photo.canCopy) {
                 $("#modalChatPhotoViewDecline").addClass('hidden');
@@ -759,7 +763,7 @@ var modalChatPhotoView = {
 
             $("#modalChatPhotoSender").addClass('hidden');
 
-            $("modalChatPhotoView-confirmRecallBtn").addClass('hidden');
+            $("#modalChatPhotoView-confirmRecallBtn").addClass('hidden');
             
             // If the user already has a copy of this photo -- hide all recipient options
             $("#modalChatPhotoView-recipientlist").addClass('hidden');
