@@ -1,12 +1,12 @@
 {
-  "ProjectName": "ghostgram",
+  "ProjectName": "intelligram",
   "ProjectGuid": "73905311-744c-48f9-9909-d427fe5ad083",
   "projectVersion": 1,
   "AppIdentifier": "com.kyburzcodeworks.ghostgrams",
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks",
   "Description": "intelligram for iOS and Android phones",
-  "BundleVersion": "0.0.135",
+  "BundleVersion": "0.0.136",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
