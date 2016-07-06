@@ -722,12 +722,19 @@ var modalChatPhotoView = {
         }
         // Does the user have copy of this photo?
         if (modalChatPhotoView._userHasCopy) {
-            $("#modalChatPhotoView-inGallery").removeClass('hidden');
-            $('#modalChatPhotoView-userhascopy').text("In Gallery");
+           // $("#modalChatPhotoView-inGallery").removeClass('hidden');
+            $('#modalChatPhotoView-userhascopy').text("In Memories Gallery");
+            $('#modalChatPhotoViewUnlocked').addClass('hidden');
         } else {
-            $("#modalChatPhotoView-inGallery").addClass('hidden');
-            $('#modalChatPhotoView-userhascopy').text("Not In Gallery");
+           // $("#modalChatPhotoView-inGallery").addClass('hidden');
+            if (photo.canCopy) {
+                $('#modalChatPhotoView-userhascopy').text("Copy to Memories Gallery");
+                $('#modalChatPhotoViewUnlocked').removeClass('hidden');
 
+            } else {
+                $('#modalChatPhotoView-userhascopy').text("Protected by Owner");
+                $('#modalChatPhotoViewUnlocked').addClass('hidden');
+            }
         }
 
 
