@@ -722,9 +722,9 @@ var modalChatPhotoView = {
         }
         // Does the user have copy of this photo?
         if (modalChatPhotoView._userHasCopy)
-            $("modalChatPhotoView-userhascopy").removeClass('hidden');
+            $("modalChatPhotoView-inGallery").removeClass('hidden');
         else
-            $("modalChatPhotoView-userhascopy").addClass('hidden');
+            $("modalChatPhotoView-inGallery").addClass('hidden');
 
 
         // photo owner
@@ -869,7 +869,7 @@ var modalChatPhotoView = {
                      modalChatPhotoView._photoUrl = url;
                      modalChatPhotoView._activePhoto.set('photoUrl', url);
                      modalChatPhotoView._activePhoto.set('photoId', photoId);
-                     
+
                      $('#modalChatPhotoView-photoView').attr('src', url);
                      modalChatPhotoView.updatePhotoStatus(photo);
 
