@@ -747,6 +747,10 @@ var modalChatPhotoView = {
                 $("#modalChatPhotoViewOwnerUnlocked").addClass('hidden');
             }*/
             $("#modalChatPhotoOwnerName").text("you");
+
+            // Todo: don - need to do hide / show if phot has been shared
+            $("#modalChatPhotoView-recipientlist").removeClass('hidden');
+
         } else {
             // user does not own the photo
             $("#modalChatPhotoOwnerName").text(photo.ownerName);
@@ -758,11 +762,8 @@ var modalChatPhotoView = {
             $("modalChatPhotoView-confirmRecallBtn").addClass('hidden');
             
             // If the user already has a copy of this photo -- hide all recipient options
-            if (modalChatPhotoView._userHasCopy) {
-                $("#modalChatPhotoView-recipientlist").addClass('hidden');
-            } else {
-                $("#modalChatPhotoView-recipientlist").removeClass('hidden');
-            }
+            $("#modalChatPhotoView-recipientlist").addClass('hidden');
+
 
             // Copy photo allowed
 
