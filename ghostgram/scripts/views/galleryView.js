@@ -869,21 +869,7 @@ var modalChatPhotoView = {
                      modalChatPhotoView._photoUrl = url;
                      modalChatPhotoView._activePhoto.set('photoUrl', url);
                      modalChatPhotoView._activePhoto.set('photoId', photoId);
-
-                     var photoObj = photoModel.findPhotoById(photoId);
-
-                     modalChatPhotoView._userHasCopy = false;
-                     $('#modalChatPhotoView-userhascopy').addClass('hidden');
-                     if (photoObj !== undefined) {
-                         // This user already has a copy of this photo
-                         modalChatPhotoView._userHasCopy = true;
-                         $('#modalChatPhotoView-userhascopy').removeClass('hidden');
-
-                         if (photoObj.canCopy === undefined) {
-                             photoObj.canCopy = true;
-                         }
-                     }
-
+                     
                      $('#modalChatPhotoView-photoView').attr('src', url);
                      modalChatPhotoView.updatePhotoStatus(photo);
 
