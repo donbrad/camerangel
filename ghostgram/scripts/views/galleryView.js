@@ -732,7 +732,7 @@ var modalChatPhotoView = {
                 $('#modalChatPhotoViewUnlocked').removeClass('hidden');
 
             } else {
-                $('#modalChatPhotoView-userhascopy').text("Protected by Owner");
+                $('#modalChatPhotoView-userhascopy').text("Locked by Sender");
                 $('#modalChatPhotoViewUnlocked').addClass('hidden');
             }
         }
