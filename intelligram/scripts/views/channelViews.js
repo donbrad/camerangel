@@ -2891,6 +2891,18 @@ var channelView = {
         mobileNotify("Chat Flight isn't wired up yet");
     },
 
+    messagePlace : function (e) {
+        _preventDefault(e);
+
+        mobileNotify("Chat Place isn't wired up yet");
+    },
+
+    messageTrip: function (e) {
+        _preventDefault(e);
+        mobileNotify("Chat Trip isn't wired up yet");
+    },
+
+
     messageMusic : function (e) {
         _preventDefault(e);
         mobileNotify("Chat Music isn't wired up yet");
