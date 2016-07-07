@@ -6,7 +6,7 @@
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks",
   "Description": "intelligram for iOS and Android phones",
-  "BundleVersion": "0.0.136",
+  "BundleVersion": "0.0.137",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -88,6 +88,7 @@
   ],
   "CorePlugins": [
     "cc.fovea.cordova.purchase@5.0.2",
+    "com.estimote.sdk@1.1.1",
     "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.phonegap.plugins.barcodescanner@5.0.1",
@@ -120,6 +121,7 @@
     "nl.x-services.plugins.toast@2.5.2",
     "org.apache.cordova.labs.keyboard",
     "org.apache.cordova.plugin.sms@0.1.1",
+    "org.devgeeks.privacyscreen@0.2.0",
     "uk.co.whiteoctober.cordova.appversion@0.1.7"
   ],
   "iOSDeploymentTarget": "8.0"
