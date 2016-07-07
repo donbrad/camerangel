@@ -395,7 +395,7 @@ var appDataChannel = {
         var msg = new Object();
 
         var event = smartEvent.findObject(eventId);
-        var notificationString =  userModel._user.name + " wants to connect on Ghostgrams";
+        var notificationString =  userModel._user.name + " wants to connect on intelligram";
         msg.msgID = uuid.v4();
         msg.type = 'connectRequest';
         msg.version = appDataChannel._version;
@@ -444,7 +444,7 @@ var appDataChannel = {
         var msg = new Object();
 
         var event = smartEvent.findObject(eventId);
-        var notificationString =  userModel._user.name + " wants to connect on Ghostgrams";
+        var notificationString =  userModel._user.name + " wants to connect on intelligram";
         msg.msgID = uuid.v4();
         msg.type = 'connectResponse';
         msg.version = appDataChannel._version;
@@ -684,7 +684,7 @@ var appDataChannel = {
         msg.version = appDataChannel._version;
         msg.ownerId = userModel._user.get('userUUID');
         msg.ownerName = userModel._user.get('name');
-        msg.message  =  msg.ownerName + " is a new ghostgrams contact." ;
+        msg.message  =  msg.ownerName + " is a new intelligram contact." ;
 
         msg.time = new Date().getTime();
         msg.pn_apns = {
@@ -699,7 +699,7 @@ var appDataChannel = {
         msg.pn_gcm = {
             data : {
                 title: notificationString,
-                message: msg.ownerName + " is a new ghostgrams contact.",
+                message: msg.ownerName + " is a new intelligram contact.",
                 target: '#contacts',
                 image: "icon",
                 isMessage: false

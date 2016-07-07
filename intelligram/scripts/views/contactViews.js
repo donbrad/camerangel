@@ -308,7 +308,7 @@ var contactsView = {
         var email = contact.email, inviteSent = contact.inviteSent;
 
         if (inviteSent === undefined || inviteSent === false) {
-            mobileNotify("Sorry, you can't invite new users to Ghostgrams Alpha");
+            mobileNotify("Sorry, you can't invite new users to intelligram Alpha");
 
             /*contactModel.currentContact.set('inviteSent', true);
             contactModel.currentContact.set('lastInvite', ggTime.currentTime());
@@ -670,7 +670,7 @@ var addContactView = {
 
         memberdirectory.findMemberByPhone(phone, function (user) {
             if (user !== null) {
-                mobileNotify(user.name + " is a ghostgrams member!");
+                mobileNotify(user.name + " is a intelligram member!");
 
                 addContactView._phoneValid = true;
                 addContactView._isMember = true;

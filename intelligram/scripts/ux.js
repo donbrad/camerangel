@@ -516,7 +516,7 @@ var ux = {
 				isHtml:      false
 			}, function (msg) {
 
-				mobileNotify("Email sent to ghostgrams support");
+				mobileNotify("Email sent to intelligram support");
 
 			});
 		}

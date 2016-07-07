@@ -13,7 +13,7 @@ var notificationModel = {
     // Types of notifications...
     _cloudClass : 'notifications',
     _ggClass : 'Notification',
-    _intro: 'ghostgrams recommends',
+    _intro: 'intelligram recommends',
     _unreadCount : 'Unread Messages',
     _newChat : 'New Chat',
     _newPrivate : 'New Private Chat',
@@ -21,7 +21,7 @@ var notificationModel = {
     _memberStatus : 'New Member Status',
     _deleteChat : 'Delete Chat',
     _deletePrivateChat : 'Delete Private Chat',
-    _system: 'ghostgrams',
+    _system: 'intelligram',
     _verifyPhone : 'Verify Phone',
     _verifyEmail : 'Verify Email',
     _connectRequest: 'Connect Request',

@@ -1096,7 +1096,7 @@ var signUpView = {
                                         });
 
                                      } else {
-                                        mobileNotify(phone + " matches an existing ghostgrams member!");
+                                        mobileNotify(phone + " matches an existing intelligram member!");
                                         //Todo:  we should a link to login / signin...
                                         signUpView.signUpPhoneReset();
                                         APP.kendo.navigate("#usersignin");
@@ -1350,7 +1350,7 @@ var signUpView = {
 
             cordova.plugins.notification.local.add({
                 id: 'userWelcome',
-                title: 'Welcome to ghostgrams',
+                title: 'Welcome to intelligram',
                 message: 'You have a secure connection to your family, friends and favorite places',
                 autoCancel: true,
                 date: new Date(new Date().getTime() + 120)
@@ -1366,7 +1366,7 @@ var signUpView = {
         userStatus.update();
         APP.kendo.navigate('#home');
         userModel._user.bind('change', userModel.sync);
-        mobileNotify('Welcome to ghostgrams!');
+        mobileNotify('Welcome to intelligram!');
     },
 
     doCreateAccount : function (e) {
@@ -1572,7 +1572,7 @@ var signInView = {
 
         APP.everlive.online();
         
-        mobileNotify("Signing you in to ghostgrams....");
+        mobileNotify("Signing you in to intelligram....");
 
         everlive.login(username, password , function (error, data) {
 
@@ -1701,7 +1701,7 @@ var verifyPhoneModal = {
 
                     cordova.plugins.notification.local.add({
                         id: 'verifyPhone',
-                        title: 'Welcome to ghostgrams',
+                        title: 'Welcome to intelligram',
                         message: 'Please verify your phone',
                         autoCancel: true,
                         date: new Date(new Date().getTime() + 30)
