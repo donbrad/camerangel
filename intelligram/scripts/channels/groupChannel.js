@@ -124,7 +124,7 @@ var groupChannel = {
             }*/
            
         }
-        // A user has left or timed out of ghostgrams so we remove them from our users object.
+        // A user has left or timed out of intelligram so we remove them from our users object.
         else if (msg.action === "timeout" || msg.action === "leave") {
             // Don't report presence for this user -- only other members
             if (msg.uuid !== userModel._user.userUUID) {

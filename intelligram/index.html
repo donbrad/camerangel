@@ -500,7 +500,7 @@
 		<div class="notify-info">
 			#if(data.type === 'Unread Messages'){#
 				<span><img src="images/icon-notify-unread.svg" class="icon-notify" /> #= description #</span>
-			#} else if(data.type === 'ghostgram recommends'){#
+			#} else if(data.type === 'intelligram recommends'){#
 				<span><img src="images/icon-notify-recommend.svg" class="icon-notify" /> Recommended</span>
 			#} else if(data.type === 'New Member'){#
 				<span>New Member</span>
@@ -1958,6 +1958,8 @@
 		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
 		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
 		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
+		<li><a data-action="channelView.messagePlace"><img src="images/smart-coffee.svg" class="icon-smart"/> Add Place</a></li><li>
+		<a data-action="channelView.messageTrip"><img src="images/smart-time.svg" class="icon-smart"/> Add Trip</a></li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
@@ -2090,7 +2092,7 @@
 		<div class="footerBk" data-role="footer" id="addChat-helper-1">
 			<div class="helperBox" id="addChat-helper1" >
 				<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
-				<a class="btnClear" data-role="button" href="#contacts">Go to ghostgram contacts</a>
+				<a class="btnClear" data-role="button" href="#contacts">Go to intelligram contacts</a>
 			</div>
 		</div>
 	</div>
@@ -4221,7 +4223,7 @@
 	</div>
 
     <div style="padding: 16px;" id="profilePhotoImportDiv">
-		<p> Take a new "selfie" Profile Photo with your phone's camera or choose a photo from your phone's gallery or ghostgram Memories.  </p>
+		<p> Take a new "selfie" Profile Photo with your phone's camera or choose a photo from your phone's gallery or intelligram Memories.  </p>
         <div style="text-align: center; display: inline-block;">
             <a type="button" data-role="button" data-click="editProfilePhotoView.doCamera" class="btnClearLine-grey-sm">Phone Camera</a>
             <a type="button" data-role="button" data-click="editProfilePhotoView.doPhotoGallery" class="btnClearLine-grey-sm">Phone Photos</a>

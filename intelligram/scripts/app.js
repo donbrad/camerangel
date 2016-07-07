@@ -128,7 +128,7 @@
 
 				deviceModel.appVersion = version;
 				userModel._user.set('appVersion', version);
-				mobileNotify("ghostgrams version: " + deviceModel.appVersion);
+				mobileNotify("intelligram version: " + deviceModel.appVersion);
 
 			});
 
@@ -139,7 +139,7 @@
 					cordova.plugins.notification.local.schedule({
 						id         : 1,
 						title      : 'Welcome Back!',
-						text       : 'ghostgrams missed you...',
+						text       : 'intelligram missed you...',
 						sound      : null,
 						autoClear  : true,
 						at         : new Date(new Date().getTime())
