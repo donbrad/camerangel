@@ -2258,6 +2258,12 @@ var channelView = {
                     } else if (object.ggType === 'Movie') {
                         smartMovie.smartAddMovie(object);
                         smartMovieView.openModal(object);
+                    } else if (object.ggType === 'Place') {
+                        var locObj = {placeId: null, lat: object.lat, lng: object.lng, name: "IntelliPlace", targetName: object.name};
+                        mapViewModal.openModal(locObj, function () {
+
+                        });
+
                     }
 
                 }
@@ -2925,7 +2931,7 @@ var channelView = {
 
         smartEventPlacesView.openModal("", "IntelliPlace", function (placeObj) {
             if (placeObj !== undefined && placeObj !== null) {
-                var place = {ggType: 'Place', uuid: guid.v4(), senderUUID: userModel._user.userUUID};
+                var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID};
 
                 place.lat = placeObj.lat;
                 place.lng = placeObj.lng;
