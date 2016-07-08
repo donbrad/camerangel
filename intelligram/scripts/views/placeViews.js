@@ -2943,10 +2943,13 @@ var mapViewModal = {
         //_preventDefault(e);
     },
 
-    openModal: function (locObj, callback) {
+    openModal: function (locObj,  callback) {
         // _preventDefault(e);
         var valid = false;
 
+        if (locObj.title !== null) {
+            $('#mapViewModal-title').text(locObj.title);
+        }
         if (!mapViewModal._inited) {
             mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), mapModel.mapOptions);
             mapViewModal._inited = true;
