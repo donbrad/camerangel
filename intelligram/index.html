@@ -481,14 +481,14 @@
 	</li>
 	<li class="home-section-header ggHome-smart">
 		<div>
-			<img src="images/icon-smart-light.svg" class="icon-home-sm" /> Smart Events
+			<img src="images/icon-smart-light.svg" class="icon-home-sm" /> IntelliEvents
 			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
 		</div>
 	</li>
 	<li data-role="button" data-click="homeView.openNotificationAction">
 		<div class="home-section home-section-smart">
 			<img src="images/smart-event-home.svg" class="icon-smart-home left" />
-			<h3>Smart Event Title</h3>
+			<h3>IntelliEvent Title</h3>
 			<p>Event action or update</p>
 		</div>
 	</li>
@@ -2863,7 +2863,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-align="left" class="helper smartNote-title">
-				<img src="images/smart-note.svg" class="icon-sm" /> Smart Note
+				<img src="images/smart-note.svg" class="icon-sm" /> IntelliNote
 			</span>
 			<a data-click="smartNoteView.onCancel" data-role="button" class="btnClear-red" data-align="right">Cancel</a>
 		</div>
@@ -3111,11 +3111,43 @@
 	</div>
 </div>
 
+
+<div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartTripView.activeObject" data-init="smartTripView.onInit" data-open="smartTripView.onShow" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span id="smartTripModel-title">IntelliTrip</span>
+			<a data-click="smartTripView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
+				<img src="images/close.svg" />
+			</a>
+		</div>
+	</div>
+	<div class="eventBanner hidden">
+		<div>
+			<p>
+				<img src="" class="icon-sm tripBannerImg" />
+				<span class="TripBannerTitle"></span>
+			</p>
+		</div>
+	</div>
+	<ul class="list-inline" id="smartTripModal-owner">
+
+	</ul>
+
+	<ul class="list-inline hidden" id="smartTripModal-viewer">
+
+	</ul>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModalSaveBtn" data-click="smartTripModal.onSave">Send IntelliTrip</a>
+		<a class="btnFull-modal btnPrimary  hidden" data-role="button" id="smartTripModalDoneBtn" data-click="smartTripModal.onViewDone">Done</a>
+	</div>
+</div>
+
+
 <!-- smartMovie movieGram modal -->
 <div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView.activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Smart Movie</span>
+			<span>IntelliMovie</span>
 			<a data-click="smartMovieView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
 				<img src="images/nav-back.svg" />
 			</a>
@@ -3206,7 +3238,7 @@
 		<ul id="smartMovieView-listview"></ul>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send SmartMovie</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartMovieViewSaveBtn" data-click="smartMovieView.onSave">Send IntelliMovie</a>
 		<a class="btnFull-modal btnPrimary  hidden" data-role="button" id="smartMovieViewDoneBtn" data-click="smartMovieView.onViewDone">Done</a>
 	</div>
 </div>
@@ -3219,7 +3251,7 @@
 <div data-role="modalview" id="smartEventModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartEventView._activeObject" data-init="smartEventView.onInit" data-open="smartEventView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Smart Event</span>
+			<span>IntelliEvent</span>
 			<a data-click="smartEventView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
 				<img src="images/nav-back.svg" />
 			</a>
@@ -3860,10 +3892,10 @@
 
 
 <!-- Smart Event Location -->
-<div data-role="modalview" data-title="Smart Location" id="smartLocationModal" data-init="smartLocationView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+<div data-role="modalview" data-title="IntelliLocation" id="smartLocationModal" data-init="smartLocationView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Smart Location</span>
+			<span>IntelliLocation</span>
 			<a data-role="button" data-align="left" data-click="smartLocationView.closeModal"><img src="images/nav-back.svg" /></a>
 		</div>
 	</div>
@@ -3888,10 +3920,10 @@
 
 
 <!-- Smart Event Places -->
-<div data-role="modalview" data-title="Smart Places" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
+<div data-role="modalview"  id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span id="smartEventPlacesModal-title">Smart Event Places</span>
+			<span id="smartEventPlacesModal-title">IntelliEvent Places</span>
 			<a data-role="button" data-align="left" data-click="smartEventPlacesView.closeModal"><img src="images/nav-back.svg" /></a>
 		</div>
 	</div>
