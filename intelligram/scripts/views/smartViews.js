@@ -2448,4 +2448,31 @@ var smartMovieView = {
 };
 
 
+var smartTripView = {
+    activeObject : new kendo.data.ObservableObject(),
+    callback : null,
 
+    openModal : function (tripObj, callback) {
+        
+    },
+    
+    onInit : function (e) {
+
+    },
+
+    onOpen : function (e) {
+
+    },
+
+    onCancel : function (e) {
+
+    },
+
+    onSave : function (e) {
+
+    },
+
+    onViewDone : function (e) {
+        
+    }
+};

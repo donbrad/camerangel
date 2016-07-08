@@ -3112,7 +3112,7 @@
 </div>
 
 
-<div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartTripView.activeObject" data-init="smartTripView.onInit" data-open="smartTripView.onShow" class="appearance">
+<div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartTripView.activeObject" data-init="smartTripView.onInit" data-open="smartTripView.onOpen" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span id="smartTripModel-title">IntelliTrip</span>
@@ -3130,15 +3130,29 @@
 		</div>
 	</div>
 	<ul class="list-inline" id="smartTripModal-owner">
-
+		<li >
+			<label> Name
+				<input type="search" id="smartTripView-name" data-bind="value: name" />
+			</label>
+		</li>
+		<li >
+			<label> Origin (Start)
+				<input type="search" id="smartTripView-origin" data-bind="value: origin" />
+			</label>
+		</li>
+		<li >
+			<label> Destination (End)
+				<input type="search" id="smartTripView-destination" data-bind="value: origin" />
+			</label>
+		</li>
 	</ul>
 
 	<ul class="list-inline hidden" id="smartTripModal-viewer">
 
 	</ul>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModalSaveBtn" data-click="smartTripModal.onSave">Send IntelliTrip</a>
-		<a class="btnFull-modal btnPrimary  hidden" data-role="button" id="smartTripModalDoneBtn" data-click="smartTripModal.onViewDone">Done</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-saveBtn" data-click="smartTripModal.onSave">Send IntelliTrip</a>
+		<a class="btnFull-modal btnPrimary  hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
 	</div>
 </div>
 
