@@ -3129,65 +3129,66 @@
 			</p>
 		</div>
 	</div>
-	<ul class="list-inline" id="smartTripModal-owner">
-		<li >
-			<label> Name
-				<input type="search" id="smartTripView-name" data-bind="value: name" />
-			</label>
-		</li>
-		<li >
-			<label> Origin (Start) <a data-click="smartMovieEdit.onOriginSearch" data-role="button" class="btnClear" id="smartTripView-originSearchBtn"> Find... </a>
-				<input type="search" id="smartTripView-origin" data-bind="value: origin" />
-			</label>
-		</li>
-		<li >
-			<label> Destination (End) <a data-click="smartMovieEdit.onDestinationSearch" data-role="button" class="btnClear" id="smartTripView-destinationSearchBtn"> Find... </a>
-				<input type="search" id="smartTripView-destination" data-bind="value: destination" />
-			</label>
-		</li>
-		<li >
-			<label> Type of Trip
-				<select id="smartTripView-tripType" data-bind="value: tripType" >
-					<option value="oneway">One Way</option>
-					<option value="roundtrip">Round Trip</option>
-					<option value="commute">Commute</option>
-				</select>
-			</label>
-		</li>
-		<li >
-			<label> Auto Update My Status
-				<select id="smartTripView-autoUpdate" data-bind="value: autoUpdate" >
-					<option value="0">Never</option>
-					<option value="10">Every 10 Minutes</option>
-					<option value="30">Every 30 Minutes</option>
-					<option value="60">Every Hour</option>
-				</select>
-			</label>
-		</li>
-		<li >
-			<label> Depart
-				<input type="date" id="smartTripView-departure" data-bind="value: departure" />
-			</label>
-		</li>
-		<li >
-			<label> Arrival
-				<input type="date" id="smartTripView-arrival" data-bind="value: arrival" />
-			</label>
-		</li>
-		<li >
-			<label> Travel Time
-				<input  id="smartTripView-travelTime" data-bind="value: travelTime" readonly />
-			</label>
-		</li>
-	</ul>
-
+	<form>
+		<ul class="list-inline" data-style="inset" id="smartTripModal-owner">
+			<li >
+				<label> Name
+					<input type="search" id="smartTripView-name" data-bind="value: name" />
+				</label>
+			</li>
+			<li >
+				<label> Origin (Start) <a data-click="smartMovieEdit.onOriginSearch" data-role="button" class="btnClear" id="smartTripView-originSearchBtn"> Find... </a>
+					<input type="search" id="smartTripView-origin" data-bind="value: origin" />
+				</label>
+			</li>
+			<li >
+				<label> Destination (End) <a data-click="smartMovieEdit.onDestinationSearch" data-role="button" class="btnClear" id="smartTripView-destinationSearchBtn"> Find... </a>
+					<input type="search" id="smartTripView-destination" data-bind="value: destination" />
+				</label>
+			</li>
+			<li >
+				<label> Type of Trip </br>
+					<select id="smartTripView-tripType" data-bind="value: tripType" >
+						<option value="oneway">One Way</option>
+						<option value="roundtrip">Round Trip</option>
+						<option value="commute">Commute</option>
+					</select>
+				</label>
+			</li>
+			<li >
+				<label> Auto Update My Status </br>
+					<select id="smartTripView-autoUpdate" data-bind="value: autoUpdate" >
+						<option value="0">Never</option>
+						<option value="10">Every 10 Minutes</option>
+						<option value="30">Every 30 Minutes</option>
+						<option value="60">Every Hour</option>
+					</select>
+				</label>
+			</li>
+			<li >
+				<label> Departure Time
+					<input type="date" id="smartTripView-departure" data-bind="value: departure" />
+				</label>
+			</li>
+			<li >
+				<label> Arrival Time
+					<input type="date" id="smartTripView-arrival" data-bind="value: arrival" />
+				</label>
+			</li>
+			<li >
+				<label> Travel Time
+					<input  id="smartTripView-travelTime" data-bind="value: travelTime" readonly />
+				</label>
+			</li>
+		</ul>
+	</form>
 	<ul class="list-inline hidden" id="smartTripModal-viewer">
 
 	</ul>
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-saveBtn" data-click="smartTripModal.onSave">Save</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-restartBtn" data-click="smartTripModal.onRestart">Restart</a>
-		<a class="btnFull-modal btnPrimary  hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
 	</div>
 </div>
 
