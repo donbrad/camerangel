@@ -2457,6 +2457,7 @@ var smartTripView = {
     },
     
     onInit : function (e) {
+        
 
     },
 
