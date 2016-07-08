@@ -2464,6 +2464,15 @@ var smartTripView = {
        
     },
 
+
+    onOriginSearch : function (e) {
+
+    },
+
+    onDestinationSearch : function (e) {
+
+    },
+
     onCancel : function (e) {
         $("#smartTripModal").data("kendoMobileModalView").close();
     },
