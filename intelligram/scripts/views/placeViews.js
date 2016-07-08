@@ -3044,7 +3044,7 @@ var mapViewModal = {
     onDirections : function (e) {
         _preventDefault(e);
         if (window.navigator.simulator === undefined) {
-            if (event.lat !== null) {
+            if (mapViewModal._lat !== null) {
                 $("#mapViewModal").data("kendoMobileModalView").close();
                 launchnavigator.navigate(
                     [mapViewModal._lat, mapViewModal._lng],
