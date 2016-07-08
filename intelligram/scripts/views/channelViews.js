@@ -2143,6 +2143,10 @@ var channelView = {
                 text = channelView.addSmartEventToMessage(smartObject, text);
             } else if (smartObject.ggType === 'Movie') {
                 text = channelView.addSmartMovieToMessage(smartObject, text);
+            } else if (smartObject.ggType === 'Place') {
+                text = channelView.addSmartPlaceToMessage(smartObject, text);
+            } else if (smartObject.ggType === 'Trip') {
+                text = channelView.addSmartTripToMessage(smartObject, text);
             }
 
         }
@@ -2254,6 +2258,12 @@ var channelView = {
                     } else if (object.ggType === 'Movie') {
                         smartMovie.smartAddMovie(object);
                         smartMovieView.openModal(object);
+                    } else if (object.ggType === 'Place') {
+                        var locObj = {placeId: null, lat: object.lat, lng: object.lng, name: "IntelliPlace", targetName: object.name};
+                        mapViewModal.openModal(locObj, function () {
+
+                        });
+
                     }
 
                 }
@@ -2325,6 +2335,31 @@ var channelView = {
         var fullMessage = message + objectUrl;
 
         channelView.activeMessage.objects.push(smartMovie);
+
+        return (fullMessage);
+
+    },
+
+
+    addSmartPlaceToMessage: function (smartPlace, message) {
+
+        //  var editor = $("#messageTextArea").data("kendoEditor");
+        var  objectId = smartPlace.uuid;
+
+
+
+        var objectUrl = '<div><span class="btnSmart-place" data-role="button" data-objectid="' + objectId +
+            '" id="placeobject_' + objectId + '"'+
+            'data-click="channelView.onObjectClick" >' +
+            '<div class="btnSmart-content">' +
+            '<p class="btnSmart-title">' + smartPlace.name + ' </p> ' +
+            '<p class="btnSmart-date textClamp">' + smartPlace.address + '</p> ' +
+            '</div>' +
+            '</span></div>';
+
+        var fullMessage = message + objectUrl;
+
+        channelView.activeMessage.objects.push(smartPlace);
 
         return (fullMessage);
 
@@ -2863,7 +2898,7 @@ var channelView = {
         smartEventView.openModal(null, function (event) {
 
             channelView.messageAddSmartEvent(event);
-            mobileNotify("Sending Smart Event...");
+            mobileNotify("Sending IntelliEvent...");
             channelView.messageSend();
         });
     },
@@ -2874,7 +2909,7 @@ var channelView = {
         movieListView.openModal( null, function (movie) {
             if (movie !== null) {
                 channelView.messageAddSmartMovie(movie);
-                mobileNotify("Sending Smart Movie...");
+                mobileNotify("Sending IntelliMovie...");
                 channelView.messageSend();
             }
         });
@@ -2894,7 +2929,22 @@ var channelView = {
     messagePlace : function (e) {
         _preventDefault(e);
 
-        mobileNotify("Chat Place isn't wired up yet");
+        smartEventPlacesView.openModal("", "IntelliPlace", function (placeObj) {
+            if (placeObj !== undefined && placeObj !== null) {
+                var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID};
+
+                place.lat = placeObj.lat;
+                place.lng = placeObj.lng;
+                place.name  = placeObj.name;
+                place.address = placeObj.address;
+                place.googleId = placeObj.googleId;
+                place.placeUUID = null;
+
+                channelView.messageObjects.push(place);
+                mobileNotify("Sending Intelliplace...");
+                channelView.messageSend();
+            }
+        });
     },
 
     messageTrip: function (e) {
