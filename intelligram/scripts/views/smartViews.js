@@ -2453,7 +2453,7 @@ var smartTripView = {
     callback : null,
 
     openModal : function (tripObj, callback) {
-        
+        $("#smartTripModal").data("kendoMobileModalView").open();
     },
     
     onInit : function (e) {
@@ -2461,11 +2461,11 @@ var smartTripView = {
     },
 
     onOpen : function (e) {
-
+       
     },
 
     onCancel : function (e) {
-
+        $("#smartTripModal").data("kendoMobileModalView").close();
     },
 
     onSave : function (e) {
@@ -2473,6 +2473,6 @@ var smartTripView = {
     },
 
     onViewDone : function (e) {
-        
+        $("#smartTripModal").data("kendoMobileModalView").close();
     }
 };
