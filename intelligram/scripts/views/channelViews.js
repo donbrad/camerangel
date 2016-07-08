@@ -2259,7 +2259,7 @@ var channelView = {
                         smartMovie.smartAddMovie(object);
                         smartMovieView.openModal(object);
                     } else if (object.ggType === 'Place') {
-                        var locObj = {placeId: null, lat: object.lat, lng: object.lng, name: "IntelliPlace", targetName: object.name};
+                        var locObj = {placeId: null, lat: object.lat, lng: object.lng, title: "IntelliPlace", name: null,  targetName: object.name};
                         mapViewModal.openModal(locObj, function () {
 
                         });

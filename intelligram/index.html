@@ -1419,12 +1419,15 @@
 	</div>
 </div>
 
-<div data-role="modalview" data-title="Map" id="mapViewModal" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade" data-stretch="true">
+<div data-role="modalview"  id="mapViewModal" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade" data-stretch="true">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span data-role="view-title"></span>
+			<span data-role="view-title" id="mapViewModal-title">Map</span>
 			<a data-role="button" data-align="left" data-click="mapViewModal.onDone">
-				<img src="images/nav-back.svg"/>
+				<img src="images/close.svg"/>
+			</a>
+			<a data-role="button" data-align="right" data-click="mapViewModal.onDirections">
+				<img src="images/icon-directions.svg"/>
 			</a>
 		</div>
 	</div>

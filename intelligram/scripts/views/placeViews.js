@@ -1588,7 +1588,7 @@ var placeView = {
             return;
         }
         if (window.navigator.simulator === undefined) {
-            if (event.lat !== null) {
+            if (place.lat !== null) {
                 launchnavigator.navigate(
                     [place.lat,place.lng],
                     null,
@@ -1598,9 +1598,9 @@ var placeView = {
                     function(error){
                         mobileNotify("Plugin error: "+ error);
                     });
-            } else if (event.address !== null) {
+            } else if (place.address !== null) {
                 launchnavigator.navigate(
-                    event.address,
+                    place.address,
                     null,
                     function(){
                         mobileNotify("Launching Navigation...");
@@ -2943,10 +2943,13 @@ var mapViewModal = {
         //_preventDefault(e);
     },
 
-    openModal: function (locObj, callback) {
+    openModal: function (locObj,  callback) {
         // _preventDefault(e);
         var valid = false;
 
+        if (locObj.title !== null) {
+            $('#mapViewModal-title').text(locObj.title);
+        }
         if (!mapViewModal._inited) {
             mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), mapModel.mapOptions);
             mapViewModal._inited = true;
@@ -3038,6 +3041,29 @@ var mapViewModal = {
             mapViewModal._activePlace.set('isAvailable', placeObj.isAvailable);
 
         }
+
+    },
+
+    onDirections : function (e) {
+        _preventDefault(e);
+        if (window.navigator.simulator === undefined) {
+            if (mapViewModal._lat !== null) {
+                $("#mapViewModal").data("kendoMobileModalView").close();
+                launchnavigator.navigate(
+                    [mapViewModal._lat, mapViewModal._lng],
+                    null,
+                    function(){
+                        mobileNotify("Launching Navigation...");
+                    },
+                    function(error){
+                        mobileNotify("Plugin error: "+ error);
+                    });
+            }
+        } else {
+            mobileNotify("Navigation not yet supported in emulator...");
+        }
+
+
 
     },
 
