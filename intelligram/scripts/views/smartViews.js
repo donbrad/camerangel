@@ -2448,4 +2448,40 @@ var smartMovieView = {
 };
 
 
+var smartTripView = {
+    activeObject : new kendo.data.ObservableObject(),
+    callback : null,
 
+    openModal : function (tripObj, callback) {
+        $("#smartTripModal").data("kendoMobileModalView").open();
+    },
+    
+    onInit : function (e) {
+
+    },
+
+    onOpen : function (e) {
+       
+    },
+
+
+    onOriginSearch : function (e) {
+
+    },
+
+    onDestinationSearch : function (e) {
+
+    },
+
+    onCancel : function (e) {
+        $("#smartTripModal").data("kendoMobileModalView").close();
+    },
+
+    onSave : function (e) {
+
+    },
+
+    onViewDone : function (e) {
+        $("#smartTripModal").data("kendoMobileModalView").close();
+    }
+};

@@ -2941,7 +2941,7 @@ var channelView = {
                 place.placeUUID = null;
 
                 channelView.messageObjects.push(place);
-                mobileNotify("Sending Intelliplace...");
+                mobileNotify("Sending IntelliPlace...");
                 channelView.messageSend();
             }
         });
@@ -2949,13 +2949,21 @@ var channelView = {
 
     messageTrip: function (e) {
         _preventDefault(e);
-        mobileNotify("Chat Trip isn't wired up yet");
+        smartTripView.openModal(null, function (trip) {
+            if (trip !== undefined && trip !== null) {
+
+
+                /*channelView.messageObjects.push(trip);
+                mobileNotify("Sending IntelliTrip...");
+                channelView.messageSend();*/
+            }
+        });
     },
 
 
     messageMusic : function (e) {
         _preventDefault(e);
-        mobileNotify("Chat Music isn't wired up yet");
+
     }
 
 
