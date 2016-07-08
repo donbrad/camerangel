@@ -3169,13 +3169,24 @@
 				<input type="date" id="smartTripView-departure" data-bind="value: departure" />
 			</label>
 		</li>
+		<li >
+			<label> Arrival
+				<input type="date" id="smartTripView-arrival" data-bind="value: arrival" />
+			</label>
+		</li>
+		<li >
+			<label> Travel Time
+				<input  id="smartTripView-travelTime" data-bind="value: travelTime" readonly />
+			</label>
+		</li>
 	</ul>
 
 	<ul class="list-inline hidden" id="smartTripModal-viewer">
 
 	</ul>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-saveBtn" data-click="smartTripModal.onSave">Send IntelliTrip</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-saveBtn" data-click="smartTripModal.onSave">Save</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-restartBtn" data-click="smartTripModal.onRestart">Restart</a>
 		<a class="btnFull-modal btnPrimary  hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
 	</div>
 </div>

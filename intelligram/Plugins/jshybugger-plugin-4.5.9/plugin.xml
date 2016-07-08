@@ -23,7 +23,7 @@
 
 				<!-- jsHybugger debugging port -->
 				<meta-data android:name="debugPort" android:value="8888"/>
-				<meta-data android:name="releaseBuildDebugging" android:value="true"/>
+				<meta-data android:name="releaseBuildDebugging" android:value="false"/>
 				<meta-data android:name="excludeFiles" android:value="*.min.js,*/cordova.js"/>
 				<meta-data android:name="excludeHosts" android:value="*.google*.com,*.twitter.com,*.gstatic.com"/>
 
