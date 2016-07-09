@@ -150,6 +150,7 @@ var deviceModel = {
         mapModel.googleMap = new google.maps.Map(document.getElementById('map-mapdiv'), mapModel.mapOptions);
       
         mapModel.geocoder =  new google.maps.Geocoder();
+        mapModel.googleDistance = new google.maps.DistanceMatrixService();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
 
         deviceModel.state.googleMapsLoaded = true;

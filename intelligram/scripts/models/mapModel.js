@@ -444,5 +444,44 @@ var mapModel = {
 
         mapModel.googleMap.setCenter({lat : lat, lng: lng});
 
+    },
+
+    getTravelTime : function (origin, destination, departure, arrival, callback, mode) {
+        if (mode === undefined || mode === null) {
+            mode =  google.maps.TravelMode.DRIVING;
+        } else if (mode === 'walk') {
+            mode =  google.maps.TravelMode.WALKING;
+        } else if (mode === 'bike') {
+            mode =  google.maps.TravelMode.BICYCLING;
+        }
+
+        var distanceObj = {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: mode
+        };
+
+        if (departure !== null) {
+            distanceObj.drivingOption  = {
+                departureTime: departure,
+                trafficModel: "pessimistic"
+            }
+        } else if (arrival !== null) {
+            distanceObj.drivingOption  = {
+                arrivalTime: arrival,
+                trafficModel: "pessimistic"
+            }
+        }
+        
+        mapModel.googleDistance.getDistanceMatrix(
+            distanceObj,
+            function (response, status){
+                if (status == google.maps.DistanceMatrixStatus.OK) {
+                    var origins = response.originAddresses;
+                    var destinations = response.destinationAddresses;
+
+                }
+            }
+        );
     }
 };
