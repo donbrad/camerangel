@@ -444,5 +444,64 @@ var mapModel = {
 
         mapModel.googleMap.setCenter({lat : lat, lng: lng});
 
+    },
+
+    getTravelTime : function (origin, destination, departure, arrival, callback, mode) {
+        if (mode === undefined || mode === null) {
+            mode =  google.maps.TravelMode.DRIVING;
+        } else if (mode === 'walk') {
+            mode =  google.maps.TravelMode.WALKING;
+        } else if (mode === 'bike') {
+            mode =  google.maps.TravelMode.BICYCLING;
+        }
+
+        var distanceObj = {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: mode
+        };
+
+        if (departure !== null) {
+            distanceObj.drivingOption  = {
+                departureTime: departure,
+                trafficModel: "pessimistic"
+            }
+        } else if (arrival !== null) {
+            distanceObj.drivingOption  = {
+                arrivalTime: arrival,
+                trafficModel: "pessimistic"
+            }
+        }
+
+        mapModel.googleDistance.getDistanceMatrix(
+            distanceObj,
+            function (response, status){
+                if (status == google.maps.DistanceMatrixStatus.OK) {
+                    var origins = response.originAddresses;
+                    var destinations = response.destinationAddresses;
+                    var results = response.rows[0].elements;
+                    var element = results[0];
+                    var distanceResult = {
+                        valid : true,
+                        error : null,
+                        distance : element.distance.value,
+                        duration  : element.duration.value,
+                        distanceString : element.distance.text,
+                        durationString : element.duration.text,
+                        fromString :  origins[0],
+                        toString :  destinations[0]
+                    };
+
+                    if (callback !== null) {
+                        callback(distanceResult);
+                    }
+                } else {
+                    ggError("Google Distance Error " + JSON.stringify(error));
+                    if (callback !== null) {
+                        callback({valid: false, error: status});
+                    }
+                }
+            }
+        );
     }
 };
