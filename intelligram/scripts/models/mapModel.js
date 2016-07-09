@@ -493,7 +493,7 @@ var mapModel = {
                     };
 
                     if (callback !== null) {
-                        callback(distanceResults)
+                        callback(distanceResult);
                     }
                 } else {
                     ggError("Google Distance Error " + JSON.stringify(error));
