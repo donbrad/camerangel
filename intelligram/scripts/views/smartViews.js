@@ -2451,13 +2451,227 @@ var smartMovieView = {
 var smartTripView = {
     activeObject : new kendo.data.ObservableObject(),
     callback : null,
+    origin: null,
+    destination: null,
+    placesDS : new kendo.data.DataSource(),
+    initialized: false,
 
     openModal : function (tripObj, callback) {
+
+        var placesArray = placesModel.placesDS.data();
+        smartTripView.placesDS.data(placesArray);
+        smartTripView.placesDS.filter([]);
+
+    /*    if (!smartTripView.initialized) {
+
+            smartTripView.initialized = true;
+
+            $("#smartTripView-origin").kendoAutoComplete({
+                dataSource: placesModel.placesDS,
+                ignoreCase: true,
+                dataTextField: "name",
+                dataValueField: "uuid",
+    /!*            change: function (e) {
+                    var placeStr = $("#smartTripView-origin").val();
+
+                    /!*if (smartEventView._placeUUID !== null) {
+                     var place = placesModel.getPlaceModel(smartEventView._placeUUID);
+
+                     if (placeStr === place.name) {
+                     return;
+                     }
+                     smartEventView._placeUUID = null;
+                     smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
+                     smartEventView._activeObject.set('placeName',placeStr);
+                     smartEventView._activeObject.set('address', null);
+                     smartEventView._activeObject.set('lat',null);
+                     smartEventView._activeObject.set('lng',null);
+
+                     }
+                     // event fired on blur -- if a place wasn't selected, need to do a nearby search
+
+                     if (placeStr.length > 3) {
+                     $("#smartEventView-placesearchBtn").text("Find " + placeStr);
+                     $("#smartEventView-placesearchdiv").removeClass('hidden');
+                     } else {
+                     $("#smartEventView-placesearchdiv").addClass('hidden');
+                     }*!/
+
+                },
+*!/                select: function(e) {
+                    // User has selected one of their places
+                    var place = e.item;
+                    var dataItem = this.dataItem(e.item.index());
+                    /!*smartEventView._placeUUID = dataItem.uuid;
+                     smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
+                     smartEventView._activeObject.set('placeName',dataItem.name);
+                     smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                     smartEventView._activeObject.set('lat',dataItem.lat);
+                     smartEventView._activeObject.set('lng',dataItem.lng);
+
+
+                     // Hide the Find Location button
+                     $("#smartEventView-placesearchdiv").addClass('hidden');*!/
+
+                },
+                filter: "contains",
+                placeholder: "Select Origin... "
+            });
+
+            $("#smartTripView-destination").kendoAutoComplete({
+                dataSource: placesModel.placesDS,
+                ignoreCase: true,
+                dataTextField: "name",
+                dataValueField: "uuid",
+  /!*              change: function (e) {
+                    var placeStr = $("#smartTripView-destination").val();
+
+                    /!*if (smartEventView._placeUUID !== null) {
+                     var place = placesModel.getPlaceModel(smartEventView._placeUUID);
+
+                     if (placeStr === place.name) {
+                     return;
+                     }
+                     smartEventView._placeUUID = null;
+                     smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
+                     smartEventView._activeObject.set('placeName',placeStr);
+                     smartEventView._activeObject.set('address', null);
+                     smartEventView._activeObject.set('lat',null);
+                     smartEventView._activeObject.set('lng',null);
+
+                     }
+                     // event fired on blur -- if a place wasn't selected, need to do a nearby search
+
+                     if (placeStr.length > 3) {
+                     $("#smartEventView-placesearchBtn").text("Find " + placeStr);
+                     $("#smartEventView-placesearchdiv").removeClass('hidden');
+                     } else {
+                     $("#smartEventView-placesearchdiv").addClass('hidden');
+                     }*!/
+
+                },
+ *!/               select: function(e) {
+                    // User has selected one of their places
+                    var place = e.item;
+                    var dataItem = this.dataItem(e.item.index());
+                    /!* smartEventView._placeUUID = dataItem.uuid;
+                     smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
+                     smartEventView._activeObject.set('placeName',dataItem.name);
+                     smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                     smartEventView._activeObject.set('lat',dataItem.lat);
+                     smartEventView._activeObject.set('lng',dataItem.lng);
+
+
+                     // Hide the Find Location button
+                     $("#smartEventView-placesearchdiv").addClass('hidden');
+                     *!/
+                },
+                filter: "contains",
+                placeholder: "Select Destination... "
+            });
+        }*/
+
+
+        smartTripView.origin = null;
+        smartTripView.destination = null;
+
         $("#smartTripModal").data("kendoMobileModalView").open();
     },
     
     onInit : function (e) {
-        
+
+        smartTripView.initialized = false;
+        $("#smartTripView-origin").kendoAutoComplete({
+            dataSource: smartTripView.placesDS,
+            ignoreCase: true,
+            dataTextField: "name",
+            change: function (e) {
+                var query = $("#smartTripView-destination").val();
+                var ds = smartTripView.placesDS;
+                if (query.length === 0) {
+                    ds.filter([]);
+                } else {
+                    ds.filter([ {
+                        "field":"name",
+                        "operator":"contains",
+                        "value":query},
+                        {
+                            "field":"alias",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"address",
+                            "operator":"contains",
+                            "value":query}
+                    ]);
+                }
+
+            },
+            select: function(e) {
+                // User has selected one of their places
+                var place = e.item;
+                var dataItem = this.dataItem(e.item.index());
+                /*smartEventView._placeUUID = dataItem.uuid;
+                 smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
+                 smartEventView._activeObject.set('placeName',dataItem.name);
+                 smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                 smartEventView._activeObject.set('lat',dataItem.lat);
+                 smartEventView._activeObject.set('lng',dataItem.lng);
+
+
+                 // Hide the Find Location button
+                 $("#smartEventView-placesearchdiv").addClass('hidden');*/
+
+            },
+            filter: "contains",
+            placeholder: "Select Origin... "
+        });
+
+        $("#smartTripView-destination").kendoAutoComplete({
+            dataSource: smartTripView.placesDS,
+            ignoreCase: true,
+            dataTextField: "name",
+            change: function (e) {
+             var query = $("#smartTripView-destination").val();
+                var ds = smartTripView.placesDS;
+                if (query.length === 0) {
+                    ds.filter([]);
+                } else {
+                    ds.filter([ {
+                        "field":"name",
+                        "operator":"contains",
+                        "value":query},
+                        {
+                            "field":"alias",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"address",
+                            "operator":"contains",
+                            "value":query}
+                    ]);
+                }
+
+             }, 
+            select: function(e) {
+                // User has selected one of their places
+                var place = e.item;
+                var dataItem = this.dataItem(e.item.index());
+                /* smartEventView._placeUUID = dataItem.uuid;
+                 smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
+                 smartEventView._activeObject.set('placeName',dataItem.name);
+                 smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                 smartEventView._activeObject.set('lat',dataItem.lat);
+                 smartEventView._activeObject.set('lng',dataItem.lng);
+
+
+                 // Hide the Find Location button
+                 $("#smartEventView-placesearchdiv").addClass('hidden');
+                 */
+            },
+            filter: "contains",
+            placeholder: "Select Destination... "
+        });
 
     },
 

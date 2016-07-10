@@ -121,7 +121,8 @@ var placesModel = {
     },
 
     sync : function () {
-        placesModel.placesDS.sync() 
+        placesModel.placesDS.sync();
+        placesModel.syncPlaceListDS();
     },
     
     

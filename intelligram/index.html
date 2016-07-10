@@ -3112,7 +3112,7 @@
 </div>
 
 
-<div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartTripView.activeObject" data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance">
+<div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span id="smartTripModel-title">IntelliTrip</span>
@@ -3133,22 +3133,22 @@
 		<ul class="list-inline" data-style="inset" id="smartTripModal-owner">
 			<li >
 				<label> Name
-					<input type="search" id="smartTripView-name" data-bind="value: name" />
+					<input type="search" id="smartTripView-name" />
 				</label>
 			</li>
 			<li >
 				<label> Origin (Start) <a data-click="smartMovieEdit.onOriginSearch" data-role="button" class="btnClear" id="smartTripView-originSearchBtn"> Find... </a>
-					<input type="search" id="smartTripView-origin" data-bind="value: origin" />
+					<input type="search" id="smartTripView-origin"  />
 				</label>
 			</li>
 			<li >
 				<label> Destination (End) <a data-click="smartMovieEdit.onDestinationSearch" data-role="button" class="btnClear" id="smartTripView-destinationSearchBtn"> Find... </a>
-					<input type="search" id="smartTripView-destination" data-bind="value: destination" />
+					<input type="search" id="smartTripView-destination"  />
 				</label>
 			</li>
 			<li >
 				<label> Type of Trip </br>
-					<select id="smartTripView-tripType" data-bind="value: tripType" >
+					<select id="smartTripView-tripType"  >
 						<option value="oneway">One Way</option>
 						<option value="roundtrip">Round Trip</option>
 						<option value="commute">Commute</option>
@@ -3157,7 +3157,7 @@
 			</li>
 			<li >
 				<label> Auto Update My Status </br>
-					<select id="smartTripView-autoUpdate" data-bind="value: autoUpdate" >
+					<select id="smartTripView-autoUpdate"  >
 						<option value="0">Never</option>
 						<option value="10">Every 10 Minutes</option>
 						<option value="30">Every 30 Minutes</option>
@@ -3167,17 +3167,17 @@
 			</li>
 			<li >
 				<label> Departure Time
-					<input type="date" id="smartTripView-departure" data-bind="value: departure" />
+					<input type="date" id="smartTripView-departure" />
 				</label>
 			</li>
 			<li >
 				<label> Arrival Time
-					<input type="date" id="smartTripView-arrival" data-bind="value: arrival" />
+					<input type="date" id="smartTripView-arrival"  />
 				</label>
 			</li>
 			<li >
 				<label> Travel Time
-					<input  id="smartTripView-travelTime" data-bind="value: travelTime" readonly />
+					<div  id="smartTripView-travelTime">  </div>
 				</label>
 			</li>
 		</ul>
