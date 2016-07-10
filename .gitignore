@@ -4,44 +4,30 @@
 *.apk
 *.ab
 *.user-settings.xml
-ghostgram hybrid/.ab*
-ghostgram hybrid/styles/main.css
-ghostgram hybrid/styles/mixins.css
-ghostgram hybrid/App_Resources/Android/drawable-nodpi/splashscreen.9.png
-ghostgram hybrid/scripts/min/
-ghostgram hybrid/css/*
 
 lesswatch.bat
 lesswatch - Shortcut.lnk
 
-ghostgram hybrid/config.codekit
-
-
-ghostgram hybrid/App_Resources/watch*
-ghostgram hybrid/.idea
-ghostgram/.idea
+intelligram/.idea
 config.codekit
 
+intelligram/App_Resources/Android/drawable-nodpi/splashscreen.9.png
 
-ghostgram hybrid/css
+intelligram/bower_components/emojione/assets/png
+intelligram/bower_components/emojione/assets/png_128x128
+intelligram/bower_components/emojione/assets/png_512x512
+intelligram/bower_components/emojione/assets/sprites/emojione.sprites.svg
+intelligram/bower_components/emojione/lib/android
+intelligram/bower_components/emojione/lib/emojione-awesome
+intelligram/bower_components/emojione/lib/ios
+intelligram/bower_components/emojione/lib/meteor
+intelligram/bower_components/emojione/lib/python
+intelligram/bower_components/emojione/assets/other
+intelligram/bower_components/emojione/assets/svg
 
-ghostgram/App_Resources/Android/drawable-nodpi/splashscreen.9.png
+intelligram/App_Resources/iOS/icon-83.5@2x.png
 
-ghostgram/bower_components/emojione/assets/png
-ghostgram/bower_components/emojione/assets/png_128x128
-ghostgram/bower_components/emojione/assets/png_512x512
-ghostgram/bower_components/emojione/assets/sprites/emojione.sprites.svg
-ghostgram/bower_components/emojione/lib/android
-ghostgram/bower_components/emojione/lib/emojione-awesome
-ghostgram/bower_components/emojione/lib/ios
-ghostgram/bower_components/emojione/lib/meteor
-ghostgram/bower_components/emojione/lib/python
-ghostgram/bower_components/emojione/assets/other
-ghostgram/bower_components/emojione/assets/svg
+intelligram/App_Resources/iOS/Default-Landscape-1366@2x.png
 
-ghostgram/App_Resources/iOS/icon-83.5@2x.png
-
-ghostgram/App_Resources/iOS/Default-Landscape-1366@2x.png
-
-ghostgram/App_Resources/iOS/Default-Portrait-1366@2x.png
+intelligram/App_Resources/iOS/Default-Portrait-1366@2x.png
 
