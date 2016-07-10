@@ -2606,7 +2606,7 @@ var smartTripView = {
                     ]);
                 }
 
-            },
+            }, 
             select: function(e) {
                 // User has selected one of their places
                 var place = e.item;
