@@ -2196,6 +2196,31 @@ var smartEventPlacesView = {
     onInit : function (e) {
         //_preventDefault(e);
 
+        $("#smartEventPlaces-query").kendoAutoComplete({
+            dataSource: placesModel.placesDS,
+            ignoreCase: true,
+            dataTextField: "name",
+
+            select: function(e) {
+                // User has selected one of their places
+                var place = e.item;
+                var dataItem = this.dataItem(e.item.index());
+                /*smartEventView._placeUUID = dataItem.uuid;
+                 smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
+                 smartEventView._activeObject.set('placeName',dataItem.name);
+                 smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                 smartEventView._activeObject.set('lat',dataItem.lat);
+                 smartEventView._activeObject.set('lng',dataItem.lng);
+
+
+                 // Hide the Find Location button
+                 $("#smartEventView-placesearchdiv").addClass('hidden');*/
+
+            },
+            filter: "contains",
+            placeholder: "Find Place or address... "
+        });
+        
         $("#smartEventPlaces-listview").kendoMobileListView({
                 dataSource: smartEventPlacesView.placesDS,
                 template: $("#smartEventPlacesTemplate").html(),
