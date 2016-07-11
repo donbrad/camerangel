@@ -372,6 +372,8 @@ var searchPlacesView = {
 
             if (e.view.params.returnview !== undefined){
                 searchPlacesView._returnView = e.view.params.returnview;
+            } else {
+                searchPlacesView._returnView = null;
             }
 
             if (e.view.params.returnmodal !== undefined){
