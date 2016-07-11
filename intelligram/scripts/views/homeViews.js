@@ -661,9 +661,30 @@ var userStatusView = {
         _preventDefault(e);
 
         var placeUUID = userModel._user.currentPlaceUUID;
-        var placeUUID = LZString.compressToEncodedURIComponent(placeUUID);
         var currentView = APP.kendo.view().id;
-        APP.kendo.navigate("#placeView?place="+placeUUID+"&returnmodal=userstatus"+ "&returnview=" + packParameter(currentView));
+
+        if (placeUUID !== undefined && placeUUID !== null) {
+            placeUUID = LZString.compressToEncodedURIComponent(placeUUID);
+
+            APP.kendo.navigate("#placeView?place="+placeUUID+"&returnmodal=userstatus"+ "&returnview=" + packParameter(currentView));
+        } else {
+            var locObj = {
+                lat: userModel._user.lat,
+                lng: userModel._user.lng,
+                name : userModel._user.currentPlace,
+                title: "My Location",
+                targetName: null,
+                placeUUID: userModel._user.currentPlaceUUID
+            };
+
+            mobileNotify("Mapping Current Location....");
+
+            userStatusView.closeModal();
+            mapViewModal.openModal(locObj, function () {
+                userStatusView.openModal();
+            });
+        }
+
     },
 
     openCheckIn : function (e) {

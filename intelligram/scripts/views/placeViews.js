@@ -1532,11 +1532,14 @@ var placeView = {
         _preventDefault(e);
 
         if (placeView._returnModal === 'userstatus') {
+            APP.kendo.navigate("#:back");
             userStatusView.openModalRestore();
-            return;
         } else if (placeView._returnView !== null) {
-            var returnUrl = '#'+ placeView._returnView;
-
+            
+            var returnUrl = placeView._returnView;
+            if (returnUrl.indexOf('#') === -1) {
+                returnUrl = '#' + returnUrl;
+            }
             APP.kendo.navigate(returnUrl);
         } else {
             APP.kendo.navigate("#:back");
