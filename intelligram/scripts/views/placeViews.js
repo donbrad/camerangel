@@ -31,7 +31,7 @@ var placesView = {
         		var place = e.touch.target[0].dataset["uuid"];
                 var placeId = LZString.compressToEncodedURIComponent(place);
 
-                APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
+                APP.kendo.navigate("#placeView?place="+placeId+"&returnview=" + packParameter("places"));
 
         	},
         	swipe: function(e) {
