@@ -1,7 +1,7 @@
 /* Colors */
 /* variables */
 /* Imports */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Hind:300,400,500|PT+Sans:400,700);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700|PT+Sans:400,700|Open+Sans:400,600);
 .sentinel .tags {
   padding: 0;
   margin: 0;
@@ -1245,6 +1245,7 @@ form p {
 .btnClear-sm,
 .btnClear-light-sm,
 .btnClearLine,
+.btnClearLine-light,
 .btnClearLine-highlight,
 .btnHighlight,
 .btnClearLine-grey-sm,
@@ -1254,6 +1255,7 @@ form p {
 .btnFull-modal,
 .twoBtn,
 .km-material .km-buttongroup .km-button,
+.btnClearLine-sm,
 .btnClear-grey-sm {
   text-decoration: none;
   font-size: 1em;
@@ -1438,7 +1440,7 @@ form p {
   background: transparent !important;
 }
 .btnClearLine {
-  color: #2D93FF !important;
+  color: #6CADF3 !important;
   border: 1px solid #6CADF3 !important;
   border-radius: 2px;
 }
@@ -1449,6 +1451,24 @@ form p {
 .btnClearLine :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.btnClearLine-light,
+.btnClearLine-sm {
+  background: transparent !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 2px;
+}
+.btnClearLine-light :active {
+  color: #3A779D !important;
+  background: transparent !important;
+}
+.btnClearLine-light :disabled {
+  color: #A4A4A4 !important;
+  background: transparent !important;
+}
+.btnClearLine-sm {
+  font-size: 0.875em !important;
 }
 .glass {
   background: #242424 !important;
@@ -1903,7 +1923,7 @@ div.km-header a img {
 .km-modalview {
   border: 1px solid #979797;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
-  border-radius: 4px;
+  border-radius: 4px !important;
 }
 .km-listinset,
 .km-listgroupinset {
@@ -1925,6 +1945,9 @@ div.km-header a img {
 .km-material .km-touch-scrollbar,
 .km-material input[type=text]:not(.k-input):focus {
   color: #4A4A4A !important;
+}
+.km-material .km-shim {
+  background: rgba(0, 0, 0, 0.4);
 }
 /*
 .km-view {
@@ -2159,10 +2182,9 @@ div.footerMenu.km-footer > ul > li > a:active {
   padding: 0px;
 }
 #home > div.km-header > div > div.km-view-title > span {
-  font-family: 'PT Sans Caption', sans-serif !important;
+  font-family: 'Ubuntu', sans-serif !important;
   color: #6CADF3;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 500;
   font-size: 1.125em;
 }
 #profilePhotoForm > div > ul > li:nth-child(4) > div > span {
@@ -2436,6 +2458,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   color: #fff;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+  border-radius: 4px 4px 0 0 !important;
 }
 .modal-top div > img {
   height: 4rem;
@@ -2654,7 +2677,8 @@ div.footerMenu.km-footer > ul > li > a:active {
   font-size: 14px;
   font-size: 0.875em;
 }
-.clearfix {
+.clearfix,
+.placeEdit-li-sm:after {
   *zoom: 1;
 }
 /* For IE 6/7 */
@@ -3002,6 +3026,9 @@ textarea {
   margin-left: 1rem;
   margin-right: 1rem;
 }
+#currentGroup {
+  display: none;
+}
 .group-contactCard {
   font-size: 0.875em;
   color: #fff;
@@ -3305,6 +3332,11 @@ a:hover {
 .contactStatusMessage {
   font-style: italic;
 }
+#contactCurrentPlace {
+  margin-top: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
 .contactStatusMessage-sm {
   margin-right: 0px !important;
 }
@@ -3501,7 +3533,7 @@ a:hover {
   height: 16px;
 }
 .chat-option-selection {
-  font-size: 12px;
+  font-size: 0.875em;
 }
 .channelMuteImg {
   vertical-align: middle;
@@ -4675,7 +4707,8 @@ div.loginBox > form > div > ul > li {
 }
 #modalview-contactActions > div > div.km-scroll-container > div.modal-top {
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.6);
+  background: url('../images/gradient-1.svg') no-repeat center center;
+  background-size: cover;
 }
 #contactSecondName {
   color: #fff;
@@ -6737,9 +6770,9 @@ table.k-editor {
   left: 0;
   right: 0;
   margin: auto;
-  font-family: 'PT Sans Caption', sans-serif !important;
+  font-family: 'Ubuntu', sans-serif !important;
   color: #fff;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.5em;
 }
 #ggDrawer > div {

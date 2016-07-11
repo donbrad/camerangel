@@ -1,6 +1,6 @@
 /* Colors */
 
-@primary-100: #2E93FD;
+@primary-100: #4B6CB7;
 @primary-200: #6CADF3;
 
 @secondary-100: #FFB74D;
@@ -783,7 +783,7 @@ form {
 .btnClear {
   &:extend(.btnStyle);
   background: transparent;
-  color: #2D93FF !important;
+  color: @primary-200 !important;
   font-weight: 400;
   :active {
     color: #3A779D !important;
@@ -875,8 +875,25 @@ form {
 }
 
 
+.btnClearLine-light {
+  &:extend(.btnStyle);
+  background: transparent !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 2px;
+  //.shadowHelper(1) !important;
+  :active {
+    color: #3A779D !important;
+    background: transparent !important;
+  }
+  :disabled {
+    color: #A4A4A4 !important;
+    background: transparent !important;
+  }
+}
+
 .btnClearLine-sm {
-  &:extend(.btnClearLine);
+  &:extend(.btnClearLine-light);
   font-size: 0.875em !important;
 }
 
@@ -1343,7 +1360,7 @@ div.km-header a img{
 .km-modalview {
   border: 1px solid #979797;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
-  border-radius: 4px;
+  border-radius: 4px !important;
 }
 .km-listinset,
 .km-listgroupinset {
@@ -1363,7 +1380,9 @@ div.km-header a img{
   color: @black !important;
 }
 
-
+.km-material .km-shim {
+  background: rgba(0,0,0,0.4);
+}
 
 /*
 .km-view {
@@ -1918,6 +1937,7 @@ div.footerMenu.km-footer > ul > li > a:active {
   color: #fff;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+  border-radius: 4px 4px 0 0 !important;
   div > img {
     height: 4rem;
     vertical-align: middle;
@@ -2832,6 +2852,15 @@ a:hover {
 
 .contactStatusMessage {
   font-style: italic;
+}
+
+#contactCurrentPlace {
+  margin-top: 0.5em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  > img {
+    margin-right: 0.5em;
+  }
 }
 
 .contactStatusMessage-sm {
@@ -4428,7 +4457,8 @@ div.loginBox > form > div > ul > li {
 
 #modalview-contactActions > div > div.km-scroll-container > div.modal-top {
   color: #fff;
-  background-color: rgba(0,0,0,0.6);
+  background: url('../images/gradient-1.svg')no-repeat center center;
+  background-size: cover;
 }
 
 #contactSecondName {
