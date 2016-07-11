@@ -1529,12 +1529,9 @@ var placeView = {
 
 
     onDone: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
-        if (placeView._returnModal === 'userstatus') {
-            APP.kendo.navigate("#:back");
-            userStatusView.openModalRestore();
-        } else if (placeView._returnView !== null) {
+         if (placeView._returnView !== null) {
             
             var returnUrl = placeView._returnView;
             if (returnUrl.indexOf('#') === -1) {
@@ -1544,7 +1541,11 @@ var placeView = {
         } else {
             APP.kendo.navigate("#:back");
         }
+        
+        if (placeView._returnModal === 'userstatus') {
 
+            userStatusView.openModalRestore();
+        }
         ux.hideSearch();
     },
 
