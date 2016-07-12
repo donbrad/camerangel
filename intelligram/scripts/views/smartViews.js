@@ -2550,7 +2550,7 @@ var smartTripView = {
             dataSource: smartTripView.placesDS,
             ignoreCase: true,
             dataTextField: "name",
-            change: function (e) {
+            /*change: function (e) {
                 var query = $("#smartTripView-destination").val();
                 var ds = smartTripView.placesDS;
                 if (query.length === 0) {
@@ -2571,7 +2571,8 @@ var smartTripView = {
                     ]);
                 }
 
-            }, 
+            }, */
+
             select: function(e) {
                 // User has selected one of their places
                 var place = e.item;
@@ -2587,7 +2588,7 @@ var smartTripView = {
             dataSource: smartTripView.placesDS,
             ignoreCase: true,
             dataTextField: "name",
-            change: function (e) {
+            /*change: function (e) {
              var query = $("#smartTripView-destination").val();
                 var ds = smartTripView.placesDS;
                 if (query.length === 0) {
@@ -2608,7 +2609,7 @@ var smartTripView = {
                     ]);
                 }
 
-             },
+             },*/
 
             select: function(e) {
                 // User has selected one of their places
@@ -2656,7 +2657,7 @@ var smartTripView = {
     onDestinationSearch : function (e) {
         var query = $('#smartTripView-destination').val();
 
-        smartEventPlacesView.openModal("", "Destination", function (placeObj) {
+        smartEventPlacesView.openModal(query, "Destination", function (placeObj) {
             if (placeObj !== undefined && placeObj !== null) {
                 var place = {};
 
