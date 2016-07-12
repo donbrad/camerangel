@@ -2503,7 +2503,8 @@ var smartTripView = {
 
         mapModel.getTravelTime(origin, dest, depart, arrive, function (result) {
             if (result.valid) {
-
+                $("#smartTripView-travelTime").text(result.durationString + " (" +
+                    result.distanceString + " mi. )");
             } else {
                 ggError ("Google Distance Matrix Error " + JSON.stringify(result.error));
             }
