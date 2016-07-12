@@ -2451,11 +2451,15 @@ var smartMovieView = {
 var smartTripView = {
     activeObject : new kendo.data.ObservableObject(),
     callback : null,
+    name: null,
     origin: null,
     destination: null,
     validOrigin: false,
     validDestination: false,
+    departure : null,
+    arrival: null,
     validTime: false,
+    validName : false,
     placesDS : new kendo.data.DataSource(),
     initialized: false,
 
@@ -2464,6 +2468,10 @@ var smartTripView = {
         var placesArray = placesModel.placesDS.data();
         smartTripView.placesDS.data(placesArray);
         smartTripView.placesDS.filter([]);
+        smartTripView.validName = false;
+        smartTripView.validTime = false;
+        smartTripView.validOrigin = false;
+        smartTripView.validDestination = false;
 
     /*    if (!smartTripView.initialized) {
 
@@ -2580,10 +2588,38 @@ var smartTripView = {
 
         $("#smartTripModal").data("kendoMobileModalView").open();
     },
-    
+
+    validate : function () {
+
+    },
+
     onInit : function (e) {
 
         smartTripView.initialized = false;
+
+        $( "#smartTripView-departure" ).change(function() {
+            smartTripView.departure = $("#smartTripView-departure").val();
+            smartTripView.arrival = null;
+            smartTripView.validTime = true;
+            smartTripView.validate();
+        });
+
+        $( "smartTripView-name" ).change(function() {
+            smartTripView.name = $("#smartTripView-name").val();
+            smartTripView.validName = false;
+            if (smartTripView.name.length > 3) {
+                smartTripView.validName = true;
+                smartTripView.validate();
+            }
+        });
+
+        $( "#smartTripView-arrival" ).change(function() {
+            smartTripView.arrival = $("#smartTripView-arrival" ).val();
+            smartTripView.departure = null;
+            smartTripView.validTime = true;
+            smartTripView.validate();
+        });
+
         $("#smartTripView-origin").kendoAutoComplete({
             dataSource: smartTripView.placesDS,
             ignoreCase: true,
@@ -2614,16 +2650,7 @@ var smartTripView = {
                 // User has selected one of their places
                 var place = e.item;
                 var dataItem = this.dataItem(e.item.index());
-                /*smartEventView._placeUUID = dataItem.uuid;
-                 smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
-                 smartEventView._activeObject.set('placeName',dataItem.name);
-                 smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
-                 smartEventView._activeObject.set('lat',dataItem.lat);
-                 smartEventView._activeObject.set('lng',dataItem.lng);
 
-
-                 // Hide the Find Location button
-                 $("#smartEventView-placesearchdiv").addClass('hidden');*/
 
             },
             filter: "contains",
@@ -2655,22 +2682,13 @@ var smartTripView = {
                     ]);
                 }
 
-             }, 
+             },
+
             select: function(e) {
                 // User has selected one of their places
                 var place = e.item;
                 var dataItem = this.dataItem(e.item.index());
-                /* smartEventView._placeUUID = dataItem.uuid;
-                 smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
-                 smartEventView._activeObject.set('placeName',dataItem.name);
-                 smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
-                 smartEventView._activeObject.set('lat',dataItem.lat);
-                 smartEventView._activeObject.set('lng',dataItem.lng);
 
-
-                 // Hide the Find Location button
-                 $("#smartEventView-placesearchdiv").addClass('hidden');
-                 */
             },
             filter: "contains",
             placeholder: "Select Destination... "
