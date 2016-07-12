@@ -663,10 +663,12 @@ var userStatusView = {
         var placeUUID = userModel._user.currentPlaceUUID;
         var currentView = APP.kendo.view().id;
 
+        userStatusView.closeModal();
         if (placeUUID !== undefined && placeUUID !== null) {
             placeUUID = LZString.compressToEncodedURIComponent(placeUUID);
 
             APP.kendo.navigate("#placeView?place="+placeUUID+"&returnmodal=userstatus"+ "&returnview=" + packParameter(currentView));
+
         } else {
             var locObj = {
                 lat: userModel._user.lat,
@@ -679,7 +681,7 @@ var userStatusView = {
 
             mobileNotify("Mapping Current Location....");
 
-            userStatusView.closeModal();
+
             mapViewModal.openModal(locObj, function () {
                 userStatusView.openModal();
             });
