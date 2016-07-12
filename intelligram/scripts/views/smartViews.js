@@ -2699,6 +2699,12 @@ var smartTripView = {
 
                  smartTripView.origin = place;
                  smartTripView.validOrigin = true;
+
+                var value = place.name;
+                if (value === null) {
+                    value = place.address;
+                }
+                $('#smartTripView-origin').val(value);
             }
         });
     },
@@ -2719,6 +2725,11 @@ var smartTripView = {
 
                 smartTripView.destination = place;
                 smartTripView.validDestination = true;
+                var value = place.name;
+                if (value === null) {
+                    value = place.address;
+                }
+                $('#smartTripView-destination').val(value);
             }
         });
     },
