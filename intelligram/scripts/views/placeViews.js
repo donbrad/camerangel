@@ -31,7 +31,7 @@ var placesView = {
         		var place = e.touch.target[0].dataset["uuid"];
                 var placeId = LZString.compressToEncodedURIComponent(place);
 
-                APP.kendo.navigate("#placeView?place="+placeId+"&returnview=places");
+                APP.kendo.navigate("#placeView?place="+placeId+"&returnview=" + packParameter("places"));
 
         	},
         	swipe: function(e) {
@@ -372,6 +372,8 @@ var searchPlacesView = {
 
             if (e.view.params.returnview !== undefined){
                 searchPlacesView._returnView = e.view.params.returnview;
+            } else {
+                searchPlacesView._returnView = null;
             }
 
             if (e.view.params.returnmodal !== undefined){
@@ -1527,19 +1529,23 @@ var placeView = {
 
 
     onDone: function (e) {
-        _preventDefault(e);
+        //_preventDefault(e);
 
-        if (placeView._returnModal === 'userstatus') {
-            userStatusView.openModalRestore();
-            return;
-        } else if (placeView._returnView !== null) {
-            var returnUrl = '#'+ placeView._returnView;
-
+         if (placeView._returnView !== null) {
+            
+            var returnUrl = placeView._returnView;
+            if (returnUrl.indexOf('#') === -1) {
+                returnUrl = '#' + returnUrl;
+            }
             APP.kendo.navigate(returnUrl);
         } else {
             APP.kendo.navigate("#:back");
         }
+        
+        if (placeView._returnModal === 'userstatus') {
 
+            userStatusView.openModalRestore();
+        }
         ux.hideSearch();
     },
 
@@ -2196,6 +2202,31 @@ var smartEventPlacesView = {
     onInit : function (e) {
         //_preventDefault(e);
 
+        /*$("#smartEventPlaces-query").kendoAutoComplete({
+            dataSource: placesModel.placesDS,
+            ignoreCase: true,
+            dataTextField: "name",
+
+            select: function (e) {
+                // User has selected one of their places
+                var place = e.item;
+                var dataItem = this.dataItem(e.item.index());
+                /!*smartEventView._placeUUID = dataItem.uuid;
+                 smartEventView._activeObject.set('placeUUID', smartEventView._placeUUID);
+                 smartEventView._activeObject.set('placeName',dataItem.name);
+                 smartEventView._activeObject.set('address',dataItem.address +  ' ' + dataItem.city + ', ' + dataItem.state);
+                 smartEventView._activeObject.set('lat',dataItem.lat);
+                 smartEventView._activeObject.set('lng',dataItem.lng);
+
+
+                 // Hide the Find Location button
+                 $("#smartEventView-placesearchdiv").addClass('hidden');*!/
+
+            },
+            filter: "contains",
+            placeholder: "Find Place or address... "
+        });*/
+        
         $("#smartEventPlaces-listview").kendoMobileListView({
                 dataSource: smartEventPlacesView.placesDS,
                 template: $("#smartEventPlacesTemplate").html(),

@@ -3132,17 +3132,17 @@
 	<form>
 		<ul class="list-inline" data-style="inset" id="smartTripModal-owner">
 			<li >
-				<label> Name
+				<label> Trip Name
 					<input type="search" id="smartTripView-name" />
 				</label>
 			</li>
 			<li >
-				<label> Origin (Start) <a data-click="smartMovieEdit.onOriginSearch" data-role="button" class="btnClear" id="smartTripView-originSearchBtn"> Find... </a>
+				<label> Origin (Start) <a data-click="smartTripView.onOriginSearch" data-role="button" class="btnClear" id="smartTripView-originSearchBtn"> Find... </a>
 					<input type="search" id="smartTripView-origin"  />
 				</label>
 			</li>
 			<li >
-				<label> Destination (End) <a data-click="smartMovieEdit.onDestinationSearch" data-role="button" class="btnClear" id="smartTripView-destinationSearchBtn"> Find... </a>
+				<label> Destination (End) <a data-click="smartTripView.onDestinationSearch" data-role="button" class="btnClear" id="smartTripView-destinationSearchBtn"> Find... </a>
 					<input type="search" id="smartTripView-destination"  />
 				</label>
 			</li>
@@ -3167,12 +3167,12 @@
 			</li>
 			<li >
 				<label> Departure Time
-					<input type="date" id="smartTripView-departure" />
+					<input type="datetime-local" id="smartTripView-departure" />
 				</label>
 			</li>
 			<li >
 				<label> Arrival Time
-					<input type="date" id="smartTripView-arrival"  />
+					<input type="datetime-local" id="smartTripView-arrival"  />
 				</label>
 			</li>
 			<li >
@@ -3981,7 +3981,7 @@
 	<div class="tempSearchBox" id="searchEventPlace-form">
 		<div class="appendSearch" id="searchEventPlaces-searchDiv">
 			<span class="searchIcon"><img src="images/search.svg" /></span>
-			<input type="search" name="place" placeholder="Find place or address..." id="smartEventPlaces-query" data-required-msg="Enter a place name" required />
+			<input type="search"  id="smartEventPlaces-query" placeholder="Find place or address..." data-required-msg="Enter a place name" required />
 		</div>
 		<span class="k-invalid-msg" data-for="place"></span>
 		<p id="searchEventPlaces-selectPlace" class="hidden">Please select the area to search</p>
