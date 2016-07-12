@@ -2458,6 +2458,7 @@ var smartTripView = {
     validDestination: false,
     departure : null,
     arrival: null,
+    autoStatus: false,
     mode: 'create',
     validTime: false,
     validName : false,
@@ -2519,6 +2520,12 @@ var smartTripView = {
         }
     },
 
+    onAutoStatus : function (e) {
+        
+        smartTripView.autoStatus = e.checked;
+
+    },
+
     onInit : function (e) {
 
         smartTripView.initialized = false;
@@ -2530,7 +2537,7 @@ var smartTripView = {
             smartTripView.validate();
         });
 
-        $( "smartTripView-name" ).change(function() {
+        $( "#smartTripView-name" ).change(function() {
             smartTripView.name = $("#smartTripView-name").val();
             smartTripView.validName = false;
             if (smartTripView.name.length > 3) {
@@ -2538,6 +2545,8 @@ var smartTripView = {
                 smartTripView.validate();
             }
         });
+
+        
 
         $( "#smartTripView-arrival" ).change(function() {
             smartTripView.arrival = $("#smartTripView-arrival" ).val();
