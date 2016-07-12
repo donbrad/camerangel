@@ -2503,6 +2503,8 @@ var smartTripView = {
 
         mapModel.getTravelTime(origin, dest, depart, arrive, function (result) {
             if (result.valid) {
+                smartTripView.duration = result.duration;
+                smartTripView.durationString = result.durationString;
                 $("#smartTripView-travelTime").text(result.durationString + " (" +
                     result.distanceString + " mi. )");
             } else {
