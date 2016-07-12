@@ -2681,11 +2681,45 @@ var smartTripView = {
 
 
     onOriginSearch : function (e) {
+        var query = $('#smartTripView-origin').val();
 
+        smartEventPlacesView.openModal(query, "Origin", function (placeObj) {
+            if (placeObj !== undefined && placeObj !== null) {
+                /* var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID};
+
+                 place.lat = placeObj.lat;
+                 place.lng = placeObj.lng;
+                 place.name  = placeObj.name;
+                 place.address = placeObj.address;
+                 place.googleId = placeObj.googleId;
+                 place.placeUUID = null;
+
+                 channelView.messageObjects.push(place);
+                 mobileNotify("Sending IntelliPlace...");
+                 channelView.messageSend();*/
+            }
+        });
     },
 
     onDestinationSearch : function (e) {
+        var query = $('#smartTripView-destination').val();
 
+        smartEventPlacesView.openModal("", "Destination", function (placeObj) {
+            if (placeObj !== undefined && placeObj !== null) {
+               /* var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID};
+
+                place.lat = placeObj.lat;
+                place.lng = placeObj.lng;
+                place.name  = placeObj.name;
+                place.address = placeObj.address;
+                place.googleId = placeObj.googleId;
+                place.placeUUID = null;
+
+                channelView.messageObjects.push(place);
+                mobileNotify("Sending IntelliPlace...");
+                channelView.messageSend();*/
+            }
+        });
     },
 
     onCancel : function (e) {
