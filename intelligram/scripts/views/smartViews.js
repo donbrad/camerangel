@@ -2453,6 +2453,9 @@ var smartTripView = {
     callback : null,
     origin: null,
     destination: null,
+    validOrigin: false,
+    validDestination: false,
+    validTime: false,
     placesDS : new kendo.data.DataSource(),
     initialized: false,
 
@@ -2685,7 +2688,7 @@ var smartTripView = {
 
         smartEventPlacesView.openModal(query, "Origin", function (placeObj) {
             if (placeObj !== undefined && placeObj !== null) {
-                /* var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID};
+                 var place = {};
 
                  place.lat = placeObj.lat;
                  place.lng = placeObj.lng;
@@ -2694,9 +2697,8 @@ var smartTripView = {
                  place.googleId = placeObj.googleId;
                  place.placeUUID = null;
 
-                 channelView.messageObjects.push(place);
-                 mobileNotify("Sending IntelliPlace...");
-                 channelView.messageSend();*/
+                 smartTripView.origin = place;
+                 smartTripView.validOrigin = true;
             }
         });
     },
@@ -2706,7 +2708,7 @@ var smartTripView = {
 
         smartEventPlacesView.openModal("", "Destination", function (placeObj) {
             if (placeObj !== undefined && placeObj !== null) {
-               /* var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID};
+                var place = {};
 
                 place.lat = placeObj.lat;
                 place.lng = placeObj.lng;
@@ -2715,9 +2717,8 @@ var smartTripView = {
                 place.googleId = placeObj.googleId;
                 place.placeUUID = null;
 
-                channelView.messageObjects.push(place);
-                mobileNotify("Sending IntelliPlace...");
-                channelView.messageSend();*/
+                smartTripView.destination = place;
+                smartTripView.validDestination = true;
             }
         });
     },
