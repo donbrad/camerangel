@@ -2655,6 +2655,10 @@ var smartTripView = {
             smartTripView.processDepartureTime();
         });
 
+        $( "#smartTripView-tripType" ).blur(function() {
+            smartTripView.tripType = $("#smartTripView-tripType").val();
+        });
+
         $( "#smartTripView-name" ).blur(function() {
             smartTripView.name = $("#smartTripView-name").val();
             smartTripView.validName = false;

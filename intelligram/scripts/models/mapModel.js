@@ -453,6 +453,8 @@ var mapModel = {
             mode =  google.maps.TravelMode.WALKING;
         } else if (mode === 'bike') {
             mode =  google.maps.TravelMode.BICYCLING;
+        } else if (mode === 'transit') {
+            mode =  google.maps.TravelMode.TRANSIT;
         }
 
         var distanceObj = {
