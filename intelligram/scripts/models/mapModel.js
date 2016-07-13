@@ -458,7 +458,8 @@ var mapModel = {
         var distanceObj = {
             origins: [origin],
             destinations: [destination],
-            travelMode: mode
+            travelMode: mode,
+            unitSystem: google.maps.UnitSystem.IMPERIAL
         };
 
         if (departure !== null) {

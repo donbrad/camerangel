@@ -2547,7 +2547,7 @@ var smartTripView = {
                 smartTripView.duration = result.duration;
                 smartTripView.durationString = result.durationString;
                 $("#smartTripView-travelTime").text(result.durationString + " (" +
-                    result.distanceString + " mi. )");
+                    result.distanceString + ")");
 
                 if (callback !== undefined && callback !== null) {
                     callback(result);
