@@ -2480,6 +2480,7 @@ var smartTripView = {
     departure : null,
     arrival: null,
     autoStatus: false,
+    addToCalendar: false,
     mode: 'create',
     validTime: false,
     validName : false,
@@ -2510,6 +2511,8 @@ var smartTripView = {
         var placesArray = placesModel.placesDS.data();
         smartTripView.placesDS.data(placesArray);
         smartTripView.placesDS.filter([]);
+        smartTripView.autoStatus = false;
+        smartTripView.addToCalendar = false;
         smartTripView.validName = false;
         smartTripView.validTime = false;
         smartTripView.validOrigin = false;
@@ -2573,11 +2576,26 @@ var smartTripView = {
 
     },
 
-    processDepartureTime : function () {
+    onAddToCalendar : function (e) {
+
+        smartTripView.addToCalendar = e.checked;
 
     },
 
+    processDepartureTime : function () {
+        var date =  $("#smartTripView-dateDeparture").val() , time = $("#smartTripView-timeDeparture").val();
+
+        var combined = date +  " " + time;
+
+        var parsedDate = moment(combined);
+    },
+
     processArrivalTime : function ()  {
+        var date =  $("#smartTripView-dateArrival").val() , time = $("#smartTripView-timeArrival").val();
+
+        var combined = date +  " " + time;
+
+        var parsedDate = moment(combined);
 
     },
 
@@ -2586,19 +2604,11 @@ var smartTripView = {
         smartTripView.initialized = false;
 
         $( "#smartTripView-timeArrival" ).change(function() {
-            var arr = $("#smartTripView-timeArrival" ).val();
-            smartTripView.arrival = arr;
-            smartTripView.departure = null;
-            smartTripView.validTime = true;
-            smartTripView.validate();
+           smartTripView.processArrivalTime();
         });
         
         $( "#smartTripView-timeDeparture" ).change(function() {
-            var dep = $("#smartTripView-timeDeparture").val();
-            smartTripView.departure = dep;
-            smartTripView.arrival = null;
-            smartTripView.validTime = true;
-            smartTripView.validate();
+            smartTripView.processDepartureTime();
         });
 
         $( "#smartTripView-name" ).change(function() {
@@ -2615,7 +2625,7 @@ var smartTripView = {
             formatSubmit: 'mm d yyyy',
             min: true,
             onSet : function (context) {
-               // smartMovieEdit.updateDateString();
+                smartTripView.processDepartureTime();
             }
         });
 
@@ -2625,7 +2635,7 @@ var smartTripView = {
             formatSubmit: 'mm d yyyy',
             min: true,
             onSet : function (context) {
-                // smartMovieEdit.updateDateString();
+                smartTripView.processArrivalTime();
             }
         });
        
