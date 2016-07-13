@@ -457,17 +457,18 @@ var mapModel = {
 
         var distanceObj = {
             origins: [origin],
-            destinations: [destination]/*,
-            travelMode: mode*/
+            destinations: [destination],
+            travelMode: mode
         };
 
         if (departure !== null) {
-            distanceObj.drivingOption  = {
+
+            distanceObj.drivingOptions  = {
                 departureTime: departure,
                 trafficModel: "pessimistic"
             }
         } else if (arrival !== null) {
-            distanceObj.drivingOption  = {
+            distanceObj.drivingOptions  = {
                 arrivalTime: arrival,
                 trafficModel: "pessimistic"
             }
