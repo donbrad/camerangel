@@ -2496,6 +2496,17 @@ var smartTripView = {
             smartTripView.mode = 'view';
         }
 
+        var d = new Date();
+
+        // Set up default dates as today
+        var dateStr = moment(d).format('MM/DD/YYYY');
+        $('#smartTripView-dateDeparture').val(dateStr);
+        $('#smartTripView-dateArrival').val(dateStr);
+
+        //Set up default arrival and departure times as rounded up hour
+        $('#smartTripView-timeDeparture').val(smartTripView.getDefaultTime());
+        $('#smartTripView-timeArrival').val(smartTripView.getDefaultTime());
+
         var placesArray = placesModel.placesDS.data();
         smartTripView.placesDS.data(placesArray);
         smartTripView.placesDS.filter([]);
@@ -2562,20 +2573,28 @@ var smartTripView = {
 
     },
 
+    processDepartureTime : function () {
+
+    },
+
+    processArrivalTime : function ()  {
+
+    },
+
     onInit : function (e) {
 
         smartTripView.initialized = false;
 
-        $( "#smartTripView-arrival" ).change(function() {
-            var arr = $("#smartTripView-arrival" ).val();
+        $( "#smartTripView-timeArrival" ).change(function() {
+            var arr = $("#smartTripView-timeArrival" ).val();
             smartTripView.arrival = arr;
             smartTripView.departure = null;
             smartTripView.validTime = true;
             smartTripView.validate();
         });
         
-        $( "#smartTripView-departure" ).change(function() {
-            var dep = $("#smartTripView-departure").val();
+        $( "#smartTripView-timeDeparture" ).change(function() {
+            var dep = $("#smartTripView-timeDeparture").val();
             smartTripView.departure = dep;
             smartTripView.arrival = null;
             smartTripView.validTime = true;
@@ -2591,8 +2610,24 @@ var smartTripView = {
             }
         });
 
-        
+        $('#smartTripView-dateDeparture').pickadate({
+            format: 'mmm, d yyyy',
+            formatSubmit: 'mm d yyyy',
+            min: true,
+            onSet : function (context) {
+               // smartMovieEdit.updateDateString();
+            }
+        });
 
+
+        $('#smartTripView-dateArrival').pickadate({
+            format: 'mmm, d yyyy',
+            formatSubmit: 'mm d yyyy',
+            min: true,
+            onSet : function (context) {
+                // smartMovieEdit.updateDateString();
+            }
+        });
        
 
         $("#smartTripView-origin").kendoAutoComplete({
