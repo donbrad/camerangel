@@ -2484,6 +2484,8 @@ var smartTripView = {
     mode: 'create',
     validTime: false,
     validName : false,
+    leg1Complete : false,
+    leg2Complete : false,
     placesDS : new kendo.data.DataSource(),
     initialized: false,
 
@@ -2513,10 +2515,14 @@ var smartTripView = {
         smartTripView.placesDS.filter([]);
         smartTripView.autoStatus = false;
         smartTripView.addToCalendar = false;
+        smartTripView.leg1Complete = false;
+        smartTripView.leg2Complete = false;
         smartTripView.validName = false;
         smartTripView.validTime = false;
         smartTripView.validOrigin = false;
         smartTripView.validDestination = false;
+        smartTripView.arrivalSet = false;
+        smartTripView.departureSet = false;
         smartTripView.origin = null;
         smartTripView.destination = null;
         smartTripView.departure = null;
@@ -2525,7 +2531,7 @@ var smartTripView = {
         $("#smartTripModal").data("kendoMobileModalView").open();
     },
 
-    computeTravelTime : function () {
+    computeTravelTime : function (callback) {
         var origin = smartTripView.origin.address, dest = smartTripView.destination.address;
 
         var depart = null, arrive = null;
@@ -2542,17 +2548,43 @@ var smartTripView = {
                 smartTripView.durationString = result.durationString;
                 $("#smartTripView-travelTime").text(result.durationString + " (" +
                     result.distanceString + " mi. )");
+
+                if (callback !== undefined && callback !== null) {
+                    callback(result);
+                }
             } else {
                 ggError ("Google Distance Matrix Error " + JSON.stringify(result.error));
+                if (callback !== undefined && callback !== null) {
+                    callback(null);
+                }
             }
         });
+    },
+
+    //Tag = 'Arrival' or 'Departure'
+    updateCalendarUX : function (tag, fulldate) {
+        var date = moment(fulldate).format('DD/MM/YYYY'), time = moment(fulldate).format("hh:mm a");
+
+        var timeTag = "smartTripView-time"+tag, dateTag =  "smartTripView-date"+tag;
+        
+        $('#'+timeTag).val(time);
+        $('#'+dateTag).val(date);
     },
 
     validate : function () {
         if (smartTripView.validTime && smartTripView.validName && smartTripView.validDestination &&
         smartTripView.validOrigin) {
             $("#smartTripModal-saveBtn").removeClass('hidden');
-            smartTripView.computeTravelTime();
+            smartTripView.computeTravelTime(function(result) {
+                if (smartTripView.arrivalSet) {
+                    smartTripView.departure = smartTripView.arrival - smartTripView.duration;
+                    smartTripView.updateCalendarUX('Departure', smartTripView.departure);
+
+                } else {
+                    smartTripView.arrival = smartTripView.departure + smartTripView.duration;
+                    smartTripView.updateCalendarUX('Arrival', smartTripView.arrival);
+                }
+            });
         } else {
             $("#smartTripModal-saveBtn").addClass('hidden');
         }
@@ -2589,6 +2621,10 @@ var smartTripView = {
 
         smartTripView.departure = moment(combined).toDate();
 
+        smartTripView.departureSet = true;
+        smartTripView.arrivalSet = false;
+        smartTripView.validate();
+
 
     },
 
@@ -2599,6 +2635,9 @@ var smartTripView = {
 
         smartTripView.arrival = moment(combined).toDate();
 
+        smartTripView.departureSet = false;
+        smartTripView.arrivalSet = true;
+        smartTripView.validate();
     },
 
     onInit : function (e) {
