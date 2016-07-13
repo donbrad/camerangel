@@ -2590,6 +2590,17 @@ var smartTripView = {
                 var place = e.item;
                 var dataItem = this.dataItem(e.item.index());
 
+                var place = {};
+
+                place.lat = dataItem.lat;
+                place.lng = dataItem.lng;
+                place.name  = dataItem.name;
+                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
+                place.googleId = dataItem.googleId;
+                place.placeUUID = dataItem.uuid;
+
+                smartTripView.origin = place;
+                smartTripView.validOrigin = true;
 
             },
             filter: "contains",
@@ -2627,6 +2638,18 @@ var smartTripView = {
                 // User has selected one of their places
                 var place = e.item;
                 var dataItem = this.dataItem(e.item.index());
+
+                var place = {};
+
+                place.lat = dataItem.lat;
+                place.lng = dataItem.lng;
+                place.name  = dataItem.name;
+                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
+                place.googleId = dataItem.googleId;
+                place.placeUUID = dataItem.uuid;
+
+                smartTripView.destination = place;
+                smartTripView.validDestination = true;
 
             },
             filter: "contains",
