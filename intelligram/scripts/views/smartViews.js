@@ -2644,15 +2644,15 @@ var smartTripView = {
 
         smartTripView.initialized = false;
 
-        $( "#smartTripView-timeArrival" ).change(function() {
+        $( "#smartTripView-timeArrival" ).blur(function() {
            smartTripView.processArrivalTime();
         });
         
-        $( "#smartTripView-timeDeparture" ).change(function() {
+        $( "#smartTripView-timeDeparture" ).blur(function() {
             smartTripView.processDepartureTime();
         });
 
-        $( "#smartTripView-name" ).change(function() {
+        $( "#smartTripView-name" ).blur(function() {
             smartTripView.name = $("#smartTripView-name").val();
             smartTripView.validName = false;
             if (smartTripView.name.length > 3) {
