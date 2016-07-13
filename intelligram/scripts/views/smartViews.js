@@ -2587,7 +2587,9 @@ var smartTripView = {
 
         var combined = date +  " " + time;
 
-        var parsedDate = moment(combined);
+        smartTripView.departure = moment(combined).toDate();
+
+
     },
 
     processArrivalTime : function ()  {
@@ -2595,7 +2597,7 @@ var smartTripView = {
 
         var combined = date +  " " + time;
 
-        var parsedDate = moment(combined);
+        smartTripView.arrival = moment(combined).toDate();
 
     },
 
