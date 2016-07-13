@@ -2623,8 +2623,9 @@ var smartTripView = {
 
         smartTripView.departureSet = true;
         smartTripView.arrivalSet = false;
-        smartTripView.validate();
 
+        smartTripView.validTime = true;
+        smartTripView.validate();
 
     },
 
@@ -2637,6 +2638,8 @@ var smartTripView = {
 
         smartTripView.departureSet = false;
         smartTripView.arrivalSet = true;
+
+        smartTripView.validTime = true;
         smartTripView.validate();
     },
 
