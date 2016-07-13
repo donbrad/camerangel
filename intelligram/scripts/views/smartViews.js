@@ -375,6 +375,18 @@ var smartEventView = {
 
     },
 
+    getDefaultTime : function () {
+        
+        // Get the new whole hour...
+        var d = new Date();
+        d.setMinutes (d.getMinutes() + 30);
+        d.setMinutes (0);
+
+        var timeStr = moment(d).format('h:mm a');
+        
+        return(timeStr);
+    },
+    
     validDateTime : function () {
         var timeIn =  $("#smartEventView-time").val(), dateIn = $("#smartEventView-time").val();
 
@@ -538,6 +550,8 @@ var smartEventView = {
 
         smartEventView._callback = callback;
 
+        $('#smartEventView-time').val(smartEventView.getDefaultTime());
+        
         smartEventView._date = new Date();
 
         $("#smartEventView-eventExpired").addClass('hidden');
@@ -2530,6 +2544,18 @@ var smartTripView = {
         }
     },
 
+    getDefaultTime : function () {
+
+        // Get the new whole hour...
+        var d = new Date();
+        d.setMinutes (d.getMinutes() + 30);
+        d.setMinutes (0);
+
+        var timeStr = moment(d).format('h:mm a');
+
+        return(timeStr);
+    },
+    
     onAutoStatus : function (e) {
         
         smartTripView.autoStatus = e.checked;

@@ -3172,7 +3172,41 @@
 					</div>-->
 				</label>
 			</li>
-			<li >
+			<li>
+				<label> Departure </label>
+				<div class="clearfix"></div>
+				<div class="smallSearch">
+
+							<span class="searchIcon">
+								<img src='images/smart-event.svg' />
+							</span>
+					<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture"/>
+				</div>
+				<div class="smallSearch-sm">
+						<span class="searchIcon">
+							<img src='images/smart-time.svg' />
+						</span>
+					<input type="time" id="smartTripView-timeDeparture"/>
+				</div>
+			</li>
+			<li>
+				<label> Arrival </label>
+				<div class="clearfix"></div>
+				<div class="smallSearch">
+
+							<span class="searchIcon">
+								<img src='images/smart-event.svg' />
+							</span>
+					<input type="text" class="viewSearchBox" id="smartTripView-dateArrival"/>
+				</div>
+				<div class="smallSearch-sm">
+						<span class="searchIcon">
+							<img src='images/smart-time.svg' />
+						</span>
+					<input type="time" id="smartTripView-timeArrival"/>
+				</div>
+			</li>
+			<!--<li >
 				<label> Departure Time
 					<input type="datetime" id="smartTripView-departure" />
 				</label>
@@ -3181,7 +3215,7 @@
 				<label> Arrival Time
 					<input type="datetime" id="smartTripView-arrival"  />
 				</label>
-			</li>
+			</li>-->
 			<li >
 				<label> Travel Time
 					<div  id="smartTripView-travelTime">  </div>
@@ -3403,7 +3437,7 @@
 						<span class="searchIcon">
 							<img src='images/smart-time.svg' />
 						</span>
-						<input type="search" id="smartEventView-time"/>
+						<input type="time" id="smartEventView-time"/>
 					</div>
 			</li>
 			<li id="smartEventView-add-calendar" class="event-valid" >
