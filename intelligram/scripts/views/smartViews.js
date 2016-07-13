@@ -1698,12 +1698,12 @@ var smartMovieEdit = {
                 }
             });
 
-            $('#smartMovieEdit-time').pickatime({
+            /*$('#smartMovieEdit-time').pickatime({
                 interval: 60,
                 min: [10,0],
                 max: [23,0],
                 clear: false
-            });
+            });*/
 
             /* $("#smartEventView-date").on('blur', function () {
 
