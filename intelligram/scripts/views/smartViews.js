@@ -375,6 +375,18 @@ var smartEventView = {
 
     },
 
+    getDefaultTime : function () {
+        
+        // Get the new whole hour...
+        var d = new Date();
+        d.setMinutes (d.getMinutes() + 30);
+        d.setMinutes (0);
+
+        var timeStr = moment(d).format('h:mm a');
+        
+        return(timeStr);
+    },
+    
     validDateTime : function () {
         var timeIn =  $("#smartEventView-time").val(), dateIn = $("#smartEventView-time").val();
 
@@ -538,6 +550,8 @@ var smartEventView = {
 
         smartEventView._callback = callback;
 
+        $('#smartEventView-time').val(smartEventView.getDefaultTime());
+        
         smartEventView._date = new Date();
 
         $("#smartEventView-eventExpired").addClass('hidden');
@@ -1698,12 +1712,12 @@ var smartMovieEdit = {
                 }
             });
 
-            $('#smartMovieEdit-time').pickatime({
+            /*$('#smartMovieEdit-time').pickatime({
                 interval: 60,
                 min: [10,0],
                 max: [23,0],
                 clear: false
-            });
+            });*/
 
             /* $("#smartEventView-date").on('blur', function () {
 
@@ -1741,7 +1755,14 @@ var smartMovieEdit = {
             smartMovieEdit._callback = callback;
         }
 
+        // Get the new whole hour...
+        var d = new Date();
+        d.setMinutes (d.getMinutes() + 30);
+        d.setMinutes (0);
 
+        var timeStr = moment(d).format('h:mm a');
+
+        $("#smartMovieEdit-time").val(timeStr);
 
         smartMovieEdit._date = new Date();
 
@@ -2458,6 +2479,8 @@ var smartTripView = {
     validDestination: false,
     departure : null,
     arrival: null,
+    autoStatus: false,
+    addToCalendar: false,
     mode: 'create',
     validTime: false,
     validName : false,
@@ -2474,9 +2497,22 @@ var smartTripView = {
             smartTripView.mode = 'view';
         }
 
+        var d = new Date();
+
+        // Set up default dates as today
+        var dateStr = moment(d).format('MM/DD/YYYY');
+        $('#smartTripView-dateDeparture').val(dateStr);
+        $('#smartTripView-dateArrival').val(dateStr);
+
+        //Set up default arrival and departure times as rounded up hour
+        $('#smartTripView-timeDeparture').val(smartTripView.getDefaultTime());
+        $('#smartTripView-timeArrival').val(smartTripView.getDefaultTime());
+
         var placesArray = placesModel.placesDS.data();
         smartTripView.placesDS.data(placesArray);
         smartTripView.placesDS.filter([]);
+        smartTripView.autoStatus = false;
+        smartTripView.addToCalendar = false;
         smartTripView.validName = false;
         smartTripView.validTime = false;
         smartTripView.validOrigin = false;
@@ -2502,7 +2538,10 @@ var smartTripView = {
 
         mapModel.getTravelTime(origin, dest, depart, arrive, function (result) {
             if (result.valid) {
-
+                smartTripView.duration = result.duration;
+                smartTripView.durationString = result.durationString;
+                $("#smartTripView-travelTime").text(result.durationString + " (" +
+                    result.distanceString + " mi. )");
             } else {
                 ggError ("Google Distance Matrix Error " + JSON.stringify(result.error));
             }
@@ -2519,18 +2558,62 @@ var smartTripView = {
         }
     },
 
+    getDefaultTime : function () {
+
+        // Get the new whole hour...
+        var d = new Date();
+        d.setMinutes (d.getMinutes() + 30);
+        d.setMinutes (0);
+
+        var timeStr = moment(d).format('h:mm a');
+
+        return(timeStr);
+    },
+    
+    onAutoStatus : function (e) {
+        
+        smartTripView.autoStatus = e.checked;
+
+    },
+
+    onAddToCalendar : function (e) {
+
+        smartTripView.addToCalendar = e.checked;
+
+    },
+
+    processDepartureTime : function () {
+        var date =  $("#smartTripView-dateDeparture").val() , time = $("#smartTripView-timeDeparture").val();
+
+        var combined = date +  " " + time;
+
+        smartTripView.departure = moment(combined).toDate();
+
+
+    },
+
+    processArrivalTime : function ()  {
+        var date =  $("#smartTripView-dateArrival").val() , time = $("#smartTripView-timeArrival").val();
+
+        var combined = date +  " " + time;
+
+        smartTripView.arrival = moment(combined).toDate();
+
+    },
+
     onInit : function (e) {
 
         smartTripView.initialized = false;
 
-        $( "#smartTripView-departure" ).change(function() {
-            smartTripView.departure = $("#smartTripView-departure").val();
-            smartTripView.arrival = null;
-            smartTripView.validTime = true;
-            smartTripView.validate();
+        $( "#smartTripView-timeArrival" ).change(function() {
+           smartTripView.processArrivalTime();
+        });
+        
+        $( "#smartTripView-timeDeparture" ).change(function() {
+            smartTripView.processDepartureTime();
         });
 
-        $( "smartTripView-name" ).change(function() {
+        $( "#smartTripView-name" ).change(function() {
             smartTripView.name = $("#smartTripView-name").val();
             smartTripView.validName = false;
             if (smartTripView.name.length > 3) {
@@ -2539,45 +2622,46 @@ var smartTripView = {
             }
         });
 
-        $( "#smartTripView-arrival" ).change(function() {
-            smartTripView.arrival = $("#smartTripView-arrival" ).val();
-            smartTripView.departure = null;
-            smartTripView.validTime = true;
-            smartTripView.validate();
+        $('#smartTripView-dateDeparture').pickadate({
+            format: 'mmm, d yyyy',
+            formatSubmit: 'mm d yyyy',
+            min: true,
+            onSet : function (context) {
+                smartTripView.processDepartureTime();
+            }
         });
+
+
+        $('#smartTripView-dateArrival').pickadate({
+            format: 'mmm, d yyyy',
+            formatSubmit: 'mm d yyyy',
+            min: true,
+            onSet : function (context) {
+                smartTripView.processArrivalTime();
+            }
+        });
+       
 
         $("#smartTripView-origin").kendoAutoComplete({
             dataSource: smartTripView.placesDS,
             ignoreCase: true,
             dataTextField: "name",
-            /*change: function (e) {
-                var query = $("#smartTripView-destination").val();
-                var ds = smartTripView.placesDS;
-                if (query.length === 0) {
-                    ds.filter([]);
-                } else {
-                    ds.filter([ {
-                        "field":"name",
-                        "operator":"contains",
-                        "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"address",
-                            "operator":"contains",
-                            "value":query}
-                    ]);
-                }
-
-            }, */
-
             select: function(e) {
                 // User has selected one of their places
                 var place = e.item;
                 var dataItem = this.dataItem(e.item.index());
 
+                var place = {};
+
+                place.lat = dataItem.lat;
+                place.lng = dataItem.lng;
+                place.name  = dataItem.name;
+                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
+                place.googleId = dataItem.googleId;
+                place.placeUUID = dataItem.uuid;
+
+                smartTripView.origin = place;
+                smartTripView.validOrigin = true;
 
             },
             filter: "contains",
@@ -2588,33 +2672,22 @@ var smartTripView = {
             dataSource: smartTripView.placesDS,
             ignoreCase: true,
             dataTextField: "name",
-            /*change: function (e) {
-             var query = $("#smartTripView-destination").val();
-                var ds = smartTripView.placesDS;
-                if (query.length === 0) {
-                    ds.filter([]);
-                } else {
-                    ds.filter([ {
-                        "field":"name",
-                        "operator":"contains",
-                        "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"address",
-                            "operator":"contains",
-                            "value":query}
-                    ]);
-                }
-
-             },*/
-
             select: function(e) {
                 // User has selected one of their places
                 var place = e.item;
                 var dataItem = this.dataItem(e.item.index());
+
+                var place = {};
+
+                place.lat = dataItem.lat;
+                place.lng = dataItem.lng;
+                place.name  = dataItem.name;
+                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
+                place.googleId = dataItem.googleId;
+                place.placeUUID = dataItem.uuid;
+
+                smartTripView.destination = place;
+                smartTripView.validDestination = true;
 
             },
             filter: "contains",

@@ -457,8 +457,8 @@ var mapModel = {
 
         var distanceObj = {
             origins: [origin],
-            destinations: [destination],
-            travelMode: mode
+            destinations: [destination]/*,
+            travelMode: mode*/
         };
 
         if (departure !== null) {

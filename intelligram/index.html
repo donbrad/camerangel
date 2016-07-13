@@ -3055,7 +3055,7 @@
 						<span class="searchIcon">
 							<img src='images/smart-time.svg' />
 						</span>
-					<input type="search" id="smartMovieEdit-time"/>
+					<input type="time" id="smartMovieEdit-time"/>
 				</div>
 			</li>
 			<!--<li id="smartMovieView-add-calendar" class="event-valid" >
@@ -3146,6 +3146,7 @@
 					<input type="search" id="smartTripView-destination"  />
 				</label>
 			</li>
+<!--
 			<li >
 				<label> Type of Trip
 					<div class="select-lg">
@@ -3157,29 +3158,63 @@
 					</div>
 				</label>
 			</li>
-			<li >
-				<label> Auto Update My Status
-					<div class="select-lg">
-						<select id="smartTripView-autoUpdate"  >
-							<option value="0">Never</option>
-							<option value="10">Every 10 Minutes</option>
-							<option value="30">Every 30 Minutes</option>
-							<option value="60">Every Hour</option>
-						</select>
-					</div>
+-->
+			<li>
+				<label> Auto Update Status
+					<input id="smartTripView-autoUpdate" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAutoStatus" />
 				</label>
 			</li>
+
+			<li>
+				<label> Add To Calendar
+					<input id="smartTripView-addToCalendar" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAddToCalendar" />
+				</label>
+			</li>
+
+			<li>
+				<label> Departure </label>
+				<div class="clearfix"></div>
+				<div class="smallSearch">
+							<span class="searchIcon">
+								<img src='images/smart-event.svg' />
+							</span>
+					<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture"/>
+				</div>
+				<div class="smallSearch-sm">
+						<span class="searchIcon">
+							<img src='images/smart-time.svg' />
+						</span>
+					<input type="time" id="smartTripView-timeDeparture"/>
+				</div>
+			</li>
 			<li >
+				<div class="clearfix"></div>
+				<label> Arrival </label>
+				<div class="clearfix"></div>
+				<div class="smallSearch">
+							<span class="searchIcon">
+								<img src='images/smart-event.svg' />
+							</span>
+					<input type="text" class="viewSearchBox" id="smartTripView-dateArrival"/>
+				</div>
+				<div class="smallSearch-sm">
+						<span class="searchIcon">
+							<img src='images/smart-time.svg' />
+						</span>
+					<input type="time" id="smartTripView-timeArrival"/>
+				</div>
+			</li>
+			<!--<li >
 				<label> Departure Time
-					<input type="datetime-local" id="smartTripView-departure" />
+					<input type="datetime" id="smartTripView-departure" />
 				</label>
 			</li>
 			<li >
 				<label> Arrival Time
-					<input type="datetime-local" id="smartTripView-arrival"  />
+					<input type="datetime" id="smartTripView-arrival"  />
 				</label>
-			</li>
-			<li >
+			</li>-->
+			<li class="clearfix">
 				<label> Travel Time
 					<div  id="smartTripView-travelTime">  </div>
 				</label>
@@ -3400,7 +3435,7 @@
 						<span class="searchIcon">
 							<img src='images/smart-time.svg' />
 						</span>
-						<input type="search" id="smartEventView-time"/>
+						<input type="time" id="smartEventView-time"/>
 					</div>
 			</li>
 			<li id="smartEventView-add-calendar" class="event-valid" >
