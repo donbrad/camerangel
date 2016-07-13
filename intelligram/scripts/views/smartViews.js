@@ -1741,7 +1741,14 @@ var smartMovieEdit = {
             smartMovieEdit._callback = callback;
         }
 
+        // Get the new whole hour...
+        var d = new Date();
+        d.setMinutes (d.getMinutes() + 30);
+        d.setMinutes (0);
 
+        var timeStr = moment(d).format('h:mm a');
+
+        $("#smartMovieEdit-time").val(timeStr);
 
         smartMovieEdit._date = new Date();
 
