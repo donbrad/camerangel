@@ -2533,8 +2533,17 @@ var smartTripView = {
 
         smartTripView.initialized = false;
 
+        $( "#smartTripView-arrival" ).change(function() {
+            var arr = $("#smartTripView-arrival" ).val();
+            smartTripView.arrival = arr;
+            smartTripView.departure = null;
+            smartTripView.validTime = true;
+            smartTripView.validate();
+        });
+        
         $( "#smartTripView-departure" ).change(function() {
-            smartTripView.departure = $("#smartTripView-departure").val();
+            var dep = $("#smartTripView-departure").val();
+            smartTripView.departure = dep;
             smartTripView.arrival = null;
             smartTripView.validTime = true;
             smartTripView.validate();
@@ -2551,40 +2560,12 @@ var smartTripView = {
 
         
 
-        $( "#smartTripView-arrival" ).change(function() {
-            smartTripView.arrival = $("#smartTripView-arrival" ).val();
-            smartTripView.departure = null;
-            smartTripView.validTime = true;
-            smartTripView.validate();
-        });
+       
 
         $("#smartTripView-origin").kendoAutoComplete({
             dataSource: smartTripView.placesDS,
             ignoreCase: true,
             dataTextField: "name",
-            /*change: function (e) {
-                var query = $("#smartTripView-destination").val();
-                var ds = smartTripView.placesDS;
-                if (query.length === 0) {
-                    ds.filter([]);
-                } else {
-                    ds.filter([ {
-                        "field":"name",
-                        "operator":"contains",
-                        "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"address",
-                            "operator":"contains",
-                            "value":query}
-                    ]);
-                }
-
-            }, */
-
             select: function(e) {
                 // User has selected one of their places
                 var place = e.item;
@@ -2611,29 +2592,6 @@ var smartTripView = {
             dataSource: smartTripView.placesDS,
             ignoreCase: true,
             dataTextField: "name",
-            /*change: function (e) {
-             var query = $("#smartTripView-destination").val();
-                var ds = smartTripView.placesDS;
-                if (query.length === 0) {
-                    ds.filter([]);
-                } else {
-                    ds.filter([ {
-                        "field":"name",
-                        "operator":"contains",
-                        "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"address",
-                            "operator":"contains",
-                            "value":query}
-                    ]);
-                }
-
-             },*/
-
             select: function(e) {
                 // User has selected one of their places
                 var place = e.item;
