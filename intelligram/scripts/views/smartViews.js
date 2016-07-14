@@ -2574,7 +2574,7 @@ var smartTripView = {
     },
 
     validate : function () {
-        if (smartTripView.validTime && smartTripView.validName && smartTripView.validDestination &&
+        if (smartTripView.validTime  && smartTripView.validDestination &&
         smartTripView.validOrigin) {
             $("#smartTripModal-saveBtn").removeClass('hidden');
             smartTripView.computeTravelTime(function(result) {
@@ -2671,15 +2671,6 @@ var smartTripView = {
         $( "#smartTripView-tripType" ).blur(function() {
             smartTripView.tripType = $("#smartTripView-tripType").val();
             smartTripView.validate();
-        });
-
-        $( "#smartTripView-name" ).blur(function() {
-            smartTripView.name = $("#smartTripView-name").val();
-            smartTripView.validName = false;
-            if (smartTripView.name.length > 3) {
-                smartTripView.validName = true;
-                smartTripView.validate();
-            }
         });
 
         $('#smartTripView-dateDeparture').pickadate({
