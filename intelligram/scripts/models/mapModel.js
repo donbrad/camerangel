@@ -447,20 +447,22 @@ var mapModel = {
     },
 
     getTravelTime : function (origin, destination, departure, arrival, callback, mode) {
-        if (mode === undefined || mode === null) {
-            mode =  google.maps.TravelMode.DRIVING;
-        } else if (mode === 'walk') {
-            mode =  google.maps.TravelMode.WALKING;
-        } else if (mode === 'bike') {
-            mode =  google.maps.TravelMode.BICYCLING;
-        } else if (mode === 'transit') {
-            mode =  google.maps.TravelMode.TRANSIT;
+        var travelMode = google.maps.TravelMode.DRIVING;
+        if (mode !== undefined && mode !== null) {
+            if (mode === 'walk') {
+                travelMode =  google.maps.TravelMode.WALKING;
+            } else if (mode === 'bike') {
+                travelMode =  google.maps.TravelMode.BICYCLING;
+            } else if (mode === 'transit') {
+                travelMode =  google.maps.TravelMode.TRANSIT;
+            }
         }
+
 
         var distanceObj = {
             origins: [origin],
             destinations: [destination],
-            travelMode: mode,
+            travelMode: travelMode,
             unitSystem: google.maps.UnitSystem.IMPERIAL
         };
 
