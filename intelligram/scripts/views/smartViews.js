@@ -2482,6 +2482,7 @@ var smartTripView = {
     autoStatus: false,
     addToCalendar: false,
     mode: 'create',
+    tripType: 'drive',
     validTime: false,
     validName : false,
     leg1Complete : false,
@@ -2513,6 +2514,7 @@ var smartTripView = {
         var placesArray = placesModel.placesDS.data();
         smartTripView.placesDS.data(placesArray);
         smartTripView.placesDS.filter([]);
+        smartTripView.tripType = 'drive';
         smartTripView.autoStatus = false;
         smartTripView.addToCalendar = false;
         smartTripView.leg1Complete = false;
@@ -2558,7 +2560,7 @@ var smartTripView = {
                     callback(null);
                 }
             }
-        });
+        }, smartTripView.tripType);
     },
 
     //Tag = 'Arrival' or 'Departure'
@@ -2657,6 +2659,7 @@ var smartTripView = {
 
         $( "#smartTripView-tripType" ).blur(function() {
             smartTripView.tripType = $("#smartTripView-tripType").val();
+            smartTripView.validate();
         });
 
         $( "#smartTripView-name" ).blur(function() {
