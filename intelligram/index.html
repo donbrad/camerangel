@@ -3128,12 +3128,12 @@
 					<input type="search" id="smartTripView-name" />
 				</label>
 			</li>
-			<li >
+			<li class="tripEdit">
 				<label> Origin (Start) <a data-click="smartTripView.onOriginSearch" data-role="button" class="btnClear" id="smartTripView-originSearchBtn"> Find... </a>
 					<input type="search" id="smartTripView-origin"  />
 				</label>
 			</li>
-			<li >
+			<li class="tripEdit">
 				<label> Destination (End) <a data-click="smartTripView.onDestinationSearch" data-role="button" class="btnClear" id="smartTripView-destinationSearchBtn"> Find... </a>
 					<input type="search" id="smartTripView-destination"  />
 				</label>
@@ -3194,14 +3194,16 @@
 			</li>
 
 			<li>
+				<div class="clearfix"></div>
 				<label> Auto Update Status
-					<input id="smartTripView-autoUpdate" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAutoStatus" />
+					<input id="smartTripView-autoUpdate" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAutoStatus" style="float: right;" />
 				</label>
 			</li>
 
 			<li>
+				<div class="clearfix"></div>
 				<label> Add To Calendar
-					<input id="smartTripView-addToCalendar" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAddToCalendar" />
+					<input id="smartTripView-addToCalendar" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAddToCalendar" style="float: right;" />
 				</label>
 			</li>
 

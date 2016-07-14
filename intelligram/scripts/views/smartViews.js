@@ -2578,6 +2578,16 @@ var smartTripView = {
         smartTripView.validOrigin) {
             $("#smartTripModal-saveBtn").removeClass('hidden');
             smartTripView.computeTravelTime(function(result) {
+                var name = $('#smartTripView-name').val();
+
+                if (name === null || name === '') {
+                    name = smartTripView.tripType + " From " + smartTripView.origin.name + " To " + smartTripView.destination.name;
+
+                    name = name.toLowerCase().capitalize;
+
+                    $('#smartTripView-name').val(name);
+                }
+
                 if (smartTripView.arrivalSet) {
                     smartTripView.departure = moment(smartTripView.arrival).add(smartTripView.duration, 's');
                     smartTripView.updateCalendarUX('Departure', smartTripView.departure);
