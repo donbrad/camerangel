@@ -2565,7 +2565,7 @@ var smartTripView = {
 
     //Tag = 'Arrival' or 'Departure'
     updateCalendarUX : function (tag, fulldate) {
-        var date = moment(fulldate).format('ddd, MMM Do YYYY'), time = moment(fulldate).format("hh:mm a");
+        var date = moment(fulldate).format('ddd, MMM Do YYYY'), time = moment(fulldate).format("k:mm");
 
         var timeTag = "smartTripView-time"+tag, dateTag =  "smartTripView-date"+tag;
         
