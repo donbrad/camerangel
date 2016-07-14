@@ -2494,10 +2494,13 @@ var smartTripView = {
 
         if (tripObj === null) {
             smartTripView.mode = 'create';
+            smartTripView.setCreator();
         } else if (tripObj.ownerUUID === userModel._user.userUUID) {
             smartTripView.mode = 'edit';
+            smartTripView.setEditor();
         } else {
             smartTripView.mode = 'view';
+            smartTripView.setViewer();
         }
 
         var d = new Date();
@@ -2801,6 +2804,37 @@ var smartTripView = {
                 $('#smartTripView-destination').val(value);
             }
         });
+    },
+
+    setCreator : function () {
+        $('.tripView').addClass('hidden');
+        $('.tripEdit').removeClass('hidden');
+    },
+
+    setViewer : function () {
+        $('.tripView').removeClass('hidden');
+        $('.tripEdit').addClass('hidden');
+    },
+
+    setEditor : function () {
+        $('.tripEdit').addClass('hidden');
+        $('.tripView').removeClass('hidden');
+        $('.tripEditTime').removeClass('hidden');
+        $('.tripViewTime').addClass('hidden');
+    },
+
+    setUpdate : function () {
+
+    },
+
+    onEnableEdit : function () {
+        $('.tripEditRoute').removeClass('hidden');
+        $('.tripView').addClass('hidden');
+    },
+
+    onEnableTimeEdit : function () {
+        $('.tripEditTime').removeClass('hidden');
+        $('.tripViewTime').addClass('hidden');
     },
 
     onCancel : function (e) {

@@ -3128,18 +3128,18 @@
 					<input type="search" id="smartTripView-name" />
 				</label>
 			</li>
-			<li class="tripEdit">
+			<li class="tripEdit tripEditRoute">
 				<label> Origin (Start) <a data-click="smartTripView.onOriginSearch" data-role="button" class="btnClear" id="smartTripView-originSearchBtn"> Find... </a>
 					<input type="search" id="smartTripView-origin"  />
 				</label>
 			</li>
-			<li class="tripEdit">
+			<li class="tripEdit tripEditRoute">
 				<label> Destination (End) <a data-click="smartTripView.onDestinationSearch" data-role="button" class="btnClear" id="smartTripView-destinationSearchBtn"> Find... </a>
 					<input type="search" id="smartTripView-destination"  />
 				</label>
 			</li>
 
-			<li >
+			<li class="tripEdit tripEditRoute">
 				<label> I'll get there by
 					<div class="select-lg">
 						<select id="smartTripView-tripType">
@@ -3152,8 +3152,22 @@
 				</label>
 			</li>
 
+			<li class="tripView tripViewRoute hidden">
+				<div class="clearfix"></div>
+				<a data-click="smartTripView.onEnableEdit" data-role="button" class="btnClear" id="smartTripView-routeEditBtn"> Change </a>
+				<div id="smartTripView-routeDescription"></div>
+			</li>
 
-			<li>
+			<li class="tripView tripViewTime hidden">
+				<div class="clearfix"></div>
+				<a data-click="smartTripView.onEnableTimeEdit" data-role="button" class="btnClear" id="smartTripView-timeEditBtn"> Change </a>
+				<div >
+					Leaving  : <span id="smartTripView-viewDeparture"></span>
+					Arriving  : <span id="smartTripView-viewArrival"></span>
+				</div>
+			</li>
+
+			<li class="tripEdit tripEditTime">
 				<label> Departure </label>
 				<div class="clearfix"></div>
 				<div class="smallSearch">
@@ -3169,7 +3183,7 @@
 					<input type="time" id="smartTripView-timeDeparture"/>
 				</div>
 			</li>
-			<li >
+			<li class="tripEdit tripEditTime">
 				<div class="clearfix"></div>
 				<label> Arrival </label>
 				<div class="clearfix"></div>
@@ -3200,7 +3214,7 @@
 				</label>
 			</li>
 
-			<li>
+			<li id="smartTripView-addToCalendarLi">
 				<div class="clearfix"></div>
 				<label> Add To Calendar
 					<input id="smartTripView-addToCalendar" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAddToCalendar" style="float: right;" />
@@ -3209,14 +3223,12 @@
 
 		</ul>
 	</form>
-	<ul class="list-inline hidden" id="smartTripModal-viewer">
 
-	</ul>
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-saveBtn" data-click="smartTripModal.onSave">Save</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-restartBtn" data-click="smartTripModal.onRestart">Restart</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-returnBtn" data-click="smartTripModal.onReturn">Return</a>
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
+		<a class="btnFull-modal btnPrimary tripView hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
 	</div>
 </div>
 
