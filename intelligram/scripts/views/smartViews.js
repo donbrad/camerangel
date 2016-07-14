@@ -2565,11 +2565,11 @@ var smartTripView = {
 
     //Tag = 'Arrival' or 'Departure'
     updateCalendarUX : function (tag, fulldate) {
-        var date = moment(fulldate).format('DD/MM/YYYY'), time = moment(fulldate).format("hh:mm a");
+        var date = moment(fulldate).format('ddd, MMM Do YYYY'), time = moment(fulldate).format("hh:mm a");
 
         var timeTag = "smartTripView-time"+tag, dateTag =  "smartTripView-date"+tag;
         
-        $('#'+timeTag).val(time);
+        $('#'+timeTag).val(time).change();
         $('#'+dateTag).val(date);
     },
 
@@ -2581,10 +2581,11 @@ var smartTripView = {
                 if (smartTripView.arrivalSet) {
                     smartTripView.departure = moment(smartTripView.arrival).add(smartTripView.duration, 's');
                     smartTripView.updateCalendarUX('Departure', smartTripView.departure);
-
+                    smartTripView.updateCalendarUX('Arrival', smartTripView.arrival);
                 } else {
                     smartTripView.arrival = moment(smartTripView.departure).add(smartTripView.duration, 's');
                     smartTripView.updateCalendarUX('Arrival', smartTripView.arrival);
+                    smartTripView.updateCalendarUX('Departure', smartTripView.departure);
                 }
             });
         } else {
