@@ -2579,11 +2579,11 @@ var smartTripView = {
             $("#smartTripModal-saveBtn").removeClass('hidden');
             smartTripView.computeTravelTime(function(result) {
                 if (smartTripView.arrivalSet) {
-                    smartTripView.departure = smartTripView.arrival - smartTripView.duration;
+                    smartTripView.departure = moment(smartTripView.arrival).add(smartTripView.duration, 's');
                     smartTripView.updateCalendarUX('Departure', smartTripView.departure);
 
                 } else {
-                    smartTripView.arrival = smartTripView.departure + smartTripView.duration;
+                    smartTripView.arrival = moment(smartTripView.departure).add(smartTripView.duration, 's');
                     smartTripView.updateCalendarUX('Arrival', smartTripView.arrival);
                 }
             });
