@@ -2472,6 +2472,7 @@ var smartMovieView = {
 var smartTripView = {
     activeObject : new kendo.data.ObservableObject(),
     callback : null,
+    _inited: false,
     name: null,
     origin: null,
     destination: null,
@@ -2532,7 +2533,10 @@ var smartTripView = {
         smartTripView.destination = null;
         smartTripView.departure = null;
         smartTripView.arrival = null;
-
+        if (!smartTripView._inited) {
+            mapModel.googleTripModal = new google.maps.Map(document.getElementById('smartTripView-mapDiv'), mapModel.mapOptions);
+            smartTripView._inited = true;
+        }
         $("#smartTripModal").data("kendoMobileModalView").open();
     },
 
