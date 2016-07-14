@@ -3129,6 +3129,9 @@
 				</label>
 			</li>
 			<li class="tripEdit tripEditRoute">
+				<h3>Where are you going?</h3>
+			</li>
+			<li class="tripEdit tripEditRoute">
 				<label> Origin (Start) <a data-click="smartTripView.onOriginSearch" data-role="button" class="btnClear" id="smartTripView-originSearchBtn"> Find... </a>
 					<input type="search" id="smartTripView-origin"  />
 				</label>
@@ -3152,6 +3155,11 @@
 				</label>
 			</li>
 
+			<li class="tripEdit tripEditRouteNext">
+				<div class="clearfix"></div>
+				<a data-click="smartTripView.onRouteComplete" data-role="button" class="btnClear" id="smartTripView-routeEditBtn"> Next </a>
+			</li>
+
 			<li class="tripView tripViewRoute hidden">
 				<div class="clearfix"></div>
 				<a data-click="smartTripView.onEnableEdit" data-role="button" class="btnClear" id="smartTripView-routeEditBtn"> Change </a>
@@ -3167,7 +3175,10 @@
 				</div>
 			</li>
 
-			<li class="tripEdit tripEditTime">
+			<li class="tripEditTime">
+				<h3>When are you going?</h3>
+			</li>
+			<li class="tripEditTime">
 				<label> Departure </label>
 				<div class="clearfix"></div>
 				<div class="smallSearch">
@@ -3183,7 +3194,7 @@
 					<input type="time" id="smartTripView-timeDeparture"/>
 				</div>
 			</li>
-			<li class="tripEdit tripEditTime">
+			<li class="tripEditTime">
 				<div class="clearfix"></div>
 				<label> Arrival </label>
 				<div class="clearfix"></div>
@@ -3205,6 +3216,10 @@
 				<label> Travel Time
 					<div  id="smartTripView-travelTime">  </div>
 				</label>
+			</li>
+			<li class="tripEditTime tripEditTimeNext">
+				<div class="clearfix"></div>
+				<a data-click="smartTripView.onTimeComplete" data-role="button" class="btnClear" id="smartTripView-routeTimeBtn"> Next </a>
 			</li>
 
 			<li>

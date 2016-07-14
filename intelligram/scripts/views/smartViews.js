@@ -2841,6 +2841,18 @@ var smartTripView = {
         $('.tripViewTime').addClass('hidden');
     },
 
+    onRouteComplete : function () {
+        $('.tripEditRoute').addClass('hidden');
+        $('.tripViewRoute').removeClass('hidden');
+        $('.tripEditTime').removeClass('hidden');
+        $('.tripViewMap').removeClass('hidden');
+    },
+
+    onTimeComplete : function () {
+        $('.tripViewTime').removeClass('hidden');
+        $('.tripEditTime').addClass('hidden');
+    },
+
     onCancel : function (e) {
         $("#smartTripModal").data("kendoMobileModalView").close();
     },
