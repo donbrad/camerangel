@@ -2580,6 +2580,13 @@ var smartTripView = {
         $('#'+dateTag).val(date);
     },
 
+    validateRoute : function () {
+        if ( smartTripView.validDestination && smartTripView.validOrigin) {
+            $(".tripEditRouteNext").removeClass('hidden');
+
+        }
+    },
+
     validate : function () {
         if (smartTripView.validTime  && smartTripView.validDestination &&
         smartTripView.validOrigin) {
@@ -2812,7 +2819,9 @@ var smartTripView = {
 
     setCreator : function () {
         $('.tripView').addClass('hidden');
-        $('.tripEdit').removeClass('hidden');
+        $('.tripEditRoute').removeClass('hidden');
+        $('.tripEditRouteNext').addClass('hidden');
+        $('.tripEditTime').addClass('hidden');
     },
 
     setViewer : function () {
@@ -2833,6 +2842,7 @@ var smartTripView = {
 
     onEnableEdit : function () {
         $('.tripEditRoute').removeClass('hidden');
+        $('.tripEditRouteNext').removeClass('hidden');
         $('.tripView').addClass('hidden');
     },
 
@@ -2843,6 +2853,13 @@ var smartTripView = {
 
     onRouteComplete : function () {
         $('.tripEditRoute').addClass('hidden');
+        $('.tripEditRouteNext').addClass('hidden');
+
+        var routeString = smartTripView.tripType + " From " + smartTripView.origin.name + " To " + smartTripView.destination.name;
+
+        routeString = routeString.toLowerCase().capitalize;
+
+        $('#smartTripView-routeDescription').text(routeString);
         $('.tripViewRoute').removeClass('hidden');
         $('.tripEditTime').removeClass('hidden');
         $('.tripViewMap').removeClass('hidden');
