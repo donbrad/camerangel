@@ -2484,6 +2484,7 @@ var smartTripView = {
     addToCalendar: false,
     mode: 'create',
     tripType: 'drive',
+    travelMode : google.maps.TravelMode.DRIVING,
     validTime: false,
     validName : false,
     leg1Complete : false,
@@ -2537,11 +2538,38 @@ var smartTripView = {
         smartTripView.destination = null;
         smartTripView.departure = null;
         smartTripView.arrival = null;
+
+        // Setup Trip Map and Directions renderer just once
         if (!smartTripView._inited) {
-            mapModel.googleTripModal = new google.maps.Map(document.getElementById('smartTripView-mapDiv'), mapModel.mapOptions);
+            smartTripView.googleMap = new google.maps.Map(document.getElementById('smartTripView-mapDiv'), mapModel.mapOptions);
+            smartTripView.directionsDisplay = new google.maps.DirectionsRenderer();
+            smartTripView.directionsDisplay.setMap(smartTripView.googleMap);
+
             smartTripView._inited = true;
         }
         $("#smartTripModal").data("kendoMobileModalView").open();
+    },
+
+    setMapCenter: function () {
+
+        smartTripView.googleMap.setCenter({lat: smartTripView.origin.lat, lng: smartTripView.origin.lng});
+    },
+
+    displayRouteOnMap : function () {
+
+        var request = {
+            origin: smartTripView.origin.address,
+            destination: smartTripView.origin.address,
+            travelMode: smartTripView.travelMode
+        };
+
+        smartTripView.setMapCenter();
+
+        mapModel.googleDirections.route(request, function(result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                smartTripView.directionsDisplay.setDirections(result);
+            }
+        });
     },
 
     computeTravelTime : function (callback) {
@@ -2615,6 +2643,9 @@ var smartTripView = {
                     smartTripView.updateCalendarUX('Arrival', smartTripView.arrival);
                     smartTripView.updateCalendarUX('Departure', smartTripView.departure);
                 }
+
+                smartTripView.setMapCenter();
+                smartTripView.displayRouteOnMap();
             });
         } else {
             $("#smartTripModal-saveBtn").addClass('hidden');
@@ -2688,6 +2719,20 @@ var smartTripView = {
 
         $( "#smartTripView-tripType" ).blur(function() {
             smartTripView.tripType = $("#smartTripView-tripType").val();
+            switch (smartTripView.tripType) {
+                case 'drive' :
+                    smartTripView.travelMode = google.maps.TravelMode.DRIVING;
+                    break;
+                case 'walk' :
+                    smartTripView.travelMode = google.maps.TravelMode.WALKING;
+                    break;
+                case  'bike' :
+                    smartTripView.travelMode = google.maps.TravelMode.BICYCLING;
+                    break;
+                case  'transit' :
+                    smartTripView.travelMode = google.maps.TravelMode.TRANSIT;
+                    break;
+            }
             smartTripView.validate();
         });
 
@@ -2882,6 +2927,7 @@ var smartTripView = {
     onTimeComplete : function () {
         $('.tripViewTime').removeClass('hidden');
         $('.tripEditTime').addClass('hidden');
+        smartTripView.validate();
     },
 
     onCancel : function (e) {

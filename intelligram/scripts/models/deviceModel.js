@@ -151,6 +151,7 @@ var deviceModel = {
       
         mapModel.geocoder =  new google.maps.Geocoder();
         mapModel.googleDistance = new google.maps.DistanceMatrixService();
+        mapModel.googleDirections = new google.maps.DirectionsService();
         mapModel.googlePlaces = new google.maps.places.PlacesService(mapModel.googleMap);
 
         deviceModel.state.googleMapsLoaded = true;
