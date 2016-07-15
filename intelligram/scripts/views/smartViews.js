@@ -2506,6 +2506,10 @@ var smartTripView = {
 
         var d = new Date();
 
+        $('#smartTripView-name').val("");
+        $('#smartTripView-origin').val("");
+        $('#ssmartTripView-destination').val("");
+
         // Set up default dates as today
         var dateStr = moment(d).format('MM/DD/YYYY');
         $('#smartTripView-dateDeparture').val(dateStr);
