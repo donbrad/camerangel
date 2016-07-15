@@ -2865,11 +2865,13 @@ var smartTripView = {
         $('.tripEditRoute').addClass('hidden');
         $('.tripEditRouteNext').addClass('hidden');
 
-        var routeString = smartTripView.tripType + "</br> From " + smartTripView.origin.name + "</br> To " + smartTripView.destination.name;
+        $("#smartTripView-routeMode").val(smartTripView.tripType.capitalize());
+        $("#smartTripView-routeFrom").val(smartTripView.origin.name.capitalize());
+        $("#smartTripView-routeTo").val(smartTripView.destination.name.capitalize());
 
-        routeString = routeString.toLowerCase().capitalize();
+        smartTripView.name = $('#smartTripView-name').val();
 
-        $('#smartTripView-routeDescription').text(routeString);
+
         $('#smartTripView-tripTitle').text(smartTripView.name);
 
         $('.tripViewRoute').removeClass('hidden');

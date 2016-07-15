@@ -3166,7 +3166,12 @@
 				<div class="clearfix"></div>
 				<h3 id="smartTripView-tripTitle"></h3>
 				<a data-click="smartTripView.onEnableEdit" data-role="button" class="btnClear" id="smartTripView-routeEditBtn" style="float:right;" > Change </a>
-				<div id="smartTripView-routeDescription"></div>
+				<div id="smartTripView-routeDescription">
+					<span id="smartTripView-routeMode"></span> </br>
+					<strong>Leaving  : </strong> <span id="smartTripView-routeFrom"></span> </br>
+					<strong>Arriving  : </strong> <span id="smartTripView-routeTo"></span>
+
+				</div>
 			</li>
 
 			<li class="tripView tripViewTime hidden">
@@ -3174,8 +3179,8 @@
 				<a data-click="smartTripView.onEnableTimeEdit" data-role="button" class="btnClear" id="smartTripView-timeEditBtn"> Change </a>
 				<div >
 					<h3><span id="smartTripView-viewTitle"> </span></h3>
-					Leaving  : <span id="smartTripView-viewDeparture"></span>
-					Arriving  : <span id="smartTripView-viewArrival"></span>
+					<strong>Leaving  : </strong> <span id="smartTripView-viewDeparture"></span> </br>
+					<strong>Arriving  : </strong> <span id="smartTripView-viewArrival"></span>
 				</div>
 			</li>
 
