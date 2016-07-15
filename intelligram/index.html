@@ -3123,7 +3123,7 @@
 	</div>
 	<form>
 		<ul class="list-inline" data-style="inset" id="smartTripModal-owner">
-			<li >
+			<li class="tripEdit tripEditRoute">
 				<label> Trip Name
 					<input type="search" id="smartTripView-name" />
 				</label>
@@ -3170,6 +3170,7 @@
 				<div class="clearfix"></div>
 				<a data-click="smartTripView.onEnableTimeEdit" data-role="button" class="btnClear" id="smartTripView-timeEditBtn"> Change </a>
 				<div >
+					<h3><span id="smartTripView-viewTitle"> </span></h3>
 					Leaving  : <span id="smartTripView-viewDeparture"></span>
 					Arriving  : <span id="smartTripView-viewArrival"></span>
 				</div>
@@ -3212,7 +3213,7 @@
 				</div>
 			</li>
 			<li >
-				<div class="clearfix"></div>
+				<div class="clearfix tripEditTime tripView"></div>
 				<label> Travel Time
 					<div  id="smartTripView-travelTime">  </div>
 				</label>
@@ -3222,14 +3223,14 @@
 				<a data-click="smartTripView.onTimeComplete" data-role="button" class="btnClear" id="smartTripView-routeTimeBtn"> Next </a>
 			</li>
 
-			<li>
+			<li class="tripEditOptions hidden">
 				<div class="clearfix"></div>
 				<label> Auto Update Status
 					<input id="smartTripView-autoUpdate" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAutoStatus" style="float: right;" />
 				</label>
 			</li>
 
-			<li id="smartTripView-addToCalendarLi">
+			<li class="tripEditOptions hidden" id="smartTripView-addToCalendarLi">
 				<div class="clearfix"></div>
 				<label> Add To Calendar
 					<input id="smartTripView-addToCalendar" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAddToCalendar" style="float: right;" />
