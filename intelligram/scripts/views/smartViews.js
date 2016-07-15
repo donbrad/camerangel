@@ -2484,7 +2484,7 @@ var smartTripView = {
     addToCalendar: false,
     mode: 'create',
     tripType: 'drive',
-    travelMode : google.maps.TravelMode.DRIVING,
+    travelMode : null,
     validTime: false,
     validName : false,
     leg1Complete : false,
@@ -2505,6 +2505,8 @@ var smartTripView = {
             smartTripView.setViewer();
         }
 
+        smartTripView.travelMode = google.maps.TravelMode.DRIVING;
+        
         var d = new Date();
 
         $('#smartTripView-name').val("");
