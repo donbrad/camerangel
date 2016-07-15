@@ -2728,6 +2728,7 @@ var smartTripView = {
                 smartTripView.origin = place;
                 smartTripView.validOrigin = true;
 
+                smartTripView.validateRoute();
             },
             filter: "contains",
             placeholder: "Select Origin... "
@@ -2754,6 +2755,7 @@ var smartTripView = {
                 smartTripView.destination = place;
                 smartTripView.validDestination = true;
 
+                smartTripView.validateRoute();
             },
             filter: "contains",
             placeholder: "Select Destination... "
@@ -2788,6 +2790,8 @@ var smartTripView = {
                     value = place.address;
                 }
                 $('#smartTripView-origin').val(value);
+
+                smartTripView.validateRoute();
             }
         });
     },
@@ -2813,6 +2817,8 @@ var smartTripView = {
                     value = place.address;
                 }
                 $('#smartTripView-destination').val(value);
+
+                smartTripView.validateRoute();
             }
         });
     },
