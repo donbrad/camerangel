@@ -2867,7 +2867,7 @@ var smartTripView = {
 
         var routeString = smartTripView.tripType + " From " + smartTripView.origin.name + " To " + smartTripView.destination.name;
 
-        routeString = routeString.toLowerCase().capitalize;
+        routeString = routeString.toLowerCase().capitalize();
 
         $('#smartTripView-routeDescription').text(routeString);
         $('.tripViewRoute').removeClass('hidden');
