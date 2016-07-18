@@ -156,12 +156,12 @@
 			ThreeDeeTouch.isAvailable(function (avail) {
 
 				if (avail) {
-
+					mobileNotify("3d Touch Enabled!");
 					ThreeDeeTouch.configureQuickActions([
 						{
 							type: 'checkin', // optional, but can be used in the onHomeIconPressed callback
 							title: 'Check In', // mandatory
-							subtitle: 'Check In To Current Location' // optional
+							subtitle: 'Check In To Here' // optional
 						},
 						{
 							type: 'photo',
@@ -172,12 +172,12 @@
 						{
 							type: 'panic',
 							title: 'Panic Button',
-							subtitle: 'Summon help from family / friends'
+							subtitle: 'Contact family & friends'
 						},
 						{
 							type: 'emergency',
 							title: 'Emergency - 911',
-							subtitle: 'IntelliEmergency - call 911, notice ICE'
+							subtitle: 'Call 911, notice ICE'
 
 						}
 					]);
