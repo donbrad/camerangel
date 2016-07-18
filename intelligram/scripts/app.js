@@ -201,7 +201,7 @@
 
 					settings.LoggingInterface = factory.CreateTraceLogger();
 					factory.CreateMonitorWithSettings( settings,
-						function() {
+						function() {                                        
 							console.log( "Monitor created" );
 							monitor.Start(function() {
 								console.log( "Monitor started" );
