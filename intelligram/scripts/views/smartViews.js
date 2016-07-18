@@ -2492,6 +2492,113 @@ var smartTripView = {
     placesDS : new kendo.data.DataSource(),
     initialized: false,
 
+    onInit : function (e) {
+
+        smartTripView.initialized = false;
+
+        $( "#smartTripView-timeArrival" ).blur(function() {
+            smartTripView.processArrivalTime();
+        });
+
+        $( "#smartTripView-timeDeparture" ).blur(function() {
+            smartTripView.processDepartureTime();
+        });
+
+        $( "#smartTripView-tripType" ).blur(function() {
+            smartTripView.tripType = $("#smartTripView-tripType").val();
+            switch (smartTripView.tripType) {
+                case 'drive' :
+                    smartTripView.travelMode = google.maps.TravelMode.DRIVING;
+                    break;
+                case 'walk' :
+                    smartTripView.travelMode = google.maps.TravelMode.WALKING;
+                    break;
+                case  'bike' :
+                    smartTripView.travelMode = google.maps.TravelMode.BICYCLING;
+                    break;
+                case  'transit' :
+                    smartTripView.travelMode = google.maps.TravelMode.TRANSIT;
+                    break;
+            }
+            smartTripView.validate();
+        });
+
+        $('#smartTripView-dateDeparture').pickadate({
+            format: 'mmm, d yyyy',
+            formatSubmit: 'mm d yyyy',
+            min: true,
+            onSet : function (context) {
+                smartTripView.processDepartureTime();
+            }
+        });
+
+
+        $('#smartTripView-dateArrival').pickadate({
+            format: 'mmm, d yyyy',
+            formatSubmit: 'mm d yyyy',
+            min: true,
+            onSet : function (context) {
+                smartTripView.processArrivalTime();
+            }
+        });
+
+
+        $("#smartTripView-origin").kendoAutoComplete({
+            dataSource: smartTripView.placesDS,
+            ignoreCase: true,
+            dataTextField: "name",
+            select: function(e) {
+                // User has selected one of their places
+                var place = e.item;
+                var dataItem = this.dataItem(e.item.index());
+
+                var place = {};
+
+                place.lat = dataItem.lat;
+                place.lng = dataItem.lng;
+                place.name  = dataItem.name;
+                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
+                place.googleId = dataItem.googleId;
+                place.placeUUID = dataItem.uuid;
+
+                smartTripView.origin = place;
+                smartTripView.validOrigin = true;
+
+                smartTripView.validateRoute();
+            },
+            filter: "contains",
+            placeholder: "Select Origin... "
+        });
+
+        $("#smartTripView-destination").kendoAutoComplete({
+            dataSource: smartTripView.placesDS,
+            ignoreCase: true,
+            dataTextField: "name",
+            select: function(e) {
+                // User has selected one of their places
+                var place = e.item;
+                var dataItem = this.dataItem(e.item.index());
+
+                var place = {};
+
+                place.lat = dataItem.lat;
+                place.lng = dataItem.lng;
+                place.name  = dataItem.name;
+                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
+                place.googleId = dataItem.googleId;
+                place.placeUUID = dataItem.uuid;
+
+                smartTripView.destination = place;
+                smartTripView.validDestination = true;
+
+                smartTripView.validateRoute();
+            },
+            filter: "contains",
+            placeholder: "Select Destination... "
+        });
+
+    },
+
     openModal : function (tripObj, callback) {
 
         if (tripObj === null) {
@@ -2509,7 +2616,8 @@ var smartTripView = {
         
         var d = new Date();
 
-        $('#smartTripView-name').val("");
+        $('#smartTripView-name').val(userModel._user.name + "'s Trip");
+        $('#smartTripView-owner').text(userModel._user.name);
         $('#smartTripView-origin').val("");
         $('#ssmartTripView-destination').val("");
 
@@ -2707,112 +2815,7 @@ var smartTripView = {
         smartTripView.validate();
     },
 
-    onInit : function (e) {
 
-        smartTripView.initialized = false;
-
-        $( "#smartTripView-timeArrival" ).blur(function() {
-           smartTripView.processArrivalTime();
-        });
-        
-        $( "#smartTripView-timeDeparture" ).blur(function() {
-            smartTripView.processDepartureTime();
-        });
-
-        $( "#smartTripView-tripType" ).blur(function() {
-            smartTripView.tripType = $("#smartTripView-tripType").val();
-            switch (smartTripView.tripType) {
-                case 'drive' :
-                    smartTripView.travelMode = google.maps.TravelMode.DRIVING;
-                    break;
-                case 'walk' :
-                    smartTripView.travelMode = google.maps.TravelMode.WALKING;
-                    break;
-                case  'bike' :
-                    smartTripView.travelMode = google.maps.TravelMode.BICYCLING;
-                    break;
-                case  'transit' :
-                    smartTripView.travelMode = google.maps.TravelMode.TRANSIT;
-                    break;
-            }
-            smartTripView.validate();
-        });
-
-        $('#smartTripView-dateDeparture').pickadate({
-            format: 'mmm, d yyyy',
-            formatSubmit: 'mm d yyyy',
-            min: true,
-            onSet : function (context) {
-                smartTripView.processDepartureTime();
-            }
-        });
-
-
-        $('#smartTripView-dateArrival').pickadate({
-            format: 'mmm, d yyyy',
-            formatSubmit: 'mm d yyyy',
-            min: true,
-            onSet : function (context) {
-                smartTripView.processArrivalTime();
-            }
-        });
-       
-
-        $("#smartTripView-origin").kendoAutoComplete({
-            dataSource: smartTripView.placesDS,
-            ignoreCase: true,
-            dataTextField: "name",
-            select: function(e) {
-                // User has selected one of their places
-                var place = e.item;
-                var dataItem = this.dataItem(e.item.index());
-
-                var place = {};
-
-                place.lat = dataItem.lat;
-                place.lng = dataItem.lng;
-                place.name  = dataItem.name;
-                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
-                place.googleId = dataItem.googleId;
-                place.placeUUID = dataItem.uuid;
-
-                smartTripView.origin = place;
-                smartTripView.validOrigin = true;
-
-                smartTripView.validateRoute();
-            },
-            filter: "contains",
-            placeholder: "Select Origin... "
-        });
-
-        $("#smartTripView-destination").kendoAutoComplete({
-            dataSource: smartTripView.placesDS,
-            ignoreCase: true,
-            dataTextField: "name",
-            select: function(e) {
-                // User has selected one of their places
-                var place = e.item;
-                var dataItem = this.dataItem(e.item.index());
-
-                var place = {};
-
-                place.lat = dataItem.lat;
-                place.lng = dataItem.lng;
-                place.name  = dataItem.name;
-                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
-                place.googleId = dataItem.googleId;
-                place.placeUUID = dataItem.uuid;
-
-                smartTripView.destination = place;
-                smartTripView.validDestination = true;
-
-                smartTripView.validateRoute();
-            },
-            filter: "contains",
-            placeholder: "Select Destination... "
-        });
-
-    },
 
     onOpen : function (e) {
        
@@ -2912,9 +2915,9 @@ var smartTripView = {
         $('.tripEditRoute').addClass('hidden');
         $('.tripEditRouteNext').addClass('hidden');
 
-        $("#smartTripView-routeMode").val(smartTripView.tripType.capitalize());
-        $("#smartTripView-routeFrom").val(smartTripView.origin.name.capitalize());
-        $("#smartTripView-routeTo").val(smartTripView.destination.name.capitalize());
+        $("#smartTripView-routeMode").text(smartTripView.tripType.capitalize());
+        $("#smartTripView-routeFrom").text(smartTripView.origin.name.capitalize());
+        $("#smartTripView-routeTo").text(smartTripView.destination.name.capitalize());
 
         smartTripView.name = $('#smartTripView-name').val();
 
