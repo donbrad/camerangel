@@ -159,18 +159,13 @@
 					mobileNotify("3d Touch Enabled!");
 					ThreeDeeTouch.configureQuickActions([
 						{
-							type: 'checkin', // optional, but can be used in the onHomeIconPressed callback
-							title: 'Check In', // mandatory
-							subtitle: 'Check In To Here' // optional
-						},
-						{
 							type: 'autotrack', // optional, but can be used in the onHomeIconPressed callback
 							title: 'AutoTrack', // mandatory
 							subtitle: 'Start Autotracking...' // optional
 						},
 						{
 							type: 'photo',
-							title: 'Photo', // can wrap two lines if no subtitle is passed in
+							title: 'Photo', 
 							subtitle: 'Take a quick photo'
 
 						},
