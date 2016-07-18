@@ -130,10 +130,17 @@ var contactsView = {
        // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
     },
 
+    clearSearchFilter : function (e) {
+        //
+        contactModel.contactListDS.filter([]);
+    },
+
     onShow : function (e) {
       // _preventDefault(e);
 
         $("#contacts-listview").data("kendoMobileListView").scroller().reset();
+
+        contactsView.clearSearchFilter();
 
         if (!contactsView._viewInitialized) {
             contactsView._viewInitialized = true;
