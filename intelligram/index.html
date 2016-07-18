@@ -4784,6 +4784,7 @@
 	</div>
 	# } #
 </script>
+
 	<script type="text/x-kendo-template" id="contactsTemplate">
 		#
 		var classNames;
@@ -4883,7 +4884,7 @@
 								#:message#
 							</p>
 
-							# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
+							# if (data.currentPlace !== undefined && data.currentPlace !== null && data.currentPlace !== ""){#
 								<p class="contactStatus-location">
 									@#:data.currentPlace#
 								</p>

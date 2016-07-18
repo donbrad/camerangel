@@ -1511,7 +1511,7 @@ var contactActionView = {
                             contactsView.contactCache[thisContact.contactUUID] = contactList;
 
                             // set current place
-                            if (contactPlace !== "" && contactPlace !== undefined) {
+                            if (contactPlace !== ""  && contactPlace !== null && contactPlace !== undefined) {
                                 $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
                             } else {
                                 $("#contactCurrentPlace").addClass('hidden').text("");
