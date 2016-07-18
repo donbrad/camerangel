@@ -152,7 +152,45 @@
 			//feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
 			window.open = cordova.InAppBrowser.open;
 
+
+			ThreeDeeTouch.isAvailable(function (avail) {
+
+				if (avail) {
+
+					ThreeDeeTouch.configureQuickActions([
+						{
+							type: 'checkin', // optional, but can be used in the onHomeIconPressed callback
+							title: 'Check In', // mandatory
+							subtitle: 'Check In To Current Location' // optional
+						},
+						{
+							type: 'photo',
+							title: 'Photo', // can wrap two lines if no subtitle is passed in
+							subtitle: 'Take a quick photo'
+
+						},
+						{
+							type: 'panic',
+							title: 'Panic Button',
+							subtitle: 'Summon help from family / friends'
+						},
+						{
+							type: 'emergency',
+							title: 'Emergency - 911',
+							subtitle: 'IntelliEmergency - call 911, notice ICE'
+
+						}
+					]);
+
+					ThreeDeeTouch.onHomeIconPressed = function (payload) {
+						mobileNotify("3D Touch. Type: " + payload.type + ". Title: " + payload.title + ".");
+						// a few examples of how to deal with various types:
+					}
+				}
+			});
+
 /*			var projectKey = "7a8cc314b41f44299fd03db24685b341";
+
 
 
 			window.analytics = {
