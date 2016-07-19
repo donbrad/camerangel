@@ -46,8 +46,8 @@ var profilePhotoModel = {
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(profilePhotoModel._cloudClass);
-        data.updateSingle(photoObj, function (data) {
-            if (data.result === 0) {
+        data.updateSingle(photoObj, function (response) {
+            if (response.result === 0) {
                 ggError("Unable to update Cloud Profile Photo : " + photoObj.photoId);
             }
         });
