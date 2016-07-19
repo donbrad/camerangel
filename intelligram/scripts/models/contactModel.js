@@ -833,8 +833,8 @@ var contactModel = {
     },
 
     updateProfilePhoto : function (contactId, photoId, photoUrl) {
-        var contact = contactModel.findContact(contactId);
-        var contactList = contactModel.findContactList(contactId);
+        var contact = contactModel.findContactByUUID(contactId);
+        var contactList = contactModel.findContactListUUID(contactId);
 
         if (contact !== undefined && contact !== null) {
             contact.set('contactPhoto', photoUrl);
