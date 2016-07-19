@@ -114,6 +114,7 @@ var profilePhotoModel = {
 
         photo.set('version', profilePhotoModel._version);
         photo.set('ggType', profilePhotoModel._ggClass);
+        photo.set('Id', photouuid);
         photo.set('photoId', photouuid);
         photo.set('uuid', photouuid);
         photo.set('deviceUrl', url);
