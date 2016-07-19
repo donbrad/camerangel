@@ -3121,57 +3121,80 @@
 			</a>
 		</div>
 	</div>
-	<div class="eventBanner hidden">
-		<div>
-			<p>
-				<img src="" class="icon-sm tripBannerImg" />
-				<span class="TripBannerTitle"></span>
-			</p>
-		</div>
-	</div>
 	<form>
 		<ul class="list-inline" data-style="inset" id="smartTripModal-owner">
-			<li >
+			<li class="tripEdit tripEditRoute">
+				<h3>Where are you going?</h3>
+			</li>
+
+			<li class="tripEdit tripEditRoute">
 				<label> Trip Name
 					<input type="search" id="smartTripView-name" />
 				</label>
 			</li>
-			<li >
+
+			<li class="tripEdit tripEditRoute">
 				<label> Origin (Start) <a data-click="smartTripView.onOriginSearch" data-role="button" class="btnClear" id="smartTripView-originSearchBtn"> Find... </a>
 					<input type="search" id="smartTripView-origin"  />
 				</label>
 			</li>
-			<li >
+			<li class="tripEdit tripEditRoute">
 				<label> Destination (End) <a data-click="smartTripView.onDestinationSearch" data-role="button" class="btnClear" id="smartTripView-destinationSearchBtn"> Find... </a>
 					<input type="search" id="smartTripView-destination"  />
 				</label>
 			</li>
-<!--
-			<li >
-				<label> Type of Trip
+
+			<li class="tripEdit tripEditRoute">
+				<label> I'll get there by
 					<div class="select-lg">
-						<select id="smartTripView-tripType"  >
-							<option value="oneway">One Way</option>
-							<option value="roundtrip">Round Trip</option>
-							<option value="commute">Commute</option>
+						<select id="smartTripView-tripType">
+							<option value="drive">Driving</option>
+							<option value="walk">Walking </option>
+							<option value="bike">Biking</option>
+							<option value="transit">Mass Transit</option>
 						</select>
 					</div>
 				</label>
 			</li>
--->
-			<li>
-				<label> Auto Update Status
-					<input id="smartTripView-autoUpdate" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAutoStatus" />
-				</label>
+
+			<li class="tripEdit tripEditRouteNext">
+				<div class="clearfix"></div>
+				<a data-click="smartTripView.onRouteComplete" data-role="button" class="btnClear" id="smartTripView-routeCompleteBtn" style="float:right;" > Next </a>
 			</li>
 
-			<li>
-				<label> Add To Calendar
-					<input id="smartTripView-addToCalendar" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAddToCalendar" />
-				</label>
+			<li class="tripView tripViewRoute hidden">
+				<div class="clearfix"></div>
+				<h3 id="smartTripView-tripTitle"></h3>
+				<div> From: <span id="smartTripView-owner"></span></div>
+				<div id="smartTripView-routeDescription">
+					<span id="smartTripView-routeMode"></span> </br>
+					<span id="smartTripView-routeFrom"></span>  To  </br>
+					<span id="smartTripView-routeTo"></span>
+
+				</div>
+				<div>
+					<a data-click="smartTripView.onEnableEdit" data-role="button" class="btnClear" id="smartTripView-routeEditBtn" style="float:right;" > Change </a>
+				</div>
+
 			</li>
 
-			<li>
+			<li class="tripView tripViewTime hidden">
+				<div class="clearfix"></div>
+
+				<div >
+					<h3><span id="smartTripView-viewTitle"> </span></h3>
+					<strong>Leaving  : </strong> <span id="smartTripView-viewDeparture"></span> </br>
+					<strong>Arriving  : </strong> <span id="smartTripView-viewArrival"></span>
+				</div>
+				<div>
+					<a data-click="smartTripView.onEnableTimeEdit" data-role="button" class="btnClear" id="smartTripView-timeEditBtn"> Change </a>
+				</div>
+			</li>
+
+			<li class="tripEditTime">
+				<h3>When are you going?</h3>
+			</li>
+			<li class="tripEditTime">
 				<label> Departure </label>
 				<div class="clearfix"></div>
 				<div class="smallSearch">
@@ -3187,7 +3210,7 @@
 					<input type="time" id="smartTripView-timeDeparture"/>
 				</div>
 			</li>
-			<li >
+			<li class="tripEditTime">
 				<div class="clearfix"></div>
 				<label> Arrival </label>
 				<div class="clearfix"></div>
@@ -3204,30 +3227,43 @@
 					<input type="time" id="smartTripView-timeArrival"/>
 				</div>
 			</li>
-			<!--<li >
-				<label> Departure Time
-					<input type="datetime" id="smartTripView-departure" />
-				</label>
-			</li>
-			<li >
-				<label> Arrival Time
-					<input type="datetime" id="smartTripView-arrival"  />
-				</label>
-			</li>-->
-			<li class="clearfix">
+			<li class="tripEditTime tripView">
+				<div class="clearfix"></div>
 				<label> Travel Time
 					<div  id="smartTripView-travelTime">  </div>
 				</label>
 			</li>
+			<li class="tripEditTime tripEditTimeNext">
+				<div class="clearfix"></div>
+				<a data-click="smartTripView.onTimeComplete" data-role="button" class="btnClear" id="smartTripView-routeTimeBtn"> Next </a>
+			</li>
+
+			<li class="tripEditOptions hidden">
+				<div class="clearfix"></div>
+				<label> Auto Update Status
+					<input id="smartTripView-autoUpdate" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAutoStatus" style="float: right;" />
+				</label>
+			</li>
+
+			<li class="tripEditOptions hidden" id="smartTripView-addToCalendarLi">
+				<div class="clearfix"></div>
+				<label> Add To Calendar
+					<input id="smartTripView-addToCalendar" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAddToCalendar" style="float: right;" />
+				</label>
+			</li>
+
 		</ul>
 	</form>
-	<ul class="list-inline hidden" id="smartTripModal-viewer">
 
-	</ul>
+	<div class="tripView tripViewMap hidden" id="smartTripView-mapDiv">
+
+	</div>
+
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-saveBtn" data-click="smartTripModal.onSave">Save</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-restartBtn" data-click="smartTripModal.onRestart">Restart</a>
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-returnBtn" data-click="smartTripModal.onReturn">Return</a>
+		<a class="btnFull-modal btnPrimary tripView hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
 	</div>
 </div>
 
@@ -4748,6 +4784,7 @@
 	</div>
 	# } #
 </script>
+
 	<script type="text/x-kendo-template" id="contactsTemplate">
 		#
 		var classNames;
@@ -4847,7 +4884,7 @@
 								#:message#
 							</p>
 
-							# if (data.currentPlace !== undefined && data.currentPlace !== ""){#
+							# if (data.currentPlace !== undefined && data.currentPlace !== null && data.currentPlace !== ""){#
 								<p class="contactStatus-location">
 									@#:data.currentPlace#
 								</p>

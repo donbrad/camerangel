@@ -130,10 +130,17 @@ var contactsView = {
        // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
     },
 
+    clearSearchFilter : function (e) {
+        //
+        contactModel.contactListDS.filter([]);
+    },
+
     onShow : function (e) {
       // _preventDefault(e);
 
         $("#contacts-listview").data("kendoMobileListView").scroller().reset();
+
+        contactsView.clearSearchFilter();
 
         if (!contactsView._viewInitialized) {
             contactsView._viewInitialized = true;
@@ -1511,8 +1518,8 @@ var contactActionView = {
                             contactsView.contactCache[thisContact.contactUUID] = contactList;
 
                             // set current place
-                            if (contactPlace !== "" && contactPlace !== undefined) {
-                                $("#contactCurrentPlace").removeClass('hidden').html("<img src='images/icon-location-light.svg' class='icon-sm'>" + contactPlace);
+                            if (contactPlace !== ""  && contactPlace !== null && contactPlace !== undefined) {
+                                $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
                             } else {
                                 $("#contactCurrentPlace").addClass('hidden').text("");
                             }

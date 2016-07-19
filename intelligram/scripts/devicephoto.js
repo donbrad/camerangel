@@ -78,7 +78,7 @@ var devicePhoto = {
         devicePhoto.uploadList[photoUUID] = true;
 
         $.ajax({
-            url: 'https://res.cloudinary.com/v1_1/ghostgrams/image/upload',
+            url: 'https://api.cloudinary.com/v1_1/ghostgrams/image/upload',
             data: formData,
             type: 'POST',
             contentType: false,

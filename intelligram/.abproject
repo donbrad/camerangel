@@ -6,7 +6,7 @@
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks",
   "Description": "intelligram for iOS and Android phones",
-  "BundleVersion": "0.0.141",
+  "BundleVersion": "0.0.146",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -93,6 +93,7 @@
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.phonegap.plugins.barcodescanner@5.0.1",
     "com.phonegap.plugins.PushPlugin@3.2.0",
+    "cordova-plugin-3dtouch@1.3.5",
     "cordova-plugin-battery-status",
     "cordova-plugin-console",
     "cordova-plugin-contacts",

@@ -2472,6 +2472,7 @@ var smartMovieView = {
 var smartTripView = {
     activeObject : new kendo.data.ObservableObject(),
     callback : null,
+    _inited: false,
     name: null,
     origin: null,
     destination: null,
@@ -2482,22 +2483,143 @@ var smartTripView = {
     autoStatus: false,
     addToCalendar: false,
     mode: 'create',
+    tripType: 'drive',
+    travelMode : null,
     validTime: false,
     validName : false,
+    leg1Complete : false,
+    leg2Complete : false,
     placesDS : new kendo.data.DataSource(),
     initialized: false,
+
+    onInit : function (e) {
+
+        smartTripView.initialized = false;
+
+        $( "#smartTripView-timeArrival" ).blur(function() {
+            smartTripView.processArrivalTime();
+        });
+
+        $( "#smartTripView-timeDeparture" ).blur(function() {
+            smartTripView.processDepartureTime();
+        });
+
+        $( "#smartTripView-tripType" ).blur(function() {
+            smartTripView.tripType = $("#smartTripView-tripType").val();
+            switch (smartTripView.tripType) {
+                case 'drive' :
+                    smartTripView.travelMode = google.maps.TravelMode.DRIVING;
+                    break;
+                case 'walk' :
+                    smartTripView.travelMode = google.maps.TravelMode.WALKING;
+                    break;
+                case  'bike' :
+                    smartTripView.travelMode = google.maps.TravelMode.BICYCLING;
+                    break;
+                case  'transit' :
+                    smartTripView.travelMode = google.maps.TravelMode.TRANSIT;
+                    break;
+            }
+            smartTripView.validate();
+        });
+
+        $('#smartTripView-dateDeparture').pickadate({
+            format: 'mmm, d yyyy',
+            formatSubmit: 'mm d yyyy',
+            min: true,
+            onSet : function (context) {
+                smartTripView.processDepartureTime();
+            }
+        });
+
+
+        $('#smartTripView-dateArrival').pickadate({
+            format: 'mmm, d yyyy',
+            formatSubmit: 'mm d yyyy',
+            min: true,
+            onSet : function (context) {
+                smartTripView.processArrivalTime();
+            }
+        });
+
+
+        $("#smartTripView-origin").kendoAutoComplete({
+            dataSource: smartTripView.placesDS,
+            ignoreCase: true,
+            dataTextField: "name",
+            select: function(e) {
+                // User has selected one of their places
+                var place = e.item;
+                var dataItem = this.dataItem(e.item.index());
+
+                var place = {};
+
+                place.lat = dataItem.lat;
+                place.lng = dataItem.lng;
+                place.name  = dataItem.name;
+                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
+                place.googleId = dataItem.googleId;
+                place.placeUUID = dataItem.uuid;
+
+                smartTripView.origin = place;
+                smartTripView.validOrigin = true;
+
+                smartTripView.validateRoute();
+            },
+            filter: "contains",
+            placeholder: "Select Origin... "
+        });
+
+        $("#smartTripView-destination").kendoAutoComplete({
+            dataSource: smartTripView.placesDS,
+            ignoreCase: true,
+            dataTextField: "name",
+            select: function(e) {
+                // User has selected one of their places
+                var place = e.item;
+                var dataItem = this.dataItem(e.item.index());
+
+                var place = {};
+
+                place.lat = dataItem.lat;
+                place.lng = dataItem.lng;
+                place.name  = dataItem.name;
+                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
+                place.googleId = dataItem.googleId;
+                place.placeUUID = dataItem.uuid;
+
+                smartTripView.destination = place;
+                smartTripView.validDestination = true;
+
+                smartTripView.validateRoute();
+            },
+            filter: "contains",
+            placeholder: "Select Destination... "
+        });
+
+    },
 
     openModal : function (tripObj, callback) {
 
         if (tripObj === null) {
             smartTripView.mode = 'create';
+            smartTripView.setCreator();
         } else if (tripObj.ownerUUID === userModel._user.userUUID) {
             smartTripView.mode = 'edit';
+            smartTripView.setEditor();
         } else {
             smartTripView.mode = 'view';
+            smartTripView.setViewer();
         }
 
+        smartTripView.travelMode = google.maps.TravelMode.DRIVING;
+        
         var d = new Date();
+
+        $('#smartTripView-name').val(userModel._user.name + "'s Trip");
+        $('#smartTripView-owner').text(userModel._user.name);
+        $('#smartTripView-origin').val("");
+        $('#ssmartTripView-destination').val("");
 
         // Set up default dates as today
         var dateStr = moment(d).format('MM/DD/YYYY');
@@ -2511,21 +2633,56 @@ var smartTripView = {
         var placesArray = placesModel.placesDS.data();
         smartTripView.placesDS.data(placesArray);
         smartTripView.placesDS.filter([]);
+        smartTripView.tripType = 'drive';
         smartTripView.autoStatus = false;
         smartTripView.addToCalendar = false;
+        smartTripView.leg1Complete = false;
+        smartTripView.leg2Complete = false;
         smartTripView.validName = false;
         smartTripView.validTime = false;
         smartTripView.validOrigin = false;
         smartTripView.validDestination = false;
+        smartTripView.arrivalSet = false;
+        smartTripView.departureSet = false;
         smartTripView.origin = null;
         smartTripView.destination = null;
         smartTripView.departure = null;
         smartTripView.arrival = null;
 
+        // Setup Trip Map and Directions renderer just once
+        if (!smartTripView._inited) {
+            smartTripView.googleMap = new google.maps.Map(document.getElementById('smartTripView-mapDiv'), mapModel.mapOptions);
+            smartTripView.directionsDisplay = new google.maps.DirectionsRenderer();
+            smartTripView.directionsDisplay.setMap(smartTripView.googleMap);
+
+            smartTripView._inited = true;
+        }
         $("#smartTripModal").data("kendoMobileModalView").open();
     },
 
-    computeTravelTime : function () {
+    setMapCenter: function () {
+
+        smartTripView.googleMap.setCenter({lat: smartTripView.origin.lat, lng: smartTripView.origin.lng});
+    },
+
+    displayRouteOnMap : function () {
+
+        var request = {
+            origin: smartTripView.origin.address,
+            destination: smartTripView.origin.address,
+            travelMode: smartTripView.travelMode
+        };
+
+        smartTripView.setMapCenter();
+
+        mapModel.googleDirections.route(request, function(result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                smartTripView.directionsDisplay.setDirections(result);
+            }
+        });
+    },
+
+    computeTravelTime : function (callback) {
         var origin = smartTripView.origin.address, dest = smartTripView.destination.address;
 
         var depart = null, arrive = null;
@@ -2541,18 +2698,65 @@ var smartTripView = {
                 smartTripView.duration = result.duration;
                 smartTripView.durationString = result.durationString;
                 $("#smartTripView-travelTime").text(result.durationString + " (" +
-                    result.distanceString + " mi. )");
+                    result.distanceString + ")");
+
+                if (callback !== undefined && callback !== null) {
+                    callback(result);
+                }
             } else {
                 ggError ("Google Distance Matrix Error " + JSON.stringify(result.error));
+                if (callback !== undefined && callback !== null) {
+                    callback(null);
+                }
             }
-        });
+        }, smartTripView.tripType);
+    },
+
+    //Tag = 'Arrival' or 'Departure'
+    updateCalendarUX : function (tag, fulldate) {
+        var date = moment(fulldate).format('ddd, MMM Do YYYY'), time = moment(fulldate).format("HH:mm");
+
+        var timeTag = "smartTripView-time"+tag, dateTag =  "smartTripView-date"+tag;
+        
+        $('#'+timeTag).val(time).change();
+        $('#'+dateTag).val(date);
+    },
+
+    validateRoute : function () {
+        if ( smartTripView.validDestination && smartTripView.validOrigin) {
+            $(".tripEditRouteNext").removeClass('hidden');
+
+        }
     },
 
     validate : function () {
-        if (smartTripView.validTime && smartTripView.validName && smartTripView.validDestination &&
+        if (smartTripView.validTime  && smartTripView.validDestination &&
         smartTripView.validOrigin) {
             $("#smartTripModal-saveBtn").removeClass('hidden');
-            smartTripView.computeTravelTime();
+            smartTripView.computeTravelTime(function(result) {
+                var name = $('#smartTripView-name').val();
+
+                if (name === null || name === '') {
+                    name = smartTripView.tripType + " From " + smartTripView.origin.name + " To " + smartTripView.destination.name;
+
+                    name = name.toLowerCase().capitalize;
+
+                    $('#smartTripView-name').val(name);
+                }
+
+                if (smartTripView.arrivalSet) {
+                    smartTripView.departure = moment(smartTripView.arrival).add(smartTripView.duration, 's');
+                    smartTripView.updateCalendarUX('Departure', smartTripView.departure);
+                    smartTripView.updateCalendarUX('Arrival', smartTripView.arrival);
+                } else {
+                    smartTripView.arrival = moment(smartTripView.departure).add(smartTripView.duration, 's');
+                    smartTripView.updateCalendarUX('Arrival', smartTripView.arrival);
+                    smartTripView.updateCalendarUX('Departure', smartTripView.departure);
+                }
+
+                smartTripView.setMapCenter();
+                smartTripView.displayRouteOnMap();
+            });
         } else {
             $("#smartTripModal-saveBtn").addClass('hidden');
         }
@@ -2589,6 +2793,11 @@ var smartTripView = {
 
         smartTripView.departure = moment(combined).toDate();
 
+        smartTripView.departureSet = true;
+        smartTripView.arrivalSet = false;
+
+        smartTripView.validTime = true;
+        smartTripView.validate();
 
     },
 
@@ -2599,102 +2808,14 @@ var smartTripView = {
 
         smartTripView.arrival = moment(combined).toDate();
 
+        smartTripView.departureSet = false;
+        smartTripView.arrivalSet = true;
+
+        smartTripView.validTime = true;
+        smartTripView.validate();
     },
 
-    onInit : function (e) {
 
-        smartTripView.initialized = false;
-
-        $( "#smartTripView-timeArrival" ).change(function() {
-           smartTripView.processArrivalTime();
-        });
-        
-        $( "#smartTripView-timeDeparture" ).change(function() {
-            smartTripView.processDepartureTime();
-        });
-
-        $( "#smartTripView-name" ).change(function() {
-            smartTripView.name = $("#smartTripView-name").val();
-            smartTripView.validName = false;
-            if (smartTripView.name.length > 3) {
-                smartTripView.validName = true;
-                smartTripView.validate();
-            }
-        });
-
-        $('#smartTripView-dateDeparture').pickadate({
-            format: 'mmm, d yyyy',
-            formatSubmit: 'mm d yyyy',
-            min: true,
-            onSet : function (context) {
-                smartTripView.processDepartureTime();
-            }
-        });
-
-
-        $('#smartTripView-dateArrival').pickadate({
-            format: 'mmm, d yyyy',
-            formatSubmit: 'mm d yyyy',
-            min: true,
-            onSet : function (context) {
-                smartTripView.processArrivalTime();
-            }
-        });
-       
-
-        $("#smartTripView-origin").kendoAutoComplete({
-            dataSource: smartTripView.placesDS,
-            ignoreCase: true,
-            dataTextField: "name",
-            select: function(e) {
-                // User has selected one of their places
-                var place = e.item;
-                var dataItem = this.dataItem(e.item.index());
-
-                var place = {};
-
-                place.lat = dataItem.lat;
-                place.lng = dataItem.lng;
-                place.name  = dataItem.name;
-                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
-                place.googleId = dataItem.googleId;
-                place.placeUUID = dataItem.uuid;
-
-                smartTripView.origin = place;
-                smartTripView.validOrigin = true;
-
-            },
-            filter: "contains",
-            placeholder: "Select Origin... "
-        });
-
-        $("#smartTripView-destination").kendoAutoComplete({
-            dataSource: smartTripView.placesDS,
-            ignoreCase: true,
-            dataTextField: "name",
-            select: function(e) {
-                // User has selected one of their places
-                var place = e.item;
-                var dataItem = this.dataItem(e.item.index());
-
-                var place = {};
-
-                place.lat = dataItem.lat;
-                place.lng = dataItem.lng;
-                place.name  = dataItem.name;
-                place.address = dataItem.address + ", " + dataItem.city + ", " + dataItem.state;
-                place.googleId = dataItem.googleId;
-                place.placeUUID = dataItem.uuid;
-
-                smartTripView.destination = place;
-                smartTripView.validDestination = true;
-
-            },
-            filter: "contains",
-            placeholder: "Select Destination... "
-        });
-
-    },
 
     onOpen : function (e) {
        
@@ -2723,6 +2844,8 @@ var smartTripView = {
                     value = place.address;
                 }
                 $('#smartTripView-origin').val(value);
+
+                smartTripView.validateRoute();
             }
         });
     },
@@ -2748,8 +2871,68 @@ var smartTripView = {
                     value = place.address;
                 }
                 $('#smartTripView-destination').val(value);
+
+                smartTripView.validateRoute();
             }
         });
+    },
+
+    setCreator : function () {
+        $('.tripView').addClass('hidden');
+        $('.tripEditRoute').removeClass('hidden');
+        $('.tripEditRouteNext').addClass('hidden');
+        $('.tripEditTime').addClass('hidden');
+    },
+
+    setViewer : function () {
+        $('.tripView').removeClass('hidden');
+        $('.tripEdit').addClass('hidden');
+    },
+
+    setEditor : function () {
+        $('.tripEdit').addClass('hidden');
+        $('.tripView').removeClass('hidden');
+        $('.tripEditTime').removeClass('hidden');
+        $('.tripViewTime').addClass('hidden');
+    },
+
+    setUpdate : function () {
+
+    },
+
+    onEnableEdit : function () {
+        $('.tripEditRoute').removeClass('hidden');
+        $('.tripEditRouteNext').removeClass('hidden');
+        $('.tripView').addClass('hidden');
+    },
+
+    onEnableTimeEdit : function () {
+        $('.tripEditTime').removeClass('hidden');
+        $('.tripViewTime').addClass('hidden');
+    },
+
+    onRouteComplete : function () {
+        $('.tripEditRoute').addClass('hidden');
+        $('.tripEditRouteNext').addClass('hidden');
+
+        $("#smartTripView-routeMode").text(smartTripView.tripType.capitalize());
+        $("#smartTripView-routeFrom").text(smartTripView.origin.name.capitalize());
+        $("#smartTripView-routeTo").text(smartTripView.destination.name.capitalize());
+
+        smartTripView.name = $('#smartTripView-name').val();
+
+
+        $('#smartTripView-tripTitle').text(smartTripView.name);
+
+        $('.tripViewRoute').removeClass('hidden');
+        $('.tripEditTime').removeClass('hidden');
+        $('.tripViewMap').removeClass('hidden');
+    },
+
+    onTimeComplete : function () {
+        $('.tripViewTime').removeClass('hidden');
+        $('.tripEditTime').addClass('hidden');
+        smartTripView.validate();
     },
 
     onCancel : function (e) {
