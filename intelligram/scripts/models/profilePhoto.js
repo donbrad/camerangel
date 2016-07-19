@@ -155,7 +155,7 @@ var profilePhotoModel = {
 
         photo.set('version', profilePhotoModel._version);
         photo.set('ggType', profilePhotoModel._ggClass);
-       
+        photo.set('Id', photouuid);
         photo.set('photoId', photouuid);
         photo.set('uuid', photouuid);
         photo.set('deviceUrl', url);
@@ -194,7 +194,7 @@ var profilePhotoModel = {
 
 
                     profilePhotoModel.sync();
-                    //profilePhotoModel.updateCloud(photoObj);
+                    profilePhotoModel.updateCloud(photoObj);
 
                     contactModel.updateProfilePhoto(contactId, photouuid, photoData.url);
                     
