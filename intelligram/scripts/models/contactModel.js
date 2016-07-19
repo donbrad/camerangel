@@ -837,9 +837,11 @@ var contactModel = {
         var contactList = contactModel.findContactListUUID(contactId);
 
         if (contact !== undefined && contact !== null) {
+            contact.set('photo', photoUrl);
             contact.set('contactPhoto', photoUrl);
             contact.set('contactPhotoUUID', photoId);
             contactModel.sync();
+            contactList.set('photo', photoUrl);
             contactList.set('contactPhoto', photoUrl);
             contactList.set('contactPhotoUUID', photoId);
         }
