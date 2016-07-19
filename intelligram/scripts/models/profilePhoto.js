@@ -18,8 +18,7 @@ var profilePhotoModel = {
         profilePhotoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
-                typeName: profilePhotoModel._cloudClass,
-                dataProvider: APP.everlive
+                typeName: profilePhotoModel._cloudClass
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -123,7 +122,7 @@ var profilePhotoModel = {
         photo.set('isProfilePhoto', true);
 
         profilePhotoModel.photosDS.add(photo);
-        profilePhotoModel.photosDS.sync();
+        profilePhotoModel.sync();
 
         devicePhoto.convertImgToDataURL(url, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
