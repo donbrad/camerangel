@@ -40,6 +40,9 @@ var profilePhotoModel = {
         /*deviceModel.isParseSyncComplete();*/
     },
 
+    sync : function () {
+        profilePhotoModel.photosDS.sync();
+    },
 
     updateCloud : function (photoObj)  {
         var data = APP.everlive.data(profilePhotoModel._cloudClass);
@@ -143,8 +146,11 @@ var profilePhotoModel = {
                     photoObj.set('cloudinaryPublicId', photoData.public_id);
 
 
-                    profilePhotoModel.photoDS.sync();
+                    profilePhotoModel.sync();
                     profilePhotoModel.updateCloud(photoObj);
+
+                    contactModel.updateProfilePhoto(contactId, photouuid, photoData.url);
+                    
                 }
             });
         });

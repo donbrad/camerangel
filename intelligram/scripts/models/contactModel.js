@@ -832,6 +832,19 @@ var contactModel = {
 
     },
 
+    updateProfilePhoto : function (contactId, photoId, photoUrl) {
+        var contact = contactModel.findContact(contactId);
+        var contactList = contactModel.findContactList(contactId);
+
+        if (contact !== undefined && contact !== null) {
+            contact.set('contactPhoto', photoUrl);
+            contact.set('contactPhotoUUID', photoId);
+            contactModel.sync();
+            contactList.set('contactPhoto', photoUrl);
+            contactList.set('contactPhotoUUID', photoId);
+        }
+    },
+
     importDeviceContacts: function() {
         var options = new ContactFindOptions();
         options.filter = '';
