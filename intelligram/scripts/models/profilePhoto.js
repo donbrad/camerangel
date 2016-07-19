@@ -10,11 +10,12 @@ var profilePhotoModel = {
     _cloudClass: 'profilephoto',
     _ggClass: 'ProfilePhoto',
     photosDS: null,
-
+    cloudPushList : [],
 
 
     init: function () {
 
+        profilePhotoModel.cloudPushList = [];
         profilePhotoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
@@ -107,6 +108,46 @@ var profilePhotoModel = {
         return(view);
     },
 
+    processCloudPushList : function () {
+        var len = profilePhotoModel.cloudPushList.length;
+        if (len === 0)
+            return;
+        for (var i = 0; i<len; i++ ){
+            profilePhotoModel.cloudCreate(profilePhotoModel.cloudPushList[i]);
+        }
+        profilePhotoModel.cloudPushList = [];
+    },
+    
+    cloudCreate : function (photo) {
+        everlive.createOne(profilePhotoModel._cloudClass, photo, function (error, data){
+            if (error !== null) {
+                ggError ("Error creating profile photo " + JSON.stringify(error));
+
+            } else {
+                // look up the photo (and remove duplicate local copy if there is one)
+                var photoList = profilePhotoModel.findPhotosById(data.photoId);
+
+                if (photoList.length > 1) {
+                    var length = photoList.length;
+
+                    for (var i=0; i<length; i++) {
+                        if (photoList[i].id === undefined) {
+                            profilePhotoModel.photosDS.remove(photoList[i]);
+                        }
+                    }
+                } else if (photoList.length === 1) {
+                    if (photoList[0].id === undefined) {
+                        photoList[0].id = data.id;
+                    }
+
+                   profilePhotoModel.sync();
+                }
+
+
+            }
+        });
+    },
+    
     addProfilePhoto : function (photouuid, url, contactId, contactUUID) {
 
         var photo = new kendo.data.ObservableObject();
@@ -114,7 +155,7 @@ var profilePhotoModel = {
 
         photo.set('version', profilePhotoModel._version);
         photo.set('ggType', profilePhotoModel._ggClass);
-        photo.set('Id', photouuid);
+       
         photo.set('photoId', photouuid);
         photo.set('uuid', photouuid);
         photo.set('deviceUrl', url);
@@ -125,6 +166,12 @@ var profilePhotoModel = {
         profilePhotoModel.photosDS.add(photo);
         profilePhotoModel.sync();
 
+        if (deviceModel.isOnline()) {
+            profilePhotoModel.cloudCreate(photo);
+        } else {
+            profilePhotoModel.cloudPushList.push(photo);
+        }
+        
         devicePhoto.convertImgToDataURL(url, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
 
@@ -147,7 +194,7 @@ var profilePhotoModel = {
 
 
                     profilePhotoModel.sync();
-                    profilePhotoModel.updateCloud(photoObj);
+                    //profilePhotoModel.updateCloud(photoObj);
 
                     contactModel.updateProfilePhoto(contactId, photouuid, photoData.url);
                     

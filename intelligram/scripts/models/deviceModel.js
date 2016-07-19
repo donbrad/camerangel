@@ -277,7 +277,7 @@ var deviceModel = {
         userModel.syncCloudModels();
         everlive.syncCloud();
         photoModel.processCloudPushList();
-
+        profilePhotoModel.processCloudPushList();
 
         if (everlive._isAuthenticated) {
             // Device is online and user is authenticated -- init pubnub
