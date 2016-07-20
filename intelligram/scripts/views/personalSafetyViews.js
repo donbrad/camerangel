@@ -24,8 +24,11 @@ var emergencyView = {
     getAddress : function () {
         mobileNotify("Looking up location!");
         mapModel.getCurrentAddress(function (status, address) {
-            emergencyView.address = address;
-           $('#emergencyView-address').val(address);
+            emergencyView.address = address.streetNumber + ' ' + address.street + ', ' + address.city + ", " + address.state + '  ' + address.zipcode;
+            emergencyView.lat = mapModel.lat;
+            emergencyView.lng = mapModel.lng;
+            
+            $('#emergencyView-address').val(address);
             $("#modalview-Emergency").data("kendoMobileModalView").open();
         });
 
