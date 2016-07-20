@@ -918,6 +918,7 @@ var channelModel = {
         channel.set('ownerName', userModel._user.name);
         channel.set('isPrivate', true);
         channel.set('isPlace', false);
+        channel.set('isEmergency', false);
         channel.set('isPrivatePlace', false);
         channel.set('placeUUID', null);
         channel.set('placeName', null);
@@ -1005,12 +1006,15 @@ var channelModel = {
         channel.set('placeUUID', null);
         channel.set('placeName', null);
         channel.set('isPrivatePlace', true);
+        channel.set('isEmergency', false)
         if (options !== undefined && options !== null) {
             if (options.chatType === 'Place') {
                 channel.set('isPlace', true);
                 channel.set('placeUUID', options.chatData.uuid);
                 channel.set('placeName', options.chatData.name);
                 placesModel.addSharedPlace(options.chatData, channelUUID);
+            } else if (options.chatType === 'Emergency') {
+                channel.set('isEmergency', true);
             }
         }
 
@@ -1107,6 +1111,7 @@ var channelModel = {
             isPrivatePlace = true;
 
         channel.set('isPlace', true);
+        channel.set('isEmergency', true)
         channel.set('isPrivatePlace', isPrivatePlace);
         channel.set('placeUUID', placeUUID);
         channel.set('placeName', placeName);
@@ -1156,6 +1161,80 @@ var channelModel = {
         
     },
 
+    addEmergencyChannel : function (channelName, channelDescription, channelMembers) {
+        var channel = new kendo.data.ObservableObject();
+
+        /* var ChannelMap = Parse.Object.extend('channelmap');
+         var channelMap = new ChannelMap();*/
+
+        var addTime = ggTime.currentTime();
+        var name = channelName,
+            description = channelDescription;
+
+
+        // If this is a member request, channelUUID will be passed in.
+        // If user is creating new channel, they own it so create new uuid and update ownerUUID and ownerName
+
+        var channelUUID = uuid.v4();
+        var ownerUUID = userModel._user.userUUID;
+        var ownerName = userModel._user.name;
+
+
+        // Ensure we have a valid duration for this channel
+
+        var durationDays = 30;
+
+        channel.set('version', channelModel._version);
+        channel.set('ggType', channelModel._ggClass);
+        channel.set('isPlace', false);
+        channel.set('category', 'Group');
+        channel.set('isPrivate', false);
+        channel.set('isEmergency', true);
+        channel.set('isMuted', false);
+        channel.set('isDeleted', false);
+
+        channel.set('isPlace', false);
+        channel.set('isPrivatePlace', false);
+        channel.set('placeUUID', null);
+        channel.set('placeName', null);
+
+        channel.set("name", name );
+
+        channel.set('isEvent', false);
+        channel.set("media",   true);
+        channel.set("archive", true);
+        channel.set("description", description);
+        channel.set("durationDays", durationDays);
+        channel.set("unreadCount", 0);
+        channel.set("clearBefore", addTime);
+        channel.set("lastAccess", addTime);
+        channel.set("lastMessage", addTime);
+        channel.set("channelUUID", channelUUID);
+        channel.set("Id", channelUUID);
+
+        channel.set("ownerUUID", ownerUUID);
+
+        channel.set("ownerName", ownerName);
+        // Channel owner can access and edit members...
+
+        channel.set("isOwner", true);
+        channel.set("members", channelMembers);
+        channel.set("memberCount", channelMembers.length);
+        channel.set("invitedMembers", []);
+
+
+        channelModel.createChannelMap(channel);
+        channelModel.channelsDS.add(channel);
+        serverPush.provisionGroupChannel(channel.channelUUID);
+        mobileNotify('Added Chat : ' + channel.get('name'));
+
+        everlive.createOne(channelModel._cloudClass, channel, function (error, data) {
+            if (error !== null) {
+                mobileNotify ("Error creating Emergency Chat " + JSON.stringify(error));
+            }
+        });
+    },
+
     // Add group channel for owner...
     addChannel : function (channelName, channelDescription) {
     
@@ -1186,6 +1265,7 @@ var channelModel = {
         channel.set('isPlace', false);
         channel.set('category', 'Group');
         channel.set('isPrivate', false);
+        channel.set('isEmergency', false);
         channel.set('isMuted', false);
         channel.set('isDeleted', false);
 

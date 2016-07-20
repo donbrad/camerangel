@@ -269,7 +269,7 @@ var contactModel = {
 
     getMemberContacts : function (query) {
         var query = { field: "category", operator: "eq", value: "member" };
-        var dataSource = contactModel.contactListDS;
+        var dataSource = contactModel.contactsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -281,6 +281,22 @@ var contactModel = {
 
         return(view);
     },
+
+    getICEContacts : function (query) {
+        var query = { field: "isICE", operator: "eq", value: true };
+        var dataSource = contactModel.contactsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
     syncNewMembers : function () {
         var newMembers = contactModel.queryContacts({ field: "category", operator: "eq", value: "unknown" });
     },
