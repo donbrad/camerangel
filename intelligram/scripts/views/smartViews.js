@@ -3003,16 +3003,16 @@ var smartMedicalView = {
 
             switch (value) {
                 case 'allergy' :
-                    $('#smartMedicalAllergy').removeClass('hidden');
+                    $('.smartMedicalAllergy').removeClass('hidden');
                     break;
                 case 'medicine' :
-                    $('#smartMedicalMedication').removeClass('hidden');
+                    $('.smartMedicalMedication').removeClass('hidden');
                     break;
                 case 'practitioner' :
-                    $('#smartMedicalPractitioner').removeClass('hidden');
+                    $('.smartMedicalPractitioner').removeClass('hidden');
                     break;
                 case 'caregiver' :
-                    $('#smartMedicalCaregiver').removeClass('hidden');
+                    $('.smartMedicalCaregiver').removeClass('hidden');
                     break;
             }
         });
