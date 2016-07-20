@@ -2955,9 +2955,15 @@ var smartFlightView = {
     onOpen : function () {
 
     },
+
+    onFlightSearch : function () {
+
+    },
+
     openModal : function () {
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
     },
+
     closeModal : function () {
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     },
@@ -2968,6 +2974,35 @@ var smartFlightView = {
 
     onSave : function () {
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
+    }
+};
+
+var smartFlightSearchView = {
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+
+    onFlightSearch : function () {
+
+    },
+
+    openModal : function () {
+        $("#modalview-smartFlightSearch").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalview-smartFlightSearch").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartFlightSearch").data("kendoMobileModalView").close();
+    },
+
+    onSearch : function () {
+        //$("#modalview-smartFlightSearch").data("kendoMobileModalView").close();
     }
 };
 

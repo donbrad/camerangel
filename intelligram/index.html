@@ -4656,6 +4656,53 @@
 </div>
 
 
+<!-- smartFlightSearch modal -->
+<div data-role="modalview" id="modalview-smartFlightSearch" data-init="smartFlightSearchView.onInit"   data-open="smartFlightSearchView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Flight Search</span>
+			<a data-role="button"  data-align="left" data-click="smartFlightSearchView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<form >
+		<ul data-role="listview" data-style="inset">
+
+			<li>
+				<label> Flight Date
+					<input id="smartFlightSearch-flightDate" type="date" >
+				</label>
+			</li>
+
+			<li class="flightFind hidden">
+				<label> Origin
+					<input id="smartFlightSearch-origin" type="search" >
+				</label>
+			</li>
+			<li  class="flightFind hidden">
+				<label> Airline
+					<input id="smartFlightSearch-airline" type="search" >
+				</label>
+			</li>
+			<li class="flightFind hidden">
+
+				<label> Destination
+					<input id="smartFlightSearch-destination" type="search" >
+				</label>
+			</li>
+
+		</ul>
+	</form>
+
+	<ul data-role="listview" data-style="inset" id="smartFlghtSearch-listview"> </ul>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-click="smartFlightSearchView.onSearch" data-role="button">Search</a>
+
+	</div>
+</div>
+
+
 <!-- smartFlight modal -->
 <div data-role="modalview" id="modalview-smartFlight" data-init="smartFlightView.onInit"   data-open="smartFlightView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
 	<div data-role="header">
@@ -4669,31 +4716,16 @@
 		<ul data-role="listview" data-style="inset">
 
 			<li>
-				<label> Flight
+				<label> Flight  <a data-click="smartFlightView.onFlightSearch" data-role="button" class="btnClear"> Find... </a>
 					<input id="smartFlight-flight" type="search" >
 				</label>
 			</li>
-			<li class="flightFind hidden">
-				<label> Origin
-					<input id="smartFlight-origin" type="search" >
+			<li>
+				<label> Flight Date
+					<input id="smartFlight-flightDate" type="date" >
 				</label>
 			</li>
-			<li  class="flightFind hidden">
-				<label> Airline
-					<input id="smartFlight-airline" type="search" >
-				</label>
-			</li>
-			<li class="flightFind hidden">
 
-				<label> Destination
-					<input id="smartFlight-destination" type="search" >
-				</label>
-			</li>
-			<li  class="flightFind hidden">
-				<label> Date
-					<input id="smartFlight-date" type="datetime" >
-				</label>
-			</li>
 		</ul>
 	</form>
 
