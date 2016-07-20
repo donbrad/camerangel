@@ -2996,7 +2996,26 @@ var smartAccountView = {
 
 var smartMedicalView = {
     onInit: function () {
+        $('#smartMedical-category').change(function () {
 
+            var value =  $('#smartMedical-category').val();
+            $('.smartMedicalTopic').addClass('hidden');
+
+            switch (value) {
+                case 'allergy' :
+                    $('#smartMedicalAllergy').removeClass('hidden');
+                    break;
+                case 'medicine' :
+                    $('#smartMedicalMedication').removeClass('hidden');
+                    break;
+                case 'practitioner' :
+                    $('#smartMedicalPractitioner').removeClass('hidden');
+                    break;
+                case 'caregiver' :
+                    $('#smartMedicalCaregiver').removeClass('hidden');
+                    break;
+            }
+        });
     },
     onOpen : function () {
 
