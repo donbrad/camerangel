@@ -3021,6 +3021,11 @@ var smartMedicalView = {
 
     },
     openModal : function () {
+        // Set the defaults
+        $('#smartMedical-category').val('allergy');
+        $('.smartMedicalTopic').addClass('hidden');
+        $('.smartMedicalAllergy').removeClass('hidden');
+
         $("#modalview-smartMedical").data("kendoMobileModalView").open();
     },
     closeModal : function () {
