@@ -28,7 +28,7 @@ var emergencyView = {
             emergencyView.lat = mapModel.lat;
             emergencyView.lng = mapModel.lng;
             
-            $('#emergencyView-address').val(address);
+            $('#emergencyView-address').val(emergencyView.address);
             $("#modalview-Emergency").data("kendoMobileModalView").open();
         });
 
