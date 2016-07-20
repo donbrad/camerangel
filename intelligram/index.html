@@ -109,6 +109,7 @@
 	<script src="scripts/views/contactViews.js"></script>
 	<script src="scripts/views/galleryView.js"></script>
 	<script src="scripts/views/homeViews.js"></script>
+	<script src="scripts/views/personalSafetyViews.js"></script>
 	<script src="scripts/views/placeViews.js"></script>
 	<script src="scripts/views/profileView.js"></script>
 	<script src="scripts/views/privateNotesView.js"></script>
@@ -291,7 +292,7 @@
 			</div>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear">
+			<a data-role="button" class="btnClear" data-click="emergencyView.openModalPolice">
 				<div class="hotButton-icon">
 					<img src="images/gg-police.svg" class="icon-gg-drawer" />
 				</div>
@@ -299,7 +300,7 @@
 			</a>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear">
+			<a data-role="button" class="btnClear" data-click="emergencyView.openModalFire">
 				<div class="hotButton-icon">
 					<img src="images/gg-fire.svg" class="icon-gg-drawer" />
 				</div>
@@ -307,7 +308,7 @@
 			</a>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear">
+			<a data-role="button" class="btnClear" data-click="emergencyView.openModalMedical">
 				<div class="hotButton-icon">
 					<img src="images/gg-medical.svg" class="icon-gg-drawer" />
 				</div>
@@ -315,7 +316,7 @@
 			</a>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear">
+			<a data-role="button" class="btnClear" data-click="roadsideView.openModal">
 				<div class="hotButton-icon">
 					<img src="images/gg-roadside.svg" class="icon-gg-drawer-lg" />
 				</div>
@@ -323,7 +324,7 @@
 			</a>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear" >
+			<a data-role="button" class="btnClear" data-click="familyAlertView.openModal">
 				<div class="hotButton-icon">
 					<img src="images/gg-family.svg" class="icon-gg-drawer-lg" />
 				</div>
@@ -331,7 +332,7 @@
 			</a>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear" >
+			<a data-role="button" class="btnClear" data-click="localAlertView.openModal">
 				<div class="hotButton-icon">
 					<img src="images/gg-local.svg" class="icon-gg-drawer" />
 				</div>
@@ -4498,7 +4499,107 @@
 </div>
 
 
+<!-- emergency modal -->
+<div data-role="modalview" id="modalview-Emergency" data-init="emergencyView.onInit"   data-open="emergencyView.onShow" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Emergency</span>
+			<a data-role="button"  data-align="left" data-click="emergencyView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		<div class="hotButton-icon">
+			<img id="emergencyView-icon" src="images/gg-police.svg" class="icon-gg-drawer" />
+			<span id="emergencyView-title">Police Emergency</span>
+		</div>
 
+	</div>
+	<form>
+		<ul>
+
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnSecondary" data-click="emergencyView.onDone" data-role="button">Cancel</a>
+		<a class="btnFull-modal btnPrimary" data-click="emergencyView.onCall" data-role="button">Call</a>
+	</div>
+</div>
+
+
+<!-- roadside modal -->
+<div data-role="modalview" id="modalview-Roadside" data-init="roadsideView.onInit"   data-open="roadsideView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Roadside</span>
+			<a data-role="button"  data-align="left" data-click="roadsideView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		<div class="hotButton-icon">
+			<img src="images/gg-roadside.svg" class="icon-gg-drawer" />
+			<span >Automotive / Roadside Event</span>
+		</div>
+	</div>
+	<form>
+		<ul>
+
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnSecondary" data-click="roadsideView.onDone" data-role="button">Cancel</a>
+		<a class="btnFull-modal btnPrimary" data-click="roadsideView.onCall" data-role="button">Call</a>
+	</div>
+</div>
+
+<!-- familyAlert modal -->
+<div data-role="modalview" id="modalview-familyAlert" data-init="familyAlertView.onInit"   data-open="familyAlertView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Personal Safety</span>
+			<a data-role="button"  data-align="left" data-click="familyAlertView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		<div class="hotButton-icon">
+			<img src="images/gg-family.svg" class="icon-gg-drawer" />
+			<span >Family Alert</span>
+		</div>
+	</div>
+	<form>
+		<ul>
+
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnSecondary" data-click="familyAlertView.onDone" data-role="button">Cancel</a>
+		<a class="btnFull-modal btnPrimary" data-click="familyAlertView.onCall" data-role="button">Send</a>
+	</div>
+</div>
+
+<!-- localAlert modal -->
+<div data-role="modalview" id="modalview-localAlert" data-init="localAlertView.onInit"   data-open="localAlertView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Personal Safety</span>
+			<a data-role="button"  data-align="left" data-click="localAlertView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		<div class="hotButton-icon">
+			<img src="images/gg-local.svg" class="icon-gg-drawer" />
+			<span >Local Alert</span>
+		</div>
+	</div>
+	<form>
+		<ul>
+
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnSecondary" data-click="localAlertView.onDone" data-role="button">Cancel</a>
+		<a class="btnFull-modal btnPrimary" data-click="localAlertView.onCall" data-role="button">Send</a>
+	</div>
+</div>
 
 
 <!--/*
