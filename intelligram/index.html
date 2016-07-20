@@ -4527,8 +4527,28 @@
 
 	</div>
 	<form>
-		<ul>
-
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Your Current Location
+					<input id="emergencyView-address" type="text" readonly>
+				</label>
+			</li>
+			<li>
+				<label> Professional Services
+					<div class="select-lg">
+						<select id="emergencyView-status">
+							<option value="0" selected>Send Help!</option>
+							<option value="1" selected>Contact 911 and share my info!</option>
+							<option value="2" selected>Help is on the way</option>
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label> Auto Report My Status
+					<input type="checkbox" data-role="switch"  id="emergencyView-autoStatus"/>
+				</label>
+			</li>
 		</ul>
 	</form>
 	<div class="footer" data-role="footer">

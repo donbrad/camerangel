@@ -9,7 +9,10 @@
  * emergencyView
  */
 var emergencyView = {
-
+    address : null,
+    lat : 0,
+    lng: 0,
+    
     onInit: function () {
 
     },
@@ -18,10 +21,20 @@ var emergencyView = {
 
     },
 
+    getAddress : function () {
+        mobileNotify("Looking up location!");
+        mapModel.getCurrentAddress(function (status, address) {
+            emergencyView.address = address;
+           $('#emergencyView-address').val(address);
+            $("#modalview-Emergency").data("kendoMobileModalView").open();
+        });
+
+    },
+
     openModal : function (emergencyType) {
         $("#hotButtonModal").data("kendoMobileModalView").close();
-        
-        $("#modalview-Emergency").data("kendoMobileModalView").open();
+        emergencyView.getAddress();
+
     },
     
     openModalPolice : function () {
@@ -29,7 +42,7 @@ var emergencyView = {
         
         $('#emergencyView-icon').attr('src', "images/gg-police.svg");
         $('#emergencyView-title').text("Police Emergency");
-        $("#modalview-Emergency").data("kendoMobileModalView").open();
+        emergencyView.getAddress();
     },
 
     openModalMedical : function () {
@@ -37,7 +50,7 @@ var emergencyView = {
         
         $('#emergencyView-icon').attr('src', "images/gg-medical.svg");
         $('#emergencyView-title').text("Medical Emergency");
-        $("#modalview-Emergency").data("kendoMobileModalView").open();
+        emergencyView.getAddress();
     },
 
     openModalFire : function () {
@@ -45,7 +58,7 @@ var emergencyView = {
         
         $('#emergencyView-icon').attr('src', "images/gg-fire.svg");
         $('#emergencyView-title').text("Fire Emergency");
-        $("#modalview-Emergency").data("kendoMobileModalView").open();
+        emergencyView.getAddress();
     },
 
     closeModal : function ()  {
