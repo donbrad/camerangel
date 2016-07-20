@@ -2948,6 +2948,28 @@ var smartTripView = {
     }
 };
 
+var smartFlightView = {
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+    openModal : function () {
+        $("#modalview-smartFlight").data("kendoMobileModalView").open();
+    },
+    closeModal : function () {
+        $("#modalview-smartFlight").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartFlight").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+        $("#modalview-smartFlight").data("kendoMobileModalView").close();
+    }
+};
 
 var smartAccountView = {
     onInit: function () {

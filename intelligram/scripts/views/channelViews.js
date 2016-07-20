@@ -2922,9 +2922,10 @@ var channelView = {
 
     messageFlight : function (e) {
         _preventDefault(e);
-        channelView.messageMenuTag();
-        mobileNotify("Chat Flight isn't wired up yet");
+        //channelView.messageMenuTag();
+        smartFlightView.openModal();
     },
+
 
     messagePlace : function (e) {
         _preventDefault(e);
