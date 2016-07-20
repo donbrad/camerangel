@@ -4527,15 +4527,16 @@
 		<ul data-role="listview" data-style="inset">
 			<li>
 				<label> Your Current Location
-					<input id="emergencyView-address" type="text" readonly>
+					<input id="emergencyView-address" type="text" >
 				</label>
 			</li>
 			<li>
-				<label> Professional Services
+				<label> My Status
 					<div class="select-lg">
 						<select id="emergencyView-status">
-							<option value="0" selected>Send Help!</option>
-							<option value="1" selected>Help is on the way</option>
+							<option value="danger" selected>I need help</option>
+							<option value="witness" selected>I'm a witness</option>
+							<option value="ok" selected>I'm Ok</option>
 						</select>
 					</div>
 				</label>
@@ -4574,14 +4575,43 @@
 		</div>
 	</div>
 	<div style="text-align: center;">
-		<div class="hotButton-icon">
-			<img src="images/gg-roadside.svg" class="icon-gg-drawer" />
-			<span >Automotive / Roadside Event</span>
-		</div>
+		<img src="images/gg-roadside.svg" class="icon-gg-drawer" />
+		<span style="font-size: 1.3em;">Road / Commute</span>
 	</div>
 	<form>
-		<ul>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Your Current Location
+					<input id="roadsideView-address" type="text" >
+				</label>
+			</li>
+			<li>
+				<label> My Status
+					<div class="select-lg">
+						<select id="roadsideView-status">
+							<option value="danger" selected>I need help</option>
+							<option value="witness" selected>I'm a witness</option>
+							<option value="ok" selected>I'm Ok</option>
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label> Need medical services
+					<input type="checkbox" data-role="switch" id="roadsideView-needMedicalHelp"/>
+				</label>
+			</li>
+			<li>
+				<label> Auto Report My Status
+					<input type="checkbox" data-role="switch" id="roadsideView-autoStatus"/>
+				</label>
+			</li>
 
+			<li>
+				<label> Display Map of My Location
+					<input type="checkbox" data-role="switch" id="roadsideView-displayMap"/>
+				</label>
+			</li>
 		</ul>
 	</form>
 	<div class="footer" data-role="footer">
@@ -4599,14 +4629,32 @@
 		</div>
 	</div>
 	<div style="text-align: center;">
-		<div class="hotButton-icon">
-			<img src="images/gg-family.svg" class="icon-gg-drawer" />
-			<span >Family Alert</span>
-		</div>
+		<img src="images/gg-family.svg" class="icon-gg-drawer" />
+		<span style="font-size: 1.3em;">Family Alert</span>
 	</div>
 	<form>
-		<ul>
-
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Your Current Location
+					<input id="familyAlertView-address" type="text" >
+				</label>
+			</li>
+			<li>
+				<label> My Status
+					<div class="select-lg">
+						<select id="familyAlertView-status">
+							<option value="goodnews" selected>Good News!</option>
+							<option value="urgentnews" selected>Urgent News</option>
+							<option value="sadnews" selected>Sad News</option>
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label> Alert Title
+					<input id="familyAlertView-message" type="search" >
+				</label>
+			</li>
 		</ul>
 	</form>
 	<div class="footer" data-role="footer">
@@ -4624,14 +4672,49 @@
 		</div>
 	</div>
 	<div style="text-align: center;">
-		<div class="hotButton-icon">
-			<img src="images/gg-local.svg" class="icon-gg-drawer" />
-			<span >Local Alert</span>
-		</div>
+		<img src="images/gg-local.svg" class="icon-gg-drawer" />
+		<span style="font-size: 1.3em;">Local Alert</span>
+
 	</div>
 	<form>
-		<ul>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Your Current Location
+					<input id="localAlertView-address" type="text" >
+				</label>
+			</li>
+			<li>
+				<label> Alert Category
+					<div class="select-lg">
+						<select id="localAlertView-category">
+							<option value="traffic" selected>Traffic / Accident</option>
+							<option value="medical" >People Injured</option>
+							<option value="crime" >Crime</option>
+							<option value="weather" >Weather</option>
+							<option value="fire" >Fire</option>
+							<option value="flooding" >Flooding</option>
+							<option value="power" >Power Outage</option>
+							<option value="wildlife" >Wildlife / Animal</option>
 
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label> Alert Title
+					<input id="localAlertView-title" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Need medical services
+					<input type="checkbox" data-role="switch" id="localAlertView-needMedicalHelp"/>
+				</label>
+			</li>
+			<li>
+				<label> Auto Report My Status
+					<input type="checkbox" data-role="switch" id="localAlertView-autoStatus"/>
+				</label>
+			</li>
 		</ul>
 	</form>
 	<div class="footer" data-role="footer">
