@@ -380,209 +380,6 @@ function getChannelDetails(channelUUID, callBack) {
 
 
 
-/*function getUserChannels(uuid, callBack) {
-	Parse.Cloud.run('getUserChannels', {
-		uuid: uuid
-	}, {
-		success: function(result, error) {
-			if (result.status === 'ok') {
-				callBack({
-					found: true,
-					channels: result.channels
-				});
-			} else {
-				callBack({
-					found: false,
-					channels: null
-				});
-			}
-
-		},
-		error: function(result, error) {
-			callBack(null, error)
-		}
-	});
-}
-
-function getNewUserChannels(phone, callBack) {
-	Parse.Cloud.run('getNewUserChannels', {
-		phone: phone
-	}, {
-		success: function(result, error) {
-			if (result.status === 'ok') {
-				callBack({
-					found: true,
-					channels: result.channels
-				});
-			} else {
-				callBack({
-					found: false,
-					channels: null
-				});
-			}
-
-		},
-		error: function(result, error) {
-			callBack(null, error)
-		}
-	});
-}
-
-
-function queryPrivateChannel(uuid, contactuuid, callBack) {
-	Parse.Cloud.run('queryPrivateChannel', {
-		uuid: uuid, contactuuid : contactuuid
-	}, {
-		success: function(result, error) {
-			if (result.status === 'ok' && result.count > 0) {
-				callBack({
-					found: true,
-					channels: result.channels,
-					count: result.count,
-					update: result.update
-				});
-			} else {
-				callBack({
-					found: false,
-					channels: null,
-					count: 0,
-					update: true
-				});
-			}
-
-		},
-		error: function(result, error) {
-			callBack(null, error)
-		}
-	});
-}
-
-function doesPhotoExist(photoId, senderId, callback) {
-	Parse.Cloud.run('doesPhotoExist', {
-		photoId: photoId, senderId : senderId
-	}, {
-		success: function(result, error) {
-			if (result.status === 'ok' && result.count > 0) {
-				callBack({
-					found: true,
-					photo: result.photo
-				});
-			} else {
-				callBack({
-					found: false,
-					photo: result.photo
-				});
-			}
-
-		},
-		error: function(result, error) {
-			callBack(null, error)
-		}
-	});
-}
-
-function getUserPublicKey(uuid, callBack) {
-	Parse.Cloud.run('getUserPublicKey', {
-		uuid: uuid
-	}, {
-		success: function(result, error) {
-			if (result.status === 'ok') {
-				callBack({
-					found: true,
-					publicKey: result.publicKey
-				});
-			} else {
-				callBack({
-					found: false,
-					publicKey: null
-				});
-			}
-
-		},
-		error: function(result, error) {
-			callBack(null, error)
-		}
-	});
-}
-
-function getUserContactInfo(uuid, callBack) {
-	Parse.Cloud.run('getUserContactData', {
-		uuid: uuid
-	}, {
-		success: function(result, error) {
-			if (result.status === 'ok') {
-				callBack({
-					found: true,
-					user: result.user
-				});
-			} else {
-				callBack({
-					found: false,
-					user: null
-				});
-			}
-
-		},
-		error: function(result, error) {
-			callBack(null, error)
-		}
-	});
-}
-
-function findUserByEmail(email, callBack) {
-	Parse.Cloud.run('findUserByEmail', {
-		email: email
-	}, {
-		success: function(result) {
-			if (result.status === 'ok') {
-				callBack({
-					found: true,
-					user: result.user
-				});
-			} else {
-				callBack({
-					found: false
-				});
-			}
-
-		},
-		error: function(result, error) {
-			mobileNotify('Error Finding User by email  ' + error);
-			callBack({
-				found: false
-			});
-		}
-	});
-}
-
-function findUserByPhone(phone, callBack) {
-	Parse.Cloud.run('findUserByPhone', {
-		phone: phone
-	}, {
-		success: function(result) {
-			if (result.status === 'ok') {
-				callBack({
-					found: true,
-					user: result.user
-				});
-			} else {
-				callBack({
-					found: false
-				});
-			}
-
-		},
-		error: function(result, error) {
-			mobileNotify('Error Finding User by phone  ' + error);
-			callBack({
-				found: false
-			});
-		}
-	});
-}*/
-
-
-
 //Remove all formatting from  phone number and add 1 for 10 digit US numbers.
 function unformatPhoneNumber(phone) {
 	if (phone === null && phone === undefined)
@@ -637,6 +434,37 @@ function isMemberEmail(email, callback) {
 		},
 		error: function(error) {
 			mobileNotify("Error checking email" + error);
+			callback({
+				status: 'error',
+				valid: false,
+				error: error
+			});
+		}
+	});
+}
+
+function getFlightStatus(airline, flight, date, callback) {
+
+	var workingDate = new Date(date);
+
+	var month = workingDate.getMonth(), day = workingDate.getDay(), year = workingDate.getYear();
+
+	var url = 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/flightStatus?airline='+airline + '&flight='+flight +
+		'&month=' + month + '&day=' + day + '&year=' + year;
+	$.ajax({
+		url: url,
+		// dataType:"jsonp",
+		//  contentType: 'application/json',
+		success: function(result) {
+			callback({
+				status: 'ok',
+				valid: true,
+				found: result.found
+			});
+
+		},
+		error: function(error) {
+			mobileNotify("Error checking flightStatus" + error);
 			callback({
 				status: 'error',
 				valid: false,
