@@ -900,6 +900,16 @@ var privateNotesView = {
        smartFlightView.openModal();
     },
 
+    noteAccount : function (e) {
+        _preventDefault(e);
+        smartAccountView.openModal();
+    },
+
+    noteMedical : function (e) {
+        _preventDefault(e);
+        smartMedicalView.openModal();
+    },
+
     noteTrip : function (e) {
         _preventDefault(e);
         smartTripView.openModal(null, function (trip) {
