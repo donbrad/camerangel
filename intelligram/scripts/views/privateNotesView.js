@@ -887,12 +887,30 @@ var privateNotesView = {
 
     noteEvent : function(e) {
         _preventDefault(e);
-        mobileNotify("Chat Event isn't wired up yet");
+        smartEventView.openModal(null, function (event) {
+
+          //  channelView.messageAddSmartEvent(event);
+            mobileNotify("Creating IntelliEvent...");
+          //  channelView.messageSend();
+        });
     },
 
     noteFlight : function (e) {
         _preventDefault(e);
-        mobileNotify("Note Flight isn't wired up yet");
+       smartFlightView.openModal();
+    },
+
+    noteTrip : function (e) {
+        _preventDefault(e);
+        smartTripView.openModal(null, function (trip) {
+            if (trip !== undefined && trip !== null) {
+
+                mobileNotify("Creating IntelliTrip...");
+                /*channelView.messageObjects.push(trip);
+                 mobileNotify("Sending IntelliTrip...");
+                 channelView.messageSend();*/
+            }
+        });
     },
 
     noteMusic : function (e) {
