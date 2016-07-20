@@ -4521,7 +4521,7 @@
 	</div>
 	<div style="text-align: center;">
 			<img id="emergencyView-icon" src="images/gg-police.svg" class="icon-gg-drawer" />
-			<span id="emergencyView-title">Police Emergency</span>
+			<span id="emergencyView-title" style="font-size: 1.3em;">Police</span>
 	</div>
 	<form>
 		<ul data-role="listview" data-style="inset">
@@ -4535,10 +4535,14 @@
 					<div class="select-lg">
 						<select id="emergencyView-status">
 							<option value="0" selected>Send Help!</option>
-							<option value="1" selected>Contact 911 and share my info!</option>
-							<option value="2" selected>Help is on the way</option>
+							<option value="1" selected>Help is on the way</option>
 						</select>
 					</div>
+				</label>
+			</li>
+			<li>
+				<label> Need medical services
+					<input type="checkbox" data-role="switch" id="emergencyView-needMedicalHelp"/>
 				</label>
 			</li>
 			<li>

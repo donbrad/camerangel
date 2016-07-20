@@ -44,7 +44,7 @@ var emergencyView = {
         $("#hotButtonModal").data("kendoMobileModalView").close();
         
         $('#emergencyView-icon').attr('src', "images/gg-police.svg");
-        $('#emergencyView-title').text("Police Emergency");
+        $('#emergencyView-title').text("Police");
         emergencyView.getAddress();
     },
 
@@ -52,7 +52,7 @@ var emergencyView = {
         $("#hotButtonModal").data("kendoMobileModalView").close();
         
         $('#emergencyView-icon').attr('src', "images/gg-medical.svg");
-        $('#emergencyView-title').text("Medical Emergency");
+        $('#emergencyView-title').text("Medical");
         emergencyView.getAddress();
     },
 
@@ -60,7 +60,7 @@ var emergencyView = {
         $("#hotButtonModal").data("kendoMobileModalView").close();
         
         $('#emergencyView-icon').attr('src', "images/gg-fire.svg");
-        $('#emergencyView-title').text("Fire Emergency");
+        $('#emergencyView-title').text("Fire");
         emergencyView.getAddress();
     },
 
