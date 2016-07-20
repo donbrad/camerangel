@@ -4716,8 +4716,18 @@
 		<ul data-role="listview" data-style="inset">
 
 			<li>
-				<label> Flight  <a data-click="smartFlightView.onFlightSearch" data-role="button" class="btnClear"> Find... </a>
-					<input id="smartFlight-flight" type="search" >
+				<label> Flight Code (aa191, ...) <a data-click="smartFlightView.onFlightSearch" data-role="button" class="btnClear"> Find... </a>
+					<input id="smartFlight-flightCode" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Airline (American, ...)
+					<input id="smartFlight-airline" type="text" >
+				</label>
+			</li>
+			<li>
+				<label> Flight Number (191)
+					<input id="smartFlight-number" type="number" >
 				</label>
 			</li>
 			<li>
@@ -4727,8 +4737,23 @@
 			</li>
 
 			<li>
-				<label> Return Flight  <a data-click="smartFlightView.onReturnFlightSearch" data-role="button" class="btnClear"> Find... </a>
-					<input id="smartFlight-returnFlight" type="search" >
+				<label> Return Flight Code (wn 2772) <a data-click="smartFlightView.onReturnFlightSearch" data-role="button" class="btnClear"> Find... </a>
+					<input id="smartFlight-returnFlightCode" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Airline (Southwest, ...)
+					<input id="smartFlight-returnAirline" type="text" >
+				</label>
+			</li>
+			<li>
+				<label> Flight Number (2772)
+					<input id="smartFlight-returnNumber" type="number" >
+				</label>
+			</li>
+			<li>
+				<label> Flight Date
+					<input id="smartFlight-flightDate" type="date" >
 				</label>
 			</li>
 			<li>
