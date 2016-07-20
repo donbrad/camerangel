@@ -2947,3 +2947,73 @@ var smartTripView = {
         $("#smartTripModal").data("kendoMobileModalView").close();
     }
 };
+
+
+var smartAccountView = {
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+    openModal : function () {
+        $("#modalview-smartAccount").data("kendoMobileModalView").open();
+    },
+    closeModal : function () {
+        $("#modalview-smartAccount").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartAccount").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+        $("#modalview-smartAccount").data("kendoMobileModalView").close();
+    }
+};
+
+var smartMedicalView = {
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+    openModal : function () {
+        $("#modalview-smartMedical").data("kendoMobileModalView").open();
+    },
+    closeModal : function () {
+        $("#modalview-smartMedical").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartMedical").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+        $("#modalview-smartMedical").data("kendoMobileModalView").close();
+    }
+};
+
+var smartParkView = {
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+    openModal : function () {
+        $("#modalview-smartPark").data("kendoMobileModalView").open();
+    },
+    closeModal : function () {
+        $("#modalview-smartPark").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartPark").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+
+    }
+};

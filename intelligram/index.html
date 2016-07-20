@@ -4511,6 +4511,141 @@
 </div>
 
 
+<!-- smartAccount modal -->
+<div data-role="modalview" id="modalview-smartMedical" data-init="smartMedicalView.onInit"   data-open="smartMedicalView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>IntelliMedical</span>
+			<a data-role="button"  data-align="left" data-click="smartMedicalView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Name
+					<input id="smartMedical-name" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Category
+					<div class="select-lg">
+						<select id="smartMedical-category">
+							<option value="allergy" selected>Allergy</option>
+							<option value="medication" selected>Medication</option>
+							<option value="practioner" selected>Practioner</option>
+							<option value="caregiver" selected>Care Giver</option>
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label> Track Time
+					<input type="checkbox" data-role="switch" id="smartPark-trackTime"/>
+				</label>
+			<li>
+				<label> Start Time
+					<input type="time"  id="smartPark-startTime"/>
+				</label>
+			</li>
+			<li>
+				<label> Meter Time
+					<input type="time"  id="smartPark-meterTime"/>
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-click="smartMedicalView.onSave" data-role="button">Save</a>
+	</div>
+</div>
+
+
+<!-- smartAccount modal -->
+<div data-role="modalview" id="modalview-smartPark" data-init="smartParkView.onInit"   data-open="smartParkView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>IntelliPark</span>
+			<a data-role="button"  data-align="left" data-click="smartParkView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Address
+					<input id="smartPark-address" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Track Time
+					<input type="checkbox" data-role="switch" id="smartPark-trackTime"/>
+				</label>
+			<li>
+				<label> Start Time
+					<input type="time"  id="smartPark-startTime"/>
+				</label>
+			</li>
+			<li>
+				<label> Meter Time
+					<input type="time"  id="smartPark-meterTime"/>
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-click="smartParkView.onSave" data-role="button">Save</a>
+	</div>
+</div>
+
+
+
+
+<!-- smartAccount modal -->
+<div data-role="modalview" id="modalview-smartAccount" data-init="smartAccountView.onInit"   data-open="smartAccountView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>IntelliAccount</span>
+			<a data-role="button"  data-align="left" data-click="smartAccountView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Account Name
+					<input id="smartAccount-name" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Account Url
+					<input id="smartAccount-name" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Username
+					<input id="smartAccount-username" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Password
+					<input id="smartAccount-password" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> PIN
+					<input id="smartAccount-password" type="search" >
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-click="smartAccountView.onSave" data-role="button">Save</a>
+	</div>
+</div>
+
+
+
 <!-- emergency modal -->
 <div data-role="modalview" id="modalview-Emergency" data-init="emergencyView.onInit"   data-open="emergencyView.onShow" style="width: 100%; height: 100%; display:none;" class="appearance">
 	<div data-role="header">
