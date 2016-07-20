@@ -3005,7 +3005,7 @@ var smartMedicalView = {
                 case 'allergy' :
                     $('.smartMedicalAllergy').removeClass('hidden');
                     break;
-                case 'medicine' :
+                case 'medication' :
                     $('.smartMedicalMedication').removeClass('hidden');
                     break;
                 case 'practitioner' :
