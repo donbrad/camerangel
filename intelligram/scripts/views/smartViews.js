@@ -2957,10 +2957,13 @@ var smartFlightView = {
     },
 
     onFlightSearch : function () {
-
+        smartFlightView.closeModal();
+        smartFlightSearchView.openModal(function (flight){
+            smartFlightView.openModal(flight);
+        })
     },
 
-    openModal : function () {
+    openModal : function (flight) {
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
     },
 
@@ -2978,6 +2981,9 @@ var smartFlightView = {
 };
 
 var smartFlightSearchView = {
+    callback : null,
+    flight : null,
+
     onInit: function () {
 
     },
@@ -2989,7 +2995,11 @@ var smartFlightSearchView = {
 
     },
 
-    openModal : function () {
+    openModal : function (callback) {
+
+        smartFlightSearchView.callback = callback;
+        smartFlightSearchView.flight = null;
+
         $("#modalview-smartFlightSearch").data("kendoMobileModalView").open();
     },
 
@@ -2999,6 +3009,9 @@ var smartFlightSearchView = {
 
     onDone: function () {
         $("#modalview-smartFlightSearch").data("kendoMobileModalView").close();
+        if (callback !== null) {
+            smartFlightSearchView.callback(smartFlightSearchView.flight);
+        }
     },
 
     onSearch : function () {
