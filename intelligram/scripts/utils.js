@@ -456,10 +456,11 @@ function getFlightStatus(airline, flight, date, callback) {
 		// dataType:"jsonp",
 		//  contentType: 'application/json',
 		success: function(result) {
+
 		    var resObj = {
                 status: 'ok',
                 valid: true,
-                flight: result
+                flightStatus: result.flightStatuses
             };
 			callback(resObj);
 

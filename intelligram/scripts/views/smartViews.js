@@ -2964,20 +2964,38 @@ var smartFlightView = {
     validAirline : false,
     validFlight: false,
     validDate: false,
+    status: null,
 
     checkFlight: function () {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
             mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
             getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
-
+                smartFlightView.processFlightStatus(result[0]);
             })
         } else {
             return;
         }
     },
 
+    processFlightStatus : function (status) {
+        smartFlightView.status.arrivalAirport = status.arrivalAirportFsCode;
+        smartFlightView.status.departureAirport = status.departureAirportFsCode;
+
+        smartFlightView.status.departureTerminal = status.airportResources.departureTerminal;
+        smartFlightView.status.departureGate = status.airportResources.departureGate;
+
+        smartFlightView.status.arrivalTerminal = status.airportResources.arrivalTerminal;
+        smartFlightView.status.arrivalGate = status.airportResources.arrivalGate;
+        smartFlightView.status.baggageClaim = status.airportResources.baggage;
+
+        smartFlightView.status.estimatedDeparture = status.operationalTimes.estimatedGateDeparture.dateUtc;
+        smartFlightView.status.estimatedArrival = status.operationalTimes.estimatedGateArrival.dateUtc;
+        smartFlightView.status.durationMinutes = status.flightDurations.scheduledBlockMinutes;
+    },
+
     onInit: function () {
 
+        smartFlightView.status =  new kendo.data.ObservableObject();
         smartFlightView.regExA = new RegExp(smartFlightView.regExAirline);
         smartFlightView.regExF= new RegExp(smartFlightView.regExFlight);
 
