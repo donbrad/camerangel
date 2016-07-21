@@ -2949,11 +2949,77 @@ var smartTripView = {
 };
 
 var smartFlightView = {
-    regExString : '^([A-Z]{2}|[A-Z]\d|\d[A-Z])[1-9](\d{1,3})?$',
+    regExAirline : '^([A-Za-z]{2})',
+    regEx : null,
+    airline : null,
+    flight: null,
+    flightCode : null,
+    returnAirline: null,
+    returnFlight : null,
+    returnFightCode : null,
 
     onInit: function () {
 
+        smartFlightView.regEx = new RegExp(smartFlightView.regExAirline);
+
+        $('#smartFlight-flightCode').change(function (){
+            var code = $('#smartFlight-flightCode').val();
+
+            if (code.length > 2) {
+                var match =  smartFlightView.regEx.exec(code);
+                if (match === null) {
+                    $('#smartFlight-airlineLi').removeClass('hidden');
+                } else {
+                    smartEventView.airline = match[0];
+                    $('#smartFlight-airlineLi').addClass('hidden');
+                }
+            }
+
+
+
+        });
+
+        $('#smartFlight-returnFlightCode').change(function (){
+            var retcode = $('#smartFlight-returnFlightCode').val();
+            if (retcode.length > 2) {
+                var retmatch = smartFlightView.regEx.exec(retcode);
+                if (retmatch === null) {
+                    $('#smartFlight-returnAirlineLi').addClass('hidden');
+                } else {
+                    smartEventView.returnAirline = retmatch[0];
+                    $('#smartFlight-returnAirlineLi').addClass('hidden');
+
+                }
+            }
+        });
+
+        $("#smartFlight-airlineLi").kendoAutoComplete({
+            dataSource: airlineArray,
+            ignoreCase: true,
+            dataTextField: "name",
+            select: function(e) {
+                // User has selected one of their places
+                var airline = e.item;
+            },
+            filter: "contains",
+            placeholder: "Enter airline... "
+        });
+
+        $("#smartFlight-returnAirlineLi").kendoAutoComplete({
+            dataSource: airlineArray,
+            ignoreCase: true,
+            dataTextField: "name",
+            select: function(e) {
+                // User has selected one of their places
+                var airline = e.item;
+            },
+            filter: "contains",
+            placeholder: "Enter airline... "
+        });
+
     },
+
+
     onOpen : function () {
 
     },
