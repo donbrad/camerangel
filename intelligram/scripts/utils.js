@@ -445,9 +445,9 @@ function isMemberEmail(email, callback) {
 
 function getFlightStatus(airline, flight, date, callback) {
 
-	var workingDate = new Date(date);
+	var workingDate = moment(date);
 
-	var month = workingDate.getMonth(), day = workingDate.getDay(), year = workingDate.getYear();
+	var month = workingDate.month(), day = workingDate.date(), year = workingDate.year();
 
 	var url = 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/flightStatus?airline='+airline + '&flight='+flight +
 		'&month=' + month + '&day=' + day + '&year=' + year;
