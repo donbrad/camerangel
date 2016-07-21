@@ -2950,23 +2950,26 @@ var smartTripView = {
 
 var smartFlightView = {
     regExAirline : '^([A-Za-z]{2})',
-    regEx : null,
+    regExFlight: '([0-9]{1,4})',
+    regExA : null,
+    regExF : null,
     airline : null,
     flight: null,
     flightCode : null,
     returnAirline: null,
     returnFlight : null,
-    returnFightCode : null,
+    returnFlightCode : null,
 
     onInit: function () {
 
-        smartFlightView.regEx = new RegExp(smartFlightView.regExAirline);
+        smartFlightView.regExA = new RegExp(smartFlightView.regExAirline);
+        smartFlightView.regExF= new RegExp(smartFlightView.regExAirline);
 
-        $('#smartFlight-flightCode').change(function (){
+        $('#smartFlight-flightCode').change(function () {
             var code = $('#smartFlight-flightCode').val();
 
             if (code.length > 2) {
-                var match =  smartFlightView.regEx.exec(code);
+                var match =  smartFlightView.regExA.exec(code);
                 if (match === null) {
                     $('#smartFlight-airlineLi').removeClass('hidden');
                 } else {
@@ -2979,10 +2982,10 @@ var smartFlightView = {
 
         });
 
-        $('#smartFlight-returnFlightCode').change(function (){
+        $('#smartFlight-returnFlightCode').change(function () {
             var retcode = $('#smartFlight-returnFlightCode').val();
             if (retcode.length > 2) {
-                var retmatch = smartFlightView.regEx.exec(retcode);
+                var retmatch = smartFlightView.regExA.exec(retcode);
                 if (retmatch === null) {
                     $('#smartFlight-returnAirlineLi').addClass('hidden');
                 } else {
@@ -3022,6 +3025,10 @@ var smartFlightView = {
 
     onOpen : function () {
 
+    },
+
+    onReturnFlight : function () {
+        $('#smartFlight-airlineLi').removeClass('hidden');
     },
 
     onFlightSearch : function () {

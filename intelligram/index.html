@@ -4714,34 +4714,40 @@
 
 	<form class="flightCreator">
 		<ul data-role="listview" data-style="inset">
-
-			<li>
-				<label> Flight Code (aa191, ...) <a data-click="smartFlightView.onFlightSearch" data-role="button" class="btnClear"> Find... </a>
-					<input id="smartFlight-flightCode" type="search" >
-				</label>
-			</li>
-			<li id="smartFlight-airlineLi" class="hidden">
+			<li id="smartFlight-airlineLi" >
 				<label> Airline (American, ...)
 					<input id="smartFlight-airline" type="text" placeholder="Please enter airline...">
 				</label>
 			</li>
+			<li>
+				<label> Flight(aa191, ...) <a data-click="smartFlightView.onFlightSearch" data-role="button" class="btnClear"> Find... </a>
+					<input id="smartFlight-flightCode" type="search" >
+				</label>
+			</li>
+
 			<li>
 				<label> Flight Date
 					<input id="smartFlight-flightDate" type="date" >
 				</label>
 			</li>
 
-			<li>
-				<label> Return Flight Code (wn 2772) <a data-click="smartFlightView.onReturnFlightSearch" data-role="button" class="btnClear"> Find... </a>
-					<input id="smartFlight-returnFlightCode" type="search" >
-				</label>
+			<li id="smartFlight-addReturn" class="hidden" >
+				<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnClear"> Add Return Flight </a>
 			</li>
-			<li id="smartFlight-returnAirlineLi" class="hidden">
+
+			<li class="returnFlight hidden">
 				<label> Airline (Southwest, ...)
 					<input id="smartFlight-returnAirline" type="text" placeholder="Please enter airline..." >
 				</label>
 			</li>
-			<li>
+
+			<li class="returnFlight hidden">
+				<label> Return Flight Code (wn 2772) <a data-click="smartFlightView.onReturnFlightSearch" data-role="button" class="btnClear"> Find... </a>
+					<input id="smartFlight-returnFlightCode" type="search" >
+				</label>
+			</li>
+
+			<li class="returnFlight hidden">
 				<label> Return Flight Date
 					<input id="smartFlight-returnFlightDate" type="date" >
 				</label>
