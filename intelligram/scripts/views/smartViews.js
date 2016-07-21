@@ -2959,6 +2959,8 @@ var smartFlightView = {
     returnAirline: null,
     returnFlight : null,
     returnFlightCode : null,
+    validFlight: false,
+    validDate: false,
 
     onInit: function () {
 
@@ -2977,8 +2979,6 @@ var smartFlightView = {
                     $('#smartFlight-airlineLi').addClass('hidden');
                 }
             }
-
-
 
         });
 
@@ -3040,6 +3040,7 @@ var smartFlightView = {
 
     openModal : function (flight) {
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
+        $("#smartFlight-flightDate").val(new Date());
     },
 
     closeModal : function () {
