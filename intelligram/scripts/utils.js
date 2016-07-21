@@ -459,7 +459,7 @@ function getFlightStatus(airline, flight, date, callback) {
 			callback({
 				status: 'ok',
 				valid: true,
-				found: result.found
+				flight: result
 			});
 
 		},
