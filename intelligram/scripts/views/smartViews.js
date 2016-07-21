@@ -2979,7 +2979,7 @@ var smartFlightView = {
     onInit: function () {
 
         smartFlightView.regExA = new RegExp(smartFlightView.regExAirline);
-        smartFlightView.regExF= new RegExp(smartFlightView.regExAirline);
+        smartFlightView.regExF= new RegExp(smartFlightView.regExFlight);
 
         $('#smartFlight-flight').change(function () {
             var code = $('#smartFlight-flight').val();
