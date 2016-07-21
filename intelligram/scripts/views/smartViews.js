@@ -2981,20 +2981,24 @@ var smartFlightView = {
         smartFlightView.regExA = new RegExp(smartFlightView.regExAirline);
         smartFlightView.regExF= new RegExp(smartFlightView.regExAirline);
 
-        $('#smartFlight-flightCode').change(function () {
-            var code = $('#smartFlight-flightCode').val();
+        $('#smartFlight-flight').change(function () {
+            var code = $('#smartFlight-flight').val();
 
-            if (code.length > 3) {
+            if (code.length > 1) {
                 var amatch =  smartFlightView.regExA.exec(code);
                 var fmatch =  smartFlightView.regExF.exec(code);
                 smartFlightView.validFlight = false;
-                if (amatch !== null && fmatch !== null) {
+                if (amatch !== null ) {
                     smartFlightView.airline = amatch[0];
                     smartFlightView.validAirline = true;
+                    smartFlightView.checkFlight();
+                }
+                if ( fmatch !== null) {
                     smartFlightView.flight = fmatch[0];
                     smartFlightView.validFlight = true;
                     smartFlightView.checkFlight();
                 }
+
             }
 
         });
