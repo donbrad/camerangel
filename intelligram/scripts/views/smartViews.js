@@ -2996,7 +2996,7 @@ var smartFlightView = {
             }
         });
 
-        $("#smartFlight-airlineLi").kendoAutoComplete({
+        $("#smartFlight-airline").kendoAutoComplete({
             dataSource: airlineArray,
             ignoreCase: true,
             dataTextField: "name",
@@ -3008,7 +3008,7 @@ var smartFlightView = {
             placeholder: "Enter airline... "
         });
 
-        $("#smartFlight-returnAirlineLi").kendoAutoComplete({
+        $("#smartFlight-returnAirline").kendoAutoComplete({
             dataSource: airlineArray,
             ignoreCase: true,
             dataTextField: "name",
