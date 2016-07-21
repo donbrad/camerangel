@@ -2954,13 +2954,27 @@ var smartFlightView = {
     regExA : null,
     regExF : null,
     airline : null,
+    airlineName : null,
     flight: null,
+    date: null,
     flightCode : null,
     returnAirline: null,
     returnFlight : null,
     returnFlightCode : null,
+    validAirline : false,
     validFlight: false,
     validDate: false,
+
+    checkFlight: function () {
+        if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
+            mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
+            getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
+
+            })
+        } else {
+            return;
+        }
+    },
 
     onInit: function () {
 
@@ -2970,16 +2984,25 @@ var smartFlightView = {
         $('#smartFlight-flightCode').change(function () {
             var code = $('#smartFlight-flightCode').val();
 
-            if (code.length > 2) {
-                var match =  smartFlightView.regExA.exec(code);
-                if (match === null) {
-                    $('#smartFlight-airlineLi').removeClass('hidden');
-                } else {
-                    smartEventView.airline = match[0];
-                    $('#smartFlight-airlineLi').addClass('hidden');
+            if (code.length > 3) {
+                var amatch =  smartFlightView.regExA.exec(code);
+                var fmatch =  smartFlightView.regExF.exec(code);
+                smartFlightView.validFlight = false;
+                if (amatch !== null && fmatch !== null) {
+                    smartFlightView.airline = amatch[0];
+                    smartFlightView.validAirline = true;
+                    smartFlightView.flight = fmatch[0];
+                    smartFlightView.validFlight = true;
+                    smartFlightView.checkFlight();
                 }
             }
 
+        });
+
+        $('#smartFlight-flightDate').change(function () {
+            smartFlightView.date = $('#smartFlight-flightDate').val();
+            smartFlightView.validDate = true;
+            smartFlightView.checkFlight();
         });
 
         $('#smartFlight-returnFlightCode').change(function () {
@@ -3001,8 +3024,12 @@ var smartFlightView = {
             ignoreCase: true,
             dataTextField: "name",
             select: function(e) {
-                // User has selected one of their places
-                var airline = e.item;
+                //var airline = e.item;
+                var airline = this.dataItem(e.item.index());
+                smartFlightView.airline = airline.abbrev;
+                smartFlightView.airlineName = airline.name;
+                smartFlightView.validAirline = true;
+                smartFlightView.checkFlight();
             },
             filter: "contains",
             placeholder: "Enter airline... "
@@ -3013,8 +3040,10 @@ var smartFlightView = {
             ignoreCase: true,
             dataTextField: "name",
             select: function(e) {
-                // User has selected one of their places
-                var airline = e.item;
+
+                //var airline = e.item;
+                var airline = this.dataItem(e.item.index());
+                smartFlightView.returnAirline = airline.abbrev;
             },
             filter: "contains",
             placeholder: "Enter airline... "
