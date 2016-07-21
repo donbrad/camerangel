@@ -2950,39 +2950,69 @@ var smartTripView = {
 
 var smartFlightView = {
     regExAirline : '^([A-Za-z]{2})',
-    regEx : null,
+    regExFlight: '([0-9]{1,4})',
+    regExA : null,
+    regExF : null,
     airline : null,
+    airlineName : null,
     flight: null,
+    date: null,
     flightCode : null,
     returnAirline: null,
     returnFlight : null,
-    returnFightCode : null,
+    returnFlightCode : null,
+    validAirline : false,
+    validFlight: false,
+    validDate: false,
+
+    checkFlight: function () {
+        if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
+            mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
+            getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
+
+            })
+        } else {
+            return;
+        }
+    },
 
     onInit: function () {
 
-        smartFlightView.regEx = new RegExp(smartFlightView.regExAirline);
+        smartFlightView.regExA = new RegExp(smartFlightView.regExAirline);
+        smartFlightView.regExF= new RegExp(smartFlightView.regExFlight);
 
-        $('#smartFlight-flightCode').change(function (){
-            var code = $('#smartFlight-flightCode').val();
+        $('#smartFlight-flight').change(function () {
+            var code = $('#smartFlight-flight').val();
 
-            if (code.length > 2) {
-                var match =  smartFlightView.regEx.exec(code);
-                if (match === null) {
-                    $('#smartFlight-airlineLi').removeClass('hidden');
-                } else {
-                    smartEventView.airline = match[0];
-                    $('#smartFlight-airlineLi').addClass('hidden');
+            if (code.length > 1) {
+                var amatch =  smartFlightView.regExA.exec(code);
+                var fmatch =  smartFlightView.regExF.exec(code);
+                smartFlightView.validFlight = false;
+                if (amatch !== null ) {
+                    smartFlightView.airline = amatch[0];
+                    smartFlightView.validAirline = true;
+                    smartFlightView.checkFlight();
                 }
+                if ( fmatch !== null) {
+                    smartFlightView.flight = fmatch[0];
+                    smartFlightView.validFlight = true;
+                    smartFlightView.checkFlight();
+                }
+
             }
-
-
 
         });
 
-        $('#smartFlight-returnFlightCode').change(function (){
+        $('#smartFlight-flightDate').change(function () {
+            smartFlightView.date = $('#smartFlight-flightDate').val();
+            smartFlightView.validDate = true;
+            smartFlightView.checkFlight();
+        });
+
+        $('#smartFlight-returnFlightCode').change(function () {
             var retcode = $('#smartFlight-returnFlightCode').val();
             if (retcode.length > 2) {
-                var retmatch = smartFlightView.regEx.exec(retcode);
+                var retmatch = smartFlightView.regExA.exec(retcode);
                 if (retmatch === null) {
                     $('#smartFlight-returnAirlineLi').addClass('hidden');
                 } else {
@@ -2993,25 +3023,31 @@ var smartFlightView = {
             }
         });
 
-        $("#smartFlight-airlineLi").kendoAutoComplete({
+        $("#smartFlight-airline").kendoAutoComplete({
             dataSource: airlineArray,
             ignoreCase: true,
             dataTextField: "name",
             select: function(e) {
-                // User has selected one of their places
-                var airline = e.item;
+                //var airline = e.item;
+                var airline = this.dataItem(e.item.index());
+                smartFlightView.airline = airline.abbrev;
+                smartFlightView.airlineName = airline.name;
+                smartFlightView.validAirline = true;
+                smartFlightView.checkFlight();
             },
             filter: "contains",
             placeholder: "Enter airline... "
         });
 
-        $("#smartFlight-returnAirlineLi").kendoAutoComplete({
+        $("#smartFlight-returnAirline").kendoAutoComplete({
             dataSource: airlineArray,
             ignoreCase: true,
             dataTextField: "name",
             select: function(e) {
-                // User has selected one of their places
-                var airline = e.item;
+
+                //var airline = e.item;
+                var airline = this.dataItem(e.item.index());
+                smartFlightView.returnAirline = airline.abbrev;
             },
             filter: "contains",
             placeholder: "Enter airline... "
@@ -3024,6 +3060,10 @@ var smartFlightView = {
 
     },
 
+    onReturnFlight : function () {
+        $('#smartFlight-airlineLi').removeClass('hidden');
+    },
+
     onFlightSearch : function () {
         smartFlightView.closeModal();
         smartFlightSearchView.openModal(function (flight){
@@ -3033,6 +3073,7 @@ var smartFlightView = {
 
     openModal : function (flight) {
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
+        $("#smartFlight-flightDate").val(new Date());
     },
 
     closeModal : function () {
