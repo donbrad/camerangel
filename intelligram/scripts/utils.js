@@ -447,7 +447,7 @@ function getFlightStatus(airline, flight, date, callback) {
 
 	var workingDate = moment(date);
 
-	var month = workingDate.month(), day = workingDate.date(), year = workingDate.year();
+	var month = workingDate.month() + 1, day = workingDate.date(), year = workingDate.year();
 
 	var url = 'https://api.everlive.com/v1/s2fo2sasaubcx7qe/Functions/flightStatus?airline='+airline + '&flight='+flight +
 		'&month=' + month + '&day=' + day + '&year=' + year;
