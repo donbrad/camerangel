@@ -2978,6 +2978,8 @@ var smartFlightView = {
     },
 
     processFlightStatus : function (status) {
+        smartFlightView.status.carrierCode = status.primaryCarrierFsCode;
+        smartFlightView.status.flightNumber = status.flightNumber;
         smartFlightView.status.arrivalAirport = status.arrivalAirportFsCode;
         smartFlightView.status.departureAirport = status.departureAirportFsCode;
 
