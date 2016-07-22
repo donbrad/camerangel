@@ -4765,7 +4765,7 @@
             </div>
         </div>
 
-        <div style="float: left; text-align: left; padding-left: 8px;">
+        <div style="float: left; text-align: left; padding-left: 12px;">
             <div style="font-size: 1.6em"><span data-bind="text: departureAirport"></span></div>
             <div style="font-size: 1.2em">Est: <span data-bind="text: estimatedDeparture"></span></div>
 			<div style="font-size: 1.2em">Act: <span data-bind="text: actualDeparture"></span></div>
@@ -4773,7 +4773,7 @@
             <div>Gate: <span data-bind="text: departureGate"></span></div>
         </div>
 
-		<div style="float: right; text-align: right; padding-right: 8px.">
+		<div style="float: right; text-align: right; padding-right: 12px;">
 			<div style="font-size: 1.6em"><span data-bind="text: arrivalAirport"></span></div>
 			<div style="font-size: 1.2em">Est: <span data-bind="text: estimatedArrival"></span></div>
 			<div style="font-size: 1.2em">Act: <span data-bind="text: actualArrival"></span></div>
@@ -4785,12 +4785,11 @@
 		<div style="clear: both; text-align: center;">
 			<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnSecondary"> Change Flight </a>
 			<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary"> Add Return Flight </a>
-
 		</div>
 	</div>
 
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary" data-click="smartFlightView.onDone" data-role="button">Done</a>
+		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Done</a>
 		<a class="btnFull-modal btnPrimary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
 	</div>
 </div>

@@ -2996,21 +2996,22 @@ var smartFlightView = {
         smartFlightView.status.set('durationMinutes', status.flightDurations.scheduledBlockMinutes);
 
         var depDate = moment(status.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(status.operationalTimes.estimatedGateArrival.dateUtc);
-        smartFlightView.status.set('estimatedDeparture', depDate.format("ddd, MMM Do YYYY, h:mm a"));
-        smartFlightView.status.set('estimatedArrival',  arrDate.format("ddd, MMM Do YYYY, h:mm a"));
+        smartFlightView.status.set('estimatedDeparture', depDate.format("M/D/YYYY h:mm a"));
+        smartFlightView.status.set('estimatedArrival',  arrDate.format("M/D/YYYY h:mm a"));
 
         if (status.operationalTimes.actualGateDeparture !== undefined) {
             var depDateAct = moment(status.operationalTimes.actualGateDeparture.dateUtc);
-            smartFlightView.status.set('actualDeparture', depDateAct.format("ddd, MMM Do YYYY, h:mm a"));
+            smartFlightView.status.set('actualDeparture', depDateAct.format("M/D/YYYY h:mm a"));
         }
 
         if (status.operationalTimes.actualGateArrival !== undefined) {
             var arrDateAct = moment(status.operationalTimes.actualGateArrival.dateUtc);
-            smartFlightView.status.set('actualArrival', arrDateAct.format("ddd, MMM Do YYYY, h:mm a"));
+            smartFlightView.status.set('actualArrival', arrDateAct.format("M/D/YYYY h:mm a"));
         }
 
 
         $('#smartFlightView-flightStatus').removeClass('hidden');
+        $('#smartFlightView-DoneBtn').addClass('hidden');
         $('#smartFlightView-SaveBtn').removeClass('hidden');
         $('.flightCreator').addClass('hidden');
     },
@@ -3122,6 +3123,7 @@ var smartFlightView = {
         if (flight === undefined || flight === null) {
             // No current flight - set editor state
             $('#smartFlightView-SaveBtn').addClass('hidden');
+            $('#smartFlightView-DoneBtn').removeClass('hidden');
             $('#smartFlightView-flightStatus').addClass('hidden');
             $('.flightCreator').removeClass('hidden');
         }
