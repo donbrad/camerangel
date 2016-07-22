@@ -4757,22 +4757,29 @@
 	</form>
 
 	<div id="smartFlightView-flightStatus" class="flightViewer hidden">
+        <h3>Flight Status</h3>
 	<table>
 		<tr>
 			<td width="40%" style="text-align: left;">
 				<div style="font-size: 1.4em"><span data-bind="text: departureAirport"></span></div>
-
+                <div style="font-size: 1.2em"><span data-bind="text: estimatedDeparture"></span></div>
+                <div>Terminal : <span data-bind="text: departureTerminal"></span></div>
+                <div>Gate: <span data-bind="text: departureGate"></span></div>
 			</td>
 			<td width="20%" style="text-align: center;">
 				<div style="font-size: 1.2em">
-					<span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
+					Flight: <span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
 				</div>
 				<div style="font-size: 1.1em">
-					<span data-bind="text: durationMinutes">
+					Flight Time: <span data-bind="text: durationMinutes">
 				</div>
 			</td>
 			<td width="40%" style="text-align: right;">
 				<div style="font-size: 1.4em"><span data-bind="text: arrivalAirport"></span></div>
+                <div style="font-size: 1.2em"><span data-bind="text: estimatedArrival"></span></div>
+                <div>Terminal : <span data-bind="text: arrivalTerminal"></span></div>
+                <div>Gate: <span data-bind="text: arrivalGate"></span></div>
+                <div>Baggage Claim: <span data-bind="text: baggageClaim"></span></div>
 			</td>
 		</tr>
 	</table>

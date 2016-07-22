@@ -2981,22 +2981,23 @@ var smartFlightView = {
 
         var status = statusObj.flightStatus[0];
 
-        
-        smartFlightView.status.carrierCode = status.primaryCarrierFsCode;
-        smartFlightView.status.flightNumber = status.flightNumber;
-        smartFlightView.status.arrivalAirport = status.arrivalAirportFsCode;
-        smartFlightView.status.departureAirport = status.departureAirportFsCode;
 
-        smartFlightView.status.departureTerminal = status.airportResources.departureTerminal;
-        smartFlightView.status.departureGate = status.airportResources.departureGate;
+        smartFlightView.status.set('carrierCode',status.primaryCarrierFsCode);
+        smartFlightView.status.set('flightNumber',status.flightNumber);
+        smartFlightView.status.set('arrivalAirport', status.arrivalAirportFsCode);
+        smartFlightView.status.set('departureAirport',status.departureAirportFsCode);
 
-        smartFlightView.status.arrivalTerminal = status.airportResources.arrivalTerminal;
-        smartFlightView.status.arrivalGate = status.airportResources.arrivalGate;
-        smartFlightView.status.baggageClaim = status.airportResources.baggage;
+        smartFlightView.status.set('departureTerminal', status.airportResources.departureTerminal);
+        smartFlightView.status.set('departureGate',status.airportResources.departureGate);
 
-        smartFlightView.status.estimatedDeparture = status.operationalTimes.estimatedGateDeparture.dateUtc;
-        smartFlightView.status.estimatedArrival = status.operationalTimes.estimatedGateArrival.dateUtc;
-        smartFlightView.status.durationMinutes = status.flightDurations.scheduledBlockMinutes;
+        smartFlightView.status.set('arrivalTerminal', status.airportResources.arrivalTerminal);
+        smartFlightView.status.set('arrivalGate', status.airportResources.arrivalGate);
+        smartFlightView.status.set('baggageClaim',  status.airportResources.baggage);
+        smartFlightView.status.set('durationMinutes'. status.flightDurations.scheduledBlockMinutes);
+
+        var depDate = moment(status.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(status.operationalTimes.estimatedGateArrival.dateUtc);
+        smartFlightView.status.estimatedDeparture = depDate.format("ddd, MMM Do YYYY, h:mm a");
+        smartFlightView.status.estimatedArrival = arrDate.format("ddd, MMM Do YYYY, h:mm a");
 
         $('#smartFlightView-flightStatus').removeClass('hidden');
 
