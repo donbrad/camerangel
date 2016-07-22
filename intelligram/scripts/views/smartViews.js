@@ -2977,7 +2977,11 @@ var smartFlightView = {
         }
     },
 
-    processFlightStatus : function (status) {
+    processFlightStatus : function (statusObj) {
+
+        var status = statusObj.flightStatus[0];
+
+        
         smartFlightView.status.carrierCode = status.primaryCarrierFsCode;
         smartFlightView.status.flightNumber = status.flightNumber;
         smartFlightView.status.arrivalAirport = status.arrivalAirportFsCode;
