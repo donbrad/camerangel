@@ -4759,7 +4759,7 @@
 	<div id="smartFlightView-flightStatus" class="flightViewer hidden">
         <h3>Flight Status</h3>
 
-        <div>
+        <div style="text-align: center;">
             <div style="font-size: 1.2em">
                 Flight: <span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
             </div>
@@ -4768,22 +4768,24 @@
             </div>
         </div>
 
-        <div style="text-align: left;">
-            <div style="font-size: 1.4em"><span data-bind="text: departureAirport"></span></div>
+        <div style="float: left; text-align: left;">
+            <div style="font-size: 1.6em"><span data-bind="text: departureAirport"></span></div>
             <div style="font-size: 1.2em"><span data-bind="text: estimatedDeparture"></span></div>
             <div>Terminal : <span data-bind="text: departureTerminal"></span></div>
             <div>Gate: <span data-bind="text: departureGate"></span></div>
         </div>
 
-		<div style="text-align: right;">
-			<div style="font-size: 1.4em"><span data-bind="text: arrivalAirport"></span></div>
+		<div style="float: right; text-align: right;">
+			<div style="font-size: 1.6em"><span data-bind="text: arrivalAirport"></span></div>
 			<div style="font-size: 1.2em"><span data-bind="text: estimatedArrival"></span></div>
 			<div>Terminal : <span data-bind="text: arrivalTerminal"></span></div>
 			<div>Gate: <span data-bind="text: arrivalGate"></span></div>
 			<div>Baggage Claim: <span data-bind="text: baggageClaim"></span></div>
 		</div>
 
-		<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnClear"> Change Flight </a>
+		<div style="clear: both;">
+			<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnClear"> Change Flight </a>
+		</div>
 	</div>
 
 	<div class="footer" data-role="footer">
