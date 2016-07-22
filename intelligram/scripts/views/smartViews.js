@@ -2964,7 +2964,7 @@ var smartFlightView = {
     validAirline : false,
     validFlight: false,
     validDate: false,
-    status: null,
+    status: new kendo.data.ObservableObject(),
 
     checkFlight: function () {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
@@ -3000,12 +3000,17 @@ var smartFlightView = {
         smartFlightView.status.estimatedArrival = arrDate.format("ddd, MMM Do YYYY, h:mm a");
 
         $('#smartFlightView-flightStatus').removeClass('hidden');
+        $('.flightCreator').addClass('hidden');
+    },
 
+    onChangeFlight : function () {
+        $('#smartFlightView-flightStatus').addClass('hidden');
+        $('.flightCreator').removeClass('hidden');
     },
 
     onInit: function () {
 
-        smartFlightView.status =  new kendo.data.ObservableObject();
+
         smartFlightView.regExA = new RegExp(smartFlightView.regExAirline);
         smartFlightView.regExF= new RegExp(smartFlightView.regExFlight);
 
