@@ -2970,7 +2970,7 @@ var smartFlightView = {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
             mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
             getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
-                smartFlightView.processFlightStatus(result[0]);
+                smartFlightView.processFlightStatus(result);
             })
         } else {
             return;
