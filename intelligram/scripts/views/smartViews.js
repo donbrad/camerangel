@@ -2999,17 +2999,19 @@ var smartFlightView = {
         smartFlightView.status.set('estimatedDeparture', depDate.format("M/D/YYYY h:mm a"));
         smartFlightView.status.set('estimatedArrival',  arrDate.format("M/D/YYYY h:mm a"));
 
+        smartFlightView.status.set('actualDeparture', null);
         if (status.operationalTimes.actualGateDeparture !== undefined) {
             var depDateAct = moment(status.operationalTimes.actualGateDeparture.dateUtc);
             smartFlightView.status.set('actualDeparture', depDateAct.format("M/D/YYYY h:mm a"));
         }
 
+        smartFlightView.status.set('actualArrival', null);
         if (status.operationalTimes.actualGateArrival !== undefined) {
             var arrDateAct = moment(status.operationalTimes.actualGateArrival.dateUtc);
             smartFlightView.status.set('actualArrival', arrDateAct.format("M/D/YYYY h:mm a"));
         }
 
-
+        ux.hideKeyboard();
         $('#smartFlightView-flightStatus').removeClass('hidden');
         $('#smartFlightView-DoneBtn').addClass('hidden');
         $('#smartFlightView-SaveBtn').removeClass('hidden');
