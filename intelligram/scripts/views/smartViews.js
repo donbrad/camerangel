@@ -3009,7 +3009,9 @@ var smartFlightView = {
             smartFlightView.status.set('actualArrival', arrDateAct.format("ddd, MMM Do YYYY, h:mm a"));
         }
 
+
         $('#smartFlightView-flightStatus').removeClass('hidden');
+        $('#smartFlightView-SaveBtn').removeClass('hidden');
         $('.flightCreator').addClass('hidden');
     },
 
@@ -3115,6 +3117,16 @@ var smartFlightView = {
     },
 
     openModal : function (flight) {
+
+
+        if (flight === undefined || flight === null) {
+            // No current flight - set editor state
+            $('#smartFlightView-SaveBtn').addClass('hidden');
+            $('#smartFlightView-flightStatus').addClass('hidden');
+            $('.flightCreator').removeClass('hidden');
+        }
+
+
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
         $("#smartFlight-flightDate").val(new Date());
     },
