@@ -2993,6 +2993,9 @@ var smartFlightView = {
         smartFlightView.status.estimatedDeparture = status.operationalTimes.estimatedGateDeparture.dateUtc;
         smartFlightView.status.estimatedArrival = status.operationalTimes.estimatedGateArrival.dateUtc;
         smartFlightView.status.durationMinutes = status.flightDurations.scheduledBlockMinutes;
+
+        $('#smartFlightView-flightStatus').removeClass('hidden');
+
     },
 
     onInit: function () {

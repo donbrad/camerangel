@@ -4704,7 +4704,7 @@
 
 
 <!-- smartFlight modal -->
-<div data-role="modalview" id="modalview-smartFlight" data-init="smartFlightView.onInit"   data-open="smartFlightView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+<div data-role="modalview" id="modalview-smartFlight" data-model="smartFlightView.status" data-init="smartFlightView.onInit"   data-open="smartFlightView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span><img src="images/smart-flight-home.svg" class="icon-gg-drawer" />IntelliFlight</span>
@@ -4756,12 +4756,26 @@
 		</ul>
 	</form>
 
-	<div id="smartFlightView-flightInfo" class="flightViewer hidden">
-
-	</div>
-
 	<div id="smartFlightView-flightStatus" class="flightViewer hidden">
+	<table>
+		<tr>
+			<td width="40%" style="text-align: left;">
+				<div style="font-size: 1.4em"><span data-bind="text: departureAirport"></span></div>
 
+			</td>
+			<td width="20%" style="text-align: center;">
+				<div style="font-size: 1.2em">
+					<span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
+				</div>
+				<div style="font-size: 1.1em">
+					<span data-bind="text: durationMinutes">
+				</div>
+			</td>
+			<td width="40%" style="text-align: right;">
+				<div style="font-size: 1.4em"><span data-bind="text: arrivalAirport"></span></div>
+			</td>
+		</tr>
+	</table>
 	</div>
 
 	<div class="footer" data-role="footer">
