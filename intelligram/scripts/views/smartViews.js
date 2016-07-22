@@ -2996,8 +2996,18 @@ var smartFlightView = {
         smartFlightView.status.set('durationMinutes', status.flightDurations.scheduledBlockMinutes);
 
         var depDate = moment(status.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(status.operationalTimes.estimatedGateArrival.dateUtc);
-        smartFlightView.status.estimatedDeparture = depDate.format("ddd, MMM Do YYYY, h:mm a");
-        smartFlightView.status.estimatedArrival = arrDate.format("ddd, MMM Do YYYY, h:mm a");
+        smartFlightView.status.set('estimatedDeparture', depDate.format("ddd, MMM Do YYYY, h:mm a"));
+        smartFlightView.status.set('estimatedArrival',  arrDate.format("ddd, MMM Do YYYY, h:mm a"));
+
+        if (status.operationalTimes.actualGateDeparture !== undefined) {
+            var depDateAct = moment(status.operationalTimes.actualGateDeparture.dateUtc);
+            smartFlightView.status.set('actualDeparture', depDateAct.format("ddd, MMM Do YYYY, h:mm a"));
+        }
+
+        if (status.operationalTimes.actualGateArrival !== undefined) {
+            var arrDateAct = moment(status.operationalTimes.actualGateArrival.dateUtc);
+            smartFlightView.status.set('actualArrival', arrDateAct.format("ddd, MMM Do YYYY, h:mm a"));
+        }
 
         $('#smartFlightView-flightStatus').removeClass('hidden');
         $('.flightCreator').addClass('hidden');

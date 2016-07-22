@@ -4760,24 +4760,26 @@
         <h3>Flight Status</h3>
 
         <div style="text-align: center;">
-            <div style="font-size: 1.2em">
-                Flight: <span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
+            <div style="font-size: 1.6em">
+                 <span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
             </div>
-            <div style="font-size: 1.1em">
-                Flight Time: <span data-bind="text: durationMinutes"></span>
+            <div style="font-size: 1.2em">
+                Flight Time: <span data-bind="text: durationMinutes"></span> minutes
             </div>
         </div>
 
-        <div style="float: left; text-align: left;">
+        <div style="float: left; text-align: left; padding-left: 8px;">
             <div style="font-size: 1.6em"><span data-bind="text: departureAirport"></span></div>
-            <div style="font-size: 1.2em"><span data-bind="text: estimatedDeparture"></span></div>
+            <div style="font-size: 1.2em">Est: <span data-bind="text: estimatedDeparture"></span></div>
+			<div style="font-size: 1.2em">Act: <span data-bind="text: actualDeparture"></span></div>
             <div>Terminal : <span data-bind="text: departureTerminal"></span></div>
             <div>Gate: <span data-bind="text: departureGate"></span></div>
         </div>
 
-		<div style="float: right; text-align: right;">
+		<div style="float: right; text-align: right; padding-right: 8px.">
 			<div style="font-size: 1.6em"><span data-bind="text: arrivalAirport"></span></div>
-			<div style="font-size: 1.2em"><span data-bind="text: estimatedArrival"></span></div>
+			<div style="font-size: 1.2em">Est: <span data-bind="text: estimatedArrival"></span></div>
+			<div style="font-size: 1.2em">Act: <span data-bind="text: actualArrival"></span></div>
 			<div>Terminal : <span data-bind="text: arrivalTerminal"></span></div>
 			<div>Gate: <span data-bind="text: arrivalGate"></span></div>
 			<div>Baggage Claim: <span data-bind="text: baggageClaim"></span></div>
