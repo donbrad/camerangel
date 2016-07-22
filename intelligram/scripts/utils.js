@@ -457,12 +457,20 @@ function getFlightStatus(airline, flight, date, callback) {
 		//  contentType: 'application/json',
 		success: function(result) {
 
-		    var resObj = {
-                status: 'ok',
-                valid: true,
-                flightStatus: result.flightStatuses
-            };
-			callback(resObj);
+		    if (result.status === 'ok' && result.result !== undefined) {
+                var resObj = {
+                    status: 'ok',
+                    valid: true,
+                    flightStatus: result.result.flightStatuses
+                };
+                callback(resObj);
+            } else {
+                callback({
+                    status: 'error',
+                    valid: false,
+                    error: 'Invalide response object'
+                });
+            }
 
 		},
 		error: function(error) {
