@@ -2993,7 +2993,7 @@ var smartFlightView = {
         smartFlightView.status.set('arrivalTerminal', status.airportResources.arrivalTerminal);
         smartFlightView.status.set('arrivalGate', status.airportResources.arrivalGate);
         smartFlightView.status.set('baggageClaim',  status.airportResources.baggage);
-        smartFlightView.status.set('durationMinutes'. status.flightDurations.scheduledBlockMinutes);
+        smartFlightView.status.set('durationMinutes', status.flightDurations.scheduledBlockMinutes);
 
         var depDate = moment(status.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(status.operationalTimes.estimatedGateArrival.dateUtc);
         smartFlightView.status.estimatedDeparture = depDate.format("ddd, MMM Do YYYY, h:mm a");
