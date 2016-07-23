@@ -473,6 +473,27 @@ var channelModel = {
         everlive.createOne('channelPhotos', photoObj, function (error, data) {
             if (error !== null) {
                 mobileNotify("Error creating Chat Shared Photo " + JSON.stringify(error));
+            } else {
+                // look up the photo (and remove duplicate local copy if there is one)
+                var photoList = channelModel.findPhotosById(data.photoId);
+
+                if (photoList.length > 1) {
+                    var length = photoList.length;
+
+                    for (var i=0; i<length; i++) {
+                        if (photoList[i].id === undefined) {
+                            channelModel.photosDS.remove(photoList[i]);
+                        }
+                    }
+                } else if (photoList.length === 1) {
+                    if (photoList[0].id === undefined) {
+                        photoList[0].id = data.id;
+                    }
+
+                    photoModel.photosDS.sync();
+                }
+
+
             }
         });
 
