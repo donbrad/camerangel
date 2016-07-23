@@ -1546,7 +1546,7 @@ var placeView = {
         if (placeView._returnModal === 'userstatus') {
             userStatusView.openModalRestore();
         }
-        
+
         ux.hideSearch();
     },
 

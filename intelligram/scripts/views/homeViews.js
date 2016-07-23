@@ -657,13 +657,32 @@ var userStatusView = {
 
     },
 
+    // close and redirect for user status
+    closeModalNoReturn : function () {
+
+        // if there's a return URL, need to close the modal and then redirect to original view
+        $(userStatusView._modalId).data("kendoMobileModalView").close();
+
+        var updatedStatus = $("#profileStatusUpdate").val();
+        if(updatedStatus !== "") {
+            // Save new status
+            userModel._user.set("statusMessage", updatedStatus);
+            userStatus.update();
+            //updateParseObject('userStatus','userUUID', userModel._user.uuid, "statusMessage", updatedStatus);
+        }
+        // clear status box
+        $("#profileStatusUpdate").val("");
+        $(".statusCharCount").text(userStatusView._profileStatusMax);
+
+    },
+
     gotoPlace: function (e) {
         _preventDefault(e);
 
         var placeUUID = userModel._user.currentPlaceUUID;
         var currentView = APP.kendo.view().id;
 
-        userStatusView.closeModal();
+        userStatusView.closeModalNoReturn();
         if (placeUUID !== undefined && placeUUID !== null) {
             placeUUID = LZString.compressToEncodedURIComponent(placeUUID);
 
