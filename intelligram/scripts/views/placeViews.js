@@ -1531,7 +1531,7 @@ var placeView = {
 
 
     onDone: function (e) {
-        //_preventDefault(e);
+        _preventDefault(e);
 
          /*if (placeView._returnView !== null) {
             var returnUrl = placeView._returnView;
