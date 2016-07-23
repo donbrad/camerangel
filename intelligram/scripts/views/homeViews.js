@@ -624,8 +624,12 @@ var userStatusView = {
 
     openModalRestore : function (e) {
         _preventDefault(e);
-
-        APP.kendo.navigate('#'+ userStatusView._returnView);
+        var returnUrl =  userStatusView._returnView;
+        if (returnUrl.indexOf('#') === -1) {
+            returnUrl = '#' + returnUrl;
+        }
+        APP.kendo.navigate(returnUrl);
+       // APP.kendo.navigate('#'+ userStatusView._returnView);
         userStatusView.openModal();
 
     },
