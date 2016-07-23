@@ -1533,18 +1533,20 @@ var placeView = {
     onDone: function (e) {
         _preventDefault(e);
 
-         if (placeView._returnView !== null) {
-            var returnUrl = placeView._returnView;
-            if (returnUrl.indexOf('#') === -1) {
-                returnUrl = '#' + returnUrl;
-            }
-            APP.kendo.navigate(returnUrl);
-        } else {
-            APP.kendo.navigate("#:back");
-        }
 
         if (placeView._returnModal === 'userstatus') {
             userStatusView.openModalRestore();
+        } else {
+            if (placeView._returnView !== null) {
+                var returnUrl = placeView._returnView;
+                if (returnUrl.indexOf('#') === -1) {
+                    returnUrl = '#' + returnUrl;
+                }
+                APP.kendo.navigate(returnUrl);
+            } else {
+                APP.kendo.navigate("#:back");
+            }
+
         }
 
         ux.hideSearch();
