@@ -1430,6 +1430,8 @@ var placeView = {
 
             if (e.view.params.returnview !== undefined){
                 placeView._returnView = unpackParameter(e.view.params.returnview);
+            } else {
+                placeView._returnView = null;
             }
 
             if (e.view.params.returnmodal !== undefined){
@@ -1531,8 +1533,7 @@ var placeView = {
     onDone: function (e) {
         //_preventDefault(e);
 
-         if (placeView._returnView !== null) {
-            
+         /*if (placeView._returnView !== null) {
             var returnUrl = placeView._returnView;
             if (returnUrl.indexOf('#') === -1) {
                 returnUrl = '#' + returnUrl;
@@ -1541,9 +1542,10 @@ var placeView = {
         } else {
             APP.kendo.navigate("#:back");
         }
+*/
+        APP.kendo.navigate("#:back");
         
         if (placeView._returnModal === 'userstatus') {
-
             userStatusView.openModalRestore();
         }
         ux.hideSearch();
