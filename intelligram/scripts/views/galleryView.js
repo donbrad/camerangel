@@ -1117,7 +1117,7 @@ var modalPhotoView = {
             });
         } else {
             $("#modalPhotoView").data("kendoMobileModalView").close();
-            smartEventPlacesView.openModal(address, "Memory Photo", function (placeObj) {
+            smartEventPlacesView.openModal(address, "Address for Photo", function (placeObj) {
                 $("#modalPhotoView").data("kendoMobileModalView").open();
             });
         }
