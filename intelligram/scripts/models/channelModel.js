@@ -460,7 +460,7 @@ var channelModel = {
 
     addPhoto : function (photoObj) {
 
-        var channel = channelModel.findChannelModel(channelUUID);
+        var channel = channelModel.findChannelModel(photoObj.channelUUID);
 
         if (channel === undefined) {
             return;
