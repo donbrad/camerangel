@@ -40,6 +40,7 @@ var sharedPhotoModel = {
         var photo = photoModel.findPhotoById(photoUUID);
         if (photo === undefined) {
             ggError("SharePhoto -- can't find source photo!!!");
+            return;
         }
         
         share.set('version', sharedPhotoModel._version);

@@ -1588,7 +1588,7 @@ var channelView = {
                     if (channelPhoto === null) {
                         var photoObj  = {
                             uuid: uuid.v4(),
-                            sourcePhotoUUID: photo.photoUUID,
+                            photoUUID: photo.photoUUID,
                             channelUUID: channelView._channelUUID,
                             isPrivateChat: channelView.isPrivateChat,
                             thumbnailUrl: null,
@@ -2080,7 +2080,7 @@ var channelView = {
 
         var photoObj  = {
             uuid: shareId,
-            sourcePhotoUUID: photoId,
+            photoUUID: photoId,
             channelUUID: channelView._channelUUID,
             thumbnailUrl: null,
             imageUrl: null,
