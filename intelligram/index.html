@@ -109,6 +109,7 @@
 	<script src="scripts/views/contactViews.js"></script>
 	<script src="scripts/views/galleryView.js"></script>
 	<script src="scripts/views/homeViews.js"></script>
+	<script src="scripts/views/personalSafetyViews.js"></script>
 	<script src="scripts/views/placeViews.js"></script>
 	<script src="scripts/views/profileView.js"></script>
 	<script src="scripts/views/privateNotesView.js"></script>
@@ -284,59 +285,71 @@
 </div>
 
 <div data-role="modalview" id="hotButtonModal" style="width: 95%; height: 100%; display: none;" data-title="Hot Buttons">
-		<ul data-role="listview"  style="text-align: center;" class="hotButtonList">
+		<ul data-role="listview" style="text-align: center;" class="hotButtonList">
 		<li>
 			<div>
 				<h3 class="gg-drawer-header">Personal Safety</h3>
 			</div>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear">
-				<div class="hotButton-icon">
-					<img src="images/gg-police.svg" class="icon-gg-drawer" />
-				</div>
-				Police (911)
-			</a>
+			<div>
+				<a data-role="button" class="btnClear" data-click="emergencyView.openModalPolice">
+					<div class="hotButton-icon">
+						<img src="images/gg-police.svg" class="icon-gg-drawer" />
+					</div>
+					Police (911)
+				</a>
+			</div>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear">
-				<div class="hotButton-icon">
-					<img src="images/gg-fire.svg" class="icon-gg-drawer" />
-				</div>
-				Fire (911)
-			</a>
+			<div>
+				<a data-role="button" class="btnClear" data-click="emergencyView.openModalFire">
+					<div class="hotButton-icon">
+						<img src="images/gg-fire.svg" class="icon-gg-drawer" />
+					</div>
+					Fire (911)
+				</a>
+			</div>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear">
-				<div class="hotButton-icon">
-					<img src="images/gg-medical.svg" class="icon-gg-drawer" />
-				</div>
-				Medical (911)
-			</a>
+			<div>
+				<a data-role="button" class="btnClear" data-click="emergencyView.openModalMedical">
+					<div class="hotButton-icon">
+						<img src="images/gg-medical.svg" class="icon-gg-drawer" />
+					</div>
+					Medical (911)
+				</a>
+			</div>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear">
-				<div class="hotButton-icon">
-					<img src="images/gg-roadside.svg" class="icon-gg-drawer-lg" />
-				</div>
-				Roadside
-			</a>
+			<div>
+				<a data-role="button" class="btnClear" data-click="roadsideView.openModal">
+					<div class="hotButton-icon">
+						<img src="images/gg-roadside.svg" class="icon-gg-drawer-lg" />
+					</div>
+					Roadside
+				</a>
+			</div>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear" >
-				<div class="hotButton-icon">
-					<img src="images/gg-family.svg" class="icon-gg-drawer-lg" />
-				</div>
-				Family Alert
-			</a>
+			<div>
+				<a data-role="button" class="btnClear" data-click="familyAlertView.openModal">
+					<div class="hotButton-icon">
+						<img src="images/gg-family.svg" class="icon-gg-drawer-lg" />
+					</div>
+					Family Alert
+				</a>
+			</div>
 		</li>
 		<li class="hotButton-li">
-			<a data-role="button" class="btnClear" >
-				<div class="hotButton-icon">
-					<img src="images/gg-local.svg" class="icon-gg-drawer" />
-				</div>
-				Local Alert
-			</a>
+			<div>
+				<a data-role="button" class="btnClear" data-click="localAlertView.openModal">
+					<div class="hotButton-icon">
+						<img src="images/gg-local.svg" class="icon-gg-drawer" />
+					</div>
+					Local Alert
+				</a>
+			</div>
 		</li>
 <!--
 			<div class="clearfix"></div>
@@ -1961,10 +1974,10 @@
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
 		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
-		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
+		<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>
 		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
-		<li><a data-action="channelView.messagePlace"><img src="images/smart-coffee.svg" class="icon-smart"/> Add Place</a></li><li>
-		<a data-action="channelView.messageTrip"><img src="images/smart-time.svg" class="icon-smart"/> Add Trip</a></li>
+		<li><a data-action="channelView.messagePlace"><img src="images/smart-coffee.svg" class="icon-smart"/> Add Place</a></li>
+		<li><a data-action="channelView.messageTrip"><img src="images/smart-time.svg" class="icon-smart"/> Add Trip</a></li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
@@ -4549,7 +4562,546 @@
 </div>
 
 
+<!-- smartAccount modal -->
+<div data-role="modalview" id="modalview-smartMedical" data-init="smartMedicalView.onInit"   data-open="smartMedicalView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>IntelliMedical</span>
+			<a data-role="button"  data-align="left" data-click="smartMedicalView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
 
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Category
+					<div class="select-lg">
+						<select id="smartMedical-category">
+							<option value="allergy" selected>Allergy</option>
+							<option value="medication" selected>Medication</option>
+							<option value="practitioner" selected>Practitioner</option>
+							<option value="caregiver" selected>Care Giver</option>
+						</select>
+					</div>
+				</label>
+			</li>
+			<li class="smartMedicalTopic smartMedicalAllergy hidden">
+				<label> Allergic To
+					<input type="search"  id="smartMedical-allergy"/>
+				</label>
+			</li>
+
+
+
+			<li class="smartMedicalTopic smartMedicalMedication hidden">
+				<label> Medication
+					<input type="search"  id="smartMedical-medication"/>
+				</label>
+			</li>
+			<li class="smartMedicalTopic smartMedicalMedication hidden">
+				<label> Dosage
+					<input type="search"  id="smartMedical-dosage"/>
+				</label>
+			</li>
+			<li class="smartMedicalTopic smartMedicalMedication hidden">
+				<label> Last Refill
+					<input type="datetime"  id="smartMedical-lastRefill"/>
+				</label>
+			</li>
+			<li class="smartMedicalTopic smartMedicalPractitioner hidden">
+				<label> Name
+					<input type="search"  id="smartMedical-doctorName"/>
+				</label>
+			</li>
+
+			<li class="smartMedicalTopic smartMedicalPractitioner hidden">
+				<label> Speciality
+					<input type="search"  id="smartMedical-doctorSpecialty"/>
+				</label>
+			</li>
+
+			<li class="smartMedicalTopic smartMedicalPractitioner hidden">
+				<label> Address
+					<input type="search"  id="smartMedical-doctorAddress"/>
+				</label>
+			</li>
+
+			<li class="smartMedicalTopic smartMedicalPractitioner hidden">
+				<label> Email
+					<input type="email"  id="smartMedical-doctorEmail"/>
+				</label>
+			</li>
+
+			<li class="smartMedicalTopic smartMedicalPractitioner hidden">
+				<label> Phone
+					<input type="phone"  id="smartMedical-doctorPhone"/>
+				</label>
+			</li>
+
+			<li class="smartMedicalTopic smartMedicalCaregiver hidden">
+				<label> Name
+					<input type="search"  id="smartMedical-caregiverName"/>
+				</label>
+			</li>
+
+			<li class="smartMedicalTopic smartMedicalCaregiver hidden">
+				<label> Email
+					<input type="email"  id="smartMedical-caregiverEmail"/>
+				</label>
+			</li>
+
+			<li class="smartMedicalTopic smartMedicalCaregiver hidden">
+				<label> Phone
+					<input type="phone"  id="smartMedical-caregiverPhone"/>
+				</label>
+			</li>
+
+			<li >
+				<label> Notes
+					<input type="search"  id="smartMedical-notes"/>
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-click="smartMedicalView.onSave" data-role="button">Save</a>
+	</div>
+</div>
+
+
+<!-- smartAccount modal -->
+<div data-role="modalview" id="modalview-smartPark" data-init="smartParkView.onInit"   data-open="smartParkView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>IntelliPark</span>
+			<a data-role="button"  data-align="left" data-click="smartParkView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Address
+					<input id="smartPark-address" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Track Time
+					<input type="checkbox" data-role="switch" id="smartPark-trackTime"/>
+				</label>
+			<li>
+				<label> Start Time
+					<input type="time"  id="smartPark-startTime"/>
+				</label>
+			</li>
+			<li>
+				<label> Meter Time
+					<input type="time"  id="smartPark-meterTime"/>
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-click="smartParkView.onSave" data-role="button">Save</a>
+	</div>
+</div>
+
+
+<!-- smartFlightSearch modal -->
+<div data-role="modalview" id="modalview-smartFlightSearch" data-init="smartFlightSearchView.onInit"   data-open="smartFlightSearchView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Flight Search</span>
+			<a data-role="button"  data-align="left" data-click="smartFlightSearchView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<form >
+		<ul data-role="listview" data-style="inset">
+
+			<li>
+				<label> Flight Date
+					<input id="smartFlightSearch-flightDate" type="date" >
+				</label>
+			</li>
+
+			<li class="flightFind hidden">
+				<label> Origin
+					<input id="smartFlightSearch-origin" type="search" >
+				</label>
+			</li>
+			<li  class="flightFind hidden">
+				<label> Airline
+					<input id="smartFlightSearch-airline" type="search" >
+				</label>
+			</li>
+			<li class="flightFind hidden">
+
+				<label> Destination
+					<input id="smartFlightSearch-destination" type="search" >
+				</label>
+			</li>
+
+		</ul>
+	</form>
+
+	<ul data-role="listview" data-style="inset" id="smartFlghtSearch-listview"> </ul>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-click="smartFlightSearchView.onSearch" data-role="button">Search</a>
+
+	</div>
+</div>
+
+
+<!-- smartFlight modal -->
+<div data-role="modalview" id="modalview-smartFlight" data-model="smartFlightView.status" data-init="smartFlightView.onInit"   data-open="smartFlightView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span><img src="images/smart-flight-home.svg" class="icon-gg-drawer" />IntelliFlight</span>
+			<a data-role="button"  data-align="left" data-click="smartFlightView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<form class="flightCreator">
+		<ul data-role="listview" data-style="inset">
+			<li >
+				<label> Airline
+					<input id="smartFlight-airline" type="text" placeholder="Please enter airline...">
+				</label>
+			</li>
+			<li>
+				<label> Flight
+					<input id="smartFlight-flight" type="search" >
+				</label>
+			</li>
+
+			<li>
+				<label> Flight Date
+					<input id="smartFlight-flightDate" type="date" >
+				</label>
+			</li>
+
+
+
+			<li class="returnFlight hidden">
+				<label> Airline
+					<input id="smartFlight-returnAirline" type="text" placeholder="Please enter airline..." >
+				</label>
+			</li>
+
+			<li class="returnFlight hidden">
+				<label> Flight
+					<input id="smartFlight-returnFlightCode" type="search" >
+				</label>
+			</li>
+
+			<li class="returnFlight hidden">
+				<label> Flight Date
+					<input id="smartFlight-returnFlightDate" type="date" >
+				</label>
+			</li>
+
+		</ul>
+	</form>
+
+	<div id="smartFlightView-flightStatus" class="flightViewer hidden">
+
+        <div style="text-align: center;">
+            <div style="font-size: 1.6em">
+                 <span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
+            </div>
+            <div style="font-size: 1.2em">
+                Flight Time: <span data-bind="text: durationMinutes"></span> minutes
+            </div>
+        </div>
+
+        <div style="float: left; text-align: left; padding-left: 12px;">
+            <div style="font-size: 1.6em"><span data-bind="text: departureAirport"></span></div>
+            <div style="font-size: 1.2em">Est: <span data-bind="text: estimatedDeparture"></span></div>
+			<div style="font-size: 1.2em">Act: <span data-bind="text: actualDeparture"></span></div>
+            <div>Terminal : <span data-bind="text: departureTerminal"></span></div>
+            <div>Gate: <span data-bind="text: departureGate"></span></div>
+        </div>
+
+		<div style="float: right; text-align: right; padding-right: 12px;">
+			<div style="font-size: 1.6em"><span data-bind="text: arrivalAirport"></span></div>
+			<div style="font-size: 1.2em">Est: <span data-bind="text: estimatedArrival"></span></div>
+			<div style="font-size: 1.2em">Act: <span data-bind="text: actualArrival"></span></div>
+			<div>Terminal : <span data-bind="text: arrivalTerminal"></span></div>
+			<div>Gate: <span data-bind="text: arrivalGate"></span></div>
+			<div>Baggage Claim: <span data-bind="text: baggageClaim"></span></div>
+		</div>
+
+		<div style="clear: both; text-align: center;">
+			<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnSecondary"> Change Flight </a>
+			<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary"> Add Return Flight </a>
+		</div>
+	</div>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Done</a>
+		<a class="btnFull-modal btnPrimary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
+	</div>
+</div>
+
+<!-- smartAccount modal -->
+<div data-role="modalview" id="modalview-smartAccount" data-init="smartAccountView.onInit"   data-open="smartAccountView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>IntelliAccount</span>
+			<a data-role="button"  data-align="left" data-click="smartAccountView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Account Name
+					<input id="smartAccount-name" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Account Url
+					<input id="smartAccount-name" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Username
+					<input id="smartAccount-username" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Password
+					<input id="smartAccount-password" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> PIN
+					<input id="smartAccount-password" type="search" >
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary" data-click="smartAccountView.onDone" data-role="button">Done</a>
+		<a class="btnFull-modal btnPrimary hidden" data-click="smartAccountView.onSave" data-role="button">Save</a>
+	</div>
+</div>
+
+
+
+<!-- emergency modal -->
+<div data-role="modalview" id="modalview-Emergency" data-init="emergencyView.onInit"   data-open="emergencyView.onShow" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Emergency</span>
+			<a data-role="button"  data-align="left" data-click="emergencyView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+	<div style="text-align: center;">
+			<img id="emergencyView-icon" src="images/gg-police.svg" class="icon-gg-drawer" />
+			<span id="emergencyView-title" style="font-size: 1.3em;">Police</span>
+	</div>
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Your Current Location
+					<input id="emergencyView-address" type="text" >
+				</label>
+			</li>
+			<li>
+				<label> My Status
+					<div class="select-lg">
+						<select id="emergencyView-status">
+							<option value="danger" selected>I need help</option>
+							<option value="witness" selected>I'm a witness</option>
+							<option value="ok" selected>I'm Ok</option>
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label> Need medical services
+					<input type="checkbox" data-role="switch" id="emergencyView-needMedicalHelp"/>
+				</label>
+			</li>
+			<li>
+				<label> Auto Report My Status
+					<input type="checkbox" data-role="switch" id="emergencyView-autoStatus"/>
+				</label>
+			</li>
+
+			<li>
+				<label> Display Map of My Location
+					<input type="checkbox" data-role="switch" id="emergencyView-displayMap"/>
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnSecondary" data-click="emergencyView.onDone" data-role="button">Cancel</a>
+		<a class="btnFull-modal btnPrimary" data-click="emergencyView.onCall" data-role="button">Call</a>
+	</div>
+</div>
+
+
+<!-- roadside modal -->
+<div data-role="modalview" id="modalview-Roadside" data-init="roadsideView.onInit"   data-open="roadsideView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Roadside</span>
+			<a data-role="button"  data-align="left" data-click="roadsideView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		<img src="images/gg-roadside.svg" class="icon-gg-drawer" />
+		<span style="font-size: 1.3em;">Road / Commute</span>
+	</div>
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Your Current Location
+					<input id="roadsideView-address" type="text" >
+				</label>
+			</li>
+			<li>
+				<label> My Status
+					<div class="select-lg">
+						<select id="roadsideView-status">
+							<option value="danger" selected>I need help</option>
+							<option value="witness" selected>I'm a witness</option>
+							<option value="ok" selected>I'm Ok</option>
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label> Need medical services
+					<input type="checkbox" data-role="switch" id="roadsideView-needMedicalHelp"/>
+				</label>
+			</li>
+			<li>
+				<label> Auto Report My Status
+					<input type="checkbox" data-role="switch" id="roadsideView-autoStatus"/>
+				</label>
+			</li>
+
+			<li>
+				<label> Display Map of My Location
+					<input type="checkbox" data-role="switch" id="roadsideView-displayMap"/>
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnSecondary" data-click="roadsideView.onDone" data-role="button">Cancel</a>
+		<a class="btnFull-modal btnPrimary" data-click="roadsideView.onCall" data-role="button">Call</a>
+	</div>
+</div>
+
+<!-- familyAlert modal -->
+<div data-role="modalview" id="modalview-familyAlert" data-init="familyAlertView.onInit"   data-open="familyAlertView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Personal Safety</span>
+			<a data-role="button"  data-align="left" data-click="familyAlertView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		<img src="images/gg-family.svg" class="icon-gg-drawer" />
+		<span style="font-size: 1.3em;">Family Alert</span>
+	</div>
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Your Current Location
+					<input id="familyAlertView-address" type="text" >
+				</label>
+			</li>
+			<li>
+				<label> My Status
+					<div class="select-lg">
+						<select id="familyAlertView-status">
+							<option value="goodnews" selected>Good News!</option>
+							<option value="urgentnews" selected>Urgent News</option>
+							<option value="sadnews" selected>Sad News</option>
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label> Alert Title
+					<input id="familyAlertView-message" type="search" >
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnSecondary" data-click="familyAlertView.onDone" data-role="button">Cancel</a>
+		<a class="btnFull-modal btnPrimary" data-click="familyAlertView.onCall" data-role="button">Send</a>
+	</div>
+</div>
+
+<!-- localAlert modal -->
+<div data-role="modalview" id="modalview-localAlert" data-init="localAlertView.onInit"   data-open="localAlertView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Personal Safety</span>
+			<a data-role="button"  data-align="left" data-click="localAlertView.onDone" ><img src="images/nav-back.svg" /></a>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		<img src="images/gg-local.svg" class="icon-gg-drawer" />
+		<span style="font-size: 1.3em;">Local Alert</span>
+
+	</div>
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label> Your Current Location
+					<input id="localAlertView-address" type="text" >
+				</label>
+			</li>
+			<li>
+				<label> Alert Category
+					<div class="select-lg">
+						<select id="localAlertView-category">
+							<option value="traffic" selected>Traffic / Accident</option>
+							<option value="medical" >People Injured</option>
+							<option value="crime" >Crime</option>
+							<option value="terror" >Terrorism</option>
+							<option value="weather" >Weather</option>
+							<option value="fire" >Fire</option>
+							<option value="flooding" >Flooding</option>
+							<option value="power" >Power Outage</option>
+							<option value="wildlife" >Wildlife / Animal</option>
+						</select>
+					</div>
+				</label>
+			</li>
+			<li>
+				<label> Alert Title
+					<input id="localAlertView-title" type="search" >
+				</label>
+			</li>
+			<li>
+				<label> Need medical services
+					<input type="checkbox" data-role="switch" id="localAlertView-needMedicalHelp"/>
+				</label>
+			</li>
+			<li>
+				<label> Auto Report My Status
+					<input type="checkbox" data-role="switch" id="localAlertView-autoStatus"/>
+				</label>
+			</li>
+		</ul>
+	</form>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnSecondary" data-click="localAlertView.onDone" data-role="button">Cancel</a>
+		<a class="btnFull-modal btnPrimary" data-click="localAlertView.onCall" data-role="button">Send</a>
+	</div>
+</div>
 
 
 <!--/*
@@ -4722,8 +5274,11 @@
 
 	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
 		<li><a data-action="privateNotesView.noteCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
-		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
+		<li><a data-action="privateNotesView.noteFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>
+		<li><a data-action="privateNotesView.noteTrip"><img src="images/smart-note.svg" class="icon-sm"/> Add Trip</a></li>
 		<li><a data-action="privateNotesView.noteMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
+		<li><a data-action="privateNotesView.noteAccount"><img src="images/smart-note.svg" class="icon-smart"/> Add Account</a></li>
+		<li><a data-action="privateNotesView.noteMedical"><img src="images/smart-note.svg" class="icon-smart"/> Add Medical</a></li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 

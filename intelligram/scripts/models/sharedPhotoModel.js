@@ -15,7 +15,7 @@ var sharedPhotoModel = {
                 typeName: 'sharedphoto'
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             }
         });
         sharedPhotoModel.photosDS.fetch();
@@ -40,6 +40,7 @@ var sharedPhotoModel = {
         var photo = photoModel.findPhotoById(photoUUID);
         if (photo === undefined) {
             ggError("SharePhoto -- can't find source photo!!!");
+            return;
         }
         
         share.set('version', sharedPhotoModel._version);

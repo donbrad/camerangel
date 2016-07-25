@@ -1586,8 +1586,22 @@ var channelView = {
                           channelView.photosDS.add(photo);
                     }
                     if (channelPhoto === null) {
+                        var photoObj  = {
+                            uuid: uuid.v4(),
+                            photoUUID: photo.photoUUID,
+                            channelUUID: channelView._channelUUID,
+                            isPrivateChat: channelView.isPrivateChat,
+                            thumbnailUrl: null,
+                            imageUrl: photo.imageUrl,
+                            canCopy: photo.canCopy,
+                            isRecalled: false,
+                            ownerUUID: photo.senderUUID,
+                            ownerName: photo.senderName,
+                            timestamp: ggTime.currentTime()
+                        };
+
                         // Photos isn't in the the channel photo data source
-                        channelModel.addPhoto(channelView._channelUUID, photo.photoUUID, photo.imageUrl, photo.ownerUUID, photo.ownerName);
+                        channelModel.addPhoto(photoObj);
 
                     }
 
@@ -2064,7 +2078,6 @@ var channelView = {
             return;
         }
 
-
         var photoObj  = {
             uuid: shareId,
             photoUUID: photoId,
@@ -2072,6 +2085,8 @@ var channelView = {
             thumbnailUrl: null,
             imageUrl: null,
             canCopy: canCopy,
+            isPrivateChat: channelView.isPrivateChat,
+            isRecalled: false,
             ownerUUID: photo.senderUUID,
             ownerName: photo.senderName,
             timestamp: ggTime.currentTime()
@@ -2090,7 +2105,7 @@ var channelView = {
         channelView.photos[photoObj.photoUUID] = photoObj;
 
         // Push the photo to the channel photo store
-        channelModel.addPhoto(photoObj.channelUUID, photoObj.photoUUID, photoObj.imageUrl, photoObj.ownerUUID, photoObj.ownerName);
+        channelModel.addPhoto(photoObj);
         
         // Add the photo to users shared photo list
         sharedPhotoModel.addSharedPhoto(shareId, photoObj.photoUUID, photoObj.channelUUID, canCopy);
@@ -2922,9 +2937,10 @@ var channelView = {
 
     messageFlight : function (e) {
         _preventDefault(e);
-        channelView.messageMenuTag();
-        mobileNotify("Chat Flight isn't wired up yet");
+        //channelView.messageMenuTag();
+        smartFlightView.openModal();
     },
+
 
     messagePlace : function (e) {
         _preventDefault(e);

@@ -20,7 +20,7 @@ var smartMovie = {
                 typeName: 'smartMovie'
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
             sort: {
                 field: "date",

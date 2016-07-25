@@ -131,7 +131,7 @@ var smartEvent = {
                 typeName: 'smartEvent'
             },
             schema: {
-                model: { id:  Everlive.idField}
+                model: { Id:  Everlive.idField}
             },
             sort: {
                 field: "date",

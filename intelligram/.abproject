@@ -6,7 +6,7 @@
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks",
   "Description": "intelligram for iOS and Android phones",
-  "BundleVersion": "0.0.146",
+  "BundleVersion": "0.0.150",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1"
@@ -63,7 +63,8 @@
     "com.android.launcher.permission.INSTALL_SHORTCUT"
   ],
   "DeviceOrientations": [
-    "Portrait"
+    "Portrait",
+    "Landscape"
   ],
   "AndroidHardwareAcceleration": "true",
   "iOSStatusBarStyle": "BlackTranslucent",

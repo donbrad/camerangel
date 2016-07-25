@@ -3073,3 +3073,434 @@ var smartTripView = {
         $("#smartTripModal").data("kendoMobileModalView").close();
     }
 };
+
+var smartFlightView = {
+    regExAirline : '^([A-Za-z]{2})',
+    regExFlight: '([0-9]{1,4})',
+    regExA : null,
+    regExF : null,
+    airline : null,
+    airlineName : null,
+    flight: null,
+    date: null,
+    flightCode : null,
+    returnAirline: null,
+    returnFlight : null,
+    returnFlightCode : null,
+    validAirline : false,
+    validFlight: false,
+    validDate: false,
+    status: new kendo.data.ObservableObject(),
+
+    checkFlight: function () {
+        if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
+            mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
+            getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
+                smartFlightView.processFlightStatus(result);
+            })
+        } else {
+            return;
+        }
+    },
+
+    processFlightStatus : function (statusObj) {
+
+        var status = statusObj.flightStatus[0];
+
+
+        smartFlightView.status.set('carrierCode',status.primaryCarrierFsCode);
+        smartFlightView.status.set('flightNumber',status.flightNumber);
+        smartFlightView.status.set('arrivalAirport', status.arrivalAirportFsCode);
+        smartFlightView.status.set('departureAirport',status.departureAirportFsCode);
+
+        smartFlightView.status.set('departureTerminal', status.airportResources.departureTerminal);
+        smartFlightView.status.set('departureGate',status.airportResources.departureGate);
+
+        smartFlightView.status.set('arrivalTerminal', status.airportResources.arrivalTerminal);
+        smartFlightView.status.set('arrivalGate', status.airportResources.arrivalGate);
+        smartFlightView.status.set('baggageClaim',  status.airportResources.baggage);
+        smartFlightView.status.set('durationMinutes', status.flightDurations.scheduledBlockMinutes);
+
+        var depDate = moment(status.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(status.operationalTimes.estimatedGateArrival.dateUtc);
+        smartFlightView.status.set('estimatedDeparture', depDate.format("M/D/YYYY h:mm a"));
+        smartFlightView.status.set('estimatedArrival',  arrDate.format("M/D/YYYY h:mm a"));
+
+        smartFlightView.status.set('actualDeparture', null);
+        if (status.operationalTimes.actualGateDeparture !== undefined) {
+            var depDateAct = moment(status.operationalTimes.actualGateDeparture.dateUtc);
+            smartFlightView.status.set('actualDeparture', depDateAct.format("M/D/YYYY h:mm a"));
+        }
+
+        smartFlightView.status.set('actualArrival', null);
+        if (status.operationalTimes.actualGateArrival !== undefined) {
+            var arrDateAct = moment(status.operationalTimes.actualGateArrival.dateUtc);
+            smartFlightView.status.set('actualArrival', arrDateAct.format("M/D/YYYY h:mm a"));
+        }
+
+        ux.hideKeyboard();
+        $('#smartFlightView-flightStatus').removeClass('hidden');
+        $('#smartFlightView-DoneBtn').addClass('hidden');
+        $('#smartFlightView-SaveBtn').removeClass('hidden');
+        $('.flightCreator').addClass('hidden');
+    },
+
+    onChangeFlight : function () {
+        $('#smartFlightView-flightStatus').addClass('hidden');
+        $('.flightCreator').removeClass('hidden');
+    },
+
+    onInit: function () {
+
+
+        smartFlightView.regExA = new RegExp(smartFlightView.regExAirline);
+        smartFlightView.regExF= new RegExp(smartFlightView.regExFlight);
+
+        $('#smartFlight-flight').change(function () {
+            var code = $('#smartFlight-flight').val();
+
+            if (code.length > 1) {
+                var amatch =  smartFlightView.regExA.exec(code);
+                var fmatch =  smartFlightView.regExF.exec(code);
+                smartFlightView.validFlight = false;
+                if (amatch !== null ) {
+                    smartFlightView.airline = amatch[0];
+                    smartFlightView.validAirline = true;
+                    smartFlightView.checkFlight();
+                }
+                if ( fmatch !== null) {
+                    smartFlightView.flight = fmatch[0];
+                    smartFlightView.validFlight = true;
+                    smartFlightView.checkFlight();
+                }
+
+            }
+
+        });
+
+        $('#smartFlight-flightDate').change(function () {
+            smartFlightView.date = $('#smartFlight-flightDate').val();
+            smartFlightView.validDate = true;
+            smartFlightView.checkFlight();
+        });
+
+        $('#smartFlight-returnFlightCode').change(function () {
+            var retcode = $('#smartFlight-returnFlightCode').val();
+            if (retcode.length > 2) {
+                var retmatch = smartFlightView.regExA.exec(retcode);
+                if (retmatch === null) {
+                    $('#smartFlight-returnAirlineLi').addClass('hidden');
+                } else {
+                    smartEventView.returnAirline = retmatch[0];
+                    $('#smartFlight-returnAirlineLi').addClass('hidden');
+
+                }
+            }
+        });
+
+        $("#smartFlight-airline").kendoAutoComplete({
+            dataSource: airlineArray,
+            ignoreCase: true,
+            dataTextField: "name",
+            select: function(e) {
+                //var airline = e.item;
+                var airline = this.dataItem(e.item.index());
+                smartFlightView.airline = airline.abbrev;
+                smartFlightView.airlineName = airline.name;
+                smartFlightView.validAirline = true;
+                smartFlightView.checkFlight();
+            },
+            filter: "contains",
+            placeholder: "Enter airline... "
+        });
+
+        $("#smartFlight-returnAirline").kendoAutoComplete({
+            dataSource: airlineArray,
+            ignoreCase: true,
+            dataTextField: "name",
+            select: function(e) {
+
+                //var airline = e.item;
+                var airline = this.dataItem(e.item.index());
+                smartFlightView.returnAirline = airline.abbrev;
+            },
+            filter: "contains",
+            placeholder: "Enter airline... "
+        });
+
+    },
+
+
+    onOpen : function () {
+
+    },
+
+    onReturnFlight : function () {
+        $('#smartFlight-airlineLi').removeClass('hidden');
+    },
+
+    onFlightSearch : function () {
+        smartFlightView.closeModal();
+        smartFlightSearchView.openModal(function (flight){
+            smartFlightView.openModal(flight);
+        })
+    },
+
+    openModal : function (flight) {
+
+
+        if (flight === undefined || flight === null) {
+            // No current flight - set editor state
+            $('#smartFlightView-SaveBtn').addClass('hidden');
+            $('#smartFlightView-DoneBtn').removeClass('hidden');
+            $('#smartFlightView-flightStatus').addClass('hidden');
+            $('.flightCreator').removeClass('hidden');
+        }
+
+
+        $("#modalview-smartFlight").data("kendoMobileModalView").open();
+        $("#smartFlight-flightDate").val(new Date());
+    },
+
+    closeModal : function () {
+        $("#modalview-smartFlight").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartFlight").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+        $("#modalview-smartFlight").data("kendoMobileModalView").close();
+    }
+};
+
+var smartFlightSearchView = {
+    callback : null,
+    flight : null,
+
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+
+    onFlightSearch : function () {
+
+    },
+
+    openModal : function (callback) {
+
+        smartFlightSearchView.callback = callback;
+        smartFlightSearchView.flight = null;
+
+        $("#modalview-smartFlightSearch").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#modalview-smartFlightSearch").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartFlightSearch").data("kendoMobileModalView").close();
+        if (callback !== null) {
+            smartFlightSearchView.callback(smartFlightSearchView.flight);
+        }
+    },
+
+    onSearch : function () {
+        //$("#modalview-smartFlightSearch").data("kendoMobileModalView").close();
+    }
+};
+
+var smartAccountView = {
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+    openModal : function () {
+        $("#modalview-smartAccount").data("kendoMobileModalView").open();
+    },
+    closeModal : function () {
+        $("#modalview-smartAccount").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartAccount").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+        $("#modalview-smartAccount").data("kendoMobileModalView").close();
+    }
+};
+
+var smartMedicalView = {
+    onInit: function () {
+        $('#smartMedical-category').change(function () {
+
+            var value =  $('#smartMedical-category').val();
+            $('.smartMedicalTopic').addClass('hidden');
+
+            switch (value) {
+                case 'allergy' :
+                    $('.smartMedicalAllergy').removeClass('hidden');
+                    break;
+                case 'medication' :
+                    $('.smartMedicalMedication').removeClass('hidden');
+                    break;
+                case 'practitioner' :
+                    $('.smartMedicalPractitioner').removeClass('hidden');
+                    break;
+                case 'caregiver' :
+                    $('.smartMedicalCaregiver').removeClass('hidden');
+                    break;
+            }
+        });
+    },
+    onOpen : function () {
+
+    },
+    openModal : function () {
+        // Set the defaults
+        $('#smartMedical-category').val('allergy');
+        $('.smartMedicalTopic').addClass('hidden');
+        $('.smartMedicalAllergy').removeClass('hidden');
+
+        $("#modalview-smartMedical").data("kendoMobileModalView").open();
+    },
+    closeModal : function () {
+        $("#modalview-smartMedical").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartMedical").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+        $("#modalview-smartMedical").data("kendoMobileModalView").close();
+    }
+};
+
+var smartParkView = {
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+    openModal : function () {
+        $("#modalview-smartPark").data("kendoMobileModalView").open();
+    },
+    closeModal : function () {
+        $("#modalview-smartPark").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#modalview-smartPark").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+
+    }
+};
+
+
+var airlineArray = [
+    {abbrev: '6A', name: 'AVIACSA'},
+    {abbrev: '9K', name: 'Cape Air'},
+    {abbrev: 'A0', name: "L'Avion"},
+    {abbrev: 'A7', name: 'Air Plus Comet'},
+    {abbrev: 'AA', name: 'American'},
+    {abbrev: 'AC', name: 'Air Canada'},
+    {abbrev: 'AF', name: 'Air France'},
+    {abbrev: 'AI', name: 'Air India'},
+    {abbrev: 'AM', name: 'Aeromexico'},
+    {abbrev: 'AR', name: 'Aerolineas Argentinas'},
+    {abbrev: 'AS', name: 'Alaska'},
+    {abbrev: 'AT', name: 'Royal Air Maroc'},
+    {abbrev: 'AV', name: 'Avianca'},
+    {abbrev: 'AY', name: 'Finnair'},
+    {abbrev: 'AZ', name: 'Alitalia'},
+    {abbrev: 'B6', name: 'JetBlue'},
+    {abbrev: 'BA', name: 'British Airways'},
+    {abbrev: 'BD', name: 'bmi british midland'},
+    {abbrev: 'BR', name: 'EVA Airways'},
+    {abbrev: 'C6', name: 'CanJet Airlines'},
+    {abbrev: 'CA', name: 'Air China'},
+    {abbrev: 'CI', name: 'China'},
+    {abbrev: 'CO', name: 'Continental'},
+    {abbrev: 'CX', name: 'Cathay'},
+    {abbrev: 'CZ', name: 'China Southern'},
+    {abbrev: 'DL', name: 'Delta'},
+    {abbrev: 'EI', name: 'Aer Lingus'},
+    {abbrev: 'EK', name: 'Emirates'},
+    {abbrev: 'EO', name: 'EOS'},
+    {abbrev: 'F9', name: 'Frontier'},
+    {abbrev: 'FI', name: 'Icelandair'},
+    {abbrev: 'FJ', name: 'Air Pacific'},
+    {abbrev: 'FL', name: 'AirTran'},
+    {abbrev: 'G4', name: 'Allegiant'},
+    {abbrev: 'GQ', name: 'Big Sky'},
+    {abbrev: 'HA', name: 'Hawaiian'},
+    {abbrev: 'HP', name: 'America West'},
+    {abbrev: 'HQ', name: 'Harmony'},
+    {abbrev: 'IB', name: 'Iberia'},
+    {abbrev: 'JK', name: 'Spanair'},
+    {abbrev: 'JL', name: 'JAL'},
+    {abbrev: 'JM', name: 'Air Jamaica'},
+    {abbrev: 'KE', name: 'Korean'},
+    {abbrev: 'KU', name: 'Kuwait'},
+    {abbrev: 'KX', name: 'Cayman'},
+    {abbrev: 'LA', name: 'LanChile'},
+    {abbrev: 'LH', name: 'Lufthansa'},
+    {abbrev: 'LO', name: 'LOT'},
+    {abbrev: 'LT', name: 'LTU'},
+    {abbrev: 'LW', name: 'Pacific Wings'},
+    {abbrev: 'LX', name: 'SWISS'},
+    {abbrev: 'LY', name: 'El Al'},
+    {abbrev: 'MA', name: 'MALEV'},
+    {abbrev: 'MH', name: 'Malaysia'},
+    {abbrev: 'MU', name: 'China Eastern'},
+    {abbrev: 'MX', name: 'Mexicana'},
+    {abbrev: 'NH', name: 'ANA'},
+    {abbrev: 'NK', name: 'Spirit'},
+    {abbrev: 'NW', name: 'Northwest'},
+    {abbrev: 'NZ', name: 'Air New Zealand'},
+    {abbrev: 'OS', name: 'Austrian'},
+    {abbrev: 'OZ', name: 'Asiana'},
+    {abbrev: 'PN', name: 'Pan American'},
+    {abbrev: 'PR', name: 'Philippine'},
+    {abbrev: 'QF', name: 'Qantas'},
+    {abbrev: 'QK', name: 'Air Canada Jazz'},
+    {abbrev: 'RG', name: 'VARIG'},
+    {abbrev: 'SA', name: 'South African'},
+    {abbrev: 'SK', name: 'SAS'},
+    {abbrev: 'SN', name: 'SN Brussels'},
+    {abbrev: 'SQ', name: 'Singapore'},
+    {abbrev: 'SU', name: 'Aeroflot'},
+    {abbrev: 'SY', name: 'Sun Country'},
+    {abbrev: 'TA', name: 'Taca'},
+    {abbrev: 'TG', name: 'Thai'},
+    {abbrev: 'TK', name: 'Turkish'},
+    {abbrev: 'TN', name: 'Air Tahiti Nui'},
+    {abbrev: 'TP', name: 'TAP'},
+    {abbrev: 'TS', name: 'Air Transat'},
+    {abbrev: 'U5', name: 'USA 3000'},
+    {abbrev: 'UA', name: 'United'},
+    {abbrev: 'UP', name: 'Bahamasair'},
+    {abbrev: 'US', name: 'US Air'},
+    {abbrev: 'V3', name: 'Copa'},
+    {abbrev: 'VS', name: 'Virgin Atlantic'},
+    {abbrev: 'VX', name: 'Virgin America'},
+    {abbrev: 'WA', name: 'Western'},
+    {abbrev: 'WN', name: 'Southwest'},
+    {abbrev: 'WS', name: 'WestJet'},
+    {abbrev: 'XE', name: 'ExpressJet'},
+    {abbrev: 'Y2', name: 'Globespan'},
+    {abbrev: 'Y7', name: 'Silverjet'},
+    {abbrev: 'YV', name: 'Mesa'},
+    {abbrev: 'YX', name: 'Midwest'},
+    {abbrev: 'ZK', name: 'Great Lakes '}
+];
