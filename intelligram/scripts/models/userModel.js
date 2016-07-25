@@ -279,6 +279,7 @@ var userModel = {
         userModel._user.set('useIdenticon', user.useIdenticon);
         userModel._user.set('useLargeView', user.useLargeView);
         userModel._user.set('rememberUsername', user.rememberUsername);
+        userModel._user.set('autoStatusEnabled', user.autoStatusEnabled);
 
         userModel._user.set('addressList', user.addressList);
         userModel._user.set('emailList', user.emailList);
@@ -286,6 +287,11 @@ var userModel = {
         userModel._user.set('homeIntro', user.homeIntro);
 
 
+        if(user.autoStatusEnabled === undefined) {
+            user.autoStatusEnabled = false;
+        }
+
+        userModel._user.set('autoStatusEnabled', user.autoStatusEnabled);
         userModel._user.set('publicKey', publicKey);
         userModel._user.set('privateKey', privateKey);
         userModel.decryptPrivateKey();
