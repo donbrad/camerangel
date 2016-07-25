@@ -1037,7 +1037,7 @@ form p {
   background-color: #FFB74D !important;
 }
 .primary-100 {
-  background: #2E93FD !important;
+  background: #4B6CB7 !important;
   color: #fff;
 }
 .primary-200 {
@@ -1057,12 +1057,12 @@ form p {
   color: #fff;
 }
 .highlight-primary-100 {
-  background: #2E93FD;
+  background: #4B6CB7;
   color: #fff;
 }
 /* Text colors */
 .blue-100-txt {
-  color: #2E93FD;
+  color: #4B6CB7;
 }
 .primary-200-text {
   color: #6CADF3;
@@ -1290,7 +1290,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
-  background: #2E93FD !important;
+  background: #4B6CB7 !important;
   /* :hover {
     	background: #E5A545 !important;
     	text-decoration: none;
@@ -1374,7 +1374,7 @@ form p {
 }
 .btnClear {
   background: transparent;
-  color: #2D93FF !important;
+  color: #6CADF3 !important;
   font-weight: 400;
 }
 .btnClear :active {
@@ -1474,9 +1474,9 @@ form p {
   background: #242424 !important;
 }
 .addBtn-sm {
-  border: 1px solid #2E93FD;
+  border: 1px solid #4B6CB7;
   border-radius: 3px;
-  color: #2E93FD !important;
+  color: #4B6CB7 !important;
   padding: 0.2em 1em;
   position: absolute;
   right: 1rem;
@@ -3334,8 +3334,11 @@ a:hover {
 }
 #contactCurrentPlace {
   margin-top: 0.5em;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+#contactCurrentPlace > img {
+  margin-right: 0.5em;
 }
 .contactStatusMessage-sm {
   margin-right: 0px !important;
@@ -5558,10 +5561,10 @@ html .km-pane-wrapper .k-header {
   width: 100%;
 }
 #dateSelect > div.k-header {
-  background: #2E93FD;
+  background: #4B6CB7;
 }
 #dateSelect > div.k-footer > a {
-  background: #2E93FD;
+  background: #4B6CB7;
 }
 #dateSelect_cell_selected {
   background: #E0E0E0;
@@ -6480,7 +6483,7 @@ html .km-pane-wrapper .k-header {
 }
 #findplace-listview li h4,
 #places-listview li h4 {
-  color: #2E93FD;
+  color: #4B6CB7;
 }
 #current-place-name {
   padding-top: 0.2rem;
@@ -6883,4 +6886,16 @@ table.k-editor {
 .hotButtonList > li > a {
   color: #fff !important;
   padding-bottom: 1.5em !important;
+}
+/* Intelli styles */
+.intelli-header {
+  margin-top: 2em;
+  text-align: center;
+}
+.intelli-header .intelli-subheader {
+  font-size: 0.875em;
+}
+/* intelliTrip */
+#smartTripModal > div.km-content.km-widget.km-native-scroller {
+  background-color: #80CBC4 !important;
 }

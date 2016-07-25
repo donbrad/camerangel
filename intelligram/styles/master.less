@@ -265,7 +265,7 @@ p {
   font-size: 1em;
 }
 
-input {
+input:not([type="radio"]) {
   width: 100%;
   border: 0px;
   font-size: 16px;
@@ -786,7 +786,15 @@ form {
   color: @primary-200 !important;
   font-weight: 400;
   :active {
-    color: #3A779D !important;
+    -webkit-transform:scale(0.9);
+    -moz-transform:scale(0.9);
+    -ms-transform:scale(0.9);
+    -o-transform:scale(0.9);
+    transform:scale(0.9);
+    -webkit-box-shadow:0px 0px 20px #FFF;
+    -moz-box-shadow:0px 0px 20px #FFF;
+    -o-box-shadow:0px 0px 20px #FFF;
+    box-shadow:0px 0px 20px #FFF;
   }
   :disabled {
     color: #A4A4A4 !important;
@@ -1206,13 +1214,30 @@ div.km-header a img{
 }
 
 
+.k-radio-label:before {
+  border-radius: 50% !important;
+  width: 1.25em !important;
+  height: 1.25em !important;
+}
+
+.k-radio-label:after {
+  width: 0.85em !important;
+  height: 0.85em !important;
+  top: 0.35em !important;
+  left: 0.35em !important;
+}
+
+.k-radio-label {
+  padding-left: 2em;
+}
+
 .k-header, .k-grid-header-wrap, .k-grid .k-grouping-header, .k-grid-header, .k-pager-wrap, .k-pager-wrap .k-textbox, .k-pager-wrap .k-link, .k-grouping-header .k-group-indicator, .k-gantt-toolbar .k-state-default {
   border-color: #fff;
 }
 
 .k-checkbox-label:hover:after, .k-checkbox:checked+.k-checkbox-label:hover:after,
 .k-checkbox:checked+.k-checkbox-label:after,
-.k-checkbox:focus+.k-checkbox-label:after, .k-radio:focus+.k-radio-label:before {
+.k-checkbox:focus+.k-checkbox-label:after {
   border-color: @primary-200;
   color: @primary-200;
   border-radius: 3px;
@@ -3320,6 +3345,17 @@ div.footerMenu.km-footer > ul > li > a {
   }
   a {
     padding-top: 0.75rem;
+  }
+  :active {
+    -webkit-transform:scale(0.9);
+    -moz-transform:scale(0.9);
+    -ms-transform:scale(0.9);
+    -o-transform:scale(0.9);
+    transform:scale(0.9);
+    -webkit-box-shadow:0px 0px 20px #FFF;
+    -moz-box-shadow:0px 0px 20px #FFF;
+    -o-box-shadow:0px 0px 20px #FFF;
+    box-shadow:0px 0px 20px #FFF;
   }
 }
 
@@ -6752,4 +6788,120 @@ table.k-editor {
 .hotButtonList > li > a {
   color: #fff !important;
   padding-bottom: 1.5em !important;
+}
+
+/* Intelli styles */
+
+.intelli-header {
+  margin-top: 2em;
+  text-align: center;
+  .intelli-subheader {
+    font-size: 0.875em;
+    color: #fff;
+  }
+}
+
+/* intelliTrip */
+#smartTripModal > div.km-content.km-widget.km-native-scroller {
+  background-color: #80CBC4 !important;
+  background-image: none !important;
+}
+
+
+#smartTripView-tripType {
+  text-align: left;
+  border-bottom: 2px dotted @shade-200;
+  padding-bottom: 0.5em;
+  li:not(:first-child) {
+    margin-left: 1em;
+  }
+}
+
+#smartTripView-destination, #smartTripView-origin {
+  font-size: 1rem;
+}
+
+
+#smartTripView-tripType > li.km-button.km-state-active {
+  background-color: transparent;
+}
+
+#smartTripView-tripType > li.km-button.km-state-active > span > svg > g > g {
+  fill: @primary-200;
+}
+
+#smartTripView-destinationSearchBtn, #smartTripView-originSearchBtn {
+  margin-top: 0.5em;
+}
+
+#smartTripModal-owner li {
+  margin-top: 1em;
+}
+
+#smartTripModal-owner li:first-child {
+  margin-top: 0;
+}
+
+#smartTrip-transit {
+  font-weight: 600;
+}
+
+.smartTrip-currentLocation  img {
+  height: 1em;
+  max-width: 1em;
+  vertical-align: middle;
+}
+
+#smartTripView-origin-box {
+  p {
+    text-align: center;
+    font-size: 0.75em;
+    margin: 0.25em 0;
+  }
+}
+
+#smartTripView-arrival-text {
+  font-size: 0.75em;
+}
+
+.intelliCard {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+  margin-top: 2em;
+  border-radius: 4px;
+  .shadowHelper(1);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.intelliCard:nth-child(2n){
+  .shadowHelper(3);
+  transform: translateY(-50%);
+}
+
+.intelliCard-active {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+#smartTripView-departure-time, #smartTripView-arrival-time {
+  margin-top: 1em;
+}
+
+#smartTripView-step-2 > form > ul > li:nth-child(3) {
+  margin-top: 0.5em;
+}
+
+#smartTripView-travelTime-box {
+  margin-top: 1.5em;
+}
+
+#smartTripView-travelTime {
+  font-size: 1.25em;
+  font-weight: 600;
+}
+
+#smartTripModal > div.footer.km-footer > a.btnFull-modal.km-widget.km-button {
+  background-color: #80CBC4 !important;
+  color: #fff;
 }
