@@ -747,8 +747,10 @@ var userStatusView = {
     onAutoStatusChange : function (e) {
         if (e.checked) {
             $('#profileEditStatusPanel').addClass('hidden');
+            $('#profileAutoStatusPanel').removeClass('hidden');
         } else {
             $('#profileEditStatusPanel').removeClass('hidden');
+            $('#profileAutoStatusPanel').addClass('hidden');
         }
 
     },
