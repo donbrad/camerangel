@@ -744,6 +744,15 @@ var userStatusView = {
 
     },
 
+    onAutoStatusChange : function (e) {
+        if (e.checked) {
+            $('#profileEditStatusPanel').addClass('hidden');
+        } else {
+            $('#profileEditStatusPanel').removeClass('hidden');
+        }
+
+    },
+
     // Important to put all jquery and other event handlers here so created only once...
     onInit : function (e) {
         //_preventDefault(e);
@@ -751,6 +760,7 @@ var userStatusView = {
         userStatusView.statusCharCount(e);
 
         userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
+
     },
 
     statusCharCount: function(e) {

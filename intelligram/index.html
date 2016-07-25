@@ -1170,43 +1170,45 @@
 			<a data-role="button" class="btnClear-sm" href="#profileEdit">Edit Profile</a>
 		</p>
 		<label for="profileAutoStatus">Enable AutoStatus</label>
-		<input id="profileAutoStatus" type="checkbox" data-role="switch"></input>
-		<label for="profileStatusUpdate">Quick Status</label>
-		<textarea id="profileStatusUpdate" maxlength="35" placeholder="What's going on..."></textarea>
-		<div class="statusCharacterCount">
-			<span class="statusCharCount"></span>
-		</div>
-		<ul class="list-inline" id="profileStatusList">
-			<li>
-				<a data-role="button" data-click="homeView.changeAvailable">
-					<img src="" height="16" class="userAvailableRev icon-sm" />
-					Change to
-					<span id="currentAvailableTxt">available</span>
-				</a>
-			</li>
-			<li id="profileCheckOutLi">
-				<div>
-					<div id="checked-in-place">
-						<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut">
-							<img src="images/icon-checkout.svg" class="icon-sm" />
-							Leave <span id="checkOut-text" data-bind="text: currentPlace"></span>
-						</a>
+		<input id="profileAutoStatus" type="checkbox" data-role="switch" data-change="userStatusView.onAutoStatusChange"></input>
+		<div id="profileEditStatusPanel">
+			<label for="profileStatusUpdate">Quick Status</label>
+			<textarea id="profileStatusUpdate" maxlength="35" placeholder="What's going on..."></textarea>
+			<div class="statusCharacterCount">
+				<span class="statusCharCount"></span>
+			</div>
+			<ul class="list-inline" id="profileStatusList">
+				<li>
+					<a data-role="button" data-click="homeView.changeAvailable">
+						<img src="" height="16" class="userAvailableRev icon-sm" />
+						Change to
+						<span id="currentAvailableTxt">available</span>
+					</a>
+				</li>
+				<li id="profileCheckOutLi">
+					<div>
+						<div id="checked-in-place">
+							<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut">
+								<img src="images/icon-checkout.svg" class="icon-sm" />
+								Leave <span id="checkOut-text" data-bind="text: currentPlace"></span>
+							</a>
+						</div>
 					</div>
-				</div>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
-					<img src="images/icon-checkin-active.svg" class="icon-sm" />
-					Check In
-				</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" href="#privateNotes">
-					<img src="images/icon-myNotes-alt.svg" class="icon-sm" />
-					My Notes
-				</a>
-			</li>
-		</ul>
+				</li>
+				<li>
+					<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
+						<img src="images/icon-checkin-active.svg" class="icon-sm" />
+						Check In
+					</a>
+				</li>
+				<li>
+					<a class="btnClear" data-role="button" href="#privateNotes">
+						<img src="images/icon-myNotes-alt.svg" class="icon-sm" />
+						My Notes
+					</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 	<div class="footer" data-role="footer">
 		<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
