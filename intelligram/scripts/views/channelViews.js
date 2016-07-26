@@ -2787,6 +2787,11 @@ var channelView = {
 
     },
 
+    messageAlert : function (e) {
+        _preventDefault(e);
+
+    },
+
     messageCamera : function (e) {
        _preventDefault(e);
 

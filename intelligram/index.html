@@ -95,8 +95,9 @@
 	<script src="scripts/models/profilePhoto.js"></script>
 	<script src="scripts/models/recalledMessage.js"></script>
 	<script src="scripts/models/recalledPhoto.js"></script>
-	<script src="scripts/models/smartListModel.js"></script>
 	<script src="scripts/models/smartEventModel.js"></script>
+	<script src="scripts/models/smartFlightModel.js"></script>
+	<script src="scripts/models/smartListModel.js"></script>
 	<script src="scripts/models/smartMovieModel.js"></script>
 	<script src="scripts/models/smartPlaceModel.js"></script>
 	<script src="scripts/models/smartTripModel.js"></script>
@@ -1148,6 +1149,7 @@
 			<img class="circle-img-md home-profile-img" src=""/>
 			<img src="images/status-away.svg" class="userStatusView-img userAvailable" />
 		</div>
+
 		<div class="left" style="width: 80%;">
 			<h3>
 				<span class="primaryName"></span>
@@ -1177,15 +1179,18 @@
 			<span class="statusCharCount"></span>
 		</div>
 
-		<a data-role="button" data-click="homeView.changeAvailable">
-			<img src="" height="16" class="userAvailableRev icon-sm" />
-			Change to
-			<span id="currentAvailableTxt">available</span>
-		</a>
+		<div>
+			<a data-role="button" data-click="homeView.changeAvailable">
+				<img src="" height="16" class="userAvailableRev icon-sm" />
+				Change to
+				<span id="currentAvailableTxt">available</span>
+			</a>
+		</div>
 
-		<label for="profileAutoStatus">Enable AutoStatus</label>
-		<input id="profileAutoStatus" type="checkbox" data-role="switch" data-change="userStatusView.onAutoStatusChange"></input>
-
+		<div style="padding: 12px;">
+			<label for="profileAutoStatus">Enable AutoStatus</label>
+			<input id="profileAutoStatus" type="checkbox" data-role="switch" data-change="userStatusView.onAutoStatusChange"></input>
+		<div>
 
 		<ul class="list-inline" id="profileStatusList">
 		<!--	<li>
@@ -1987,6 +1992,7 @@
 	</script>
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
+		<li><a data-action="channelView.messageAlert"><img src="images/icon-unmute.svg" class="icon-smart"/> Add Alert</a></li>
 		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
 		<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>
 		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
