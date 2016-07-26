@@ -1190,7 +1190,8 @@
 		<div style="padding: 12px;">
 			<label for="profileAutoStatus">Enable AutoStatus</label>
 			<input id="profileAutoStatus" type="checkbox" data-role="switch" data-change="userStatusView.onAutoStatusChange"></input>
-		<div>
+		</div>
+
 
 		<ul class="list-inline" id="profileStatusList">
 		<!--	<li>
@@ -1224,9 +1225,10 @@
 			</li>-->
 		</ul>
 
-	</div>
-	<div class="footer" data-role="footer">
-		<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
+		
+		<div class="footer" data-role="footer">
+			<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
+		</div>
 	</div>
 </div>
 
@@ -4832,7 +4834,7 @@
 			</li>
 			<li>
 				<label> Account Url
-					<input id="smartAccount-name" type="search" >
+					<input id="smartAccount-url" type="search" >
 				</label>
 			</li>
 			<li>
@@ -4847,7 +4849,7 @@
 			</li>
 			<li>
 				<label> PIN
-					<input id="smartAccount-password" type="search" >
+					<input id="smartAccount-pin" type="search" >
 				</label>
 			</li>
 		</ul>
@@ -5360,155 +5362,156 @@
 	# } #
 </script>
 
-	<script type="text/x-kendo-template" id="contactsTemplate">
-		#
-		var classNames;
-		var name = data.name;
-		var alias = data.alias;
-		var group = data.group;
+<script type="text/x-kendo-template" id="contactsTemplate">
+	#
+	var classNames;
+	var name = data.name;
+	var alias = data.alias;
+	var group = data.group;
 
-		var primaryName = ux.returnUXPrimaryName(name, alias);
-		var secondaryName = ux.returnAliasName(name, alias);
-		if  (data.identicon === undefined || data.identicon === null) {
-		data.identicon = contactModel.createIdenticon(data.uuid);
-		}
-		var photoUrl = data.identicon;
+	var primaryName = ux.returnUXPrimaryName(name, alias);
+	var secondaryName = ux.returnAliasName(name, alias);
+	if  (data.identicon === undefined || data.identicon === null) {
+	data.identicon = contactModel.createIdenticon(data.uuid);
+	}
+	var photoUrl = data.identicon;
 
-		if (data.photo !== undefined && data.photo !== null) {
-		photoUrl = data.photo;
-		}
-		#
-		<div>
-			<div class="contact-options">
-				# if (data.contactUUID === undefined || data.contactUUID === null){#
-				<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
-					<img src="images/contact-invite.svg" height="12" />
-					<p class="chat-option-selection"> Resend Invite</p>
+	if (data.photo !== undefined && data.photo !== null) {
+	photoUrl = data.photo;
+	}
+	#
+	<div>
+		<div class="contact-options">
+			# if (data.contactUUID === undefined || data.contactUUID === null){#
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
+				<img src="images/contact-invite.svg" height="12" />
+				<p class="chat-option-selection"> Resend Invite</p>
+			</a>
+			#} else {#
+				#if(data.isBlocked) {#
+				<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
+					<img src="images/icon-unblock.svg" height="24" />
+					<p class="chat-option-selection"> Unblock </p>
 				</a>
 				#} else {#
-					#if(data.isBlocked) {#
-					<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
-						<img src="images/icon-unblock.svg" height="24" />
-						<p class="chat-option-selection"> Unblock </p>
-					</a>
-					#} else {#
-					<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
-						<img src="images/icon-block.svg" height="24" />
-						<p class="chat-option-selection"> Block </p>
-					</a>
-					#}#
-				#}#
-				<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
-					<img src="images/option-edit.svg" height="18" />
-					<p class="chat-option-selection">Edit</p>
+				<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
+					<img src="images/icon-block.svg" height="24" />
+					<p class="chat-option-selection"> Block </p>
 				</a>
-				<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
-					<img src="images/icon-trash.svg" height="18" />
-					<p class="chat-option-selection"> Delete</p>
-				</a>
-			</div><!-- contact-options -->
-
-				# if(data.category === 'member') {#
-					# classNames = "contactListBox member" #
-				#} else if(data.category === 'new'){#
-					# classNames = "contactListBox" #
-				#} else {#
-					 # classNames = "contactListBox noSlide" #
 				#}#
-				<a class="#: classNames #" data-contact="#:uuid#">
-				#if (data.category === 'member') {#
-						<div class="left listPhoto">
-							<div class="statusContactList">
-								#if (data.isAvailable !== undefined && data.isAvailable) { #
-									<img class="circle-img-md" src="#:photoUrl#" />
-									<img src="images/status-available.svg" class="statusContactList-icon" />
-								#} else {#
-									<img class="circle-img-md" src="#:photoUrl#" />
-									<img src="images/status-away.svg" class="statusContactList-icon" />
-								#}#
+			#}#
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
+				<img src="images/option-edit.svg" height="18" />
+				<p class="chat-option-selection">Edit</p>
+			</a>
+			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
+				<img src="images/icon-trash.svg" height="18" />
+				<p class="chat-option-selection"> Delete</p>
+			</a>
+		</div><!-- contact-options -->
 
-								# if (data.isBlocked) {#
-									<div class="left">
-										<span class="helper helper-sm">Blocked</span>
-									</div>
-								#}#
-							</div>
-						</div><!-- left -->
+			# if(data.category === 'member') {#
+				# classNames = "contactListBox member" #
+			#} else if(data.category === 'new'){#
+				# classNames = "contactListBox" #
+			#} else {#
+				 # classNames = "contactListBox noSlide" #
+			#}#
+			<a class="#: classNames #" data-contact="#:uuid#">
+			#if (data.category === 'member') {#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							#if (data.isAvailable !== undefined && data.isAvailable) { #
+								<img class="circle-img-md" src="#:photoUrl#" />
+								<img src="images/status-available.svg" class="statusContactList-icon" />
+							#} else {#
+								<img class="circle-img-md" src="#:photoUrl#" />
+								<img src="images/status-away.svg" class="statusContactList-icon" />
+							#}#
 
-						<div class="left listName">
-							<h4 class="textClamp">
-								#= primaryName #
-								#if (data.phoneValidated){#
-									<img src="images/user-verified.svg" class="user-status-icon" />
-								#}#
-									<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
-
-								#if(data.group !== "" && data.group !== null){#
-									<span class="contact-group">#: data.group #</span>
-								#}#
-							</h4>
-						</div>
-
-						<div class="left contact-status textClamp">
-							<p class="contactStatusMessage-sm">
-								# var message = "", location = "";
-								if (data.statusMessage !== undefined && data.statusMessage !== "") {
-								message = data.statusMessage;
-								}#
-
-								#:message#
-							</p>
-
-							# if (data.currentPlace !== undefined && data.currentPlace !== null && data.currentPlace !== ""){#
-								<p class="contactStatus-location">
-									@#:data.currentPlace#
-								</p>
+							# if (data.isBlocked) {#
+								<div class="left">
+									<span class="helper helper-sm">Blocked</span>
+								</div>
 							#}#
 						</div>
+					</div><!-- left -->
 
-						<div class="clearfix"></div>
-				#} else if(data.category === 'new'){#
-						<div class="left listPhoto">
-							<div class="statusContactList">
-								<img class="circle-img-md" src="#:photoUrl#" />
-							</div>
-						</div><!-- left -->
-						<div class="left listName">
-							<h4 class="textClamp">
-								#= primaryName #
-							</h4>
-						</div>
-						<div class="left contact-status">
-							<p class="left contactStatusMessage-sm">Invite Sent</p>
-						</div>
-				#} else {#
-						<div class="left listPhoto">
-							<div class="statusContactList">
-								<img class="circle-img-md" src="#:photoUrl#" />
-							</div>
-						</div><!-- left -->
-						<div class="left listName">
-							<h4 class="textClamp">
-								#: data.name #
-								#if (data.phoneValidated){#
-									<img src="images/user-verified.svg" class="user-status-icon" />
-								#}#
-							</h4>
-						</div>
+					<div class="left listName">
+						<h4 class="textClamp">
+							#= primaryName #
+							#if (data.phoneValidated){#
+								<img src="images/user-verified.svg" class="user-status-icon" />
+							#}#
+								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 
-						<div class="left contact-status">
-							<p class="left contactStatusMessage-sm">
-								# if (data.category === 'unknown' ) { #
-								New Contact - Tap to Connect!
-								# }  else { #
-								Deleted Contact - Tap to Restore !
-								#} #
+							#if(data.group !== "" && data.group !== null){#
+								<span class="contact-group">#: data.group #</span>
+							#}#
+						</h4>
+					</div>
+
+					<div class="left contact-status textClamp">
+						<p class="contactStatusMessage-sm">
+							# var message = "", location = "";
+							if (data.statusMessage !== undefined && data.statusMessage !== "") {
+							message = data.statusMessage;
+							}#
+
+							#:message#
+						</p>
+
+						# if (data.currentPlace !== undefined && data.currentPlace !== null && data.currentPlace !== ""){#
+							<p class="contactStatus-location">
+								@#:data.currentPlace#
 							</p>
+						#}#
+					</div>
+
+					<div class="clearfix"></div>
+			#} else if(data.category === 'new'){#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:photoUrl#" />
 						</div>
-				#}#
-				</a><!-- listBox -->
-		</div>
-	</script>
+					</div><!-- left -->
+					<div class="left listName">
+						<h4 class="textClamp">
+							#= primaryName #
+						</h4>
+					</div>
+					<div class="left contact-status">
+						<p class="left contactStatusMessage-sm">Invite Sent</p>
+					</div>
+			#} else {#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:photoUrl#" />
+						</div>
+					</div><!-- left -->
+					<div class="left listName">
+						<h4 class="textClamp">
+							#: data.name #
+							#if (data.phoneValidated){#
+								<img src="images/user-verified.svg" class="user-status-icon" />
+							#}#
+						</h4>
+					</div>
+
+					<div class="left contact-status">
+						<p class="left contactStatusMessage-sm">
+							# if (data.category === 'unknown' ) { #
+							New Contact - Tap to Connect!
+							# }  else { #
+							Deleted Contact - Tap to Restore !
+							#} #
+						</p>
+					</div>
+			#}#
+			</a><!-- listBox -->
+	</div>
+</script>
+
 
 </body>
 </html>
