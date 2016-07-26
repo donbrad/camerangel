@@ -58,6 +58,7 @@ var userModel = {
         isVisible: true,
         isAvailable: true,
         useIdenticon: true,
+        autoStatusEnabled: false,
         availImgUrl: 'images/status-available.svg',
         lat: '',
         lng: '',

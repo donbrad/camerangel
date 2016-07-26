@@ -748,9 +748,11 @@ var userStatusView = {
         if (e.checked) {
             $('#profileEditStatusPanel').addClass('hidden');
             $('#profileAutoStatusPanel').removeClass('hidden');
+            userModel._user.set('autoStatusEnabled', true);
         } else {
             $('#profileEditStatusPanel').removeClass('hidden');
             $('#profileAutoStatusPanel').addClass('hidden');
+            userModel._user.set('autoStatusEnabled', false);
         }
 
     },
@@ -1389,6 +1391,8 @@ var signUpView = {
         user.set('saveToPhotoAlbum', true);
         user.set('isRetina', true);
         user.set('homeIntro', false);
+        user.set('autoStatusEnabled', false);
+
 
         userModel.generateNewPrivateKey(user);
 
