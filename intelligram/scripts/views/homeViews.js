@@ -746,12 +746,12 @@ var userStatusView = {
 
     onAutoStatusChange : function (e) {
         if (e.checked) {
-            $('#profileEditStatusPanel').addClass('hidden');
-            $('#profileAutoStatusPanel').removeClass('hidden');
+            $('#profileStatusList').addClass('hidden');
+            //$('#profileAutoStatusPanel').removeClass('hidden');
             userModel._user.set('autoStatusEnabled', true);
         } else {
-            $('#profileEditStatusPanel').removeClass('hidden');
-            $('#profileAutoStatusPanel').addClass('hidden');
+            $('#profileStatusList').removeClass('hidden');
+          //  $('#profileAutoStatusPanel').addClass('hidden');
             userModel._user.set('autoStatusEnabled', false);
         }
 
