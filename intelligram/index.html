@@ -1169,17 +1169,8 @@
 		<div style="clear: both;"></div>
 	</div>
 	<div class="modal-bottom">
-		<p class="caption right">
-			<a data-role="button" class="btnClear-sm" href="#profileEdit">Edit Profile</a>
-		</p>
 
-		<label for="profileStatusUpdate">Quick Status</label>
-		<textarea id="profileStatusUpdate" maxlength="35" placeholder="What's going on..."></textarea>
-		<div class="statusCharacterCount">
-			<span class="statusCharCount"></span>
-		</div>
-
-		<div>
+		<!--<div>
 			<a data-role="button" data-click="homeView.changeAvailable">
 				<img src="" height="16" class="userAvailableRev icon-sm" />
 				Change to
@@ -1189,11 +1180,41 @@
 
 		<div style="padding: 12px;">
 			<label for="profileAutoStatus">Enable AutoStatus</label>
-			<input id="profileAutoStatus" type="checkbox" data-role="switch" data-change="userStatusView.onAutoStatusChange"></input>
-		</div>
+			<input id="profileAutoStatus" type="checkbox" data-role="switch" data-change="userStatusView.onAutoStatusChange" />
+		</div>-->
+		<ul class="list-unstyled listStyle">
+			<li>
+				<p class="caption right">
+					<a data-role="button" class="btnClear-sm" href="#profileEdit">Edit Profile</a>
+				</p>
+			</li>
+			<li>
+				<label for="profileStatusUpdate">Quick Status</label>
+				<textarea id="profileStatusUpdate" maxlength="35" placeholder="What's going on..."></textarea>
+				<div class="statusCharacterCount">
+					<span class="statusCharCount"></span>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a data-role="button" data-click="homeView.changeAvailable">
+						<img src="" height="16" class="userAvailableRev icon-sm" />
+						Change to
+						<span id="currentAvailableTxt">available</span>
+					</a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a data-role="button" data-click="userStatusView.onAutoStatusChange" data-autocheckin="false" id="userStatusView-autoCheckin">
+						<img src="images/icon-autoCheckin.svg" class="icon-sm" /> Enable Auto Checkin </a>
+				</div>
+
+			</li>
+		</ul>
 
 
-		<ul class="list-inline" id="profileStatusList">
+		<ul class="list-inline listStyle" id="profileStatusList">
 		<!--	<li>
 				<a data-role="button" data-click="homeView.changeAvailable">
 					<img src="" height="16" class="userAvailableRev icon-sm" />
@@ -1212,10 +1233,12 @@
 				</div>
 			</li>
 			<li>
-				<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
-					<img src="images/icon-checkin-active.svg" class="icon-sm" />
-					Check In
-				</a>
+				<div>
+					<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
+						<img src="images/icon-checkin-active.svg" class="icon-sm" />
+						Check In
+					</a>
+				</div>
 			</li>
 	<!--		<li>
 				<a class="btnClear" data-role="button" href="#privateNotes">
@@ -1224,11 +1247,9 @@
 				</a>
 			</li>-->
 		</ul>
-
-		
-		<div class="footer" data-role="footer">
-			<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
-		</div>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnClear btnFull-modal" data-click="userStatusView.closeModal" data-role="button">Done</a>
 	</div>
 </div>
 
