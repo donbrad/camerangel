@@ -28,7 +28,14 @@ var statusTracker = {
             },
             autoSync: true
         });
+
+        statusTracker.objectsDS.fetch();
     },
+
+    sync : function () {
+        statusTracker.objectsDS.sync();
+    },
+
 
     create : function () {
 

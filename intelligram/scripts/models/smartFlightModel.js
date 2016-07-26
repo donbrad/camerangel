@@ -28,6 +28,10 @@ var smartFlight = {
         smartFlight.flightsDS.fetch();
     },
 
+    sync : function ()  {
+        smartFlight.flightsDS.sync();
+    },
+
     create : function (flightObj) {
 
     },

@@ -160,6 +160,10 @@ var userModel = {
 
         smartMovie.init();
 
+        smartTrip.init();
+
+        smartFlight.init();
+
         tagModel.init();
 
         notificationModel.init();
@@ -181,6 +185,10 @@ var userModel = {
         sharedPhotoModel.sync();
         smartEvent.sync();
         smartMovie.sync();
+        smartTrip.sync();
+        smartFlight.sync();
+        statusTracker.sync();
+        statusTracker.syncObjects();
         notificationModel.sync();
     },
 

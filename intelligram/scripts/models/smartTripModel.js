@@ -23,5 +23,9 @@ var smartTrip = {
             autoSync: true
         });
         smartTrip.tripsDS.fetch();
+    },
+
+    sync : function () {
+        smartTrip.tripsDS.sync();
     }
 };
