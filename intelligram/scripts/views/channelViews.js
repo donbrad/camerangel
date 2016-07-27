@@ -1132,9 +1132,10 @@ var channelView = {
 
         if (!isSelected) {
             // Nothing is selected
+            var offset = $('#messageTextArea').redactor('offset.get') + 1;
             channelView._emojiIsSelected = false;
-            channelView._emojiStart = $('#messageTextArea').redactor('offset.get');
-            channelView._emojiEnd = channelView._tagStart;
+            channelView._emojiStart = offset;
+            channelView._emojiEnd = offset;
         } else {
             var selection = $('#messageTextArea').redactor('selection.save');
             var range = $('#messageTextArea').redactor('selection.range', selection);
@@ -1148,6 +1149,7 @@ var channelView = {
 
 
     },
+
     emojiMenuOpen: function(e){
         ux.hideKeyboard();
         // Need to cache the offset
@@ -1174,7 +1176,12 @@ var channelView = {
             $('#messageTextArea').redactor('offset.set', channelView._emojiStart+1);
         }
 
+
         $('#messageTextArea').redactor('insert.html', rendered);
+
+        // Recompute selection after emoji inserted
+        channelView.emojiGetSelection();
+
     },
 
     openEditor : function () {
