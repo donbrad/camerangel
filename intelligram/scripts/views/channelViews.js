@@ -1129,6 +1129,7 @@ var channelView = {
         // Get the current insertion point
 
         var isSelected = $('#messageTextArea').redactor('selection.is');
+        var currentObject = $('#messageTextArea').redactor('selection.current');
 
         if (!isSelected) {
             // Nothing is selected
@@ -1173,7 +1174,7 @@ var channelView = {
         if (channelView._emojiIsSelected) {
             $('#messageTextArea').redactor('selection.restore', channelView._emojiSelection);
         } else {
-            //$('#messageTextArea').redactor('offset.set', channelView._emojiStart);
+            $('#messageTextArea').redactor('offset.set', channelView._emojiStart);
         }
 
 
