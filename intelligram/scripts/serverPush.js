@@ -199,7 +199,8 @@ var serverPush = {
 
             serverPush._channelsProvisioned = true;
 
-            var channels = channelModel.queryChannels({ field: "isPrivate", operator: "eq", value: false });
+            var channels = channelModel.queryChannels([{ field: "isPrivate", operator: "eq", value: false },
+                { field: "isEmergency", operator: "eq", value: true }]);
 
             if (channels !== undefined && channels.length > 0) {
                 for (var i=0; i< channels.length; i++) {
@@ -217,7 +218,8 @@ var serverPush = {
 
             serverPush._channelsProvisioned = true;
 
-            var channels = channelModel.queryChannels({ field: "isPrivate", operator: "eq", value: false });
+            var channels = channelModel.queryChannels([{ field: "isPrivate", operator: "eq", value: false },
+                { field: "isEmergency", operator: "eq", value: true }]);
 
             if (channels !== undefined && channels.length > 0) {
                 for (var i=0; i< channels.length; i++) {
