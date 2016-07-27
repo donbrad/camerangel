@@ -3282,15 +3282,33 @@ var smartParkView = {
 
 
 var smartAlertView = {
-    onInit: function () {
+    channelUUID : null,
+    channelName : null,
 
+    onInit: function () {
+       $('#smartAlertModal-message').change(function (){
+           var message = $('#smartAlertModal-message').val();
+           if (message.length > 6) {
+               $('#smartAlertModel-saveBtn').removeClass('hidden');
+           } else {
+               $('#smartAlertModel-saveBtn').addClass('hidden');
+           }
+        });
     },
+
     onOpen : function () {
 
     },
-    openModal : function () {
+
+    openModal : function (channelUUID, channelName) {
+
+        smartAlertView.channelUUID = channelUUID;
+        smartAlertView.channelName = channelName;
+        $('#smartAlertModal-message').val("");
+        $('#smartAlertModel-saveBtn').addClass('hidden');
         $("#smartAlertModal").data("kendoMobileModalView").open();
     },
+
     closeModal : function () {
         $("#smartAlertModal").data("kendoMobileModalView").close();
     },
@@ -3300,7 +3318,11 @@ var smartAlertView = {
     },
 
     onSave : function () {
+        var message = $('#smartAlertModal-message').val();
 
+        appDataChannel.userAlert(smartAlertView.channelUUID, smartAlertView.channelName, message);
+        mobileNotify("Sending IntelliAlert to " + smartAlertView.channelName);
+        $("#smartAlertModal").data("kendoMobileModalView").close();
     }
 };
 

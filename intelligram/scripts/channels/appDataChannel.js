@@ -210,10 +210,11 @@ var appDataChannel = {
                 contact.set('contactEmail', m.email);
                 contact.set('publicKey', m.publicKey);
 
-                /*updateParseObject('contacts', 'uuid', contact.uuid, 'contactUUID', m.userId);
-                updateParseObject('contacts', 'uuid', contact.uuid, 'contactEmail', m.email);
-                updateParseObject('contacts', 'uuid', contact.uuid, 'contactPhone', m.phone);
-                updateParseObject('contacts', 'uuid', contact.uuid, 'publicKey', m.publicKey);*/
+            } break;
+
+            case 'userAlert' : {
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                    appDataChannel.processUserAlert( m.channelUUID, m.channelName, m.ownerId, m.ownerName,  m.message);
             } break;
 
             //  { type: 'channelInvite',  channelUUID: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
@@ -306,6 +307,48 @@ var appDataChannel = {
         }
 
     },
+
+
+    userAlert : function (channelUUID, channelName, message) {
+        msg.msgID = uuid.v4();
+        msg.type = 'userAlert';
+        msg.version = appDataChannel._version;
+        msg.ownerUUID = userModel._user.userUUID;
+        msg.ownerName = userModel._user.name;
+        msg.channelUUID = channelUUID;
+        msg.channelName = channelName;
+        msg.message = message;
+        msg.pn_apns = {
+            aps: {
+                alert :  msg.ownerName + ' : "'  + message + '"',
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage: false,
+            target: '#channel?channelUUID=' + channelUUID,
+            channelUUID :channelUUID
+        };
+        msg.pn_gcm = {
+            data : {
+                title: "IntelliAlert from " + msg.ownerName,
+                message: msg.ownerName + ' : "'  + message + '"',
+                target: '#channel?channelUUID=' + channelUUID,
+                image: "icon",
+                isMessage: false,
+                channelUUID : channelUUID
+            }
+        };
+        msg.time = new Date().getTime();
+
+
+        APP.pubnub.publish({
+            channel: appDataChannel.channelUUID,
+            message: msg,
+            success: appDataChannel.channelSuccess,
+            error: appDataChannel.channelError
+        });
+    },
+
 
     newUserMessage : function (userUUID, phone, email) {
         var msg = {};
@@ -859,6 +902,9 @@ var appDataChannel = {
     },
     
 
+    processUserAlert : function (channelUUID, channelName, userUUID, userName, message) {
+        notificationModel.addUserAlert(channelUUID, channelName, userName, message);
+    },
 
     processConnectRequest : function (senderId, senderName, comment) {
         contactModel.connectReceived(senderId);

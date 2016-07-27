@@ -26,6 +26,7 @@ var notificationModel = {
     _verifyEmail : 'Verify Email',
     _connectRequest: 'Connect Request',
     _connectResponse: 'Connect Response',
+    _userAlert: 'Urgent Message',
 
 
     notificationDS: null, 
@@ -222,6 +223,10 @@ var notificationModel = {
             '#channel?channelUUID='+channelUUID, true);
     },
 
+    addUserAlert : function (channelUUID, channelName, senderName, message) {
+        this.newNotification(this._userAlert, channelUUID, channelName, message, 'From '+ senderName, 'Goto Chat', null,
+            '#channel?channelUUID='+channelUUID, true);
+    },
     addNewPrivateChatNotification : function (channelUUID, channelName) {
         this.newNotification(this._newPrivate, channelUUID, channelName, null, 'New Private Chat', 'Goto Chat', null,
             '#channel?channelUUID='+channelUUID, true);
@@ -237,37 +242,6 @@ var notificationModel = {
             null, true);
     },
 
-/*    parseFetch: function () {
-        var NotificationModel = Parse.Object.extend("notifications");
-        var query = new Parse.Query(NotificationModel);
-     /!*   var NotificationCollection = Parse.Collection.extend({
-            model: NotificationModel
-        });
-
-        var notifications = new NotificationCollection();
-
-        notifications.fetch({*!/
-        query.find({
-            success: function(collection) {
-                var userNotifications = [];
-                for (var i = 0; i < collection.length; i++) {
-                    var object = collection[i];
-                    // Todo: check status of members
-                    var date = object.get('updatedAt');
-                    object.set('date',Date.parse(date));
-                    var data = object.toJSON();
-                    userNotifications.push(JSON.stringify(data));
-                    notificationModel.notificationDS.add(data);
-                    deviceModel.setAppState('introFetched', true);
-                }
-                window.localStorage.setItem('ggUserNotifications', JSON.stringify(userNotifications));
-                deviceModel.state.userNotifications = userNotifications;
-            },
-            error: function(error) {
-                handleParseError(error);
-            }
-        });
-    },*/
 
     localStorageFetch: function () {
         var userNotifications = window.localStorage.getItem('ggUserNotifications');
