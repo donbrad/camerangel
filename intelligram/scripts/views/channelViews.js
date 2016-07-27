@@ -2798,6 +2798,8 @@ var channelView = {
     messageAlert : function (e) {
         _preventDefault(e);
 
+        smartAlertView.openModal();
+
     },
 
     messageCamera : function (e) {

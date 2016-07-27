@@ -3281,6 +3281,30 @@ var smartParkView = {
 };
 
 
+var smartAlertView = {
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+    openModal : function () {
+        $("#smartAlertModal").data("kendoMobileModalView").open();
+    },
+    closeModal : function () {
+        $("#smartAlertModal").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#smartAlertModal").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+
+    }
+};
+
+
 var airlineArray = [
     {abbrev: '6A', name: 'AVIACSA'},
     {abbrev: '9K', name: 'Cape Air'},
