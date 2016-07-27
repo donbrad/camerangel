@@ -871,6 +871,7 @@ var channelView = {
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
+    isEmergencyChat: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     activeMessage: {},
@@ -1352,6 +1353,16 @@ var channelView = {
 
         $("#messageSend").html('<img src="images/icon-send.svg" class="icon-send" />');
 
+        if (thisChannel.isEmergency === undefined) {
+            thisChannel.isEmergency = false;
+            channelView.isEmergencyChat = false;
+        }
+
+        if (thisChannel.isEmergency || thisChannel.isPrivate) {
+            $('#messageAlertLi').removeClass('hidden');
+        } else {
+            $('#messageAlertLi').addClass('hidden');
+        }
 
         if (thisChannel.isPrivate) {
 
