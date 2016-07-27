@@ -1173,7 +1173,7 @@ var channelView = {
         if (channelView._emojiIsSelected) {
             $('#messageTextArea').redactor('selection.restore', channelView._emojiSelection);
         } else {
-            $('#messageTextArea').redactor('offset.set', channelView._emojiStart+1);
+            $('#messageTextArea').redactor('offset.set', channelView._emojiStart);
         }
 
 
