@@ -1132,7 +1132,7 @@ var channelView = {
 
         if (!isSelected) {
             // Nothing is selected
-            var offset = $('#messageTextArea').redactor('offset.get') + 1;
+            var offset = $('#messageTextArea').redactor('offset.get');
             channelView._emojiIsSelected = false;
             channelView._emojiStart = offset;
             channelView._emojiEnd = offset;
