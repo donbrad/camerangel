@@ -31,3 +31,15 @@ intelligram/App_Resources/iOS/Default-Landscape-1366@2x.png
 
 intelligram/App_Resources/iOS/Default-Portrait-1366@2x.png
 
+
+intelligram/App_Resources/Android/drawable-xxxhdpi/splashscreen.png
+
+intelligram/App_Resources/Android/drawable-xxhdpi/splashscreen.png
+
+intelligram/App_Resources/Android/drawable-xhdpi/splashscreen.png
+
+intelligram/App_Resources/Android/drawable-mdpi/splashscreen.png
+
+intelligram/App_Resources/Android/drawable-ldpi/splashscreen.png
+
+intelligram/App_Resources/Android/drawable-hdpi/splashscreen.png
