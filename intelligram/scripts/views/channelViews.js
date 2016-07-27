@@ -1128,7 +1128,7 @@ var channelView = {
 
         // Get the current insertion point
 
-        var isSelected = $('#messageTextArea').redactor('selection.is');
+        /*var isSelected = $('#messageTextArea').redactor('selection.is');
         var currentObject = $('#messageTextArea').redactor('selection.current');
 
         if (!isSelected) {
@@ -1146,8 +1146,8 @@ var channelView = {
             channelView._emojiSelection = selection;
             channelView._emojiStart = range.startOffset;
             channelView._emojiEnd = range.endOffset;
-        }
-
+        }*/
+        $('#messageTextArea').redactor('selection.save');
 
     },
 
@@ -1171,13 +1171,13 @@ var channelView = {
         //var node = $('<span />').html(rendered);
        // var html = JSON.stringify(node);
 
-        if (channelView._emojiIsSelected) {
+       /* if (channelView._emojiIsSelected) {
             $('#messageTextArea').redactor('selection.restore', channelView._emojiSelection);
         } else {
             $('#messageTextArea').redactor('offset.set', channelView._emojiStart);
-        }
+        }*/
 
-
+        $('#messageTextArea').redactor('selection.restore');
         $('#messageTextArea').redactor('insert.html', rendered);
 
         // Recompute selection after emoji inserted
