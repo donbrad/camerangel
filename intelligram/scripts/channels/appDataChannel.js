@@ -310,6 +310,8 @@ var appDataChannel = {
 
 
     userAlert : function (channelUUID, channelName, message) {
+        var msg = {};
+        
         msg.msgID = uuid.v4();
         msg.type = 'userAlert';
         msg.version = appDataChannel._version;
