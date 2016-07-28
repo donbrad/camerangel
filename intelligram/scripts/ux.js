@@ -579,6 +579,41 @@ var ux = {
 		$(".eventBannerImg").addClass("hidden").attr("src", "");
 	},
 
+	setDefaultTime: function(buffer, bufferAmount){
+		var newDate = new Date();
+		var newDateMin = newDate.getMinutes();
+		var newDateHour = newDate.getHours();
+		var newDateDay = newDate.getDate();
+
+		if(buffer){
+			// if there is a time buffer
+			if(newDateHour < 22 && newDate > 8){
+				newDateHour += bufferAmount;
+				newDate.setHours(newDateHour);
+				newDate.setMinutes(0);
+			} else {
+			// if after 11pm default to next morning
+				newDateDay += 1;
+				newDateHour = 8;
+				newDate.setDate(newDateDay);
+				newDate.setHours(newDateHour);
+				newDate.setMinutes(0);
+			}
+		} else {
+			// no hour buffer, default to next half-hour
+			if(newDateMin >= 30){
+				newDateHour += 1;
+				newDate.setHours(newDateHour);
+				newDate.setMinutes(0);
+			} else {
+				newDate.setMinutes(30);
+			}
+
+		}
+		return newDate;
+
+	}
+
 };
 
 

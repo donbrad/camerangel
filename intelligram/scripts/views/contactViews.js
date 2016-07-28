@@ -1630,7 +1630,7 @@ var contactActionView = {
         $("#modalview-contactActions").data("kendoMobileModalView").close();
 
         // Clear place
-        $("#contactCurrentPlace").text("");
+        $("#contactCurrentPlace").html("");
 
         $("#modalview-contactActions .preMotionUp, #modalview-contactActions .hasMotion").css("display", "none").velocity("fadeOut", {opacity: 0, translateY: "0%"});
     	$("#contactProfileImg, #contactStatusImg").css("opacity", 0);
