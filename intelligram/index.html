@@ -95,11 +95,13 @@
 	<script src="scripts/models/profilePhoto.js"></script>
 	<script src="scripts/models/recalledMessage.js"></script>
 	<script src="scripts/models/recalledPhoto.js"></script>
-	<script src="scripts/models/smartListModel.js"></script>
 	<script src="scripts/models/smartEventModel.js"></script>
+	<script src="scripts/models/smartFlightModel.js"></script>
+	<script src="scripts/models/smartListModel.js"></script>
 	<script src="scripts/models/smartMovieModel.js"></script>
 	<script src="scripts/models/smartPlaceModel.js"></script>
 	<script src="scripts/models/smartTripModel.js"></script>
+	<script src="scripts/models/statusTracker.js"></script>
 	<script src="scripts/models/tagModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
     <!--<script src="scripts/views/sentinel.js"></script>-->
@@ -1147,6 +1149,7 @@
 			<img class="circle-img-md home-profile-img" src=""/>
 			<img src="images/status-away.svg" class="userStatusView-img userAvailable" />
 		</div>
+
 		<div class="left" style="width: 80%;">
 			<h3>
 				<span class="primaryName"></span>
@@ -1166,22 +1169,59 @@
 		<div style="clear: both;"></div>
 	</div>
 	<div class="modal-bottom">
-		<p class="caption right">
-			<a data-role="button" class="btnClear-sm" href="#profileEdit">Edit Profile</a>
-		</p>
-		<label for="profileStatusUpdate">Quick Status</label>
-		<textarea id="profileStatusUpdate" maxlength="35" placeholder="What's going on..."></textarea>
-		<div class="statusCharacterCount">
-			<span class="statusCharCount"></span>
+
+		<!--<div>
+			<a data-role="button" data-click="homeView.changeAvailable">
+				<img src="" height="16" class="userAvailableRev icon-sm" />
+				Change to
+				<span id="currentAvailableTxt">available</span>
+			</a>
 		</div>
-		<ul class="list-inline" id="profileStatusList">
+
+		<div style="padding: 12px;">
+			<label for="profileAutoStatus">Enable AutoStatus</label>
+			<input id="profileAutoStatus" type="checkbox" data-role="switch" data-change="userStatusView.onAutoStatusChange" />
+		</div>-->
+		<ul class="list-unstyled listStyle">
 			<li>
+				<p class="caption right">
+					<a data-role="button" class="btnClear-sm" href="#profileEdit">Edit Profile</a>
+				</p>
+			</li>
+			<li>
+				<label for="profileStatusUpdate">Quick Status</label>
+				<textarea id="profileStatusUpdate" maxlength="35" placeholder="What's going on..."></textarea>
+				<div class="statusCharacterCount">
+					<span class="statusCharCount"></span>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a data-role="button" data-click="homeView.changeAvailable">
+						<img src="" height="16" class="userAvailableRev icon-sm" />
+						Change to
+						<span id="currentAvailableTxt">available</span>
+					</a>
+				</div>
+			</li>
+			<li>
+				<div>
+					<a data-role="button" data-click="userStatusView.onAutoStatusChange" data-autocheckin="false" id="userStatusView-autoCheckin">
+						<img src="images/icon-autoCheckin.svg" class="icon-sm" /> Enable Auto Checkin </a>
+				</div>
+
+			</li>
+		</ul>
+
+
+		<ul class="list-inline listStyle" id="profileStatusList">
+		<!--	<li>
 				<a data-role="button" data-click="homeView.changeAvailable">
 					<img src="" height="16" class="userAvailableRev icon-sm" />
 					Change to
 					<span id="currentAvailableTxt">available</span>
 				</a>
-			</li>
+			</li>-->
 			<li id="profileCheckOutLi">
 				<div>
 					<div id="checked-in-place">
@@ -1193,17 +1233,19 @@
 				</div>
 			</li>
 			<li>
-				<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
-					<img src="images/icon-checkin-active.svg" class="icon-sm" />
-					Check In
-				</a>
+				<div>
+					<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
+						<img src="images/icon-checkin-active.svg" class="icon-sm" />
+						Check In
+					</a>
+				</div>
 			</li>
-			<li>
+	<!--		<li>
 				<a class="btnClear" data-role="button" href="#privateNotes">
 					<img src="images/icon-myNotes-alt.svg" class="icon-sm" />
 					My Notes
 				</a>
-			</li>
+			</li>-->
 		</ul>
 	</div>
 	<div class="footer" data-role="footer">
@@ -1973,6 +2015,7 @@
 	</script>
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
+		<li><a id="messageAlertLi" data-action="channelView.messageAlert"><img src="images/icon-unmute.svg" class="icon-smart"/> Add Alert</a></li>
 		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
 		<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>
 		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
@@ -4574,6 +4617,32 @@
 </div>
 
 
+<!-- Photo tag modal -->
+<div data-role="modalview" id="smartAlertModal"  data-init="smartAlertView.onInit" class="appearance" style="width: 100%; height: 100%; display:none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>IntelliAlert</span>
+			<a data-click="smartAlertView.onDone" data-role="button" data-align="left"><img src="images/nav-back.svg" /></a>
+
+		</div>
+	</div>
+
+	<p style="text-align: center; font-size: 1.2em; padding: 12px;">Alert user to this important event: </p>
+	<form>
+		<ul data-role="listview" data-style="inset">
+			<li>
+				<label>Message
+					<input type="search" id="smartAlertModal-message" placeholder="Enter alert message..."/>
+				</label>
+			</li>
+		</ul>
+	</form>
+
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnPrimary hidden" id="smartAlertModal-saveBtn" data-role="button" data-click="smartAlertView.onSave">Send</a>
+	</div>
+</div>
+
 <!-- smartAccount modal -->
 <div data-role="modalview" id="modalview-smartMedical" data-init="smartMedicalView.onInit"   data-open="smartMedicalView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
 	<div data-role="header">
@@ -4875,7 +4944,7 @@
 			</li>
 			<li>
 				<label> Account Url
-					<input id="smartAccount-name" type="search" >
+					<input id="smartAccount-url" type="search" >
 				</label>
 			</li>
 			<li>
@@ -4890,7 +4959,7 @@
 			</li>
 			<li>
 				<label> PIN
-					<input id="smartAccount-password" type="search" >
+					<input id="smartAccount-pin" type="search" >
 				</label>
 			</li>
 		</ul>
@@ -5403,155 +5472,156 @@
 	# } #
 </script>
 
-	<script type="text/x-kendo-template" id="contactsTemplate">
-		#
-		var classNames;
-		var name = data.name;
-		var alias = data.alias;
-		var group = data.group;
+<script type="text/x-kendo-template" id="contactsTemplate">
+	#
+	var classNames;
+	var name = data.name;
+	var alias = data.alias;
+	var group = data.group;
 
-		var primaryName = ux.returnUXPrimaryName(name, alias);
-		var secondaryName = ux.returnAliasName(name, alias);
-		if  (data.identicon === undefined || data.identicon === null) {
-		data.identicon = contactModel.createIdenticon(data.uuid);
-		}
-		var photoUrl = data.identicon;
+	var primaryName = ux.returnUXPrimaryName(name, alias);
+	var secondaryName = ux.returnAliasName(name, alias);
+	if  (data.identicon === undefined || data.identicon === null) {
+	data.identicon = contactModel.createIdenticon(data.uuid);
+	}
+	var photoUrl = data.identicon;
 
-		if (data.photo !== undefined && data.photo !== null) {
-		photoUrl = data.photo;
-		}
-		#
-		<div>
-			<div class="contact-options">
-				# if (data.contactUUID === undefined || data.contactUUID === null){#
-				<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
-					<img src="images/contact-invite.svg" height="12" />
-					<p class="chat-option-selection"> Resend Invite</p>
+	if (data.photo !== undefined && data.photo !== null) {
+	photoUrl = data.photo;
+	}
+	#
+	<div>
+		<div class="contact-options">
+			# if (data.contactUUID === undefined || data.contactUUID === null){#
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
+				<img src="images/contact-invite.svg" height="12" />
+				<p class="chat-option-selection"> Resend Invite</p>
+			</a>
+			#} else {#
+				#if(data.isBlocked) {#
+				<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
+					<img src="images/icon-unblock.svg" height="24" />
+					<p class="chat-option-selection"> Unblock </p>
 				</a>
 				#} else {#
-					#if(data.isBlocked) {#
-					<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
-						<img src="images/icon-unblock.svg" height="24" />
-						<p class="chat-option-selection"> Unblock </p>
-					</a>
-					#} else {#
-					<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
-						<img src="images/icon-block.svg" height="24" />
-						<p class="chat-option-selection"> Block </p>
-					</a>
-					#}#
-				#}#
-				<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
-					<img src="images/option-edit.svg" height="18" />
-					<p class="chat-option-selection">Edit</p>
+				<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
+					<img src="images/icon-block.svg" height="24" />
+					<p class="chat-option-selection"> Block </p>
 				</a>
-				<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
-					<img src="images/icon-trash.svg" height="18" />
-					<p class="chat-option-selection"> Delete</p>
-				</a>
-			</div><!-- contact-options -->
-
-				# if(data.category === 'member') {#
-					# classNames = "contactListBox member" #
-				#} else if(data.category === 'new'){#
-					# classNames = "contactListBox" #
-				#} else {#
-					 # classNames = "contactListBox noSlide" #
 				#}#
-				<a class="#: classNames #" data-contact="#:uuid#">
-				#if (data.category === 'member') {#
-						<div class="left listPhoto">
-							<div class="statusContactList">
-								#if (data.isAvailable !== undefined && data.isAvailable) { #
-									<img class="circle-img-md" src="#:photoUrl#" />
-									<img src="images/status-available.svg" class="statusContactList-icon" />
-								#} else {#
-									<img class="circle-img-md" src="#:photoUrl#" />
-									<img src="images/status-away.svg" class="statusContactList-icon" />
-								#}#
+			#}#
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
+				<img src="images/option-edit.svg" height="18" />
+				<p class="chat-option-selection">Edit</p>
+			</a>
+			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
+				<img src="images/icon-trash.svg" height="18" />
+				<p class="chat-option-selection"> Delete</p>
+			</a>
+		</div><!-- contact-options -->
 
-								# if (data.isBlocked) {#
-									<div class="left">
-										<span class="helper helper-sm">Blocked</span>
-									</div>
-								#}#
-							</div>
-						</div><!-- left -->
+			# if(data.category === 'member') {#
+				# classNames = "contactListBox member" #
+			#} else if(data.category === 'new'){#
+				# classNames = "contactListBox" #
+			#} else {#
+				 # classNames = "contactListBox noSlide" #
+			#}#
+			<a class="#: classNames #" data-contact="#:uuid#">
+			#if (data.category === 'member') {#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							#if (data.isAvailable !== undefined && data.isAvailable) { #
+								<img class="circle-img-md" src="#:photoUrl#" />
+								<img src="images/status-available.svg" class="statusContactList-icon" />
+							#} else {#
+								<img class="circle-img-md" src="#:photoUrl#" />
+								<img src="images/status-away.svg" class="statusContactList-icon" />
+							#}#
 
-						<div class="left listName">
-							<h4 class="textClamp">
-								#= primaryName #
-								#if (data.phoneValidated){#
-									<img src="images/user-verified.svg" class="user-status-icon" />
-								#}#
-									<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
-
-								#if(data.group !== "" && data.group !== null){#
-									<span class="contact-group">#: data.group #</span>
-								#}#
-							</h4>
-						</div>
-
-						<div class="left contact-status textClamp">
-							<p class="contactStatusMessage-sm">
-								# var message = "", location = "";
-								if (data.statusMessage !== undefined && data.statusMessage !== "") {
-								message = data.statusMessage;
-								}#
-
-								#:message#
-							</p>
-
-							# if (data.currentPlace !== undefined && data.currentPlace !== null && data.currentPlace !== ""){#
-								<p class="contactStatus-location">
-									@#:data.currentPlace#
-								</p>
+							# if (data.isBlocked) {#
+								<div class="left">
+									<span class="helper helper-sm">Blocked</span>
+								</div>
 							#}#
 						</div>
+					</div><!-- left -->
 
-						<div class="clearfix"></div>
-				#} else if(data.category === 'new'){#
-						<div class="left listPhoto">
-							<div class="statusContactList">
-								<img class="circle-img-md" src="#:photoUrl#" />
-							</div>
-						</div><!-- left -->
-						<div class="left listName">
-							<h4 class="textClamp">
-								#= primaryName #
-							</h4>
-						</div>
-						<div class="left contact-status">
-							<p class="left contactStatusMessage-sm">Invite Sent</p>
-						</div>
-				#} else {#
-						<div class="left listPhoto">
-							<div class="statusContactList">
-								<img class="circle-img-md" src="#:photoUrl#" />
-							</div>
-						</div><!-- left -->
-						<div class="left listName">
-							<h4 class="textClamp">
-								#: data.name #
-								#if (data.phoneValidated){#
-									<img src="images/user-verified.svg" class="user-status-icon" />
-								#}#
-							</h4>
-						</div>
+					<div class="left listName">
+						<h4 class="textClamp">
+							#= primaryName #
+							#if (data.phoneValidated){#
+								<img src="images/user-verified.svg" class="user-status-icon" />
+							#}#
+								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 
-						<div class="left contact-status">
-							<p class="left contactStatusMessage-sm">
-								# if (data.category === 'unknown' ) { #
-								New Contact - Tap to Connect!
-								# }  else { #
-								Deleted Contact - Tap to Restore !
-								#} #
+							#if(data.group !== "" && data.group !== null){#
+								<span class="contact-group">#: data.group #</span>
+							#}#
+						</h4>
+					</div>
+
+					<div class="left contact-status textClamp">
+						<p class="contactStatusMessage-sm">
+							# var message = "", location = "";
+							if (data.statusMessage !== undefined && data.statusMessage !== "") {
+							message = data.statusMessage;
+							}#
+
+							#:message#
+						</p>
+
+						# if (data.currentPlace !== undefined && data.currentPlace !== null && data.currentPlace !== ""){#
+							<p class="contactStatus-location">
+								@#:data.currentPlace#
 							</p>
+						#}#
+					</div>
+
+					<div class="clearfix"></div>
+			#} else if(data.category === 'new'){#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:photoUrl#" />
 						</div>
-				#}#
-				</a><!-- listBox -->
-		</div>
-	</script>
+					</div><!-- left -->
+					<div class="left listName">
+						<h4 class="textClamp">
+							#= primaryName #
+						</h4>
+					</div>
+					<div class="left contact-status">
+						<p class="left contactStatusMessage-sm">Invite Sent</p>
+					</div>
+			#} else {#
+					<div class="left listPhoto">
+						<div class="statusContactList">
+							<img class="circle-img-md" src="#:photoUrl#" />
+						</div>
+					</div><!-- left -->
+					<div class="left listName">
+						<h4 class="textClamp">
+							#: data.name #
+							#if (data.phoneValidated){#
+								<img src="images/user-verified.svg" class="user-status-icon" />
+							#}#
+						</h4>
+					</div>
+
+					<div class="left contact-status">
+						<p class="left contactStatusMessage-sm">
+							# if (data.category === 'unknown' ) { #
+							New Contact - Tap to Connect!
+							# }  else { #
+							Deleted Contact - Tap to Restore !
+							#} #
+						</p>
+					</div>
+			#}#
+			</a><!-- listBox -->
+	</div>
+</script>
+
 
 </body>
 </html>

@@ -871,6 +871,7 @@ var channelView = {
     privateContactId: null,
     privateContact : null,
     isPrivateChat: false,
+    isEmergencyChat: false,
     privacyMode: false,  // Privacy mode - obscure messages after timeout
     currentContact: null,
     activeMessage: {},
@@ -930,6 +931,7 @@ var channelView = {
     }),
 
     _channel : null,
+    _channelName : null,
     _channelUUID : null,
     _showEmoji: true,
     emojiCategories: null,
@@ -1128,13 +1130,15 @@ var channelView = {
 
         // Get the current insertion point
 
-        var isSelected = $('#messageTextArea').redactor('selection.is');
+        /*var isSelected = $('#messageTextArea').redactor('selection.is');
+        var currentObject = $('#messageTextArea').redactor('selection.current');
 
         if (!isSelected) {
             // Nothing is selected
+            var offset = $('#messageTextArea').redactor('offset.get');
             channelView._emojiIsSelected = false;
-            channelView._emojiStart = $('#messageTextArea').redactor('offset.get');
-            channelView._emojiEnd = channelView._tagStart;
+            channelView._emojiStart = offset;
+            channelView._emojiEnd = offset;
         } else {
             var selection = $('#messageTextArea').redactor('selection.save');
             var range = $('#messageTextArea').redactor('selection.range', selection);
@@ -1144,10 +1148,11 @@ var channelView = {
             channelView._emojiSelection = selection;
             channelView._emojiStart = range.startOffset;
             channelView._emojiEnd = range.endOffset;
-        }
-
+        }*/
+        $('#messageTextArea').redactor('selection.save');
 
     },
+
     emojiMenuOpen: function(e){
         ux.hideKeyboard();
         // Need to cache the offset
@@ -1168,13 +1173,18 @@ var channelView = {
         //var node = $('<span />').html(rendered);
        // var html = JSON.stringify(node);
 
-        if (channelView._emojiIsSelected) {
+       /* if (channelView._emojiIsSelected) {
             $('#messageTextArea').redactor('selection.restore', channelView._emojiSelection);
         } else {
-            $('#messageTextArea').redactor('offset.set', channelView._emojiStart+1);
-        }
+            $('#messageTextArea').redactor('offset.set', channelView._emojiStart);
+        }*/
 
+        $('#messageTextArea').redactor('selection.restore');
         $('#messageTextArea').redactor('insert.html', rendered);
+
+        // Recompute selection after emoji inserted
+        channelView.emojiGetSelection();
+
     },
 
     openEditor : function () {
@@ -1301,6 +1311,10 @@ var channelView = {
             return;
         }
 
+        channelView._channelUUID = channelUUID;
+        channelView._channel = thisChannel;
+        channelView._channelName = thisChannel.name;
+
         channelView.openEditor();
         channelView.toggleTitleTag();
 
@@ -1344,6 +1358,16 @@ var channelView = {
 
         $("#messageSend").html('<img src="images/icon-send.svg" class="icon-send" />');
 
+        if (thisChannel.isEmergency === undefined) {
+            thisChannel.isEmergency = false;
+            channelView.isEmergencyChat = false;
+        }
+
+        if (thisChannel.isEmergency || thisChannel.isPrivate) {
+            $('#messageAlertLi').removeClass('hidden');
+        } else {
+            $('#messageAlertLi').addClass('hidden');
+        }
 
         if (thisChannel.isPrivate) {
 
@@ -2784,6 +2808,13 @@ var channelView = {
         channelView.winRef.addEventListener("loadstop", channelView.messageSearchLoad);
         /* channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
 
+
+    },
+
+    messageAlert : function (e) {
+        _preventDefault(e);
+
+        smartAlertView.openModal(channelView._channelUUID, channelView._channelName);
 
     },
 

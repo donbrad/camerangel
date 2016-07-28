@@ -58,6 +58,7 @@ var userModel = {
         isVisible: true,
         isAvailable: true,
         useIdenticon: true,
+        autoStatusEnabled: false,
         availImgUrl: 'images/status-available.svg',
         lat: '',
         lng: '',
@@ -159,6 +160,12 @@ var userModel = {
 
         smartMovie.init();
 
+        smartTrip.init();
+
+        smartFlight.init();
+
+        statusTracker.init();
+
         tagModel.init();
 
         notificationModel.init();
@@ -180,6 +187,10 @@ var userModel = {
         sharedPhotoModel.sync();
         smartEvent.sync();
         smartMovie.sync();
+        smartTrip.sync();
+        smartFlight.sync();
+        statusTracker.sync();
+        statusTracker.syncObjects();
         notificationModel.sync();
     },
 
@@ -279,6 +290,7 @@ var userModel = {
         userModel._user.set('useIdenticon', user.useIdenticon);
         userModel._user.set('useLargeView', user.useLargeView);
         userModel._user.set('rememberUsername', user.rememberUsername);
+        userModel._user.set('autoStatusEnabled', user.autoStatusEnabled);
 
         userModel._user.set('addressList', user.addressList);
         userModel._user.set('emailList', user.emailList);
@@ -286,6 +298,11 @@ var userModel = {
         userModel._user.set('homeIntro', user.homeIntro);
 
 
+        if(user.autoStatusEnabled === undefined) {
+            user.autoStatusEnabled = false;
+        }
+
+        userModel._user.set('autoStatusEnabled', user.autoStatusEnabled);
         userModel._user.set('publicKey', publicKey);
         userModel._user.set('privateKey', privateKey);
         userModel.decryptPrivateKey();

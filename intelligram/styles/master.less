@@ -547,9 +547,9 @@ form {
 }
 
 .icon-sm {
-  height: 1em;
-  max-width: 1em;
-  vertical-align: baseline;
+  height: 1.2em;
+  max-width: 1.2em;
+  vertical-align: sub;
 }
 
 .icon-smart {
@@ -1185,12 +1185,12 @@ div.km-header a img{
   margin: 0.5em;
 }
 
-#profileStatusList > li:nth-child(3) > span > span {
-  background: #fff !important;
-}
-
-#profileStatusList > li:nth-child(3) > div > span > span > * {
-  background-color: #fff !important;
+.listStyle {
+  padding: 0 !important;
+  margin: 0;
+  li {
+    margin: 0.25em 0;
+  }
 }
 
 .km-material .km-switch-handle {
@@ -1674,15 +1674,6 @@ div.footerMenu.km-footer > ul > li > a:active {
   width: 2em;
 }
 
-#profileStatusList {
-  position: relative;
-  top: -1rem;
-  width: 100%;
-  li a {
-    text-align: left;
-  }
-}
-
 #profileStatusUpdate {
   width: 100%;
   .font-size(16);
@@ -1985,11 +1976,11 @@ div.footerMenu.km-footer > ul > li > a:active {
     margin-right: 0px;
   }
 
-  a:not(.modal-close) {
+  /*a:not(.modal-close) {
     width: 100%;
     border-top: 1px solid @shade-300 !important;
     text-align: center;
-  }
+  }*/
   .modal-helper {
     margin-bottom: 0.5rem;
   }

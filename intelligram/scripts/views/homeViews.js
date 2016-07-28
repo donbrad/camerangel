@@ -382,6 +382,7 @@ var homeView = {
 
     },
 
+
     closeModalViewProfileStatus: function(e){
         _preventDefault(e);
 
@@ -744,6 +745,23 @@ var userStatusView = {
 
     },
 
+    onAutoStatusChange : function (e) {
+        var $autoCheckinBtn = $("#" + e.button[0].id);
+
+        if (!$autoCheckinBtn.data("autocheckin")) {
+            $('#profileStatusList').addClass('hidden');
+            //$('#profileAutoStatusPanel').removeClass('hidden');
+            userModel._user.set('autoStatusEnabled', true);
+            $autoCheckinBtn.data('autocheckin', true).html('<img src="images/icon-autoCheckin.svg" class="icon-sm" /> Disable Auto Checkin');
+        } else {
+            $('#profileStatusList').removeClass('hidden');
+          //  $('#profileAutoStatusPanel').addClass('hidden');
+            userModel._user.set('autoStatusEnabled', false);
+            $autoCheckinBtn.data('autocheckin', false).html('<img src="images/icon-autoCheckin.svg" class="icon-sm" /> Enable Auto Checkin');
+        }
+
+    },
+
     // Important to put all jquery and other event handlers here so created only once...
     onInit : function (e) {
         //_preventDefault(e);
@@ -751,6 +769,7 @@ var userStatusView = {
         userStatusView.statusCharCount(e);
 
         userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
+
     },
 
     statusCharCount: function(e) {
@@ -1377,6 +1396,8 @@ var signUpView = {
         user.set('saveToPhotoAlbum', true);
         user.set('isRetina', true);
         user.set('homeIntro', false);
+        user.set('autoStatusEnabled', false);
+
 
         userModel.generateNewPrivateKey(user);
 

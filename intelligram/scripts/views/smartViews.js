@@ -3447,6 +3447,52 @@ var smartParkView = {
 };
 
 
+var smartAlertView = {
+    channelUUID : null,
+    channelName : null,
+
+    onInit: function () {
+       $('#smartAlertModal-message').change(function (){
+           var message = $('#smartAlertModal-message').val();
+           if (message.length > 6) {
+               $('#smartAlertModal-saveBtn').removeClass('hidden');
+           } else {
+               $('#smartAlertModal-saveBtn').addClass('hidden');
+           }
+        });
+    },
+
+    onOpen : function () {
+
+    },
+
+    openModal : function (channelUUID, channelName) {
+
+        smartAlertView.channelUUID = channelUUID;
+        smartAlertView.channelName = channelName;
+        $('#smartAlertModal-message').val("");
+        $('#smartAlertModal-saveBtn').addClass('hidden');
+        $("#smartAlertModal").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#smartAlertModal").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#smartAlertModal").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+        var message = $('#smartAlertModal-message').val();
+
+        appDataChannel.userAlert(smartAlertView.channelUUID, smartAlertView.channelName, message);
+        mobileNotify("Sending IntelliAlert to " + smartAlertView.channelName);
+        $("#smartAlertModal").data("kendoMobileModalView").close();
+    }
+};
+
+
 var airlineArray = [
     {abbrev: '6A', name: 'AVIACSA'},
     {abbrev: '9K', name: 'Cape Air'},
