@@ -73,6 +73,8 @@ var serverPush = {
                     }
                 }
             }
+        } else if (e.isAlert !== undefined && e.isAlert) {
+
         } else {
             //This is an appDataChannel Notification
             if (e.isEvent !== undefined && e.isEvent) {
@@ -89,10 +91,13 @@ var serverPush = {
                     if (e.channelUUID !== channelView._channelUUID) {
                         mobileNotify(e.alert);
                     }
-
                 }
 
                 if (e.isEvent !== undefined && e.isEvent) {
+                    mobileNotify(e.alert);
+                }
+
+                if (e.isAlert !== undefined && e.isAlert) {
                     mobileNotify(e.alert);
                 }
 
@@ -287,7 +292,7 @@ var serverPush = {
         if (!serverPush._dataChannelsProvisioned) {
 
             if (APP.pubnub === undefined || APP.pubnub === null ) {
-                mobileNotify("Provision Push - Pubnub not initialized");
+                ggError("Provision Push - Pubnub not initialized");
                 return;
             }
 
@@ -330,7 +335,7 @@ var serverPush = {
         if (serverPush._dataChannelsProvisioned) {
 
             if (APP.pubnub === undefined || APP.pubnub === null ) {
-                mobileNotify("Provision Push - Pubnub not initialized");
+                ggError("Provision Push - Pubnub not initialized");
                 return;
             }
 
@@ -378,12 +383,12 @@ var serverPush = {
 
     _error : function (error) {
         if (error !== undefined)
-            mobileNotify("Pubnub Push Channel Error " + JSON.stringify(error));
+            ggError("Pubnub Push Channel Error " + JSON.stringify(error));
     },
 
     _errorProvision : function (error) {
         if (error !== undefined)
-            mobileNotify("Pubnub Provision Error " + JSON.stringify(error));
+            ggError("Pubnub Provision Error " + JSON.stringify(error));
     }
 
 

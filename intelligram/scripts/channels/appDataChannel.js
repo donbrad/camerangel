@@ -328,6 +328,7 @@ var appDataChannel = {
                 'content-available' : 1
             },
             isMessage: false,
+            isAlert: true,
             target: '#channel?channelUUID=' + channelUUID,
             channelUUID :channelUUID
         };
@@ -338,6 +339,7 @@ var appDataChannel = {
                 target: '#channel?channelUUID=' + channelUUID,
                 image: "icon",
                 isMessage: false,
+                isAlert: true,
                 channelUUID : channelUUID
             }
         };
