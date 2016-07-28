@@ -165,7 +165,7 @@ var userModel = {
         smartFlight.init();
 
         statusTracker.init();
-        
+
         tagModel.init();
 
         notificationModel.init();
