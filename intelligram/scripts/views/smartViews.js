@@ -3289,9 +3289,9 @@ var smartAlertView = {
        $('#smartAlertModal-message').change(function (){
            var message = $('#smartAlertModal-message').val();
            if (message.length > 6) {
-               $('#smartAlertModel-saveBtn').removeClass('hidden');
+               $('#smartAlertModal-saveBtn').removeClass('hidden');
            } else {
-               $('#smartAlertModel-saveBtn').addClass('hidden');
+               $('#smartAlertModal-saveBtn').addClass('hidden');
            }
         });
     },
@@ -3305,7 +3305,7 @@ var smartAlertView = {
         smartAlertView.channelUUID = channelUUID;
         smartAlertView.channelName = channelName;
         $('#smartAlertModal-message').val("");
-        $('#smartAlertModel-saveBtn').addClass('hidden');
+        $('#smartAlertModal-saveBtn').addClass('hidden');
         $("#smartAlertModal").data("kendoMobileModalView").open();
     },
 
