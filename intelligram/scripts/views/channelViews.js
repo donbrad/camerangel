@@ -1314,7 +1314,7 @@ var channelView = {
         channelView._channelUUID = channelUUID;
         channelView._channel = thisChannel;
         channelView._channelName = thisChannel.name;
-        
+
         channelView.openEditor();
         channelView.toggleTitleTag();
 
@@ -2814,7 +2814,7 @@ var channelView = {
     messageAlert : function (e) {
         _preventDefault(e);
 
-        smartAlertView.openModal(channelView._channelUUID, channelView.channelName);
+        smartAlertView.openModal(channelView._channelUUID, channelView._channelName);
 
     },
 

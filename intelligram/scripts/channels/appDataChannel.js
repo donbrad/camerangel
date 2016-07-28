@@ -137,12 +137,13 @@ var appDataChannel = {
     },
 
     archiveMessage : function (message) {
-        if (message.Id === undefined) {
+       /* if (message.Id === undefined) {
             message.Id = message.msgID;
-        }
+        }*/
         message.processed = true;
         message.processTime = ggTime.currentTime();
         appDataChannel.messagesDS.add(message);
+        appDataChannel.messagesDS.sync();
         everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
             if (error !== null) {
                 ggError ("App Channel cache error " + JSON.stringify(error));
@@ -311,7 +312,7 @@ var appDataChannel = {
 
     userAlert : function (channelUUID, channelName, message) {
         var msg = {};
-        
+
         msg.msgID = uuid.v4();
         msg.type = 'userAlert';
         msg.version = appDataChannel._version;
