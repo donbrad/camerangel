@@ -785,17 +785,6 @@ form {
   background: transparent;
   color: @primary-200 !important;
   font-weight: 400;
-  :active {
-    -webkit-transform:scale(0.9);
-    -moz-transform:scale(0.9);
-    -ms-transform:scale(0.9);
-    -o-transform:scale(0.9);
-    transform:scale(0.9);
-    -webkit-box-shadow:0px 0px 20px #FFF;
-    -moz-box-shadow:0px 0px 20px #FFF;
-    -o-box-shadow:0px 0px 20px #FFF;
-    box-shadow:0px 0px 20px #FFF;
-  }
   :disabled {
     color: #A4A4A4 !important;
     background: transparent !important;
@@ -1014,7 +1003,7 @@ form {
 
 .btnFull-modal {
   .btnFull;
-  border-radius: 0px !important;
+  border-radius: 0px 4px 4px 0!important;
   height: 3rem;
   padding-top: 1rem !important;
   font-weight: 600 !important;
@@ -3345,17 +3334,6 @@ div.footerMenu.km-footer > ul > li > a {
   }
   a {
     padding-top: 0.75rem;
-  }
-  :active {
-    -webkit-transform:scale(0.9);
-    -moz-transform:scale(0.9);
-    -ms-transform:scale(0.9);
-    -o-transform:scale(0.9);
-    transform:scale(0.9);
-    -webkit-box-shadow:0px 0px 20px #FFF;
-    -moz-box-shadow:0px 0px 20px #FFF;
-    -o-box-shadow:0px 0px 20px #FFF;
-    box-shadow:0px 0px 20px #FFF;
   }
 }
 
@@ -6852,7 +6830,7 @@ table.k-editor {
   vertical-align: middle;
 }
 
-#smartTripView-origin-box {
+.smartTripView-origin-box {
   p {
     text-align: center;
     font-size: 0.75em;
@@ -6872,12 +6850,16 @@ table.k-editor {
   margin-top: 2em;
   border-radius: 4px;
   .shadowHelper(1);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  //transition: all 1s cubic-bezier(.25,.8,.25,1);
+  position: absolute;
+  top: 5em;
+  left: 1em;
 }
 
 .intelliCard:nth-child(2n){
-  .shadowHelper(3);
-  transform: translateY(-50%);
+  //display: none;
+  //.shadowHelper(3);
+  //transform: translateY(-50%);
 }
 
 .intelliCard-active {
@@ -6890,10 +6872,17 @@ table.k-editor {
 
 #smartTripView-step-2 > form > ul > li:nth-child(3) {
   margin-top: 0.5em;
+  margin-bottom: 1em;
 }
 
 #smartTripView-travelTime-box {
   margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+#smartTripView-step-2, #smartTripView-step-3 {
+  opacity: 0;
+  z-index: -1;
 }
 
 #smartTripView-travelTime {
@@ -6904,4 +6893,91 @@ table.k-editor {
 #smartTripModal > div.footer.km-footer > a.btnFull-modal.km-widget.km-button {
   background-color: #80CBC4 !important;
   color: #fff;
+}
+
+.intelli-helper {
+  font-size: 0.85em;
+}
+
+#smartTripView-autoUpdate, #smartTripView-addToCalendar {
+  float: right !important;
+}
+
+.tripEditOptions {
+  margin-top: 1em;
+}
+
+.tripEditOptions:last-child {
+  margin-bottom: 2em;
+}
+
+.intelliTrip {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-radius: 4px;
+  background: #fff;
+  .shadowHelper(1);
+  .header {
+    padding: 0.5em 1em;
+    p {
+      img {
+        height: 1.2em;
+        max-width: 1.2em;
+      }
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .map {
+    width: 100%;
+    height: 25vh;
+    > img {
+      max-height: 100%;
+      width: 100%;
+    }
+  }
+  .footer {
+    a {
+      border-radius: 0 4px 4px 0;
+    }
+  }
+}
+
+.intelliTrip-map {
+  width: 100%;
+  height: 25vh;
+  > img {
+    max-height: 100%;
+    width: 100%;
+  }
+}
+
+.intelliTrip-title {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.intelliTrip-subheader {
+  font-size: 0.75em;
+}
+
+#intelliCard-back-2, #intelliCard-back-3 {
+  box-shadow: none;
+  margin-left: 0.5em;
+}
+
+.intelliTrip-arrow {
+  line-height: 1em;
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+  img {
+    max-height: 1em !important;
+    width: 1em !important;
+    vertical-align: middle;
+  }
+}
+
+.intelliTrip-details {
+  border-bottom: 2px dotted @shade-300;
 }

@@ -1977,7 +1977,7 @@
 		<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>
 		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
 		<li><a data-action="channelView.messagePlace"><img src="images/smart-coffee.svg" class="icon-smart"/> Add Place</a></li>
-		<li><a data-action="channelView.messageTrip"><img src="images/smart-time.svg" class="icon-smart"/> Add Trip</a></li>
+		<li><a data-action="channelView.messageTrip"><img src="images/intelliTrip-icon.svg" class="icon-smart"/> Add Trip</a></li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
@@ -3125,203 +3125,191 @@
 </div>
 
 
-<div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance">
+<div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance" data-model="smartTripView._activeObject">
 	<div class="intelli-header">
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
 		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
 	</div>
-	<div class="intelliCard" id="smartTripView-step-1">
-		<form>
-			<ul class="list-inline" data-style="inset" id="smartTripModal-owner">
-				<li>
-					<ul data-role="buttongroup" data-select="smartTripView.selectTransitMode" id="smartTripView-tripType" data-index="0">
-						<li data-transit="driving">
-							<svg width="29px" height="24px" viewBox="0 0 29 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-								<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-									<g transform="translate(-40.000000, -164.000000)" fill="#D0D0D0">
-										<g transform="translate(26.000000, 164.000000)">
-											<path d="M39.9790518,8.19771429 L37.6369566,2.15009524 C37.1980995,0.992380952 36.2411471,0.00723809524 34.4300995,0 L22.121909,0 C20.3184804,0.00876190476 19.361528,0.993904762 18.9150518,2.15161905 L16.5729566,8.19771429 C15.6426709,8.31847619 13.9969566,9.41066667 14.0000042,11.4819048 L14.0000042,19.1828571 L16.2857185,19.1828571 L16.2857185,21.6411429 C16.2796233,24.6712381 20.5683852,24.6354286 20.5668614,21.6411429 L20.5668614,19.1828571 L35.9851471,19.1828571 L35.9851471,21.6411429 C35.993909,24.6354286 40.2826709,24.6712381 40.2857185,21.6411429 L40.2857185,19.1828571 L42.5714328,19.1828571 L42.5714328,11.4819048 C42.5638138,9.41066667 40.9165757,8.31847619 39.9790518,8.19771429 L39.9790518,8.19771429 L39.9790518,8.19771429 Z M18.4940995,14.535619 C17.3988614,14.5386667 16.5120042,13.6247619 16.5161947,12.5013333 C16.5120042,11.3702857 17.3988614,10.4552381 18.4940995,10.464381 C19.5862899,10.4552381 20.4731471,11.3691429 20.4716233,12.5013333 C20.4716233,13.6247619 19.5847661,14.5386667 18.4940995,14.535619 L18.4940995,14.535619 L18.4940995,14.535619 Z M28.2857185,8.14133333 L19.0118138,8.14133333 L20.7782899,3.37942857 C20.9912423,2.70361905 21.3230518,2.22019048 22.1040042,2.20838095 L34.4685757,2.20838095 C35.2380995,2.22019048 35.569909,2.70361905 35.7931471,3.37942857 L37.5596233,8.14133333 L28.2857185,8.14133333 L28.2857185,8.14133333 Z M38.0788614,14.535619 C36.9760042,14.5386667 36.0876233,13.6247619 36.081909,12.5013333 C36.0876233,11.3702857 36.9748614,10.4552381 38.0788614,10.464381 C39.1638138,10.4552381 40.0491471,11.3691429 40.0563852,12.5013333 C40.0491471,13.6247619 39.1622899,14.5386667 38.0788614,14.535619 L38.0788614,14.535619 L38.0788614,14.535619 Z"></path>
+	<div id="intelliTrip-container">
+		<div class="intelliCard" id="smartTripView-step-1" data-card="1">
+			<form>
+				<ul class="list-inline" data-style="inset" id="smartTripModal-owner">
+					<li>
+						<ul data-role="buttongroup" data-select="smartTripView.selectTransitMode" id="smartTripView-tripType" data-index="0">
+							<li data-transit="driving">
+								<svg width="29px" height="24px" viewBox="0 0 29 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<g transform="translate(-40.000000, -164.000000)" fill="#D0D0D0">
+											<g transform="translate(26.000000, 164.000000)">
+												<path d="M39.9790518,8.19771429 L37.6369566,2.15009524 C37.1980995,0.992380952 36.2411471,0.00723809524 34.4300995,0 L22.121909,0 C20.3184804,0.00876190476 19.361528,0.993904762 18.9150518,2.15161905 L16.5729566,8.19771429 C15.6426709,8.31847619 13.9969566,9.41066667 14.0000042,11.4819048 L14.0000042,19.1828571 L16.2857185,19.1828571 L16.2857185,21.6411429 C16.2796233,24.6712381 20.5683852,24.6354286 20.5668614,21.6411429 L20.5668614,19.1828571 L35.9851471,19.1828571 L35.9851471,21.6411429 C35.993909,24.6354286 40.2826709,24.6712381 40.2857185,21.6411429 L40.2857185,19.1828571 L42.5714328,19.1828571 L42.5714328,11.4819048 C42.5638138,9.41066667 40.9165757,8.31847619 39.9790518,8.19771429 L39.9790518,8.19771429 L39.9790518,8.19771429 Z M18.4940995,14.535619 C17.3988614,14.5386667 16.5120042,13.6247619 16.5161947,12.5013333 C16.5120042,11.3702857 17.3988614,10.4552381 18.4940995,10.464381 C19.5862899,10.4552381 20.4731471,11.3691429 20.4716233,12.5013333 C20.4716233,13.6247619 19.5847661,14.5386667 18.4940995,14.535619 L18.4940995,14.535619 L18.4940995,14.535619 Z M28.2857185,8.14133333 L19.0118138,8.14133333 L20.7782899,3.37942857 C20.9912423,2.70361905 21.3230518,2.22019048 22.1040042,2.20838095 L34.4685757,2.20838095 C35.2380995,2.22019048 35.569909,2.70361905 35.7931471,3.37942857 L37.5596233,8.14133333 L28.2857185,8.14133333 L28.2857185,8.14133333 Z M38.0788614,14.535619 C36.9760042,14.5386667 36.0876233,13.6247619 36.081909,12.5013333 C36.0876233,11.3702857 36.9748614,10.4552381 38.0788614,10.464381 C39.1638138,10.4552381 40.0491471,11.3691429 40.0563852,12.5013333 C40.0491471,13.6247619 39.1622899,14.5386667 38.0788614,14.535619 L38.0788614,14.535619 L38.0788614,14.535619 Z"></path>
+											</g>
 										</g>
 									</g>
-								</g>
-							</svg>
-						</li>
-						<li data-transit="riding">
-							<svg width="22px" height="24px" viewBox="0 0 22 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-								<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-									<g transform="translate(-108.000000, -164.000000)" fill="#D0D0D0">
-										<g transform="translate(26.000000, 164.000000)">
-											<path d="M84.3884892,24 L86.7769784,24 L86.7769784,21.6115108 L98.7769784,21.6115108 L98.7769784,24 L101.165468,24 L101.165468,21.6115108 L103.553957,21.6115108 L103.553957,3.5971223 C103.553957,1.61151079 101.942446,-1.77635684e-15 99.9568345,-1.77635684e-15 L85.5971223,-1.77635684e-15 C83.6115108,-1.77635684e-15 82,1.61151079 82,3.5971223 L82,21.5827338 L84.3884892,21.5827338 L84.3884892,24 L84.3884892,24 Z M99.9856115,19.1942446 C99.323741,19.1942446 98.7769784,18.647482 98.7769784,17.9856115 C98.7769784,17.323741 99.323741,16.7769784 99.9856115,16.7769784 C100.647482,16.7769784 101.194245,17.323741 101.194245,17.9856115 C101.194245,18.647482 100.647482,19.1942446 99.9856115,19.1942446 L99.9856115,19.1942446 Z M87.9856115,2.41726619 L97.5683453,2.41726619 L97.5683453,4.8057554 L87.9856115,4.8057554 L87.9856115,2.41726619 L87.9856115,2.41726619 Z M84.3884892,7.1942446 L101.165468,7.1942446 L101.165468,14.3884892 L84.3884892,14.3884892 L84.3884892,7.1942446 L84.3884892,7.1942446 Z M85.5971223,16.8057554 C86.2589928,16.8057554 86.8057554,17.352518 86.8057554,18.0143885 C86.8057554,18.676259 86.2589928,19.2230216 85.5971223,19.2230216 C84.9352518,19.2230216 84.3884892,18.676259 84.3884892,18.0143885 C84.3884892,17.323741 84.9352518,16.8057554 85.5971223,16.8057554 L85.5971223,16.8057554 Z"></path>
+								</svg>
+							</li>
+							<li data-transit="riding">
+								<svg width="22px" height="24px" viewBox="0 0 22 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<g transform="translate(-108.000000, -164.000000)" fill="#D0D0D0">
+											<g transform="translate(26.000000, 164.000000)">
+												<path d="M84.3884892,24 L86.7769784,24 L86.7769784,21.6115108 L98.7769784,21.6115108 L98.7769784,24 L101.165468,24 L101.165468,21.6115108 L103.553957,21.6115108 L103.553957,3.5971223 C103.553957,1.61151079 101.942446,-1.77635684e-15 99.9568345,-1.77635684e-15 L85.5971223,-1.77635684e-15 C83.6115108,-1.77635684e-15 82,1.61151079 82,3.5971223 L82,21.5827338 L84.3884892,21.5827338 L84.3884892,24 L84.3884892,24 Z M99.9856115,19.1942446 C99.323741,19.1942446 98.7769784,18.647482 98.7769784,17.9856115 C98.7769784,17.323741 99.323741,16.7769784 99.9856115,16.7769784 C100.647482,16.7769784 101.194245,17.323741 101.194245,17.9856115 C101.194245,18.647482 100.647482,19.1942446 99.9856115,19.1942446 L99.9856115,19.1942446 Z M87.9856115,2.41726619 L97.5683453,2.41726619 L97.5683453,4.8057554 L87.9856115,4.8057554 L87.9856115,2.41726619 L87.9856115,2.41726619 Z M84.3884892,7.1942446 L101.165468,7.1942446 L101.165468,14.3884892 L84.3884892,14.3884892 L84.3884892,7.1942446 L84.3884892,7.1942446 Z M85.5971223,16.8057554 C86.2589928,16.8057554 86.8057554,17.352518 86.8057554,18.0143885 C86.8057554,18.676259 86.2589928,19.2230216 85.5971223,19.2230216 C84.9352518,19.2230216 84.3884892,18.676259 84.3884892,18.0143885 C84.3884892,17.323741 84.9352518,16.8057554 85.5971223,16.8057554 L85.5971223,16.8057554 Z"></path>
+											</g>
 										</g>
 									</g>
-								</g>
-							</svg>
-						</li>
-						<li data-transit="biking">
-							<svg width="36px" height="24px" viewBox="0 0 36 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-								<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-									<g transform="translate(-169.000000, -164.000000)" fill="#D0D0D0">
-										<g transform="translate(26.000000, 164.000000)">
-											<path d="M171.235294,9.88235294 C170.800118,9.88235294 170.375529,9.92788235 169.961882,10.0034118 L168.249765,4.08952941 C169.170235,3.76270588 169.647059,2.93611765 169.647059,2.11764706 C169.647059,1.55929412 169.432824,1.03729412 169.043176,0.648 C168.747412,0.352235294 168.214118,0 167.352941,0 L165.235294,0 C164.845647,0 164.529412,0.316235294 164.529412,0.705882353 C164.529412,1.09552941 164.845647,1.41176471 165.235294,1.41176471 L167.352941,1.41176471 C167.652588,1.41176471 167.891529,1.49258824 168.045059,1.64611765 C168.167882,1.76894118 168.235294,1.93623529 168.235294,2.11764706 C168.235294,2.45894118 168.003765,2.82352941 167.352941,2.82352941 C167.130941,2.82352941 166.922,2.928 166.788588,3.10517647 C166.655176,3.28270588 166.613176,3.51247059 166.674941,3.72564706 L167.333176,6 L156.685294,6 L156.281176,4.78764706 C157.221412,4.41070588 157.985176,4.21658824 157.995059,4.21411765 C158.340588,4.12729412 158.567529,3.79658824 158.523765,3.44294118 C158.48,3.08894118 158.18,2.82352941 157.823529,2.82352941 L152.529412,2.82352941 C152.274941,2.82352941 152.040588,2.96047059 151.915294,3.18176471 C151.79,3.40305882 151.793176,3.67447059 151.924118,3.89258824 C152.020118,4.05317647 152.906,5.46070588 154.326941,5.46070588 C154.547529,5.46070588 154.766353,5.42223529 154.981294,5.35305882 L155.362824,6.49729412 L152.997765,10.5317647 C152.101647,10.1188235 151.108471,9.88235294 150.058824,9.88235294 C146.166588,9.88235294 143,13.0489412 143,16.9411765 C143,20.8334118 146.166588,24 150.058824,24 C153.712824,24 156.726588,21.2092941 157.081647,17.6470588 L157.972118,17.6470588 C158.244588,18.27 158.864706,18.7058824 159.587882,18.7058824 C160.562353,18.7058824 161.352588,17.916 161.352588,16.9411765 C161.352588,16.7011765 161.303529,16.4735294 161.217059,16.2649412 L168.201765,9.00105882 L168.605529,10.3955294 C166.013176,11.4409412 164.176471,13.9782353 164.176471,16.9411765 C164.176471,20.8334118 167.343059,24 171.235294,24 C175.127529,24 178.294118,20.8334118 178.294118,16.9411765 C178.294118,13.0489412 175.127529,9.88235294 171.235294,9.88235294 L171.235294,9.88235294 Z M155.956118,8.27682353 L158.409412,15.6367059 C158.225176,15.8032941 158.073412,16.0044706 157.972471,16.2352941 L157.082,16.2352941 C156.878,14.1885882 155.791647,12.4023529 154.214706,11.2478824 L155.956118,8.27682353 L155.956118,8.27682353 Z M155.300353,16.2352941 L151.290941,16.2352941 L153.317882,12.7775294 C154.378824,13.6101176 155.112588,14.8358824 155.300353,16.2352941 L155.300353,16.2352941 Z M150.058824,22.2352941 C147.139647,22.2352941 144.764706,19.8603529 144.764706,16.9411765 C144.764706,14.022 147.139647,11.6470588 150.058824,11.6470588 C150.783059,11.6470588 151.473412,11.7938824 152.103059,12.0582353 L149.45,16.584 C149.322235,16.8024706 149.320824,17.0724706 149.446471,17.292 C149.572118,17.5115294 149.805765,17.6470588 150.058824,17.6470588 L155.300353,17.6470588 C154.953412,20.2330588 152.738,22.2352941 150.058824,22.2352941 L150.058824,22.2352941 Z M160.196,15.2904706 C160.054824,15.2385882 159.905176,15.2071765 159.749529,15.1927059 L157.155765,7.41176471 L167.741882,7.41176471 L167.748941,7.43541176 L160.196,15.2904706 L160.196,15.2904706 Z M171.235294,22.2352941 C168.316118,22.2352941 165.941176,19.8603529 165.941176,16.9411765 C165.941176,14.7825882 167.242118,12.924 169.099294,12.1009412 L170.557294,17.1374118 C170.646588,17.4465882 170.928588,17.6474118 171.234941,17.6474118 C171.300235,17.6474118 171.365882,17.6382353 171.431529,17.6191765 C171.806353,17.5108235 172.022,17.1194118 171.913294,16.7449412 L170.456,11.7109412 C170.711176,11.6731765 170.969882,11.6470588 171.235294,11.6470588 C174.154471,11.6470588 176.529412,14.022 176.529412,16.9411765 C176.529412,19.8603529 174.154471,22.2352941 171.235294,22.2352941 L171.235294,22.2352941 Z"></path>
+								</svg>
+							</li>
+							<li data-transit="biking">
+								<svg width="36px" height="24px" viewBox="0 0 36 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<g transform="translate(-169.000000, -164.000000)" fill="#D0D0D0">
+											<g transform="translate(26.000000, 164.000000)">
+												<path d="M171.235294,9.88235294 C170.800118,9.88235294 170.375529,9.92788235 169.961882,10.0034118 L168.249765,4.08952941 C169.170235,3.76270588 169.647059,2.93611765 169.647059,2.11764706 C169.647059,1.55929412 169.432824,1.03729412 169.043176,0.648 C168.747412,0.352235294 168.214118,0 167.352941,0 L165.235294,0 C164.845647,0 164.529412,0.316235294 164.529412,0.705882353 C164.529412,1.09552941 164.845647,1.41176471 165.235294,1.41176471 L167.352941,1.41176471 C167.652588,1.41176471 167.891529,1.49258824 168.045059,1.64611765 C168.167882,1.76894118 168.235294,1.93623529 168.235294,2.11764706 C168.235294,2.45894118 168.003765,2.82352941 167.352941,2.82352941 C167.130941,2.82352941 166.922,2.928 166.788588,3.10517647 C166.655176,3.28270588 166.613176,3.51247059 166.674941,3.72564706 L167.333176,6 L156.685294,6 L156.281176,4.78764706 C157.221412,4.41070588 157.985176,4.21658824 157.995059,4.21411765 C158.340588,4.12729412 158.567529,3.79658824 158.523765,3.44294118 C158.48,3.08894118 158.18,2.82352941 157.823529,2.82352941 L152.529412,2.82352941 C152.274941,2.82352941 152.040588,2.96047059 151.915294,3.18176471 C151.79,3.40305882 151.793176,3.67447059 151.924118,3.89258824 C152.020118,4.05317647 152.906,5.46070588 154.326941,5.46070588 C154.547529,5.46070588 154.766353,5.42223529 154.981294,5.35305882 L155.362824,6.49729412 L152.997765,10.5317647 C152.101647,10.1188235 151.108471,9.88235294 150.058824,9.88235294 C146.166588,9.88235294 143,13.0489412 143,16.9411765 C143,20.8334118 146.166588,24 150.058824,24 C153.712824,24 156.726588,21.2092941 157.081647,17.6470588 L157.972118,17.6470588 C158.244588,18.27 158.864706,18.7058824 159.587882,18.7058824 C160.562353,18.7058824 161.352588,17.916 161.352588,16.9411765 C161.352588,16.7011765 161.303529,16.4735294 161.217059,16.2649412 L168.201765,9.00105882 L168.605529,10.3955294 C166.013176,11.4409412 164.176471,13.9782353 164.176471,16.9411765 C164.176471,20.8334118 167.343059,24 171.235294,24 C175.127529,24 178.294118,20.8334118 178.294118,16.9411765 C178.294118,13.0489412 175.127529,9.88235294 171.235294,9.88235294 L171.235294,9.88235294 Z M155.956118,8.27682353 L158.409412,15.6367059 C158.225176,15.8032941 158.073412,16.0044706 157.972471,16.2352941 L157.082,16.2352941 C156.878,14.1885882 155.791647,12.4023529 154.214706,11.2478824 L155.956118,8.27682353 L155.956118,8.27682353 Z M155.300353,16.2352941 L151.290941,16.2352941 L153.317882,12.7775294 C154.378824,13.6101176 155.112588,14.8358824 155.300353,16.2352941 L155.300353,16.2352941 Z M150.058824,22.2352941 C147.139647,22.2352941 144.764706,19.8603529 144.764706,16.9411765 C144.764706,14.022 147.139647,11.6470588 150.058824,11.6470588 C150.783059,11.6470588 151.473412,11.7938824 152.103059,12.0582353 L149.45,16.584 C149.322235,16.8024706 149.320824,17.0724706 149.446471,17.292 C149.572118,17.5115294 149.805765,17.6470588 150.058824,17.6470588 L155.300353,17.6470588 C154.953412,20.2330588 152.738,22.2352941 150.058824,22.2352941 L150.058824,22.2352941 Z M160.196,15.2904706 C160.054824,15.2385882 159.905176,15.2071765 159.749529,15.1927059 L157.155765,7.41176471 L167.741882,7.41176471 L167.748941,7.43541176 L160.196,15.2904706 L160.196,15.2904706 Z M171.235294,22.2352941 C168.316118,22.2352941 165.941176,19.8603529 165.941176,16.9411765 C165.941176,14.7825882 167.242118,12.924 169.099294,12.1009412 L170.557294,17.1374118 C170.646588,17.4465882 170.928588,17.6474118 171.234941,17.6474118 C171.300235,17.6474118 171.365882,17.6382353 171.431529,17.6191765 C171.806353,17.5108235 172.022,17.1194118 171.913294,16.7449412 L170.456,11.7109412 C170.711176,11.6731765 170.969882,11.6470588 171.235294,11.6470588 C174.154471,11.6470588 176.529412,14.022 176.529412,16.9411765 C176.529412,19.8603529 174.154471,22.2352941 171.235294,22.2352941 L171.235294,22.2352941 Z"></path>
+											</g>
 										</g>
 									</g>
-								</g>
-							</svg>
-						</li>
-						<li data-transit="walking">
-							<svg width="17px" height="24px" viewBox="0 0 17 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-								<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-									<g transform="translate(-243.000000, -164.000000)" fill="#D0D0D0">
-										<g id="Step-1" transform="translate(26.000000, 164.000000)">
-											<path d="M224.113587,3.98293778 C225.213445,3.98293778 226.105056,3.09132679 226.105056,1.99146889 C226.105056,0.891610993 225.213445,0 224.113587,0 C223.013729,0 222.122118,0.891610993 222.122118,1.99146889 C222.122118,3.09132679 223.013729,3.98293778 224.113587,3.98293778 Z M217.910012,10.5607302 C218.463321,10.4650173 220.678778,10.0811791 220.802366,10.0399831 C220.943962,9.99286676 220.802366,10.0399831 220.849483,9.96918523 C220.896352,9.89838731 222.829111,5.82121676 223.017823,5.6090697 C223.206288,5.39692263 223.724815,4.85471421 224.455243,4.61913229 C225.185917,4.38355038 225.916591,4.76048144 225.916591,4.76048144 C225.916591,4.76048144 229.546032,6.83458902 229.781614,6.95225663 C230.017443,7.07017093 230.22959,7.49446506 230.22959,7.49446506 L231.924053,10.6798779 C232.062688,10.8547759 232.146067,11.0755568 232.146067,11.3163191 C232.146067,11.8824557 231.687237,12.3415321 231.120854,12.3415321 C230.636863,12.3415321 230.232303,12.0055504 230.124503,11.5546145 L228.544501,8.56679446 L227.554563,8.01299195 C227.625114,8.22513902 228.53266,12.6442117 228.53266,12.6442117 L229.451799,17.8763503 L232.672488,21.7569148 C232.904123,21.9727621 233.049666,22.2796353 233.049666,22.6210441 C233.049666,23.274013 232.520531,23.8036406 231.867316,23.8036406 C231.46991,23.8036406 231.118634,23.6062945 230.904267,23.305095 C230.313955,22.6114235 227.346116,19.1228377 227.059718,18.7831557 C226.741497,18.4062246 226.659105,18.2177591 226.611989,17.9703364 C226.565119,17.7226671 226.034505,14.5293604 226.034505,14.5293604 L222.994141,17.5702172 L222.994141,22.9316175 L222.987974,22.9316175 C222.926797,23.5317964 222.419864,24 221.803651,24 C221.187684,24 220.680752,23.5317964 220.619821,22.9316175 L220.613654,22.9316175 C220.613654,22.9316175 220.613901,22.8936284 220.614394,22.8277641 C220.614394,22.8218437 220.613654,22.8156767 220.613654,22.8097563 C220.613654,22.8021091 220.614641,22.794462 220.614641,22.7865681 C220.620314,21.9695553 220.645476,17.9020053 220.613654,16.9806457 C220.578378,15.9556794 220.943962,15.7316915 221.026354,15.6374588 C221.108993,15.543226 223.948803,12.5265441 223.948803,12.5265441 L223.324449,9.49826808 C223.324449,9.49826808 222.511137,11.0888777 222.428745,11.2657491 C222.346106,11.4423739 222.086843,11.7608412 221.816232,11.8195517 C221.544881,11.8785088 218.162862,12.5620664 218.162862,12.5620664 L218.161382,12.5549126 C218.111799,12.5623131 218.061475,12.5702069 218.009672,12.5702069 C217.451923,12.5702069 217,12.1182843 217,11.5605349 C216.999753,11.036581 217.399626,10.6115468 217.910012,10.5607302 Z"></path>
+								</svg>
+							</li>
+							<li data-transit="walking">
+								<svg width="17px" height="24px" viewBox="0 0 17 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<g transform="translate(-243.000000, -164.000000)" fill="#D0D0D0">
+											<g id="Step-1" transform="translate(26.000000, 164.000000)">
+												<path d="M224.113587,3.98293778 C225.213445,3.98293778 226.105056,3.09132679 226.105056,1.99146889 C226.105056,0.891610993 225.213445,0 224.113587,0 C223.013729,0 222.122118,0.891610993 222.122118,1.99146889 C222.122118,3.09132679 223.013729,3.98293778 224.113587,3.98293778 Z M217.910012,10.5607302 C218.463321,10.4650173 220.678778,10.0811791 220.802366,10.0399831 C220.943962,9.99286676 220.802366,10.0399831 220.849483,9.96918523 C220.896352,9.89838731 222.829111,5.82121676 223.017823,5.6090697 C223.206288,5.39692263 223.724815,4.85471421 224.455243,4.61913229 C225.185917,4.38355038 225.916591,4.76048144 225.916591,4.76048144 C225.916591,4.76048144 229.546032,6.83458902 229.781614,6.95225663 C230.017443,7.07017093 230.22959,7.49446506 230.22959,7.49446506 L231.924053,10.6798779 C232.062688,10.8547759 232.146067,11.0755568 232.146067,11.3163191 C232.146067,11.8824557 231.687237,12.3415321 231.120854,12.3415321 C230.636863,12.3415321 230.232303,12.0055504 230.124503,11.5546145 L228.544501,8.56679446 L227.554563,8.01299195 C227.625114,8.22513902 228.53266,12.6442117 228.53266,12.6442117 L229.451799,17.8763503 L232.672488,21.7569148 C232.904123,21.9727621 233.049666,22.2796353 233.049666,22.6210441 C233.049666,23.274013 232.520531,23.8036406 231.867316,23.8036406 C231.46991,23.8036406 231.118634,23.6062945 230.904267,23.305095 C230.313955,22.6114235 227.346116,19.1228377 227.059718,18.7831557 C226.741497,18.4062246 226.659105,18.2177591 226.611989,17.9703364 C226.565119,17.7226671 226.034505,14.5293604 226.034505,14.5293604 L222.994141,17.5702172 L222.994141,22.9316175 L222.987974,22.9316175 C222.926797,23.5317964 222.419864,24 221.803651,24 C221.187684,24 220.680752,23.5317964 220.619821,22.9316175 L220.613654,22.9316175 C220.613654,22.9316175 220.613901,22.8936284 220.614394,22.8277641 C220.614394,22.8218437 220.613654,22.8156767 220.613654,22.8097563 C220.613654,22.8021091 220.614641,22.794462 220.614641,22.7865681 C220.620314,21.9695553 220.645476,17.9020053 220.613654,16.9806457 C220.578378,15.9556794 220.943962,15.7316915 221.026354,15.6374588 C221.108993,15.543226 223.948803,12.5265441 223.948803,12.5265441 L223.324449,9.49826808 C223.324449,9.49826808 222.511137,11.0888777 222.428745,11.2657491 C222.346106,11.4423739 222.086843,11.7608412 221.816232,11.8195517 C221.544881,11.8785088 218.162862,12.5620664 218.162862,12.5620664 L218.161382,12.5549126 C218.111799,12.5623131 218.061475,12.5702069 218.009672,12.5702069 C217.451923,12.5702069 217,12.1182843 217,11.5605349 C216.999753,11.036581 217.399626,10.6115468 217.910012,10.5607302 Z"></path>
+											</g>
 										</g>
 									</g>
-								</g>
-							</svg>
-						</li>
-					</ul>
-				</li>
-				<li class="tripEdit tripEditRoute">
-					<label> Where are you <span id="smartTrip-transit">driving</span> to?
-						<input type="search" id="smartTripView-destination"  />
-					</label>
-					<a data-click="smartTripView.onDestinationSearch" data-role="button" class="btnClearLine btnFull hidden" id="smartTripView-destinationSearchBtn"></a>
-					<a class="btnClear-sm hidden" data-click="smartTripView.lockLocation" id="smartTripView-destination-change" data-role="button" data-lock="false" data-type="destination">Change</a>
-				</li>
-				<li class="hidden" id="smartTripView-origin-box">
-					<label> Leaving from? </label>
+								</svg>
+							</li>
+						</ul>
+					</li>
+					<li class="tripEdit tripEditRoute">
+						<label> Where are you <span id="smartTrip-transit">driving</span> to?
+							<input type="search" id="smartTripView-destination"  />
+						</label>
+						<a data-click="smartTripView.onDestinationSearch" data-role="button" class="btnClearLine btnFull hidden" id="smartTripView-destinationSearchBtn"></a>
+						<a class="btnClear-sm hidden" data-click="smartTripView.lockLocation" id="smartTripView-destination-change" data-role="button" data-lock="false" data-type="destination">Change</a>
+					</li>
+					<li class="hidden smartTripView-origin-box">
+						<label> Leaving from? </label>
 
-					<input type="search" id="smartTripView-origin"  />
-					<a class="btnClear-sm hidden" data-click="smartTripView.lockLocation" id="smartTripView-origin-change" data-role="button" data-lock="false" data-type="origin">
-						Change
-					</a>
-					<a data-click="smartTripView.onOriginSearch" data-role="button" class="btnClearLine btnFull hidden" id="smartTripView-originSearchBtn"></a>
-					<p class="helper smartTrip-currentLocation">OR</p>
-					<a class="btnClearLine btnFull smartTrip-currentLocation" data-role="button" data-click="smartTripView.getCurrentLocation">
-						<img src="images/icon-location-active.svg"  />
-						Current location
-					</a>
+						<input type="search" id="smartTripView-origin"  />
+						<a class="btnClear-sm hidden" data-click="smartTripView.lockLocation" id="smartTripView-origin-change" data-role="button" data-lock="false" data-type="origin">
+							Change
+						</a>
+						<a data-click="smartTripView.onOriginSearch" data-role="button" class="btnClearLine btnFull hidden" id="smartTripView-originSearchBtn"></a>
+						<p class="helper smartTrip-currentLocation">OR</p>
+						<a class="btnClearLine btnFull smartTrip-currentLocation" data-role="button" data-click="smartTripView.getCurrentLocation">
+							<img src="images/icon-location-active.svg"  />
+							Current location
+						</a>
 
-				</li>
+					</li>
+					<li class="smartTripView-origin-box hidden">
+						<label>
+							Trip Name (optional)
+							<input type="text" id="smartTripView-name"/>
+						</label>
+					</li>
+				</ul>
+			</form>
 
+				<a data-click="smartTripView.onRouteComplete" data-role="button" id="smartTripView-routeCompleteBtn" class="btnFull-modal btnPrimary tripEdit tripEditRouteNext" data-card="1">
+					Next
+				</a>
+		</div>
 
-
-				<li class="hidden">
-					<div class="clearfix"></div>
-					<h3 id="smartTripView-tripTitle"></h3>
-					<div> From: <span id="smartTripView-owner"></span></div>
-					<div id="smartTripView-routeDescription">
-						<span id="smartTripView-routeMode"></span> </br>
-						<span id="smartTripView-routeFrom"></span>  To  </br>
-						<span id="smartTripView-routeTo"></span>
-
-					</div>
-					<div>
-						<a data-click="smartTripView.onEnableEdit" data-role="button" class="btnClear" id="smartTripView-routeEditBtn" style="float:right;" > Change </a>
-					</div>
-
-				</li>
-
-				<li class="hidden">
-					<div class="clearfix"></div>
-
-					<div >
-						<h3><span id="smartTripView-viewTitle"> </span></h3>
-						<strong>Leaving  : </strong> <span id="smartTripView-viewDeparture"></span> </br>
-						<strong>Arriving  : </strong> <span id="smartTripView-viewArrival"></span>
-					</div>
-					<div>
-						<a data-click="smartTripView.onEnableTimeEdit" data-role="button" class="btnClear" id="smartTripView-timeEditBtn"> Change </a>
-					</div>
-				</li>
-
-				<li class="tripEditOptions hidden">
-					<div class="clearfix"></div>
-					<label> Auto Update Status
-						<input id="smartTripView-autoUpdate" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAutoStatus" style="float: right;" />
-					</label>
-				</li>
-
-				<li class="tripEditOptions hidden" id="smartTripView-addToCalendarLi">
-					<div class="clearfix"></div>
-					<label> Add To Calendar
-						<input id="smartTripView-addToCalendar" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAddToCalendar" style="float: right;" />
-					</label>
-				</li>
-
-			</ul>
-		</form>
-
-			<a data-click="smartTripView.onRouteComplete" data-role="button" id="smartTripView-routeCompleteBtn" class="btnFull-modal btnPrimary tripEdit tripEditRouteNext">
-				Next
-			</a>
-	</div>
-	<div class="intelliCard tripEditTime" id="smartTripView-step-2">
-		<form>
-			<ul class="list-inline" data-style="inset">
-				<li>
-					<h3>Need to be there on time?</h3>
-					<p class="helper" id="smartTripView-arrival-text">Intelligram helps you leave on time by calculating future traffic patterns and alerting you when you should leave. Recommended for meetings.</p>
-				</li>
-				<li>
-					<input type="radio" name="arrival" id="smartTripView-arrival-yes" class="k-radio" value="true">
-					<label class="k-radio-label" for="smartTripView-arrival-yes">Yes</label>
-				</li>
-				<li>
-					<input type="radio" name="arrival" id="smartTripView-arrival-no" class="k-radio" value="false">
-					<label class="k-radio-label" for="smartTripView-arrival-no">No, I'm flexible</label>
-				</li>
-				<li id="smartTripView-departure-time" class="hidden">
-					<label> Departure </label> <br />
-					<div class="smallSearch">
+		<div class="intelliCard" id="smartTripView-step-2" data-card="2">
+			<a class="btnClear" data-role="button" data-click="smartTripView.switchCards" data-card="2" data-direction="reverse" id="intelliCard-back-2">Back</a>
+			<form>
+				<ul class="list-inline" data-style="inset">
+					<li>
+						<h3>Need to be there on time?</h3>
+						<p class="helper" id="smartTripView-arrival-text">Intelligram helps you leave on time by calculating future traffic patterns and alerting you when you should leave. Recommended for meetings.</p>
+					</li>
+					<li>
+						<input type="radio" name="arrival" id="smartTripView-arrival-yes" class="k-radio" value="true">
+						<label class="k-radio-label" for="smartTripView-arrival-yes">Yes</label>
+					</li>
+					<li>
+						<input type="radio" name="arrival" id="smartTripView-arrival-no" class="k-radio" value="false">
+						<label class="k-radio-label" for="smartTripView-arrival-no">No, I'm flexible</label>
+					</li>
+					<li id="smartTripView-departure-time" class="hidden">
+						<label> Departure </label> <br />
+						<div class="smallSearch">
+								<span class="searchIcon">
+									<img src='images/smart-event.svg' />
+								</span>
+							<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture"/>
+						</div>
+						<div class="smallSearch-sm">
 							<span class="searchIcon">
-								<img src='images/smart-event.svg' />
+								<img src='images/smart-time.svg' />
 							</span>
-						<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture"/>
-					</div>
-					<div class="smallSearch-sm">
-						<span class="searchIcon">
-							<img src='images/smart-time.svg' />
-						</span>
-						<input type="time" id="smartTripView-timeDeparture" />
-					</div>
-					<div class="clearfix"></div>
-				</li>
-				<li id="smartTripView-arrival-time" class="hidden">
-					<label> Arrival </label>
-					<div class="clearfix"></div>
-					<div class="smallSearch">
+							<input type="time" id="smartTripView-timeDeparture" />
+						</div>
+						<div class="clearfix"></div>
+					</li>
+					<li id="smartTripView-arrival-time" class="hidden">
+						<label> Arrival </label>
+						<div class="clearfix"></div>
+						<div class="smallSearch">
+								<span class="searchIcon">
+									<img src='images/smart-event.svg' />
+								</span>
+							<input type="text" class="viewSearchBox" id="smartTripView-dateArrival"/>
+						</div>
+						<div class="smallSearch-sm">
 							<span class="searchIcon">
-								<img src='images/smart-event.svg' />
+								<img src='images/smart-time.svg' />
 							</span>
-						<input type="text" class="viewSearchBox" id="smartTripView-dateArrival"/>
-					</div>
-					<div class="smallSearch-sm">
-						<span class="searchIcon">
-							<img src='images/smart-time.svg' />
+							<input type="time" id="smartTripView-timeArrival"/>
+						</div>
+						<div class="clearfix"></div>
+					</li>
+					<li class="hidden" id="smartTripView-travelTime-box">
+						<label> Travel Time
+							<p>
+								<span id="smartTripView-travelTime"></span>
+								<span id="smartTripView-travelTime-dist"></span>
+							</p>
+						</label>
+					</li>
+				</ul>
+			</form>
+			<a data-click="smartTripView.onTimeComplete" data-role="button" class="btnFull-modal btnPrimary hidden" id="smartTripView-routeTimeBtn" data-card="2"> Next </a>
+		</div>
+		<div class="intelliCard" id="smartTripView-step-3" data-card="3">
+			<a class="btnClear" data-role="button" data-click="smartTripView.switchCards" data-card="3" data-direction="reverse" id="intelliCard-back-3">Back</a>
+			<form>
+				<ul class="list-inline">
+					<li id="smartTripView-autoUpdate-box">
+						Auto Update Status
+						<span style="float: right;">
+						<input id="smartTripView-autoUpdate" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAutoStatus" />
 						</span>
-						<input type="time" id="smartTripView-timeArrival"/>
-					</div>
-					<div class="clearfix"></div>
-				</li>
-				<li class="tripEditTime tripView" id="smartTripView-travelTime-box">
-					<div class="clearfix"></div>
-					<label> Travel Time
-						<p id="smartTripView-travelTime"></p>
-						<p id="smartTripView-travelTime-dist"></p>
-					</label>
-				</li>
-			</ul>
-		</form>
-		<a data-click="smartTripView.onTimeComplete" data-role="button" class="btnFull-modal btnPrimary tripEditTime tripEditTimeNext" id="smartTripView-routeTimeBtn"> Next </a>
+						<p class="helper intelli-helper">Your status will be updated with your current location for your contacts to follow along.</p>
+					</li>
+
+					<li id="smartTripView-addToCalendarLi">
+						Add To Calendar
+						<span style="float: right;">
+							<input id="smartTripView-addToCalendar" type="checkbox" data-role="switch" data-checked="false" data-change="smartTripView.onAddToCalendar" />
+						</span>
+					</li>
+				</ul>
+			</form>
+
+			<div>
+				<div class="intelliTrip-map" id="smartTripView-mapDiv"></div>
+			</div>
+			<a data-role="button" class="btnPrimary btnFull-modal" id="smartTripModal-saveBtn" data-click="smartTripView.onSave">Save</a>
+		</div>
 	</div>
 
-	<div class="tripView tripViewMap hidden" id="smartTripView-mapDiv">
-
-	</div>
 
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-saveBtn" data-click="smartTripModal.onSave">Save</a>
+
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-restartBtn" data-click="smartTripModal.onRestart">Restart</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-returnBtn" data-click="smartTripModal.onReturn">Return</a>
 		<a class="btnFull-modal btnPrimary tripView hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
@@ -3331,6 +3319,30 @@
 	</div>
 </div>
 
+<script id="intelliTrip-temp" type="text/x-kendo-template">
+	<div class="intelliTrip">
+		<div class="header">
+			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> Summer Road Trip</p>
+			<p class="helper intelliTrip-subheader">
+				<span>LAX, CA</span>
+				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
+				<span>San Fran, CA</span>
+			</p>
+		</div>
+		<div class="map">
+			<!-- sample static map -->
+			<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+franisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san franisco">
+		</div>
+		<div class="footer">
+			<ul class="list-unstyled intelliTrip-details">
+				<li>
+					<img src="images/icon-time.svg" class="icon-sm" /> 1 hrs 32 mins (300 mi)
+				</li>
+			</ul>
+			<a class="btnFull-modal btnClear" data-role="button">Track</a>
+		</div>
+	</div>
+</script>
 
 <!-- smartMovie movieGram modal -->
 <div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView.activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
