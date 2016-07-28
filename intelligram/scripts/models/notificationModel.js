@@ -224,7 +224,7 @@ var notificationModel = {
     },
 
     addUserAlert : function (channelUUID, channelName, senderName, message) {
-        this.newNotification(this._userAlert, channelUUID, channelName + ' says: ', null,  message,  'Goto Chat', null,
+        this.newNotification(this._userAlert, channelUUID, "Urgent from " + channelName, null,  message,  'Goto Chat', null,
             '#channel?channelUUID='+channelUUID, true);
     },
     addNewPrivateChatNotification : function (channelUUID, channelName) {
