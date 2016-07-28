@@ -931,6 +931,7 @@ var channelView = {
     }),
 
     _channel : null,
+    _channelName : null,
     _channelUUID : null,
     _showEmoji: true,
     emojiCategories: null,
@@ -1310,6 +1311,10 @@ var channelView = {
             return;
         }
 
+        channelView._channelUUID = channelUUID;
+        channelView._channel = thisChannel;
+        channelView._channelName = thisChannel.name;
+        
         channelView.openEditor();
         channelView.toggleTitleTag();
 
@@ -2809,7 +2814,7 @@ var channelView = {
     messageAlert : function (e) {
         _preventDefault(e);
 
-        smartAlertView.openModal();
+        smartAlertView.openModal(channelView._channelUUID, channelView.channelName);
 
     },
 
