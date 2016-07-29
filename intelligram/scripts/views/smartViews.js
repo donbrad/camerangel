@@ -2863,22 +2863,22 @@ var smartTripView = {
         var index = this.current().index();
         /// Set transit mode in label
         var transit = this.current()[0].dataset["transit"];
-        smartTripView.set('tripType', transit);
+        smartTripView.activeObject.set('tripType', transit);
 
         $("#smartTrip-transit").text(transit);
 
         switch (index) {
             case 0 :
-                smartTripView.travelMode = google.maps.TravelMode.DRIVING;
+                smartTripView.activeObject.set('travelMode', google.maps.TravelMode.DRIVING);
                 break;
             case  1 :
-                smartTripView.travelMode = google.maps.TravelMode.TRANSIT;
+                smartTripView.activeObject.set('travelMode', google.maps.TravelMode.TRANSIT);
                 break;
             case  2 :
-                smartTripView.travelMode = google.maps.TravelMode.BICYCLING;
+                smartTripView.activeObject.set('travelMode', google.maps.TravelMode.BICYCLING);
                 break;
             case 3 :
-                smartTripView.travelMode = google.maps.TravelMode.WALKING;
+                smartTripView.activeObject.set('travelMode', google.maps.TravelMode.WALKING);
                 break;
 
         }
@@ -3409,6 +3409,7 @@ var smartFlightView = {
             filter: "contains",
             placeholder: "Enter airline... "
         });
+
 
     },
 

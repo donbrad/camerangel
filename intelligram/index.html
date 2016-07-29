@@ -3387,6 +3387,8 @@
 	</div>
 </script>
 
+
+
 <!-- smartMovie movieGram modal -->
 <div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView.activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
 	<div data-role="header">
@@ -4787,6 +4789,41 @@
 	</div>
 </div>
 
+<script id="intelliFlight-chat" type="text/x-kendo-template">
+	<div class="intelliFlight">
+		<div class="header">
+			<p class="title">
+				<img src="images/intelliFlight-icon.svg" /> Flight Name <span>Status</span>
+			</p>
+			<p class="helper subheader">
+				<span>Airline</span>
+				<span>Flight</span> •
+				<span>Flight Duration</span>
+			</p>
+		</div>
+		<div class="summary">
+			<div class="origin">
+				<p class="airport">LAX</p>
+				<p class="city">Los Angeles, CA</p>
+				<p class="date">July 24, 2016</p>
+				<p class="time">8:20am PST</p>
+				<p class="terminal">Terminal 1 Gate 32</p>
+			</div>
+			<div class="liner"></div>
+			<div class="destination">
+				<p class="airport">NYC</p>
+				<p class="city">New York, NY</p>
+				<p class="date">July 25, 2016</p>
+				<p class="time">5:09pm EST</p>
+				<p class="terminal"></p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="footer">
+			<a class="btnClear btnFull-modal" data-role="button">Track</a>
+		</div>
+	</div>
+</script>
 
 <!-- smartFlightSearch modal -->
 <div data-role="modalview" id="modalview-smartFlightSearch" data-init="smartFlightSearchView.onInit"   data-open="smartFlightSearchView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
@@ -4919,7 +4956,6 @@
 			<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary"> Add Return Flight </a>
 		</div>
 	</div>
-
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Done</a>
 		<a class="btnFull-modal btnPrimary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
