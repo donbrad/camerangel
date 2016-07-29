@@ -3233,10 +3233,7 @@ var smartTripView = {
         smartTripView.validate();
     },
 
-    onCancel : function (e) {
-        // todo - Clear fields wip, need to rewire to observable event
-
-
+    initUX : function ()  {
         smartTripView.lockLocation(false, "destination");
         smartTripView.lockLocation(false, "origin");
 
@@ -3245,13 +3242,24 @@ var smartTripView = {
         $("#smartTripView-step-2, #smartTripView-step-3").css({"opacity": 0, "z-index": 0});
         $("input[name=arrival]").prop("checked", false);
         $("#smartTripView-departure-time, #smartTripView-arrival-time").addClass('hidden');
+    },
+
+    onCancel : function (e) {
+
+        smartTripView.setActiveObject(null);
+
+
+        smartTripView.initUX();
+
 
         $("#smartTripModal").data("kendoMobileModalView").close();
     },
 
     onSave : function (e) {
 
-        smartTripView.onCancel();
+
+        smartTripView.initUX();
+        smartTripView.onDone();
     },
 
     onViewDone : function (e) {
