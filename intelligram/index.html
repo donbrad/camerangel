@@ -3424,6 +3424,23 @@
 </div>
 </script>
 
+
+<script id="intelliPlace-chat" type="text/x-kendo-template">
+	<div>
+	<span class="btnSmart-place" data-role="button" data-objectid="#:objectId#" data-objectType="place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick" >
+
+			<div class="btnSmart-content">
+				<p class="btnSmart-title"> #:name# </p>
+				<p class="btnSmart-date"> #:address#</p>
+
+			</div>
+
+			<span class="btnSmart-type">
+					<img src="images/smart-event-alt.svg" class="icon-smartBtn" />
+			</span>
+	</span>
+	</div>
+</script>
 <!-- smartMovie movieGram modal -->
 <div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView.activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
 	<div data-role="header">

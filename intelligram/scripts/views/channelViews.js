@@ -2272,7 +2272,7 @@ var channelView = {
         var messageId = chatmessage[0].attributes.id.value;
 
         if (messageId === null) {
-            mobileNotify("Sender deleted this Smart Event!");
+            mobileNotify("Sender deleted this IntelliObject!");
             return;
         }
 
@@ -2302,6 +2302,9 @@ var channelView = {
                         mapViewModal.openModal(locObj, function () {
 
                         });
+                    } else if (object.ggType === "Trip") {
+
+                    } else if (object.ggType === "Flight") {
 
                     }
 
@@ -2335,19 +2338,6 @@ var channelView = {
             placeName: placeName,
             objectId : objectId
         };
-        
-       /* var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
-            '" id="chatobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
-            '<span class="btnSmart-content">' +
-            '<span class="btnSmart-title">' + smartEvent.title + ' </span><br /> ' +
-            '<span class="btnSmart-date">' + date + '</span><br /> ' +
-            '<span class="btnSmart-date">' + placeName + '</span> ' +
-            '</span>' +
-            '<span class="btnSmart-type">' +
-            '<img src="images/smart-event-alt.svg" class="icon-smartBtn" />' +
-            '</span>' +
-            '</span></div>';*/
 
 
        var objectUrl = template(dataObj);
@@ -2366,22 +2356,6 @@ var channelView = {
         var date = smartMovie.showtime, objectId = smartMovie.uuid;
 
         var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
-
-       /* var objectUrl = '<div><span class="btnSmart-movie" data-role="button" data-objectid="' + objectId +
-            '" id="movieobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
-            '<div class="btnSmart-poster">' +
-            '<img src="' + smartMovie.imageUrl + '" class="btnSmart-img" />' +
-            '</div>' +
-            '<div class="btnSmart-content">' +
-            '<p class="btnSmart-title">' + smartMovie.movieTitle + ' </p> ' +
-            '<p class="btnSmart-date textClamp">' + dateStr + '</p> ' +
-            '<p class="btnSmart-date textClamp">' + smartMovie.theatreName + '</p> ' +
-            '</div>' +
-            '<span class="btnSmart-type">' +
-            '<img src="images/smart-movie-circle.svg" />' +
-            '</span>' +
-            '</span></div>';*/
 
 
         var template = kendo.template($("#intelliMovie-chat").html());
@@ -2411,7 +2385,7 @@ var channelView = {
 
 
 
-        var objectUrl = '<div><span class="btnSmart-place" data-role="button" data-objectid="' + objectId +
+       /* var objectUrl = '<div><span class="btnSmart-place" data-role="button" data-objectid="' + objectId +
             '" id="placeobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
             '<div class="btnSmart-content">' +
@@ -2419,7 +2393,16 @@ var channelView = {
             '<p class="btnSmart-date textClamp">' + smartPlace.address + '</p> ' +
             '</div>' +
             '</span></div>';
+*/
 
+        var template = kendo.template($("#intelliPlace-chat").html());
+        var dataObj = {
+            name: smartPlace.name,
+            address: smartPlace.address,
+            objectId : objectId
+        };
+
+        var objectUrl = template(dataObj);
         var fullMessage = message + objectUrl;
 
         channelView.activeMessage.objects.push(smartPlace);
