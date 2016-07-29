@@ -7063,3 +7063,103 @@ table.k-editor {
 .intelliTrip-details {
   border-bottom: 2px dotted #f5f5f5;
 }
+/* intelliFlight */
+.intelliFlight {
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background-color: #fff;
+}
+.intelliFlight .header {
+  padding: 0.5em 1em;
+  border-bottom: 2px dotted #E0E0E0;
+}
+.intelliFlight .header .title {
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 0;
+  margin: 0 !important;
+}
+.intelliFlight .header .title img {
+  height: 1.2em;
+  max-width: 1.2em;
+  vertical-align: sub;
+}
+.intelliFlight .header .title span {
+  font-size: 0.85em;
+  background-color: #E0E0E0;
+  border-radius: 4px;
+  margin: 0 0.5em;
+  color: #fff;
+  font-weight: 400;
+  padding: 0.1em 0.25em;
+}
+.intelliFlight .header .subheader {
+  font-size: 0.85em;
+  margin: 0 0 0 2em;
+}
+.intelliFlight .summary {
+  padding: 0.5em 1em;
+  display: inline-block;
+  width: 100%;
+  border-bottom: 2px dotted #E0E0E0;
+}
+.intelliFlight .summary div {
+  width: 35%;
+  float: left;
+  text-align: center;
+}
+.intelliFlight .summary div p {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.intelliFlight .summary .airport {
+  font-size: 1.5em;
+}
+.intelliFlight .summary .city {
+  font-size: 0.85em;
+  color: #979797;
+}
+.intelliFlight .summary .city img {
+  height: 12px;
+}
+.intelliFlight .summary .terminal {
+  font-size: 0.85em;
+}
+.intelliFlight .summary .liner {
+  width: 30%;
+  height: 2px;
+  background-color: #4A4A4A;
+  margin-top: 1em;
+}
+.intelliFlight .summary .liner img {
+  width: 100%;
+}
+.liner::after {
+  content: "";
+  height: 0.5em;
+  display: inline-block;
+  width: 0.5em;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  border-radius: 0.5em;
+  border: 2px solid #4A4A4A;
+  background-color: #fff;
+  position: relative;
+  top: -0.25em;
+  float: right;
+}
+.liner::before {
+  content: "";
+  height: 0.5em;
+  display: inline-block;
+  width: 0.5em;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  border-radius: 0.5em;
+  border: 2px solid #4A4A4A;
+  background-color: #4A4A4A;
+  position: relative;
+  top: -0.25em;
+  float: left;
+}
