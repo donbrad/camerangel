@@ -97,18 +97,15 @@ var smartMovie = {
     },
     
     addMovie : function (objectIn, callback) {
-       /* var smartMovies = Parse.Object.extend(smartMovie._cloudClass);
-        var smartOb = new smartMovies();*/
 
         var smartOb = new kendo.data.ObservableObject();
 
-            mobileNotify("Creating Smart Movie...");
+            mobileNotify("Creating intelliMovie...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
             objectIn.senderUUID = userModel._user.userUUID;
         }
 
-        //smartOb.setACL(userModel.parseACL);
         smartOb.set('version', smartMovie._version);
         smartOb.set('ggType', smartMovie._ggClass);
         smartOb.set('uuid', objectIn.uuid);
@@ -144,7 +141,7 @@ var smartMovie = {
         
         everlive.createOne(smartMovie._cloudClass, smartOb, function (error, data){
             if (error !== null) {
-                mobileNotify ("Error creating photo " + JSON.stringify(error));
+                mobileNotify ("Error creating intelliMovie " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
                 

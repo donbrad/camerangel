@@ -2690,8 +2690,8 @@ var smartTripView = {
             smartTripView.validOrigin = false;
             smartTripView.validDestination = false;
 
-            obj.set('ownerUUID', userModel._user.userUUID);
-            obj.set('ownerName', userModel._user.name);
+            obj.set('senderUUID', userModel._user.userUUID);
+            obj.set('senderName', userModel._user.name);
             obj.set('name', userModel._user.name + "'s Trip");
             obj.set('tripType', 'driving');
             obj.set('travelMode', google.maps.TravelMode.DRIVING);
@@ -2722,8 +2722,8 @@ var smartTripView = {
             smartTripView.validOrigin = true;
             smartTripView.validDestination = true;
 
-            obj.set('ownerUUID', tripObj.ownerUUID);
-            obj.set('ownerName', tripObj.ownerName);
+            obj.set('senderUUID', tripObj.senderUUID);
+            obj.set('senderName', tripObj.senderName);
 
             obj.set('name', tripObj.name);
             obj.set('tripType', tripObj.tripType);
@@ -2757,7 +2757,7 @@ var smartTripView = {
             smartTripView.setCreator();
             smartTripView.setActiveObject(null);
 
-        } else if (tripObj.ownerUUID === userModel._user.userUUID) {
+        } else if (tripObj.senderUUID === userModel._user.userUUID) {
             smartTripView.mode = 'edit';
             smartTripView.setActiveObject(tripObj);
             smartTripView.setEditor();
