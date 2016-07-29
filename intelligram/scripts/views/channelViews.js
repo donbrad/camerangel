@@ -2985,7 +2985,7 @@ var channelView = {
 
         smartEventPlacesView.openModal("", "IntelliPlace", function (placeObj) {
             if (placeObj !== undefined && placeObj !== null) {
-                var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID};
+                var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID, senderName: userModel._user.name};
 
                 place.lat = placeObj.lat;
                 place.lng = placeObj.lng;

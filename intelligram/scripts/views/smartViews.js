@@ -3284,6 +3284,7 @@ var smartFlightView = {
     validFlight: false,
     validDate: false,
     status: new kendo.data.ObservableObject(),
+    callback : null,
 
     checkFlight: function () {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
@@ -3296,6 +3297,10 @@ var smartFlightView = {
         }
     },
 
+    setFlightSTatus : function (statusObj) {
+
+    },
+    
     processFlightStatus : function (statusObj) {
 
         var status = statusObj.flightStatus[0];
@@ -3439,8 +3444,13 @@ var smartFlightView = {
         })
     },
 
-    openModal : function (flight) {
+    openModal : function (flight, callback) {
 
+        smartFlightView.callback = null;
+
+        if (callback !== undefined) {
+            smartFlightView.callback = callback;
+        }
 
         if (flight === undefined || flight === null) {
             // No current flight - set editor state
