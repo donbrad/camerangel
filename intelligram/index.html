@@ -3364,28 +3364,64 @@
 </div>
 
 <script id="intelliTrip-chat" type="text/x-kendo-template">
-	<div class="intelliTrip">
+	<div class="intelliTrip" >
 		<div class="header">
-			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> Summer Road Trip</p>
+			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
 			<p class="helper intelliTrip-subheader">
-				<span>LAX, CA</span>
+				<span>#:origin#</span>
 				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
-				<span>San Fran, CA</span>
+				<span>#:destintation#</span>
 			</p>
 		</div>
-		<div class="map">
+		<div class="map hidden">
 			<!-- sample static map -->
 			<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+franisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san franisco">
 		</div>
 		<div class="footer">
 			<ul class="list-unstyled intelliTrip-details">
 				<li>
-					<img src="images/icon-time.svg" class="icon-sm" /> 1 hrs 32 mins (300 mi)
+					<img src="images/icon-time.svg" class="icon-sm" /> #:travelTime# (#:distance#)
 				</li>
 			</ul>
 			<a class="btnFull-modal btnClear" data-role="button">Track</a>
 		</div>
 	</div>
+</script>
+
+<script id="intelliEvent-chat" type="text/x-kendo-template">
+<div>
+	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="event" id="eventobject_#:objectId#" data-click="channelView.onObjectClick" >
+
+			<div class="btnSmart-content">
+				<span class="btnSmart-title"> #:title# </span><br />
+				<span class="btnSmart-date"> #:date#</span><br />
+				<span class="btnSmart-date"> #:placeName#</span>
+			</div>
+
+			<span class="btnSmart-type">
+					<img src="images/smart-event-alt.svg" class="icon-smartBtn" />
+			</span>
+	</span>
+</div>
+</script>
+
+<script id="intelliMovie-chat" type="text/x-kendo-template">
+<div>
+	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick" >
+		<div class="btnSmart-poster">
+			<img src="#:imageUrl" class="btnSmart-img" />
+		</div>
+		<div class="btnSmart-content">
+			<p class="btnSmart-title">#:.movieTitle#</p>
+            <p class="btnSmart-date textClamp">#:dateStr#</p>
+            <p class="btnSmart-date textClamp">#:theatreName#</p>
+		</div>
+
+		<span class="btnSmart-type">
+            <img src="images/smart-movie-circle.svg" />
+		</span>
+	</span>
+</div>
 </script>
 
 <!-- smartMovie movieGram modal -->
@@ -5622,6 +5658,7 @@
 			</a><!-- listBox -->
 	</div>
 </script>
+
 
 
 </body>
