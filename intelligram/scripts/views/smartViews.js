@@ -3176,7 +3176,7 @@ var smartTripView = {
             // hide destination search
             $("#smartTripView-originSearchBtn").text("").addClass("hidden");
 
-            smartTripView.lockLocation(true, 'destination');
+            smartTripView.lockLocation(true, 'origin');
 
             smartTripView.validateRoute();
 
