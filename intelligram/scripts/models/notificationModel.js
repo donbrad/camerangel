@@ -1,7 +1,7 @@
 /**
  * Created by donbrad on 8/12/15.
  *
- * notificationModel.js -- notification interface to parse, kendo and localstorage
+ * notificationModel.js -- notification interface to  kendo and localstorage
  *
  * Notification types: 'unread', 'newchat', 'newprivate', 'deletechat', 'newmember',
  */

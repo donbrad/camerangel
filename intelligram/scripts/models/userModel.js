@@ -170,6 +170,8 @@ var userModel = {
 
         notificationModel.init();
 
+        todayModel.init();
+
         if (window.navigator.simulator === undefined) {
             serverPush.init();
         }
@@ -192,6 +194,7 @@ var userModel = {
         statusTracker.sync();
         statusTracker.syncObjects();
         notificationModel.sync();
+        todayModel.sync();
     },
 
     initKendo : function () {
