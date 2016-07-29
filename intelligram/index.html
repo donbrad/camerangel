@@ -3168,7 +3168,7 @@
 </div>
 
 
-<div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance" data-model="smartTripView._activeObject">
+<div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance" data-model="smartTripView.activeObject">
 	<div class="intelli-header">
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
 		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
@@ -3226,7 +3226,7 @@
 						</ul>
 					</li>
 					<li class="tripEdit tripEditRoute">
-						<label> Where are you <span id="smartTrip-transit">driving</span> to?
+						<label> Where are you <span id="smartTrip-transit" data-bind="text: tripType">driving</span> to?
 							<input type="search" id="smartTripView-destination"  />
 						</label>
 						<a data-click="smartTripView.onDestinationSearch" data-role="button" class="btnClearLine btnFull hidden" id="smartTripView-destinationSearchBtn"></a>
@@ -3250,7 +3250,7 @@
 					<li class="smartTripView-origin-box hidden">
 						<label>
 							Trip Name (optional)
-							<input type="text" id="smartTripView-name"/>
+							<input type="text" id="smartTripView-name" data-bind="value: name"/>
 						</label>
 					</li>
 				</ul>
@@ -3283,13 +3283,13 @@
 								<span class="searchIcon">
 									<img src='images/smart-event.svg' />
 								</span>
-							<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture"/>
+							<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture" data-bind="value: dateDeparture" />
 						</div>
 						<div class="smallSearch-sm">
 							<span class="searchIcon">
 								<img src='images/smart-time.svg' />
 							</span>
-							<input type="time" id="smartTripView-timeDeparture" />
+							<input type="time" id="smartTripView-timeDeparture" data-bind="value: timeDeparture"/>
 						</div>
 						<div class="clearfix"></div>
 					</li>
@@ -3300,21 +3300,21 @@
 								<span class="searchIcon">
 									<img src='images/smart-event.svg' />
 								</span>
-							<input type="text" class="viewSearchBox" id="smartTripView-dateArrival"/>
+							<input type="text" class="viewSearchBox" id="smartTripView-dateArrival" data-bind="value: dateArrival"/>
 						</div>
 						<div class="smallSearch-sm">
 							<span class="searchIcon">
 								<img src='images/smart-time.svg' />
 							</span>
-							<input type="time" id="smartTripView-timeArrival"/>
+							<input type="time" id="smartTripView-timeArrival" data-bind="value: timeArrival"/>
 						</div>
 						<div class="clearfix"></div>
 					</li>
 					<li class="hidden" id="smartTripView-travelTime-box">
 						<label> Travel Time
 							<p>
-								<span id="smartTripView-travelTime"></span>
-								<span id="smartTripView-travelTime-dist"></span>
+								<span id="smartTripView-travelTime" data-bind="text: durationString"></span>
+								<span id="smartTripView-travelTime-dist" data-bind="text: distanceString"></span>
 							</p>
 						</label>
 					</li>
