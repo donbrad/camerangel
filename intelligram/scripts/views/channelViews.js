@@ -2388,7 +2388,7 @@ var channelView = {
         var dataObj = {
             imageUrl: smartMovie.imageUrl,
             movieTitle : smartMovie.movieTitle,
-            date : dateStr,
+            dateStr : dateStr,
             theatreName: smartMovie.theatreName,
             objectId : objectId
         };
