@@ -27,5 +27,18 @@ var smartTrip = {
 
     sync : function () {
         smartTrip.tripsDS.sync();
+    },
+
+
+    create : function (tripObj) {
+
+    },
+
+    update : function (tripObj) {
+
+    },
+
+    delete : function (tripObj) {
+
     }
 };
