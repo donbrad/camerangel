@@ -3387,6 +3387,7 @@
 	</div>
 </script>
 
+
 <script id="intelliFlight-chat" type="text/x-kendo-template">
 	<div class="intelliTrip" >
 		<div class="header">
@@ -3420,53 +3421,43 @@
 	</div>
 </script>
 
-
-<script id="intelliFlight-home" type="text/x-kendo-template">
-	<div class="intelliTrip" >
+<script id="intelliFlight-chat" type="text/x-kendo-template">
+	<div class="intelliFlight">
 		<div class="header">
-			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
-			<p class="helper intelliTrip-subheader">
-				<span>#:origin#</span>
-				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
-				<span>#:destintation#</span>
+			<p class="title">
+				<img src="images/intelliFlight-icon.svg" /> #:name# <span>Status</span>
+			</p>
+			<p class="helper subheader">
+				<span data-bind="text: carrierCode">Airline</span>
+				<span>#:flightNumber#</span> •
+				<span>#:flightTime# minutes</span>
 			</p>
 		</div>
-		<div>
-			<div style="text-align: center;">
-				<div style="font-size: 1.6em">
-					<span data-bind="text: carrierCode"></span> #:flightNumber#</span>
-				</div>
-				<div style="font-size: 1.2em">
-					Flight Time: #:flightTime# minutes
-				</div>
+		<div class="summary">
+			<div class="origin">
+				<p class="airport">#:departureAirport#</p>
+				<p class="city">#:origin#</p>
+				<p class="date">#:estimatedDeparture#</p>
+				<p class="time">#actualDeparture#</p>
+				<p class="terminal">Terminal #:departureTerminal# Gate #:departureGate#</p>
 			</div>
-
-			<div style="float: left; text-align: left; padding-left: 12px;">
-				<div style="font-size: 1.6em">#:departureAirport#</div>
-				<div style="font-size: 1.2em">Est:#:estimatedDeparture#</div>
-				<div style="font-size: 1.2em">Act: #actualDeparture#</div>
-				<div>Terminal : #:departureTerminal#</div>
-				<div>Gate: #:departureGate#</div>
+			<div class="liner"></div>
+			<div class="destination">
+				<p class="airport">#:arrivalAirport#</p>
+				<p class="city">New York, NY</p>
+				<p class="date">#:estimatedArrival#</p>
+				<p class="time">#:actualArrival#</p>
+				<p class="terminal">Terminal #:arrivalGate# Gate #:arrivalGate#</p>
+				<p class="termianl">Baggage Claim: #:baggageClaim#</p>
 			</div>
-
-			<div style="float: right; text-align: right; padding-right: 12px;">
-				<div style="font-size: 1.6em">#:arrivalAirport#</div>
-				<div style="font-size: 1.2em">Est:#:estimatedArrival#</div>
-				<div style="font-size: 1.2em">Act: #:actualArrival#</div>
-				<div>Terminal :#:arrivalTerminal#</div>
-				<div>Gate: #:arrivalGate#</div>
-				<div>Baggage Claim: #:baggageClaim#/div>
-				</div>
-			</div>
-			<div class="footer">
-				<ul class="list-unstyled intelliTrip-details">
-					<li>
-						<img src="images/icon-time.svg" class="icon-sm" /> #:travelTime# (#:distance#)
-					</li>
-				</ul>
-			</div>
+			<div class="clearfix"></div>
 		</div>
+		<div class="footer">
+			<a class="btnClear btnFull-modal" data-role="button">Track</a>
+		</div>
+	</div>
 </script>
+
 
 <script id="intelliEvent-chat" type="text/x-kendo-template">
 <div>
@@ -3521,6 +3512,7 @@
 	</span>
 	</div>
 </script>
+
 <!-- smartMovie movieGram modal -->
 <div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView.activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
 	<div data-role="header">
@@ -5053,7 +5045,6 @@
 			<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary"> Add Return Flight </a>
 		</div>
 	</div>
-
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Done</a>
 		<a class="btnFull-modal btnPrimary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
