@@ -2317,7 +2317,7 @@ var channelView = {
     addSmartEventToMessage: function (smartEvent, message) {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = new Date(smartEvent.date).toLocaleString(), objectId = smartEvent.uuid;
+        var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
 
         /*var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");*/
@@ -2326,8 +2326,17 @@ var channelView = {
         if(placeName === null){
             placeName = "";
         }
+
+
+        var template = kendo.template($("#intelliEvent-chat").html());
+        var dataObj = {
+            title : smartEvent.title,
+            date : date,
+            placeName: placeName,
+            objectId : objectId
+        };
         
-        var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
+       /* var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
             '" id="chatobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
             '<span class="btnSmart-content">' +
@@ -2338,7 +2347,10 @@ var channelView = {
             '<span class="btnSmart-type">' +
             '<img src="images/smart-event-alt.svg" class="icon-smartBtn" />' +
             '</span>' +
-            '</span></div>';
+            '</span></div>';*/
+
+
+       var objectUrl = template(dataObj);
 
         var fullMessage = message + objectUrl;
 
@@ -2353,9 +2365,9 @@ var channelView = {
         //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartMovie.showtime, objectId = smartMovie.uuid;
 
-        var dateStr = moment(date).format('ddd MMM Do h:mm A');
+        var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
 
-        var objectUrl = '<div><span class="btnSmart-movie" data-role="button" data-objectid="' + objectId +
+       /* var objectUrl = '<div><span class="btnSmart-movie" data-role="button" data-objectid="' + objectId +
             '" id="movieobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
             '<div class="btnSmart-poster">' +
@@ -2369,7 +2381,19 @@ var channelView = {
             '<span class="btnSmart-type">' +
             '<img src="images/smart-movie-circle.svg" />' +
             '</span>' +
-            '</span></div>';
+            '</span></div>';*/
+
+
+        var template = kendo.template($("#intelliMovie-chat").html());
+        var dataObj = {
+            imageUrl: smartMovie.imageUrl,
+            movieTitle : smartMovie.movieTitle,
+            date : dateStr,
+            theatreName: smartMovie.theatreName,
+            objectId : objectId
+        };
+
+        var objectUrl = template(dataObj);
 
         var fullMessage = message + objectUrl;
 

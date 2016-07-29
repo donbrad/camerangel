@@ -2484,6 +2484,7 @@ var smartTripView = {
         smartTripView.activeObject.bind("change", function (e) {
             switch (e.field) {
                 case 'tripType' :
+                    smartTripView.validate();
                     break;
 
                 case 'origin' :
@@ -2587,7 +2588,7 @@ var smartTripView = {
                 if(filter.value > 0){
                     $(".smartTrip-currentLocation").addClass("hidden");
 
-                    if(smartTripView.origin === null){
+                    if(smartTripView.activeObject.origin === null){
                         $("#smartTripView-originSearchBtn").removeClass("hidden").text('Find "' + val + '"');
                     }
 
@@ -2633,10 +2634,11 @@ var smartTripView = {
                 // Show origin step
                 $(".smartTripView-origin-box").removeClass("hidden");
             },
+
             change: function(e){
                 var val = this.value();
 
-                if(val.length > 0 && smartTripView.destination === null){
+                if(val.length > 0 && smartTripView.activeObject.destination === null){
                     $("#smartTripView-destinationSearchBtn").removeClass("hidden").text('Find "' + val + '"');
 
                 } else {
@@ -3231,10 +3233,7 @@ var smartTripView = {
         smartTripView.validate();
     },
 
-    onCancel : function (e) {
-        // todo - Clear fields wip, need to rewire to observable event
-
-
+    initUX : function ()  {
         smartTripView.lockLocation(false, "destination");
         smartTripView.lockLocation(false, "origin");
 
@@ -3243,13 +3242,24 @@ var smartTripView = {
         $("#smartTripView-step-2, #smartTripView-step-3").css({"opacity": 0, "z-index": 0});
         $("input[name=arrival]").prop("checked", false);
         $("#smartTripView-departure-time, #smartTripView-arrival-time").addClass('hidden');
+    },
+
+    onCancel : function (e) {
+
+        smartTripView.setActiveObject(null);
+
+
+        smartTripView.initUX();
+
 
         $("#smartTripModal").data("kendoMobileModalView").close();
     },
 
     onSave : function (e) {
 
-        smartTripView.onCancel();
+
+        smartTripView.initUX();
+        smartTripView.onDone();
     },
 
     onViewDone : function (e) {
