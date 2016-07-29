@@ -2843,14 +2843,14 @@ var smartTripView = {
             if(type === 'origin'){
                 $origin.readonly(false);
                 $("#smartTripView-origin-change").addClass('hidden');
-                smartTripView.origin = null;
+                smartTripView.activeObject.origin = null;
                 smartTripView.validOrigin = false;
                 $("#smartTripView-origin").trigger("change").val('');
 
             } else {
                 $destination.readonly(false);
                 $("#smartTripView-destination-change").addClass('hidden');
-                smartTripView.destination = null;
+                smartTripView.activeObject.destination = null;
                 smartTripView.validDestination = false;
                 $("#smartTripView-destination").trigger("change").val('');
             }
@@ -3155,37 +3155,31 @@ var smartTripView = {
 
     getCurrentLocation: function() {
         mobileNotify("Checking your current address...");
-        mapModel.getCurrentAddress(function (status, address) {
 
-            if (!status) {
-                mobileNotify("Can't determine your current address...")
-            } else {
+        mapModel.getCurrentAddress(function (newAddressFlag, address) {
 
-                var place = {};
+            var place = {};
 
-                place.lat = mapModel.lat;
-                place.lng = mapModel.lng;
-                place.name = null;
-                place.address = address;
-                place.googleId = null;
-                place.placeUUID = null;
+            place.lat = mapModel.lat;
+            place.lng = mapModel.lng;
+            place.name = null;
+            place.address = mapModel.address;
+            place.googleId = null;
+            place.placeUUID = null;
 
-                smartTripView.activeObject.set('destination', place);
-                smartTripView.validDestination = true;
+            smartTripView.activeObject.set('origin', place);
+            smartTripView.validOrigin = true;
 
-                smartTripView.activeObject.set('destinationName', place.address);
-                $('#smartTripView-destination').val(place.address);
+            smartTripView.activeObject.set('originName', place.address);
+            $('#smartTripView-origin').val(place.address);
 
-                // Show origin search
-                $(".smartTripView-origin-box").removeClass("hidden");
+            // hide destination search
+            $("#smartTripView-originSearchBtn").text("").addClass("hidden");
 
-                // hide destination search
-                $("#smartTripView-destinationSearchBtn").text("").addClass("hidden");
+            smartTripView.lockLocation(true, 'destination');
 
-                smartTripView.lockLocation(true, 'destination');
+            smartTripView.validateRoute();
 
-                smartTripView.validateRoute();
-            }
         });
     },
 
