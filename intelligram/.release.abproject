@@ -1,20 +1,47 @@
 {
+  "CorePlugins": [
+    "cordova-plugin-battery-status",
+    "cordova-plugin-console",
+    "cordova-plugin-contacts",
+    "cordova-plugin-device",
+    "cordova-plugin-device-motion",
+    "cordova-plugin-device-orientation",
+    "cordova-plugin-dialogs",
+    "cordova-plugin-file",
+    "cordova-plugin-file-transfer",
+    "cordova-plugin-geolocation",
+    "cordova-plugin-globalization",
+    "cordova-plugin-inappbrowser",
+    "cordova-plugin-media",
+    "cordova-plugin-media-capture",
+    "cordova-plugin-network-information",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
+    "cordova-plugin-vibration",
+    "cordova-plugin-whitelist",
+    "org.apache.cordova.labs.keyboard",
+    "cc.fovea.cordova.purchase@5.0.2",
+    "com.estimote.sdk@1.1.1",
+    "com.ionic.keyboard@2.0.1",
+    "com.ohh2ahh.plugins.appavailability@0.3.1",
+    "com.phonegap.plugins.barcodescanner@5.0.1",
+    "com.phonegap.plugins.PushPlugin@3.2.0",
+    "cordova-plugin-3dtouch@1.3.5",
+    "cordova-plugin-crosswalk-webview@1.7.2",
+    "de.appplant.cordova.plugin.email-composer@0.8.3",
+    "de.appplant.cordova.plugin.local-notification@0.8.4",
+    "de.appplant.cordova.plugin.printer@0.7.1",
+    "nl.x-services.plugins.calendar@4.5.1",
+    "nl.x-services.plugins.launchmyapp@4.1.5",
+    "nl.x-services.plugins.socialsharing@5.1.1",
+    "nl.x-services.plugins.toast@2.5.2",
+    "org.apache.cordova.plugin.sms@0.1.1",
+    "org.devgeeks.privacyscreen@0.2.0",
+    "uk.co.whiteoctober.cordova.appversion@0.1.7"
+  ],
   "CordovaPluginVariables": {
-    "plugin.google.maps": {
-      "API_KEY_FOR_ANDROID": "AIzaSyCp60Oq5scSpYHUjf9jEXYYL0tijwrnqKk",
-      "API_KEY_FOR_IOS": "AIzaSyBmvj1RrT6j7Fj_7KJdcGwjDhKl2ij55lQ"
-    },
     "nl.x-services.plugins.launchmyapp": {
       "URL_SCHEME": "ghostgrams"
-    },
-    "com.telerik.plugin.telerikanalytics": {
-      "AUTO_TRACK_EXCEPTIONS": "True",
-      "AUTO_TRACK_KENDO_EVENTS": "True",
-      "PRODUCT_ID": "7a8cc314b41f44299fd03db24685b341"
-    },
-    "cordova-plugin-googlemaps": {
-      "API_KEY_FOR_ANDROID": "AIzaSyCp60Oq5scSpYHUjf9jEXYYL0tijwrnqKk",
-      "API_KEY_FOR_IOS": "AIzaSyBmvj1RrT6j7Fj_7KJdcGwjDhKl2ij55lQ"
     },
     "cc.fovea.cordova.purchase": {
       "BILLING_KEY": "needtoget"
