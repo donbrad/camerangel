@@ -278,6 +278,7 @@ var notificationModel = {
             if (unreadCount === undefined || unreadCount === 0) {
 
                 notificationModel.notificationDS.remove(notObj);
+                notificationModel.notificationDS.sync();
 
                 everlive.delete(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
 

@@ -1182,8 +1182,6 @@ var channelView = {
         $('#messageTextArea').redactor('selection.restore');
         $('#messageTextArea').redactor('insert.html', rendered);
 
-        // Recompute selection after emoji inserted
-        channelView.emojiGetSelection();
 
     },
 
@@ -1314,6 +1312,8 @@ var channelView = {
         channelView._channelUUID = channelUUID;
         channelView._channel = thisChannel;
         channelView._channelName = thisChannel.name;
+
+        notificationModel.updateUnreadNotification(channelView._channelUUID, channelView._channelName, 0);
 
         channelView.openEditor();
         channelView.toggleTitleTag();
