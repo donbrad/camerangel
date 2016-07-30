@@ -3516,7 +3516,7 @@ var smartFlightView = {
         }
 
         smartFlightView.setFlightSTatus(flight);
-        
+
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
 
     },
@@ -3526,10 +3526,16 @@ var smartFlightView = {
     },
 
     onDone: function () {
+        if (smartFlightView.callback !== null) {
+            smartFlightView.callback(null);
+        }
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     },
 
     onSave : function () {
+        if (smartFlightView.callback !== null) {
+            smartFlightView.callback(status);
+        }
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     }
 };
