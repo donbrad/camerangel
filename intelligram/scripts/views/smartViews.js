@@ -2732,8 +2732,6 @@ var smartTripView = {
             obj.set('addToCalendar',  tripObj.addToCalendar);
             obj.set('leg1Complete',  tripObj.leg1Complete);
             obj.set('leg2Complete',  tripObj.leg2Complete);
-            obj.set('arrivalSet',  tripObj.arrivalSet);
-            obj.set('arrivalSet', tripObj.arrivalSet);
             obj.set('origin', tripObj.origin);
             obj.set('originName', tripObj.originName);
             obj.set('destination', tripObj.destination);
@@ -3298,6 +3296,46 @@ var smartFlightView = {
     },
 
     setFlightSTatus : function (statusObj) {
+        if (statusObj === null) {
+            smartFlightView.status.set('carrierCode', null);
+            smartFlightView.status.set('flightNumber',null);
+            smartFlightView.status.set('arrivalAirport', null);
+            smartFlightView.status.set('departureAirport',null);
+
+            smartFlightView.status.set('departureTerminal', null);
+            smartFlightView.status.set('departureGate',null);
+
+            smartFlightView.status.set('arrivalTerminal', null);
+            smartFlightView.status.set('arrivalGate', null);
+            smartFlightView.status.set('baggageClaim',  null);
+            smartFlightView.status.set('durationMinutes', null);
+
+            smartFlightView.status.set('estimatedDeparture', null);
+            smartFlightView.status.set('estimatedArrival',  null);
+
+            smartFlightView.status.set('actualDeparture', null);
+            smartFlightView.status.set('actualArrival', null);
+
+        } else {
+            smartFlightView.status.set('carrierCode', statusObj.carrierCode);
+            smartFlightView.status.set('flightNumber',statusObj.flightNumber);
+            smartFlightView.status.set('arrivalAirport', statusObj.arrivalAirport);
+            smartFlightView.status.set('departureAirport',statusObj.departureAirport);
+
+            smartFlightView.status.set('departureTerminal', statusObj.departureTerminal);
+            smartFlightView.status.set('departureGate',statusObj.departureGate);
+
+            smartFlightView.status.set('arrivalTerminal', statusObj.arrivalTerminal);
+            smartFlightView.status.set('arrivalGate', statusObj.arrivalGate);
+            smartFlightView.status.set('baggageClaim',  statusObj.baggageClaim);
+            smartFlightView.status.set('durationMinutes', statusObj.durationMinutes);
+
+            smartFlightView.status.set('estimatedDeparture', statusObj.estimatedDeparture);
+            smartFlightView.status.set('estimatedArrival',  statusObj.estimatedArrival);
+
+            smartFlightView.status.set('actualDeparture', statusObj.actualDeparture);
+            smartFlightView.status.set('actualArrival', statusObj.actualArrival);
+        }
 
     },
     
@@ -3444,25 +3482,43 @@ var smartFlightView = {
         })
     },
 
+    initUx : function () {
+        $('#smartFlightView-SaveBtn').addClass('hidden');
+        $('#smartFlightView-DoneBtn').removeClass('hidden');
+        $('#smartFlightView-flightStatus').addClass('hidden');
+    },
+
+    setCreatorMode: function () {
+        $("#smartFlight-flightDate").val(new Date());
+        $('.flightCreator').removeClass('hidden');
+    },
+
+    setViewerMode : function ()  {
+        $('.flightCreator').addClass('hidden');
+    },
+
+
     openModal : function (flight, callback) {
 
         smartFlightView.callback = null;
+
+        smartFlightView.initUx();
 
         if (callback !== undefined) {
             smartFlightView.callback = callback;
         }
 
-        if (flight === undefined || flight === null) {
+        if ( flight === null) {
             // No current flight - set editor state
-            $('#smartFlightView-SaveBtn').addClass('hidden');
-            $('#smartFlightView-DoneBtn').removeClass('hidden');
-            $('#smartFlightView-flightStatus').addClass('hidden');
-            $('.flightCreator').removeClass('hidden');
+           smartFlightView.setCreatorMode();
+        } else {
+            smartFlightView.setViewerMode();
         }
 
-
+        smartFlightView.setFlightSTatus(flight);
+        
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
-        $("#smartFlight-flightDate").val(new Date());
+
     },
 
     closeModal : function () {
