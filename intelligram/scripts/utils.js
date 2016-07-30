@@ -457,7 +457,7 @@ function getFlightStatus(airline, flight, date, callback) {
 		//  contentType: 'application/json',
 		success: function(result) {
 
-		    if (result.status === 'ok' && result.result !== undefined) {
+		    if (result.status === 'ok' && result.result !== undefined && result.result.flightStatuses.length > 0) {
                 var resObj = {
                     status: 'ok',
                     valid: true,
@@ -470,13 +470,13 @@ function getFlightStatus(airline, flight, date, callback) {
                 callback({
                     status: 'error',
                     valid: false,
-                    error: 'Invalide response object'
+                    error: 'Flight not found...'
                 });
             }
 
 		},
 		error: function(error) {
-			mobileNotify("Error checking flightStatus" + error);
+			mobileNotify("Error checking FlightStatus" + error);
 			callback({
 				status: 'error',
 				valid: false,
