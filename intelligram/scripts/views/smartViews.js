@@ -3341,13 +3341,69 @@ var smartFlightView = {
     
     processFlightStatus : function (statusObj) {
 
-        var status = statusObj.flightStatus[0];
+        var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
 
+        var addressArray = [], airlineArray = [];
+
+        // Process airports -- build associative array
+        for (var i=0; i<airports.length; i++) {
+            addressArray[airports[i].fs]  =  {
+                code : airports[i].fs,
+                name : airports[i].name,
+                address :  airports[i].city + ", " + airports[i].stateCode,
+                lat : airports[i].latitude,
+                lng : airports[i].longitude,
+                weatherZone : airports[i].weatherZone,
+                utcOffsetHours : airports[i].utcOffsetHours
+            };
+        }
+
+        // Process airlines -- build associative array
+        for (var j=0; j<airlines.lenght; j++) {
+            airlineArray[airlines[j].fs] = {
+                code : airlines[j].fs,
+                name : airlines[j].name,
+                phoneNumber : airlines[j].phoneNumber
+            };
+        }
+
+        var airline = airlineArray[status.primaryCarrierFsCode].name;
+        if (airline === undefined) {
+            airline = null;
+        }
+
+        var airlinePhone = airlineArray[status.primaryCarrierFsCode].phoneNumber;
+        if (airlinePhone === undefined) {
+            airlinePhone = null;
+        }
+
+        var arrivalCity = airportArray[status.arrivalAirportFsCode].address;
+        var arrivalName = airportArray[status.arrivalAirportFsCode].name;
+        var arrivalLat = airportArray[status.arrivalAirportFsCode].lat;
+        var arrivalLng = airportArray[status.arrivalAirportFsCode].lng;
+
+        var departureCity = airportArray[status.departureAirportFsCode].address;
+        var departureName = airportArray[status.departureAirportFsCode].name;
+        var departureLat = airportArray[status.departureAirportFsCode].lat;
+        var departureLng = airportArray[status.departureAirportFsCode].lng;
 
         smartFlightView.status.set('carrierCode',status.primaryCarrierFsCode);
+        smartFlightView.status.set('airline', airline);
+        smartFlightView.status.set('airlinePhone', airlinePhone);
         smartFlightView.status.set('flightNumber',status.flightNumber);
+
         smartFlightView.status.set('arrivalAirport', status.arrivalAirportFsCode);
+        smartFlightView.status.set('arrivalCity', arrivalCity);
+        smartFlightView.status.set('arrivalName', arrivalName);
+        smartFlightView.status.set('arrivalLat', arrivalLat);
+        smartFlightView.status.set('arrivalLng', arrivalLng);
+
         smartFlightView.status.set('departureAirport',status.departureAirportFsCode);
+        smartFlightView.status.set('departureCity',departureCity);
+        smartFlightView.status.set('departureName',departureName);
+        smartFlightView.status.set('departureLat',departureLat);
+        smartFlightView.status.set('departureLng',departureLng);
+
 
         smartFlightView.status.set('departureTerminal', status.airportResources.departureTerminal);
         smartFlightView.status.set('departureGate',status.airportResources.departureGate);
