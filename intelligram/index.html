@@ -3365,7 +3365,7 @@
 </div>
 
 <script id="intelliTrip-chat" type="text/x-kendo-template">
-	<div class="intelliTrip" >
+	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
 			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
 			<p class="helper intelliTrip-subheader">
@@ -3390,7 +3390,7 @@
 
 
 <script id="intelliFlight-chat" type="text/x-kendo-template">
-	<div class="intelliFlight" >
+	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
 			<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
 		</div>
@@ -3412,7 +3412,7 @@
 </script>
 
 <script id="intelliFlight-home" type="text/x-kendo-template">
-	<div class="intelliFlight">
+	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" >
 		<div class="header">
 			<p class="title">
 				<img src="images/intelliFlight-icon.svg" /> <span> #:name#</span>
@@ -3449,7 +3449,7 @@
 
 <script id="intelliEvent-chat" type="text/x-kendo-template">
 <div>
-	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="event" id="eventobject_#:objectId#" data-click="channelView.onObjectClick" >
+	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" data-click="channelView.onObjectClick" >
 
 			<div class="btnSmart-content">
 				<span class="btnSmart-title"> #:title# </span><br />
@@ -3466,7 +3466,7 @@
 
 <script id="intelliMovie-chat" type="text/x-kendo-template">
 <div>
-	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick" >
+	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick" >
 		<div class="btnSmart-poster">
 			<img src="#:imageUrl#" class="btnSmart-img" />
 		</div>
