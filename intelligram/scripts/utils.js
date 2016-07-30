@@ -462,8 +462,8 @@ function getFlightStatus(airline, flight, date, callback) {
                     status: 'ok',
                     valid: true,
                     flightStatus: result.result.flightStatuses,
-					airports: result.result.airports,
-					airlines: result.result.airlines
+					airports: result.result.appendix.airports,
+					airlines: result.result.appendix.airlines
                 };
                 callback(resObj);
             } else {
