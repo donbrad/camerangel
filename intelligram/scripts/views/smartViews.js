@@ -2732,8 +2732,6 @@ var smartTripView = {
             obj.set('addToCalendar',  tripObj.addToCalendar);
             obj.set('leg1Complete',  tripObj.leg1Complete);
             obj.set('leg2Complete',  tripObj.leg2Complete);
-            obj.set('arrivalSet',  tripObj.arrivalSet);
-            obj.set('arrivalSet', tripObj.arrivalSet);
             obj.set('origin', tripObj.origin);
             obj.set('originName', tripObj.originName);
             obj.set('destination', tripObj.destination);
@@ -3474,9 +3472,6 @@ var smartFlightView = {
     },
 
     onSave : function () {
-        if (smartEventView.callback !== null) {
-            smartFlightView.callback(smartFlightView.status);
-        }
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     }
 };
