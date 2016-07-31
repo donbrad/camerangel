@@ -3474,6 +3474,9 @@ var smartFlightView = {
     },
 
     onSave : function () {
+        if (smartEventView.callback !== null) {
+            smartFlightView.callback(smartFlightView.status);
+        }
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     }
 };

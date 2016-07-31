@@ -2976,7 +2976,12 @@ var channelView = {
     messageFlight : function (e) {
         _preventDefault(e);
         //channelView.messageMenuTag();
-        smartFlightView.openModal();
+        smartFlightView.openModal(function (statusObj) {
+            var flight = {ggType: 'Flight', uuid: uuid.v4(), senderUUID: userModel._user.userUUID, senderName: userModel._user.name};
+            channelView.messageObjects.push(flight);
+            mobileNotify("Sending IntelliFlight...");
+            channelView.messageSend();
+        });
     },
 
 
