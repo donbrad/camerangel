@@ -2865,7 +2865,11 @@ var channelView = {
     messageAlert : function (e) {
         _preventDefault(e);
 
-        smartAlertView.openModal(channelView._channelUUID, channelView._channelName);
+        smartAlertView.openModal(channelView._channelUUID, channelView._channelName, function(alert) {
+            if (alert !== undefined && alert !== null) {
+
+            }
+        });
 
     },
 

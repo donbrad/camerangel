@@ -280,7 +280,7 @@ var notificationModel = {
                 notificationModel.notificationDS.remove(notObj);
                 notificationModel.notificationDS.sync();
 
-                everlive.delete(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
+                everlive.deleteMatching(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
 
                 });
 

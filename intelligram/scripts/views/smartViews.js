@@ -3612,6 +3612,7 @@ var smartParkView = {
 var smartAlertView = {
     channelUUID : null,
     channelName : null,
+    callback: null,
 
     onInit: function () {
        $('#smartAlertModal-message').change(function (){
@@ -3628,7 +3629,13 @@ var smartAlertView = {
 
     },
 
-    openModal : function (channelUUID, channelName) {
+    openModal : function (channelUUID, channelName, callback) {
+
+        smartAlertView.callback = null;
+
+        if (callback !== undefined) {
+            smartAlertView.callback = callback;
+        }
 
         smartAlertView.channelUUID = channelUUID;
         smartAlertView.channelName = channelName;
@@ -3649,7 +3656,10 @@ var smartAlertView = {
         var message = $('#smartAlertModal-message').val();
 
         appDataChannel.userAlert(smartAlertView.channelUUID, smartAlertView.channelName, message);
-        mobileNotify("Sending IntelliAlert to " + smartAlertView.channelName);
+        //mobileNotify("Sending IntelliAlert to " + smartAlertView.channelName);
+        if (smartAlertView.callback !== null) {
+            smartAlertView.callback(message);
+        }
         $("#smartAlertModal").data("kendoMobileModalView").close();
     }
 };
