@@ -165,7 +165,6 @@ var groupChannel = {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
 
-
         var currentTime =  ggTime.currentTime();
 
         APP.pubnub.uuid(function (msgID) {

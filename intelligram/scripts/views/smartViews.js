@@ -1066,9 +1066,6 @@ var smartNoteView = {
     }
 };
 
-var smartFlightView = {
-
-};
 
 var movieListView = {
     activeObject : new kendo.data.ObservableObject(),
@@ -3445,6 +3442,12 @@ var smartFlightView = {
     openModal : function (flight, callback) {
 
         smartFlightView.callback = null;
+        smartFlightView.validAirline  = false;
+        smartFlightView.validFlight = false;
+        smartFlightView.validDate = false;
+        $("#smartFlight-flightDate").val(new Date());
+        ("#smartFlight-flight").val('');
+        ("#smartFlight-airline").val(new Date());
 
         if (callback !== undefined) {
             smartFlightView.callback = callback;
@@ -3460,7 +3463,7 @@ var smartFlightView = {
 
 
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
-        $("#smartFlight-flightDate").val(new Date());
+
     },
 
     closeModal : function () {
