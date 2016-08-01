@@ -7,9 +7,6 @@
 'use strict';
 
 var statusTracker = {
-    deltaMinutes : 5,    // Number of minutes between status updates
-
-    trackingClass: 'auto', // call be "event", "movie", "auto", "emergency", "flight", or "trip"
 
     objectsDS : null,
 

@@ -8,6 +8,25 @@
 
 var statusReporter = {
 
+    deltaMinutes : 5,    // Number of minutes between status updates
+    _deltaFlight : 15,
+    _deltaDriving : 5,
+    _deltaWalking : 1,
+    _deltaBiking : 1,
+    _deltaEmergency : 1,
+
+    trackingClass: 'auto', // could be "auto", "emergency", "flight", or "trip"
+    _trackAuto: 'auto',
+    _trackEmergency: 'emergency',
+    _trackFlight :'flight',
+    _trackTrip : 'trip',
+
+    objectUUID : null,
+    channelUUID : null,
+    isActive : false,
+    isPaused : false,
+    isComplete : false,
+
     reportsDS : null,
 
     init : function () {
@@ -34,24 +53,27 @@ var statusReporter = {
     },
 
 
-    create : function () {
+    startTracking : function (trackingClass, objectUUID, ChannelUUID, deltaMinutes) {
 
     },
 
-    delete : function () {
+    pauseTracking : function (objectUUID) {
 
     },
 
-    update : function () {
+    stopTracking : function (objectUUID, isComplete) {
 
     },
 
-    // Process status-able object lists to statusTracker objects Data Source
-    syncObjects : function () {
+    reportStatus : function (message, timestamp) {
 
     },
 
-    refreshObjects : function () {
+    reportLocation : function (lat, lng, timestamp)  {
+
+    },
+
+    reportEvent : function (lat, lng, timestamp, eventType, eventMessage) {
 
     }
 
