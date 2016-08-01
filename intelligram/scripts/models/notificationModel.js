@@ -1,7 +1,7 @@
 /**
  * Created by donbrad on 8/12/15.
  *
- * notificationModel.js -- notification interface to parse, kendo and localstorage
+ * notificationModel.js -- notification interface to  kendo and localstorage
  *
  * Notification types: 'unread', 'newchat', 'newprivate', 'deletechat', 'newmember',
  */
@@ -278,8 +278,9 @@ var notificationModel = {
             if (unreadCount === undefined || unreadCount === 0) {
 
                 notificationModel.notificationDS.remove(notObj);
+                notificationModel.notificationDS.sync();
 
-                everlive.delete(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
+                everlive.deleteMatching(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
 
                 });
 

@@ -101,8 +101,10 @@
 	<script src="scripts/models/smartMovieModel.js"></script>
 	<script src="scripts/models/smartPlaceModel.js"></script>
 	<script src="scripts/models/smartTripModel.js"></script>
+	<script src="scripts/models/statusReporter.js"></script>
 	<script src="scripts/models/statusTracker.js"></script>
 	<script src="scripts/models/tagModel.js"></script>
+	<script src="scripts/models/todayModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
     <!--<script src="scripts/views/sentinel.js"></script>-->
 	<script src="scripts/views/smartViews.js"></script>
@@ -3363,8 +3365,9 @@
 	</div>
 </div>
 
+
 <script id="intelliTrip-chat" type="text/x-kendo-template">
-	<div class="intelliTrip" >
+	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
 			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
 			<p class="helper intelliTrip-subheader">
@@ -3389,54 +3392,44 @@
 
 
 <script id="intelliFlight-chat" type="text/x-kendo-template">
-	<div class="intelliTrip" >
+	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
-			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
-			<p class="helper intelliTrip-subheader">
-				<span>#:origin#</span>
-				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
-				<span>#:destintation#</span>
-			</p>
+			<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
 		</div>
-		<div>
-			<div style="text-align: center;">
-				<div style="font-size: 1.6em">
-					<span data-bind="text: carrierCode"></span> #:flightNumber#</span>
-				</div>
-				<div style="font-size: 1.2em">
-					Flight Time: #:flightTime# minutes
-				</div>
+		<div class="summary">
+			<div class="origin">
+				<p class="airport">#:departureAirport#</p>
+				<p class="city">#:departureCity#</p>
+				<p class="date">#:estimatedDeparture#</p>
 			</div>
-
-			<div style="float: left; text-align: left; padding-left: 12px;">
-				<div style="font-size: 1.6em">#:departureAirport#</div>
-				<div style="font-size: 1.2em">Est:#:estimatedDeparture#</div>
+			<div class="liner"></div>
+			<div class="destination">
+				<p class="airport">#:arrivalAirport#</p>
+				<p class="city">#:arrivalCity#</p>
+				<p class="date">#:estimatedArrival#</p>
 			</div>
-
-			<div style="float: right; text-align: right; padding-right: 12px;">
-				<div style="font-size: 1.6em">#:arrivalAirport#</div>
-				<div style="font-size: 1.2em">Est:#:estimatedArrival#</div>
-			</div>
+			<div class="clearfix"></div>
 		</div>
 	</div>
 </script>
 
 <script id="intelliFlight-home" type="text/x-kendo-template">
-	<div class="intelliFlight">
+	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" >
 		<div class="header">
 			<p class="title">
-				<img src="images/intelliFlight-icon.svg" /> #:name# <span>Status</span>
+				<img src="images/intelliFlight-icon.svg" /> <span> #:name#</span>
 			</p>
 			<p class="helper subheader">
-				<span data-bind="text: carrierCode">Airline</span>
-				<span>#:flightNumber#</span> •
+				<span>#:airline#</span>
+				<span>#:flightNumber#</span>
 				<span>#:flightTime# minutes</span>
+				<span>#:airlinePhone#</span>
 			</p>
 		</div>
 		<div class="summary">
 			<div class="origin">
 				<p class="airport">#:departureAirport#</p>
-				<p class="city">#:origin#</p>
+				<p class="city">#:departureCity#</p>
 				<p class="date">#:estimatedDeparture#</p>
 				<p class="time">#actualDeparture#</p>
 				<p class="terminal">Terminal #:departureTerminal# Gate #:departureGate#</p>
@@ -3444,16 +3437,13 @@
 			<div class="liner"></div>
 			<div class="destination">
 				<p class="airport">#:arrivalAirport#</p>
-				<p class="city">New York, NY</p>
+				<p class="city">#:arrivalCity#</p>
 				<p class="date">#:estimatedArrival#</p>
 				<p class="time">#:actualArrival#</p>
-				<p class="terminal">Terminal #:arrivalGate# Gate #:arrivalGate#</p>
-				<p class="termianl">Baggage Claim: #:baggageClaim#</p>
+				<p class="terminal">Terminal #:arrivalTerminal# Gate #:arrivalGate#</p>
+				<p class="terminal">Baggage Claim: #:baggageClaim#</p>
 			</div>
 			<div class="clearfix"></div>
-		</div>
-		<div class="footer">
-			<a class="btnClear btnFull-modal" data-role="button">Track</a>
 		</div>
 	</div>
 </script>
@@ -3461,7 +3451,7 @@
 
 <script id="intelliEvent-chat" type="text/x-kendo-template">
 <div>
-	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="event" id="eventobject_#:objectId#" data-click="channelView.onObjectClick" >
+	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" data-click="channelView.onObjectClick" >
 
 			<div class="btnSmart-content">
 				<span class="btnSmart-title"> #:title# </span><br />
@@ -4997,9 +4987,14 @@
 <div data-role="modalview" id="modalview-smartFlight" data-model="smartFlightView.status" data-init="smartFlightView.onInit"   data-open="smartFlightView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span><img src="images/smart-flight-home.svg" class="icon-gg-drawer" />IntelliFlight</span>
+			<span><img src="images/intelliFlight-icon.svg" class="icon-gg-drawer" />IntelliFlight</span>
 			<a data-role="button"  data-align="left" data-click="smartFlightView.onDone" ><img src="images/nav-back.svg" /></a>
 		</div>
+	</div>
+
+	<div class="intelli-header">
+		<img src="images/intelliFlight-icon.svg" alt="intelliFlight"/>
+		<p class="intelli-subheader">Track your flight (share with friends and family).</p>
 	</div>
 
 	<form class="flightCreator">
@@ -5011,7 +5006,7 @@
 			</li>
 			<li>
 				<label> Flight
-					<input id="smartFlight-flight" type="search" >
+					<input id="smartFlight-flight" type="search" placeholder="Please enter flight...">
 				</label>
 			</li>
 
