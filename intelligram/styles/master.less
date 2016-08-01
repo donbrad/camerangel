@@ -5586,13 +5586,13 @@ div.contactListBox.activeContact > div > div > ul {
 
 /* Chat styles */
 
-#messages-listview li {
+#messages-listview > li {
   width: 100%;
   padding-right: 1rem !important;
   padding-left: 1rem !important;
 }
 
-#messages-listview li:last-child {
+#messages-listview > li:last-child {
   margin-bottom: 2em;
 }
 
@@ -7074,4 +7074,74 @@ table.k-editor {
   position: relative;
   top: -0.25em;
   float: left;
+}
+
+/* IntelliMovie */
+
+.intelliMovie {
+  width: 100%;
+  border-radius: 4px;
+  .shadowHelper(1);
+  padding: 0 !important;
+  background-color: #fff !important;
+  overflow: hidden;
+  .header {
+    padding: 0.5em 1em 0;
+    text-align: left;
+    border-bottom: 2px dotted @shade-200;
+    .title {
+      font-size: 1em;
+      font-weight: 600;
+      width: 95%;
+      img {
+        height: 1em;
+        max-width: 1em;
+        vertical-align: text-top;
+      }
+      span {
+        font-size: 0.85em;
+        background-color: @shade-200;
+        border-radius: 4px;
+        margin: 0 0.5em;
+        color: #fff;
+        font-weight: 400;
+        padding: 0.1em 0.25em;
+      }
+      padding: 0;
+      margin: 0 !important;
+    }
+    .subheader {
+      font-size: 0.85em;
+      position: relative;
+    }
+  }
+  .poster {
+    position: absolute;
+    top: 0;
+    right: 0;
+    img {
+      height: 3em;
+    }
+  }
+  .footer {
+    text-align: left;
+    ul {
+      padding: 0;
+      li {
+        padding-left: 1em !important;
+        padding-right: 1em !important;
+        font-size: 0.85em;
+        margin-top: 0.5em;
+        img {
+          height: 1em;
+          max-width: 1em;
+          margin-right: 0.5em;
+          vertical-align: text-top;
+        }
+      }
+      li:last-child {
+        margin-bottom: 1em;
+      }
+    }
+  }
 }

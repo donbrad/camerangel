@@ -2364,7 +2364,9 @@ var channelView = {
             movieTitle : smartMovie.movieTitle,
             dateStr : dateStr,
             theatreName: smartMovie.theatreName,
-            objectId : objectId
+            objectId : objectId,
+            rating: smartMovie.rating,
+            runtime: smartMovie.runtime
         };
 
         var objectUrl = template(dataObj);

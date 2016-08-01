@@ -3476,25 +3476,57 @@
 </div>
 </script>
 
-<script id="intelliMovie-chat" type="text/x-kendo-template">
-<div>
-	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick" >
-		<div class="btnSmart-poster">
-			<img src="#:imageUrl#" class="btnSmart-img" />
-		</div>
-		<div class="btnSmart-content">
-			<p class="btnSmart-title">#:movieTitle#</p>
-            <p class="btnSmart-date textClamp">#:dateStr#</p>
-            <p class="btnSmart-date textClamp">#:theatreName#</p>
-		</div>
-
-		<span class="btnSmart-type">
-            <img src="images/smart-movie-circle.svg" />
+<script id="intelliMovie-chat-1" type="text/x-kendo-template">
+	<div class="intelliMovie">
+		<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick" >
+			<div class="btnSmart-poster">
+				<img src="#:imageUrl#" class="btnSmart-img" />
+			</div>
+			<div class="btnSmart-content">
+				<p class="btnSmart-title">#:movieTitle#</p>
+				<p class="btnSmart-date textClamp">#:dateStr#</p>
+				<p class="btnSmart-date textClamp">#:theatreName#</p>
+			</div>
+			<span class="btnSmart-type">
+				<img src="images/smart-movie-circle.svg" />
+			</span>
 		</span>
-	</span>
-</div>
+	</div>
 </script>
 
+
+<script id="intelliMovie-chat" type="text/x-kendo-template">
+	<div class="intelliMovie" data-role="button" data-objectid="#:objectId#" data-objectType="movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick">
+		<div class="header">
+			<p class="title textClamp">
+				<img src="images/intelliMovie-icon.svg" />
+				#:movieTitle#
+			</p>
+			<p class="subheader helper textClamp">
+				<span class="rating">#:rating#</span> •
+				<span class="runtime">#:runtime# </span>
+			</p>
+			<div class="poster">
+				<img src="#:imageUrl#" class="btnSmart-img" />
+			</div>
+		</div>
+
+		<div class="footer">
+			<ul class="list-unstyled">
+				<li>
+					<p class="textClamp date">
+						<img src="images/icon-time.svg" /> #:dateStr#
+					</p>
+				</li>
+				<li>
+					<p class="textClamp location">
+						<img src="images/icon-location-dark.svg" /> #:theatreName#
+					</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</script>
 
 <script id="intelliPlace-chat" type="text/x-kendo-template">
 	<div>
