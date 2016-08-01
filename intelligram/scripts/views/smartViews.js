@@ -3351,7 +3351,7 @@ var smartFlightView = {
         $('#smartFlight-flight').change(function () {
             var code = $('#smartFlight-flight').val();
 
-            if (code.length > 4) {
+            if (code.length > 1) {
                 var amatch =  smartFlightView.regExA.exec(code);
                 var fmatch =  smartFlightView.regExF.exec(code);
                 smartFlightView.validFlight = false;
