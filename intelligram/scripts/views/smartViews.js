@@ -3351,7 +3351,7 @@ var smartFlightView = {
         $('#smartFlight-flight').change(function () {
             var code = $('#smartFlight-flight').val();
 
-            if (code.length > 1) {
+            if (code.length > 4) {
                 var amatch =  smartFlightView.regExA.exec(code);
                 var fmatch =  smartFlightView.regExF.exec(code);
                 smartFlightView.validFlight = false;
@@ -3446,8 +3446,8 @@ var smartFlightView = {
         smartFlightView.validFlight = false;
         smartFlightView.validDate = false;
         $("#smartFlight-flightDate").val(new Date());
-        ("#smartFlight-flight").val('');
-        ("#smartFlight-airline").val(new Date());
+        $("#smartFlight-flight").val('');
+        $("#smartFlight-airline").val('');
 
         if (callback !== undefined) {
             smartFlightView.callback = callback;
