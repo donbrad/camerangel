@@ -101,8 +101,10 @@
 	<script src="scripts/models/smartMovieModel.js"></script>
 	<script src="scripts/models/smartPlaceModel.js"></script>
 	<script src="scripts/models/smartTripModel.js"></script>
+	<script src="scripts/models/statusReporter.js"></script>
 	<script src="scripts/models/statusTracker.js"></script>
 	<script src="scripts/models/tagModel.js"></script>
+	<script src="scripts/models/todayModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
     <!--<script src="scripts/views/sentinel.js"></script>-->
 	<script src="scripts/views/smartViews.js"></script>
@@ -2954,6 +2956,7 @@
 		<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartNoteView.onSave">Save Note</a>
 	</div>
 </div>
+
 <script id="smartNoteView-itemtmpl" type="text/x-kendo-template">
 	#
 		var name = data.name;
@@ -3362,32 +3365,175 @@
 	</div>
 </div>
 
-<script id="intelliTrip-temp" type="text/x-kendo-template">
-	<div class="intelliTrip">
+
+<script id="intelliTrip-chat" type="text/x-kendo-template">
+	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
-			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> Summer Road Trip</p>
+			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
 			<p class="helper intelliTrip-subheader">
-				<span>LAX, CA</span>
+				<span>#:origin#</span>
 				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
-				<span>San Fran, CA</span>
+				<span>#:destintation#</span>
 			</p>
 		</div>
-		<div class="map">
+		<div class="map hidden">
 			<!-- sample static map -->
 			<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+franisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san franisco">
 		</div>
 		<div class="footer">
 			<ul class="list-unstyled intelliTrip-details">
 				<li>
-					<img src="images/icon-time.svg" class="icon-sm" /> 1 hrs 32 mins (300 mi)
+					<img src="images/icon-time.svg" class="icon-sm" /> #:travelTime# (#:distance#)
 				</li>
 			</ul>
-			<a class="btnFull-modal btnClear" data-role="button">Track</a>
 		</div>
 	</div>
 </script>
 
 
+<script id="intelliFlight-chat" type="text/x-kendo-template">
+	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
+		<div class="header">
+			<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
+		</div>
+		<div class="summary">
+			<div class="origin">
+				<p class="airport">#:departureAirport#</p>
+				<p class="city">#:departureCity#</p>
+				<p class="date">#:estimatedDeparture#</p>
+			</div>
+			<div class="liner"></div>
+			<div class="destination">
+				<p class="airport">#:arrivalAirport#</p>
+				<p class="city">#:arrivalCity#</p>
+				<p class="date">#:estimatedArrival#</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</script>
+
+<script id="intelliFlight-home" type="text/x-kendo-template">
+	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" >
+		<div class="header">
+			<p class="title">
+				<img src="images/intelliFlight-icon.svg" /> <span> #:name#</span>
+			</p>
+			<p class="helper subheader">
+				<span>#:airline#</span>
+				<span>#:flightNumber#</span>
+				<span>#:flightTime# minutes</span>
+				<span>#:airlinePhone#</span>
+			</p>
+		</div>
+		<div class="summary">
+			<div class="origin">
+				<p class="airport">#:departureAirport#</p>
+				<p class="city">#:departureCity#</p>
+				<p class="date">#:estimatedDeparture#</p>
+				<p class="time">#actualDeparture#</p>
+				<p class="terminal">Terminal #:departureTerminal# Gate #:departureGate#</p>
+			</div>
+			<div class="liner"></div>
+			<div class="destination">
+				<p class="airport">#:arrivalAirport#</p>
+				<p class="city">#:arrivalCity#</p>
+				<p class="date">#:estimatedArrival#</p>
+				<p class="time">#:actualArrival#</p>
+				<p class="terminal">Terminal #:arrivalTerminal# Gate #:arrivalGate#</p>
+				<p class="terminal">Baggage Claim: #:baggageClaim#</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</script>
+
+
+<script id="intelliEvent-chat" type="text/x-kendo-template">
+<div>
+	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" data-click="channelView.onObjectClick" >
+
+			<div class="btnSmart-content">
+				<span class="btnSmart-title"> #:title# </span><br />
+				<span class="btnSmart-date"> #:date#</span><br />
+				<span class="btnSmart-date"> #:placeName#</span>
+			</div>
+
+			<span class="btnSmart-type">
+					<img src="images/smart-event-alt.svg" class="icon-smartBtn" />
+			</span>
+	</span>
+</div>
+</script>
+
+<script id="intelliMovie-chat-1" type="text/x-kendo-template">
+	<div class="intelliMovie">
+		<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick" >
+			<div class="btnSmart-poster">
+				<img src="#:imageUrl#" class="btnSmart-img" />
+			</div>
+			<div class="btnSmart-content">
+				<p class="btnSmart-title">#:movieTitle#</p>
+				<p class="btnSmart-date textClamp">#:dateStr#</p>
+				<p class="btnSmart-date textClamp">#:theatreName#</p>
+			</div>
+			<span class="btnSmart-type">
+				<img src="images/smart-movie-circle.svg" />
+			</span>
+		</span>
+	</div>
+</script>
+
+
+<script id="intelliMovie-chat" type="text/x-kendo-template">
+	<div class="intelliMovie" data-role="button" data-objectid="#:objectId#" data-objectType="movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick">
+		<div class="header">
+			<p class="title textClamp">
+				<img src="images/intelliMovie-icon.svg" />
+				#:movieTitle#
+			</p>
+			<p class="subheader helper textClamp">
+				<span class="rating">#:rating#</span> •
+				<span class="runtime">#:runtime# </span>
+			</p>
+			<div class="poster">
+				<img src="#:imageUrl#" class="btnSmart-img" />
+			</div>
+		</div>
+
+		<div class="footer">
+			<ul class="list-unstyled">
+				<li>
+					<p class="textClamp date">
+						<img src="images/icon-time.svg" /> #:dateStr#
+					</p>
+				</li>
+				<li>
+					<p class="textClamp location">
+						<img src="images/icon-location-dark.svg" /> #:theatreName#
+					</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</script>
+
+<script id="intelliPlace-chat" type="text/x-kendo-template">
+	<div>
+	<span class="btnSmart-place" data-role="button" data-objectid="#:objectId#" data-objectType="place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick" >
+
+			<div class="btnSmart-content">
+				<p class="btnSmart-title"> #:name# </p>
+				<p class="btnSmart-date"> #:address#</p>
+
+			</div>
+
+			<span class="btnSmart-type">
+					<img src="images/smart-event-alt.svg" class="icon-smartBtn" />
+			</span>
+	</span>
+	</div>
+</script>
 
 <!-- smartMovie movieGram modal -->
 <div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView.activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
@@ -4789,41 +4935,6 @@
 	</div>
 </div>
 
-<script id="intelliFlight-chat" type="text/x-kendo-template">
-	<div class="intelliFlight">
-		<div class="header">
-			<p class="title">
-				<img src="images/intelliFlight-icon.svg" /> Flight Name <span>Status</span>
-			</p>
-			<p class="helper subheader">
-				<span>Airline</span>
-				<span>Flight</span> •
-				<span>Flight Duration</span>
-			</p>
-		</div>
-		<div class="summary">
-			<div class="origin">
-				<p class="airport">LAX</p>
-				<p class="city">Los Angeles, CA</p>
-				<p class="date">July 24, 2016</p>
-				<p class="time">8:20am PST</p>
-				<p class="terminal">Terminal 1 Gate 32</p>
-			</div>
-			<div class="liner"></div>
-			<div class="destination">
-				<p class="airport">NYC</p>
-				<p class="city">New York, NY</p>
-				<p class="date">July 25, 2016</p>
-				<p class="time">5:09pm EST</p>
-				<p class="terminal"></p>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-		<div class="footer">
-			<a class="btnClear btnFull-modal" data-role="button">Track</a>
-		</div>
-	</div>
-</script>
 
 <!-- smartFlightSearch modal -->
 <div data-role="modalview" id="modalview-smartFlightSearch" data-init="smartFlightSearchView.onInit"   data-open="smartFlightSearchView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
@@ -4876,9 +4987,14 @@
 <div data-role="modalview" id="modalview-smartFlight" data-model="smartFlightView.status" data-init="smartFlightView.onInit"   data-open="smartFlightView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span><img src="images/smart-flight-home.svg" class="icon-gg-drawer" />IntelliFlight</span>
+			<span><img src="images/intelliFlight-icon.svg" class="icon-gg-drawer" />IntelliFlight</span>
 			<a data-role="button"  data-align="left" data-click="smartFlightView.onDone" ><img src="images/nav-back.svg" /></a>
 		</div>
+	</div>
+
+	<div class="intelli-header">
+		<img src="images/intelliFlight-icon.svg" alt="intelliFlight"/>
+		<p class="intelli-subheader">Track your flight (share with friends and family).</p>
 	</div>
 
 	<form class="flightCreator">
@@ -4890,7 +5006,7 @@
 			</li>
 			<li>
 				<label> Flight
-					<input id="smartFlight-flight" type="search" >
+					<input id="smartFlight-flight" type="search" placeholder="Please enter flight...">
 				</label>
 			</li>
 
@@ -5657,6 +5773,7 @@
 			</a><!-- listBox -->
 	</div>
 </script>
+
 
 
 </body>

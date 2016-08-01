@@ -457,24 +457,26 @@ function getFlightStatus(airline, flight, date, callback) {
 		//  contentType: 'application/json',
 		success: function(result) {
 
-		    if (result.status === 'ok' && result.result !== undefined) {
+		    if (result.status === 'ok' && result.result !== undefined && result.result.flightStatuses.length > 0) {
                 var resObj = {
                     status: 'ok',
                     valid: true,
-                    flightStatus: result.result.flightStatuses
+                    flightStatus: result.result.flightStatuses,
+					airports: result.result.appendix.airports,
+					airlines: result.result.appendix.airlines
                 };
                 callback(resObj);
             } else {
                 callback({
                     status: 'error',
                     valid: false,
-                    error: 'Invalide response object'
+                    error: 'Flight not found...'
                 });
             }
 
 		},
 		error: function(error) {
-			mobileNotify("Error checking flightStatus" + error);
+			mobileNotify("Error checking FlightStatus" + error);
 			callback({
 				status: 'error',
 				valid: false,

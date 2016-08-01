@@ -227,10 +227,10 @@
   width: 5.4em;
   background: #fff !important;
   max-width: 30%;
+  height: 6em;
 }
 .btnSmart-movie .btnSmart-poster .btnSmart-img {
-  width: 100%;
-  height: 100%;
+  max-width: 100% !important;
   text-align: center;
   vertical-align: middle;
 }
@@ -5872,12 +5872,12 @@ html .km-pane-wrapper .k-header {
   color: #4A4A4A;
 }
 /* Chat styles */
-#messages-listview li {
+#messages-listview > li {
   width: 100%;
   padding-right: 1rem !important;
   padding-left: 1rem !important;
 }
-#messages-listview li:last-child {
+#messages-listview > li:last-child {
   margin-bottom: 2em;
 }
 .chat-message {
@@ -7162,4 +7162,72 @@ table.k-editor {
   position: relative;
   top: -0.25em;
   float: left;
+}
+/* IntelliMovie */
+.intelliMovie {
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  padding: 0 !important;
+  background-color: #fff !important;
+  overflow: hidden;
+}
+.intelliMovie .header {
+  padding: 0.5em 1em 0;
+  text-align: left;
+  border-bottom: 2px dotted #E0E0E0;
+}
+.intelliMovie .header .title {
+  font-size: 1em;
+  font-weight: 600;
+  width: 95%;
+  padding: 0;
+  margin: 0 !important;
+}
+.intelliMovie .header .title img {
+  height: 1em;
+  max-width: 1em;
+  vertical-align: text-top;
+}
+.intelliMovie .header .title span {
+  font-size: 0.85em;
+  background-color: #E0E0E0;
+  border-radius: 4px;
+  margin: 0 0.5em;
+  color: #fff;
+  font-weight: 400;
+  padding: 0.1em 0.25em;
+}
+.intelliMovie .header .subheader {
+  font-size: 0.85em;
+  position: relative;
+}
+.intelliMovie .poster {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.intelliMovie .poster img {
+  height: 3em;
+}
+.intelliMovie .footer {
+  text-align: left;
+}
+.intelliMovie .footer ul {
+  padding: 0;
+}
+.intelliMovie .footer ul li {
+  padding-left: 1em !important;
+  padding-right: 1em !important;
+  font-size: 0.85em;
+  margin-top: 0.5em;
+}
+.intelliMovie .footer ul li img {
+  height: 1em;
+  max-width: 1em;
+  margin-right: 0.5em;
+  vertical-align: text-top;
+}
+.intelliMovie .footer ul li:last-child {
+  margin-bottom: 1em;
 }

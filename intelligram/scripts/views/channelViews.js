@@ -1315,6 +1315,8 @@ var channelView = {
         channelView._channel = thisChannel;
         channelView._channelName = thisChannel.name;
 
+        notificationModel.updateUnreadNotification(channelView._channelUUID, channelView._channelName, 0);
+
         channelView.openEditor();
         channelView.toggleTitleTag();
 
@@ -2186,6 +2188,8 @@ var channelView = {
                 text = channelView.addSmartPlaceToMessage(smartObject, text);
             } else if (smartObject.ggType === 'Trip') {
                 text = channelView.addSmartTripToMessage(smartObject, text);
+            } else if (smartObject.ggType === 'Flight') {
+                text = channelView.addSmartFlightToMessage(smartObject, text);
             }
 
         }
@@ -2272,7 +2276,7 @@ var channelView = {
         var messageId = chatmessage[0].attributes.id.value;
 
         if (messageId === null) {
-            mobileNotify("Sender deleted this Smart Event!");
+            mobileNotify("Sender deleted this IntelliObject!");
             return;
         }
 
@@ -2302,6 +2306,9 @@ var channelView = {
                         mapViewModal.openModal(locObj, function () {
 
                         });
+                    } else if (object.ggType === "Trip") {
+
+                    } else if (object.ggType === "Flight") {
 
                     }
 
@@ -2317,7 +2324,7 @@ var channelView = {
     addSmartEventToMessage: function (smartEvent, message) {
 
       //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = new Date(smartEvent.date).toLocaleString(), objectId = smartEvent.uuid;
+        var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
 
         /*var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");*/
@@ -2326,19 +2333,18 @@ var channelView = {
         if(placeName === null){
             placeName = "";
         }
-        
-        var objectUrl = '<div><span class="btnSmart" data-role="button" data-objectid="' + objectId +
-            '" id="chatobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
-            '<span class="btnSmart-content">' +
-            '<span class="btnSmart-title">' + smartEvent.title + ' </span><br /> ' +
-            '<span class="btnSmart-date">' + date + '</span><br /> ' +
-            '<span class="btnSmart-date">' + placeName + '</span> ' +
-            '</span>' +
-            '<span class="btnSmart-type">' +
-            '<img src="images/smart-event-alt.svg" class="icon-smartBtn" />' +
-            '</span>' +
-            '</span></div>';
+
+
+        var template = kendo.template($("#intelliEvent-chat").html());
+        var dataObj = {
+            title : smartEvent.title,
+            date : date,
+            placeName: placeName,
+            objectId : objectId
+        };
+
+
+       var objectUrl = template(dataObj);
 
         var fullMessage = message + objectUrl;
 
@@ -2353,23 +2359,21 @@ var channelView = {
         //  var editor = $("#messageTextArea").data("kendoEditor");
         var date = smartMovie.showtime, objectId = smartMovie.uuid;
 
-        var dateStr = moment(date).format('ddd MMM Do h:mm A');
+        var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
 
-        var objectUrl = '<div><span class="btnSmart-movie" data-role="button" data-objectid="' + objectId +
-            '" id="movieobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
-            '<div class="btnSmart-poster">' +
-            '<img src="' + smartMovie.imageUrl + '" class="btnSmart-img" />' +
-            '</div>' +
-            '<div class="btnSmart-content">' +
-            '<p class="btnSmart-title">' + smartMovie.movieTitle + ' </p> ' +
-            '<p class="btnSmart-date textClamp">' + dateStr + '</p> ' +
-            '<p class="btnSmart-date textClamp">' + smartMovie.theatreName + '</p> ' +
-            '</div>' +
-            '<span class="btnSmart-type">' +
-            '<img src="images/smart-movie-circle.svg" />' +
-            '</span>' +
-            '</span></div>';
+
+        var template = kendo.template($("#intelliMovie-chat").html());
+        var dataObj = {
+            imageUrl: smartMovie.imageUrl,
+            movieTitle : smartMovie.movieTitle,
+            dateStr : dateStr,
+            theatreName: smartMovie.theatreName,
+            objectId : objectId,
+            rating: smartMovie.rating,
+            runtime: smartMovie.runtime
+        };
+
+        var objectUrl = template(dataObj);
 
         var fullMessage = message + objectUrl;
 
@@ -2387,7 +2391,7 @@ var channelView = {
 
 
 
-        var objectUrl = '<div><span class="btnSmart-place" data-role="button" data-objectid="' + objectId +
+       /* var objectUrl = '<div><span class="btnSmart-place" data-role="button" data-objectid="' + objectId +
             '" id="placeobject_' + objectId + '"'+
             'data-click="channelView.onObjectClick" >' +
             '<div class="btnSmart-content">' +
@@ -2395,10 +2399,59 @@ var channelView = {
             '<p class="btnSmart-date textClamp">' + smartPlace.address + '</p> ' +
             '</div>' +
             '</span></div>';
+*/
 
+        var template = kendo.template($("#intelliPlace-chat").html());
+        var dataObj = {
+            name: smartPlace.name,
+            address: smartPlace.address,
+            objectId : objectId
+        };
+
+        var objectUrl = template(dataObj);
         var fullMessage = message + objectUrl;
 
         channelView.activeMessage.objects.push(smartPlace);
+
+        return (fullMessage);
+
+    },
+
+
+    addSmartTripToMessage: function (smartTrip, message) {
+        var  objectId = smartTrip.uuid;
+
+        var template = kendo.template($("#intelliTrip-chat").html());
+        var dataObj = {
+            name: smartPlace.name,
+            address: smartPlace.address,
+            objectId : objectId
+        };
+
+        var objectUrl = template(dataObj);
+        var fullMessage = message + objectUrl;
+
+        channelView.activeMessage.objects.push(smartTrip);
+
+        return (fullMessage);
+
+    },
+
+
+    addSmartFlightToMessage: function (smartFlight, message) {
+        var  objectId = smartFlight.uuid;
+
+        var template = kendo.template($("#intelliFlight-chat").html());
+        var dataObj = {
+            name: smartPlace.name,
+            address: smartPlace.address,
+            objectId : objectId
+        };
+
+        var objectUrl = template(dataObj);
+        var fullMessage = message + objectUrl;
+
+        channelView.activeMessage.objects.push(smartFlight);
 
         return (fullMessage);
 
@@ -2814,7 +2867,11 @@ var channelView = {
     messageAlert : function (e) {
         _preventDefault(e);
 
-        smartAlertView.openModal(channelView._channelUUID, channelView._channelName);
+        smartAlertView.openModal(channelView._channelUUID, channelView._channelName, function(alert) {
+            if (alert !== undefined && alert !== null) {
+
+            }
+        });
 
     },
 
@@ -2969,7 +3026,13 @@ var channelView = {
     messageFlight : function (e) {
         _preventDefault(e);
         //channelView.messageMenuTag();
-        smartFlightView.openModal();
+        smartFlightView.openModal(null, function (flight) {
+            if (flight !== undefined && flight !== null) {
+                channelView.messageObjects.push(flight);
+                 mobileNotify("Sending IntelliFlight...");
+                 channelView.messageSend();
+            }
+        });
     },
 
 
@@ -2978,7 +3041,7 @@ var channelView = {
 
         smartEventPlacesView.openModal("", "IntelliPlace", function (placeObj) {
             if (placeObj !== undefined && placeObj !== null) {
-                var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID};
+                var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID, senderName: userModel._user.name};
 
                 place.lat = placeObj.lat;
                 place.lng = placeObj.lng;
@@ -2999,10 +3062,9 @@ var channelView = {
         smartTripView.openModal(null, function (trip) {
             if (trip !== undefined && trip !== null) {
 
-
-                /*channelView.messageObjects.push(trip);
+                channelView.messageObjects.push(trip);
                 mobileNotify("Sending IntelliTrip...");
-                channelView.messageSend();*/
+                channelView.messageSend();
             }
         });
     },

@@ -1066,9 +1066,6 @@ var smartNoteView = {
     }
 };
 
-var smartFlightView = {
-
-};
 
 var movieListView = {
     activeObject : new kendo.data.ObservableObject(),
@@ -2484,6 +2481,7 @@ var smartTripView = {
         smartTripView.activeObject.bind("change", function (e) {
             switch (e.field) {
                 case 'tripType' :
+                    smartTripView.validate();
                     break;
 
                 case 'origin' :
@@ -2587,7 +2585,7 @@ var smartTripView = {
                 if(filter.value > 0){
                     $(".smartTrip-currentLocation").addClass("hidden");
 
-                    if(smartTripView.origin === null){
+                    if(smartTripView.activeObject.origin === null){
                         $("#smartTripView-originSearchBtn").removeClass("hidden").text('Find "' + val + '"');
                     }
 
@@ -2633,10 +2631,11 @@ var smartTripView = {
                 // Show origin step
                 $(".smartTripView-origin-box").removeClass("hidden");
             },
+
             change: function(e){
                 var val = this.value();
 
-                if(val.length > 0 && smartTripView.destination === null){
+                if(val.length > 0 && smartTripView.activeObject.destination === null){
                     $("#smartTripView-destinationSearchBtn").removeClass("hidden").text('Find "' + val + '"');
 
                 } else {
@@ -2688,8 +2687,8 @@ var smartTripView = {
             smartTripView.validOrigin = false;
             smartTripView.validDestination = false;
 
-            obj.set('ownerUUID', userModel._user.userUUID);
-            obj.set('ownerName', userModel._user.name);
+            obj.set('senderUUID', userModel._user.userUUID);
+            obj.set('senderName', userModel._user.name);
             obj.set('name', userModel._user.name + "'s Trip");
             obj.set('tripType', 'driving');
             obj.set('travelMode', google.maps.TravelMode.DRIVING);
@@ -2720,8 +2719,8 @@ var smartTripView = {
             smartTripView.validOrigin = true;
             smartTripView.validDestination = true;
 
-            obj.set('ownerUUID', tripObj.ownerUUID);
-            obj.set('ownerName', tripObj.ownerName);
+            obj.set('senderUUID', tripObj.senderUUID);
+            obj.set('senderName', tripObj.senderName);
 
             obj.set('name', tripObj.name);
             obj.set('tripType', tripObj.tripType);
@@ -2730,8 +2729,6 @@ var smartTripView = {
             obj.set('addToCalendar',  tripObj.addToCalendar);
             obj.set('leg1Complete',  tripObj.leg1Complete);
             obj.set('leg2Complete',  tripObj.leg2Complete);
-            obj.set('arrivalSet',  tripObj.arrivalSet);
-            obj.set('arrivalSet', tripObj.arrivalSet);
             obj.set('origin', tripObj.origin);
             obj.set('originName', tripObj.originName);
             obj.set('destination', tripObj.destination);
@@ -2755,7 +2752,7 @@ var smartTripView = {
             smartTripView.setCreator();
             smartTripView.setActiveObject(null);
 
-        } else if (tripObj.ownerUUID === userModel._user.userUUID) {
+        } else if (tripObj.senderUUID === userModel._user.userUUID) {
             smartTripView.mode = 'edit';
             smartTripView.setActiveObject(tripObj);
             smartTripView.setEditor();
@@ -3231,10 +3228,7 @@ var smartTripView = {
         smartTripView.validate();
     },
 
-    onCancel : function (e) {
-        // todo - Clear fields wip, need to rewire to observable event
-
-
+    initUX : function ()  {
         smartTripView.lockLocation(false, "destination");
         smartTripView.lockLocation(false, "origin");
 
@@ -3243,13 +3237,24 @@ var smartTripView = {
         $("#smartTripView-step-2, #smartTripView-step-3").css({"opacity": 0, "z-index": 0});
         $("input[name=arrival]").prop("checked", false);
         $("#smartTripView-departure-time, #smartTripView-arrival-time").addClass('hidden');
+    },
+
+    onCancel : function (e) {
+
+        smartTripView.setActiveObject(null);
+
+
+        smartTripView.initUX();
+
 
         $("#smartTripModal").data("kendoMobileModalView").close();
     },
 
     onSave : function (e) {
 
-        smartTripView.onCancel();
+
+        smartTripView.initUX();
+        smartTripView.onDone();
     },
 
     onViewDone : function (e) {
@@ -3274,6 +3279,7 @@ var smartFlightView = {
     validFlight: false,
     validDate: false,
     status: new kendo.data.ObservableObject(),
+    callback : null,
 
     checkFlight: function () {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
@@ -3286,6 +3292,10 @@ var smartFlightView = {
         }
     },
 
+    setFlightSTatus : function (statusObj) {
+
+    },
+    
     processFlightStatus : function (statusObj) {
 
         var status = statusObj.flightStatus[0];
@@ -3341,7 +3351,7 @@ var smartFlightView = {
         $('#smartFlight-flight').change(function () {
             var code = $('#smartFlight-flight').val();
 
-            if (code.length > 1) {
+            if (code.length > 4) {
                 var amatch =  smartFlightView.regExA.exec(code);
                 var fmatch =  smartFlightView.regExF.exec(code);
                 smartFlightView.validFlight = false;
@@ -3429,8 +3439,19 @@ var smartFlightView = {
         })
     },
 
-    openModal : function (flight) {
+    openModal : function (flight, callback) {
 
+        smartFlightView.callback = null;
+        smartFlightView.validAirline  = false;
+        smartFlightView.validFlight = false;
+        smartFlightView.validDate = false;
+        $("#smartFlight-flightDate").val(new Date());
+        $("#smartFlight-flight").val('');
+        $("#smartFlight-airline").val('');
+
+        if (callback !== undefined) {
+            smartFlightView.callback = callback;
+        }
 
         if (flight === undefined || flight === null) {
             // No current flight - set editor state
@@ -3442,7 +3463,7 @@ var smartFlightView = {
 
 
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
-        $("#smartFlight-flightDate").val(new Date());
+
     },
 
     closeModal : function () {
@@ -3594,6 +3615,7 @@ var smartParkView = {
 var smartAlertView = {
     channelUUID : null,
     channelName : null,
+    callback: null,
 
     onInit: function () {
        $('#smartAlertModal-message').change(function (){
@@ -3610,7 +3632,13 @@ var smartAlertView = {
 
     },
 
-    openModal : function (channelUUID, channelName) {
+    openModal : function (channelUUID, channelName, callback) {
+
+        smartAlertView.callback = null;
+
+        if (callback !== undefined) {
+            smartAlertView.callback = callback;
+        }
 
         smartAlertView.channelUUID = channelUUID;
         smartAlertView.channelName = channelName;
@@ -3631,7 +3659,10 @@ var smartAlertView = {
         var message = $('#smartAlertModal-message').val();
 
         appDataChannel.userAlert(smartAlertView.channelUUID, smartAlertView.channelName, message);
-        mobileNotify("Sending IntelliAlert to " + smartAlertView.channelName);
+        //mobileNotify("Sending IntelliAlert to " + smartAlertView.channelName);
+        if (smartAlertView.callback !== null) {
+            smartAlertView.callback(message);
+        }
         $("#smartAlertModal").data("kendoMobileModalView").close();
     }
 };
