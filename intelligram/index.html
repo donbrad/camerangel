@@ -5010,6 +5010,19 @@
 					<input id="smartFlight-flightDate" type="date" >
 				</label>
 			</li>
+
+			<li class="flightPicker hidden">
+				<label> Flying From
+					<input id="smartFlight-flightDeparture" type="text" >
+				</label>
+			</li>
+
+			<li class="flightPicker hidden">
+				<label> Flying To
+					<input id="smartFlight-flightArrival" type="text" >
+				</label>
+			</li>
+
 			<li class="returnFlight hidden">
 				<label> Airline
 					<input id="smartFlight-returnAirline" type="text" placeholder="Please enter airline..." >
@@ -5031,10 +5044,7 @@
 		</ul>
 	</form>
 
-	<div id="smartFlightView-flightPicker" class="hidden">
-		<a data-click="smartFlightView.onAllSegments" data-role="button" class="btnSecondary">Select All Segments </a>
-		<ul id="smartFlightView-flightSegments" data-role="listview" data-style="inset"></ul>
-	</div>
+
 
 	<div id="smartFlightView-flightStatus" class="flightViewer hidden">
 
