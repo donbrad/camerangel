@@ -3278,7 +3278,9 @@ var smartFlightView = {
     validAirline : false,
     validFlight: false,
     validDate: false,
+    pickSegment : false,  // User must pick segment in multi-segment flight
     status: new kendo.data.ObservableObject(),
+    segmentsDS : new kendo.data.DataSource(),
     callback : null,
 
     checkFlight: function () {
@@ -3335,16 +3337,24 @@ var smartFlightView = {
         }
 
     },
-    
+
+    finalizeFlightStatus : function (status) {
+
+    },
+
     processFlightStatus : function (statusObj) {
 
-        var status = statusObj.flightStatus[0];
-
-
-
+        var that = smartFlightView;
         var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
 
-        var addressArray = [], airlineArray = [], airportArray = [], segmentArray = [];
+        var addressArray = that.addressArray = [],
+            airlineArray = that.airlineArray = [],
+            airportArray = that.airportArray = [],
+            segmentArray = that.segmentArray = [];
+
+        if (airports.length > 1) {
+            smartFlightView.pickSegment = true;
+        }
 
         // Process airports -- build associative array
         for (var i=0; i<airports.length; i++) {
@@ -3358,6 +3368,7 @@ var smartFlightView = {
                 utcOffsetHours : airports[i].utcOffsetHours
             };
 
+            // Build the route segment array
             if (i < (airports.length - 1) ) {
                 var thisSegment = {fromAirport : airports[i].fs, fromCity : airports[i].city + ", " + airports[i].stateCode,
                     toAirport : airports[i+1].fs, toCity : airports[i+1].city + ", " + airports[i+1].stateCode};
@@ -3528,7 +3539,17 @@ var smartFlightView = {
             placeholder: "Enter airline... "
         });
 
+        $("#smartFlightView-flightSegments").kendoMobileListView({
+                dataSource: smartFlightView.segmentsDS,
+                template: $("#flightViewSegmentTemplate").html(),
+                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
+                //fixedHeaders: true,
+                click: function (e) {
+                    var segment = e.dataItem;
 
+                }
+            }
+        );
     },
 
 
@@ -3553,10 +3574,13 @@ var smartFlightView = {
         smartFlightView.validAirline  = false;
         smartFlightView.validFlight = false;
         smartFlightView.validDate = false;
+        smartFlightView.segmentsDS.data([]);
+
         $("#smartFlight-flightDate").val(new Date());
         $("#smartFlight-flight").val('');
         $("#smartFlight-airline").val('');
         $('#smartFlightView-flightPicker').addClass('hidden');
+
         
         if (callback !== undefined) {
             smartFlightView.callback = callback;
@@ -3569,7 +3593,6 @@ var smartFlightView = {
             $('#smartFlightView-flightStatus').addClass('hidden');
             $('.flightCreator').removeClass('hidden');
         }
-
 
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
 
