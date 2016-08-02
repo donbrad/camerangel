@@ -3406,7 +3406,7 @@ var smartFlightView = {
         smartFlightView.status.set('baggageClaim',  that.arrivalStatus.airportResources.baggage);
 
 
-        var duration = that.computeFlightTime(that.departureAirport, that.arrivalStatua);
+        var duration = that.computeFlightTime(that.departureAirport, that.arrivalAirport);
         smartFlightView.status.set('durationMinutes', duration);
 
         var depDate = moment(that.departureStatus.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(that.arrivalStatus.operationalTimes.estimatedGateArrival.dateUtc);
