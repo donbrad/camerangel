@@ -3282,6 +3282,8 @@ var smartFlightView = {
     status: new kendo.data.ObservableObject(),
     segmentsDS : new kendo.data.DataSource(),
     callback : null,
+    departureStatus : null,
+    arrivalStatua: null,
     departureAirport : null,
     arrivalAirport: null,
     addressArray : [],
@@ -3298,6 +3300,15 @@ var smartFlightView = {
             getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
                 smartFlightView.processFlightStatus(result);
             })
+        } else {
+            return;
+        }
+    },
+
+    checkFlightComplete : function () {
+        if (smartFlightView.validArrival && smartFlightView.validDeparture) {
+            smartFlightView.finalizeFlightStatus();
+            
         } else {
             return;
         }
@@ -3347,18 +3358,15 @@ var smartFlightView = {
 
     },
 
-    onSelectAllSegments : function ()  {
 
-    },
-
-    finalizeFlightStatus : function (status) {
+    finalizeFlightStatus : function () {
         var that = smartFlightView;
-        var airline = that.airlineArray[status.primaryCarrierFsCode].name;
+        var airline = that.airlineArray[that.carrierCode].name;
         if (airline === undefined) {
             airline = null;
         }
 
-        var airlinePhone = that.airlineArray[status.primaryCarrierFsCode].phoneNumber;
+        var airlinePhone = that.airlineArray[that.carrierCode].phoneNumber;
         if (airlinePhone === undefined) {
             airlinePhone = null;
         }
@@ -3373,45 +3381,48 @@ var smartFlightView = {
         var departureLat = that.airportArray[that.departureAirport].lat;
         var departureLng =that.airportArray[that.departureAirport].lng;
 
-        smartFlightView.status.set('carrierCode',status.primaryCarrierFsCode);
+        smartFlightView.status.set('carrierCode',that.carrierCode);
         smartFlightView.status.set('airline', airline);
         smartFlightView.status.set('airlinePhone', airlinePhone);
-        smartFlightView.status.set('flightNumber',status.flightNumber);
+        smartFlightView.status.set('flightNumber',that.flightNumber);
 
-        smartFlightView.status.set('arrivalAirport', status.arrivalAirportFsCode);
+        smartFlightView.status.set('arrivalAirport', that.arrivalAirport);
         smartFlightView.status.set('arrivalCity', arrivalCity);
         smartFlightView.status.set('arrivalName', arrivalName);
         smartFlightView.status.set('arrivalLat', arrivalLat);
         smartFlightView.status.set('arrivalLng', arrivalLng);
 
-        smartFlightView.status.set('departureAirport',status.departureAirportFsCode);
+        smartFlightView.status.set('departureAirport',that.departureAirport);
         smartFlightView.status.set('departureCity',departureCity);
         smartFlightView.status.set('departureName',departureName);
         smartFlightView.status.set('departureLat',departureLat);
         smartFlightView.status.set('departureLng',departureLng);
 
 
-        smartFlightView.status.set('departureTerminal', status.airportResources.departureTerminal);
-        smartFlightView.status.set('departureGate',status.airportResources.departureGate);
+        smartFlightView.status.set('departureTerminal', that.departureStatus.airportResources.departureTerminal);
+        smartFlightView.status.set('departureGate',that.departureStatus.airportResources.departureGate);
 
-        smartFlightView.status.set('arrivalTerminal', status.airportResources.arrivalTerminal);
-        smartFlightView.status.set('arrivalGate', status.airportResources.arrivalGate);
-        smartFlightView.status.set('baggageClaim',  status.airportResources.baggage);
-        smartFlightView.status.set('durationMinutes', status.flightDurations.scheduledBlockMinutes);
+        smartFlightView.status.set('arrivalTerminal', that.arrivalStatus.airportResources.arrivalTerminal);
+        smartFlightView.status.set('arrivalGate', that.arrivalStatus.airportResources.arrivalGate);
+        smartFlightView.status.set('baggageClaim',  that.arrivalStatus.airportResources.baggage);
 
-        var depDate = moment(status.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(status.operationalTimes.estimatedGateArrival.dateUtc);
+
+        var duration = that.computeFlightTime(that.departureAirport, that.arrivalStatua);
+        smartFlightView.status.set('durationMinutes', duration);
+
+        var depDate = moment(that.departureStatus.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(that.arrivalStatus.operationalTimes.estimatedGateArrival.dateUtc);
         smartFlightView.status.set('estimatedDeparture', depDate.format("M/D/YYYY h:mm a"));
         smartFlightView.status.set('estimatedArrival',  arrDate.format("M/D/YYYY h:mm a"));
 
         smartFlightView.status.set('actualDeparture', null);
-        if (status.operationalTimes.actualGateDeparture !== undefined) {
-            var depDateAct = moment(status.operationalTimes.actualGateDeparture.dateUtc);
+        if (that.departureStatus.operationalTimes.actualGateDeparture !== undefined) {
+            var depDateAct = moment(that.departureStatus.operationalTimes.actualGateDeparture.dateUtc);
             smartFlightView.status.set('actualDeparture', depDateAct.format("M/D/YYYY h:mm a"));
         }
 
         smartFlightView.status.set('actualArrival', null);
-        if (status.operationalTimes.actualGateArrival !== undefined) {
-            var arrDateAct = moment(status.operationalTimes.actualGateArrival.dateUtc);
+        if (that.arrivalStatus.operationalTimes.actualGateArrival !== undefined) {
+            var arrDateAct = moment(that.arrivalStatus.operationalTimes.actualGateArrival.dateUtc);
             smartFlightView.status.set('actualArrival', arrDateAct.format("M/D/YYYY h:mm a"));
         }
 
@@ -3423,14 +3434,72 @@ var smartFlightView = {
 
     },
 
+    getArrivalStatus : function (airportCode) {
+        var that = smartFlightView;
+
+        for (var i=0; i<that.statusArray.length; i++) {
+            if (that.statusArray[i].arrivalAirportFsCode === airportCode) {
+                that.arrivalStatus = that.StatusArray[i];
+                return (true);
+            }
+        }
+
+        return(false);
+    },
+
+    getDepartureStatus : function (airportCode) {
+        var that = smartFlightView;
+
+        for (var i=0; i<that.statusArray.length; i++) {
+            if (that.statusArray[i].departureAirportFsCode === airportCode) {
+                that.departureStatus = that.StatusArray[i];
+
+                return (true);
+            }
+        }
+
+        return(false);
+    },
+
+
+    computeFlightTime : function (departAirport, arriveAirport) {
+        var that = smartFlightView;
+
+        var flightTime = 0;
+
+        var depart = departAirport,
+            arrive = arriveAirport;
+
+
+        for (var i=0; i<that.statusArray.length; i++) {
+            var status = that.statusArray[i];
+            if (status.departureAirportFsCode === depart) {
+                flightTime += status.flightDurations.scheduledBlockMinutes;
+
+                if (status.arrivalAirportFsCode === arrive) {
+                    return(flightTime);
+                } else {
+                    depart = status.arrivalAirportFsCode;
+                }
+            }
+        }
+
+    },
+
+
     processFlightStatus : function (statusObj) {
 
         var that = smartFlightView;
+
+        that.statusArray = statusObj.flightStatus;
+
         var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
 
         that.addressArray = [], that.airlineArray = [], that.airportArray = [], that.segmentArray = [], that.departureAirports = [],
-        that.arrivalAirports = [], that.statusArray = [];
+        that.arrivalAirports = [];
 
+        that.carrierCode = status.primaryCarrierFsCode;
+        that.flightNumber = status.flightNumber;
 
         // Process airports -- build associative array
         for (var i=0; i<airports.length; i++) {
@@ -3459,16 +3528,24 @@ var smartFlightView = {
         }
 
         if (airports.length > 1) {
-            smartFlightView.pickSegment = true;
-            smartFlightView.validArrival = false;
-            smartFlightView.validDeparture = false;
+            // Multiple segments, need to let user pick departure and arrival airports from available segments
+            that.pickSegment = true;
+            that.validArrival = false;
+            that.validDeparture = false;
             $('.flightPicker').removeClass('hidden');
         } else {
-            smartFlightView.validArrival = true;
-            smartFlightView.validDeparture = true;
-            
 
-            smartFlightView.finalizeFlightStatus(status);
+            // Just one segment -- so we know departure and arrival airports
+            that.validArrival = true;
+            that.validDeparture = true;
+
+            that.departureAirport = status.departureAirportFsCode;
+            that.arrivalAirport = status.arrivalAirportFsCode;
+
+            that.arrivalStatus = status;
+            that.departureStatus = status;
+
+            that.finalizeFlightStatus();
             $('.flightPicker').addClass('hidden');
         }
 
@@ -3562,8 +3639,11 @@ var smartFlightView = {
                 //var depart = e.item;
                 var depart = this.dataItem(e.item.index());
                 smartFlightView.departureAirport = depart.airport;
-                smartFlightView.validDeparture = true;
-                smartFlightView.checkFlight();
+                if (smartFlightView.getDepartureStatus(depart.airport)) {
+                    smartFlightView.validDeparture = true;
+                    smartFlightView.checkFlightComplete();
+                }
+
             },
             filter: "contains",
             placeholder: "Enter Departure... "
@@ -3577,8 +3657,11 @@ var smartFlightView = {
                 //var airline = e.item;
                 var arrive = this.dataItem(e.item.index());
                 smartFlightView.arrivalAirport = arrive.airport;
-                smartFlightView.validArrival = true;
-                smartFlightView.checkFlight();
+
+                if (smartFlightView.getArrivalStatus(arrive.airport)) {
+                    smartFlightView.validArrival = true;
+                    smartFlightView.checkFlightComplete();
+                }
             },
             filter: "contains",
             placeholder: "Enter Arrival... "
