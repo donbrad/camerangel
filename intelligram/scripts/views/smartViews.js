@@ -3278,8 +3278,14 @@ var smartFlightView = {
     validAirline : false,
     validFlight: false,
     validDate: false,
+    pickSegment : false,  // User must pick segment in multi-segment flight
     status: new kendo.data.ObservableObject(),
+    segmentsDS : new kendo.data.DataSource(),
     callback : null,
+    addressArray : [],
+    segmentArray: [],
+    airportArray: [],
+    airlineArray: [],
 
     checkFlight: function () {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
@@ -3292,19 +3298,92 @@ var smartFlightView = {
         }
     },
 
-    setFlightSTatus : function (statusObj) {
+    setFlightStatus : function (statusObj) {
+        if (statusObj === null) {
+            smartFlightView.status.set('carrierCode', null);
+            smartFlightView.status.set('flightNumber',null);
+            smartFlightView.status.set('arrivalAirport', null);
+            smartFlightView.status.set('departureAirport',null);
+
+            smartFlightView.status.set('departureTerminal', null);
+            smartFlightView.status.set('departureGate',null);
+
+            smartFlightView.status.set('arrivalTerminal', null);
+            smartFlightView.status.set('arrivalGate', null);
+            smartFlightView.status.set('baggageClaim',  null);
+            smartFlightView.status.set('durationMinutes', null);
+
+            smartFlightView.status.set('estimatedDeparture', null);
+            smartFlightView.status.set('estimatedArrival',  null);
+
+            smartFlightView.status.set('actualDeparture', null);
+            smartFlightView.status.set('actualArrival', null);
+
+        } else {
+            smartFlightView.status.set('carrierCode', statusObj.carrierCode);
+            smartFlightView.status.set('flightNumber',statusObj.flightNumber);
+            smartFlightView.status.set('arrivalAirport', statusObj.arrivalAirport);
+            smartFlightView.status.set('departureAirport',statusObj.departureAirport);
+
+            smartFlightView.status.set('departureTerminal', statusObj.departureTerminal);
+            smartFlightView.status.set('departureGate',statusObj.departureGate);
+
+            smartFlightView.status.set('arrivalTerminal', statusObj.arrivalTerminal);
+            smartFlightView.status.set('arrivalGate', statusObj.arrivalGate);
+            smartFlightView.status.set('baggageClaim',  statusObj.baggageClaim);
+            smartFlightView.status.set('durationMinutes', statusObj.durationMinutes);
+
+            smartFlightView.status.set('estimatedDeparture', statusObj.estimatedDeparture);
+            smartFlightView.status.set('estimatedArrival',  statusObj.estimatedArrival);
+
+            smartFlightView.status.set('actualDeparture', statusObj.actualDeparture);
+            smartFlightView.status.set('actualArrival', statusObj.actualArrival);
+        }
 
     },
-    
-    processFlightStatus : function (statusObj) {
 
-        var status = statusObj.flightStatus[0];
+    onSelectAllSegments : function ()  {
 
+    },
+
+    finalizeFlightStatus : function (status) {
+        var airline = airlineArray[status.primaryCarrierFsCode].name;
+        if (airline === undefined) {
+            airline = null;
+        }
+
+        var airlinePhone = airlineArray[status.primaryCarrierFsCode].phoneNumber;
+        if (airlinePhone === undefined) {
+            airlinePhone = null;
+        }
+
+        var arrivalCity = airportArray[status.arrivalAirportFsCode].address;
+        var arrivalName = airportArray[status.arrivalAirportFsCode].name;
+        var arrivalLat = airportArray[status.arrivalAirportFsCode].lat;
+        var arrivalLng = airportArray[status.arrivalAirportFsCode].lng;
+
+        var departureCity = airportArray[status.departureAirportFsCode].address;
+        var departureName = airportArray[status.departureAirportFsCode].name;
+        var departureLat = airportArray[status.departureAirportFsCode].lat;
+        var departureLng = airportArray[status.departureAirportFsCode].lng;
 
         smartFlightView.status.set('carrierCode',status.primaryCarrierFsCode);
+        smartFlightView.status.set('airline', airline);
+        smartFlightView.status.set('airlinePhone', airlinePhone);
         smartFlightView.status.set('flightNumber',status.flightNumber);
+
         smartFlightView.status.set('arrivalAirport', status.arrivalAirportFsCode);
+        smartFlightView.status.set('arrivalCity', arrivalCity);
+        smartFlightView.status.set('arrivalName', arrivalName);
+        smartFlightView.status.set('arrivalLat', arrivalLat);
+        smartFlightView.status.set('arrivalLng', arrivalLng);
+
         smartFlightView.status.set('departureAirport',status.departureAirportFsCode);
+        smartFlightView.status.set('departureCity',departureCity);
+        smartFlightView.status.set('departureName',departureName);
+        smartFlightView.status.set('departureLat',departureLat);
+        smartFlightView.status.set('departureLng',departureLng);
+
 
         smartFlightView.status.set('departureTerminal', status.airportResources.departureTerminal);
         smartFlightView.status.set('departureGate',status.airportResources.departureGate);
@@ -3335,6 +3414,60 @@ var smartFlightView = {
         $('#smartFlightView-DoneBtn').addClass('hidden');
         $('#smartFlightView-SaveBtn').removeClass('hidden');
         $('.flightCreator').addClass('hidden');
+
+    },
+
+    processFlightStatus : function (statusObj) {
+
+        var that = smartFlightView;
+        var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
+
+        var addressArray = that.addressArray = [],
+            airlineArray = that.airlineArray = [],
+            airportArray = that.airportArray = [],
+            segmentArray = that.segmentArray = [];
+
+
+        // Process airports -- build associative array
+        for (var i=0; i<airports.length; i++) {
+            addressArray[airports[i].fs]  =  {
+                code : airports[i].fs,
+                name : airports[i].name,
+                address :  airports[i].city + ", " + airports[i].stateCode,
+                lat : airports[i].latitude,
+                lng : airports[i].longitude,
+                weatherZone : airports[i].weatherZone,
+                utcOffsetHours : airports[i].utcOffsetHours
+            };
+
+            // Build the route segment array
+            if (i < (airports.length - 1) ) {
+                var thisSegment = {fromAirport : airports[i].fs, fromCity : airports[i].city + ", " + airports[i].stateCode,
+                    toAirport : airports[i+1].fs, toCity : airports[i+1].city + ", " + airports[i+1].stateCode};
+
+                segmentArray.push(thisSegment);
+            }
+
+        }
+
+        if (airports.length > 1) {
+            smartFlightView.pickSegment = true;
+            smartFlightView.segmentsDS.data(segmentArray);
+            $('#smartFlightView-flightPicker').removeClass('hidden');
+        } else {
+            smartFlightView.finalizeFlightStatus(status);
+        }
+
+
+        // Process airlines -- build associative array
+        for (var j=0; j<airlines.length; j++) {
+            airlineArray[airlines[j].fs] = {
+                code : airlines[j].fs,
+                name : airlines[j].name,
+                phoneNumber : airlines[j].phoneNumber
+            };
+        }
+
     },
 
     onChangeFlight : function () {
@@ -3351,7 +3484,7 @@ var smartFlightView = {
         $('#smartFlight-flight').change(function () {
             var code = $('#smartFlight-flight').val();
 
-            if (code.length > 4) {
+            if (code.length > 1) {
                 var amatch =  smartFlightView.regExA.exec(code);
                 var fmatch =  smartFlightView.regExF.exec(code);
                 smartFlightView.validFlight = false;
@@ -3420,7 +3553,17 @@ var smartFlightView = {
             placeholder: "Enter airline... "
         });
 
+        $("#smartFlightView-flightSegments").kendoMobileListView({
+                dataSource: smartFlightView.segmentsDS,
+                template: $("#flightViewSegmentTemplate").html(),
+                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
+                //fixedHeaders: true,
+                click: function (e) {
+                    var segment = e.dataItem;
 
+                }
+            }
+        );
     },
 
 
@@ -3445,10 +3588,14 @@ var smartFlightView = {
         smartFlightView.validAirline  = false;
         smartFlightView.validFlight = false;
         smartFlightView.validDate = false;
+        smartFlightView.segmentsDS.data([]);
+
         $("#smartFlight-flightDate").val(new Date());
         $("#smartFlight-flight").val('');
         $("#smartFlight-airline").val('');
+        $('#smartFlightView-flightPicker').addClass('hidden');
 
+        
         if (callback !== undefined) {
             smartFlightView.callback = callback;
         }
@@ -3460,7 +3607,6 @@ var smartFlightView = {
             $('#smartFlightView-flightStatus').addClass('hidden');
             $('.flightCreator').removeClass('hidden');
         }
-
 
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
 

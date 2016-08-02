@@ -1183,7 +1183,7 @@ var channelView = {
         $('#messageTextArea').redactor('insert.html', rendered);
 
         // Recompute selection after emoji inserted
-        channelView.emojiGetSelection();
+       // channelView.emojiGetSelection();
 
     },
 

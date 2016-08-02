@@ -4992,11 +4992,6 @@
 		</div>
 	</div>
 
-	<div class="intelli-header">
-		<img src="images/intelliFlight-icon.svg" alt="intelliFlight"/>
-		<p class="intelli-subheader">Track your flight (share with friends and family).</p>
-	</div>
-
 	<form class="flightCreator">
 		<ul data-role="listview" data-style="inset">
 			<li >
@@ -5015,9 +5010,6 @@
 					<input id="smartFlight-flightDate" type="date" >
 				</label>
 			</li>
-
-
-
 			<li class="returnFlight hidden">
 				<label> Airline
 					<input id="smartFlight-returnAirline" type="text" placeholder="Please enter airline..." >
@@ -5038,6 +5030,11 @@
 
 		</ul>
 	</form>
+
+	<div id="smartFlightView-flightPicker" class="hidden">
+		<a data-click="smartFlightView.onAllSegments" data-role="button" class="btnSecondary">Select All Segments </a>
+		<ul id="smartFlightView-flightSegments" data-role="listview" data-style="inset"></ul>
+	</div>
 
 	<div id="smartFlightView-flightStatus" class="flightViewer hidden">
 
@@ -5069,7 +5066,7 @@
 
 		<div style="clear: both; text-align: center;">
 			<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnSecondary"> Change Flight </a>
-			<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary"> Add Return Flight </a>
+			<!--<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary"> Add Return Flight </a>-->
 		</div>
 	</div>
 	<div class="footer" data-role="footer">
@@ -5077,6 +5074,22 @@
 		<a class="btnFull-modal btnPrimary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
 	</div>
 </div>
+
+
+<script type="text/x-kendo-template" id="flightViewSegmentTemplate">
+	<div>
+		<div style="float: left; text-align: left;">
+			<div> <strong> From: </strong></div>
+			<div> #:fromCity# (#:fromAirport#)</div>
+		</div>
+		<div style="float: right; text-align: right;">
+			<div> <strong> To: </strong></div>
+			<div> #:toCity# (#:toAirport#)</div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+</script>
+
 
 <!-- smartAccount modal -->
 <div data-role="modalview" id="modalview-smartAccount" data-init="smartAccountView.onInit"   data-open="smartAccountView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
