@@ -3282,6 +3282,10 @@ var smartFlightView = {
     status: new kendo.data.ObservableObject(),
     segmentsDS : new kendo.data.DataSource(),
     callback : null,
+    addressArray : [],
+    segmentArray: [],
+    airportArray: [],
+    airlineArray: [],
 
     checkFlight: function () {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
@@ -3338,55 +3342,11 @@ var smartFlightView = {
 
     },
 
-    finalizeFlightStatus : function (status) {
+    onSelectAllSegments : function ()  {
 
     },
 
-    processFlightStatus : function (statusObj) {
-
-        var that = smartFlightView;
-        var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
-
-        var addressArray = that.addressArray = [],
-            airlineArray = that.airlineArray = [],
-            airportArray = that.airportArray = [],
-            segmentArray = that.segmentArray = [];
-
-        if (airports.length > 1) {
-            smartFlightView.pickSegment = true;
-        }
-
-        // Process airports -- build associative array
-        for (var i=0; i<airports.length; i++) {
-            addressArray[airports[i].fs]  =  {
-                code : airports[i].fs,
-                name : airports[i].name,
-                address :  airports[i].city + ", " + airports[i].stateCode,
-                lat : airports[i].latitude,
-                lng : airports[i].longitude,
-                weatherZone : airports[i].weatherZone,
-                utcOffsetHours : airports[i].utcOffsetHours
-            };
-
-            // Build the route segment array
-            if (i < (airports.length - 1) ) {
-                var thisSegment = {fromAirport : airports[i].fs, fromCity : airports[i].city + ", " + airports[i].stateCode,
-                    toAirport : airports[i+1].fs, toCity : airports[i+1].city + ", " + airports[i+1].stateCode};
-
-                segmentArray.push(thisSegment);
-            }
-
-        }
-
-        // Process airlines -- build associative array
-        for (var j=0; j<airlines.length; j++) {
-            airlineArray[airlines[j].fs] = {
-                code : airlines[j].fs,
-                name : airlines[j].name,
-                phoneNumber : airlines[j].phoneNumber
-            };
-        }
-
+    finalizeFlightStatus : function (status) {
         var airline = airlineArray[status.primaryCarrierFsCode].name;
         if (airline === undefined) {
             airline = null;
@@ -3454,6 +3414,60 @@ var smartFlightView = {
         $('#smartFlightView-DoneBtn').addClass('hidden');
         $('#smartFlightView-SaveBtn').removeClass('hidden');
         $('.flightCreator').addClass('hidden');
+
+    },
+
+    processFlightStatus : function (statusObj) {
+
+        var that = smartFlightView;
+        var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
+
+        var addressArray = that.addressArray = [],
+            airlineArray = that.airlineArray = [],
+            airportArray = that.airportArray = [],
+            segmentArray = that.segmentArray = [];
+
+
+        // Process airports -- build associative array
+        for (var i=0; i<airports.length; i++) {
+            addressArray[airports[i].fs]  =  {
+                code : airports[i].fs,
+                name : airports[i].name,
+                address :  airports[i].city + ", " + airports[i].stateCode,
+                lat : airports[i].latitude,
+                lng : airports[i].longitude,
+                weatherZone : airports[i].weatherZone,
+                utcOffsetHours : airports[i].utcOffsetHours
+            };
+
+            // Build the route segment array
+            if (i < (airports.length - 1) ) {
+                var thisSegment = {fromAirport : airports[i].fs, fromCity : airports[i].city + ", " + airports[i].stateCode,
+                    toAirport : airports[i+1].fs, toCity : airports[i+1].city + ", " + airports[i+1].stateCode};
+
+                segmentArray.push(thisSegment);
+            }
+
+        }
+
+        if (airports.length > 1) {
+            smartFlightView.pickSegment = true;
+            smartFlightView.segmentsDS.data(segmentArray);
+            $('#smartFlightView-flightPicker').removeClass('hidden');
+        } else {
+            smartFlightView.finalizeFlightStatus(status);
+        }
+
+
+        // Process airlines -- build associative array
+        for (var j=0; j<airlines.length; j++) {
+            airlineArray[airlines[j].fs] = {
+                code : airlines[j].fs,
+                name : airlines[j].name,
+                phoneNumber : airlines[j].phoneNumber
+            };
+        }
+
     },
 
     onChangeFlight : function () {
