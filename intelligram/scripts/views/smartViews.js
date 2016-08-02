@@ -3308,7 +3308,7 @@ var smartFlightView = {
     checkFlightComplete : function () {
         if (smartFlightView.validArrival && smartFlightView.validDeparture) {
             smartFlightView.finalizeFlightStatus();
-            
+
         } else {
             return;
         }
