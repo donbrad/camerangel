@@ -3438,8 +3438,9 @@ var smartFlightView = {
         var that = smartFlightView;
 
         for (var i=0; i<that.statusArray.length; i++) {
-            if (that.statusArray[i].arrivalAirportFsCode === airportCode) {
-                that.arrivalStatus = that.StatusArray[i];
+            var status = that.statusArray[i];
+            if (status.arrivalAirportFsCode === airportCode) {
+                that.arrivalStatus = status;
                 return (true);
             }
         }
@@ -3451,9 +3452,9 @@ var smartFlightView = {
         var that = smartFlightView;
 
         for (var i=0; i<that.statusArray.length; i++) {
-            if (that.statusArray[i].departureAirportFsCode === airportCode) {
-                that.departureStatus = that.StatusArray[i];
-
+            var status = that.statusArray[i];
+            if (status.departureAirportFsCode === airportCode) {
+                that.departureStatus = status;
                 return (true);
             }
         }
