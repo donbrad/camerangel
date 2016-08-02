@@ -3291,8 +3291,8 @@ var smartFlightView = {
     statusArray : [],
     airportArray: [],
     airlineArray: [],
-    departureAirports : [],
-    arrivalAirports : [],
+    departureAirportsDS : new kendo.data.DataSource(),
+    arrivalAirportsDS : new kendo.data.DataSource(),
 
     checkFlight: function () {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
@@ -3495,8 +3495,11 @@ var smartFlightView = {
 
         var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
 
-        that.addressArray = [], that.airlineArray = [], that.airportArray = [], that.segmentArray = [], that.departureAirports = [],
-        that.arrivalAirports = [];
+        that.addressArray = [], that.airlineArray = [], that.airportArray = [], that.segmentArray = [];
+        var departureAirports = [], arrivalAirports = [];
+
+        that.departureAirportsDS.data([]);
+        that.arrivalAirportsDS.data([]);
 
         that.carrierCode = status.primaryCarrierFsCode;
         that.flightNumber = status.flightNumber;
@@ -3517,15 +3520,18 @@ var smartFlightView = {
             if (i < (airports.length - 1) ) {
                 var thisDepart = {airport : airports[i].fs, city : airports[i].city + ", " + airports[i].stateCode};
 
-                that.departureAirports.push(thisDepart);
+                departureAirports.push(thisDepart);
             }
 
             if (i > 0){
                 var thisArrive = {airport : airports[i].fs, city : airports[i].city + ", " + airports[i].stateCode};
-                that.arrivalAirports.push(thisArrive);
+                arrivalAirports.push(thisArrive);
             }
 
         }
+
+        that.departureAirportsDS.data(departureAirports);
+        that.arrivalAirportsDS.data(arrivalAirports);
 
         if (airports.length > 1) {
             // Multiple segments, need to let user pick departure and arrival airports from available segments
@@ -3632,7 +3638,7 @@ var smartFlightView = {
 
 
         $("#smartFlight-flightDeparture").kendoAutoComplete({
-            dataSource: smartFlightView.departureAirports,
+            dataSource: smartFlightView.departureAirportsDS,
             ignoreCase: true,
             dataTextField: "name",
             select: function(e) {
@@ -3650,7 +3656,7 @@ var smartFlightView = {
         });
 
         $("#smartFlight-flightArrival").kendoAutoComplete({
-            dataSource: smartFlightView.arrivalAirports,
+            dataSource: smartFlightView.arrivalAirportsDS,
             ignoreCase: true,
             dataTextField: "name",
             select: function(e) {
