@@ -239,7 +239,7 @@ var smartEventView = {
         $('#smartEventView-placesearch').val('');
 
         //$('#smartEventView-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
-        $('#smartEventView-date').val(moment(thisEvent.date).format("MMM dd, yyyy"));
+        $('#smartEventView-date').val(moment(thisEvent.date).format("MMM dd, YYYY"));
         $('#smartEventView-time').val(moment(thisEvent.date).format("h:mm a"));
         $(".eventBanner").addClass("hidden");
     },
@@ -379,9 +379,9 @@ var smartEventView = {
         if (timeIn === null || dateIn === null) {
             return (false);
         }
-        var time = moment.parse(timeIn);
+        var time = moment(timeIn);
 
-        var date = moment.parse(dateIn);
+        var date = moment(dateIn);
 
         if (time === null && date === null) {
             mobileNotify("Please enter a valid Date and Time");
@@ -392,7 +392,7 @@ var smartEventView = {
             mobileNotify("Please enter a valid Date");
         } else {
             var timeComp = moment(time).format("h:mm a");
-            var dateComp = moment(date).format('MMM dd, yyyy');
+            var dateComp = moment(date).format('MMM dd, YYYY');
             smartEventView.updateDateString();
             return (true);
         }
