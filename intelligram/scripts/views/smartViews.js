@@ -69,8 +69,8 @@ var smartEventView = {
 
         $('#smartEventView-placesearch').val(thisObj.placeName);
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#smartEventView-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
-        $('#smartEventView-time').val(new Date(thisObj.date).toString('h:mm tt'));
+        $('#smartEventView-date').val(moment(thisObj.date).format('MMM dd, yyyy'));
+        $('#smartEventView-time').val(moment(thisObj.date).format('h:mm a'));
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
     },
@@ -239,8 +239,8 @@ var smartEventView = {
         $('#smartEventView-placesearch').val('');
 
         //$('#smartEventView-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
-        $('#smartEventView-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
-        $('#smartEventView-time').val(new Date(thisEvent.date).toString("h:mm tt"));
+        $('#smartEventView-date').val(moment(thisEvent.date).format("MMM dd, yyyy"));
+        $('#smartEventView-time').val(moment(thisEvent.date).format("h:mm a"));
         $(".eventBanner").addClass("hidden");
     },
 
@@ -379,9 +379,9 @@ var smartEventView = {
         if (timeIn === null || dateIn === null) {
             return (false);
         }
-        var time = Date.parse(timeIn);
+        var time = moment.parse(timeIn);
 
-        var date = Date.parse(dateIn);
+        var date = moment.parse(dateIn);
 
         if (time === null && date === null) {
             mobileNotify("Please enter a valid Date and Time");
@@ -391,8 +391,8 @@ var smartEventView = {
         } else if (date === null) {
             mobileNotify("Please enter a valid Date");
         } else {
-            var timeComp = new Date(time).toString("h:mm tt");
-            var dateCome = new Date(date).toString('MMM dd, yyyy');
+            var timeComp = moment(time).format("h:mm a");
+            var dateComp = moment(date).format('MMM dd, yyyy');
             smartEventView.updateDateString();
             return (true);
         }
@@ -458,8 +458,8 @@ var smartEventView = {
                 var timeIn =  $("#smartEventView-time").val();
                 if (timeIn.length > 2) {
 
-                    var time = Date.parse(timeIn);
-                    var timeComp = new Date(time).toString("h:mm tt");
+                    var time = moment.parse(timeIn);
+                    var timeComp = moment(time).parse("h:mm a");
                     $("#smartEventView-time").val(timeComp);
                     smartEventView.updateDateString();
                 }
@@ -3378,7 +3378,7 @@ var smartFlightView = {
         var departureCity = that.airportArray[that.departureAirport].address;
         var departureName = that.airportArray[that.departureAirport].name;
         var departureLat = that.airportArray[that.departureAirport].lat;
-        var departureLng =that.airportArray[that.departureAirport].lng;
+        var departureLng = that.airportArray[that.departureAirport].lng;
 
         smartFlightView.status.set('carrierCode',that.carrierCode);
         smartFlightView.status.set('airline', airline);
