@@ -3640,7 +3640,7 @@ var smartFlightView = {
         $("#smartFlight-flightDeparture").kendoAutoComplete({
             dataSource: smartFlightView.departureAirportsDS,
             ignoreCase: true,
-            dataTextField: "name",
+            dataTextField: "city",
             select: function(e) {
                 //var depart = e.item;
                 var depart = this.dataItem(e.item.index());
@@ -3658,7 +3658,7 @@ var smartFlightView = {
         $("#smartFlight-flightArrival").kendoAutoComplete({
             dataSource: smartFlightView.arrivalAirportsDS,
             ignoreCase: true,
-            dataTextField: "name",
+            dataTextField: "city",
             select: function(e) {
                 //var airline = e.item;
                 var arrive = this.dataItem(e.item.index());
