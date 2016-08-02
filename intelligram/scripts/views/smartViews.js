@@ -3286,7 +3286,6 @@ var smartFlightView = {
     arrivalStatua: null,
     departureAirport : null,
     arrivalAirport: null,
-    addressArray : [],
     segmentArray: [],
     statusArray : [],
     airportArray: [],
@@ -3496,7 +3495,10 @@ var smartFlightView = {
 
         var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
 
-        that.addressArray = [], that.airlineArray = [], that.airportArray = [], that.segmentArray = [];
+        that.airlineArray = [];
+        that.airportArray = [];
+
+        that.segmentArray = [];
         var departureAirports = [], arrivalAirports = [];
 
         that.departureAirportsDS.data([]);
@@ -3507,7 +3509,7 @@ var smartFlightView = {
 
         // Process airports -- build associative array
         for (var i=0; i<airports.length; i++) {
-            that.addressArray[airports[i].fs]  =  {
+            that.airportArray[airports[i].fs]  =  {
                 code : airports[i].fs,
                 name : airports[i].name,
                 address :  airports[i].city + ", " + airports[i].stateCode,
