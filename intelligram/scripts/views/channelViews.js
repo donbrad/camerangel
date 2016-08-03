@@ -2443,9 +2443,14 @@ var channelView = {
 
         var template = kendo.template($("#intelliFlight-chat").html());
         var dataObj = {
-            name: smartPlace.name,
-            address: smartPlace.address,
-            objectId : objectId
+            objectId : objectId,
+            departureAirport : smartFlight.departureAirport,
+            departureCity : smartFlight.departureCity,
+            arrivalAirport : smartFlight.arrivalAirport,
+            arrivalCity : smartFlight.arrivalCity,
+            estimatedDeparture : smartFlight.estimatedDeparture,
+            estimatedArrival : smartFlight.estimatedArrival
+
         };
 
         var objectUrl = template(dataObj);

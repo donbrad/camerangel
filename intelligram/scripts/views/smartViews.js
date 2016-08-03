@@ -2699,6 +2699,8 @@ var smartTripView = {
             obj.set('leg2Complete',  false);
             obj.set('duration', null);
             obj.set('durationString', null);
+            obj.set('distance', null);
+            obj.set('distanceString', null);
             obj.set('origin', null);
             obj.set('originName', null);
             obj.set('destination', null);
@@ -2742,6 +2744,9 @@ var smartTripView = {
             obj.set('timeArrival', tripObj.timeArrival);
             obj.set('duration', tripObj.duration);
             obj.set('durationString', tripObj.durationString);
+            obj.set('distance', tripObj.distance);
+            obj.set('distanceString', tripObj.distanceString);
+
         }
     },
 
@@ -3245,23 +3250,30 @@ var smartTripView = {
     onCancel : function (e) {
 
         smartTripView.setActiveObject(null);
-
-
         smartTripView.initUX();
 
-
-        $("#smartTripModal").data("kendoMobileModalView").close();
     },
 
     onSave : function (e) {
-
+        if (smartTripView.callback !== null) {
+            smartTripView.callback(smartTripView.activeObject);
+        }
 
         smartTripView.initUX();
         smartTripView.onDone();
     },
 
-    onViewDone : function (e) {
+    onDone : function (e) {
         $("#smartTripModal").data("kendoMobileModalView").close();
+    },
+
+    onViewDone : function (e) {
+        if (smartTripView.callback !== null) {
+            smartTripView.callback(null);
+
+        }
+
+        smartTripView.onDone();
     }
 };
 
@@ -3759,10 +3771,19 @@ var smartFlightView = {
     },
 
     onDone: function () {
+
+        if (smartFlightView.callback !== null) {
+            smartFlightView.callback(null);
+        }
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     },
 
     onSave : function () {
+
+        if (smartFlightView.callback !== null) {
+            smartFlightView.callback(smartEventView.status);
+        }
+
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     }
 };
