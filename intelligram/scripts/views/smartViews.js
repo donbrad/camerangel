@@ -73,7 +73,7 @@ var smartEventView = {
         var ROUNDING = 60 * 60 * 1000; /*ms*/
 
         var start = moment(Math.ceil((thisObj.date) / ROUNDING) * ROUNDING);
-        $('#smartEventView-date').val(start.format('MMM dd, YYYY'));
+        $('#smartEventView-date').val(start.format('MMM D, YYYY'));
         $('#smartEventView-time').val(start.format('HH:MM:ss'));
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
@@ -2993,9 +2993,11 @@ var smartTripView = {
 
     getDefaultTime : function () {
 
-        // Get the new whole hour...
-        var d = ux.setDefaultTime(true, 1);
-        var timeStr = moment(d).format('H:mm');
+        var ROUNDING = 60 * 60 * 1000; /*ms*/
+
+        var start = moment(Math.ceil((new Date()) / ROUNDING) * ROUNDING);
+
+        var timeStr = moment(start).format('HH:MM:SS');
 
         return(timeStr);
     },
