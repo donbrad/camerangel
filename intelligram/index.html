@@ -3452,10 +3452,10 @@
 <script id="intelliEvent-chat" type="text/x-kendo-template">
 <div>
 	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" data-click="channelView.onObjectClick" >
-
+			# var dateStr = date; if (ux.isToday(date)) { dateStr = "Today" + " at " + moment(date).format("hh:mm a"; }  if (ux.isToday(date)) { dateStr = "Tomorrow" + " at " + moment(date).format("hh:mm a"; } #
 			<div class="btnSmart-content">
 				<span class="btnSmart-title"> #:title# </span><br />
-				<span class="btnSmart-date"> #:date#</span><br />
+				<span class="btnSmart-date"> #:datStre#</span><br />
 				<span class="btnSmart-date"> #:placeName#</span>
 			</div>
 
