@@ -70,11 +70,9 @@ var smartEventView = {
         $('#smartEventView-placesearch').val(thisObj.placeName);
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
 
-
-
         var start = moment(thisObj.date);
-        $('#smartEventView-date').val(start.format('MMM DD, YYYY'));
-        $('#smartEventView-time').val(start.format('HH:MM:ss'));
+        $('#smartEventView-date').val(start.format('MM/DD/YYYY'));
+        $('#smartEventView-time').val(start.format('HH:MM'));
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
     },
@@ -368,9 +366,9 @@ var smartEventView = {
 
     getDefaultTime : function () {
 
-        var start = ux.setDefaultTime(true,1);
+        var start = ux.setDefaultTime(false,1);
 
-        var timeStr = moment(start).format('HH:MM:SS');
+        var timeStr = moment(start).format('HH:MM');
 
         return(timeStr);
     },
@@ -429,7 +427,7 @@ var smartEventView = {
 
             $('#smartEventView-date').pickadate({
                 format: 'mmm, d yyyy',
-                formatSubmit: 'mmm, d yyyy',
+                formatSubmit: 'mm/dd/yyyy',
                 min: true,
                 onSet : function (context) {
                     smartEventView.updateDateString();
