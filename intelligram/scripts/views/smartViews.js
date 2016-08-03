@@ -2582,6 +2582,7 @@ var smartTripView = {
             filtering: function(e) {
                 //get filter descriptor
                 var filter = e.filter;
+                var val = this.value();
 
                 if(filter.value > 0){
                     $(".smartTrip-currentLocation").addClass("hidden");
@@ -3295,6 +3296,8 @@ var smartFlightView = {
     returnFlightCode : null,
     validAirline : false,
     validFlight: false,
+    validArrival : false,
+    validDeparture: false,
     validDate: false,
     pickSegment : false,  // User must pick segment in multi-segment flight
     status: new kendo.data.ObservableObject(),
@@ -3745,6 +3748,8 @@ var smartFlightView = {
         smartFlightView.validAirline  = false;
         smartFlightView.validFlight = false;
         smartFlightView.validDate = false;
+        smartFlightView.validArrival = false;
+        smartFlightView.validDeparture = false;
         smartFlightView.segmentsDS.data([]);
 
         $("#smartFlight-flightDate").val(new Date());
