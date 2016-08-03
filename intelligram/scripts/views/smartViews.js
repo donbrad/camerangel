@@ -71,8 +71,10 @@ var smartEventView = {
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
 
         var start = moment(thisObj.date);
-        $('#smartEventView-date').val(start.format('MM/DD/YYYY'));
-        $('#smartEventView-time').val(start.format('HH:MM'));
+        var dateStr = start.format('MM/DD/YYYY');
+        var timeStr = start.format('HH:MM');
+        $('#smartEventView-date').val(dateStr);
+        $('#smartEventView-time').val(timeStr);
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
     },
@@ -240,8 +242,8 @@ var smartEventView = {
         var thisEvent = smartEventView._activeObject;
         $('#smartEventView-placesearch').val('');
 
-        //$('#smartEventView-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
-        $('#smartEventView-date').val(moment(thisEvent.date).format("MMM dd, YYYY"));
+
+        $('#smartEventView-date').val(moment(thisEvent.date).format("MM/DD/YYYY"));
         $('#smartEventView-time').val(moment(thisEvent.date).format("HH:MM:ss"));
         $(".eventBanner").addClass("hidden");
     },
@@ -356,9 +358,8 @@ var smartEventView = {
         var date = $('#smartEventView-date').val();
         var time = $('#smartEventView-time').val();
 
-        var finalDateStr = date + " " + time;
-        //$("#smartEventView-datestring").val(finalDateStr);
-
+        var finalDateStr = moment(date).format("MM/DD/YYYY") + " " + moment(time).format("HH:MM");
+        
         var finalDate =  moment(finalDateStr);
         smartEventView._activeObject.set('date', finalDate);
 
