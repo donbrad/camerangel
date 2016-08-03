@@ -692,7 +692,7 @@ form {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
-  background: @primary-100 !important;
+  background-color: @primary-100 !important;
    /* :hover {
     	background: #E5A545 !important;
     	text-decoration: none;
@@ -702,10 +702,11 @@ form {
     	text-decoration: none;
     	transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-	:disabled {
-    	background: #A4A4A4 !important;
 	}*/
+}
+
+.btnPrimary:disabled {
+  background-color: #A4A4A4 !important;
 }
 
 .btnBlack {
@@ -1003,7 +1004,7 @@ form {
 
 .btnFull-modal {
   .btnFull;
-  border-radius: 0px 4px 4px 0!important;
+  border-radius: 0px 0px 4px 4px !important;
   height: 3rem;
   padding-top: 1rem !important;
   font-weight: 600 !important;
@@ -6762,7 +6763,7 @@ table.k-editor {
 /* Intelli styles */
 
 .intelli-header {
-  margin-top: 2em;
+  margin-top: 1em;
   text-align: center;
   .intelli-subheader {
     font-size: 0.875em;
@@ -6831,6 +6832,10 @@ table.k-editor {
 
 #smartTripView-arrival-text {
   font-size: 0.75em;
+}
+
+.intelliCard-container {
+  //overflow-x: hidden;
 }
 
 .intelliCard {
@@ -7143,5 +7148,11 @@ table.k-editor {
         margin-bottom: 1em;
       }
     }
+  }
+}
+
+.smartTripView-error {
+  .error-msg {
+    font-size: 0.85em;
   }
 }

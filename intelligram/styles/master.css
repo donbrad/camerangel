@@ -1289,7 +1289,7 @@ form p {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
-  background: #4B6CB7 !important;
+  background-color: #4B6CB7 !important;
   /* :hover {
     	background: #E5A545 !important;
     	text-decoration: none;
@@ -1299,10 +1299,10 @@ form p {
     	text-decoration: none;
     	transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-	:disabled {
-    	background: #A4A4A4 !important;
 	}*/
+}
+.btnPrimary:disabled {
+  background-color: #A4A4A4 !important;
 }
 .btnBlack {
   -webkit-border-radius: 2px;
@@ -1553,7 +1553,7 @@ form p {
   width: 100%;
   color: #fff;
   text-align: center;
-  border-radius: 0px 4px 4px 0!important;
+  border-radius: 0px 0px 4px 4px !important;
   height: 3rem;
   padding-top: 1rem !important;
   font-weight: 600 !important;
@@ -6891,7 +6891,7 @@ table.k-editor {
 }
 /* Intelli styles */
 .intelli-header {
-  margin-top: 2em;
+  margin-top: 1em;
   text-align: center;
 }
 .intelli-header .intelli-subheader {
@@ -7230,4 +7230,7 @@ table.k-editor {
 }
 .intelliMovie .footer ul li:last-child {
   margin-bottom: 1em;
+}
+.smartTripView-error .error-msg {
+  font-size: 0.85em;
 }

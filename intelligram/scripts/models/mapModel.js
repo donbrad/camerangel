@@ -447,7 +447,7 @@ var mapModel = {
     },
 
     getTravelTime : function (origin, destination, departure, arrival, callback, mode) {
-        var travelMode = google.maps.TravelMode.DRIVING;
+        /*var travelMode = google.maps.TravelMode.DRIVING;
         if (mode !== undefined && mode !== null) {
             if (mode === 'walk') {
                 travelMode =  google.maps.TravelMode.WALKING;
@@ -456,13 +456,13 @@ var mapModel = {
             } else if (mode === 'transit') {
                 travelMode =  google.maps.TravelMode.TRANSIT;
             }
-        }
+        }*/
 
 
         var distanceObj = {
             origins: [origin],
             destinations: [destination],
-            travelMode: travelMode,
+            travelMode: mode,
             unitSystem: google.maps.UnitSystem.IMPERIAL
         };
 
@@ -482,22 +482,31 @@ var mapModel = {
         mapModel.googleDistance.getDistanceMatrix(
             distanceObj,
             function (response, status){
+                //
                 if (status == google.maps.DistanceMatrixStatus.OK) {
                     var origins = response.originAddresses;
                     var destinations = response.destinationAddresses;
                     var results = response.rows[0].elements;
                     var element = results[0];
-                    var distanceResult = {
-                        valid : true,
-                        error : null,
-                        distance : element.distance.value,
-                        duration  : element.duration.value,
-                        distanceString : element.distance.text,
-                        durationString : element.duration.text,
-                        fromString :  origins[0],
-                        toString :  destinations[0]
-                    };
 
+                    if(element.status === google.maps.DistanceMatrixStatus.OK){
+                        var distanceResult = {
+                            valid : true,
+                            error : null,
+                            distance : element.distance.value,
+                            duration  : element.duration.value,
+                            distanceString : element.distance.text,
+                            durationString : element.duration.text,
+                            fromString :  origins[0],
+                            toString :  destinations[0]
+                        };
+
+
+                    } else {
+                        var distanceResult = {
+                            valid: false
+                        };
+                    }
                     if (callback !== null) {
                         callback(distanceResult);
                     }
