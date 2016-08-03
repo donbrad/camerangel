@@ -69,8 +69,12 @@ var smartEventView = {
 
         $('#smartEventView-placesearch').val(thisObj.placeName);
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#smartEventView-date').val(moment(thisObj.date).format('MMM dd, yyyy'));
-        $('#smartEventView-time').val(moment(thisObj.date).format('h:mm a'));
+
+        var ROUNDING = 60 * 60 * 1000; /*ms*/
+
+        var start = moment(Math.ceil((thisObj.date) / ROUNDING) * ROUNDING);
+        $('#smartEventView-date').val(start.format('MMM dd, yyyy'));
+        $('#smartEventView-time').val(start.format('h:mm a'));
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
     },
@@ -458,7 +462,7 @@ var smartEventView = {
                 var timeIn =  $("#smartEventView-time").val();
                 if (timeIn.length > 2) {
 
-                    var time = moment.(timeIn);
+                    var time = moment(timeIn);
                     var timeComp = moment(timeIn).format("h:mm a");
                     $("#smartEventView-time").val(timeComp);
                     smartEventView.updateDateString();
