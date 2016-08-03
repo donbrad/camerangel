@@ -73,7 +73,7 @@ var smartEventView = {
         var ROUNDING = 60 * 60 * 1000; /*ms*/
 
         var start = moment(Math.ceil((thisObj.date) / ROUNDING) * ROUNDING);
-        $('#smartEventView-date').val(start.format('MMM D, YYYY'));
+        $('#smartEventView-date').val(start.format('MMM DD, YYYY'));
         $('#smartEventView-time').val(start.format('HH:MM:ss'));
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
@@ -367,14 +367,14 @@ var smartEventView = {
     },
 
     getDefaultTime : function () {
-        
-        // Get the new whole hour...
-        var d = new Date();
-        d.setMinutes (d.getMinutes() + 30);
-        d.setMinutes (0);
 
-        var timeStr = moment(d).format('HH:MM:SS');
-        
+        var ROUNDING = 60 * 60 * 1000; /*ms*/
+
+        var start = moment(Math.ceil((new Date()) / ROUNDING) * ROUNDING);
+
+        var timeStr = moment(start).format('HH:MM:SS');
+
+
         return(timeStr);
     },
     
@@ -397,7 +397,7 @@ var smartEventView = {
             mobileNotify("Please enter a valid Date");
         } else {
             var timeComp = moment(time).format("HH:MM:SS");
-            var dateComp = moment(date).format('MMM dd, YYYY');
+            var dateComp = moment(date).format('MMM Dd, YYYY');
             smartEventView.updateDateString();
             return (true);
         }
@@ -432,7 +432,7 @@ var smartEventView = {
 
             $('#smartEventView-date').pickadate({
                 format: 'mmm, d yyyy',
-                formatSubmit: 'mm d yyyy',
+                formatSubmit: 'mmm, d yyyy',
                 min: true,
                 onSet : function (context) {
                     smartEventView.updateDateString();
