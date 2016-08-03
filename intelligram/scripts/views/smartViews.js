@@ -29,7 +29,7 @@ var smartEventView = {
 
     initActiveObject : function () {
         var thisObj = smartEventView._activeObject;
-        var newDate = ux.setDefaultTime(false, 3);
+        var newDate = ux.setDefaultTime(true, 1);
 
         thisObj.set("uuid", uuid.v4());
         thisObj.set("ggType", smartEvent._ggClass);
@@ -69,8 +69,12 @@ var smartEventView = {
 
         $('#smartEventView-placesearch').val(thisObj.placeName);
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
-        $('#smartEventView-date').val(new Date(thisObj.date).toString('MMM dd, yyyy'));
-        $('#smartEventView-time').val(new Date(thisObj.date).toString('h:mm tt'));
+
+        var start = moment(thisObj.date);
+        var dateStr = start.format('MM/DD/YYYY');
+        var timeStr = start.format('HH:MM');
+        $('#smartEventView-date').val(dateStr);
+        $('#smartEventView-time').val(timeStr);
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
     },
@@ -238,9 +242,9 @@ var smartEventView = {
         var thisEvent = smartEventView._activeObject;
         $('#smartEventView-placesearch').val('');
 
-        //$('#smartEventView-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
-        $('#smartEventView-date').val(new Date(thisEvent.date).toString("MMM dd, yyyy"));
-        $('#smartEventView-time').val(new Date(thisEvent.date).toString("h:mm tt"));
+
+        $('#smartEventView-date').val(moment(thisEvent.date).format("MM/DD/YYYY"));
+        $('#smartEventView-time').val(moment(thisEvent.date).format("HH:MM:ss"));
         $(".eventBanner").addClass("hidden");
     },
 
@@ -267,8 +271,8 @@ var smartEventView = {
         $("#smartEventView-placesearchBtn").text("");
         $("#smartEventView-placesearch").val("");
         //$("#smartEventView-datestring").val("");
-        $("#smartEventView-date").val("");
-        $("#smartEventView-time").val("");
+      /*  $("#smartEventView-date").val("");
+        $("#smartEventView-time").val("");*/
         $('#smartEventView-comments').val("");
 
         $("#smartEventView-placeadddiv").addClass('hidden');
@@ -354,22 +358,19 @@ var smartEventView = {
         var date = $('#smartEventView-date').val();
         var time = $('#smartEventView-time').val();
 
-        var finalDateStr = date + " " + time;
-        //$("#smartEventView-datestring").val(finalDateStr);
+        var finalDateStr = moment(date).format("MM/DD/YYYY") + " " + time;
 
-        smartEventView._activeObject.set('date', new Date(finalDateStr));
+        var finalDate =  moment(finalDateStr);
+        smartEventView._activeObject.set('date', finalDate);
 
     },
 
     getDefaultTime : function () {
-        
-        // Get the new whole hour...
-        var d = new Date();
-        d.setMinutes (d.getMinutes() + 30);
-        d.setMinutes (0);
 
-        var timeStr = moment(d).format('h:mm a');
-        
+        var start = ux.setDefaultTime(false,1);
+
+        var timeStr = moment(start).format('HH:MM');
+
         return(timeStr);
     },
     
@@ -379,9 +380,9 @@ var smartEventView = {
         if (timeIn === null || dateIn === null) {
             return (false);
         }
-        var time = Date.parse(timeIn);
+        var time = moment(timeIn);
 
-        var date = Date.parse(dateIn);
+        var date = moment(dateIn);
 
         if (time === null && date === null) {
             mobileNotify("Please enter a valid Date and Time");
@@ -391,8 +392,8 @@ var smartEventView = {
         } else if (date === null) {
             mobileNotify("Please enter a valid Date");
         } else {
-            var timeComp = new Date(time).toString("h:mm tt");
-            var dateCome = new Date(date).toString('MMM dd, yyyy');
+            var timeComp = moment(time).format("HH:MM:SS");
+            var dateComp = moment(date).format('MMM Dd, YYYY');
             smartEventView.updateDateString();
             return (true);
         }
@@ -427,7 +428,7 @@ var smartEventView = {
 
             $('#smartEventView-date').pickadate({
                 format: 'mmm, d yyyy',
-                formatSubmit: 'mm d yyyy',
+                formatSubmit: 'mm/dd/yyyy',
                 min: true,
                 onSet : function (context) {
                     smartEventView.updateDateString();
@@ -455,14 +456,14 @@ var smartEventView = {
             });
 
             $("#smartEventView-time").on('blur', function () {
-                var timeIn =  $("#smartEventView-time").val();
+                /*var timeIn =  $("#smartEventView-time").val();
                 if (timeIn.length > 2) {
-
-                    var time = Date.parse(timeIn);
-                    var timeComp = new Date(time).toString("h:mm tt");
+                    var time = moment(timeIn);
+                    var timeComp = moment(timeIn).format("h:mm a");
                     $("#smartEventView-time").val(timeComp);
                     smartEventView.updateDateString();
-                }
+                }*/
+                smartEventView.updateDateString();
             });
 
             $("#smartEventView-placesearch").on('input', function () {
@@ -3036,9 +3037,11 @@ var smartTripView = {
 
     getDefaultTime : function () {
 
-        // Get the new whole hour...
-        var d = ux.setDefaultTime(true, 1);
-        var timeStr = moment(d).format('H:mm');
+        var ROUNDING = 60 * 60 * 1000; /*ms*/
+
+        var start = moment(Math.ceil((new Date()) / ROUNDING) * ROUNDING);
+
+        var timeStr = moment(start).format('HH:MM:SS');
 
         return(timeStr);
     },
@@ -3328,10 +3331,16 @@ var smartFlightView = {
     status: new kendo.data.ObservableObject(),
     segmentsDS : new kendo.data.DataSource(),
     callback : null,
-    addressArray : [],
+    departureStatus : null,
+    arrivalStatua: null,
+    departureAirport : null,
+    arrivalAirport: null,
     segmentArray: [],
+    statusArray : [],
     airportArray: [],
     airlineArray: [],
+    departureAirportsDS : new kendo.data.DataSource(),
+    arrivalAirportsDS : new kendo.data.DataSource(),
 
     checkFlight: function () {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
@@ -3339,6 +3348,15 @@ var smartFlightView = {
             getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
                 smartFlightView.processFlightStatus(result);
             })
+        } else {
+            return;
+        }
+    },
+
+    checkFlightComplete : function () {
+        if (smartFlightView.validArrival && smartFlightView.validDeparture) {
+            smartFlightView.finalizeFlightStatus();
+
         } else {
             return;
         }
@@ -3388,70 +3406,71 @@ var smartFlightView = {
 
     },
 
-    onSelectAllSegments : function ()  {
 
-    },
-
-    finalizeFlightStatus : function (status) {
-        var airline = airlineArray[status.primaryCarrierFsCode].name;
+    finalizeFlightStatus : function () {
+        var that = smartFlightView;
+        var airline = that.airlineArray[that.carrierCode].name;
         if (airline === undefined) {
             airline = null;
         }
 
-        var airlinePhone = airlineArray[status.primaryCarrierFsCode].phoneNumber;
+        var airlinePhone = that.airlineArray[that.carrierCode].phoneNumber;
         if (airlinePhone === undefined) {
             airlinePhone = null;
         }
 
-        var arrivalCity = airportArray[status.arrivalAirportFsCode].address;
-        var arrivalName = airportArray[status.arrivalAirportFsCode].name;
-        var arrivalLat = airportArray[status.arrivalAirportFsCode].lat;
-        var arrivalLng = airportArray[status.arrivalAirportFsCode].lng;
+        var arrivalCity = that.airportArray[that.arrivalAirport].address;
+        var arrivalName = that.airportArray[that.arrivalAirport].name;
+        var arrivalLat = that.airportArray[that.arrivalAirport].lat;
+        var arrivalLng = that.airportArray[that.arrivalAirport].lng;
 
-        var departureCity = airportArray[status.departureAirportFsCode].address;
-        var departureName = airportArray[status.departureAirportFsCode].name;
-        var departureLat = airportArray[status.departureAirportFsCode].lat;
-        var departureLng = airportArray[status.departureAirportFsCode].lng;
+        var departureCity = that.airportArray[that.departureAirport].address;
+        var departureName = that.airportArray[that.departureAirport].name;
+        var departureLat = that.airportArray[that.departureAirport].lat;
+        var departureLng = that.airportArray[that.departureAirport].lng;
 
-        smartFlightView.status.set('carrierCode',status.primaryCarrierFsCode);
+        smartFlightView.status.set('carrierCode',that.carrierCode);
         smartFlightView.status.set('airline', airline);
         smartFlightView.status.set('airlinePhone', airlinePhone);
-        smartFlightView.status.set('flightNumber',status.flightNumber);
+        smartFlightView.status.set('flightNumber',that.flightNumber);
 
-        smartFlightView.status.set('arrivalAirport', status.arrivalAirportFsCode);
+        smartFlightView.status.set('arrivalAirport', that.arrivalAirport);
         smartFlightView.status.set('arrivalCity', arrivalCity);
         smartFlightView.status.set('arrivalName', arrivalName);
         smartFlightView.status.set('arrivalLat', arrivalLat);
         smartFlightView.status.set('arrivalLng', arrivalLng);
 
-        smartFlightView.status.set('departureAirport',status.departureAirportFsCode);
+        smartFlightView.status.set('departureAirport',that.departureAirport);
         smartFlightView.status.set('departureCity',departureCity);
         smartFlightView.status.set('departureName',departureName);
         smartFlightView.status.set('departureLat',departureLat);
         smartFlightView.status.set('departureLng',departureLng);
 
 
-        smartFlightView.status.set('departureTerminal', status.airportResources.departureTerminal);
-        smartFlightView.status.set('departureGate',status.airportResources.departureGate);
+        smartFlightView.status.set('departureTerminal', that.departureStatus.airportResources.departureTerminal);
+        smartFlightView.status.set('departureGate',that.departureStatus.airportResources.departureGate);
 
-        smartFlightView.status.set('arrivalTerminal', status.airportResources.arrivalTerminal);
-        smartFlightView.status.set('arrivalGate', status.airportResources.arrivalGate);
-        smartFlightView.status.set('baggageClaim',  status.airportResources.baggage);
-        smartFlightView.status.set('durationMinutes', status.flightDurations.scheduledBlockMinutes);
+        smartFlightView.status.set('arrivalTerminal', that.arrivalStatus.airportResources.arrivalTerminal);
+        smartFlightView.status.set('arrivalGate', that.arrivalStatus.airportResources.arrivalGate);
+        smartFlightView.status.set('baggageClaim',  that.arrivalStatus.airportResources.baggage);
 
-        var depDate = moment(status.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(status.operationalTimes.estimatedGateArrival.dateUtc);
+
+        var duration = that.computeFlightTime(that.departureAirport, that.arrivalAirport);
+        smartFlightView.status.set('durationMinutes', duration);
+
+        var depDate = moment(that.departureStatus.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(that.arrivalStatus.operationalTimes.estimatedGateArrival.dateUtc);
         smartFlightView.status.set('estimatedDeparture', depDate.format("M/D/YYYY h:mm a"));
         smartFlightView.status.set('estimatedArrival',  arrDate.format("M/D/YYYY h:mm a"));
 
         smartFlightView.status.set('actualDeparture', null);
-        if (status.operationalTimes.actualGateDeparture !== undefined) {
-            var depDateAct = moment(status.operationalTimes.actualGateDeparture.dateUtc);
+        if (that.departureStatus.operationalTimes.actualGateDeparture !== undefined) {
+            var depDateAct = moment(that.departureStatus.operationalTimes.actualGateDeparture.dateUtc);
             smartFlightView.status.set('actualDeparture', depDateAct.format("M/D/YYYY h:mm a"));
         }
 
         smartFlightView.status.set('actualArrival', null);
-        if (status.operationalTimes.actualGateArrival !== undefined) {
-            var arrDateAct = moment(status.operationalTimes.actualGateArrival.dateUtc);
+        if (that.arrivalStatus.operationalTimes.actualGateArrival !== undefined) {
+            var arrDateAct = moment(that.arrivalStatus.operationalTimes.actualGateArrival.dateUtc);
             smartFlightView.status.set('actualArrival', arrDateAct.format("M/D/YYYY h:mm a"));
         }
 
@@ -3463,20 +3482,83 @@ var smartFlightView = {
 
     },
 
+    getArrivalStatus : function (airportCode) {
+        var that = smartFlightView;
+
+        for (var i=0; i<that.statusArray.length; i++) {
+            var status = that.statusArray[i];
+            if (status.arrivalAirportFsCode === airportCode) {
+                that.arrivalStatus = status;
+                return (true);
+            }
+        }
+
+        return(false);
+    },
+
+    getDepartureStatus : function (airportCode) {
+        var that = smartFlightView;
+
+        for (var i=0; i<that.statusArray.length; i++) {
+            var status = that.statusArray[i];
+            if (status.departureAirportFsCode === airportCode) {
+                that.departureStatus = status;
+                return (true);
+            }
+        }
+
+        return(false);
+    },
+
+
+    computeFlightTime : function (departAirport, arriveAirport) {
+        var that = smartFlightView;
+
+        var flightTime = 0;
+
+        var depart = departAirport,
+            arrive = arriveAirport;
+
+
+        for (var i=0; i<that.statusArray.length; i++) {
+            var status = that.statusArray[i];
+            if (status.departureAirportFsCode === depart) {
+                flightTime += status.flightDurations.scheduledBlockMinutes;
+
+                if (status.arrivalAirportFsCode === arrive) {
+                    return(flightTime);
+                } else {
+                    depart = status.arrivalAirportFsCode;
+                }
+            }
+        }
+
+    },
+
+
     processFlightStatus : function (statusObj) {
 
         var that = smartFlightView;
+
+        that.statusArray = statusObj.flightStatus;
+
         var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
 
-        var addressArray = that.addressArray = [],
-            airlineArray = that.airlineArray = [],
-            airportArray = that.airportArray = [],
-            segmentArray = that.segmentArray = [];
+        that.airlineArray = [];
+        that.airportArray = [];
 
+        that.segmentArray = [];
+        var departureAirports = [], arrivalAirports = [];
+
+        that.departureAirportsDS.data([]);
+        that.arrivalAirportsDS.data([]);
+
+        that.carrierCode = status.primaryCarrierFsCode;
+        that.flightNumber = status.flightNumber;
 
         // Process airports -- build associative array
         for (var i=0; i<airports.length; i++) {
-            addressArray[airports[i].fs]  =  {
+            that.airportArray[airports[i].fs]  =  {
                 code : airports[i].fs,
                 name : airports[i].name,
                 address :  airports[i].city + ", " + airports[i].stateCode,
@@ -3488,26 +3570,47 @@ var smartFlightView = {
 
             // Build the route segment array
             if (i < (airports.length - 1) ) {
-                var thisSegment = {fromAirport : airports[i].fs, fromCity : airports[i].city + ", " + airports[i].stateCode,
-                    toAirport : airports[i+1].fs, toCity : airports[i+1].city + ", " + airports[i+1].stateCode};
+                var thisDepart = {airport : airports[i].fs, city : airports[i].city + ", " + airports[i].stateCode};
 
-                segmentArray.push(thisSegment);
+                departureAirports.push(thisDepart);
+            }
+
+            if (i > 0){
+                var thisArrive = {airport : airports[i].fs, city : airports[i].city + ", " + airports[i].stateCode};
+                arrivalAirports.push(thisArrive);
             }
 
         }
 
+        that.departureAirportsDS.data(departureAirports);
+        that.arrivalAirportsDS.data(arrivalAirports);
+
         if (airports.length > 1) {
-            smartFlightView.pickSegment = true;
-            smartFlightView.segmentsDS.data(segmentArray);
-            $('#smartFlightView-flightPicker').removeClass('hidden');
+            // Multiple segments, need to let user pick departure and arrival airports from available segments
+            that.pickSegment = true;
+            that.validArrival = false;
+            that.validDeparture = false;
+            $('.flightPicker').removeClass('hidden');
         } else {
-            smartFlightView.finalizeFlightStatus(status);
+
+            // Just one segment -- so we know departure and arrival airports
+            that.validArrival = true;
+            that.validDeparture = true;
+
+            that.departureAirport = status.departureAirportFsCode;
+            that.arrivalAirport = status.arrivalAirportFsCode;
+
+            that.arrivalStatus = status;
+            that.departureStatus = status;
+
+            that.finalizeFlightStatus();
+            $('.flightPicker').addClass('hidden');
         }
 
 
         // Process airlines -- build associative array
         for (var j=0; j<airlines.length; j++) {
-            airlineArray[airlines[j].fs] = {
+            that.airlineArray[airlines[j].fs] = {
                 code : airlines[j].fs,
                 name : airlines[j].name,
                 phoneNumber : airlines[j].phoneNumber
@@ -3585,6 +3688,45 @@ var smartFlightView = {
             placeholder: "Enter airline... "
         });
 
+
+        $("#smartFlight-flightDeparture").kendoAutoComplete({
+            dataSource: smartFlightView.departureAirportsDS,
+            ignoreCase: true,
+            template : "<span> #:city# (<strong> #:airport# </strong>) </span>",
+            dataTextField: "city",
+            select: function(e) {
+                //var depart = e.item;
+                var depart = this.dataItem(e.item.index());
+                smartFlightView.departureAirport = depart.airport;
+                if (smartFlightView.getDepartureStatus(depart.airport)) {
+                    smartFlightView.validDeparture = true;
+                    smartFlightView.checkFlightComplete();
+                }
+
+            },
+            filter: "contains",
+            placeholder: "Enter Departure... "
+        });
+
+        $("#smartFlight-flightArrival").kendoAutoComplete({
+            dataSource: smartFlightView.arrivalAirportsDS,
+            ignoreCase: true,
+            template : "<span> #:city# (<strong> #:airport# </strong>) </span>",
+            dataTextField: "city",
+            select: function(e) {
+                //var airline = e.item;
+                var arrive = this.dataItem(e.item.index());
+                smartFlightView.arrivalAirport = arrive.airport;
+
+                if (smartFlightView.getArrivalStatus(arrive.airport)) {
+                    smartFlightView.validArrival = true;
+                    smartFlightView.checkFlightComplete();
+                }
+            },
+            filter: "contains",
+            placeholder: "Enter Arrival... "
+        });
+
         $("#smartFlight-returnAirline").kendoAutoComplete({
             dataSource: airlineArray,
             ignoreCase: true,
@@ -3599,7 +3741,7 @@ var smartFlightView = {
             placeholder: "Enter airline... "
         });
 
-        $("#smartFlightView-flightSegments").kendoMobileListView({
+      /*  $("#smartFlightView-flightSegments").kendoMobileListView({
                 dataSource: smartFlightView.segmentsDS,
                 template: $("#flightViewSegmentTemplate").html(),
                 //headerTemplate: $("#findPlacesHeaderTemplate").html(),
@@ -3609,7 +3751,7 @@ var smartFlightView = {
 
                 }
             }
-        );
+        );*/
     },
 
 
@@ -3639,7 +3781,7 @@ var smartFlightView = {
         $("#smartFlight-flightDate").val(new Date());
         $("#smartFlight-flight").val('');
         $("#smartFlight-airline").val('');
-        $('#smartFlightView-flightPicker').addClass('hidden');
+        $('.flightPicker').addClass('hidden');
 
         
         if (callback !== undefined) {

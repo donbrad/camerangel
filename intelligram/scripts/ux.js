@@ -579,6 +579,19 @@ var ux = {
 		$(".eventBannerImg").addClass("hidden").attr("src", "");
 	},
 
+
+	isToday : function (date) {
+
+		return (moment(date).isSame(new Date(), 'day'));
+	},
+
+	isTomorrow : function (date) {
+
+		var tomorrow = moment(new Date()).add(1, 'd');
+
+		return (moment(date).isSame(tomorrow, 'day'));
+	},
+
 	setDefaultTime: function(buffer, bufferAmount){
 		var newDate = new Date();
 		var newDateMin = newDate.getMinutes();
@@ -587,7 +600,7 @@ var ux = {
 
 		if(buffer){
 			// if there is a time buffer
-			if(newDateHour < 22 && newDate > 8){
+			if(newDateHour < 22 ){
 				newDateHour += bufferAmount;
 				newDate.setHours(newDateHour);
 				newDate.setMinutes(0);

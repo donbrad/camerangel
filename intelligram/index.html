@@ -3458,10 +3458,10 @@
 <script id="intelliEvent-chat" type="text/x-kendo-template">
 <div>
 	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" data-click="channelView.onObjectClick" >
-
+			# var dateStr = date; if (ux.isToday(date)) { dateStr = "Today" + " at " + moment(date).format("hh:mm a"); }  if (ux.isTomorrow(date)) { dateStr = "Tomorrow" + " at " + moment(date).format("hh:mm a"); } #
 			<div class="btnSmart-content">
 				<span class="btnSmart-title"> #:title# </span><br />
-				<span class="btnSmart-date"> #:date#</span><br />
+				<span class="btnSmart-date"> #:dateStr#</span><br />
 				<span class="btnSmart-date"> #:placeName#</span>
 			</div>
 
@@ -5016,6 +5016,19 @@
 					<input id="smartFlight-flightDate" type="date" >
 				</label>
 			</li>
+
+			<li class="flightPicker hidden">
+				<label> Departing From
+					<input id="smartFlight-flightDeparture" type="text" >
+				</label>
+			</li>
+
+			<li class="flightPicker hidden">
+				<label> Arriving At
+					<input id="smartFlight-flightArrival" type="text" >
+				</label>
+			</li>
+
 			<li class="returnFlight hidden">
 				<label> Airline
 					<input id="smartFlight-returnAirline" type="text" placeholder="Please enter airline..." >
@@ -5037,10 +5050,7 @@
 		</ul>
 	</form>
 
-	<div id="smartFlightView-flightPicker" class="hidden">
-		<a data-click="smartFlightView.onAllSegments" data-role="button" class="btnSecondary">Select All Segments </a>
-		<ul id="smartFlightView-flightSegments" data-role="listview" data-style="inset"></ul>
-	</div>
+
 
 	<div id="smartFlightView-flightStatus" class="flightViewer hidden">
 
@@ -5055,6 +5065,8 @@
 
         <div style="float: left; text-align: left; padding-left: 12px;">
             <div style="font-size: 1.6em"><span data-bind="text: departureAirport"></span></div>
+			<div style="font-size: 1.3em"><span data-bind="text: departureCity"></span></div>
+			<div style="font-size: 1.0em"><span data-bind="text: departureName"></span></div>
             <div style="font-size: 1.2em">Est: <span data-bind="text: estimatedDeparture"></span></div>
 			<div style="font-size: 1.2em">Act: <span data-bind="text: actualDeparture"></span></div>
             <div>Terminal : <span data-bind="text: departureTerminal"></span></div>
@@ -5063,6 +5075,8 @@
 
 		<div style="float: right; text-align: right; padding-right: 12px;">
 			<div style="font-size: 1.6em"><span data-bind="text: arrivalAirport"></span></div>
+			<div style="font-size: 1.3em"><span data-bind="text: arrivalCity"></span></div>
+			<div style="font-size: 1.0em"><span data-bind="text: arrivalName"></span></div>
 			<div style="font-size: 1.2em">Est: <span data-bind="text: estimatedArrival"></span></div>
 			<div style="font-size: 1.2em">Act: <span data-bind="text: actualArrival"></span></div>
 			<div>Terminal : <span data-bind="text: arrivalTerminal"></span></div>
