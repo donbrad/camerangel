@@ -73,8 +73,8 @@ var smartEventView = {
         var ROUNDING = 60 * 60 * 1000; /*ms*/
 
         var start = moment(Math.ceil((thisObj.date) / ROUNDING) * ROUNDING);
-        $('#smartEventView-date').val(start.format('MMM dd, yyyy'));
-        $('#smartEventView-time').val(start.format('h:mm a'));
+        $('#smartEventView-date').val(start.format('MMM dd, YYYY'));
+        $('#smartEventView-time').val(start.format('HH:MM:ss'));
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
     },
@@ -244,7 +244,7 @@ var smartEventView = {
 
         //$('#smartEventView-datestring').val(new Date(thisEvent.date).toString("MMM dd, yyyy h:mm tt"));
         $('#smartEventView-date').val(moment(thisEvent.date).format("MMM dd, YYYY"));
-        $('#smartEventView-time').val(moment(thisEvent.date).format("h:mm a"));
+        $('#smartEventView-time').val(moment(thisEvent.date).format("HH:MM:ss"));
         $(".eventBanner").addClass("hidden");
     },
 
@@ -271,8 +271,8 @@ var smartEventView = {
         $("#smartEventView-placesearchBtn").text("");
         $("#smartEventView-placesearch").val("");
         //$("#smartEventView-datestring").val("");
-        $("#smartEventView-date").val("");
-        $("#smartEventView-time").val("");
+      /*  $("#smartEventView-date").val("");
+        $("#smartEventView-time").val("");*/
         $('#smartEventView-comments').val("");
 
         $("#smartEventView-placeadddiv").addClass('hidden');
@@ -361,7 +361,8 @@ var smartEventView = {
         var finalDateStr = date + " " + time;
         //$("#smartEventView-datestring").val(finalDateStr);
 
-        smartEventView._activeObject.set('date', new Date(finalDateStr));
+        var finalDate =  moment(finalDateStr);
+        smartEventView._activeObject.set('date', finalDate);
 
     },
 
@@ -372,7 +373,7 @@ var smartEventView = {
         d.setMinutes (d.getMinutes() + 30);
         d.setMinutes (0);
 
-        var timeStr = moment(d).format('h:mm a');
+        var timeStr = moment(d).format('HH:MM:SS');
         
         return(timeStr);
     },
@@ -395,7 +396,7 @@ var smartEventView = {
         } else if (date === null) {
             mobileNotify("Please enter a valid Date");
         } else {
-            var timeComp = moment(time).format("h:mm a");
+            var timeComp = moment(time).format("HH:MM:SS");
             var dateComp = moment(date).format('MMM dd, YYYY');
             smartEventView.updateDateString();
             return (true);
@@ -461,7 +462,6 @@ var smartEventView = {
             $("#smartEventView-time").on('blur', function () {
                 var timeIn =  $("#smartEventView-time").val();
                 if (timeIn.length > 2) {
-
                     var time = moment(timeIn);
                     var timeComp = moment(timeIn).format("h:mm a");
                     $("#smartEventView-time").val(timeComp);
