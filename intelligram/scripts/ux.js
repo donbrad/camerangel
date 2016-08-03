@@ -587,7 +587,7 @@ var ux = {
 
 		if(buffer){
 			// if there is a time buffer
-			if(newDateHour < 22 && newDate > 8){
+			if(newDateHour < 22 && newDateHour > 8){
 				newDateHour += bufferAmount;
 				newDate.setHours(newDateHour);
 				newDate.setMinutes(0);

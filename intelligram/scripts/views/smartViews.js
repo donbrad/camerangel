@@ -29,7 +29,7 @@ var smartEventView = {
 
     initActiveObject : function () {
         var thisObj = smartEventView._activeObject;
-        var newDate = ux.setDefaultTime(false, 3);
+        var newDate = ux.setDefaultTime(true, 1);
 
         thisObj.set("uuid", uuid.v4());
         thisObj.set("ggType", smartEvent._ggClass);
@@ -70,9 +70,9 @@ var smartEventView = {
         $('#smartEventView-placesearch').val(thisObj.placeName);
         //$('#smartEventView-datestring').val(new Date(thisObj.date).toString('dddd, MMMM dd, yyyy h:mm tt'));
 
-        var ROUNDING = 60 * 60 * 1000; /*ms*/
 
-        var start = moment(Math.ceil((thisObj.date) / ROUNDING) * ROUNDING);
+
+        var start = moment(thisObj.date);
         $('#smartEventView-date').val(start.format('MMM DD, YYYY'));
         $('#smartEventView-time').val(start.format('HH:MM:ss'));
         $("#smartEventView-placeadddiv").addClass('hidden');
@@ -368,12 +368,9 @@ var smartEventView = {
 
     getDefaultTime : function () {
 
-        var ROUNDING = 60 * 60 * 1000; /*ms*/
-
-        var start = moment(Math.ceil((new Date()) / ROUNDING) * ROUNDING);
+        var start = ux.setDefaultTime(true,1);
 
         var timeStr = moment(start).format('HH:MM:SS');
-
 
         return(timeStr);
     },
