@@ -359,7 +359,7 @@ var smartEventView = {
         var time = $('#smartEventView-time').val();
 
         var finalDateStr = moment(date).format("MM/DD/YYYY") + " " + moment(time).format("HH:MM");
-        
+
         var finalDate =  moment(finalDateStr);
         smartEventView._activeObject.set('date', finalDate);
 
@@ -456,13 +456,14 @@ var smartEventView = {
             });
 
             $("#smartEventView-time").on('blur', function () {
-                var timeIn =  $("#smartEventView-time").val();
+                /*var timeIn =  $("#smartEventView-time").val();
                 if (timeIn.length > 2) {
                     var time = moment(timeIn);
                     var timeComp = moment(timeIn).format("h:mm a");
                     $("#smartEventView-time").val(timeComp);
                     smartEventView.updateDateString();
-                }
+                }*/
+                smartEventView.updateDateString();
             });
 
             $("#smartEventView-placesearch").on('input', function () {
