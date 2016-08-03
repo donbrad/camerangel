@@ -3170,7 +3170,7 @@ var smartTripView = {
             place.lat = mapModel.lat;
             place.lng = mapModel.lng;
             place.name = null;
-            place.address = mapModel.address;
+            place.address = mapModel.currentAddress;
             place.googleId = null;
             place.placeUUID = null;
 
