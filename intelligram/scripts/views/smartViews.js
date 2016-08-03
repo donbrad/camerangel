@@ -458,8 +458,8 @@ var smartEventView = {
                 var timeIn =  $("#smartEventView-time").val();
                 if (timeIn.length > 2) {
 
-                    var time = moment.parse(timeIn);
-                    var timeComp = moment(time).parse("h:mm a");
+                    var time = moment.(timeIn);
+                    var timeComp = moment(timeIn).format("h:mm a");
                     $("#smartEventView-time").val(timeComp);
                     smartEventView.updateDateString();
                 }
