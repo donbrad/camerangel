@@ -2923,6 +2923,8 @@ var smartTripView = {
             if (result.valid) {
                 smartTripView.activeObject.duration = result.duration;
                 smartTripView.activeObject.durationString = result.durationString;
+                smartTripView.activeObject.distance = result.distance;
+                smartTripView.activeObject.distanceString = result.distanceString;
                 $("#smartTripView-travelTime").text(result.durationString);
                 $("#smartTripView-travelTime-dist").text(result.distanceString);
 

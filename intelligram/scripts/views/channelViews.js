@@ -2423,8 +2423,10 @@ var channelView = {
 
         var template = kendo.template($("#intelliTrip-chat").html());
         var dataObj = {
-            name: smartPlace.name,
-            address: smartPlace.address,
+            name: smartTrip.name,
+            origin: smartTrip.origin,
+            destination: smartTrip.destination,
+            departure: moment(smartTrip.date).format ("ddd, MMM Do, YYYY @ h:mm a"),
             objectId : objectId
         };
 
