@@ -358,7 +358,7 @@ var smartEventView = {
         var date = $('#smartEventView-date').val();
         var time = $('#smartEventView-time').val();
 
-        var finalDateStr = moment(date).format("MM/DD/YYYY") + " " + moment(time).format("HH:MM");
+        var finalDateStr = moment(date).format("MM/DD/YYYY") + " " + time;
 
         var finalDate =  moment(finalDateStr);
         smartEventView._activeObject.set('date', finalDate);
