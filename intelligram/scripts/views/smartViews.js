@@ -3001,7 +3001,7 @@ var smartTripView = {
 
         var start = moment(Math.ceil((new Date()) / ROUNDING) * ROUNDING);
 
-        var timeStr = moment(start).format('HH:MM:SS');
+        var timeStr = moment(start).format('HH:MM');
 
         return(timeStr);
     },
@@ -3254,6 +3254,7 @@ var smartTripView = {
         smartTripView.setActiveObject(null);
         smartTripView.initUX();
 
+        smartTripView.onDone();
     },
 
     onSave : function (e) {
