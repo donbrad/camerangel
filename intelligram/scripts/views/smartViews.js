@@ -3755,6 +3755,9 @@ var smartFlightView = {
         $("#smartFlight-flightDate").val(new Date());
         $("#smartFlight-flight").val('');
         $("#smartFlight-airline").val('');
+        $("#smartFlight-flightDeparture").val('');
+        $("#smartFlight-flightArrival").val('');
+
         $('.flightPicker').addClass('hidden');
 
         
