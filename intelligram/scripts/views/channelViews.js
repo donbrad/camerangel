@@ -3033,7 +3033,7 @@ var channelView = {
     messageFlight : function (e) {
         _preventDefault(e);
         //channelView.messageMenuTag();
-        smartFlightView.openModal(null, function (flight) {
+        smartFlightView.openModal(null,function (flight) {
             if (flight !== undefined && flight !== null) {
                 channelView.messageObjects.push(flight);
                  mobileNotify("Sending IntelliFlight...");

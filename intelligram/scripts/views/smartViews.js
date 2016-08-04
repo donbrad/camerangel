@@ -3792,7 +3792,7 @@ var smartFlightView = {
     onSave : function () {
 
         if (smartFlightView.callback !== null) {
-            smartFlightView.callback(smartEventView.status);
+            smartFlightView.callback(smartFlightView.status);
         }
 
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
