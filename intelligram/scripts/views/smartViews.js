@@ -2640,6 +2640,24 @@ var smartTripView = {
                 }
 
             },
+            filtering: function(e) {
+                //get filter descriptor
+                var filter = e.filter;
+                var val = this.value();
+
+                if(filter.value > 0){
+                    $(".smartTrip-currentLocation").addClass("hidden");
+
+                    if(smartTripView.activeObject.origin === null){
+                        $("#smartTripView-originSearchBtn").removeClass("hidden").text('Find "' + val + '"');
+                    }
+
+                } else {
+                    $("#smartTripView-originSearchBtn").addClass("hidden").text('');
+                    $(".smartTrip-currentLocation").removeClass("hidden");
+                }
+            },
+
             filter: "contains",
             placeholder: "Place, address, or location"
         });
@@ -2743,6 +2761,8 @@ var smartTripView = {
             obj.set('leg2Complete',  false);
             obj.set('duration', null);
             obj.set('durationString', null);
+            obj.set('distance', null);
+            obj.set('distanceString', null);
             obj.set('origin', null);
             obj.set('originName', null);
             obj.set('destination', null);
@@ -2787,6 +2807,9 @@ var smartTripView = {
             obj.set('timeArrival', tripObj.timeArrival);
             obj.set('duration', tripObj.duration);
             obj.set('durationString', tripObj.durationString);
+            obj.set('distance', tripObj.distance);
+            obj.set('distanceString', tripObj.distanceString);
+
         }
     },
 
@@ -2961,10 +2984,12 @@ var smartTripView = {
 
         mapModel.getTravelTime(origin, dest, depart, arrive, function (result) {
             if (result.valid) {
-
                 smartTripView.activeObject.set("travelError", false);
                 smartTripView.activeObject.set("duration", result.duration);
                 smartTripView.activeObject.set("durationString", result.durationString);
+                smartTripView.activeObject.set("distance", result.distance);
+                smartTripView.activeObject.set("distanceString", result.distanceString);
+
                 $("#smartTripView-travelTime").text(result.durationString);
                 $("#smartTripView-travelTime-dist").text(result.distanceString);
 
@@ -3041,7 +3066,7 @@ var smartTripView = {
 
         var start = moment(Math.ceil((new Date()) / ROUNDING) * ROUNDING);
 
-        var timeStr = moment(start).format('HH:MM:SS');
+        var timeStr = moment(start).format('HH:MM');
 
         return(timeStr);
     },
@@ -3208,7 +3233,7 @@ var smartTripView = {
             place.lat = mapModel.lat;
             place.lng = mapModel.lng;
             place.name = null;
-            place.address = mapModel.address;
+            place.address = mapModel.currentAddress;
             place.googleId = null;
             place.placeUUID = null;
 
@@ -3291,23 +3316,38 @@ var smartTripView = {
     onCancel : function (e) {
 
         smartTripView.setActiveObject(null);
-
         smartTripView.initUX();
-        $("#smartTripModal").data("kendoMobileModalView").close();
+
+        smartTripView.onDone();
     },
 
     onSave : function (e) {
+
         if(smartTripView.activeObject.get("travelError")){
             e.preventDefault;
         } else {
+            if (smartTripView.callback !== null) {
+                smartTripView.callback(smartTripView.activeObject);
+            }
+
             smartTripView.initUX();
-            //smartTripView.onDone();
+            smartTripView.onDone();
         }
+
 
     },
 
-    onViewDone : function (e) {
+    onDone : function (e) {
         $("#smartTripModal").data("kendoMobileModalView").close();
+    },
+
+    onViewDone : function (e) {
+        if (smartTripView.callback !== null) {
+            smartTripView.callback(null);
+
+        }
+
+        smartTripView.onDone();
     }
 };
 
@@ -3326,6 +3366,8 @@ var smartFlightView = {
     returnFlightCode : null,
     validAirline : false,
     validFlight: false,
+    validArrival : false,
+    validDeparture: false,
     validDate: false,
     pickSegment : false,  // User must pick segment in multi-segment flight
     status: new kendo.data.ObservableObject(),
@@ -3776,6 +3818,8 @@ var smartFlightView = {
         smartFlightView.validAirline  = false;
         smartFlightView.validFlight = false;
         smartFlightView.validDate = false;
+        smartFlightView.validArrival = false;
+        smartFlightView.validDeparture = false;
         smartFlightView.segmentsDS.data([]);
 
         $("#smartFlight-flightDate").val(new Date());
@@ -3805,10 +3849,19 @@ var smartFlightView = {
     },
 
     onDone: function () {
+
+        if (smartFlightView.callback !== null) {
+            smartFlightView.callback(null);
+        }
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     },
 
     onSave : function () {
+
+        if (smartFlightView.callback !== null) {
+            smartFlightView.callback(smartEventView.status);
+        }
+
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     }
 };

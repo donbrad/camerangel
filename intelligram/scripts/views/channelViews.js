@@ -2423,8 +2423,10 @@ var channelView = {
 
         var template = kendo.template($("#intelliTrip-chat").html());
         var dataObj = {
-            name: smartPlace.name,
-            address: smartPlace.address,
+            name: smartTrip.name,
+            origin: smartTrip.origin,
+            destination: smartTrip.destination,
+            departure: moment(smartTrip.date).format ("ddd, MMM Do, YYYY @ h:mm a"),
             objectId : objectId
         };
 
@@ -2443,9 +2445,14 @@ var channelView = {
 
         var template = kendo.template($("#intelliFlight-chat").html());
         var dataObj = {
-            name: smartPlace.name,
-            address: smartPlace.address,
-            objectId : objectId
+            objectId : objectId,
+            departureAirport : smartFlight.departureAirport,
+            departureCity : smartFlight.departureCity,
+            arrivalAirport : smartFlight.arrivalAirport,
+            arrivalCity : smartFlight.arrivalCity,
+            estimatedDeparture : smartFlight.estimatedDeparture,
+            estimatedArrival : smartFlight.estimatedArrival
+
         };
 
         var objectUrl = template(dataObj);
