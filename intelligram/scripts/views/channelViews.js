@@ -3046,9 +3046,12 @@ var channelView = {
 
         smartFlightView.openModal(null,function (flight) {
             if (flight !== undefined && flight !== null) {
-                channelView.messageObjects.push(flight);
-                 mobileNotify("Sending IntelliFlight...");
-                 channelView.messageSend();
+                smartFlight.smartAddFlight(flight, function (flightObj) {
+                    channelView.messageObjects.push(flightObj);
+                    mobileNotify("Sending IntelliFlight...");
+                    channelView.messageSend();
+                });
+
             }
         });
     },
@@ -3079,10 +3082,12 @@ var channelView = {
         _preventDefault(e);
         smartTripView.openModal(null, function (trip) {
             if (trip !== undefined && trip !== null) {
+                smartTrip.smartAddTrip(trip, function (tripObj) {
+                    channelView.messageObjects.push(tripObj);
+                    mobileNotify("Sending IntelliTrip...");
+                    channelView.messageSend();
+                });
 
-                channelView.messageObjects.push(trip);
-                mobileNotify("Sending IntelliTrip...");
-                channelView.messageSend();
             }
         });
     },

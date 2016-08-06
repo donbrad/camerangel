@@ -88,6 +88,10 @@ var smartFlight = {
             objectIn.senderUUID = userModel._user.userUUID;
         }
 
+        if (objectIn.uuid === undefined) {
+            objectIn.uuid = uuid.v4();
+        }
+        
         //smartOb.setACL(userModel.parseACL);
         smartOb.set('version', smartFlight.version);
         smartOb.set('ggType', smartFlight._ggClass);
