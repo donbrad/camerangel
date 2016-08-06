@@ -2307,9 +2307,14 @@ var channelView = {
 
                         });
                     } else if (object.ggType === "Trip") {
+                        smartTripView.openModal(object, function () {
+
+                        });
 
                     } else if (object.ggType === "Flight") {
+                        smartFlightView.openModal(object, function () {
 
+                        });
                     }
 
                 }
@@ -2337,6 +2342,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliEvent-chat").html());
         var dataObj = {
+            ggType: "Event",
             title : smartEvent.title,
             date : date,
             placeName: placeName,
@@ -2364,6 +2370,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliMovie-chat").html());
         var dataObj = {
+            ggType: "Movie",
             imageUrl: smartMovie.imageUrl,
             movieTitle : smartMovie.movieTitle,
             dateStr : dateStr,
@@ -2403,6 +2410,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliPlace-chat").html());
         var dataObj = {
+            ggType : "Place",
             name: smartPlace.name,
             address: smartPlace.address,
             objectId : objectId
@@ -2423,6 +2431,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliTrip-chat").html());
         var dataObj = {
+            ggType: "Trip",
             name: smartTrip.name,
             origin: smartTrip.origin,
             destination: smartTrip.destination,
@@ -2445,6 +2454,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliFlight-chat").html());
         var dataObj = {
+            ggType : "Flight",
             objectId : objectId,
             departureAirport : smartFlight.departureAirport,
             departureCity : smartFlight.departureCity,
@@ -3033,6 +3043,7 @@ var channelView = {
     messageFlight : function (e) {
         _preventDefault(e);
         //channelView.messageMenuTag();
+
         smartFlightView.openModal(null,function (flight) {
             if (flight !== undefined && flight !== null) {
                 channelView.messageObjects.push(flight);
