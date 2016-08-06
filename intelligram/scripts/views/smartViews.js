@@ -3318,6 +3318,7 @@ var smartFlightView = {
         if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
             mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
             getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
+
                 smartFlightView.processFlightStatus(result);
             })
         } else {
@@ -3512,6 +3513,14 @@ var smartFlightView = {
 
         var that = smartFlightView;
 
+        if (statusObj.status === 'error') {
+            smartFlightView.flightFound = false;
+            mobileNotify(statusObj.error);
+            $('.flightError').removeClass('hidden');
+            return;
+        }
+
+        $('.flightError').addClass('hidden');
         that.statusArray = statusObj.flightStatus;
 
         var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
@@ -3751,6 +3760,8 @@ var smartFlightView = {
         smartFlightView.validArrival = false;
         smartFlightView.validDeparture = false;
         smartFlightView.segmentsDS.data([]);
+
+        $('.flightError').addClass('hidden');
 
         $("#smartFlight-flightDate").val(new Date());
         $("#smartFlight-flight").val('');
