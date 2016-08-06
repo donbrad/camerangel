@@ -62,7 +62,7 @@ var smartTrip = {
         } else {
             // Event exists, so just return current instance
             if (callback !== undefined && callback !== null) {
-                callback(event);
+                callback(trip);
             }
         }
     },

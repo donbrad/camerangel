@@ -66,6 +66,11 @@ var smartFlight = {
     smartAddFlight : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 
+        if (objectId === undefined) {
+            smartFlight.addFlight(objectIn, callback);
+            return;
+        }
+
         var flight = smartFlight.findFlight(objectId);
         if ( flight  === undefined) {
             // Event doesnt exist -- need to create it
@@ -73,7 +78,7 @@ var smartFlight = {
         } else {
             // Event exists, so just return current instance
             if (callback !== undefined && callback !== null) {
-                callback(event);
+                callback(flight);
             }
         }
     },
