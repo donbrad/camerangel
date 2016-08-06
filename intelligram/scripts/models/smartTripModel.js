@@ -96,7 +96,7 @@ var smartTrip = {
         smartOb.set('autoStatus', objectIn.autoStatus);
         smartOb.set('addToCalendar',  objectIn.addToCalendar);
         smartOb.set('leg1Complete',  objectIn.leg1Complete);
-        smartOb.set('leg2Complete',  objectIn.leg2Complete);;
+        smartOb.set('leg2Complete',  objectIn.leg2Complete);
         smartOb.set('origin', objectIn.origin);
         smartOb.set('originName', objectIn.originName);
         smartOb.set('destination', objectIn.destination);

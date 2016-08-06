@@ -91,17 +91,13 @@ var smartFlight = {
         if (objectIn.uuid === undefined) {
             objectIn.uuid = uuid.v4();
         }
-        
+
         //smartOb.setACL(userModel.parseACL);
-        smartOb.set('version', smartFlight.version);
-        smartOb.set('ggType', smartFlight._ggClass);
-        smartOb.set('uuid', objectIn.uuid);
-        //smartOb.set('Id', objectIn.uuid);
-        smartOb.set('senderUUID', objectIn.senderUUID);
-        smartOb.set('senderName', objectIn.senderName);
+        objectIn.version =  smartFlight._version;
+        objectIn.ggType = smartFlight._ggClass;
 
 
-        smartFlight.flightsDS.add(smartOb);
+        smartFlight.flightsDS.add(objectIn);
         smartFlight.flightsDS.sync();
         if (callback !== undefined && callback !== null)
             callback(smartOb);
