@@ -2689,6 +2689,7 @@ var smartTripView = {
             smartTripView.validOrigin = false;
             smartTripView.validDestination = false;
 
+            obj.set('ggType', 'Trip');
             obj.set('senderUUID', userModel._user.userUUID);
             obj.set('senderName', userModel._user.name);
             obj.set('name', userModel._user.name + "'s Trip");
@@ -2723,6 +2724,7 @@ var smartTripView = {
             smartTripView.validOrigin = true;
             smartTripView.validDestination = true;
 
+            obj.set('ggType', tripObj.ggType);
             obj.set('senderUUID', tripObj.senderUUID);
             obj.set('senderName', tripObj.senderName);
 
@@ -3337,6 +3339,7 @@ var smartFlightView = {
 
     setFlightStatus : function (statusObj) {
         if (statusObj === null) {
+            smartFlightView.status.set('ggType', 'Flight');
             smartFlightView.status.set('carrierCode', null);
             smartFlightView.status.set('flightNumber',null);
             smartFlightView.status.set('arrivalAirport', null);
@@ -3357,6 +3360,7 @@ var smartFlightView = {
             smartFlightView.status.set('actualArrival', null);
 
         } else {
+            smartFlightView.status.set('ggType', statusObj.ggType);
             smartFlightView.status.set('carrierCode', statusObj.carrierCode);
             smartFlightView.status.set('flightNumber',statusObj.flightNumber);
             smartFlightView.status.set('arrivalAirport', statusObj.arrivalAirport);
