@@ -68,7 +68,6 @@ var smartFlight = {
 
         if (objectId === undefined) {
             smartFlight.addFlight(objectIn, callback);
-            return;
         }
 
         var flight = smartFlight.findFlight(objectId);
