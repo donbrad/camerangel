@@ -3343,7 +3343,8 @@ var smartFlightView = {
         if (statusObj === null) {
 
             smartFlightView.status.set('ggType', 'Flight');
-            smartFlightView.status.set('uuid', uuid.v4());
+            smartFlightView.status.set('uuid', uuid.v4())
+            smartFlightView.status.set('name', userModel._user.name + "'s Flight");
             smartFlightView.status.set('carrierCode', null);
             smartFlightView.status.set('flightNumber',null);
             smartFlightView.status.set('arrivalAirport', null);
@@ -3366,6 +3367,7 @@ var smartFlightView = {
         } else {
             smartFlightView.status.set('ggType', statusObj.ggType);
             smartFlightView.status.set('uuid', statusObj.uuid);
+            smartFlightView.status.set('name', statusObj.name);
             smartFlightView.status.set('carrierCode', statusObj.carrierCode);
             smartFlightView.status.set('flightNumber',statusObj.flightNumber);
             smartFlightView.status.set('arrivalAirport', statusObj.arrivalAirport);
@@ -3777,6 +3779,7 @@ var smartFlightView = {
         $("#smartFlight-airline").val('');
         $("#smartFlight-flightDeparture").val('');
         $("#smartFlight-flightArrival").val('');
+        $("#smartFlight-name").val('');
 
         $('.flightPicker').addClass('hidden');
 
@@ -3791,7 +3794,10 @@ var smartFlightView = {
             $('#smartFlightView-DoneBtn').removeClass('hidden');
             $('#smartFlightView-flightStatus').addClass('hidden');
             $('.flightCreator').removeClass('hidden');
+            $("#smartFlight-name").val(userModel._user.name + "'s Flight");
         }
+
+        smartFlightView.setFlightStatus(flight);
 
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
 
