@@ -84,12 +84,15 @@ var smartFlight = {
 
     addFlight : function (objectIn, callback) {
 
-        var smartOb = new kendo.data.ObservableObject();
 
         mobileNotify("Creating IntelliFlight...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
             objectIn.senderUUID = userModel._user.userUUID;
+        }
+
+        if (objectIn.senderName === undefined || objectIn.senderName === null) {
+            objectIn.senderName = userModel._user.name;
         }
 
         if (objectIn.uuid === undefined) {
@@ -104,9 +107,9 @@ var smartFlight = {
         smartFlight.flightsDS.add(objectIn);
         smartFlight.flightsDS.sync();
         if (callback !== undefined && callback !== null)
-            callback(smartOb);
+            callback(objectIn);
 
-        everlive.createOne(smartFlight._cloudClass, smartOb, function (error, data){
+        everlive.createOne(smartFlight._cloudClass, objectIn, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating intelliFlight " + JSON.stringify(error));
             } else {

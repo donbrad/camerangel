@@ -77,7 +77,10 @@ var smartTrip = {
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
             objectIn.senderUUID = userModel._user.userUUID;
         }
-
+        
+        if (objectIn.senderName === undefined || objectIn.senderName === null) {
+            objectIn.senderName = userModel._user.name;
+        }
         if (objectIn.uuid === undefined) {
             objectIn.uuid = uuid.v4();
         }
