@@ -2587,14 +2587,17 @@ var channelView = {
         var messageId = null;
         var objectType = null;
 
+        // User has clicked in message area, so hide the keyboard
+        ux.hideKeyboard();
 
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
             messageId =  $(e.touch.currentTarget).data("uid");
+
         } else {
             // New Android
             messageId =   e.touch.target[0].attributes['data-uid'].value;
-            objectType = e.touch.target[0].attributes['data-objecttype'].value;
+
         }
 
         if (messageId === undefined || messageId === null) {
@@ -2602,8 +2605,38 @@ var channelView = {
         }
 
         var message = dataSource.getByUid(messageId);
-        // User has clicked in message area, so hide the keyboard
-        // ux.hideKeyboard();
+
+        if (message.data.objects.length > 0) {
+            var object = message.data.objects[0];
+            var objType = object.ggType;
+
+            if (objType !== undefined && objType !== null) {
+                if (object.ggType === 'Event') {
+                    smartEvent.smartAddEvent(object);
+                    smartEventView.openModal(object);
+                } else if (object.ggType === 'Movie') {
+                    smartMovie.smartAddMovie(object);
+                    smartMovieView.openModal(object);
+                } else if (object.ggType === 'Place') {
+                    var locObj = {placeId: null, lat: object.lat, lng: object.lng, title: "IntelliPlace", name: null,  targetName: object.name};
+                    mapViewModal.openModal(locObj, function () {
+
+                    });
+                } else if (object.ggType === "Trip") {
+                    smartTripView.openModal(object, function () {
+
+                    });
+
+                } else if (object.ggType === "Flight") {
+                    smartFlightView.openModal(object, function () {
+
+                    });
+                }
+            }
+
+
+        }
+
 
         // User actually clicked on the photo so show the open the photo viewer
         if ($target.hasClass('photo-chat')) {
