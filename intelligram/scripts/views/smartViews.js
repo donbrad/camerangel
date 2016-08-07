@@ -2464,6 +2464,7 @@ var smartTripView = {
     validDestination: false,
     departure : null,
     arrival: null,
+    isPlace : false,
     autoStatus: false,
     addToCalendar: false,
     mode: 'create',
@@ -2552,6 +2553,7 @@ var smartTripView = {
 
                 smartTripView.activeObject.set('origin', oplace);
 
+                smartTripView.isPlace = true;
                 smartTripView.validOrigin = true;
 
                 smartTripView.validateRoute();
@@ -2560,6 +2562,7 @@ var smartTripView = {
                 $("#smartTripView-origin").trigger("change");
                 // Show origin step
                 $("#smartTripView-origin-box").removeClass("hidden");
+                $("#smartTripView-originSearchBtn").addClass("hidden").text('');
             },
 
             change: function(e){
@@ -2568,7 +2571,7 @@ var smartTripView = {
                 if(val.length > 0){
                     $(".smartTrip-currentLocation").addClass("hidden");
 
-                    if(smartTripView.origin == null){
+                    if(smartTripView.origin == null && smartTripView.isPlace === false){
                         $("#smartTripView-originSearchBtn").removeClass("hidden").text('Find "' + val + '"');
                     }
 
@@ -2688,6 +2691,7 @@ var smartTripView = {
             smartTripView.validName = false;
             smartTripView.validOrigin = false;
             smartTripView.validDestination = false;
+            smartTripView.isPlace = false;
 
             obj.set('ggType', 'Trip');
             obj.set('uuid', uuid.v4());
@@ -2724,7 +2728,8 @@ var smartTripView = {
             smartTripView.validName = true;
             smartTripView.validOrigin = true;
             smartTripView.validDestination = true;
-
+            smartTripView.isPlace = false;
+            
             obj.set('ggType', tripObj.ggType);
             obj.set('uuid', tripObj.uuid);
             obj.set('senderUUID', tripObj.senderUUID);
@@ -2774,7 +2779,7 @@ var smartTripView = {
         }
 
         $("#smartTripView-originSearchBtn").addClass("hidden").text('');
-        
+
         /*var d = new Date();*/
 
        /* $('#smartTripView-name').attr("placeholder", userModel._user.name + "'s Trip");
