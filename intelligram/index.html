@@ -5095,9 +5095,13 @@
 			<div>Baggage Claim: <span data-bind="text: baggageClaim"></span></div>
 		</div>
 
-		<div style="clear: both; text-align: center;">
+		<div style="clear: both; text-align: center;" class="flightCreator">
 			<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnSecondary"> Change Flight </a>
-			<!--<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary"> Add Return Flight </a>-->
+			<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary hidden"> Add Return Flight </a>
+		</div>
+
+		<div style="clear: both; text-align: center;" class="flightViewer">
+			<a data-click="smartFlightView.onTrackFlight" data-role="button" class="btnSecondary" id="smartFlightView-trackFlight"> Track Flight </a>
 		</div>
 	</div>
 	<div class="footer" data-role="footer">

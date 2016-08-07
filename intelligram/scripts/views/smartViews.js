@@ -3810,6 +3810,13 @@ var smartFlightView = {
            smartFlightView.setEditMode();
         } else {
             smartFlightView.setViewMode();
+            // Is the user tracking this flight?
+            var flightObj = smartFlight.findFlight(flight.uuid);
+            if (flightObj === undefined || flightObj === null) {
+                $('#smartFlightView-trackFlight').removeClass('hidden');
+            } else {
+                $('#smartFlightView-trackFlight').addClass('hidden');
+            }
         }
 
 
@@ -3827,6 +3834,11 @@ var smartFlightView = {
             smartFlightView.callback(null);
         }
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
+    },
+
+
+    onTrackFlight : function () {
+
     },
 
     onSave : function () {
