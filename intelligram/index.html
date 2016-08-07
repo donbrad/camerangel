@@ -5058,8 +5058,12 @@
 
 	<div id="smartFlightView-flightStatus" class="flightViewer hidden">
 
-        <div style="text-align: center;">
-            <div style="font-size: 1.6em">
+		<div>
+			<span style="text-align: center; font-size: 1.2em;" data-bind="text: name"></span>
+		</div>
+
+		<div style="text-align: center;">
+            <div style="font-size: 1.4em">
                  <span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
             </div>
             <div style="font-size: 1.2em">
@@ -5067,9 +5071,6 @@
             </div>
         </div>
 
-		<div>
-			<h3>#:name#</h3>
-		</div>
 
         <div style="float: left; text-align: left; padding-left: 12px;">
             <div style="font-size: 1.6em"><span data-bind="text: departureAirport"></span></div>
