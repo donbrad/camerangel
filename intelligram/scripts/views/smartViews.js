@@ -2772,6 +2772,8 @@ var smartTripView = {
             smartTripView.setActiveObject(tripObj);
             smartTripView.setViewer();
         }
+
+        $("#smartTripView-originSearchBtn").addClass("hidden").text('');
         
         /*var d = new Date();*/
 
