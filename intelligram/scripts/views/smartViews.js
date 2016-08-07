@@ -3762,6 +3762,21 @@ var smartFlightView = {
         })
     },
 
+    setViewMode : function () {
+        $('#smartFlightView-SaveBtn').addClass('hidden');
+        $('#smartFlightView-DoneBtn').removeClass('hidden');
+        $('.flightViewer').removeClass('hidden');
+        $('.flightCreator').addClass('hidden');
+    },
+
+    setEditMode : function () {
+        $('#smartFlightView-SaveBtn').addClass('hidden');
+        $('#smartFlightView-DoneBtn').removeClass('hidden');
+        $('.flightViewer').addClass('hidden');
+        $('.flightCreator').removeClass('hidden');
+        $("#smartFlight-name").val(userModel._user.name + "'s Flight");
+    },
+
     openModal : function (flight, callback) {
 
         smartFlightView.callback = null;
@@ -3788,16 +3803,15 @@ var smartFlightView = {
             smartFlightView.callback = callback;
         }
 
+        smartFlightView.setFlightStatus(flight);
+
         if (flight === undefined || flight === null) {
             // No current flight - set editor state
-            $('#smartFlightView-SaveBtn').addClass('hidden');
-            $('#smartFlightView-DoneBtn').removeClass('hidden');
-            $('#smartFlightView-flightStatus').addClass('hidden');
-            $('.flightCreator').removeClass('hidden');
-            $("#smartFlight-name").val(userModel._user.name + "'s Flight");
+           smartFlightView.setEditMode();
+        } else {
+            smartFlightView.setViewMode();
         }
 
-        smartFlightView.setFlightStatus(flight);
 
         $("#modalview-smartFlight").data("kendoMobileModalView").open();
 

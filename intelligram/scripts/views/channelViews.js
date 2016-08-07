@@ -2623,6 +2623,7 @@ var channelView = {
 
                     });
                 } else if (object.ggType === "Trip") {
+
                     smartTripView.openModal(object, function () {
 
                     });
