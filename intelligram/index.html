@@ -3365,52 +3365,56 @@
 
 
 <script id="intelliTrip-chat" type="text/x-kendo-template">
-	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
-		<div class="header">
-			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
-			<p class="helper intelliTrip-subheader">
-				<span>#:origin#</span>
-				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
-				<span>#:destintation#</span>
-			</p>
-			<p class="helper intelliTrip-subheader">
-				Departing : <span>#:departure#</span>
-			</p>
-		</div>
-		<div class="map hidden">
-			<!-- sample static map -->
-			<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+franisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san franisco">
-		</div>
-		<div class="footer">
-			<ul class="list-unstyled intelliTrip-details">
-				<li>
-					<img src="images/icon-time.svg" class="icon-sm" /> #:durationString# (#:distanceString#)
-				</li>
-			</ul>
-		</div>
+	<div class="intelliTrip" >
+		<a data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
+			<div class="header">
+				<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
+				<p class="helper intelliTrip-subheader">
+					<span>#:origin#</span>
+					<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
+					<span>#:destintation#</span>
+				</p>
+				<p class="helper intelliTrip-subheader">
+					Departing : <span>#:departure#</span>
+				</p>
+			</div>
+			<div class="map hidden">
+				<!-- sample static map -->
+				<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+franisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san franisco">
+			</div>
+			<div class="footer">
+				<ul class="list-unstyled intelliTrip-details">
+					<li>
+						<img src="images/icon-time.svg" class="icon-sm" /> #:durationString# (#:distanceString#)
+					</li>
+				</ul>
+			</div>
+		</a>
 	</div>
 </script>
 
 
 <script id="intelliFlight-chat" type="text/x-kendo-template">
-	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
-		<div class="header">
-			<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
-		</div>
-		<div class="summary">
-			<div class="origin">
-				<p class="airport">#:departureAirport#</p>
-				<p class="city">#:departureCity#</p>
-				<p class="date">#:estimatedDeparture#</p>
+	<div class="intelliFlight">
+		<a data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
+			<div class="header">
+				<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
 			</div>
-			<div class="liner"></div>
-			<div class="destination">
-				<p class="airport">#:arrivalAirport#</p>
-				<p class="city">#:arrivalCity#</p>
-				<p class="date">#:estimatedArrival#</p>
+			<div class="summary">
+				<div class="origin">
+					<p class="airport">#:departureAirport#</p>
+					<p class="city">#:departureCity#</p>
+					<p class="date">#:estimatedDeparture#</p>
+				</div>
+				<div class="liner"></div>
+				<div class="destination">
+					<p class="airport">#:arrivalAirport#</p>
+					<p class="city">#:arrivalCity#</p>
+					<p class="date">#:estimatedArrival#</p>
+				</div>
+				<div class="clearfix"></div>
 			</div>
-			<div class="clearfix"></div>
-		</div>
+		</a>
 	</div>
 </script>
 
@@ -3521,7 +3525,7 @@
 
 <script id="intelliPlace-chat" type="text/x-kendo-template">
 	<div>
-	<span class="btnSmart-place" data-role="button" data-objectid="#:objectId#" data-objectType="place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick" >
+	<a class="btnSmart-place" data-role="button" data-objectid="#:objectId#" data-objectType="place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick" >
 
 			<div class="btnSmart-content">
 				<p class="btnSmart-title"> #:name# </p>
@@ -3532,7 +3536,7 @@
 			<span class="btnSmart-type">
 					<img src="images/smart-event-alt.svg" class="icon-smartBtn" />
 			</span>
-	</span>
+	</a>
 	</div>
 </script>
 
