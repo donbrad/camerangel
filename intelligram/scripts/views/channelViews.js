@@ -2585,6 +2585,7 @@ var channelView = {
         var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
         var messageId = null;
+        var objectType = null;
 
 
         if (e.touch.currentTarget !== undefined) {
@@ -2593,6 +2594,7 @@ var channelView = {
         } else {
             // New Android
             messageId =   e.touch.target[0].attributes['data-uid'].value;
+            objectType = e.touch.target[0].attributes['data-objecttype'].value;
         }
 
         if (messageId === undefined || messageId === null) {
