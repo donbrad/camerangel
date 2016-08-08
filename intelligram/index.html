@@ -3364,8 +3364,7 @@
 
 
 <script id="intelliTrip-chat" type="text/x-kendo-template">
-	<div class="intelliTrip" >
-		<a data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
 				<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
 				<p class="helper intelliTrip-subheader">
@@ -3388,14 +3387,12 @@
 					</li>
 				</ul>
 			</div>
-		</a>
 	</div>
 </script>
 
 
 <script id="intelliFlight-chat" type="text/x-kendo-template">
-	<div class="intelliFlight">
-		<a data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliFlight"mdata-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
 				<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
 			</div>
@@ -3413,7 +3410,6 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
-		</a>
 	</div>
 </script>
 

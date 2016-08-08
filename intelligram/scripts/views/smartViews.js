@@ -2729,7 +2729,7 @@ var smartTripView = {
             smartTripView.validOrigin = true;
             smartTripView.validDestination = true;
             smartTripView.isPlace = false;
-            
+
             obj.set('ggType', tripObj.ggType);
             obj.set('uuid', tripObj.uuid);
             obj.set('senderUUID', tripObj.senderUUID);
