@@ -3374,7 +3374,7 @@ var smartFlightView = {
     segmentsDS : new kendo.data.DataSource(),
     callback : null,
     departureStatus : null,
-    arrivalStatua: null,
+    arrivalStatus: null,
     departureAirport : null,
     arrivalAirport: null,
     segmentArray: [],
@@ -3385,7 +3385,8 @@ var smartFlightView = {
     arrivalAirportsDS : new kendo.data.DataSource(),
 
     checkFlight: function () {
-        if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
+
+        if (smartFlightView.validAirline && smartFlightView.validFlight && smartFlightView.validDate) {
             mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
             getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
                 smartFlightView.processFlightStatus(result);
@@ -3424,6 +3425,7 @@ var smartFlightView = {
 
             smartFlightView.status.set('actualDeparture', null);
             smartFlightView.status.set('actualArrival', null);
+
 
         } else {
             smartFlightView.status.set('carrierCode', statusObj.carrierCode);
@@ -3516,12 +3518,11 @@ var smartFlightView = {
             smartFlightView.status.set('actualArrival', arrDateAct.format("M/D/YYYY h:mm a"));
         }
 
-        ux.hideKeyboard();
         $('#smartFlightView-flightStatus').removeClass('hidden');
         $('#smartFlightView-DoneBtn').addClass('hidden');
         $('#smartFlightView-SaveBtn').removeClass('hidden');
         $('.flightCreator').addClass('hidden');
-
+        ux.hideKeyboard();
     },
 
     getArrivalStatus : function (airportCode) {
@@ -3529,13 +3530,14 @@ var smartFlightView = {
 
         for (var i=0; i<that.statusArray.length; i++) {
             var status = that.statusArray[i];
+
             if (status.arrivalAirportFsCode === airportCode) {
                 that.arrivalStatus = status;
                 return (true);
             }
         }
-
         return(false);
+
     },
 
     getDepartureStatus : function (airportCode) {
@@ -3543,13 +3545,14 @@ var smartFlightView = {
 
         for (var i=0; i<that.statusArray.length; i++) {
             var status = that.statusArray[i];
+
             if (status.departureAirportFsCode === airportCode) {
                 that.departureStatus = status;
                 return (true);
             }
         }
-
         return(false);
+
     },
 
 
@@ -3565,6 +3568,7 @@ var smartFlightView = {
         for (var i=0; i<that.statusArray.length; i++) {
             var status = that.statusArray[i];
             if (status.departureAirportFsCode === depart) {
+
                 flightTime += status.flightDurations.scheduledBlockMinutes;
 
                 if (status.arrivalAirportFsCode === arrive) {
@@ -3684,7 +3688,7 @@ var smartFlightView = {
                     smartFlightView.validAirline = true;
                     smartFlightView.checkFlight();
                 }
-                if ( fmatch !== null) {
+                if (fmatch !== null) {
                     smartFlightView.flight = fmatch[0];
                     smartFlightView.validFlight = true;
                     smartFlightView.checkFlight();
@@ -3738,7 +3742,9 @@ var smartFlightView = {
             dataTextField: "city",
             select: function(e) {
                 //var depart = e.item;
+
                 var depart = this.dataItem(e.item.index());
+
                 smartFlightView.departureAirport = depart.airport;
                 if (smartFlightView.getDepartureStatus(depart.airport)) {
                     smartFlightView.validDeparture = true;
@@ -3783,19 +3789,48 @@ var smartFlightView = {
             placeholder: "Enter airline... "
         });
 
-      /*  $("#smartFlightView-flightSegments").kendoMobileListView({
-                dataSource: smartFlightView.segmentsDS,
-                template: $("#flightViewSegmentTemplate").html(),
-                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
-                //fixedHeaders: true,
-                click: function (e) {
-                    var segment = e.dataItem;
 
-                }
+        smartFlightView.status.bind("change", function(e){
+            var field = e.field;
+            var value = smartFlightView.status.get(field);
+            var displayTime = null;
+
+            switch(field){
+
+                case 'durationMinutes':
+                    if(value !== null){
+                        var time = ux.getDurationTime(value, "min");
+                        smartFlightView.status.set("ui_"+ field, time);
+                    } else {
+                        smartFlightView.status.set("ui_"+ field, null);
+                    }
+                    break;
+                case "estimatedDeparture":
+                    if(value !== null){
+                        displayTime = smartFlightView.displayTime(value);
+                        smartFlightView.status.set("ui_"+ field, displayTime);
+                    } else {
+                        smartFlightView.status.set("ui_"+ field, null);
+                    }
+                    break;
+                case "estimatedArrival":
+                    if(value !== null){
+                        displayTime = smartFlightView.displayTime(value);
+                        smartFlightView.status.set("ui_"+ field, displayTime);
+                    } else {
+                        smartFlightView.status.set("ui_"+ field, null);
+                    }
+                    break;
             }
-        );*/
+        });
     },
 
+    displayTime: function(dateTime){
+        var formattedDate = moment(dateTime, "M/D/YYYY h:mm a").format("M/D");
+        var formattedTime = moment(dateTime, "M/D/YYYY h:mm a").format("h:mma z");
+
+        return formattedDate + " @ " + formattedTime;
+    },
 
     onOpen : function () {
 

@@ -7067,7 +7067,6 @@ table.k-editor {
 .intelliFlight {
   width: 100%;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   background-color: #fff;
 }
 .intelliFlight .header {
@@ -7085,7 +7084,7 @@ table.k-editor {
   max-width: 1.2em;
   vertical-align: sub;
 }
-.intelliFlight .header .title span {
+.intelliFlight .header .title span:not(.info) {
   font-size: 0.85em;
   background-color: #E0E0E0;
   border-radius: 4px;
@@ -7097,6 +7096,10 @@ table.k-editor {
 .intelliFlight .header .subheader {
   font-size: 0.85em;
   margin: 0 0 0 2em;
+  color: #979797;
+}
+.intelliFlight .header .subheader img {
+  height: 12px;
 }
 .intelliFlight .summary {
   padding: 0.5em 1em;
@@ -7123,6 +7126,9 @@ table.k-editor {
 .intelliFlight .summary .city img {
   height: 12px;
 }
+.intelliFlight .summary .date {
+  font-size: 0.85em;
+}
 .intelliFlight .summary .terminal {
   font-size: 0.85em;
 }
@@ -7134,6 +7140,9 @@ table.k-editor {
 }
 .intelliFlight .summary .liner img {
   width: 100%;
+}
+.intelliCard > .intelliFlight {
+  box-shadow: none;
 }
 .liner::after {
   content: "";

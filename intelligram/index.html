@@ -2019,7 +2019,7 @@
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
 		<li><a id="messageAlertLi" data-action="channelView.messageAlert"><img src="images/icon-unmute.svg" class="icon-smart"/> Add Alert</a></li>
 		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
-		<li><a data-action="channelView.messageFlight"><img src="images/intelliFlight-icon.svg" class="icon-sm"/> Add Flight</a></li>
+		<li><a data-action="channelView.messageFlight"><img src="images/intelliFlight-icon.svg" class="icon-smart"/> Add Flight</a></li>
 		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
 		<li><a data-action="channelView.messagePlace"><img src="images/smart-coffee.svg" class="icon-smart"/> Add Place</a></li>
 		<li><a data-action="channelView.messageTrip"><img src="images/intelliTrip-icon.svg" class="icon-smart"/> Add Trip</a></li>
@@ -5055,28 +5055,43 @@
 			</ul>
 		</form>
 	</div>
+	<!-- flightViewer hidden" id="smartFlightView-flightStatus" -->
 	<div class="intelliCard flightViewer hidden" id="smartFlightView-flightStatus">
 		<div class="intelliFlight">
 			<div class="header">
 				<p class="title"><img src="images/intelliFlight-icon.svg" />
-					<span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
+					<span class="info" data-bind="text: carrierCode"></span> <span class="info" data-bind="text: flightNumber"></span>
 				</p>
+				<p class="subheader" data-bind="text: ui_durationMinutes"></p>
 			</div>
 			<div class="summary">
 				<div class="origin">
 					<p class="airport" data-bind="text: departureAirport"></p>
 					<p class="city" data-bind="text: departureCity"></p>
-					<p class="date" data-bind="text: estimatedDeparture"></p>
+					<p class="date" data-bind="text: ui_estimatedDeparture"></p>
 				</div>
 				<div class="liner"></div>
 				<div class="destination">
 					<p class="airport" data-bind="text: arrivalAirport"></p>
 					<p class="city" data-bind="text: arrivalCity"></p>
-					<p class="date" data-bind="text: estimatedArrival"></p>
+					<p class="date" data-bind="text: ui_estimatedArrival"></p>
 				</div>
 				<div class="clearfix"></div>
 			</div>
 		</div>
+
+		<div>
+			<ul class="list-unstyled">
+				<li>
+					<label>
+						Trip Name (optional)
+						<input type="text" />
+					</label>
+				</li>
+			</ul>
+		</div>
+
+
 
 		<!--<div style="text-align: center;">
 			<div style="font-size: 1.6em">
@@ -5109,14 +5124,13 @@
 		</div>-->
 
 		<div>
-			<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnSecondary btnFull-modal"> Change Flight </a>
-			<!--<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary"> Add Return Flight </a>-->
+			<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnClear btnFull-modal"> Change Flight </a>
 		</div>
 	</div>
 
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Cancel</a>
-		<a class="btnFull-modal btnPrimary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
+		<a class="btnFull-modal btnSecondary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
 	</div>
 </div>
 

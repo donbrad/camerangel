@@ -6982,7 +6982,6 @@ table.k-editor {
 .intelliFlight {
   width: 100%;
   border-radius: 4px;
-  .shadowHelper(1);
   background-color: #fff;
   .header {
     padding: 0.5em 1em;
@@ -6995,7 +6994,7 @@ table.k-editor {
         max-width: 1.2em;
         vertical-align: sub;
       }
-      span {
+      span:not(.info) {
         font-size: 0.85em;
         background-color: @shade-200;
         border-radius: 4px;
@@ -7010,6 +7009,7 @@ table.k-editor {
     .subheader {
       font-size: 0.85em;
       margin: 0 0 0 2em;
+      .helper;
     }
   }
   .summary {
@@ -7033,6 +7033,9 @@ table.k-editor {
       font-size: 0.85em;
       .helper;
     }
+    .date {
+      font-size: 0.85em;
+    }
     .terminal {
       font-size: 0.85em;
     }
@@ -7050,6 +7053,10 @@ table.k-editor {
   .footer {
 
   }
+}
+
+.intelliCard > .intelliFlight {
+  .shadowHelper(0);
 }
 
 .liner::after {

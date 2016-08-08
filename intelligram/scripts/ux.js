@@ -625,6 +625,25 @@ var ux = {
 		}
 		return newDate;
 
+	},
+
+	getDurationTime: function(time, scale){
+		var ui_time;
+
+		if(scale === "min"){
+			var min, hour;
+			hour = (time / 60).toFixed(0);
+			min = time % 60;
+			console.log("hour: " + hour);
+			console.log("min: " + min);
+			if(hour !== undefined && hour > 0){
+				ui_time = hour + "hrs" + " " + min + "min";
+			} else {
+				ui_time = min + "min";
+			}
+		}
+		return ui_time;
+
 	}
 
 };
