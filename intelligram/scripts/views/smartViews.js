@@ -3018,9 +3018,14 @@ var smartTripView = {
 
     getDefaultTime : function () {
 
-        var ROUNDING = 60 * 60 * 1000; /*ms*/
+        var start = moment();
 
-        var start = moment(Math.ceil((new Date()) / ROUNDING) * ROUNDING);
+        if (start.minutes() <= 30) {
+            start.minutes(30);
+        } else {
+            start.minutes(0);
+            start.add(1, 'h');
+        }
 
         var timeStr = moment(start).format('HH:MM');
 
@@ -3044,7 +3049,9 @@ var smartTripView = {
 
         var combined = date +  " " + time;
 
-        smartTripView.activeObject.set('departure', moment(combined).toDate());
+        var depart = moment(combined);
+
+        smartTripView.activeObject.set('departure', depart);
 
         smartTripView.departureSet = true;
         smartTripView.arrivalSet = false;
@@ -3059,7 +3066,8 @@ var smartTripView = {
 
         var combined = date +  " " + time;
 
-        smartTripView.activeObject.set('arrival',moment(combined).toDate());
+        var arrive = moment(combined);
+        smartTripView.activeObject.set('arrival',arrive);
 
         smartTripView.departureSet = false;
         smartTripView.arrivalSet = true;
