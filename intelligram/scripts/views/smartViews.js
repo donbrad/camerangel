@@ -2693,7 +2693,7 @@ var smartTripView = {
             smartTripView.validDestination = false;
             smartTripView.isPlace = false;
 
-            obj.set('ggType', 'Trip');
+            obj.set('ggType', smartTrip._ggClass);
             obj.set('uuid', uuid.v4());
             obj.set('senderUUID', userModel._user.userUUID);
             obj.set('senderName', userModel._user.name);
@@ -2763,6 +2763,12 @@ var smartTripView = {
 
     openModal : function (tripObj, callback) {
 
+
+        smartTripView.callback = null;
+        if (callback !== undefined) {
+            smartTripView.callback = callback;
+        }
+        
         if (tripObj === null) {
             smartTripView.mode = 'create';
             smartTripView.setCreator();

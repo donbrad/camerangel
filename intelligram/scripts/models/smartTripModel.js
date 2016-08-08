@@ -111,6 +111,13 @@ var smartTrip = {
         smartOb.set('departure', objectIn.departure);
         smartOb.set('arrival', objectIn.arrival);
         smartOb.set('duration', objectIn.duration);
+        smartOb.set('durationString', objectIn.durationString);
+        smartOb.set('distance', objectIn.distance);
+        smartOb.set('distanceString', objectIn.distanceString);
+        smartOb.set('dateDeparture', objectIn.dateDeparture);
+        smartOb.set('dateArrival', objectIn.dateArrival);
+        smartOb.set('timeDeparture', objectIn.timeDeparture);
+        smartOb.set('timeArrival', objectIn.timeArrival);
 
         smartTrip.tripsDS.add(smartOb);
         smartTrip.tripsDS.sync();
