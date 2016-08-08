@@ -2824,13 +2824,15 @@ var smartTripView = {
 
             smartTripView._inited = true;
         }
-        
+
         $("#smartTripModal").data("kendoMobileModalView").open();
     },
 
     setMapCenter: function () {
 
+        smartTripView.googleMap.setZoom(13);
         smartTripView.googleMap.setCenter({lat: smartTripView.activeObject.origin.lat, lng: smartTripView.activeObject.origin.lng});
+
     },
 
     lockLocation: function(boolean, type){
