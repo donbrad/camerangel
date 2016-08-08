@@ -2768,7 +2768,7 @@ var smartTripView = {
         if (callback !== undefined) {
             smartTripView.callback = callback;
         }
-        
+
         if (tripObj === null) {
             smartTripView.mode = 'create';
             smartTripView.setCreator();

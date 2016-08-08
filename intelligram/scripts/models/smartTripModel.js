@@ -59,11 +59,11 @@ var smartTrip = {
             smartTrip.addTrip(objectIn, callback);
         } else {
             var trip = smartTrip.findTrip(objectId);
-            if ( event  === undefined) {
-                // Event doesnt exist -- need to create it
+            if ( trip  === undefined) {
+                // Trip doesnt exist -- need to create it
                 smartTrip.addTrip(objectIn, callback);
             } else {
-                // Event exists, so just return current instance
+                // Trip exists, so just return current instance
                 if (callback !== undefined && callback !== null) {
                     callback(trip);
                 }
