@@ -3092,6 +3092,20 @@ var channelView = {
         });
     },
 
+    messageTrip: function (e) {
+        _preventDefault(e);
+        smartTripView.openModal(null, function (trip) {
+            if (trip !== undefined && trip !== null) {
+                smartTrip.smartAddTrip(trip, function (tripObj) {
+                    channelView.messageObjects.push(tripObj);
+                    mobileNotify("Sending IntelliTrip...");
+                    channelView.messageSend();
+                });
+
+            }
+        });
+    },
+
 
     messagePlace : function (e) {
         _preventDefault(e);
@@ -3110,20 +3124,6 @@ var channelView = {
                 channelView.messageObjects.push(place);
                 mobileNotify("Sending IntelliPlace...");
                 channelView.messageSend();
-            }
-        });
-    },
-
-    messageTrip: function (e) {
-        _preventDefault(e);
-        smartTripView.openModal(null, function (trip) {
-            if (trip !== undefined && trip !== null) {
-                smartTrip.smartAddTrip(trip, function (tripObj) {
-                    channelView.messageObjects.push(tripObj);
-                    mobileNotify("Sending IntelliTrip...");
-                    channelView.messageSend();
-                });
-
             }
         });
     },
