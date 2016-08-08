@@ -3254,7 +3254,6 @@
 							<img src="images/icon-location-active.svg"  />
 							Current location
 						</a>
-
 					</li>
 					<li class="smartTripView-origin-box hidden">
 						<label>
@@ -3352,9 +3351,9 @@
 				</ul>
 			</form>
 
-			<div>
+			<!--<div>
 				<div class="intelliTrip-map" id="smartTripView-mapDiv"></div>
-			</div>
+			</div>-->
 			<a data-role="button" class="btnPrimary btnFull-modal" id="smartTripModal-saveBtn" data-click="smartTripView.onSave">Save</a>
 		</div>
 	</div>
@@ -3371,52 +3370,56 @@
 
 
 <script id="intelliTrip-chat" type="text/x-kendo-template">
-	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
-		<div class="header">
-			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
-			<p class="helper intelliTrip-subheader">
-				<span>#:origin#</span>
-				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
-				<span>#:destintation#</span>
-			</p>
-			<p class="helper intelliTrip-subheader">
-				Departing : <span>#:departure#</span>
-			</p>
-		</div>
-		<div class="map hidden">
-			<!-- sample static map -->
-			<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+franisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san franisco">
-		</div>
-		<div class="footer">
-			<ul class="list-unstyled intelliTrip-details">
-				<li>
-					<img src="images/icon-time.svg" class="icon-sm" /> #:durationString# (#:distanceString#)
-				</li>
-			</ul>
-		</div>
+	<div class="intelliTrip" >
+		<a data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
+			<div class="header">
+				<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
+				<p class="helper intelliTrip-subheader">
+					<span>#:origin#</span>
+					<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
+					<span>#:destintation#</span>
+				</p>
+				<p class="helper intelliTrip-subheader">
+					Departing : <span>#:departure#</span>
+				</p>
+			</div>
+			<div class="map hidden">
+				<!-- sample static map -->
+				<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+franisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san franisco">
+			</div>
+			<div class="footer">
+				<ul class="list-unstyled intelliTrip-details">
+					<li>
+						<img src="images/icon-time.svg" class="icon-sm" /> #:durationString# (#:distanceString#)
+					</li>
+				</ul>
+			</div>
+		</a>
 	</div>
 </script>
 
 
 <script id="intelliFlight-chat" type="text/x-kendo-template">
-	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
-		<div class="header">
-			<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
-		</div>
-		<div class="summary">
-			<div class="origin">
-				<p class="airport">#:departureAirport#</p>
-				<p class="city">#:departureCity#</p>
-				<p class="date">#:estimatedDeparture#</p>
+	<div class="intelliFlight">
+		<a data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
+			<div class="header">
+				<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
 			</div>
-			<div class="liner"></div>
-			<div class="destination">
-				<p class="airport">#:arrivalAirport#</p>
-				<p class="city">#:arrivalCity#</p>
-				<p class="date">#:estimatedArrival#</p>
+			<div class="summary">
+				<div class="origin">
+					<p class="airport">#:departureAirport#</p>
+					<p class="city">#:departureCity#</p>
+					<p class="date">#:estimatedDeparture#</p>
+				</div>
+				<div class="liner"></div>
+				<div class="destination">
+					<p class="airport">#:arrivalAirport#</p>
+					<p class="city">#:arrivalCity#</p>
+					<p class="date">#:estimatedArrival#</p>
+				</div>
+				<div class="clearfix"></div>
 			</div>
-			<div class="clearfix"></div>
-		</div>
+		</a>
 	</div>
 </script>
 
@@ -3527,7 +3530,7 @@
 
 <script id="intelliPlace-chat" type="text/x-kendo-template">
 	<div>
-	<span class="btnSmart-place" data-role="button" data-objectid="#:objectId#" data-objectType="place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick" >
+	<a class="btnSmart-place" data-role="button" data-objectid="#:objectId#" data-objectType="place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick" >
 
 			<div class="btnSmart-content">
 				<p class="btnSmart-title"> #:name# </p>
@@ -3538,7 +3541,7 @@
 			<span class="btnSmart-type">
 					<img src="images/smart-event-alt.svg" class="icon-smartBtn" />
 			</span>
-	</span>
+	</a>
 	</div>
 </script>
 
@@ -5005,7 +5008,7 @@
 	<div class="intelliCard flightCreator">
 		<form>
 			<ul data-role="listview" data-style="inset">
-				<li >
+				<li>
 					<label> Airline
 						<input id="smartFlight-airline" type="text" placeholder="Please enter airline...">
 					</label>
@@ -5034,11 +5037,17 @@
 					</label>
 				</li>
 
+
+				<li class="flightError hidden">
+					<p class="error-msg">Couldn't locate this flight.  Please confirm flight information.</p>
+				</li>
+
 				<li class="returnFlight hidden">
 					<label> Airline
 						<input id="smartFlight-returnAirline" type="text" placeholder="Please enter airline..." >
 					</label>
 				</li>
+
 
 				<li class="returnFlight hidden">
 					<label> Flight
@@ -5051,7 +5060,6 @@
 						<input id="smartFlight-returnFlightDate" type="date" >
 					</label>
 				</li>
-
 			</ul>
 		</form>
 	</div>
@@ -5093,18 +5101,24 @@
 
 
 
-		<!--<div style="text-align: center;">
-			<div style="font-size: 1.6em">
-				<span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
-			</div>
-			<div style="font-size: 1.2em">
-				Flight Time: <span data-bind="text: durationMinutes"></span> minutes
-			</div>
+		<!--
+		<div>
+			<span style="text-align: center; font-size: 1.2em;" data-bind="text: name"></span>
 		</div>
 
-		<div style="float: left; text-align: left; padding-left: 12px;">
-			<div style="font-size: 1.6em"><span data-bind="text: departureAirport"></span></div>
-			<div style="font-size: 1.3em"><span data-bind="text: departureCity"></span></div>
+		<div style="text-align: center;">
+            <div style="font-size: 1.4em">
+                 <span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
+            </div>
+            <div style="font-size: 1.2em">
+                Flight Time: <span data-bind="text: durationMinutes"></span> minutes
+            </div>
+        </div>
+
+
+        <div style="float: left; text-align: left; padding-left: 12px;">
+			<div style="font-size: 1.3em"><span data-bind="text: departureCity"></span> (<span data-bind="text: departureAirport"></span>)</div>
+
 			<div style="font-size: 1.0em"><span data-bind="text: departureName"></span></div>
 			<div style="font-size: 1.2em">Est: <span data-bind="text: estimatedDeparture"></span></div>
 			<div style="font-size: 1.2em">Act: <span data-bind="text: actualDeparture"></span></div>
@@ -5113,8 +5127,7 @@
 		</div>
 
 		<div style="float: right; text-align: right; padding-right: 12px;">
-			<div style="font-size: 1.6em"><span data-bind="text: arrivalAirport"></span></div>
-			<div style="font-size: 1.3em"><span data-bind="text: arrivalCity"></span></div>
+			<div style="font-size: 1.3em"><span data-bind="text: arrivalCity"></span> (<span data-bind="text: arrivalAirport"></span>)</div>
 			<div style="font-size: 1.0em"><span data-bind="text: arrivalName"></span></div>
 			<div style="font-size: 1.2em">Est: <span data-bind="text: estimatedArrival"></span></div>
 			<div style="font-size: 1.2em">Act: <span data-bind="text: actualArrival"></span></div>
@@ -5123,10 +5136,20 @@
 			<div>Baggage Claim: <span data-bind="text: baggageClaim"></span></div>
 		</div>-->
 
+
 		<div>
-			<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnClear btnFull-modal"> Change Flight </a>
+
+
+			<div class="flightCreator">
+				<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnSecondary"> Change Flight </a>
+				<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary hidden"> Add Return Flight </a>
+			</div>
+
+			<div class="flightViewer">
+				<a data-click="smartFlightView.onTrackFlight" data-role="button" class="btnSecondary" id="smartFlightView-trackFlight"> Track Flight </a>
+
+			</div>
 		</div>
-	</div>
 
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Cancel</a>

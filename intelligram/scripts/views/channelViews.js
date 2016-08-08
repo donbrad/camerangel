@@ -2307,9 +2307,14 @@ var channelView = {
 
                         });
                     } else if (object.ggType === "Trip") {
+                        smartTripView.openModal(object, function () {
+
+                        });
 
                     } else if (object.ggType === "Flight") {
+                        smartFlightView.openModal(object, function () {
 
+                        });
                     }
 
                 }
@@ -2337,6 +2342,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliEvent-chat").html());
         var dataObj = {
+            ggType: "Event",
             title : smartEvent.title,
             date : date,
             placeName: placeName,
@@ -2364,6 +2370,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliMovie-chat").html());
         var dataObj = {
+            ggType: "Movie",
             imageUrl: smartMovie.imageUrl,
             movieTitle : smartMovie.movieTitle,
             dateStr : dateStr,
@@ -2403,6 +2410,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliPlace-chat").html());
         var dataObj = {
+            ggType : "Place",
             name: smartPlace.name,
             address: smartPlace.address,
             objectId : objectId
@@ -2423,6 +2431,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliTrip-chat").html());
         var dataObj = {
+            ggType: "Trip",
             name: smartTrip.name,
             origin: smartTrip.origin,
             destination: smartTrip.destination,
@@ -2445,6 +2454,7 @@ var channelView = {
 
         var template = kendo.template($("#intelliFlight-chat").html());
         var dataObj = {
+            ggType : "Flight",
             objectId : objectId,
             departureAirport : smartFlight.departureAirport,
             departureCity : smartFlight.departureCity,
@@ -2575,14 +2585,19 @@ var channelView = {
         var $target = $(e.touch.initialTouch);
         var dataSource = channelView.messagesDS;
         var messageId = null;
+        var objectType = null;
 
+        // User has clicked in message area, so hide the keyboard
+        ux.hideKeyboard();
 
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
             messageId =  $(e.touch.currentTarget).data("uid");
+
         } else {
             // New Android
             messageId =   e.touch.target[0].attributes['data-uid'].value;
+
         }
 
         if (messageId === undefined || messageId === null) {
@@ -2590,8 +2605,39 @@ var channelView = {
         }
 
         var message = dataSource.getByUid(messageId);
-        // User has clicked in message area, so hide the keyboard
-        // ux.hideKeyboard();
+
+        if (message.data.objects.length > 0) {
+            var object = message.data.objects[0];
+            var objType = object.ggType;
+
+            if (objType !== undefined && objType !== null) {
+                if (object.ggType === 'Event') {
+                    smartEvent.smartAddEvent(object);
+                    smartEventView.openModal(object);
+                } else if (object.ggType === 'Movie') {
+                    smartMovie.smartAddMovie(object);
+                    smartMovieView.openModal(object);
+                } else if (object.ggType === 'Place') {
+                    var locObj = {placeId: null, lat: object.lat, lng: object.lng, title: "IntelliPlace", name: null,  targetName: object.name};
+                    mapViewModal.openModal(locObj, function () {
+
+                    });
+                } else if (object.ggType === "Trip") {
+
+                    smartTripView.openModal(object, function () {
+
+                    });
+
+                } else if (object.ggType === "Flight") {
+                    smartFlightView.openModal(object, function () {
+
+                    });
+                }
+            }
+
+
+        }
+
 
         // User actually clicked on the photo so show the open the photo viewer
         if ($target.hasClass('photo-chat')) {
@@ -3033,11 +3079,15 @@ var channelView = {
     messageFlight : function (e) {
         _preventDefault(e);
         //channelView.messageMenuTag();
-        smartFlightView.openModal(null, function (flight) {
+
+        smartFlightView.openModal(null,function (flight) {
             if (flight !== undefined && flight !== null) {
-                channelView.messageObjects.push(flight);
-                 mobileNotify("Sending IntelliFlight...");
-                 channelView.messageSend();
+                smartFlight.smartAddFlight(flight, function (flightObj) {
+                    channelView.messageObjects.push(flightObj);
+                    mobileNotify("Sending IntelliFlight...");
+                    channelView.messageSend();
+                });
+
             }
         });
     },
@@ -3068,10 +3118,12 @@ var channelView = {
         _preventDefault(e);
         smartTripView.openModal(null, function (trip) {
             if (trip !== undefined && trip !== null) {
+                smartTrip.smartAddTrip(trip, function (tripObj) {
+                    channelView.messageObjects.push(tripObj);
+                    mobileNotify("Sending IntelliTrip...");
+                    channelView.messageSend();
+                });
 
-                channelView.messageObjects.push(trip);
-                mobileNotify("Sending IntelliTrip...");
-                channelView.messageSend();
             }
         });
     },

@@ -7,7 +7,7 @@
 var smartTrip = {
 
     _cloudClass : 'smartTrip',
-    _ggClass : 'smarttrip',
+    _ggClass : 'Trip',
     _version : 1,
     tripsDS : null,
 
@@ -62,7 +62,7 @@ var smartTrip = {
         } else {
             // Event exists, so just return current instance
             if (callback !== undefined && callback !== null) {
-                callback(event);
+                callback(trip);
             }
         }
     },
@@ -76,6 +76,13 @@ var smartTrip = {
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
             objectIn.senderUUID = userModel._user.userUUID;
+        }
+
+        if (objectIn.senderName === undefined || objectIn.senderName === null) {
+            objectIn.senderName = userModel._user.name;
+        }
+        if (objectIn.uuid === undefined) {
+            objectIn.uuid = uuid.v4();
         }
 
         //smartOb.setACL(userModel.parseACL);
@@ -92,7 +99,7 @@ var smartTrip = {
         smartOb.set('autoStatus', objectIn.autoStatus);
         smartOb.set('addToCalendar',  objectIn.addToCalendar);
         smartOb.set('leg1Complete',  objectIn.leg1Complete);
-        smartOb.set('leg2Complete',  objectIn.leg2Complete);;
+        smartOb.set('leg2Complete',  objectIn.leg2Complete);
         smartOb.set('origin', objectIn.origin);
         smartOb.set('originName', objectIn.originName);
         smartOb.set('destination', objectIn.destination);

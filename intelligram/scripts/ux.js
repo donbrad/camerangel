@@ -632,10 +632,9 @@ var ux = {
 
 		if(scale === "min"){
 			var min, hour;
-			hour = (time / 60).toFixed(0);
+			hour = Math.floor(time / 60);
 			min = time % 60;
-			console.log("hour: " + hour);
-			console.log("min: " + min);
+			
 			if(hour !== undefined && hour > 0){
 				ui_time = hour + "hrs" + " " + min + "min";
 			} else {

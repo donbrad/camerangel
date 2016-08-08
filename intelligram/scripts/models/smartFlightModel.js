@@ -66,6 +66,10 @@ var smartFlight = {
     smartAddFlight : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 
+        if (objectId === undefined) {
+            smartFlight.addFlight(objectIn, callback);
+        }
+
         var flight = smartFlight.findFlight(objectId);
         if ( flight  === undefined) {
             // Event doesnt exist -- need to create it
@@ -73,14 +77,13 @@ var smartFlight = {
         } else {
             // Event exists, so just return current instance
             if (callback !== undefined && callback !== null) {
-                callback(event);
+                callback(flight);
             }
         }
     },
 
     addFlight : function (objectIn, callback) {
 
-        var smartOb = new kendo.data.ObservableObject();
 
         mobileNotify("Creating IntelliFlight...");
 
@@ -88,21 +91,25 @@ var smartFlight = {
             objectIn.senderUUID = userModel._user.userUUID;
         }
 
+        if (objectIn.senderName === undefined || objectIn.senderName === null) {
+            objectIn.senderName = userModel._user.name;
+        }
+
+        if (objectIn.uuid === undefined) {
+            objectIn.uuid = uuid.v4();
+        }
+
         //smartOb.setACL(userModel.parseACL);
-        smartOb.set('version', smartFlight.version);
-        smartOb.set('ggType', smartFlight._ggClass);
-        smartOb.set('uuid', objectIn.uuid);
-        //smartOb.set('Id', objectIn.uuid);
-        smartOb.set('senderUUID', objectIn.senderUUID);
-        smartOb.set('senderName', objectIn.senderName);
+        objectIn.version =  smartFlight._version;
+        objectIn.ggType = smartFlight._ggClass;
 
 
-        smartFlight.flightsDS.add(smartOb);
+        smartFlight.flightsDS.add(objectIn);
         smartFlight.flightsDS.sync();
         if (callback !== undefined && callback !== null)
-            callback(smartOb);
+            callback(objectIn);
 
-        everlive.createOne(smartFlight._cloudClass, smartOb, function (error, data){
+        everlive.createOne(smartFlight._cloudClass, objectIn, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating intelliFlight " + JSON.stringify(error));
             } else {
