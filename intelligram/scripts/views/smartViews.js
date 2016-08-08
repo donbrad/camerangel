@@ -2817,19 +2817,20 @@ var smartTripView = {
         smartTripView.arrival = null;*/
 
         // Setup Trip Map and Directions renderer just once
-      /*  if (!smartTripView._inited) {
+       if (!smartTripView._inited) {
             smartTripView.googleMap = new google.maps.Map(document.getElementById('smartTripView-mapDiv'), mapModel.mapOptions);
             smartTripView.directionsDisplay = new google.maps.DirectionsRenderer();
             smartTripView.directionsDisplay.setMap(smartTripView.googleMap);
 
             smartTripView._inited = true;
-        }*/
+        }
+        
         $("#smartTripModal").data("kendoMobileModalView").open();
     },
 
     setMapCenter: function () {
 
-        //smartTripView.googleMap.setCenter({lat: smartTripView.activeObject.origin.lat, lng: smartTripView.activeObject.origin.lng});
+        smartTripView.googleMap.setCenter({lat: smartTripView.activeObject.origin.lat, lng: smartTripView.activeObject.origin.lng});
     },
 
     lockLocation: function(boolean, type){
