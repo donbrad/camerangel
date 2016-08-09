@@ -6984,7 +6984,7 @@ table.k-editor {
   border-radius: 4px;
   background-color: #fff;
   .header {
-    padding: 0.5em 1em;
+    padding: 0.5em;
     border-bottom: 2px dotted @shade-200;
     .title {
       font-size: 1.2em;
@@ -6994,9 +6994,9 @@ table.k-editor {
         max-width: 1.2em;
         vertical-align: sub;
       }
-      span:not(.info) {
+     >span:not(.info) {
         font-size: 0.85em;
-        background-color: @shade-200;
+        background-color: @shade-100;
         border-radius: 4px;
         margin: 0 0.5em;
         color: #fff;
@@ -7013,12 +7013,12 @@ table.k-editor {
     }
   }
   .summary {
-    padding: 0.5em 1em;
+    padding: 0.5em;
     display: inline-block;
     width: 100%;
     border-bottom: 2px dotted @shade-200;
     div {
-      width: 35%;
+      width: 40%;
       float: left;
       text-align: center;
       p {
@@ -7040,7 +7040,7 @@ table.k-editor {
       font-size: 0.85em;
     }
     .liner {
-      width: 30%;
+      width: 20%;
       height:2px;
       background-color: @black;
       margin-top: 1em;
@@ -7053,10 +7053,86 @@ table.k-editor {
   .footer {
 
   }
+  .detail-btn {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+  }
+}
+
+.intelliCardActions {
+  margin-top: 0.5em;
+  border-top: 2px dotted @shade-200;
+}
+
+.intelliFlight-updates {
+  margin: 0.5em 1em;
+  border: 1px solid @shade-200;
+  border-radius: 4px;
+  padding: 0.5em;
+  background-color: @shade-300;
+  p {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .update-header {
+    margin-bottom: 0.25em;
+    color: @primary-200;
+    font-size: 0.85em;
+    img {
+      height: 0.85em;
+      max-width: 0.85em;
+    }
+  }
+  .update-content {
+    font-size: 1em;
+  }
+  .update-time {
+    .helper;
+    font-size: 0.75em;
+  }
+}
+
+
+.arrival-summary {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.arrival-summary,
+.destination-summary {
+  //border-radius: 4px;
+  //border: 1px solid @shade-200;
+}
+
+.flightInfo-list {
+  position: relative;
+}
+
+.flightInfo-list > li:not(:first-child) {
+  width: 50%;
+  float: left;
+  margin-top: 0.25em;
+}
+
+#smartFlightView-flightStatus > div.intelliFlight > div > ul > li > label {
+  .helper;
+  font-size: 0.85em;
+}
+
+#smartFlightView-flightStatus > div.intelliFlight > div > ul > li > p {
+  font-size: 1em;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .intelliCard > .intelliFlight {
   .shadowHelper(0);
+}
+
+.arrival-depart {
+  font-size: 0.85em !important;
+  font-weight: 600;
 }
 
 .liner::after {
@@ -7071,6 +7147,7 @@ table.k-editor {
   background-color: #fff;
   position: relative;
   top: -0.25em;
+  right: -0.5em;
   float: right;
 }
 .liner::before {
@@ -7085,6 +7162,7 @@ table.k-editor {
   background-color: @black;
   position: relative;
   top: -0.25em;
+  left: -0.5em;
   float: left;
 }
 
@@ -7173,3 +7251,12 @@ table.k-editor {
   }
 }
 
+.chat-message-text > .intelliFlight > a > div.header > p > img {
+  height: 1em;
+  max-width: 1em;
+
+}
+
+.chat-message-text > .intelliFlight > a > div.summary {
+  border-bottom: none;
+}

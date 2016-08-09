@@ -3401,7 +3401,7 @@ var smartFlightView = {
             getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
 
                 smartFlightView.processFlightStatus(result);
-            })
+            });
         } else {
             return;
         }
@@ -3420,12 +3420,13 @@ var smartFlightView = {
         if (statusObj === null) {
 
             smartFlightView.status.set('ggType', 'Flight');
-            smartFlightView.status.set('uuid', uuid.v4())
-            smartFlightView.status.set('name', userModel._user.name + "'s Flight");
+            smartFlightView.status.set('uuid', uuid.v4());
+            smartFlightView.status.set('name', null);
             smartFlightView.status.set('carrierCode', null);
             smartFlightView.status.set('flightNumber',null);
             smartFlightView.status.set('arrivalAirport', null);
             smartFlightView.status.set('departureAirport',null);
+            smartFlightView.status.set('airline', null);
 
             smartFlightView.status.set('departureTerminal', null);
             smartFlightView.status.set('departureGate',null);
@@ -3448,22 +3449,25 @@ var smartFlightView = {
             smartFlightView.status.set('name', statusObj.name);
             smartFlightView.status.set('carrierCode', statusObj.carrierCode);
             smartFlightView.status.set('flightNumber',statusObj.flightNumber);
-            smartFlightView.status.set('arrivalAirport', statusObj.arrivalAirport);
-            smartFlightView.status.set('departureAirport',statusObj.departureAirport);
-
-            smartFlightView.status.set('departureTerminal', statusObj.departureTerminal);
-            smartFlightView.status.set('departureGate',statusObj.departureGate);
-
-            smartFlightView.status.set('arrivalTerminal', statusObj.arrivalTerminal);
-            smartFlightView.status.set('arrivalGate', statusObj.arrivalGate);
             smartFlightView.status.set('baggageClaim',  statusObj.baggageClaim);
             smartFlightView.status.set('durationMinutes', statusObj.durationMinutes);
+            smartFlightView.status.set('airline', statusObj.airline);
 
-            smartFlightView.status.set('estimatedDeparture', statusObj.estimatedDeparture);
+            /// Arrival Info
+            smartFlightView.status.set('arrivalAirport', statusObj.arrivalAirport);
+            smartFlightView.status.set('arrivalTerminal', statusObj.arrivalTerminal);
+            smartFlightView.status.set('arrivalGate', statusObj.arrivalGate);
             smartFlightView.status.set('estimatedArrival',  statusObj.estimatedArrival);
-
-            smartFlightView.status.set('actualDeparture', statusObj.actualDeparture);
             smartFlightView.status.set('actualArrival', statusObj.actualArrival);
+            smartFlightView.status.set('arrivalCity', statusObj.arrivalCity);
+
+            /// Departure Info
+            smartFlightView.status.set('departureTerminal', statusObj.departureTerminal);
+            smartFlightView.status.set('departureGate',statusObj.departureGate);
+            smartFlightView.status.set('departureAirport',statusObj.departureAirport);
+            smartFlightView.status.set('estimatedDeparture', statusObj.estimatedDeparture);
+            smartFlightView.status.set('actualDeparture', statusObj.actualDeparture);
+            smartFlightView.status.set('departureCity', statusObj.departureCity);
         }
 
     },
@@ -3535,7 +3539,7 @@ var smartFlightView = {
             var arrDateAct = moment(that.arrivalStatus.operationalTimes.actualGateArrival.dateUtc);
             smartFlightView.status.set('actualArrival', arrDateAct.format("M/D/YYYY h:mm a"));
         }
-        console.log(smartFlightView.status);
+
 
         $('#smartFlightView-flightStatus').removeClass('hidden');
         $('#smartFlightView-DoneBtn').addClass('hidden');
@@ -3765,7 +3769,7 @@ var smartFlightView = {
         $("#smartFlight-flightDeparture").kendoAutoComplete({
             dataSource: smartFlightView.departureAirportsDS,
             ignoreCase: true,
-            template : "<span> #:city# (<strong> #:airport# </strong>) </span>",
+            template : "<span> #:city# (#:airport#) </span>",
             dataTextField: "city",
             select: function(e) {
                 //var depart = e.item;
@@ -3786,7 +3790,7 @@ var smartFlightView = {
         $("#smartFlight-flightArrival").kendoAutoComplete({
             dataSource: smartFlightView.arrivalAirportsDS,
             ignoreCase: true,
-            template : "<span> #:city# (<strong> #:airport# </strong>) </span>",
+            template : "<span> #:city# (#:airport#) </span>",
             dataTextField: "city",
             select: function(e) {
                 //var airline = e.item;
@@ -3853,8 +3857,8 @@ var smartFlightView = {
     },
 
     displayTime: function(dateTime){
-        var formattedDate = moment(dateTime, "M/D/YYYY h:mm a").format("M/D");
-        var formattedTime = moment(dateTime, "M/D/YYYY h:mm a").format("h:mma z");
+        var formattedDate = moment(dateTime, "M/D/YYYY h:mm a").format("ddd MMM Do, YY");
+        var formattedTime = moment(dateTime, "M/D/YYYY h:mm a").format("h:mma");
 
         return formattedDate + " @ " + formattedTime;
     },
@@ -3879,6 +3883,7 @@ var smartFlightView = {
         $('#smartFlightView-DoneBtn').removeClass('hidden');
         $('.flightViewer').removeClass('hidden');
         $('.flightCreator').addClass('hidden');
+
     },
 
     setEditMode : function () {
@@ -3886,7 +3891,7 @@ var smartFlightView = {
         $('#smartFlightView-DoneBtn').removeClass('hidden');
         $('.flightViewer').addClass('hidden');
         $('.flightCreator').removeClass('hidden');
-        $("#smartFlight-name").val(userModel._user.name + "'s Flight");
+        //$("#smartFlight-name").val(userModel._user.name + "'s Flight");
     },
 
     openModal : function (flight, callback) {
@@ -3924,10 +3929,11 @@ var smartFlightView = {
             smartFlightView.setViewMode();
             // Is the user tracking this flight?
             var flightObj = smartFlight.findFlight(flight.uuid);
+
             if (flightObj === undefined || flightObj === null) {
-                $('#smartFlightView-trackFlight').removeClass('hidden');
+                $('#smartFlightView-trackFlight').html("<img src='images/icon-checked-active.svg' class='icon-sm'/> Tracking");
             } else {
-                $('#smartFlightView-trackFlight').addClass('hidden');
+                $('#smartFlightView-trackFlight').html("Track Flight");
             }
         }
 

@@ -3404,6 +3404,7 @@
 		<a data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
 				<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
+				<p class="subheader">#:flightTime#</p>
 			</div>
 			<div class="summary">
 				<div class="origin">
@@ -5036,8 +5037,12 @@
 						<input id="smartFlight-flightArrival" type="text" >
 					</label>
 				</li>
-
-
+				<li>
+					<label>
+						Trip Name (optional)
+						<input type="text" data-bind="value: name" />
+					</label>
+				</li>
 				<li class="flightError hidden">
 					<p class="error-msg">Couldn't locate this flight.  Please confirm flight information.</p>
 				</li>
@@ -5063,94 +5068,76 @@
 			</ul>
 		</form>
 	</div>
-	<!-- flightViewer hidden" id="smartFlightView-flightStatus" -->
+
 	<div class="intelliCard flightViewer hidden" id="smartFlightView-flightStatus">
 		<div class="intelliFlight">
 			<div class="header">
 				<p class="title"><img src="images/intelliFlight-icon.svg" />
-					<span class="info" data-bind="text: carrierCode"></span> <span class="info" data-bind="text: flightNumber"></span>
+					<span class="info" data-bind="text: departureAirport"></span> / <span class="info" data-bind="text: arrivalAirport"></span>
 				</p>
-				<p class="subheader" data-bind="text: ui_durationMinutes"></p>
+				<p class="subheader">
+					<span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span> •
+					<span data-bind="text: ui_durationMinutes"></span>
+				</p>
 			</div>
-			<div class="summary">
-				<div class="origin">
-					<p class="airport" data-bind="text: departureAirport"></p>
-					<p class="city" data-bind="text: departureCity"></p>
-					<p class="date" data-bind="text: ui_estimatedDeparture"></p>
-				</div>
-				<div class="liner"></div>
-				<div class="destination">
-					<p class="airport" data-bind="text: arrivalAirport"></p>
-					<p class="city" data-bind="text: arrivalCity"></p>
-					<p class="date" data-bind="text: ui_estimatedArrival"></p>
+			<div class="intelliFlight-updates">
+				<p class="update-header"><img src="images/icon-time-primary.svg" /> Recent Update</p>
+				<p class="update-content">Flight took off at 8:17am</p>
+				<p class="update-time">5 mins ago</p>
+			</div>
+				<div class="destination-summary">
+					<ul class="list-unstyled flightInfo-list">
+						<li>
+							<p class="arrival-depart">Departure -
+								<span data-bind="text: departureCity"></span>
+								(<span data-bind="text: departureAirport"></span>)
+							</p>
+							<p class="date" data-bind="text: ui_estimatedDeparture"></p>
+						</li>
+						<li>
+							<label>Gate</label>
+							<p data-bind="text: departureGate"></p>
+						</li>
+					</ul>
 				</div>
 				<div class="clearfix"></div>
-			</div>
+				<div class="arrival-summary">
+					<ul class="list-unstyled flightInfo-list">
+						<li>
+							<p class="arrival-depart">Arrival -
+								<span data-bind="text: arrivalCity"></span>
+								(<span data-bind="text: arrivalAirport"></span>)
+							</p>
+							<p class="date" data-bind="text: ui_estimatedArrival"></p>
+						</li>
+						<li>
+							<label>Terminal</label>
+							<p data-bind="text: arrivalTerminal"></p>
+						</li>
+						<li>
+							<label>Gate</label>
+							<p data-bind="text: arrivalGate"></p>
+						</li>
+					</ul>
+				</div>
 		</div>
-
-		<div>
-			<ul class="list-unstyled">
-				<li>
-					<label>
-						Trip Name (optional)
-						<input type="text" />
-					</label>
-				</li>
-			</ul>
-		</div>
+		<div class="clearfix"></div>
 
 
-
-		<!--
-		<div>
-			<span style="text-align: center; font-size: 1.2em;" data-bind="text: name"></span>
-		</div>
-
-		<div style="text-align: center;">
-            <div style="font-size: 1.4em">
-                 <span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
-            </div>
-            <div style="font-size: 1.2em">
-                Flight Time: <span data-bind="text: durationMinutes"></span> minutes
-            </div>
-        </div>
-
-
-        <div style="float: left; text-align: left; padding-left: 12px;">
-			<div style="font-size: 1.3em"><span data-bind="text: departureCity"></span> (<span data-bind="text: departureAirport"></span>)</div>
-
-			<div style="font-size: 1.0em"><span data-bind="text: departureName"></span></div>
-			<div style="font-size: 1.2em">Est: <span data-bind="text: estimatedDeparture"></span></div>
-			<div style="font-size: 1.2em">Act: <span data-bind="text: actualDeparture"></span></div>
-			<div>Terminal : <span data-bind="text: departureTerminal"></span></div>
-			<div>Gate: <span data-bind="text: departureGate"></span></div>
-		</div>
-
-		<div style="float: right; text-align: right; padding-right: 12px;">
-			<div style="font-size: 1.3em"><span data-bind="text: arrivalCity"></span> (<span data-bind="text: arrivalAirport"></span>)</div>
-			<div style="font-size: 1.0em"><span data-bind="text: arrivalName"></span></div>
-			<div style="font-size: 1.2em">Est: <span data-bind="text: estimatedArrival"></span></div>
-			<div style="font-size: 1.2em">Act: <span data-bind="text: actualArrival"></span></div>
-			<div>Terminal : <span data-bind="text: arrivalTerminal"></span></div>
-			<div>Gate: <span data-bind="text: arrivalGate"></span></div>
-			<div>Baggage Claim: <span data-bind="text: baggageClaim"></span></div>
-		</div>-->
-
-
-		<div>
-
-
+		<div class="intelliCardActions">
 			<div class="flightCreator">
-				<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnSecondary"> Change Flight </a>
-				<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary hidden"> Add Return Flight </a>
+				<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnSecondary btnFull-modal"> Change Flight </a>
+				<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary hidden btnFull-modal">
+					Add Return Flight
+				</a>
 			</div>
 
 			<div class="flightViewer">
-				<a data-click="smartFlightView.onTrackFlight" data-role="button" class="btnSecondary" id="smartFlightView-trackFlight"> Track Flight </a>
+				<a data-click="smartFlightView.onTrackFlight" data-role="button" class="btnClear btnFull-modal" id="smartFlightView-trackFlight"> Track Flight </a>
 
 			</div>
 		</div>
-
+	</div>
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Cancel</a>
 		<a class="btnFull-modal btnSecondary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
