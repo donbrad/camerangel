@@ -2992,7 +2992,7 @@ var smartTripView = {
         smartTripView.validOrigin) {
             $("#smartTripModal-saveBtn").removeClass('hidden');
             smartTripView.computeTravelTime(function(result) {
-                
+
                 if (smartTripView.arrivalSet) {
                     smartTripView.activeObject.departure = moment(smartTripView.activeObject.arrival).add(smartTripView.activeObject.duration, 's').toDate();
                     smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
