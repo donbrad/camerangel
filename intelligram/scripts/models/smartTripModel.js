@@ -121,8 +121,7 @@ var smartTrip = {
 
         smartTrip.tripsDS.add(smartOb);
         smartTrip.tripsDS.sync();
-        if (callback !== undefined && callback !== null)
-            callback(smartOb);
+
 
         everlive.createOne(smartTrip._cloudClass, smartOb, function (error, data){
             if (error !== null) {
@@ -133,6 +132,8 @@ var smartTrip = {
             }
         });
 
+        if (callback !== undefined && callback !== null)
+            callback(smartOb);
     }
 
 };
