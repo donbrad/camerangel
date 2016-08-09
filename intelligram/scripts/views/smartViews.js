@@ -72,7 +72,7 @@ var smartEventView = {
 
         var start = moment(thisObj.date);
         var dateStr = start.format('MM/DD/YYYY');
-        var timeStr = start.format('HH:MM');
+        var timeStr = start.format('HH:mm');
         $('#smartEventView-date').val(dateStr);
         $('#smartEventView-time').val(timeStr);
         $("#smartEventView-placeadddiv").addClass('hidden');
@@ -244,7 +244,7 @@ var smartEventView = {
 
 
         $('#smartEventView-date').val(moment(thisEvent.date).format("MM/DD/YYYY"));
-        $('#smartEventView-time').val(moment(thisEvent.date).format("HH:MM:ss"));
+        $('#smartEventView-time').val(moment(thisEvent.date).format("HH:mm"));
         $(".eventBanner").addClass("hidden");
     },
 
@@ -369,7 +369,7 @@ var smartEventView = {
 
         var start = ux.setDefaultTime(false,1);
 
-        var timeStr = moment(start).format('HH:MM');
+        var timeStr = moment(start).format('HH:mm');
 
         return(timeStr);
     },
@@ -392,7 +392,7 @@ var smartEventView = {
         } else if (date === null) {
             mobileNotify("Please enter a valid Date");
         } else {
-            var timeComp = moment(time).format("HH:MM:SS");
+            var timeComp = moment(time).format("HH:mm");
             var dateComp = moment(date).format('MMM Dd, YYYY');
             smartEventView.updateDateString();
             return (true);
@@ -2486,13 +2486,13 @@ var smartTripView = {
             switch (field) {
                 case 'tripType' :
 
-                    if(value !== null){
+                    if (value !== null) {
                         smartTripView.validate();
                     }
                     break;
 
                 case 'origin' :
-                    if(value === null){
+                    if (value === null) {
                         smartTripView.lockLocation(false, "origin");
                     }
 
@@ -2500,7 +2500,7 @@ var smartTripView = {
                     break;
 
                 case 'destination' :
-                    if(value === null){
+                    if (value === null) {
                         smartTripView.lockLocation(false, "destination");
                     } else {
                         smartTripView.validate();
@@ -2509,54 +2509,22 @@ var smartTripView = {
                     break;
 
                 case 'timeArrival' :
-                    if(value !== null){
-                        smartTripView.processArrivalTime();
-                    }
+                    //smartTripView.processArrivalTime();
                     break;
 
                 case 'timeDeparture' :
-                    if(value !== null){
-                        smartTripView.processDepartureTime();
-                    }
+                    // smartTripView.processDepartureTime();
 
-                    break;
-                case 'durationString':
-                    if(value === null){
-                        $(".smartTripView-travelTime-box").addClass("hidden");
-                    } else {
-                        $(".smartTripView-travelTime-box").removeClass("hidden");
-                    }
                     break;
                 case 'travelError':
-                    if(value === true){
-                        // show error
-                        $(".smartTripView-error").removeClass("hidden");
-                        /// hide travel time
-                        $("#smartTripView-travelTime-box").addClass("hidden");
-
-                        $(".intelli-subheader").addClass("hidden");
-
-                        // Disable save btn
-                        //$("#smartTripModal-saveBtn").attr("disabled", true);
-                        $("#smartTripModal-saveBtn").kendoButton({
-                            enable: false
-                        });
-
+                    if(value){
+                        $(".smartTripView-error").removeClass('hidden');
                     } else {
-                        // hide error
-                        $(".smartTripView-error").addClass("hidden");
-                        // show travel time
-                        //$("#smartTripView-travelTime-box").removeClass("hidden");
-
-                        $(".intelli-subheader").removeClass("hidden");
-
-                        // enable save btn
-                        $("#smartTripModal-saveBtn").kendoButton({
-                            enable: true
-                        });
+                        $(".smartTripView-error").addClass('hidden');
                     }
                     break;
             }
+
         });
 
         smartTripView.activeObject.bind("reset", function(e){
@@ -2571,11 +2539,16 @@ var smartTripView = {
             $("#smartTripView-departure-time, #smartTripView-arrival-time").addClass('hidden');
 
             $(".smartTripView-origin-box").addClass("hidden");
-
         });
 
+       $("#smartTripView-timeArrival" ).blur(function() {
+            smartTripView.processArrivalTime();
+        });
 
-        smartTripView.initialized = false;
+        $("#smartTripView-timeDeparture" ).blur(function() {
+            smartTripView.processDepartureTime();
+        });
+
 
 
         $('#smartTripView-dateDeparture').pickadate({
@@ -2715,7 +2688,7 @@ var smartTripView = {
 
         $('input[type=radio][name=arrival]').on("change", function() {
             var value = $(this).val();
-            var currentTime = smartTripView.getDefaultTime();
+
 
             if(value === "true"){
                 $("#smartTripView-arrival-time").removeClass("hidden");
@@ -2730,12 +2703,13 @@ var smartTripView = {
                 $("#smartTripView-arrival-time").addClass("hidden");
 
                 // set default time
+                var currentTime = smartTripView.getDefaultTime60();
+
                 $("#smartTripView-timeDeparture").val(currentTime);
                 smartTripView.processDepartureTime();
 
                 $("#smartTripView-routeTimeBtn").removeClass('hidden');
             }
-
 
         });
 
@@ -2753,7 +2727,7 @@ var smartTripView = {
             smartTripView.validDestination = false;
             smartTripView.isPlace = false;
 
-            obj.set('ggType', 'Trip');
+            obj.set('ggType', smartTrip._ggClass);
             obj.set('uuid', uuid.v4());
             obj.set('senderUUID', userModel._user.userUUID);
             obj.set('senderName', userModel._user.name);
@@ -2779,7 +2753,9 @@ var smartTripView = {
             var dateStr = moment(d).format('MM/DD/YYYY');
             obj.set('dateDeparture', dateStr);
             obj.set('dateArrival', dateStr);
-            var timeStr = moment(d).format('h:mm');
+
+            var timeStr = smartTripView.getDefaultTime60();
+
             obj.set('timeDeparture', timeStr);
             obj.set('timeArrival', timeStr);
 
@@ -2790,7 +2766,7 @@ var smartTripView = {
             smartTripView.validOrigin = true;
             smartTripView.validDestination = true;
             smartTripView.isPlace = false;
-            
+
             obj.set('ggType', tripObj.ggType);
             obj.set('uuid', tripObj.uuid);
             obj.set('senderUUID', tripObj.senderUUID);
@@ -2823,6 +2799,13 @@ var smartTripView = {
 
 
     openModal : function (tripObj, callback) {
+
+        smartTripView.initUX();
+
+        smartTripView.callback = null;
+        if (callback !== undefined) {
+            smartTripView.callback = callback;
+        }
 
         if (tripObj === null) {
             smartTripView.mode = 'create';
@@ -2878,19 +2861,23 @@ var smartTripView = {
         smartTripView.arrival = null;*/
 
         // Setup Trip Map and Directions renderer just once
-        if (!smartTripView._inited) {
+       if (!smartTripView._inited) {
             smartTripView.googleMap = new google.maps.Map(document.getElementById('smartTripView-mapDiv'), mapModel.mapOptions);
+           smartTripView.googleMap.setMapTypeId(google.maps.MapTypeId.ROADMAP);
             smartTripView.directionsDisplay = new google.maps.DirectionsRenderer();
             smartTripView.directionsDisplay.setMap(smartTripView.googleMap);
 
             smartTripView._inited = true;
         }
+
         $("#smartTripModal").data("kendoMobileModalView").open();
     },
 
     setMapCenter: function () {
 
+        smartTripView.googleMap.setZoom(15);
         smartTripView.googleMap.setCenter({lat: smartTripView.activeObject.origin.lat, lng: smartTripView.activeObject.origin.lng});
+
     },
 
     lockLocation: function(boolean, type){
@@ -2988,8 +2975,14 @@ var smartTripView = {
 
         if (smartTripView.activeObject.departure !== null) {
             depart = smartTripView.activeObject.departure;
+            if (depart._isAMomentObject !== undefined) {
+                depart = depart.toDate();
+            }
         } else if (smartTripView.arrival !== null) {
             arrive = smartTripView.activeObject.arrival;
+            if (arrive._isAMomentObject !== undefined) {
+                arrive = arrive.toDate();
+            }
         }
 
         mapModel.getTravelTime(origin, dest, depart, arrive, function (result) {
@@ -3042,15 +3035,16 @@ var smartTripView = {
             $("#smartTripModal-saveBtn").removeClass('hidden');
             smartTripView.computeTravelTime(function(result) {
 
-
+                
                 if (smartTripView.arrivalSet) {
-                    smartTripView.activeObject.departure = moment(smartTripView.activeObject.arrival).add(smartTripView.activeObject.duration, 's');
-                    //smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
-                    //smartTripView.updateCalendarUX('Arrival', smartTripView.activeObject.arrival);
+                    smartTripView.activeObject.departure = moment(smartTripView.activeObject.arrival).add(smartTripView.activeObject.duration, 's').toDate();
+                    smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
+                    smartTripView.updateCalendarUX('Arrival', smartTripView.activeObject.arrival);
                 } else {
-                    smartTripView.activeObject.arrival = moment(smartTripView.activeObject.departure).add(smartTripView.activeObject.duration, 's');
-                    //smartTripView.updateCalendarUX('Arrival', smartTripView.activeObject.arrival);
-                    //smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
+                    smartTripView.activeObject.arrival = moment(smartTripView.activeObject.departure).add(smartTripView.activeObject.duration, 's').toDate();
+                    smartTripView.updateCalendarUX('Arrival', smartTripView.activeObject.arrival);
+                    smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
+
                 }
 
                 // Show trip travel time
@@ -3062,21 +3056,32 @@ var smartTripView = {
         }
     },
 
-    getDefaultDate: function(){
-        // Get the new whole hour...
-        var d = ux.setDefaultTime(true, 1);
-        var dateStr = moment(d).format('MM/DD/YYYY');
 
-        return(dateStr);
+    getDefaultTime30 : function () {
+
+
+        var start = moment();
+
+        if (start.minutes() <= 30) {
+            start.minutes(30);
+        } else {
+            start.minutes(0);
+            start.add(1, 'h');
+        }
+
+        var timeStr = moment(start).format('HH:mm');
+
+        return(timeStr);
     },
 
-    getDefaultTime : function () {
+    getDefaultTime60 : function () {
 
-        var ROUNDING = 60 * 60 * 1000; /*ms*/
+        var start = moment();
 
-        var start = moment(Math.ceil((new Date()) / ROUNDING) * ROUNDING);
+        start.add(1, 'h');
+        start.minutes(0);
 
-        var timeStr = moment(start).format('HH:MM');
+        var timeStr = moment(start).format('HH:mm');
 
         return(timeStr);
     },
@@ -3098,7 +3103,9 @@ var smartTripView = {
 
         var combined = date +  " " + time;
 
-        smartTripView.activeObject.set('departure', moment(combined).toDate());
+        var depart = moment(combined).toDate();
+
+        smartTripView.activeObject.set('departure', depart);
 
         smartTripView.departureSet = true;
         smartTripView.arrivalSet = false;
@@ -3113,7 +3120,9 @@ var smartTripView = {
 
         var combined = date +  " " + time;
 
-        smartTripView.activeObject.set('arrival',moment(combined).toDate());
+        var arrive = moment(combined).toDate();
+
+        smartTripView.activeObject.set('arrival',arrive);
 
         smartTripView.departureSet = false;
         smartTripView.arrivalSet = true;
@@ -3333,6 +3342,7 @@ var smartTripView = {
 
     onSave : function (e) {
 
+
         if(smartTripView.activeObject.get("travelError")){
             e.preventDefault;
         } else {
@@ -3342,6 +3352,7 @@ var smartTripView = {
 
             smartTripView.initUX();
             smartTripView.onDone();
+
         }
 
 

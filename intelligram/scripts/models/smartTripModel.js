@@ -55,14 +55,18 @@ var smartTrip = {
     smartAddTrip : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 
-        var trip = smartTrip.findTrip(objectId);
-        if ( event  === undefined) {
-            // Event doesnt exist -- need to create it
+        if (objectId === undefined) {
             smartTrip.addTrip(objectIn, callback);
         } else {
-            // Event exists, so just return current instance
-            if (callback !== undefined && callback !== null) {
-                callback(trip);
+            var trip = smartTrip.findTrip(objectId);
+            if ( trip  === undefined) {
+                // Trip doesnt exist -- need to create it
+                smartTrip.addTrip(objectIn, callback);
+            } else {
+                // Trip exists, so just return current instance
+                if (callback !== undefined && callback !== null) {
+                    callback(trip);
+                }
             }
         }
     },
@@ -92,7 +96,6 @@ var smartTrip = {
         //smartOb.set('Id', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);
-
         smartOb.set('name', objectIn.name);
         smartOb.set('tripType', objectIn.tripType);
         smartOb.set('travelMode', objectIn.travelMode);
@@ -104,14 +107,20 @@ var smartTrip = {
         smartOb.set('originName', objectIn.originName);
         smartOb.set('destination', objectIn.destination);
         smartOb.set('destinationName', objectIn.destinationName);
-        smartOb.set('departure', objectIn.departure);
-        smartOb.set('arrival', objectIn.arrival);
+        smartOb.set('departure', getMomentDate(objectIn.departure));
+        smartOb.set('arrival', getMomentDate(objectIn.arrival));
         smartOb.set('duration', objectIn.duration);
+        smartOb.set('durationString', objectIn.durationString);
+        smartOb.set('distance', objectIn.distance);
+        smartOb.set('distanceString', objectIn.distanceString);
+        smartOb.set('dateDeparture', objectIn.dateDeparture);
+        smartOb.set('dateArrival', objectIn.dateArrival);
+        smartOb.set('timeDeparture', objectIn.timeDeparture);
+        smartOb.set('timeArrival', objectIn.timeArrival);
 
         smartTrip.tripsDS.add(smartOb);
         smartTrip.tripsDS.sync();
-        if (callback !== undefined && callback !== null)
-            callback(smartOb);
+
 
         everlive.createOne(smartTrip._cloudClass, smartOb, function (error, data){
             if (error !== null) {
@@ -122,6 +131,8 @@ var smartTrip = {
             }
         });
 
+        if (callback !== undefined && callback !== null)
+            callback(smartOb);
     }
 
 };

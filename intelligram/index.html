@@ -3175,7 +3175,7 @@
 	<div class="intelli-header">
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
 		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
-		<div class="smartTripView-error">
+		<div class="smartTripView-error hidden">
 			<p class="error-msg">
 				Sorry, we are having trouble processing your route. Try another transport option or change locations.
 			</p>
@@ -3351,9 +3351,9 @@
 				</ul>
 			</form>
 
-			<!--<div>
+			<div >
 				<div class="intelliTrip-map" id="smartTripView-mapDiv"></div>
-			</div>-->
+			</div>
 			<a data-role="button" class="btnPrimary btnFull-modal" id="smartTripModal-saveBtn" data-click="smartTripView.onSave">Save</a>
 		</div>
 	</div>
@@ -3370,8 +3370,7 @@
 
 
 <script id="intelliTrip-chat" type="text/x-kendo-template">
-	<div class="intelliTrip" >
-		<a data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
 				<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
 				<p class="helper intelliTrip-subheader">
@@ -3394,14 +3393,12 @@
 					</li>
 				</ul>
 			</div>
-		</a>
 	</div>
 </script>
 
 
 <script id="intelliFlight-chat" type="text/x-kendo-template">
-	<div class="intelliFlight">
-		<a data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliFlight"mdata-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
 				<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
 				<p class="subheader">#:flightTime#</p>
@@ -3420,7 +3417,6 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
-		</a>
 	</div>
 </script>
 

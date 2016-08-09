@@ -2430,12 +2430,26 @@ var channelView = {
         var  objectId = smartTrip.uuid;
 
         var template = kendo.template($("#intelliTrip-chat").html());
+
+        var dest = smartTrip.destination.address;
+        var orig = smartTrip.origin.address;
+
+
+        if (smartTrip.destination.name !== null) {
+            dest = smartTrip.destination.name;
+        }
+
+        if (smartTrip.origin.name !== null) {
+            orig = smartTrip.origin.name;
+        }
+
         var dataObj = {
             ggType: "Trip",
             name: smartTrip.name,
-            origin: smartTrip.origin,
-            destination: smartTrip.destination,
-            departure: moment(smartTrip.date).format ("ddd, MMM Do, YYYY @ h:mm a"),
+            origin: orig,
+            destination: dest,
+            departure: moment(smartTrip.departure).format ("ddd, MMM Do, YYYY @ h:mm a"),
+            arrival: moment(smartTrip.arrival).format ("ddd, MMM Do, YYYY @ h:mm a"),
             objectId : objectId
         };
 
@@ -3092,6 +3106,20 @@ var channelView = {
         });
     },
 
+    messageTrip: function (e) {
+        _preventDefault(e);
+        smartTripView.openModal(null, function (trip) {
+            if (trip !== undefined && trip !== null) {
+                smartTrip.smartAddTrip(trip, function (tripObj) {
+                    channelView.messageObjects.push(tripObj);
+                    mobileNotify("Sending IntelliTrip...");
+                    channelView.messageSend();
+                });
+
+            }
+        });
+    },
+
 
     messagePlace : function (e) {
         _preventDefault(e);
@@ -3110,20 +3138,6 @@ var channelView = {
                 channelView.messageObjects.push(place);
                 mobileNotify("Sending IntelliPlace...");
                 channelView.messageSend();
-            }
-        });
-    },
-
-    messageTrip: function (e) {
-        _preventDefault(e);
-        smartTripView.openModal(null, function (trip) {
-            if (trip !== undefined && trip !== null) {
-                smartTrip.smartAddTrip(trip, function (tripObj) {
-                    channelView.messageObjects.push(tripObj);
-                    mobileNotify("Sending IntelliTrip...");
-                    channelView.messageSend();
-                });
-
             }
         });
     },
