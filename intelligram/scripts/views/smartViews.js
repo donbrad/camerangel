@@ -2936,9 +2936,9 @@ var smartTripView = {
         var depart = null, arrive = null;
 
         if (smartTripView.activeObject.departure !== null) {
-            depart = smartTripView.activeObject.departure.date();
+            depart = smartTripView.activeObject.departure;
         } else if (smartTripView.arrival !== null) {
-            arrive = smartTripView.activeObject.arrival.date();
+            arrive = smartTripView.activeObject.arrival;
         }
 
         mapModel.getTravelTime(origin, dest, depart, arrive, function (result) {
@@ -2997,11 +2997,11 @@ var smartTripView = {
                 }*/
 
                 if (smartTripView.arrivalSet) {
-                    smartTripView.activeObject.departure = moment(smartTripView.activeObject.arrival).add(smartTripView.activeObject.duration, 's');
+                    smartTripView.activeObject.departure = moment(smartTripView.activeObject.arrival).add(smartTripView.activeObject.duration, 's').toDate();
                     smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
                     smartTripView.updateCalendarUX('Arrival', smartTripView.activeObject.arrival);
                 } else {
-                    smartTripView.activeObject.arrival = moment(smartTripView.activeObject.departure).add(smartTripView.activeObject.duration, 's');
+                    smartTripView.activeObject.arrival = moment(smartTripView.activeObject.departure).add(smartTripView.activeObject.duration, 's').toDate();
                     smartTripView.updateCalendarUX('Arrival', smartTripView.activeObject.arrival);
                     smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
                 }
