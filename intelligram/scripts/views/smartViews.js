@@ -2825,6 +2825,7 @@ var smartTripView = {
         // Setup Trip Map and Directions renderer just once
        if (!smartTripView._inited) {
             smartTripView.googleMap = new google.maps.Map(document.getElementById('smartTripView-mapDiv'), mapModel.mapOptions);
+           smartTripView.googleMap.setMapTypeId(google.maps.MapTypeId.ROADMAP);
             smartTripView.directionsDisplay = new google.maps.DirectionsRenderer();
             smartTripView.directionsDisplay.setMap(smartTripView.googleMap);
 
@@ -2836,7 +2837,7 @@ var smartTripView = {
 
     setMapCenter: function () {
 
-        smartTripView.googleMap.setZoom(13);
+        smartTripView.googleMap.setZoom(15);
         smartTripView.googleMap.setCenter({lat: smartTripView.activeObject.origin.lat, lng: smartTripView.activeObject.origin.lng});
 
     },
