@@ -2718,7 +2718,7 @@ var smartTripView = {
             var dateStr = moment(d).format('MM/DD/YYYY');
             obj.set('dateDeparture', dateStr);
             obj.set('dateArrival', dateStr);
-            var timeStr = moment(d).format('h:mm a');
+            var timeStr = smartTripView.getDefaultTime60();
             obj.set('timeDeparture', timeStr);
             obj.set('timeArrival', timeStr);
 
@@ -3039,7 +3039,7 @@ var smartTripView = {
 
         start.minutes(0);
         start.add(1, 'h');
-        
+
         var timeStr = moment(start).format('HH:MM');
 
         return(timeStr);
