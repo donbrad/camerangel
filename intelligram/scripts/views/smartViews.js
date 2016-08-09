@@ -2788,6 +2788,9 @@ var smartTripView = {
             obj.set('leg1Complete',  tripObj.leg1Complete);
             obj.set('leg2Complete',  tripObj.leg2Complete);
             obj.set('origin', tripObj.origin);
+            if ( tripObj.originName === null) {
+                tripObj.originName = tripObj.origin.name;
+            }
             obj.set('originName', tripObj.originName);
             obj.set('destination', tripObj.destination);
             obj.set('destinationName', tripObj.destinationName);
