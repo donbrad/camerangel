@@ -2668,7 +2668,7 @@ var smartTripView = {
                 $("#smartTripView-arrival-time").addClass("hidden");
 
                 // set default time
-                var currentTime = smartTripView.getDefaultTime();
+                var currentTime = smartTripView.getDefaultTime60();
 
                 $("#smartTripView-timeDeparture").val(currentTime);
                 smartTripView.processDepartureTime();
@@ -3017,7 +3017,7 @@ var smartTripView = {
         }
     },
 
-    getDefaultTime : function () {
+    getDefaultTime30 : function () {
 
         var start = moment();
 
@@ -3028,6 +3028,18 @@ var smartTripView = {
             start.add(1, 'h');
         }
 
+        var timeStr = moment(start).format('HH:MM');
+
+        return(timeStr);
+    },
+
+    getDefaultTime60 : function () {
+
+        var start = moment();
+
+        start.minutes(0);
+        start.add(1, 'h');
+        
         var timeStr = moment(start).format('HH:MM');
 
         return(timeStr);
