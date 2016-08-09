@@ -48,6 +48,14 @@ function setButtonGroupIndex(buttonSelector, index) {
 	}
 }
 
+function getMomentDate (dateIn) {
+	if (dateIn._isAMomentObject !== undefined) {
+		return (dateIn.toDate());
+	} else {
+		return (dateIn);
+	}
+};
+
 String.prototype.capitalize = function(){
 	return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
 };
