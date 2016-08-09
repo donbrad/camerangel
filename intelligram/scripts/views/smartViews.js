@@ -2787,12 +2787,12 @@ var smartTripView = {
             obj.set('addToCalendar',  tripObj.addToCalendar);
             obj.set('leg1Complete',  tripObj.leg1Complete);
             obj.set('leg2Complete',  tripObj.leg2Complete);
-            obj.set('origin', tripObj.origin);
+            obj.origin = tripObj.origin; // Avoid the change trigger
             if ( tripObj.originName === null) {
                 tripObj.originName = tripObj.origin.name;
             }
             obj.set('originName', tripObj.originName);
-            obj.set('destination', tripObj.destination);
+            obj.destination = tripObj.destination; // Avoid the change trigger
             obj.set('destinationName', tripObj.destinationName);
             obj.set('departure', tripObj.departure);
             obj.set('arrival', tripObj.arrival);
