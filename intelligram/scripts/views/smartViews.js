@@ -2781,7 +2781,7 @@ var smartTripView = {
             obj.set('senderName', tripObj.senderName);
 
             obj.set('name', tripObj.name);
-            obj.set('tripType', tripObj.tripType);
+            obj.tripType = tripObj.tripType; // Avoid the change trigger
             obj.set('travelMode', tripObj.travelMode);
             obj.set('autoStatus', tripObj.autoStatus);
             obj.set('addToCalendar',  tripObj.addToCalendar);
@@ -2966,6 +2966,10 @@ var smartTripView = {
             destination: dest,
             travelMode: mode
         };
+
+        if (org === null || dest === null) {
+            return;
+        }
 
         smartTripView.setMapCenter();
 
