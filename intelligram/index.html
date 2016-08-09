@@ -3176,7 +3176,7 @@
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
 		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
 	</div>
-	<div id="intelliTrip-container">
+	<div id="intelliTrip-container" class="tripEdit">
 		<div class="intelliCard" id="smartTripView-step-1" data-card="1">
 			<form>
 				<ul class="list-inline" data-style="inset" id="smartTripModal-owner">
@@ -3263,7 +3263,7 @@
 				</a>
 		</div>
 
-		<div class="intelliCard" id="smartTripView-step-2" data-card="2">
+		<div class="intelliCard tripEdit" id="smartTripView-step-2" data-card="2">
 			<a class="btnClear" data-role="button" data-click="smartTripView.switchCards" data-card="2" data-direction="reverse" id="intelliCard-back-2">Back</a>
 			<form>
 				<ul class="list-inline" data-style="inset">
@@ -3324,7 +3324,7 @@
 			</form>
 			<a data-click="smartTripView.onTimeComplete" data-role="button" class="btnFull-modal btnPrimary hidden" id="smartTripView-routeTimeBtn" data-card="2"> Next </a>
 		</div>
-		<div class="intelliCard" id="smartTripView-step-3" data-card="3">
+		<div class="intelliCard tripEdit" id="smartTripView-step-3" data-card="3">
 			<a class="btnClear" data-role="button" data-click="smartTripView.switchCards" data-card="3" data-direction="reverse" id="intelliCard-back-3">Back</a>
 			<form>
 				<ul class="list-inline">
@@ -3351,7 +3351,26 @@
 			<a data-role="button" class="btnPrimary btnFull-modal" id="smartTripModal-saveBtn" data-click="smartTripView.onSave">Save</a>
 		</div>
 	</div>
+	<div class="intelliTrip tripView">
+		<div class="header">
+			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
+			<p class="helper intelliTrip-subheader">
+				<span data-bind="text: originName"></span>
+				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
+				<span data-bind="text: destinationName"></span>
+			</p>
+			<p class="helper intelliTrip-subheader">
+				Departing : <span data-bind="text: dateDeparture"></span> @ <span data-bind="text: timeDeparture"></span>
+			</p>
+			<p class="helper intelliTrip-subheader">
+				Arriving : <span data-bind="text: dateArrival"></span> @ <span data-bind="text: timeArrival"></span>
+			</p>
+			<p class="helper intelliTrip-subheader">
+				<img src="images/icon-time.svg" class="icon-sm" /> <span data-bind="text: durationString"></span> (<span data-bind="text: distanceString"></span>)
+			</p>
+		</div>
 
+	</div>
 
 	<div class="footer" data-role="footer">
 
