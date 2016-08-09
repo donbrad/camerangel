@@ -2552,7 +2552,11 @@ var smartTripView = {
                 oplace.placeUUID = dataItem.uuid;
 
                 smartTripView.activeObject.set('origin', oplace);
-
+                if (oplace.name !== null && oplace.name !== '') {
+                    smartTripView.activeObject.set('originName', oplace.name);
+                } else {
+                    smartTripView.activeObject.set('originName', oplace.address);
+                }
                 smartTripView.isPlace = true;
                 smartTripView.validOrigin = true;
 
