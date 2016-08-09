@@ -72,7 +72,7 @@ var smartEventView = {
 
         var start = moment(thisObj.date);
         var dateStr = start.format('MM/DD/YYYY');
-        var timeStr = start.format('HH:MM');
+        var timeStr = start.format('HH:mm');
         $('#smartEventView-date').val(dateStr);
         $('#smartEventView-time').val(timeStr);
         $("#smartEventView-placeadddiv").addClass('hidden');
@@ -244,7 +244,7 @@ var smartEventView = {
 
 
         $('#smartEventView-date').val(moment(thisEvent.date).format("MM/DD/YYYY"));
-        $('#smartEventView-time').val(moment(thisEvent.date).format("HH:MM:ss"));
+        $('#smartEventView-time').val(moment(thisEvent.date).format("HH:mm"));
         $(".eventBanner").addClass("hidden");
     },
 
@@ -369,7 +369,7 @@ var smartEventView = {
 
         var start = ux.setDefaultTime(false,1);
 
-        var timeStr = moment(start).format('HH:MM');
+        var timeStr = moment(start).format('HH:mm');
 
         return(timeStr);
     },
@@ -392,7 +392,7 @@ var smartEventView = {
         } else if (date === null) {
             mobileNotify("Please enter a valid Date");
         } else {
-            var timeComp = moment(time).format("HH:MM:SS");
+            var timeComp = moment(time).format("HH:mm");
             var dateComp = moment(date).format('MMM Dd, YYYY');
             smartEventView.updateDateString();
             return (true);
@@ -2493,11 +2493,11 @@ var smartTripView = {
                     break;
 
                 case 'timeArrival' :
-                    smartTripView.processArrivalTime();
+                    //smartTripView.processArrivalTime();
                     break;
 
                 case 'timeDeparture' :
-                    smartTripView.processDepartureTime();
+                   // smartTripView.processDepartureTime();
                     break;
             }
         });
@@ -2505,13 +2505,13 @@ var smartTripView = {
 
         smartTripView.initialized = false;
 
-       /* $( "#smartTripView-timeArrival" ).blur(function() {
+       $( "#smartTripView-timeArrival" ).blur(function() {
             smartTripView.processArrivalTime();
         });
 
         $( "#smartTripView-timeDeparture" ).blur(function() {
             smartTripView.processDepartureTime();
-        });*/
+        });
 
 
         $('#smartTripView-dateDeparture').pickadate({
@@ -3028,7 +3028,7 @@ var smartTripView = {
             start.add(1, 'h');
         }
 
-        var timeStr = moment(start).format('HH:MM');
+        var timeStr = moment(start).format('HH:mm');
 
         return(timeStr);
     },
@@ -3037,10 +3037,10 @@ var smartTripView = {
 
         var start = moment();
 
-        start.minutes(0);
         start.add(1, 'h');
+        start.minutes(0);
 
-        var timeStr = moment(start).format('HH:MM');
+        var timeStr = moment(start).format('HH:mm');
 
         return(timeStr);
     },
