@@ -2019,7 +2019,7 @@
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
 		<li><a id="messageAlertLi" data-action="channelView.messageAlert"><img src="images/icon-unmute.svg" class="icon-smart"/> Add Alert</a></li>
 		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
-		<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>
+		<li><a data-action="channelView.messageFlight"><img src="images/intelliFlight-icon.svg" class="icon-smart"/> Add Flight</a></li>
 		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
 		<li><a data-action="channelView.messagePlace"><img src="images/smart-coffee.svg" class="icon-smart"/> Add Place</a></li>
 		<li><a data-action="channelView.messageTrip"><img src="images/intelliTrip-icon.svg" class="icon-smart"/> Add Trip</a></li>
@@ -3175,7 +3175,13 @@
 	<div class="intelli-header">
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
 		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
+		<div class="smartTripView-error hidden">
+			<p class="error-msg">
+				Sorry, we are having trouble processing your route. Try another transport option or change locations.
+			</p>
+		</div>
 	</div>
+
 	<div id="intelliTrip-container" class="tripEdit">
 		<div class="intelliCard" id="smartTripView-step-1" data-card="1">
 			<form>
@@ -3411,9 +3417,10 @@
 
 
 <script id="intelliFlight-chat" type="text/x-kendo-template">
-	<div class="intelliFlight"mdata-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
 				<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
+				<p class="subheader">#:flightTime#</p>
 			</div>
 			<div class="summary">
 				<div class="origin">
@@ -5004,123 +5011,148 @@
 
 <!-- smartFlight modal -->
 <div data-role="modalview" id="modalview-smartFlight" data-model="smartFlightView.status" data-init="smartFlightView.onInit"   data-open="smartFlightView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
-	<div data-role="header">
-		<div data-role="navbar">
-			<span><img src="images/intelliFlight-icon.svg" class="icon-gg-drawer" />IntelliFlight</span>
-			<a data-role="button"  data-align="left" data-click="smartFlightView.onDone" ><img src="images/nav-back.svg" /></a>
+	<div class="intelli-header">
+		<img src="images/intelliFlight-light.svg" />
+		<p class="intelli-subheader">Track and share flights</p>
+	</div>
+	<div class="intelliCard flightCreator">
+		<form>
+			<ul data-role="listview" data-style="inset">
+				<li>
+					<label> Airline
+						<input id="smartFlight-airline" type="text" placeholder="Please enter airline...">
+					</label>
+				</li>
+				<li>
+					<label> Flight Number
+						<input id="smartFlight-flight" type="tel" placeholder="ex. 101">
+					</label>
+				</li>
+
+				<li>
+					<label> Flight Date
+						<input id="smartFlight-flightDate" type="date" placeholder="MM/DD/YYYY">
+					</label>
+				</li>
+
+				<li class="flightPicker hidden">
+					<label> Departing From
+						<input id="smartFlight-flightDeparture" type="text" >
+					</label>
+				</li>
+
+				<li class="flightPicker hidden">
+					<label> Arriving At
+						<input id="smartFlight-flightArrival" type="text" >
+					</label>
+				</li>
+				<li>
+					<label>
+						Trip Name (optional)
+						<input type="text" data-bind="value: name" />
+					</label>
+				</li>
+				<li class="flightError hidden">
+					<p class="error-msg">Couldn't locate this flight.  Please confirm flight information.</p>
+				</li>
+
+				<li class="returnFlight hidden">
+					<label> Airline
+						<input id="smartFlight-returnAirline" type="text" placeholder="Please enter airline..." >
+					</label>
+				</li>
+
+
+				<li class="returnFlight hidden">
+					<label> Flight
+						<input id="smartFlight-returnFlightCode" type="search" >
+					</label>
+				</li>
+
+				<li class="returnFlight hidden">
+					<label> Flight Date
+						<input id="smartFlight-returnFlightDate" type="date" >
+					</label>
+				</li>
+			</ul>
+		</form>
+		<div class="footer">
+			<a class="btnClear btnFull-modal" data-role="button" data-click="smartFlightView.checkFlightComplete">Next</a>
 		</div>
 	</div>
 
-	<form class="flightCreator">
-		<ul data-role="listview" data-style="inset">
-			<li >
-				<label> Name
-					<input id="smartFlight-name" type="text" placeholder="Please enter name or title...">
-				</label>
-			</li>
-			<li >
-				<label> Airline
-					<input id="smartFlight-airline" type="text" placeholder="Please enter airline...">
-				</label>
-			</li>
-			<li>
-				<label> Flight
-					<input id="smartFlight-flight" type="search" placeholder="Please enter flight...">
-				</label>
-			</li>
-
-			<li>
-				<label> Flight Date
-					<input id="smartFlight-flightDate" type="date" >
-				</label>
-			</li>
-
-			<li class="flightPicker hidden">
-				<label> Departing From
-					<input id="smartFlight-flightDeparture" type="text" >
-				</label>
-			</li>
-
-			<li class="flightPicker hidden">
-				<label> Arriving At
-					<input id="smartFlight-flightArrival" type="text" >
-				</label>
-			</li>
-
-			<li class="flightError hidden">
-				<h3>Couldn't Locate This Flight.  Please confirm flight information.</h3>
-			</li>
-
-			<li class="returnFlight hidden">
-				<label> Airline
-					<input id="smartFlight-returnAirline" type="text" placeholder="Please enter airline..." >
-				</label>
-			</li>
-
-			<li class="returnFlight hidden">
-				<label> Flight
-					<input id="smartFlight-returnFlightCode" type="search" >
-				</label>
-			</li>
-
-			<li class="returnFlight hidden">
-				<label> Flight Date
-					<input id="smartFlight-returnFlightDate" type="date" >
-				</label>
-			</li>
-
-		</ul>
-	</form>
-
-
-
-	<div id="smartFlightView-flightStatus" class="flightViewer hidden">
-
-		<div>
-			<span style="text-align: center; font-size: 1.2em;" data-bind="text: name"></span>
+	<div class="intelliCard flightViewer hidden" id="smartFlightView-flightStatus">
+		<div class="intelliFlight">
+			<div class="header">
+				<p class="title"><img src="images/intelliFlight-icon.svg" />
+					<span class="info" data-bind="text: ui_name"></span>
+				</p>
+				<p class="subheader">
+					<span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span> •
+					<span data-bind="text: ui_durationMinutes"></span>
+				</p>
+			</div>
+			<div class="intelliFlight-updates">
+				<p class="update-header"><img src="images/icon-time-primary.svg" /> Recent Update</p>
+				<p class="update-content">Flight took off at 8:17am</p>
+				<p class="update-time">5 mins ago</p>
+			</div>
+				<div class="destination-summary">
+					<ul class="list-unstyled flightInfo-list">
+						<li>
+							<p class="arrival-depart">Departure -
+								<span data-bind="text: departureCity"></span>
+								(<span data-bind="text: departureAirport"></span>)
+							</p>
+							<p class="date" data-bind="text: ui_estimatedDeparture"></p>
+						</li>
+						<li>
+							<label>Gate</label>
+							<p data-bind="text: departureGate"></p>
+						</li>
+					</ul>
+				</div>
+				<div class="clearfix"></div>
+				<div class="arrival-summary">
+					<ul class="list-unstyled flightInfo-list">
+						<li>
+							<p class="arrival-depart">Arrival -
+								<span data-bind="text: arrivalCity"></span>
+								(<span data-bind="text: arrivalAirport"></span>)
+							</p>
+							<p class="date" data-bind="text: ui_estimatedArrival"></p>
+						</li>
+						<li>
+							<label>Terminal</label>
+							<p data-bind="text: arrivalTerminal"></p>
+						</li>
+						<li>
+							<label>Gate</label>
+							<p data-bind="text: arrivalGate"></p>
+						</li>
+					</ul>
+				</div>
 		</div>
-
-		<div style="text-align: center;">
-            <div style="font-size: 1.4em">
-                 <span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span>
-            </div>
-            <div style="font-size: 1.2em">
-                Flight Time: <span data-bind="text: durationMinutes"></span> minutes
-            </div>
-        </div>
+		<div class="clearfix"></div>
 
 
-        <div style="float: left; text-align: left; padding-left: 12px;">
-			<div style="font-size: 1.3em"><span data-bind="text: departureCity"></span> (<span data-bind="text: departureAirport"></span>)</div>
-			<div style="font-size: 1.0em"><span data-bind="text: departureName"></span></div>
-            <div style="font-size: 1.2em">Est: <span data-bind="text: estimatedDeparture"></span></div>
-			<div style="font-size: 1.2em">Act: <span data-bind="text: actualDeparture"></span></div>
-            <div>Terminal : <span data-bind="text: departureTerminal"></span></div>
-            <div>Gate: <span data-bind="text: departureGate"></span></div>
-        </div>
+		<div class="intelliCardActions">
+			<div class="flightCreator" id="flightCreator">
+				<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnClear btnFull-modal"> Change Flight </a>
+				<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary hidden btnFull-modal">
+					Add Return Flight
+				</a>
+			</div>
 
-		<div style="float: right; text-align: right; padding-right: 12px;">
-			<div style="font-size: 1.3em"><span data-bind="text: arrivalCity"></span> (<span data-bind="text: arrivalAirport"></span>)</div>
-			<div style="font-size: 1.0em"><span data-bind="text: arrivalName"></span></div>
-			<div style="font-size: 1.2em">Est: <span data-bind="text: estimatedArrival"></span></div>
-			<div style="font-size: 1.2em">Act: <span data-bind="text: actualArrival"></span></div>
-			<div>Terminal : <span data-bind="text: arrivalTerminal"></span></div>
-			<div>Gate: <span data-bind="text: arrivalGate"></span></div>
-			<div>Baggage Claim: <span data-bind="text: baggageClaim"></span></div>
-		</div>
+			<div class="flightViewer">
+				<a data-click="smartFlightView.onTrackFlight" data-role="button" class="btnClear btnFull-modal" id="smartFlightView-trackFlight"> Track Flight </a>
 
-		<div style="clear: both; text-align: center;" class="flightCreator">
-			<a data-click="smartFlightView.onChangeFlight" data-role="button" class="btnSecondary"> Change Flight </a>
-			<a data-click="smartFlightView.onAddReturn" data-role="button" class="btnSecondary hidden"> Add Return Flight </a>
-		</div>
-
-		<div style="clear: both; text-align: center;" class="flightViewer">
-			<a data-click="smartFlightView.onTrackFlight" data-role="button" class="btnSecondary" id="smartFlightView-trackFlight"> Track Flight </a>
+			</div>
 		</div>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Done</a>
-		<a class="btnFull-modal btnPrimary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
+		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Cancel</a>
+		<a class="btnFull-modal btnSecondary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
 	</div>
 </div>
 
@@ -5569,7 +5601,7 @@
 
 	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
 		<li><a data-action="privateNotesView.noteCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
-		<li><a data-action="privateNotesView.noteFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>
+		<li><a data-action="privateNotesView.noteFlight"><img src="images/intelliFlight-icon.svg" class="icon-sm"/> Add Flight</a></li>
 		<li><a data-action="privateNotesView.noteTrip"><img src="images/smart-note.svg" class="icon-sm"/> Add Trip</a></li>
 		<li><a data-action="privateNotesView.noteMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
 		<li><a data-action="privateNotesView.noteAccount"><img src="images/smart-note.svg" class="icon-smart"/> Add Account</a></li>

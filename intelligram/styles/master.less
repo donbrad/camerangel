@@ -692,7 +692,7 @@ form {
   -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.24);
   color: #fff !important;
-  background: @primary-100 !important;
+  background-color: @primary-100 !important;
    /* :hover {
     	background: #E5A545 !important;
     	text-decoration: none;
@@ -702,10 +702,11 @@ form {
     	text-decoration: none;
     	transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     	transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-	:disabled {
-    	background: #A4A4A4 !important;
 	}*/
+}
+
+.btnPrimary:disabled {
+  background-color: #A4A4A4 !important;
 }
 
 .btnBlack {
@@ -1003,7 +1004,7 @@ form {
 
 .btnFull-modal {
   .btnFull;
-  border-radius: 0px 4px 4px 0!important;
+  border-radius: 0px 0px 4px 4px !important;
   height: 3rem;
   padding-top: 1rem !important;
   font-weight: 600 !important;
@@ -6762,7 +6763,7 @@ table.k-editor {
 /* Intelli styles */
 
 .intelli-header {
-  margin-top: 2em;
+  margin-top: 1em;
   text-align: center;
   .intelli-subheader {
     font-size: 0.875em;
@@ -6829,8 +6830,16 @@ table.k-editor {
   }
 }
 
+#intelliTrip-container {
+  //margin-top: 2em;
+}
+
 #smartTripView-arrival-text {
   font-size: 0.75em;
+}
+
+.intelliCard-container {
+  //overflow-x: hidden;
 }
 
 .intelliCard {
@@ -6838,13 +6847,20 @@ table.k-editor {
   margin-left: auto;
   margin-right: auto;
   background-color: #fff;
-  margin-top: 2em;
+  margin-top: 1em;
   border-radius: 4px;
   .shadowHelper(1);
   //transition: all 1s cubic-bezier(.25,.8,.25,1);
   position: absolute;
   top: 5em;
   left: 1em;
+  margin-bottom: 4em;
+}
+
+#intelliTrip-container {
+  position: absolute;
+  top: 2em;
+  width: 100%;
 }
 
 .intelliCard:nth-child(2n){
@@ -6977,10 +6993,9 @@ table.k-editor {
 .intelliFlight {
   width: 100%;
   border-radius: 4px;
-  .shadowHelper(1);
   background-color: #fff;
   .header {
-    padding: 0.5em 1em;
+    padding: 0.5em;
     border-bottom: 2px dotted @shade-200;
     .title {
       font-size: 1.2em;
@@ -6990,9 +7005,9 @@ table.k-editor {
         max-width: 1.2em;
         vertical-align: sub;
       }
-      span {
+     >span:not(.info) {
         font-size: 0.85em;
-        background-color: @shade-200;
+        background-color: @shade-100;
         border-radius: 4px;
         margin: 0 0.5em;
         color: #fff;
@@ -7005,15 +7020,16 @@ table.k-editor {
     .subheader {
       font-size: 0.85em;
       margin: 0 0 0 2em;
+      .helper;
     }
   }
   .summary {
-    padding: 0.5em 1em;
+    padding: 0.5em;
     display: inline-block;
     width: 100%;
     border-bottom: 2px dotted @shade-200;
     div {
-      width: 35%;
+      width: 40%;
       float: left;
       text-align: center;
       p {
@@ -7028,11 +7044,14 @@ table.k-editor {
       font-size: 0.85em;
       .helper;
     }
+    .date {
+      font-size: 0.85em;
+    }
     .terminal {
       font-size: 0.85em;
     }
     .liner {
-      width: 30%;
+      width: 20%;
       height:2px;
       background-color: @black;
       margin-top: 1em;
@@ -7045,6 +7064,86 @@ table.k-editor {
   .footer {
 
   }
+  .detail-btn {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+  }
+}
+
+.intelliCardActions {
+  margin-top: 0.5em;
+  border-top: 2px dotted @shade-200;
+}
+
+.intelliFlight-updates {
+  margin: 0.5em 1em;
+  border: 1px solid @shade-200;
+  border-radius: 4px;
+  padding: 0.5em;
+  background-color: @shade-300;
+  p {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .update-header {
+    margin-bottom: 0.25em;
+    color: @primary-200;
+    font-size: 0.85em;
+    img {
+      height: 0.85em;
+      max-width: 0.85em;
+    }
+  }
+  .update-content {
+    font-size: 1em;
+  }
+  .update-time {
+    .helper;
+    font-size: 0.75em;
+  }
+}
+
+
+.arrival-summary {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.arrival-summary,
+.destination-summary {
+  //border-radius: 4px;
+  //border: 1px solid @shade-200;
+}
+
+.flightInfo-list {
+  position: relative;
+}
+
+.flightInfo-list > li:not(:first-child) {
+  width: 50%;
+  float: left;
+  margin-top: 0.25em;
+}
+
+#smartFlightView-flightStatus > div.intelliFlight > div > ul > li > label {
+  .helper;
+  font-size: 0.85em;
+}
+
+#smartFlightView-flightStatus > div.intelliFlight > div > ul > li > p {
+  font-size: 1em;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.intelliCard > .intelliFlight {
+  .shadowHelper(0);
+}
+
+.arrival-depart {
+  font-size: 0.85em !important;
+  font-weight: 600;
 }
 
 .liner::after {
@@ -7059,6 +7158,7 @@ table.k-editor {
   background-color: #fff;
   position: relative;
   top: -0.25em;
+  right: -0.5em;
   float: right;
 }
 .liner::before {
@@ -7073,7 +7173,17 @@ table.k-editor {
   background-color: @black;
   position: relative;
   top: -0.25em;
+  left: -0.5em;
   float: left;
+}
+
+#modalview-smartFlight > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
+  background-color: #3A779D !important;
+  background-image: none !important;
+}
+
+#smartFlightView-DoneBtn {
+  background-color: #3A779D !important;
 }
 
 /* IntelliMovie */
@@ -7144,4 +7254,20 @@ table.k-editor {
       }
     }
   }
+}
+
+.smartTripView-error {
+  .error-msg {
+    font-size: 0.85em;
+  }
+}
+
+.chat-message-text > .intelliFlight > a > div.header > p > img {
+  height: 1em;
+  max-width: 1em;
+
+}
+
+.chat-message-text > .intelliFlight > a > div.summary {
+  border-bottom: none;
 }

@@ -52,7 +52,7 @@ var smartEventView = {
         thisObj.set('lng', null);
         thisObj.set('date', newDate);
         thisObj.set('duration', 60);
-        thisObj.set('durationString', '1 hour');
+        thisObj.set('durationString', null);
         thisObj.set('approxTime', false);
         thisObj.set('approxPlace', false);
         thisObj.set('timeFlexible', false);
@@ -2481,15 +2481,31 @@ var smartTripView = {
 
 
         smartTripView.activeObject.bind("change", function (e) {
-            switch (e.field) {
+            var field = e.field;
+            var value = smartTripView.activeObject.get(field);
+            switch (field) {
                 case 'tripType' :
-                    smartTripView.validate();
+
+                    if (value !== null) {
+                        smartTripView.validate();
+                    }
                     break;
 
                 case 'origin' :
+                    if (value === null) {
+                        smartTripView.lockLocation(false, "origin");
+                    }
+
+                    smartTripView.validate();
                     break;
 
                 case 'destination' :
+                    if (value === null) {
+                        smartTripView.lockLocation(false, "destination");
+                    } else {
+                        smartTripView.validate();
+                    }
+
                     break;
 
                 case 'timeArrival' :
@@ -2497,21 +2513,42 @@ var smartTripView = {
                     break;
 
                 case 'timeDeparture' :
-                   // smartTripView.processDepartureTime();
+                    // smartTripView.processDepartureTime();
+
+                    break;
+                case 'travelError':
+                    if(value){
+                        $(".smartTripView-error").removeClass('hidden');
+                    } else {
+                        $(".smartTripView-error").addClass('hidden');
+                    }
                     break;
             }
+
         });
 
+        smartTripView.activeObject.bind("reset", function(e){
+            // reset tripType
+            var buttongroup = $("#smartTripView-tripType").data("kendoMobileButtonGroup");
+            buttongroup.select(0);
 
-        smartTripView.initialized = false;
+            $(".intelliCard").css("transform", "translateX(0%)");
+            $("#smartTripView-step-1").css("z-index", 1);
+            $("#smartTripView-step-2, #smartTripView-step-3").css({"opacity": 0, "z-index": 0});
+            $("input[name=arrival]").prop("checked", false);
+            $("#smartTripView-departure-time, #smartTripView-arrival-time").addClass('hidden');
 
-       $( "#smartTripView-timeArrival" ).blur(function() {
+            $(".smartTripView-origin-box").addClass("hidden");
+        });
+
+       $("#smartTripView-timeArrival" ).blur(function() {
             smartTripView.processArrivalTime();
         });
 
-        $( "#smartTripView-timeDeparture" ).blur(function() {
+        $("#smartTripView-timeDeparture" ).blur(function() {
             smartTripView.processDepartureTime();
         });
+
 
 
         $('#smartTripView-dateDeparture').pickadate({
@@ -2572,12 +2609,9 @@ var smartTripView = {
             change: function(e){
                 var val = this.value();
 
-                if(val.length > 0){
-                    $(".smartTrip-currentLocation").addClass("hidden");
 
-                    if(smartTripView.origin == null && smartTripView.isPlace === false){
+                if(smartTripView.origin == null && smartTripView.isPlace === false){
                         $("#smartTripView-originSearchBtn").removeClass("hidden").text('Find "' + val + '"');
-                    }
 
                 } else {
                     $("#smartTripView-originSearchBtn").addClass("hidden").text('');
@@ -2585,7 +2619,6 @@ var smartTripView = {
                 }
 
             },
-
             filtering: function(e) {
                 //get filter descriptor
                 var filter = e.filter;
@@ -2603,6 +2636,7 @@ var smartTripView = {
                     $(".smartTrip-currentLocation").removeClass("hidden");
                 }
             },
+
             filter: "contains",
             placeholder: "Place, address, or location"
         });
@@ -2644,7 +2678,7 @@ var smartTripView = {
             change: function(e){
                 var val = this.value();
 
-                if(val.length > 0 && smartTripView.activeObject.destination === null){
+                if(smartTripView.activeObject.destination === null){
                     $("#smartTripView-destinationSearchBtn").removeClass("hidden").text('Find "' + val + '"');
 
                 } else {
@@ -2660,6 +2694,7 @@ var smartTripView = {
             var value = $(this).val();
             // set default time
             var currentTime = smartTripView.getDefaultTime60();
+
 
             if(value === "true"){
                 $("#smartTripView-arrival-time").removeClass("hidden");
@@ -2721,11 +2756,14 @@ var smartTripView = {
             obj.set('destinationName', null);
             obj.set('departure', null);
             obj.set('arrival', null);
+            obj.set('travelError', false);
             var d = new Date();
             var dateStr = moment(d).format('MM/DD/YYYY');
             obj.set('dateDeparture', dateStr);
             obj.set('dateArrival', dateStr);
+
             var timeStr = smartTripView.getDefaultTime60();
+
             obj.set('timeDeparture', timeStr);
             obj.set('timeArrival', timeStr);
 
@@ -2957,10 +2995,12 @@ var smartTripView = {
 
         mapModel.getTravelTime(origin, dest, depart, arrive, function (result) {
             if (result.valid) {
-                smartTripView.activeObject.duration = result.duration;
-                smartTripView.activeObject.durationString = result.durationString;
-                smartTripView.activeObject.distance = result.distance;
-                smartTripView.activeObject.distanceString = result.distanceString;
+                smartTripView.activeObject.set("travelError", false);
+                smartTripView.activeObject.set("duration", result.duration);
+                smartTripView.activeObject.set("durationString", result.durationString);
+                smartTripView.activeObject.set("distance", result.distance);
+                smartTripView.activeObject.set("distanceString", result.distanceString);
+
                 $("#smartTripView-travelTime").text(result.durationString);
                 $("#smartTripView-travelTime-dist").text(result.distanceString);
 
@@ -2969,11 +3009,11 @@ var smartTripView = {
                 }
             } else {
                 ggError ("Google Distance Matrix Error " + JSON.stringify(result.error));
-                if (callback !== undefined && callback !== null) {
-                    callback(null);
-                }
+                // show error
+                smartTripView.activeObject.set("travelError", true);
+
             }
-        }, smartTripView.activeObject.tripType);
+        }, smartTripView.activeObject.travelMode);
     },
 
     //Tag = 'Arrival' or 'Departure'
@@ -2996,10 +3036,13 @@ var smartTripView = {
     },
 
     validate : function () {
+
         if (smartTripView.validTime  && smartTripView.validDestination &&
         smartTripView.validOrigin) {
+
             $("#smartTripModal-saveBtn").removeClass('hidden');
             smartTripView.computeTravelTime(function(result) {
+
 
                 if (smartTripView.arrivalSet) {
                     smartTripView.activeObject.departure = moment(smartTripView.activeObject.arrival).add(smartTripView.activeObject.duration, 's').toDate();
@@ -3009,6 +3052,7 @@ var smartTripView = {
                     smartTripView.activeObject.arrival = moment(smartTripView.activeObject.departure).add(smartTripView.activeObject.duration, 's').toDate();
                     smartTripView.updateCalendarUX('Arrival', smartTripView.activeObject.arrival);
                     smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
+
                 }
 
                 // Show trip travel time
@@ -3017,12 +3061,12 @@ var smartTripView = {
                 smartTripView.setMapCenter();
                 smartTripView.displayRouteOnMap();
             });
-        } else {
-            $("#smartTripModal-saveBtn").addClass('hidden');
         }
     },
 
+
     getDefaultTime30 : function () {
+
 
         var start = moment();
 
@@ -3148,12 +3192,10 @@ var smartTripView = {
                 }
 
                 smartTripView.activeObject.set('origin', place);
-
                 smartTripView.activeObject.set('originName', value);
 
                 smartTripView.validDestination = true;
 
-                smartTripView.validateRoute();
 
                 $('#smartTripView-origin').val(value);
 
@@ -3287,14 +3329,15 @@ var smartTripView = {
     },
 
     initUX : function ()  {
-        smartTripView.lockLocation(false, "destination");
-        smartTripView.lockLocation(false, "origin");
-
         $(".intelliCard").css("transform", "translateX(0%)");
+
         $("#smartTripView-step-1").css("z-index", 1);
-        $("#smartTripView-step-2, #smartTripView-step-3").css({"opacity": 0, "z-index": 0});
+        $("#smartTripView-step-2, #smartTripView-step-3").css({"opacity": 0, "z-index": 0, transform: "translateX(100%)"});
         $("input[name=arrival]").prop("checked", false);
         $("#smartTripView-departure-time, #smartTripView-arrival-time").addClass('hidden');
+
+        // Reset fields
+        smartTripView.activeObject.trigger("reset");
     },
 
     onCancel : function (e) {
@@ -3307,10 +3350,17 @@ var smartTripView = {
 
     onSave : function (e) {
 
-        smartTripView.onDone();
 
-        if (smartTripView.callback !== null) {
-            smartTripView.callback(smartTripView.activeObject);
+        if(smartTripView.activeObject.get("travelError")){
+            e.preventDefault;
+        } else {
+            if (smartTripView.callback !== null) {
+                smartTripView.callback(smartTripView.activeObject);
+            }
+
+            smartTripView.initUX();
+            smartTripView.onDone();
+
         }
 
 
@@ -3353,7 +3403,7 @@ var smartFlightView = {
     segmentsDS : new kendo.data.DataSource(),
     callback : null,
     departureStatus : null,
-    arrivalStatua: null,
+    arrivalStatus: null,
     departureAirport : null,
     arrivalAirport: null,
     segmentArray: [],
@@ -3364,12 +3414,13 @@ var smartFlightView = {
     arrivalAirportsDS : new kendo.data.DataSource(),
 
     checkFlight: function () {
-        if (smartFlightView.validAirline &&smartFlightView.validFlight && smartFlightView.validDate) {
+
+        if (smartFlightView.validAirline && smartFlightView.validFlight && smartFlightView.validDate) {
             mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
             getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
 
                 smartFlightView.processFlightStatus(result);
-            })
+            });
         } else {
             return;
         }
@@ -3388,12 +3439,13 @@ var smartFlightView = {
         if (statusObj === null) {
 
             smartFlightView.status.set('ggType', 'Flight');
-            smartFlightView.status.set('uuid', uuid.v4())
-            smartFlightView.status.set('name', userModel._user.name + "'s Flight");
+            smartFlightView.status.set('uuid', uuid.v4());
+            smartFlightView.status.set('name', null);
             smartFlightView.status.set('carrierCode', null);
             smartFlightView.status.set('flightNumber',null);
             smartFlightView.status.set('arrivalAirport', null);
             smartFlightView.status.set('departureAirport',null);
+            smartFlightView.status.set('airline', null);
 
             smartFlightView.status.set('departureTerminal', null);
             smartFlightView.status.set('departureGate',null);
@@ -3409,28 +3461,36 @@ var smartFlightView = {
             smartFlightView.status.set('actualDeparture', null);
             smartFlightView.status.set('actualArrival', null);
 
+
         } else {
+
+            smartFlightView.status.set("name", statusObj.name);
+
+
             smartFlightView.status.set('ggType', statusObj.ggType);
             smartFlightView.status.set('uuid', statusObj.uuid);
-            smartFlightView.status.set('name', statusObj.name);
+
             smartFlightView.status.set('carrierCode', statusObj.carrierCode);
             smartFlightView.status.set('flightNumber',statusObj.flightNumber);
-            smartFlightView.status.set('arrivalAirport', statusObj.arrivalAirport);
-            smartFlightView.status.set('departureAirport',statusObj.departureAirport);
-
-            smartFlightView.status.set('departureTerminal', statusObj.departureTerminal);
-            smartFlightView.status.set('departureGate',statusObj.departureGate);
-
-            smartFlightView.status.set('arrivalTerminal', statusObj.arrivalTerminal);
-            smartFlightView.status.set('arrivalGate', statusObj.arrivalGate);
             smartFlightView.status.set('baggageClaim',  statusObj.baggageClaim);
             smartFlightView.status.set('durationMinutes', statusObj.durationMinutes);
+            smartFlightView.status.set('airline', statusObj.airline);
 
-            smartFlightView.status.set('estimatedDeparture', statusObj.estimatedDeparture);
+            /// Arrival Info
+            smartFlightView.status.set('arrivalAirport', statusObj.arrivalAirport);
+            smartFlightView.status.set('arrivalTerminal', statusObj.arrivalTerminal);
+            smartFlightView.status.set('arrivalGate', statusObj.arrivalGate);
             smartFlightView.status.set('estimatedArrival',  statusObj.estimatedArrival);
-
-            smartFlightView.status.set('actualDeparture', statusObj.actualDeparture);
             smartFlightView.status.set('actualArrival', statusObj.actualArrival);
+            smartFlightView.status.set('arrivalCity', statusObj.arrivalCity);
+
+            /// Departure Info
+            smartFlightView.status.set('departureTerminal', statusObj.departureTerminal);
+            smartFlightView.status.set('departureGate',statusObj.departureGate);
+            smartFlightView.status.set('departureAirport',statusObj.departureAirport);
+            smartFlightView.status.set('estimatedDeparture', statusObj.estimatedDeparture);
+            smartFlightView.status.set('actualDeparture', statusObj.actualDeparture);
+            smartFlightView.status.set('departureCity', statusObj.departureCity);
         }
 
     },
@@ -3483,7 +3543,6 @@ var smartFlightView = {
         smartFlightView.status.set('arrivalGate', that.arrivalStatus.airportResources.arrivalGate);
         smartFlightView.status.set('baggageClaim',  that.arrivalStatus.airportResources.baggage);
 
-
         var duration = that.computeFlightTime(that.departureAirport, that.arrivalAirport);
         smartFlightView.status.set('durationMinutes', duration);
 
@@ -3503,12 +3562,12 @@ var smartFlightView = {
             smartFlightView.status.set('actualArrival', arrDateAct.format("M/D/YYYY h:mm a"));
         }
 
-        ux.hideKeyboard();
+
         $('#smartFlightView-flightStatus').removeClass('hidden');
         $('#smartFlightView-DoneBtn').addClass('hidden');
         $('#smartFlightView-SaveBtn').removeClass('hidden');
-        $('.flightCreator').addClass('hidden');
-
+        $('.flightCreator:not(.intelliCardActions > div:first-child)').addClass('hidden');
+        ux.hideKeyboard();
     },
 
     getArrivalStatus : function (airportCode) {
@@ -3516,13 +3575,14 @@ var smartFlightView = {
 
         for (var i=0; i<that.statusArray.length; i++) {
             var status = that.statusArray[i];
+
             if (status.arrivalAirportFsCode === airportCode) {
                 that.arrivalStatus = status;
                 return (true);
             }
         }
-
         return(false);
+
     },
 
     getDepartureStatus : function (airportCode) {
@@ -3530,13 +3590,14 @@ var smartFlightView = {
 
         for (var i=0; i<that.statusArray.length; i++) {
             var status = that.statusArray[i];
+
             if (status.departureAirportFsCode === airportCode) {
                 that.departureStatus = status;
                 return (true);
             }
         }
-
         return(false);
+
     },
 
 
@@ -3552,6 +3613,7 @@ var smartFlightView = {
         for (var i=0; i<that.statusArray.length; i++) {
             var status = that.statusArray[i];
             if (status.departureAirportFsCode === depart) {
+
                 flightTime += status.flightDurations.scheduledBlockMinutes;
 
                 if (status.arrivalAirportFsCode === arrive) {
@@ -3679,7 +3741,7 @@ var smartFlightView = {
                     smartFlightView.validAirline = true;
                     smartFlightView.checkFlight();
                 }
-                if ( fmatch !== null) {
+                if (fmatch !== null) {
                     smartFlightView.flight = fmatch[0];
                     smartFlightView.validFlight = true;
                     smartFlightView.checkFlight();
@@ -3729,11 +3791,13 @@ var smartFlightView = {
         $("#smartFlight-flightDeparture").kendoAutoComplete({
             dataSource: smartFlightView.departureAirportsDS,
             ignoreCase: true,
-            template : "<span> #:city# (<strong> #:airport# </strong>) </span>",
+            template : "<span> #:city# (#:airport#) </span>",
             dataTextField: "city",
             select: function(e) {
                 //var depart = e.item;
+
                 var depart = this.dataItem(e.item.index());
+
                 smartFlightView.departureAirport = depart.airport;
                 if (smartFlightView.getDepartureStatus(depart.airport)) {
                     smartFlightView.validDeparture = true;
@@ -3748,7 +3812,7 @@ var smartFlightView = {
         $("#smartFlight-flightArrival").kendoAutoComplete({
             dataSource: smartFlightView.arrivalAirportsDS,
             ignoreCase: true,
-            template : "<span> #:city# (<strong> #:airport# </strong>) </span>",
+            template : "<span> #:city# (#:airport#) </span>",
             dataTextField: "city",
             select: function(e) {
                 //var airline = e.item;
@@ -3778,19 +3842,62 @@ var smartFlightView = {
             placeholder: "Enter airline... "
         });
 
-      /*  $("#smartFlightView-flightSegments").kendoMobileListView({
-                dataSource: smartFlightView.segmentsDS,
-                template: $("#flightViewSegmentTemplate").html(),
-                //headerTemplate: $("#findPlacesHeaderTemplate").html(),
-                //fixedHeaders: true,
-                click: function (e) {
-                    var segment = e.dataItem;
 
-                }
+        smartFlightView.status.bind("change", function(e){
+            var field = e.field;
+            var value = smartFlightView.status.get(field);
+            var displayTime = null;
+
+            switch(field){
+                case 'name':
+                    
+                    if(value !== null && value !== ""){
+                        smartFlightView.status.set("ui_"+ field, value);
+                    } else {
+                        var ux_departure = smartFlightView.status.get('departureAirport');
+                        var ux_arrival = smartFlightView.status.get('arrivalAirport');
+                        if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
+                            var nameStr = ux_departure + " / " + ux_arrival;
+                            smartFlightView.status.set("ui_"+ field, nameStr);
+                        } else {
+                            smartFlightView.status.set("ui_"+ field, userModel._user.name + "'s Flight");
+                        }
+                    }
+                    break;
+                case 'durationMinutes':
+                    if(value !== null){
+                        var time = ux.getDurationTime(value, "min");
+                        smartFlightView.status.set("ui_"+ field, time);
+                    } else {
+                        smartFlightView.status.set("ui_"+ field, null);
+                    }
+                    break;
+                case "estimatedDeparture":
+                    if(value !== null){
+                        displayTime = smartFlightView.displayTime(value);
+                        smartFlightView.status.set("ui_"+ field, displayTime);
+                    } else {
+                        smartFlightView.status.set("ui_"+ field, null);
+                    }
+                    break;
+                case "estimatedArrival":
+                    if(value !== null){
+                        displayTime = smartFlightView.displayTime(value);
+                        smartFlightView.status.set("ui_"+ field, displayTime);
+                    } else {
+                        smartFlightView.status.set("ui_"+ field, null);
+                    }
+                    break;
             }
-        );*/
+        });
     },
 
+    displayTime: function(dateTime){
+        var formattedDate = moment(dateTime, "M/D/YYYY h:mm a").format("ddd MMM Do, YY");
+        var formattedTime = moment(dateTime, "M/D/YYYY h:mm a").format("h:mma");
+
+        return formattedDate + " @ " + formattedTime;
+    },
 
     onOpen : function () {
 
@@ -3812,6 +3919,7 @@ var smartFlightView = {
         $('#smartFlightView-DoneBtn').removeClass('hidden');
         $('.flightViewer').removeClass('hidden');
         $('.flightCreator').addClass('hidden');
+
     },
 
     setEditMode : function () {
@@ -3819,7 +3927,7 @@ var smartFlightView = {
         $('#smartFlightView-DoneBtn').removeClass('hidden');
         $('.flightViewer').addClass('hidden');
         $('.flightCreator').removeClass('hidden');
-        $("#smartFlight-name").val(userModel._user.name + "'s Flight");
+
     },
 
     openModal : function (flight, callback) {
@@ -3857,10 +3965,11 @@ var smartFlightView = {
             smartFlightView.setViewMode();
             // Is the user tracking this flight?
             var flightObj = smartFlight.findFlight(flight.uuid);
+
             if (flightObj === undefined || flightObj === null) {
-                $('#smartFlightView-trackFlight').removeClass('hidden');
+                $('#smartFlightView-trackFlight').html("<img src='../images/icon-checked-active.svg' class='icon-sm'/> Tracking");
             } else {
-                $('#smartFlightView-trackFlight').addClass('hidden');
+                $('#smartFlightView-trackFlight').html("Track Flight");
             }
         }
 
