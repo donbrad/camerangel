@@ -2676,7 +2676,6 @@ var smartTripView = {
                 $("#smartTripView-routeTimeBtn").removeClass('hidden');
             }
 
-
         });
 
 
