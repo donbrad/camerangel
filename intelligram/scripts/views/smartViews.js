@@ -2937,8 +2937,14 @@ var smartTripView = {
 
         if (smartTripView.activeObject.departure !== null) {
             depart = smartTripView.activeObject.departure;
+            if (depart._isAMomentObject !== undefined) {
+                depart = depart.toDate();
+            }
         } else if (smartTripView.arrival !== null) {
             arrive = smartTripView.activeObject.arrival;
+            if (arrive._isAMomentObject !== undefined) {
+                arrive = arrive.toDate();
+            }
         }
 
         mapModel.getTravelTime(origin, dest, depart, arrive, function (result) {
