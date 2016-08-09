@@ -2763,7 +2763,8 @@ var smartTripView = {
 
     openModal : function (tripObj, callback) {
 
-
+        smartTripView.initUX();
+        
         smartTripView.callback = null;
         if (callback !== undefined) {
             smartTripView.callback = callback;
@@ -3306,12 +3307,14 @@ var smartTripView = {
     },
 
     onSave : function (e) {
+
+        smartTripView.onDone();
+
         if (smartTripView.callback !== null) {
             smartTripView.callback(smartTripView.activeObject);
         }
 
-        smartTripView.initUX();
-        smartTripView.onDone();
+
     },
 
     onDone : function (e) {
