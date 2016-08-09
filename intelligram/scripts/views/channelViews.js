@@ -2450,6 +2450,8 @@ var channelView = {
             destination: dest,
             departure: moment(smartTrip.departure).format ("ddd, MMM Do, YYYY @ h:mm a"),
             arrival: moment(smartTrip.arrival).format ("ddd, MMM Do, YYYY @ h:mm a"),
+            durationString: smartTrip.durationString,
+            distanceString: smartTrip.distanceString,
             objectId : objectId
         };
 
