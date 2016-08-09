@@ -1689,7 +1689,7 @@ var smartMovieEdit = {
 
             $('#smartMovieEdit-date').pickadate({
                 format: 'mmm, d yyyy',
-                formatSubmit: 'mm d yyyy',
+                formatSubmit: 'mm/dd/yyyy',
                 min: true,
                 onSet : function (context) {
                     smartMovieEdit.updateDateString();
@@ -2553,7 +2553,7 @@ var smartTripView = {
 
         $('#smartTripView-dateDeparture').pickadate({
             format: 'mmm, d yyyy',
-            formatSubmit: 'mm d yyyy',
+            formatSubmit: 'mm/dd/yyyy',
             min: true,
             onSet : function (context) {
                 smartTripView.processDepartureTime();
@@ -2563,7 +2563,7 @@ var smartTripView = {
 
         $('#smartTripView-dateArrival').pickadate({
             format: 'mmm, d yyyy',
-            formatSubmit: 'mm d yyyy',
+            formatSubmit: 'mm/dd/yyyy',
             min: true,
             onSet : function (context) {
                 smartTripView.processArrivalTime();
@@ -2688,6 +2688,8 @@ var smartTripView = {
 
         $('input[type=radio][name=arrival]').on("change", function() {
             var value = $(this).val();
+            // set default time
+            var currentTime = smartTripView.getDefaultTime60();
 
 
             if(value === "true"){
@@ -2696,14 +2698,16 @@ var smartTripView = {
 
                 $("#smartTripView-travelTime-box").addClass('hidden');
 
+                $("#smartTripView-timeArrival").val(currentTime);
+                smartTripView.processArrivalTime();
+
                 // Show calculate btn
                 //$("#smartTripView-calculateArrival")
             } else {
                 $("#smartTripView-departure-time").removeClass("hidden");
                 $("#smartTripView-arrival-time").addClass("hidden");
 
-                // set default time
-                var currentTime = smartTripView.getDefaultTime60();
+
 
                 $("#smartTripView-timeDeparture").val(currentTime);
                 smartTripView.processDepartureTime();
@@ -3010,7 +3014,7 @@ var smartTripView = {
 
     //Tag = 'Arrival' or 'Departure'
     updateCalendarUX : function (tag, fulldate) {
-        var date = moment(fulldate).format('ddd, MMM Do YYYY'), time = moment(fulldate).format("HH:mm");
+        var date = moment(fulldate).format('MM/DD/YYYY'), time = moment(fulldate).format("HH:mm");
 
         var timeTag = "smartTripView-time"+tag, dateTag =  "smartTripView-date"+tag;
         
@@ -3035,7 +3039,7 @@ var smartTripView = {
             $("#smartTripModal-saveBtn").removeClass('hidden');
             smartTripView.computeTravelTime(function(result) {
 
-                
+
                 if (smartTripView.arrivalSet) {
                     smartTripView.activeObject.departure = moment(smartTripView.activeObject.arrival).add(smartTripView.activeObject.duration, 's').toDate();
                     smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
@@ -3455,9 +3459,13 @@ var smartFlightView = {
 
 
         } else {
+
+            smartFlightView.status.set("name", statusObj.name);
+
+
             smartFlightView.status.set('ggType', statusObj.ggType);
             smartFlightView.status.set('uuid', statusObj.uuid);
-            smartFlightView.status.set('name', statusObj.name);
+
             smartFlightView.status.set('carrierCode', statusObj.carrierCode);
             smartFlightView.status.set('flightNumber',statusObj.flightNumber);
             smartFlightView.status.set('baggageClaim',  statusObj.baggageClaim);
@@ -3531,7 +3539,6 @@ var smartFlightView = {
         smartFlightView.status.set('arrivalGate', that.arrivalStatus.airportResources.arrivalGate);
         smartFlightView.status.set('baggageClaim',  that.arrivalStatus.airportResources.baggage);
 
-
         var duration = that.computeFlightTime(that.departureAirport, that.arrivalAirport);
         smartFlightView.status.set('durationMinutes', duration);
 
@@ -3555,7 +3562,7 @@ var smartFlightView = {
         $('#smartFlightView-flightStatus').removeClass('hidden');
         $('#smartFlightView-DoneBtn').addClass('hidden');
         $('#smartFlightView-SaveBtn').removeClass('hidden');
-        $('.flightCreator').addClass('hidden');
+        $('.flightCreator:not(.intelliCardActions > div:first-child)').addClass('hidden');
         ux.hideKeyboard();
     },
 
@@ -3838,7 +3845,21 @@ var smartFlightView = {
             var displayTime = null;
 
             switch(field){
-
+                case 'name':
+                    
+                    if(value !== null && value !== ""){
+                        smartFlightView.status.set("ui_"+ field, value);
+                    } else {
+                        var ux_departure = smartFlightView.status.get('departureAirport');
+                        var ux_arrival = smartFlightView.status.get('arrivalAirport');
+                        if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
+                            var nameStr = ux_departure + " / " + ux_arrival;
+                            smartFlightView.status.set("ui_"+ field, nameStr);
+                        } else {
+                            smartFlightView.status.set("ui_"+ field, userModel._user.name + "'s Flight");
+                        }
+                    }
+                    break;
                 case 'durationMinutes':
                     if(value !== null){
                         var time = ux.getDurationTime(value, "min");
@@ -3902,7 +3923,7 @@ var smartFlightView = {
         $('#smartFlightView-DoneBtn').removeClass('hidden');
         $('.flightViewer').addClass('hidden');
         $('.flightCreator').removeClass('hidden');
-        //$("#smartFlight-name").val(userModel._user.name + "'s Flight");
+
     },
 
     openModal : function (flight, callback) {
@@ -3942,7 +3963,7 @@ var smartFlightView = {
             var flightObj = smartFlight.findFlight(flight.uuid);
 
             if (flightObj === undefined || flightObj === null) {
-                $('#smartFlightView-trackFlight').html("<img src='images/icon-checked-active.svg' class='icon-sm'/> Tracking");
+                $('#smartFlightView-trackFlight').html("<img src='../images/icon-checked-active.svg' class='icon-sm'/> Tracking");
             } else {
                 $('#smartFlightView-trackFlight').html("Track Flight");
             }
