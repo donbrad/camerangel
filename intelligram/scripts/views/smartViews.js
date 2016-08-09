@@ -2992,16 +2992,7 @@ var smartTripView = {
         smartTripView.validOrigin) {
             $("#smartTripModal-saveBtn").removeClass('hidden');
             smartTripView.computeTravelTime(function(result) {
-                /*var name = $('#smartTripView-name').val();
-
-                if (name === null || name === '' || name === undefined) {
-                    name = smartTripView.tripType + " From " + smartTripView.origin.name + " To " + smartTripView.destination.name;
-
-                    name = name.toLowerCase().capitalize;
-
-                    $('#smartTripView-name').val(name);
-                }*/
-
+                
                 if (smartTripView.arrivalSet) {
                     smartTripView.activeObject.departure = moment(smartTripView.activeObject.arrival).add(smartTripView.activeObject.duration, 's').toDate();
                     smartTripView.updateCalendarUX('Departure', smartTripView.activeObject.departure);
@@ -3068,7 +3059,7 @@ var smartTripView = {
 
         var combined = date +  " " + time;
 
-        var depart = moment(combined);
+        var depart = moment(combined).toDate();
 
         smartTripView.activeObject.set('departure', depart);
 
@@ -3085,7 +3076,8 @@ var smartTripView = {
 
         var combined = date +  " " + time;
 
-        var arrive = moment(combined);
+        var arrive = moment(combined).toDate();
+
         smartTripView.activeObject.set('arrival',arrive);
 
         smartTripView.departureSet = false;
