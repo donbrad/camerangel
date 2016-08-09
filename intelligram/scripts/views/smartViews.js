@@ -1689,7 +1689,7 @@ var smartMovieEdit = {
 
             $('#smartMovieEdit-date').pickadate({
                 format: 'mmm, d yyyy',
-                formatSubmit: 'mm d yyyy',
+                formatSubmit: 'mm/dd/yyyy',
                 min: true,
                 onSet : function (context) {
                     smartMovieEdit.updateDateString();
@@ -2516,7 +2516,7 @@ var smartTripView = {
 
         $('#smartTripView-dateDeparture').pickadate({
             format: 'mmm, d yyyy',
-            formatSubmit: 'mm d yyyy',
+            formatSubmit: 'mm/dd/yyyy',
             min: true,
             onSet : function (context) {
                 smartTripView.processDepartureTime();
@@ -2526,7 +2526,7 @@ var smartTripView = {
 
         $('#smartTripView-dateArrival').pickadate({
             format: 'mmm, d yyyy',
-            formatSubmit: 'mm d yyyy',
+            formatSubmit: 'mm/dd/yyyy',
             min: true,
             onSet : function (context) {
                 smartTripView.processArrivalTime();
@@ -2654,6 +2654,8 @@ var smartTripView = {
 
         $('input[type=radio][name=arrival]').on("change", function() {
             var value = $(this).val();
+            // set default time
+            var currentTime = smartTripView.getDefaultTime60();
 
             if(value === "true"){
                 $("#smartTripView-arrival-time").removeClass("hidden");
@@ -2661,14 +2663,16 @@ var smartTripView = {
 
                 $("#smartTripView-travelTime-box").addClass('hidden');
 
+                $("#smartTripView-timeArrival").val(currentTime);
+                smartTripView.processArrivalTime();
+
                 // Show calculate btn
                 //$("#smartTripView-calculateArrival")
             } else {
                 $("#smartTripView-departure-time").removeClass("hidden");
                 $("#smartTripView-arrival-time").addClass("hidden");
 
-                // set default time
-                var currentTime = smartTripView.getDefaultTime60();
+
 
                 $("#smartTripView-timeDeparture").val(currentTime);
                 smartTripView.processDepartureTime();
@@ -2970,7 +2974,7 @@ var smartTripView = {
 
     //Tag = 'Arrival' or 'Departure'
     updateCalendarUX : function (tag, fulldate) {
-        var date = moment(fulldate).format('ddd, MMM Do YYYY'), time = moment(fulldate).format("HH:mm");
+        var date = moment(fulldate).format('MM/DD/YYYY'), time = moment(fulldate).format("HH:mm");
 
         var timeTag = "smartTripView-time"+tag, dateTag =  "smartTripView-date"+tag;
         
