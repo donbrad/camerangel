@@ -3174,7 +3174,8 @@
 <div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance" data-model="smartTripView.activeObject">
 	<div class="intelli-header">
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
-		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
+		<p class="intelli-subheader tripEdit">Quickly share your trip with friends and family.</p>
+		<p class="intelli-subheader tripView"><span data-bind="text: senderName"></span>'s Trip</p>
 		<div class="smartTripView-error hidden">
 			<p class="error-msg">
 				Sorry, we are having trouble processing your route. Try another transport option or change locations.
@@ -3359,7 +3360,7 @@
 	</div>
 	<div class="intelliTrip tripView">
 		<div class="header">
-			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
+			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> <span data-bind="text: name"></span> </p>
 			<p class="helper intelliTrip-subheader">
 				<span data-bind="text: originName"></span>
 				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
@@ -3382,7 +3383,7 @@
 
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-restartBtn" data-click="smartTripModal.onRestart">Restart</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-returnBtn" data-click="smartTripModal.onReturn">Return</a>
-		<a class="btnFull-modal btnPrimary tripView hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
 		<a class="btnFull-modal" data-role="button" data-click="smartTripView.onCancel">Cancel</a>
 	</div>
 </div>
