@@ -3633,6 +3633,8 @@ var smartFlightView = {
         var duration = that.computeFlightTime(that.departureAirport, that.arrivalAirport);
         smartFlightView.status.set('durationMinutes', duration);
 
+        smartFlightView.status.set('durationString', ux.getDurationTime(duration, 'min'));
+
         var depart = null;
         if (that.departureStatus.operationalTimes.estimatedGateDeparture !== undefined) {
             depart = that.departureStatus.operationalTimes.estimatedGateDeparture.dateUtc;

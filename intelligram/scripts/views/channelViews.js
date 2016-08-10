@@ -2489,7 +2489,8 @@ var channelView = {
             arrivalAirport : smartFlight.arrivalAirport,
             arrivalCity : smartFlight.arrivalCity,
             estimatedDeparture : smartFlight.estimatedDeparture,
-            estimatedArrival : smartFlight.estimatedArrival
+            estimatedArrival : smartFlight.estimatedArrival,
+            durationString : smartFlight.durationString
 
         };
 

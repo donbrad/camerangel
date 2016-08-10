@@ -214,37 +214,7 @@ function _nullString (stringIn) {
 	return(stringIn);
 }
 
-/*function getNetworkState() {
-	var networkState = navigator.connection.type;
-	switch (networkState) {
-		case Connection.ETHERNET:
-		case Connection.WIFI:
-			deviceModel.setAppState('connection', "internet");
-			mobileNotify("Online via Wifi");
-			break;
-		case Connection.CELL:
-		case Connection.CELL_2G:
-		case Connection.CELL_3G:
-		case Connection.CELL_4G:
-			deviceModel.setAppState('connection', "cell");
-			mobileNotify("Online via Cell");
-			break;
-	}
-}*/
 
-/*function handleParseError(err) {
-	switch (err.code) {
-		case Parse.Error.INVALID_SESSION_TOKEN:
-			mobileNotify("Security Check: Please Sign In");
-			_signOut();
-			APP.kendo.navigate('#usersignin');
-			break;
-		default:
-			mobileNotify(err.code + " : " + err.message);
-			console.error(err.code + " : " + err.message);
-			break;
-	}
-}*/
 
 function getDistanceInMiles(lat1, lon1, lat2, lon2) {
 
