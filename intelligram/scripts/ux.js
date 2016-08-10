@@ -17,10 +17,8 @@ var ux = {
 
 		if (target !== undefined) {
 			ux.currentAddTarget = target;
-			ux.currentAddFunction = null;
 		}
-		if ( func !== undefined ){
-			ux.currentAddTarget = null;
+		if (func !== undefined){
 			ux.currentAddFunction = func;
 		}
 	},
