@@ -342,16 +342,21 @@ var homeView = {
 
 
         // Hide action button on home
-        ux.showActionBtn(true, "#home", "#settingsAction");
+        ux.setAddTarget("images/nav-gear.svg", null, homeView.openSettingsAction);
+        /*ux.showActionBtn(true, "#home", "#settingsAction");
         ux.changeActionBtnImg("home","nav-add-white");
         ux.showActionBtnText("#home", "3em", "Shortcuts");
 
         ux.addDataProp("rel", "actionsheet");
-
+*/
         everlive.syncCloud();
 
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();
+    },
+
+    openSettingsAction : function (e) {
+        $("#settingsAction").data("kendoMobileActionSheet").open();
     },
 
     onHide: function(e){

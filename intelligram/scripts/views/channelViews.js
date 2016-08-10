@@ -178,14 +178,16 @@ var channelsView = {
         ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
     	
         // set action button
-        ux.showActionBtn(true, "#channels", "#addChannel");
-        ux.showActionBtnText("#channels", "3em", "New Chat");
+        ux.setAddTarget(null, "#addChannel", null);
+       // ux.showActionBtn(true, "#channels", "#addChannel");
+      //  ux.showActionBtnText("#channels", "3em", "New Chat");
 
     },
 
     onHide: function(){
     	// set action button
-		ux.showActionBtn(false, "#channels");
+		//ux.showActionBtn(false, "#channels");
+        ux.setAddTarget(null);
 		ux.hideSearch();
     },
 
@@ -1299,7 +1301,7 @@ var channelView = {
         channelView._offersLoaded = false;
         channelView._titleTagActive = false;
         // hide action btn
-        ux.showActionBtn(false, "#channel");
+        //ux.showActionBtn(false, "#channel");
 
 
         var channelUUID = e.view.params.channelUUID;

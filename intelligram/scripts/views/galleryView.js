@@ -181,9 +181,9 @@ var galleryView = {
 
 
         // Set action btn
-        ux.showActionBtn(true, "#gallery", "");
+       /* ux.showActionBtn(true, "#gallery", "");
         ux.changeActionBtnImg("#gallery", "icon-camera");
-        ux.showActionBtnText("#gallery", "3.5rem", "Camera");
+        ux.showActionBtnText("#gallery", "3.5rem", "Camera");*/
 
         galleryView.updateTotalPhotos();
 
@@ -246,14 +246,14 @@ var galleryView = {
         var index = this.current().index();
         switch (index) {
             case 0:
-                ux.showActionBtn(true, "#gallery");
+                //ux.showActionBtn(true, "#gallery");
                 $('#archive-listview').addClass('hidden');
                 $("#gallery-listview").removeClass("hidden");
                 $(".resultsBar").removeClass("hidden");
                 break;
 
             case 1:
-                ux.showActionBtn(false, "#gallery");
+               // ux.showActionBtn(false, "#gallery");
                 $('#archive-listview').removeClass('hidden');
                 $("#gallery-listview").addClass('hidden');
                 $(".resultsBar").addClass("hidden");

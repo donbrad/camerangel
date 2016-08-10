@@ -2,6 +2,37 @@
 
 
 var ux = {
+	currentAddTarget : null,
+	currentAddFunction : null,
+	defaultAddIcon : "images/menu-add.svg",
+
+	// Set the add target (url or function) and option icon for right tool button on all main template views
+	setAddTarget : function (iconUrl, target, func) {
+		if (iconUrl !== null) {
+			$('.header-add-icon').attr('src', iconUrl);
+		} else {
+			$('.header-add-icon').attr('src', ux.defaultAddIcon);
+
+		}
+
+		if (target !== undefined) {
+			ux.currentAddTarget = target;
+			ux.currentAddFunction = null;
+		}
+		if ( func !== undefined ){
+			ux.currentAddTarget = null;
+			ux.currentAddFunction = func;
+		}
+	},
+
+	// Add target navigation function -- will navigate to currentAddTarget if not null, if null with call currentAddFunction if not null.
+	// if both are null doees nothing....
+	navigateAddTarget : function (object) {
+		if (ux.currentAddTarget !== null)
+			APP.kendo.navigate(ux.currentAddTarget);
+		else if (ux.currentAddFunction !== null)
+			ux.currentAddFunction();
+	},
 
 	// Display the right name combo - for template use returnUXPrimaryName
 	formatNameAlias: function(name, alias, view){

@@ -211,8 +211,9 @@ var contactsView = {
         
 
         // set action button
-    	ux.showActionBtn(true, "#contacts", "#contactImport");
-    	ux.showActionBtnText("#contacts", "3em", "New Contact");
+        ux.setAddTarget(null, "#contactImport", null);
+    	//ux.showActionBtn(true, "#contacts", "#contactImport");
+    	//ux.showActionBtnText("#contacts", "3em", "New Contact");
     	// Bind contact search
 
     },
@@ -224,7 +225,7 @@ var contactsView = {
     },
 
     onHide: function(){
-    	ux.showActionBtn(false, "#contacts");
+    	//ux.showActionBtn(false, "#contacts");
     	$("#btnSearchDeviceContacts").addClass("hidden");
     	ux.hideSearch();
         /*if (contactsView.updateInterval !== null) {
