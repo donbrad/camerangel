@@ -84,7 +84,10 @@ var channelsView = {
         });
 
 		ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
-
+        var scroller = e.view.scroller;
+        scroller.bind("pull", function(e) {
+          ux.toggleSearch();
+        });
     },
 
     // Update channel display list from channel master list
