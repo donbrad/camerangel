@@ -109,13 +109,22 @@ var privateChannel = {
             content = userDataChannel.decryptBlock(msg.content);
         }
 
+        if (content === undefined) {
+            content = "<p>Unable to decrypt messages...</p>"
+        }
+
         if (msg.data.cipher !== undefined) {
             data = userDataChannel.decryptBlock(msg.data.cipher);
         } else {
             data = userDataChannel.decryptBlock(msg.data);
         }
 
-        data = JSON.parse(data);
+        if (data !== undefined) {
+            data = JSON.parse(data);
+        } else {
+            data = {};
+        }
+
         
         var parsedMsg = {
             type: 'privateMessage',
