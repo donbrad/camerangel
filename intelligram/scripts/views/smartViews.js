@@ -3447,7 +3447,7 @@ var smartFlightView = {
         }
     },
 
-    findFlight : function () {
+    lookUpFlight : function () {
         mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
         getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
 
@@ -3984,7 +3984,7 @@ var smartFlightView = {
 
         $('.flightError').addClass('hidden');
         $('#smartFlight-FindBtn').addClass('hidden');
-        
+
         $("#smartFlight-flightDate").val(new Date());
         $("#smartFlight-flight").val('');
         $("#smartFlight-airline").val('');
