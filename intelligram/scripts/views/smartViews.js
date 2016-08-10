@@ -3633,7 +3633,26 @@ var smartFlightView = {
         var duration = that.computeFlightTime(that.departureAirport, that.arrivalAirport);
         smartFlightView.status.set('durationMinutes', duration);
 
-        var depDate = moment(that.departureStatus.operationalTimes.estimatedGateDeparture.dateUtc), arrDate = moment(that.arrivalStatus.operationalTimes.estimatedGateArrival.dateUtc);
+        var depart = null;
+        if (that.departureStatus.operationalTimes.estimatedGateDeparture !== undefined) {
+            depart = that.departureStatus.operationalTimes.estimatedGateDeparture.dateUtc;
+        } else  if (that.departureStatus.operationalTimes.publishedGateDeparture !== undefined) {
+            depart = that.departureStatus.operationalTimes.publishedGateDeparture.dateUtc;
+        } else  if (that.departureStatus.operationalTimes.scheduledGateDeparture !== undefined) {
+            depart = that.departureStatus.operationalTimes.scheduledGateDeparture.dateUtc;
+        }
+
+
+        var arrive = null;
+        if (that.arrivalStatus.operationalTimes.estimatedGateDeparture !== undefined) {
+            arrive = that.arrivalStatus.operationalTimes.estimatedGateArrival.dateUtc;
+        } else if (that.arrivalStatus.operationalTimes.publishedGateArrival !== undefined) {
+            arrive = that.arrivalStatus.operationalTimes.publishedGateArrival.dateUtc;
+        } else if (that.arrivalStatus.operationalTimes.scheduledGateArrival !== undefined) {
+            arrive = that.arrivalStatus.operationalTimes.scheduledGateArrival.dateUtc;
+        }
+
+        var depDate = moment(depart), arrDate = moment(arrive);
         smartFlightView.status.set('estimatedDeparture', depDate.format("M/D/YYYY h:mm a"));
         smartFlightView.status.set('estimatedArrival',  arrDate.format("M/D/YYYY h:mm a"));
 
