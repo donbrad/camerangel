@@ -3432,11 +3432,7 @@ var smartFlightView = {
     checkFlight: function () {
 
         if (smartFlightView.validAirline && smartFlightView.validFlight && smartFlightView.validDate) {
-            mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
-            getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
-
-                smartFlightView.processFlightStatus(result);
-            });
+            $('#smartFlight-FindBtn').removeClass('hidden');
         } else {
             return;
         }
@@ -3449,6 +3445,15 @@ var smartFlightView = {
         } else {
             return;
         }
+    },
+
+    findFlight : function () {
+        mobileNotify("Looking up " + smartFlightView.airlineName + " " + smartFlightView.flight);
+        getFlightStatus(smartFlightView.airline, smartFlightView.flight, smartFlightView.date, function (result) {
+
+            smartFlightView.processFlightStatus(result);
+            $('#smartFlight-FindBtn').addClass('hidden');
+        });
     },
 
     setFlightStatus : function (statusObj) {
@@ -3961,6 +3966,7 @@ var smartFlightView = {
     setEditMode : function () {
         $('#smartFlightView-SaveBtn').addClass('hidden');
         $('#smartFlightView-DoneBtn').removeClass('hidden');
+        $('#smartFlight-FindBtn').addClass('hidden');
         $('.flightViewer').addClass('hidden');
         $('.flightCreator').removeClass('hidden');
 
@@ -3977,7 +3983,8 @@ var smartFlightView = {
         smartFlightView.segmentsDS.data([]);
 
         $('.flightError').addClass('hidden');
-
+        $('#smartFlight-FindBtn').addClass('hidden');
+        
         $("#smartFlight-flightDate").val(new Date());
         $("#smartFlight-flight").val('');
         $("#smartFlight-airline").val('');

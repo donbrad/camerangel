@@ -5019,6 +5019,12 @@
 		<form>
 			<ul data-role="listview" data-style="inset">
 				<li>
+					<label>
+						Trip Name (optional)
+						<input type="text" data-bind="value: name" />
+					</label>
+				</li>
+				<li>
 					<label> Airline
 						<input id="smartFlight-airline" type="text" placeholder="Please enter airline...">
 					</label>
@@ -5035,6 +5041,10 @@
 					</label>
 				</li>
 
+				<li>
+					<a class="btnClear btnFull-modal hidden" data-role="button" id="smartFlight-FindBtn" data-click="smartFlightView.findFlight">Find</a>
+				</li>
+
 				<li class="flightPicker hidden">
 					<label> Departing From
 						<input id="smartFlight-flightDeparture" type="text" >
@@ -5046,12 +5056,7 @@
 						<input id="smartFlight-flightArrival" type="text" >
 					</label>
 				</li>
-				<li>
-					<label>
-						Trip Name (optional)
-						<input type="text" data-bind="value: name" />
-					</label>
-				</li>
+
 				<li class="flightError hidden">
 					<p class="error-msg">Couldn't locate this flight.  Please confirm flight information.</p>
 				</li>
@@ -5151,7 +5156,7 @@
 		</div>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnClear btnFull-modal flightCreator hidden" data-role="button" id="smartFlight-nextBtn" data-click="smartFlightView.checkFlightComplete">Next</a>
+
 		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Cancel</a>
 		<a class="btnFull-modal btnSecondary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
 	</div>
