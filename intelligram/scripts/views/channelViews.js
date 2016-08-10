@@ -84,9 +84,16 @@ var channelsView = {
         });
 
 		ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
-        var scroller = e.view.scroller;
-        scroller.bind("pull", function(e) {
-          ux.toggleSearch();
+        channelsView.scroller = e.view.scroller;
+
+        channelsView.scroller.setOptions({
+            pullToRefresh: true,
+            pull: function() {
+                channelModel.channelsDS.sync();
+                ux.toggleSearch();
+                channelsView.scroller.pullHandled();
+
+            }
         });
     },
 

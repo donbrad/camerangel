@@ -180,6 +180,16 @@ var galleryView = {
 
         galleryView.scroller = e.view.scroller;
 
+        galleryView.scroller.setOptions({
+            pullToRefresh: true,
+            pull: function() {
+                photoModel.photosDS.sync();
+                ux.toggleSearch();
+                galleryView.scroller.pullHandled();
+
+            }
+        });
+
 
         // Set action btn
        /* ux.showActionBtn(true, "#gallery", "");

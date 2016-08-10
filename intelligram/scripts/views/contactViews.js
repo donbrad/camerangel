@@ -215,7 +215,17 @@ var contactsView = {
     	//ux.showActionBtn(true, "#contacts", "#contactImport");
     	//ux.showActionBtnText("#contacts", "3em", "New Contact");
     	// Bind contact search
+        contactsView.scroller = e.view.scroller;
 
+        contactsView.scroller.setOptions({
+            pullToRefresh: true,
+            pull: function() {
+                contactModel.contactsDS.sync();
+                ux.toggleSearch();
+                contactsView.scroller.pullHandled();
+
+            }
+        });
     },
 
     // All update the ContactListDS item with current changes

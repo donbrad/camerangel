@@ -55,7 +55,17 @@ var placesView = {
             }
         });
 
+        placesView.scroller = e.view.scroller;
 
+        placesView.scroller.setOptions({
+            pullToRefresh: true,
+            pull: function() {
+                placesModel.placesDS.sync();
+                ux.toggleSearch();
+                placesView.scroller.pullHandled();
+
+            }
+        });
     },
 
 
