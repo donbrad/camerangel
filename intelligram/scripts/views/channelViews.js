@@ -2484,6 +2484,7 @@ var channelView = {
         var dataObj = {
             ggType : "Flight",
             objectId : objectId,
+            name: smartFlight.name,
             departureAirport : smartFlight.departureAirport,
             departureCity : smartFlight.departureCity,
             arrivalAirport : smartFlight.arrivalAirport,
