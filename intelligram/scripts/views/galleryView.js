@@ -21,6 +21,7 @@ var galleryView = {
     _currentPhotoUrl: null,
     _previewSize: "33%",
     _viewInitialized : false,
+    scroller: null,
 
     onInit : function (e) {
         //_preventDefault(e);
@@ -177,7 +178,7 @@ var galleryView = {
         photoModel.rotationAngle = 0;
         
 
-        var scroller = e.view.scroller;
+        galleryView.scroller = e.view.scroller;
 
 
         // Set action btn
@@ -187,14 +188,13 @@ var galleryView = {
 
         galleryView.updateTotalPhotos();
 
+        ux.setAddTarget(null, null, galleryView.onAddGallery);
 
-        $("#gallery > div.footerMenu.km-footer > a").removeAttr("href").on("click", function(e){
+       /* $("#gallery > div.footerMenu.km-footer > a").removeAttr("href").on("click", function(e){
             _preventDefault(e);
             $("#galleryActions1").data("kendoMobileActionSheet").open();
-        });
+        });*/
         
-
-
 
 
         // set filter count
@@ -211,6 +211,11 @@ var galleryView = {
         }
 
     },
+
+    onAddGallery : function (e) {
+        $("#galleryActions1").data("kendoMobileActionSheet").open();
+    },
+
 
     onHide: function(e){
     	var $actionBtn = $("#gallery > div.footerMenu.km-footer > a");
