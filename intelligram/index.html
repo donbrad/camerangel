@@ -3175,7 +3175,7 @@
 	<div class="intelli-header">
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
 		<p class="intelli-subheader tripEdit">Quickly share your trip with friends and family.</p>
-		<p class="intelli-subheader tripView"><span data-bind="text: senderName"></span>'s Trip</p>
+		<p class="intelli-subheader tripView">Trip From: <span data-bind="text: senderName"></span</p>
 		<div class="smartTripView-error hidden">
 			<p class="error-msg">
 				Sorry, we are having trouble processing your route. Try another transport option or change locations.
@@ -3360,19 +3360,19 @@
 	</div>
 	<div class="intelliTrip tripView">
 		<div class="header">
-			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> <span data-bind="text: name"></span> </p>
-			<p class="helper intelliTrip-subheader">
-				<span data-bind="text: originName"></span>
+			<p class="intelliTrip-title"><span data-bind="text: name"></span> </p>
+			<div class="helper intelliTrip-subheader" style="font-size: 1.3em;">
+				<p><strong>From:</strong> <span data-bind="text: originName"></span> </p>
 				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
-				<span data-bind="text: destinationName"></span>
-			</p>
-			<p class="helper intelliTrip-subheader">
+				<p><strong>To:</strong> <span data-bind="text: destinationName"></span></p>
+			</div>
+			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
 				Departing : <span data-bind="text: dateDeparture"></span> @ <span data-bind="text: timeDeparture"></span>
 			</p>
-			<p class="helper intelliTrip-subheader">
+			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
 				Arriving : <span data-bind="text: dateArrival"></span> @ <span data-bind="text: timeArrival"></span>
 			</p>
-			<p class="helper intelliTrip-subheader">
+			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
 				<img src="images/icon-time.svg" class="icon-sm" /> <span data-bind="text: durationString"></span> (<span data-bind="text: distanceString"></span>)
 			</p>
 		</div>
