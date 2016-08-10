@@ -12,6 +12,8 @@
 
 var homeView = {
     _radius: 90, // 90 meters or approx 300 ft
+    today : new kendo.data.DataSource(),
+
 
     openNotificationAction: function(e){
         // todo - wire notification action
@@ -321,6 +323,18 @@ var homeView = {
             },
             dataBound: function(e) {
                 ux.checkEmptyUIState(notificationModel.notificationDS, "#home");
+            }
+        });
+
+        homeView.scroller = e.view.scroller;
+
+        homeView.scroller.setOptions({
+            pullToRefresh: true,
+            pull: function() {
+               // photoModel.photosDS.sync();
+                ux.toggleSearch();
+                homeView.scroller.pullHandled();
+
             }
         });
     },

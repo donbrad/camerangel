@@ -2724,6 +2724,14 @@ var smartTripView = {
 
     },
 
+    trackChanges : function () {
+
+    },
+
+    untrackChanges : function () {
+
+    },
+
     setActiveObject : function (tripObj) {
 
         var obj = smartTripView.activeObject;
@@ -3419,6 +3427,7 @@ var smartFlightView = {
     airlineArray: [],
     departureAirportsDS : new kendo.data.DataSource(),
     arrivalAirportsDS : new kendo.data.DataSource(),
+    changeTracking : false,
 
     checkFlight: function () {
 
@@ -3500,7 +3509,73 @@ var smartFlightView = {
             smartFlightView.status.set('departureCity', statusObj.departureCity);
         }
 
+        smartFlightView.trackChanges();
     },
+
+    trackChanges : function () {
+        if (smartFlightView.changeTracking) {
+            return;
+        }
+
+        smartFlightView.changeTracking = true;
+
+        smartFlightView.status.bind("change", function(e){
+            var field = e.field;
+            var value = smartFlightView.status.get(field);
+            var displayTime = null;
+
+            switch(field){
+                case 'name':
+
+                    if(value !== null && value !== ""){
+                        smartFlightView.status.set("ui_"+ field, value);
+                    } else {
+                        var ux_departure = smartFlightView.status.get('departureAirport');
+                        var ux_arrival = smartFlightView.status.get('arrivalAirport');
+                        if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
+                            var nameStr = ux_departure + " / " + ux_arrival;
+                            smartFlightView.status.set("ui_"+ field, nameStr);
+                        } else {
+                            smartFlightView.status.set("ui_"+ field, userModel._user.name + "'s Flight");
+                        }
+                    }
+                    break;
+                case 'durationMinutes':
+                    if(value !== null){
+                        var time = ux.getDurationTime(value, "min");
+                        smartFlightView.status.set("ui_"+ field, time);
+                    } else {
+                        smartFlightView.status.set("ui_"+ field, null);
+                    }
+                    break;
+                case "estimatedDeparture":
+                    if(value !== null){
+                        displayTime = smartFlightView.displayTime(value);
+                        smartFlightView.status.set("ui_"+ field, displayTime);
+                    } else {
+                        smartFlightView.status.set("ui_"+ field, null);
+                    }
+                    break;
+                case "estimatedArrival":
+                    if(value !== null){
+                        displayTime = smartFlightView.displayTime(value);
+                        smartFlightView.status.set("ui_"+ field, displayTime);
+                    } else {
+                        smartFlightView.status.set("ui_"+ field, null);
+                    }
+                    break;
+            }
+        });
+    },
+
+    untrackChanges : function () {
+        if (smartFlightView.changeTracking) {
+            smartFlightView.status.unbind("change");
+            smartFlightView.changeTracking = false;
+        }
+
+    },
+
 
 
     finalizeFlightStatus : function () {
@@ -3850,58 +3925,12 @@ var smartFlightView = {
         });
 
 
-        smartFlightView.status.bind("change", function(e){
-            var field = e.field;
-            var value = smartFlightView.status.get(field);
-            var displayTime = null;
 
-            switch(field){
-                case 'name':
-                    
-                    if(value !== null && value !== ""){
-                        smartFlightView.status.set("ui_"+ field, value);
-                    } else {
-                        var ux_departure = smartFlightView.status.get('departureAirport');
-                        var ux_arrival = smartFlightView.status.get('arrivalAirport');
-                        if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
-                            var nameStr = ux_departure + " / " + ux_arrival;
-                            smartFlightView.status.set("ui_"+ field, nameStr);
-                        } else {
-                            smartFlightView.status.set("ui_"+ field, userModel._user.name + "'s Flight");
-                        }
-                    }
-                    break;
-                case 'durationMinutes':
-                    if(value !== null){
-                        var time = ux.getDurationTime(value, "min");
-                        smartFlightView.status.set("ui_"+ field, time);
-                    } else {
-                        smartFlightView.status.set("ui_"+ field, null);
-                    }
-                    break;
-                case "estimatedDeparture":
-                    if(value !== null){
-                        displayTime = smartFlightView.displayTime(value);
-                        smartFlightView.status.set("ui_"+ field, displayTime);
-                    } else {
-                        smartFlightView.status.set("ui_"+ field, null);
-                    }
-                    break;
-                case "estimatedArrival":
-                    if(value !== null){
-                        displayTime = smartFlightView.displayTime(value);
-                        smartFlightView.status.set("ui_"+ field, displayTime);
-                    } else {
-                        smartFlightView.status.set("ui_"+ field, null);
-                    }
-                    break;
-            }
-        });
     },
 
     displayTime: function(dateTime){
         var formattedDate = moment(dateTime, "M/D/YYYY h:mm a").format("ddd MMM Do, YY");
-        var formattedTime = moment(dateTime, "M/D/YYYY h:mm a").format("h:mma");
+        var formattedTime = moment(dateTime, "M/D/YYYY h:mm a").format("h:mm a");
 
         return formattedDate + " @ " + formattedTime;
     },
@@ -3987,6 +4016,7 @@ var smartFlightView = {
 
     closeModal : function () {
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
+        smartFlightView.untrackChanges();
     },
 
     onDone: function () {
@@ -3994,6 +4024,8 @@ var smartFlightView = {
         if (smartFlightView.callback !== null) {
             smartFlightView.callback(null);
         }
+        smartFlightView.untrackChanges();
+
         $("#modalview-smartFlight").data("kendoMobileModalView").close();
     },
 
@@ -4003,6 +4035,7 @@ var smartFlightView = {
     },
 
     onSave : function () {
+        smartFlightView.untrackChanges();
 
         if (smartFlightView.callback !== null) {
             smartFlightView.callback(smartFlightView.status);
