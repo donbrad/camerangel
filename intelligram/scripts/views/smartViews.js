@@ -2589,7 +2589,11 @@ var smartTripView = {
                 oplace.placeUUID = dataItem.uuid;
 
                 smartTripView.activeObject.set('origin', oplace);
-
+                if (oplace.name !== null && oplace.name !== '') {
+                    smartTripView.activeObject.set('originName', oplace.name);
+                } else {
+                    smartTripView.activeObject.set('originName', oplace.address);
+                }
                 smartTripView.isPlace = true;
                 smartTripView.validOrigin = true;
 
@@ -2777,15 +2781,18 @@ var smartTripView = {
             obj.set('senderName', tripObj.senderName);
 
             obj.set('name', tripObj.name);
-            obj.set('tripType', tripObj.tripType);
+            obj.tripType = tripObj.tripType; // Avoid the change trigger
             obj.set('travelMode', tripObj.travelMode);
             obj.set('autoStatus', tripObj.autoStatus);
             obj.set('addToCalendar',  tripObj.addToCalendar);
             obj.set('leg1Complete',  tripObj.leg1Complete);
             obj.set('leg2Complete',  tripObj.leg2Complete);
-            obj.set('origin', tripObj.origin);
+            obj.origin = tripObj.origin; // Avoid the change trigger
+            if ( tripObj.originName === null) {
+                tripObj.originName = tripObj.origin.name;
+            }
             obj.set('originName', tripObj.originName);
-            obj.set('destination', tripObj.destination);
+            obj.destination = tripObj.destination; // Avoid the change trigger
             obj.set('destinationName', tripObj.destinationName);
             obj.set('departure', tripObj.departure);
             obj.set('arrival', tripObj.arrival);
@@ -2962,6 +2969,10 @@ var smartTripView = {
             destination: dest,
             travelMode: mode
         };
+
+        if (org === null || dest === null) {
+            return;
+        }
 
         smartTripView.setMapCenter();
 

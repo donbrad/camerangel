@@ -84,7 +84,17 @@ var channelsView = {
         });
 
 		ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
+        channelsView.scroller = e.view.scroller;
 
+        channelsView.scroller.setOptions({
+            pullToRefresh: true,
+            pull: function() {
+                channelModel.channelsDS.sync();
+                ux.toggleSearch();
+                channelsView.scroller.pullHandled();
+
+            }
+        });
     },
 
     // Update channel display list from channel master list
@@ -178,14 +188,16 @@ var channelsView = {
         ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
     	
         // set action button
-        ux.showActionBtn(true, "#channels", "#addChannel");
-        ux.showActionBtnText("#channels", "3em", "New Chat");
+        ux.setAddTarget(null, "#addChannel", null);
+       // ux.showActionBtn(true, "#channels", "#addChannel");
+      //  ux.showActionBtnText("#channels", "3em", "New Chat");
 
     },
 
     onHide: function(){
     	// set action button
-		ux.showActionBtn(false, "#channels");
+		//ux.showActionBtn(false, "#channels");
+        ux.setAddTarget(null);
 		ux.hideSearch();
     },
 
@@ -1299,7 +1311,7 @@ var channelView = {
         channelView._offersLoaded = false;
         channelView._titleTagActive = false;
         // hide action btn
-        ux.showActionBtn(false, "#channel");
+        //ux.showActionBtn(false, "#channel");
 
 
         var channelUUID = e.view.params.channelUUID;
@@ -2450,6 +2462,8 @@ var channelView = {
             destination: dest,
             departure: moment(smartTrip.departure).format ("ddd, MMM Do, YYYY @ h:mm a"),
             arrival: moment(smartTrip.arrival).format ("ddd, MMM Do, YYYY @ h:mm a"),
+            durationString: smartTrip.durationString,
+            distanceString: smartTrip.distanceString,
             objectId : objectId
         };
 

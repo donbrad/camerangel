@@ -55,7 +55,17 @@ var placesView = {
             }
         });
 
+        placesView.scroller = e.view.scroller;
 
+        placesView.scroller.setOptions({
+            pullToRefresh: true,
+            pull: function() {
+                placesModel.placesDS.sync();
+                ux.toggleSearch();
+                placesView.scroller.pullHandled();
+
+            }
+        });
     },
 
 
@@ -165,12 +175,14 @@ var placesView = {
         // Always display the add places button so users can create a new place (even if others exist)
         
         // update actionBtn
-        ux.changeActionBtnImg("#places", "icon-gps-light");
-        ux.showActionBtnText("#places", "3.5rem", "Add Place");
+      /*  ux.changeActionBtnImg("#places", "icon-gps-light");
+        ux.showActionBtnText("#places", "3.5rem", "Add Place");*/
 
         var findPlaceUrl = "#findPlace?lat="+ mapModel.lat + "&lng=" +  mapModel.lng +"&returnview=places";
-        ux.showActionBtn(true, "#places", findPlaceUrl);
-        $("#quickFindPlaceBtn").attr("href", findPlaceUrl);
+
+        ux.setAddTarget(null, findPlaceUrl, null);
+       /* ux.showActionBtn(true, "#places", findPlaceUrl);
+        $("#quickFindPlaceBtn").attr("href", findPlaceUrl);*/
 
 
         //$("#places > div.footerMenu.km-footer > a").removeAttr('href').css("display", "none");

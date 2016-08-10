@@ -21,6 +21,7 @@ var galleryView = {
     _currentPhotoUrl: null,
     _previewSize: "33%",
     _viewInitialized : false,
+    scroller: null,
 
     onInit : function (e) {
         //_preventDefault(e);
@@ -177,24 +178,33 @@ var galleryView = {
         photoModel.rotationAngle = 0;
         
 
-        var scroller = e.view.scroller;
+        galleryView.scroller = e.view.scroller;
+
+        galleryView.scroller.setOptions({
+            pullToRefresh: true,
+            pull: function() {
+                photoModel.photosDS.sync();
+                ux.toggleSearch();
+                galleryView.scroller.pullHandled();
+
+            }
+        });
 
 
         // Set action btn
-        ux.showActionBtn(true, "#gallery", "");
+       /* ux.showActionBtn(true, "#gallery", "");
         ux.changeActionBtnImg("#gallery", "icon-camera");
-        ux.showActionBtnText("#gallery", "3.5rem", "Camera");
+        ux.showActionBtnText("#gallery", "3.5rem", "Camera");*/
 
         galleryView.updateTotalPhotos();
 
+        ux.setAddTarget(null, null, galleryView.onAddGallery);
 
-        $("#gallery > div.footerMenu.km-footer > a").removeAttr("href").on("click", function(e){
+       /* $("#gallery > div.footerMenu.km-footer > a").removeAttr("href").on("click", function(e){
             _preventDefault(e);
             $("#galleryActions1").data("kendoMobileActionSheet").open();
-        });
+        });*/
         
-
-
 
 
         // set filter count
@@ -211,6 +221,11 @@ var galleryView = {
         }
 
     },
+
+    onAddGallery : function (e) {
+        $("#galleryActions1").data("kendoMobileActionSheet").open();
+    },
+
 
     onHide: function(e){
     	var $actionBtn = $("#gallery > div.footerMenu.km-footer > a");
@@ -246,14 +261,14 @@ var galleryView = {
         var index = this.current().index();
         switch (index) {
             case 0:
-                ux.showActionBtn(true, "#gallery");
+                //ux.showActionBtn(true, "#gallery");
                 $('#archive-listview').addClass('hidden');
                 $("#gallery-listview").removeClass("hidden");
                 $(".resultsBar").removeClass("hidden");
                 break;
 
             case 1:
-                ux.showActionBtn(false, "#gallery");
+               // ux.showActionBtn(false, "#gallery");
                 $('#archive-listview').removeClass('hidden');
                 $("#gallery-listview").addClass('hidden');
                 $(".resultsBar").addClass("hidden");

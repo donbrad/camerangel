@@ -153,9 +153,9 @@
 				</div>
 			</a>
 			<span data-role="view-title"></span>
-            	<a data-role="button" data-align="right" class="user-settings homeToggleSearch" data-click="ux.toggleSearch">
-                	<img class="nav-search" src="images/icon-search.svg"/>
-            	</a>
+			<a data-role="button" data-align="right" class="user-settings homeToggleSearch" data-click="ux.navigateAddTarget">
+				<img class="nav-search header-add-icon" src="images/menu-add.svg"/>
+			</a>
         </div>
         <div class="gg_mainSearchBox" data-visible="false">
 	 		<div class="appendSearch">
@@ -171,10 +171,10 @@
 
 
     <div class="footerMenu" data-role="footer">
-    	<a class="actionBtn secondary-100" data-role="button" href="#addChannel">
+    	<!--<a class="actionBtn secondary-100" data-role="button" href="#addChannel">
     		<p class="actionBtn-text">Cancel</p>
     		<img src="images/nav-add-white.svg"/>
-    	</a>
+    	</a>-->
     	<div id="network-offline" class="hidden">Offline Mode</div>
         <ul class="list-inline menuNav">
             <li>
@@ -2770,7 +2770,6 @@
 					</li>
 				</ul>
 
-
 			</div>
 			<div class="filter">
 				<a class="btnClear" data-role="button" href="#filterGallery" id="toggleFilterBtn">
@@ -3174,7 +3173,8 @@
 <div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance" data-model="smartTripView.activeObject">
 	<div class="intelli-header">
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
-		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
+		<p class="intelli-subheader tripEdit">Quickly share your trip with friends and family.</p>
+		<p class="intelli-subheader tripView">Trip From: <span data-bind="text: senderName"></span</p>
 		<div class="smartTripView-error hidden">
 			<p class="error-msg">
 				Sorry, we are having trouble processing your route. Try another transport option or change locations.
@@ -3182,7 +3182,7 @@
 		</div>
 	</div>
 
-	<div id="intelliTrip-container">
+	<div id="intelliTrip-container" class="tripEdit">
 		<div class="intelliCard" id="smartTripView-step-1" data-card="1">
 			<form>
 				<ul class="list-inline" data-style="inset" id="smartTripModal-owner">
@@ -3269,7 +3269,7 @@
 				</a>
 		</div>
 
-		<div class="intelliCard" id="smartTripView-step-2" data-card="2">
+		<div class="intelliCard tripEdit" id="smartTripView-step-2" data-card="2">
 			<a class="btnClear" data-role="button" data-click="smartTripView.switchCards" data-card="2" data-direction="reverse" id="intelliCard-back-2">Back</a>
 			<form>
 				<ul class="list-inline" data-style="inset">
@@ -3330,7 +3330,7 @@
 			</form>
 			<a data-click="smartTripView.onTimeComplete" data-role="button" class="btnFull-modal btnPrimary hidden" id="smartTripView-routeTimeBtn" data-card="2"> Next </a>
 		</div>
-		<div class="intelliCard" id="smartTripView-step-3" data-card="3">
+		<div class="intelliCard tripEdit" id="smartTripView-step-3" data-card="3">
 			<a class="btnClear" data-role="button" data-click="smartTripView.switchCards" data-card="3" data-direction="reverse" id="intelliCard-back-3">Back</a>
 			<form>
 				<ul class="list-inline">
@@ -3357,13 +3357,32 @@
 			<a data-role="button" class="btnPrimary btnFull-modal" id="smartTripModal-saveBtn" data-click="smartTripView.onSave">Save</a>
 		</div>
 	</div>
+	<div class="intelliTrip tripView">
+		<div class="header">
+			<p class="intelliTrip-title"><span data-bind="text: name"></span> </p>
+			<div class="helper intelliTrip-subheader" style="font-size: 1.3em;">
+				<p><strong>From:</strong> <span data-bind="text: originName"></span> </p>
+				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
+				<p><strong>To:</strong> <span data-bind="text: destinationName"></span></p>
+			</div>
+			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
+				Departing : <span data-bind="text: dateDeparture"></span> @ <span data-bind="text: timeDeparture"></span>
+			</p>
+			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
+				Arriving : <span data-bind="text: dateArrival"></span> @ <span data-bind="text: timeArrival"></span>
+			</p>
+			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
+				<img src="images/icon-time.svg" class="icon-sm" /> <span data-bind="text: durationString"></span> (<span data-bind="text: distanceString"></span>)
+			</p>
+		</div>
 
+	</div>
 
 	<div class="footer" data-role="footer">
 
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-restartBtn" data-click="smartTripModal.onRestart">Restart</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-returnBtn" data-click="smartTripModal.onReturn">Return</a>
-		<a class="btnFull-modal btnPrimary tripView hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
+		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
 		<a class="btnFull-modal" data-role="button" data-click="smartTripView.onCancel">Cancel</a>
 	</div>
 </div>
@@ -5073,7 +5092,7 @@
 					<span data-bind="text: ui_durationMinutes"></span>
 				</p>
 			</div>
-			<div class="intelliFlight-updates">
+			<div class="intelliFlight-updates hidden">
 				<p class="update-header"><img src="images/icon-time-primary.svg" /> Recent Update</p>
 				<p class="update-content">Flight took off at 8:17am</p>
 				<p class="update-time">5 mins ago</p>
