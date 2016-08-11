@@ -3442,7 +3442,7 @@ var smartFlightView = {
         if (smartFlightView.validArrival && smartFlightView.validDeparture) {
             // If the user hasnt created a name -- create one from origin and destination
             var value = smartFlightView.status.name;
-            if( value === null && value === ""){
+            if( value === null || value === "") {
                 //smartFlightView.status.set(field, value);
                 var ux_departure = smartFlightView.status.get('departureAirport');
                 var ux_arrival = smartFlightView.status.get('arrivalAirport');
