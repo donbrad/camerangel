@@ -2484,12 +2484,20 @@ var channelView = {
         var dataObj = {
             ggType : "Flight",
             objectId : objectId,
+            name: smartFlight.name,
             departureAirport : smartFlight.departureAirport,
             departureCity : smartFlight.departureCity,
             arrivalAirport : smartFlight.arrivalAirport,
             arrivalCity : smartFlight.arrivalCity,
             estimatedDeparture : smartFlight.estimatedDeparture,
-            estimatedArrival : smartFlight.estimatedArrival
+            ui_estimatedDeparture : smartFlight.ui_estimatedDeparture,
+            timeDeparture: smartFlight.timeDeparture,
+            dateDeparture: smartFlight.dateDeparture,
+            timeArrival : smartFlight.timeArrival,
+            dateArrival: smartFlight.dateArrival,
+            estimatedArrival : smartFlight.estimatedArrival,
+            ui_estimatedArrival : smartFlight.ui_estimatedArrival,
+            durationString : smartFlight.durationString
 
         };
 

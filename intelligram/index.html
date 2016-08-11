@@ -3420,19 +3420,19 @@
 	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
 				<p class="title"><img src="images/intelliFlight-icon.svg" /> #:name# </p>
-				<p class="subheader">#:flightTime#</p>
+				<p class="subheader">#:durationString#</p>
 			</div>
 			<div class="summary">
 				<div class="origin">
 					<p class="airport">#:departureAirport#</p>
 					<p class="city">#:departureCity#</p>
-					<p class="date">#:estimatedDeparture#</p>
+					<p class="date">#:ui_estimatedDeparture#</p>
 				</div>
 				<div class="liner"></div>
 				<div class="destination">
 					<p class="airport">#:arrivalAirport#</p>
 					<p class="city">#:arrivalCity#</p>
-					<p class="date">#:estimatedArrival#</p>
+					<p class="date">#:ui_estimatedArrival#</p>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -5019,6 +5019,12 @@
 		<form>
 			<ul data-role="listview" data-style="inset">
 				<li>
+					<label>
+						Trip Name (optional)
+						<input type="text" data-bind="value: name" />
+					</label>
+				</li>
+				<li>
 					<label> Airline
 						<input id="smartFlight-airline" type="text" placeholder="Please enter airline...">
 					</label>
@@ -5035,6 +5041,12 @@
 					</label>
 				</li>
 
+				<li>
+					<div>
+						<a class="btnClear btnFull-modal hidden" data-role="button" id="smartFlight-FindBtn" data-click="smartFlightView.lookUpFlight">Look Up Flight!</a>
+					</div>
+				</li>
+
 				<li class="flightPicker hidden">
 					<label> Departing From
 						<input id="smartFlight-flightDeparture" type="text" >
@@ -5046,12 +5058,7 @@
 						<input id="smartFlight-flightArrival" type="text" >
 					</label>
 				</li>
-				<li>
-					<label>
-						Trip Name (optional)
-						<input type="text" data-bind="value: name" />
-					</label>
-				</li>
+
 				<li class="flightError hidden">
 					<p class="error-msg">Couldn't locate this flight.  Please confirm flight information.</p>
 				</li>
@@ -5077,7 +5084,7 @@
 			</ul>
 		</form>
 		<div class="footer">
-			<a class="btnClear btnFull-modal" data-role="button" data-click="smartFlightView.checkFlightComplete">Next</a>
+
 		</div>
 	</div>
 
@@ -5085,11 +5092,11 @@
 		<div class="intelliFlight">
 			<div class="header">
 				<p class="title"><img src="images/intelliFlight-icon.svg" />
-					<span class="info" data-bind="text: ui_name"></span>
+					<span class="info" data-bind="text: name"></span>
 				</p>
 				<p class="subheader">
 					<span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span> •
-					<span data-bind="text: ui_durationMinutes"></span>
+					<span data-bind="text: durationString"></span>
 				</p>
 			</div>
 			<div class="intelliFlight-updates hidden">
@@ -5151,6 +5158,7 @@
 		</div>
 	</div>
 	<div class="footer" data-role="footer">
+
 		<a class="btnFull-modal btnPrimary" id="smartFlightView-DoneBtn" data-click="smartFlightView.onDone" data-role="button">Cancel</a>
 		<a class="btnFull-modal btnSecondary hidden" id="smartFlightView-SaveBtn" data-click="smartFlightView.onSave" data-role="button">Save</a>
 	</div>
