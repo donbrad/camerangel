@@ -21,7 +21,7 @@ var privateNotesView = {
     _editMode: false,
     _editorView: false,
     _editorMin : "3em", /// changing to relative sizing
-    _editorMax : "10em", /// changing to relative sizing
+    _editorMax : "12em", /// changing to relative sizing
 
     onInit : function (e) {
        // _preventDefault(e);
@@ -85,6 +85,8 @@ var privateNotesView = {
         $('#privateNoteTags').val("");
         $('#privateNoteTextArea').val('');
         $('#privateNoteTextArea').redactor('code.set', "");
+
+        ux.hideKeyboard();
        // $('#privateNote-SaveBtn').addClass('hidden');
 
     },
@@ -98,8 +100,9 @@ var privateNotesView = {
     },
 
     onHide : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         ux.hideKeyboard();
+        privateNotesView.deactivateEditor();
         privateNotesView.noteInit();
         privateNotesView.closeEditor();
     },
@@ -124,17 +127,6 @@ var privateNotesView = {
 
     },
 
-    _initTextArea : function () {
-
-        $('#privateNoteTextArea').val('');
-        $('#privateNoteTextArea').redactor('code.set', "");
-
-        if (privateNotesView._editorActive) {
-            privateNotesView._editorActive = false;
-            privateNotesView.deactivateEditor();
-        }
-
-    },
 
     noteAddPhoto : function (photoId) {
 
@@ -242,11 +234,24 @@ var privateNotesView = {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
 
-            privateNotesView._initTextArea();
+
             privateNotesView.noteInit();
 
         }
 
+    },
+
+    _initNoteTextArea : function () {
+
+        $('#privateNoteTextArea').val('');
+        $('#privateNoteTextArea').redactor('code.set', "");
+
+        /*if (channelView.ghostgramActive) {
+            channelView.ghostgramActive = false;
+            channelView.deactivateEditor();
+        }*/
+
+        ux.hideKeyboard();
     },
 
 
@@ -286,6 +291,8 @@ var privateNotesView = {
       //  privateNoteModel.notesDS.sync();
         privateNotesView.scrollToBottom();
 
+        privateNotesView._initNoteTextArea();
+        privateNotesView.deactivateEditor();
         //deviceModel.syncEverlive();
 
     },
@@ -307,7 +314,7 @@ var privateNotesView = {
 */
     activateEditor : function () {
 
-        $(".redactor-editor").velocity({height: privateNotesView._editorMax},{duration: 300});
+        $(".redactor-editor").velocity({height: privateNotesView._editorMax},{duration: 10});
         privateNotesView._editorView = true;
         $("#privateNoteToolbar").removeClass('hidden');
         $('#privateNoteTitleTag').removeClass('hidden');
@@ -320,7 +327,7 @@ var privateNotesView = {
     deactivateEditor : function () {
         privateNotesView._editorView = false;
       // privateNotesView.hideEditor();
-        $(".redactor-editor").velocity({height: privateNotesView._editorMin},{duration: 300});
+        $(".redactor-editor").velocity({height: privateNotesView._editorMin},{duration: 10});
         $("#privateNoteToolbar").addClass('hidden');
         $('#privateNoteTitleTag').addClass('hidden');
         $("#privateNote-hideKeyboard").addClass('hidden');
@@ -330,7 +337,7 @@ var privateNotesView = {
 
 
     hideEditor : function () {
-        $(".redactor-editor").velocity({height: "3em"},{duration: 300});
+        $(".redactor-editor").velocity({height: "3em"},{duration: 10});
         $("#privateNoteToolbar").addClass('hidden');
         $('#privateNoteTitleTag').addClass('hidden');
         ux.hideKeyboard();
@@ -342,8 +349,10 @@ var privateNotesView = {
             privateNotesView._editorActive = true;
 
             $('#privateNoteTextArea').redactor({
-                //minHeight: privateNotesView._editorMin,
-                //maxHeight: (privateNotesView._editorMax * 16),
+               /* minHeight: 72,
+                maxHeight: 360,*/
+                minHeight: privateNotesView._editorMin,
+                maxHeight: privateNotesView._editorMax,
                 focus: false,
                 imageEditable: false, // disable image edit mode on click
                 imageResizable: false, // disable image resize mode on click
@@ -384,12 +393,10 @@ var privateNotesView = {
 
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
                 buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
-                plugins: ['clear', 'save'],
                 toolbarExternal: '#privateNoteToolbar'
             });
 
-            $.Redactor.prototype.clear = function()
-            {
+           /* $.Redactor.prototype.clear = function() {
                 return {
                     init: function ()
                     {
@@ -416,7 +423,7 @@ var privateNotesView = {
                         privateNotesView.saveNote();
                     }
                 };
-            };
+            };*/
         }
 
     },
@@ -424,7 +431,7 @@ var privateNotesView = {
 
     closeEditor : function () {
 
-        privateNotesView.deactivateEditor()
+        privateNotesView.deactivateEditor();
 
         if (privateNotesView._editorActive) {
             privateNotesView._editorActive = false;
@@ -444,20 +451,14 @@ var privateNotesView = {
            
            var noteObject = null;
            
-           if (note.data.objects.length > 0) {
+           if (note.data.object !== undefined && note.data.objects.length > 0) {
                 noteObject =   note.data.objects; 
            }
-           if (note.type === privateNoteModel._movie) {
-               
-           } else if (note.type === privateNoteModel._event) {
-               
-           }
 
-
-               everlive.deleteMatching(privateNoteModel._cloudClass, {'noteUUID': note.noteUUID}, function (error, data) {
-                   privateNoteModel.deleteNote(privateNotesView.activeNote);
-                   privateNotesView.activeNote = {objects: [], photos: []};
-               });
+           everlive.deleteMatching(privateNoteModel._cloudClass, {'noteUUID': note.noteUUID}, function (error, data) {
+               privateNoteModel.deleteNote(privateNotesView.activeNote);
+               privateNotesView.activeNote = {objects: [], photos: []};
+           });
 
        }
 
