@@ -2490,11 +2490,13 @@ var channelView = {
             arrivalAirport : smartFlight.arrivalAirport,
             arrivalCity : smartFlight.arrivalCity,
             estimatedDeparture : smartFlight.estimatedDeparture,
+            ui_estimatedDeparture : smartFlight.ui_estimatedDeparture,
             timeDeparture: smartFlight.timeDeparture,
             dateDeparture: smartFlight.dateDeparture,
             timeArrival : smartFlight.timeArrival,
             dateArrival: smartFlight.dateArrival,
             estimatedArrival : smartFlight.estimatedArrival,
+            ui_estimatedArrival : smartFlight.ui_estimatedArrival,
             durationString : smartFlight.durationString
 
         };

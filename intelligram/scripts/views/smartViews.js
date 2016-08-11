@@ -3475,18 +3475,18 @@ var smartFlightView = {
             smartFlightView.status.set('arrivalGate', null);
             smartFlightView.status.set('baggageClaim',  null);
             smartFlightView.status.set('durationMinutes', null);
-
+            smartFlightView.status.set('durationString', null);
             smartFlightView.status.set('estimatedDeparture', null);
             smartFlightView.status.set('estimatedArrival',  null);
 
             smartFlightView.status.set('actualDeparture', null);
             smartFlightView.status.set('actualArrival', null);
 
+            smartFlightView.trackChanges();
 
         } else {
 
             smartFlightView.status.set("name", statusObj.name);
-
 
             smartFlightView.status.set('ggType', statusObj.ggType);
             smartFlightView.status.set('uuid', statusObj.uuid);
@@ -3504,6 +3504,7 @@ var smartFlightView = {
             smartFlightView.status.set('arrivalTerminal', statusObj.arrivalTerminal);
             smartFlightView.status.set('arrivalGate', statusObj.arrivalGate);
             smartFlightView.status.set('estimatedArrival',  statusObj.estimatedArrival);
+            smartFlightView.status.set('ui_estimatedArrival',  statusObj.ui_estimatedArrival);
             smartFlightView.status.set('actualArrival', statusObj.actualArrival);
             smartFlightView.status.set('arrivalCity', statusObj.arrivalCity);
 
@@ -3512,11 +3513,12 @@ var smartFlightView = {
             smartFlightView.status.set('departureGate',statusObj.departureGate);
             smartFlightView.status.set('departureAirport',statusObj.departureAirport);
             smartFlightView.status.set('estimatedDeparture', statusObj.estimatedDeparture);
+            smartFlightView.status.set('ui_estimatedDeparture', statusObj.ui_estimatedDeparture);
             smartFlightView.status.set('actualDeparture', statusObj.actualDeparture);
             smartFlightView.status.set('departureCity', statusObj.departureCity);
         }
 
-        smartFlightView.trackChanges();
+
     },
 
     trackChanges : function () {
@@ -3535,26 +3537,26 @@ var smartFlightView = {
                 case 'name':
 
                     if(value !== null && value !== ""){
-                        smartFlightView.status.set("ui_"+ field, value);
+                        //smartFlightView.status.set(field, value);
                     } else {
                         var ux_departure = smartFlightView.status.get('departureAirport');
                         var ux_arrival = smartFlightView.status.get('arrivalAirport');
                         if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
                             var nameStr = ux_departure + " / " + ux_arrival;
-                            smartFlightView.status.set("ui_"+ field, nameStr);
+                            smartFlightView.status.set(field, nameStr);
                         } else {
-                            smartFlightView.status.set("ui_"+ field, userModel._user.name + "'s Flight");
+                            smartFlightView.status.set(field, userModel._user.name + "'s Flight");
                         }
                     }
                     break;
-                case 'durationMinutes':
+               /* case 'durationMinutes':
                     if(value !== null){
                         var time = ux.getDurationTime(value, "min");
                         smartFlightView.status.set("ui_"+ field, time);
                     } else {
                         smartFlightView.status.set("ui_"+ field, null);
                     }
-                    break;
+                    break;*/
                 case "estimatedDeparture":
                     if(value !== null){
                         displayTime = smartFlightView.displayTime(value);
