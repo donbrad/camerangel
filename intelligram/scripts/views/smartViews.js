@@ -3440,6 +3440,19 @@ var smartFlightView = {
 
     checkFlightComplete : function () {
         if (smartFlightView.validArrival && smartFlightView.validDeparture) {
+            // If the user hasnt created a name -- create one from origin and destination
+            var value = smartFlightView.status.name;
+            if( value === null && value === ""){
+                //smartFlightView.status.set(field, value);
+                var ux_departure = smartFlightView.status.get('departureAirport');
+                var ux_arrival = smartFlightView.status.get('arrivalAirport');
+                if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
+                    var nameStr = ux_departure + " / " + ux_arrival;
+                    smartFlightView.status.set('name', nameStr);
+                } else {
+                    smartFlightView.status.set('name', userModel._user.name + "'s Flight");
+                }
+            }
             smartFlightView.finalizeFlightStatus();
 
         } else {
@@ -3534,11 +3547,10 @@ var smartFlightView = {
             var displayTime = null;
 
             switch(field){
-                case 'name':
+               /* case 'name':
 
-                    if(value !== null && value !== ""){
+                    if( value === null && value === ""){
                         //smartFlightView.status.set(field, value);
-                    } else {
                         var ux_departure = smartFlightView.status.get('departureAirport');
                         var ux_arrival = smartFlightView.status.get('arrivalAirport');
                         if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
@@ -3548,7 +3560,7 @@ var smartFlightView = {
                             smartFlightView.status.set(field, userModel._user.name + "'s Flight");
                         }
                     }
-                    break;
+                    break;*/
                /* case 'durationMinutes':
                     if(value !== null){
                         var time = ux.getDurationTime(value, "min");
@@ -3802,7 +3814,7 @@ var smartFlightView = {
 
             var arriveFound = false;
             for (var j=0; j<arrivalAirports.length; j++) {
-                if (arrive === arrivalAirports[j].fs) {
+                if (arrive === arrivalAirports[j].airport) {
                     arriveFound = true;
                 }
             }
@@ -3814,7 +3826,7 @@ var smartFlightView = {
 
             var departFound = false;
             for (var k=0; k<departureAirports.length; k++) {
-                if (depart === departureAirports[k].fs) {
+                if (depart === departureAirports[k].airport) {
                     departFound = true;
                 }
             }
