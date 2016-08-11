@@ -12,16 +12,6 @@
  */
 var privateNotesView = {
     topOffset: 0,
-
-    // Future expansion -- these notes would be unencrypted
-    notesDS : new kendo.data.DataSource(  {
-        sort: {
-                field: "time",
-                dir: "desc"
-            }
-        }
-    ),
-
     activeNote: new kendo.data.ObservableObject(),
     noteObjects: [],
     notePhotos: [],
@@ -115,12 +105,12 @@ var privateNotesView = {
     },
 
     expandEditor : function () {
-        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMax});
+        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMax}, {duration: "fast"});
         privateNotesView._editorExpanded = true;
     },
 
     shrinkEditor : function ()  {
-        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMin});
+        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMin}, {duration: "fast"});
         privateNotesView._editorExpanded = false;
     },
 
@@ -208,8 +198,6 @@ var privateNotesView = {
         privateNotesView.activeNote.tagString = tagString;
         privateNotesView.activeNote.tags = tags;
 
-
-       
 
         // Are there any photos in the current message
         if (privateNotesView.notePhotos.length > 0) {

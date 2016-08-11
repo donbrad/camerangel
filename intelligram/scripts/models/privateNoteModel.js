@@ -31,7 +31,7 @@ var privateNoteModel = {
             },
             sort: {
                 field: "time",
-                dir: "desc"
+                dir: "asc"
             },
             autoSync: true
         });
