@@ -3426,13 +3426,13 @@
 				<div class="origin">
 					<p class="airport">#:departureAirport#</p>
 					<p class="city">#:departureCity#</p>
-					<p class="date">#:estimatedDeparture#</p>
+					<p class="date">#:ui_estimatedDeparture#</p>
 				</div>
 				<div class="liner"></div>
 				<div class="destination">
 					<p class="airport">#:arrivalAirport#</p>
 					<p class="city">#:arrivalCity#</p>
-					<p class="date">#:estimatedArrival#</p>
+					<p class="date">#:ui_estimatedArrival#</p>
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -5092,11 +5092,11 @@
 		<div class="intelliFlight">
 			<div class="header">
 				<p class="title"><img src="images/intelliFlight-icon.svg" />
-					<span class="info" data-bind="text: ui_name"></span>
+					<span class="info" data-bind="text: name"></span>
 				</p>
 				<p class="subheader">
 					<span data-bind="text: carrierCode"></span> <span data-bind="text: flightNumber"></span> •
-					<span data-bind="text: ui_durationMinutes"></span>
+					<span data-bind="text: durationString"></span>
 				</p>
 			</div>
 			<div class="intelliFlight-updates hidden">

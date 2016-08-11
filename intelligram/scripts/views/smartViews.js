@@ -3440,6 +3440,19 @@ var smartFlightView = {
 
     checkFlightComplete : function () {
         if (smartFlightView.validArrival && smartFlightView.validDeparture) {
+            // If the user hasnt created a name -- create one from origin and destination
+            var value = smartFlightView.status.name;
+            if( value === null || value === "") {
+                //smartFlightView.status.set(field, value);
+                var ux_departure = smartFlightView.status.get('departureAirport');
+                var ux_arrival = smartFlightView.status.get('arrivalAirport');
+                if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
+                    var nameStr = ux_departure + " / " + ux_arrival;
+                    smartFlightView.status.set('name', nameStr);
+                } else {
+                    smartFlightView.status.set('name', userModel._user.name + "'s Flight");
+                }
+            }
             smartFlightView.finalizeFlightStatus();
 
         } else {
@@ -3475,26 +3488,28 @@ var smartFlightView = {
             smartFlightView.status.set('arrivalGate', null);
             smartFlightView.status.set('baggageClaim',  null);
             smartFlightView.status.set('durationMinutes', null);
-
+            smartFlightView.status.set('durationString', null);
             smartFlightView.status.set('estimatedDeparture', null);
             smartFlightView.status.set('estimatedArrival',  null);
 
             smartFlightView.status.set('actualDeparture', null);
             smartFlightView.status.set('actualArrival', null);
 
+            smartFlightView.trackChanges();
 
         } else {
 
             smartFlightView.status.set("name", statusObj.name);
 
-
             smartFlightView.status.set('ggType', statusObj.ggType);
             smartFlightView.status.set('uuid', statusObj.uuid);
+            smartFlightView.status.set('name', statusObj.name);
 
             smartFlightView.status.set('carrierCode', statusObj.carrierCode);
             smartFlightView.status.set('flightNumber',statusObj.flightNumber);
             smartFlightView.status.set('baggageClaim',  statusObj.baggageClaim);
             smartFlightView.status.set('durationMinutes', statusObj.durationMinutes);
+            smartFlightView.status.set('durationString', statusObj.durationString);
             smartFlightView.status.set('airline', statusObj.airline);
 
             /// Arrival Info
@@ -3502,6 +3517,7 @@ var smartFlightView = {
             smartFlightView.status.set('arrivalTerminal', statusObj.arrivalTerminal);
             smartFlightView.status.set('arrivalGate', statusObj.arrivalGate);
             smartFlightView.status.set('estimatedArrival',  statusObj.estimatedArrival);
+            smartFlightView.status.set('ui_estimatedArrival',  statusObj.ui_estimatedArrival);
             smartFlightView.status.set('actualArrival', statusObj.actualArrival);
             smartFlightView.status.set('arrivalCity', statusObj.arrivalCity);
 
@@ -3510,11 +3526,12 @@ var smartFlightView = {
             smartFlightView.status.set('departureGate',statusObj.departureGate);
             smartFlightView.status.set('departureAirport',statusObj.departureAirport);
             smartFlightView.status.set('estimatedDeparture', statusObj.estimatedDeparture);
+            smartFlightView.status.set('ui_estimatedDeparture', statusObj.ui_estimatedDeparture);
             smartFlightView.status.set('actualDeparture', statusObj.actualDeparture);
             smartFlightView.status.set('departureCity', statusObj.departureCity);
         }
 
-        smartFlightView.trackChanges();
+
     },
 
     trackChanges : function () {
@@ -3530,28 +3547,28 @@ var smartFlightView = {
             var displayTime = null;
 
             switch(field){
-                case 'name':
-                    if(value !== null && value !== ""){
-                        smartFlightView.status.set("ui_"+ field, value);
-                    } else {
+               /* case 'name':
+
+                    if( value === null && value === ""){
+                        //smartFlightView.status.set(field, value);
                         var ux_departure = smartFlightView.status.get('departureAirport');
                         var ux_arrival = smartFlightView.status.get('arrivalAirport');
                         if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
                             var nameStr = ux_departure + " / " + ux_arrival;
-                            smartFlightView.status.set("ui_"+ field, nameStr);
+                            smartFlightView.status.set(field, nameStr);
                         } else {
-                            smartFlightView.status.set("ui_"+ field, userModel._user.name + "'s Flight");
+                            smartFlightView.status.set(field, userModel._user.name + "'s Flight");
                         }
                     }
-                    break;
-                case 'durationMinutes':
+                    break;*/
+               /* case 'durationMinutes':
                     if(value !== null){
                         var time = ux.getDurationTime(value, "min");
                         smartFlightView.status.set("ui_"+ field, time);
                     } else {
                         smartFlightView.status.set("ui_"+ field, null);
                     }
-                    break;
+                    break;*/
                 case "estimatedDeparture":
                     if(value !== null){
                         displayTime = smartFlightView.displayTime(value);
@@ -3748,6 +3765,8 @@ var smartFlightView = {
         $('.flightError').addClass('hidden');
         that.statusArray = statusObj.flightStatus;
 
+        var statusLen = that.statusArray.length;
+
         var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
 
         that.airlineArray = [];
@@ -3788,6 +3807,39 @@ var smartFlightView = {
 
         }
 
+        // Process flight status array to make sure that any return flights are included
+        for (var s=0; s<statusLen; s++) {
+            var stat = that.statusArray[s];
+            var arrive = stat.arrivalAirportFsCode, depart = stat.departureAirportFsCode;
+
+            var arriveFound = false;
+            for (var j=0; j<arrivalAirports.length; j++) {
+                if (arrive === arrivalAirports[j].airport) {
+                    arriveFound = true;
+                }
+            }
+
+            if (!arriveFound) {
+                var aObj = {airport : that.airportArray[arrive].code, city : that.airportArray[arrive].address};
+                arrivalAirports.push(aObj);
+            }
+
+            var departFound = false;
+            for (var k=0; k<departureAirports.length; k++) {
+                if (depart === departureAirports[k].airport) {
+                    departFound = true;
+                }
+            }
+
+            if (!departFound) {
+                var dObj = {airport : that.airportArray[depart].code, city : that.airportArray[depart].address};
+                departureAirports.push(dObj);
+            }
+
+
+        }
+
+
         that.departureAirportsDS.data(departureAirports);
         that.arrivalAirportsDS.data(arrivalAirports);
 
@@ -3796,7 +3848,6 @@ var smartFlightView = {
             that.pickSegment = true;
             that.validArrival = false;
             that.validDeparture = false;
-
             $('.flightPicker').removeClass('hidden');
         } else {
 
