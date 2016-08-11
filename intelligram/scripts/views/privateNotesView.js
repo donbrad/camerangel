@@ -234,7 +234,7 @@ var privateNotesView = {
 
             if (privateNotesView._editMode) {
                 var activeNote = privateNotesView.activeNote;
-                var note = privateNoteModel.findNote(activeNote.noteId);
+                var note = privateNoteModel.findNote(activeNote.noteUUID);
 
                 var contentData = JSON.stringify(activeNote.data);
                 var dataObj = JSON.parse(contentData);
@@ -280,7 +280,7 @@ var privateNotesView = {
             ggType = data.ggType;
         }
         var note = {
-            noteId: uuidNote,
+            noteUUID: uuidNote,
             type: 'Note',
             ggType: ggType,
             title: data.title,
@@ -449,7 +449,7 @@ var privateNotesView = {
 
     deleteNote : function (e) {
         _preventDefault(e);
-       if (privateNotesView.activeNote.noteId !== undefined) {
+       if (privateNotesView.activeNote.noteUUID !== undefined) {
 
            var note = privateNotesView.activeNote;
            var Id = note.Id;
@@ -466,7 +466,7 @@ var privateNotesView = {
            }
 
 
-               everlive.deleteMatching(privateNoteModel._cloudClass, {'noteId': note.noteId}, function (error, data) {
+               everlive.deleteMatching(privateNoteModel._cloudClass, {'noteUUID': note.noteUUID}, function (error, data) {
                    privateNoteModel.deleteNote(privateNotesView.activeNote);
                    privateNotesView.activeNote = {objects: [], photos: []};
                });
@@ -478,7 +478,7 @@ var privateNotesView = {
     editNote : function (e) {
         _preventDefault(e);
 
-        if (privateNotesView.activeNote.noteId !== undefined) {
+        if (privateNotesView.activeNote.noteUUID !== undefined) {
             var content='<p></p>';
            
             privateNotesView._editMode = true;

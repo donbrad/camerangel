@@ -3531,7 +3531,6 @@ var smartFlightView = {
 
             switch(field){
                 case 'name':
-
                     if(value !== null && value !== ""){
                         smartFlightView.status.set("ui_"+ field, value);
                     } else {
@@ -3797,6 +3796,7 @@ var smartFlightView = {
             that.pickSegment = true;
             that.validArrival = false;
             that.validDeparture = false;
+
             $('.flightPicker').removeClass('hidden');
         } else {
 

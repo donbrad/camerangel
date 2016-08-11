@@ -137,7 +137,8 @@ var smartEvent = {
                 field: "date",
                 dir: "desc"
             },
-            autoSync: true
+            autoSync: true,
+            change : todayModel.change(e, smartEvent._ggClass)
         });
 
         smartEvent.eventsDS.fetch();

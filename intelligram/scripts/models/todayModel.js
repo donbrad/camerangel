@@ -35,5 +35,28 @@ var todayModel = {
 
     sync: function () {
         todayModel.objectsDS.sync();
+    },
+
+    change : function (e, dataType) {
+        var action = e.action;
+        var data = e.items;
+        var dataLength  = 0;
+        if (data !== undefined) {
+            dataLength = data.length;
+        }
+        switch(action) {
+            case 'itemchange' :
+                break;
+
+            case 'sync' :
+                break;
+
+            case 'add' :
+                break;
+
+            case 'remove' :
+                break;
+
+        }
     }
 };
