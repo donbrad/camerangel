@@ -3808,7 +3808,8 @@ var smartFlightView = {
             }
 
             if (!arriveFound) {
-                arrivalAirports.push(that.airportArray[arrive]);
+                var aObj = {airport : that.airportArray[arrive].code, city : that.airportArray[arrive].address};
+                arrivalAirports.push(aObj);
             }
 
             var departFound = false;
@@ -3819,7 +3820,8 @@ var smartFlightView = {
             }
 
             if (!departFound) {
-                departureAirports.push(that.airportArray[depart]);
+                var dObj = {airport : that.airportArray[depart].code, city : that.airportArray[depart].address};
+                departureAirports.push(dObj);
             }
 
 
