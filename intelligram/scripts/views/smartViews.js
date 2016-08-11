@@ -3753,6 +3753,8 @@ var smartFlightView = {
         $('.flightError').addClass('hidden');
         that.statusArray = statusObj.flightStatus;
 
+        var statusLen = that.statusArray.length;
+
         var status = statusObj.flightStatus[0], airlines = statusObj.airlines, airports = statusObj.airports;
 
         that.airlineArray = [];
@@ -3792,6 +3794,37 @@ var smartFlightView = {
             }
 
         }
+
+        // Process flight status array to make sure that any return flights are included
+        for (var s=0; s<statusLen; s++) {
+            var stat = that.statusArray[s];
+            var arrive = stat.arrivalAirportFsCode, depart = stat.departureAirportFsCode;
+
+            var arriveFound = false;
+            for (var j=0; j<arrivalAirports.length; j++) {
+                if (arrive === arrivalAirports[j].fs) {
+                    arriveFound = true;
+                }
+            }
+
+            if (!arriveFound) {
+                arrivalAirports.push(that.airportArray[arrive]);
+            }
+
+            var departFound = false;
+            for (var k=0; k<departureAirports.length; k++) {
+                if (depart === departureAirports[k].fs) {
+                    departFound = true;
+                }
+            }
+
+            if (!departFound) {
+                departureAirports.push(that.airportArray[depart]);
+            }
+
+
+        }
+
 
         that.departureAirportsDS.data(departureAirports);
         that.arrivalAirportsDS.data(arrivalAirports);
