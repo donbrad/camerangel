@@ -39,6 +39,7 @@ var privateNoteModel = {
         privateNoteModel.notesDS.bind("change", function (e) {
             var changedNotes = e.items;
             var note = e.items[0];
+
             if (e.action !== undefined) {
                 switch (e.action) {
                     case "itemchange" :
@@ -93,7 +94,7 @@ var privateNoteModel = {
 
         var Id = note.Id;
         if (Id !== undefined){
-            everlive.update(privateNoteModel._cloudClass, note, {'noteUUID' : note.noteId}, function (error, data) {
+            everlive.update(privateNoteModel._cloudClass, note, {'noteUUID' : note.noteUUIE}, function (error, data) {
                 //placeNoteModel.notesDS.remove(note);
             });
         }

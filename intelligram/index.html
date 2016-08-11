@@ -2371,7 +2371,7 @@
 		</div>
 
 		<div class="deleteMemberText">
-			<a class="btnClear-red deleteChannelMember" data-role="button" data-id="#: data.uuid#" data-click="editChannelView.deleteMemberBtn">
+			<a class="btnClear-red deleteChannelMember" data-role="button" data-id="#:data.uuid#" data-click="editChannelView.deleteMemberBtn">
 				<img src="images/icon-trash.svg" class="icon" />
 			</a>
 		</div>
@@ -5690,27 +5690,27 @@
 
 	#
 	# if (ggType === 'Note') { #
-		<div class="private-note" data-objectId="#:noteUUID#">
+		<div class="private-note" data-id="#:noteUUID#" data-objectId="#:noteUUID#">
 			<h3 class="textClamp">
 				<img src="images/smart-note-inline.svg" class="icon-sm" />
-				<span>#: titleStr #</span>
+				<span>#:titleStr#</span>
 			</h3>
 			<p class="helper" style="font-size: 0.85em;">
 				<span>#:dateString#</span>
-				<span> #: tagString #</span>
+				<span> #:tagString#</span>
 			</p>
-			<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
+			<p style="margin-top: 0.5em; width: 100%;">#=content#</p>
 		</div>
 	# } #
 	# if (ggType === 'Event') { #
 	<div class="private-note" >
 		<h3 class="textClamp">
 			<img src="images/smart-event.svg" class="icon-md" />
-			<span>#: titleStr #</span>
+			<span>#:titleStr#</span>
 			<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 		</h3>
 		<p>#: tagString #</p>
-		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
+		<p style="margin-top: 0.5em; width: 100%;">#=content#</p>
 	</div>
 	# } #
 	# if (ggType === 'Movie') { #
