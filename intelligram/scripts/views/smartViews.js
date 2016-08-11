@@ -3490,11 +3490,13 @@ var smartFlightView = {
 
             smartFlightView.status.set('ggType', statusObj.ggType);
             smartFlightView.status.set('uuid', statusObj.uuid);
+            smartFlightView.status.set('name', statusObj.name);
 
             smartFlightView.status.set('carrierCode', statusObj.carrierCode);
             smartFlightView.status.set('flightNumber',statusObj.flightNumber);
             smartFlightView.status.set('baggageClaim',  statusObj.baggageClaim);
             smartFlightView.status.set('durationMinutes', statusObj.durationMinutes);
+            smartFlightView.status.set('durationString', statusObj.durationString);
             smartFlightView.status.set('airline', statusObj.airline);
 
             /// Arrival Info
