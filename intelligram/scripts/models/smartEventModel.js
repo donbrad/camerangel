@@ -138,7 +138,7 @@ var smartEvent = {
                 dir: "desc"
             },
             autoSync: true,
-            change : todayModel.change(e, smartEvent._ggClass)
+            change :  function (e) {todayModel.change(e, smartEvent._ggClass);}
         });
 
         smartEvent.eventsDS.fetch();

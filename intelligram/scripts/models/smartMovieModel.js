@@ -27,7 +27,7 @@ var smartMovie = {
                 dir: "desc"
             },
             autoSync: true,
-            change : todayModel.change(e, smartMovie._ggClass)
+            change :  function (e) {todayModel.change(e, smartMovie._ggClass);}
         });
         
         smartMovie.moviesDS.fetch();
