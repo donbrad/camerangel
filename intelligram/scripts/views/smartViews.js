@@ -4313,6 +4313,44 @@ var smartAlertView = {
 };
 
 
+
+var smartTagView = {
+    callback: null,
+
+    onInit: function () {
+
+    },
+
+    onOpen : function () {
+
+    },
+
+    openModal : function (channelUUID, channelName, callback) {
+
+        smartTagView.callback = null;
+
+        if (callback !== undefined) {
+            smartTagView.callback = callback;
+        }
+
+
+    },
+
+    closeModal : function () {
+        $("#smartTagModal").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#smartTagModal").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+
+        $("#smartTagModal").data("kendoMobileModalView").close();
+    }
+};
+
+
 var airlineArray = [
     {abbrev: '6A', name: 'AVIACSA'},
     {abbrev: '9K', name: 'Cape Air'},
