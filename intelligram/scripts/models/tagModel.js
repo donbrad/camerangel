@@ -11,7 +11,7 @@
 
 var tagModel = {
 
-    _ggClass : 'tag',
+    _ggClass : 'Tag',
     _cloudClass : 'tags',
     _user : 'user',
     _version: 1,
@@ -34,10 +34,8 @@ var tagModel = {
         
         tagModel.tagsDS = new kendo.data.DataSource({
             type: 'everlive',
-         //   offlineStorage: "tags",
             transport: {
-                typeName: 'tags'/*,
-                dataProvider: APP.everlive*/
+                typeName: 'tags'
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -61,24 +59,33 @@ var tagModel = {
 
     addTag : function (tag, description, category, categoryId, semanticCategory) {
 
+        var normTag = tagModel.normalizeTag(tag);
+
+        var tagExists = tagModel.findTagByCategory(category, normTag);
+
+        if (tagExists.length > 0) {
+            return;
+        }
+
         var tagObj = tagModel.newTag();
 
 
         tagObj.name = tag;
-        tagObj.tagName = tagModel.normalizeTag(tag)
-        tagObj.tagHash = category + tagObj.tagName;
+        tagObj.tagName = tagModel.normalizeTag(tag);
         tagObj.description = description;
         tagObj.category = category;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = semanticCategory;
 
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
 
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                tagModel.tagsDS.add(tagObj);
+                //tagModel.tagsDS.add(tagObj);
 
             }
         });
@@ -86,17 +93,27 @@ var tagModel = {
     },
 
     addGroupTag : function (tag, description) {
+        var normTag = tagModel.normalizeTag(tag);
+
+        var tagExists = tagModel.findTagByCategory(tagModel._group, normTag);
+
+        if (tagExists.length > 0) {
+            return;
+        }
+
         var tagObj = tagModel.newTag();
 
 
         tagObj.name = tag;
         tagObj.tagName = tagModel.normalizeTag(tag);
         tagObj.description = description;
-        tagObj.category = 'Group';
+        tagObj.category = tagModel._group;
         tagObj.categoryId = null;
         tagObj.semanticCategory = 'Group';
 
         tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
+
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
@@ -111,8 +128,8 @@ var tagModel = {
     addContactTag : function (tag, alias, description, categoryId) {
 
         var normTag = tagModel.normalizeTag(tag);
-        var hash = tagModel._contact+normTag;
-        var tagExists = tagModel.findTagByHash(hash);
+
+        var tagExists = tagModel.findTagByCategory(tagModel._contact, normTag);
 
         if (tagExists.length > 0) {
             return;
@@ -123,13 +140,13 @@ var tagModel = {
         tagObj.name = tag;
         tagObj.alias = alias;
         tagObj.tagName = tagModel.normalizeTag(tag);
-        tagObj.tagHash  = tagModel._contact + tagObj.tagName;
         tagObj.description = description;
-        tagObj.category = 'Contact';
+        tagObj.category = tagModel._contact;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Contact';
 
         tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
 
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
@@ -144,8 +161,7 @@ var tagModel = {
 
     addPlaceTag : function (tag, alias, description, categoryId) {
         var normTag = tagModel.normalizeTag(tag);
-        var hash = tagModel._place+normTag;
-        var tagExists = tagModel.findTagByHash(hash);
+        var tagExists = tagModel.findTagByCategory(tagModel._place, normTag);
 
         if (tagExists.length > 0) {
             return;
@@ -157,11 +173,13 @@ var tagModel = {
         tagObj.name = tag;
         tagObj.alias = alias;
         tagObj.tagName = tagModel.normalizeTag(tag);
-        tagObj.tagHash = tagModel._place + tagObj.tagName;
         tagObj.description = description;
-        tagObj.category = 'Place';
+        tagObj.category = tagModel._place;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Place';
+
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
 
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
@@ -184,7 +202,6 @@ var tagModel = {
         tag.name = null;
         tag.alias = null;
         tag.tagName = null;
-        tag.tagHash = null;
         tag.category = tagModel._user;
         tag.categoryId = null;
         tag.semanticCategory = null;
@@ -273,9 +290,17 @@ var tagModel = {
         return (tags);
     },
 
+
+    findTagByCategory : function (category, tag) {
+        var normTag = tagModel.normalizeTag(tag);
+        var tags = tagModel.queryTags([{field: "tagName", operator: "eq", value: normTag},
+            {field: "category", operator: "eq", value: category}]);
+
+        return (tags);
+    },
+
     findTagByCategoryId : function (tagId) {
         var tags = tagModel.queryTags({field: "categoryId", operator: "eq", value: tagId});
-
         return (tags);
     },
 
