@@ -415,11 +415,19 @@
 <!-- home - for signed in users -->
 <div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
 		<div class="appBox">
-		    <!-- application views will be rendered here -->
-		    <div>
-		    	<div class="notify-title hidden">
-			    	<img src="images/notify-icon.svg" height="14" />
-			    		Notifications
+			<ul id="home-buttongroup" style="padding: 6px; font-size: 1.2em;">
+				<li>
+					<img src="images/notify-icon.svg" height="20" /> Alerts
+				</li>
+				<li>
+					<img src="images/icon-myNotes.svg" height="20" /> Notes
+				</li>
+				<li>
+					<img src="images/icon-time-primary.svg" height="20" /> Today
+				</li>
+			</ul>
+		    <div id="home-alerts">
+		    	<div class="notify-title ">
 			    	<span class="right">
 			    		<a class="btnClear-grey-sm" data-role="button" data-click="homeView.clearNotifications">Clear</a>
 			    	</span>
@@ -430,6 +438,17 @@
 	         		<img src="images/empty-home.svg" />
 	         	</div>
 		   	</div>
+			<div id="home-notes" class="hidden">
+				<div class="notify-title ">
+
+				</div>
+			</div>
+			<div id="home-today" class="hidden">
+				<div class="notify-title ">
+
+				</div>
+			</div>
+
 	  </div>
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
 </div>

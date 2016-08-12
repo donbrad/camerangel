@@ -13,6 +13,7 @@
 var homeView = {
     _radius: 90, // 90 meters or approx 300 ft
     today : new kendo.data.DataSource(),
+    _activeView : 0,
 
 
     openNotificationAction: function(e){
@@ -267,6 +268,26 @@ var homeView = {
        /* }*/
     },
 
+    selectView : function (index) {
+        switch (index) {
+            case 0: // Alerts
+                $('#home-notes').addClass("hidden");
+                $('#home-today').addClass("hidden");
+                $('#home-alerts').removeClass("hidden");
+                break;
+            case 1: // Notes
+                $('#home-notes').removeClass("hidden");
+                $('#home-today').addClass("hidden");
+                $('#home-alerts').addClass("hidden");
+                break;
+            case 2 : // Today
+                $('#home-notes').addClass("hidden");
+                $('#home-today').removeClass("hidden");
+                $('#home-alerts').addeClass("hidden");
+                break;
+        }
+    },
+
     onInit: function(e) {
        // _preventDefault(e);
 
@@ -307,7 +328,18 @@ var homeView = {
             }
         });*/
 
+        $('#home-buttongroup').kendoMobileButtonGroup({
+            select: function(e) {
+                var index = e.index;
+                if (index != homeView._activeView) {
+                    homeView._activeView = index;
+                    homeView.selectView(homeView._activeView);
 
+                }
+
+            },
+            index: homeView._activeView
+        });
 
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
