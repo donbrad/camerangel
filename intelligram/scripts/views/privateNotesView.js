@@ -108,7 +108,7 @@ var privateNotesView = {
         privateNotesView.closeEditor();
     },
 
-    expandEditor : function () {
+    /*expandEditor : function () {
         $('#privateNoteTextArea').velocity({height: privateNotesView._editorMax}, {duration: "fast"});
         privateNotesView._editorExpanded = true;
     },
@@ -116,13 +116,13 @@ var privateNotesView = {
     shrinkEditor : function ()  {
         $('#privateNoteTextArea').velocity({height: privateNotesView._editorMin}, {duration: "fast"});
         privateNotesView._editorExpanded = false;
-    },
+    },*/
 
-    checkEditor : function () {
+    /*checkEditor : function () {
         if (! privateNotesView._editorExpanded) {
             privateNotesView.expandEditor();
         }
-    },
+    },*/
 
     hideKeyboardBtn: function(){
 
@@ -352,11 +352,11 @@ var privateNotesView = {
                 maxHeight: privateNotesView._editorMax,
                 focus: true,
                 toolbarExternal: "#privateNoteToolbar",
-                imageEditable: false, // disable image edit mode on click
-                imageResizable: false, // disable image resize mode on click
+               /* imageEditable: false, // disable image edit mode on click
+                imageResizable: false, // disable image resize mode on click*/
                 placeholder: 'Add Note...',
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
-                buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule']/*,
+                buttons: [ 'bold', 'italic', 'lists', 'horizontalrule']/*,
                 callbacks: {
                      paste: function(content)
                      {
@@ -782,7 +782,7 @@ var privateNotesView = {
 
         if (photoObj !== undefined) {
             $('#privateNote-SaveBtn').addClass('hidden');
-            privateNotesView.checkEditor();
+           // privateNotesView.checkEditor();
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
 
