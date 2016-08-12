@@ -87,7 +87,6 @@
     "ID_RESOLUTION_HD720P"
   ],
   "CorePlugins": [
-    "ch.ti8m.documenthandler@0.2.2",
     "com.estimote.sdk@1.1.1",
     "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
