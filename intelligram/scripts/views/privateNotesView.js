@@ -15,13 +15,14 @@ var privateNotesView = {
     activeNote: new kendo.data.ObservableObject(),
     noteObjects: [],
     notePhotos: [],
+    editorVisible : false,
     _titleTagActive: false,
     _editorActive: false,
     _editorExpanded : false,
     _editMode: false,
     _editorView: false,
     _editorMin : "3em", /// changing to relative sizing
-    _editorMax : "12em", /// changing to relative sizing
+    _editorMax : "16em", /// changing to relative sizing
 
     onInit : function (e) {
        // _preventDefault(e);
@@ -37,12 +38,12 @@ var privateNotesView = {
         });
 
 
-        $('#privateNoteTextArea').click(function() {
+       /* $('#privateNoteTextArea').click(function() {
             if (privateNotesView._editorExpanded)
                 return;
             privateNotesView._editorExpanded = true;
             privateNotesView.activateEditor();
-        });
+        });*/
 
 
         $("#privateNoteTags").kendoMultiSelect({
@@ -246,11 +247,6 @@ var privateNotesView = {
         $('#privateNoteTextArea').val('');
         $('#privateNoteTextArea').redactor('code.set', "");
 
-        /*if (channelView.ghostgramActive) {
-            channelView.ghostgramActive = false;
-            channelView.deactivateEditor();
-        }*/
-
         ux.hideKeyboard();
     },
 
@@ -315,7 +311,7 @@ var privateNotesView = {
     activateEditor : function () {
 
         $(".redactor-editor").velocity({height: privateNotesView._editorMax},{duration: 10});
-        privateNotesView._editorView = true;
+        privateNotesView.editorVisible = true;
         $("#privateNoteToolbar").removeClass('hidden');
         $('#privateNoteTitleTag').removeClass('hidden');
         $("#privateNote-hideKeyboard").removeClass('hidden');
@@ -329,6 +325,7 @@ var privateNotesView = {
       // privateNotesView.hideEditor();
         $(".redactor-editor").velocity({height: privateNotesView._editorMin},{duration: 10});
         $("#privateNoteToolbar").addClass('hidden');
+        privateNotesView.editorVisible = false;
         $('#privateNoteTitleTag').addClass('hidden');
         $("#privateNote-hideKeyboard").addClass('hidden');
         ux.hideKeyboard();
@@ -353,11 +350,13 @@ var privateNotesView = {
                 maxHeight: 360,*/
                 minHeight: privateNotesView._editorMin,
                 maxHeight: privateNotesView._editorMax,
-                focus: false,
+                focus: true,
+                toolbarExternal: "#privateNoteToolbar",
                 imageEditable: false, // disable image edit mode on click
                 imageResizable: false, // disable image resize mode on click
                 placeholder: 'Add Note...',
-
+                formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
+                buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
                 callbacks: {
                      paste: function(content)
                      {
@@ -372,7 +371,7 @@ var privateNotesView = {
                          this.selection.restore();
                          this.selection.replace("");
                          return(contentOut);
-                     },
+                     }/*,
 
                     focus: function(e){
                         privateNotesView.activateEditor();
@@ -385,15 +384,14 @@ var privateNotesView = {
                         }
 
 
-                    }/*,
+                    }*//*,
                     click : function (e) {
 
                     }*/
-                 },
+                 }
 
-                formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
-                buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
-                toolbarExternal: '#privateNoteToolbar'
+
+                //toolbarExternal: '#privateNoteToolbar'
             });
 
            /* $.Redactor.prototype.clear = function() {
@@ -850,6 +848,15 @@ var privateNotesView = {
         return selectedText;
     },
 
+
+    noteEditor : function (e) {
+        if (privateNotesView.editorVisible) {
+            privateNotesView.activateEditor();
+        } else {
+            privateNotesView.deactivateEditor();
+            $("#privateNoteToolbar").removeClass('hidden');
+        }
+    },
 
     noteCalendar : function (e) {
         _preventDefault(e);
