@@ -1053,7 +1053,8 @@ var noteEditView = {
                  imageResizable: false, // disable image resize mode on click*/
                 placeholder: 'Add Note Content...',
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
-                buttons: [ 'format', 'bold', 'italic', 'lists', 'horizontalrule']/*,
+                buttons: [ 'format', 'bold', 'italic', 'lists', 'horizontalrule'],
+                plugins: ['photos']/*,
                  callbacks: {
                  paste: function(content)
                  {

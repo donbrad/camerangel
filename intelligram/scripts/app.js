@@ -153,6 +153,7 @@
 			window.open = cordova.InAppBrowser.open;
 
 
+
 			ThreeDeeTouch.isAvailable(function (avail) {
 
 				if (avail) {
@@ -256,7 +257,23 @@
 		emojione.sprites = true;
 		//emojione.imagePathSVGSprites = './bower_components/emojione/assets/sprites/emojione.sprites.svg';
 
+		$.Redactor.prototype.photos = function()
+		{
+			return {
+				init: function ()
+				{
+					var button = this.button.add('photos', 'Photos');
+					this.button.addCallback(button, this.photos.showActionSheet);
 
+					// Set icon
+					this.button.setIcon(button, '<img src="images/chat-camera.svg" height="18">');
+				},
+				showActionSheet: function(buttonName)
+				{
+					$("#notePhotoActions").data("kendoMobileActionSheet").open();
+				}
+			};
+		};
 
 		
 		/* $(".email-Autocomplete").emailautocomplete({
