@@ -1054,7 +1054,7 @@ var noteEditView = {
                 placeholder: 'Add Note Content...',
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
                 buttons: [ 'format', 'bold', 'italic', 'lists', 'horizontalrule'],
-                plugins: ['photos']/*,
+                plugins: ['photos', 'iconic']/*,
                  callbacks: {
                  paste: function(content)
                  {

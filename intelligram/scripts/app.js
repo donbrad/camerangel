@@ -257,6 +257,34 @@
 		emojione.sprites = true;
 		//emojione.imagePathSVGSprites = './bower_components/emojione/assets/sprites/emojione.sprites.svg';
 
+		$.Redactor.prototype.iconic = function()
+		{
+			return {
+				init: function ()
+				{
+					var icons = {
+						'format': '<img src="images/icon-editor.svg" height="18">',
+						'bold': '<img src="images/icon-bold.svg" height="18">',
+						'italic': '<img src="images/icon-italic.svg" height="18">',
+						'lists': '<img src="images/icon-list.svg" height="18">',
+						'horizontalrule': '<img src="images/icon-grid.svg" height="18">'
+					};
+
+					$.each(this.button.all(), $.proxy(function(i,s)
+					{
+						var key = $(s).attr('rel');
+
+						if (typeof icons[key] !== 'undefined')
+						{
+							var icon = icons[key];
+							var button = this.button.get(key);
+							this.button.setIcon(button, icon);
+						}
+
+					}, this));
+				}
+			};
+		};
 		$.Redactor.prototype.photos = function()
 		{
 			return {
