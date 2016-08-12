@@ -46,7 +46,7 @@ var privateNotesView = {
         });*/
 
 
-        $("#privateNoteTags").kendoMultiSelect({
+       /* $("#privateNoteTags").kendoMultiSelect({
             dataTextField: "name",
             dataValueField: "uuid",
             autoBind: false,
@@ -63,7 +63,7 @@ var privateNotesView = {
                 // Use the value of the widget
             }
         });
-
+*/
 
     },
 
