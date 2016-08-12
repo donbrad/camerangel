@@ -7006,6 +7006,10 @@ table.k-editor {
 .tripEditOptions:last-child {
   margin-bottom: 2em;
 }
+.chat-message-text > .intelliTrip {
+  width: 100%;
+  margin: 0 !important;
+}
 .intelliTrip {
   width: 90%;
   margin-left: 5%;
@@ -7015,15 +7019,16 @@ table.k-editor {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 .intelliTrip .header {
-  padding: 0.5em 1em;
+  padding: 0.5em;
 }
 .intelliTrip .header p {
   padding: 0;
   margin: 0;
 }
-.intelliTrip .header p img {
-  height: 1.2em;
-  max-width: 1.2em;
+.intelliTrip .header p > img {
+  height: 1em;
+  max-width: 1em;
+  vertical-align: text-top;
 }
 .intelliTrip .map {
   width: 100%;
@@ -7032,6 +7037,18 @@ table.k-editor {
 .intelliTrip .map > img {
   max-height: 100%;
   width: 100%;
+}
+.intelliTrip .footer {
+  border-top: 2px dotted #E0E0E0;
+}
+.intelliTrip .footer .intelliTrip-details {
+  font-size: 1em;
+  padding: 0.5em;
+}
+.intelliTrip .footer .intelliTrip-details img {
+  height: 0.875em;
+  max-width: 0.875em;
+  vertical-align: middle;
 }
 .intelliTrip .footer a {
   border-radius: 0 4px 4px 0;
@@ -7049,7 +7066,7 @@ table.k-editor {
   font-weight: 600;
 }
 .intelliTrip-subheader {
-  font-size: 0.75em;
+  font-size: 0.875em;
 }
 #intelliCard-back-2,
 #intelliCard-back-3 {
@@ -7061,7 +7078,7 @@ table.k-editor {
   margin-left: 0.25em;
   margin-right: 0.25em;
 }
-.intelliTrip-arrow img {
+.intelliTrip-arrow > img {
   max-height: 1em !important;
   width: 1em !important;
   vertical-align: middle;

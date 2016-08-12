@@ -6918,6 +6918,11 @@ table.k-editor {
   margin-bottom: 2em;
 }
 
+.chat-message-text > .intelliTrip {
+  width: 100%;
+  margin: 0 !important;
+}
+
 .intelliTrip {
   width: 90%;
   margin-left: 5%;
@@ -6926,11 +6931,12 @@ table.k-editor {
   background: #fff;
   .shadowHelper(1);
   .header {
-    padding: 0.5em 1em;
+    padding: 0.5em;
     p {
-      img {
-        height: 1.2em;
-        max-width: 1.2em;
+      >img {
+        height: 1em;
+        max-width: 1em;
+        vertical-align: text-top;
       }
       padding: 0;
       margin: 0;
@@ -6945,6 +6951,16 @@ table.k-editor {
     }
   }
   .footer {
+    .intelliTrip-details {
+      font-size: 1em;
+      padding: 0.5em;
+      img {
+        height: 0.875em;
+        max-width: 0.875em;
+        vertical-align: middle;
+      }
+    }
+    border-top: 2px dotted @shade-200;
     a {
       border-radius: 0 4px 4px 0;
     }
@@ -6966,7 +6982,7 @@ table.k-editor {
 }
 
 .intelliTrip-subheader {
-  font-size: 0.75em;
+  font-size: 0.875em;
 }
 
 #intelliCard-back-2, #intelliCard-back-3 {
@@ -6978,7 +6994,7 @@ table.k-editor {
   line-height: 1em;
   margin-left: 0.25em;
   margin-right: 0.25em;
-  img {
+  >img {
     max-height: 1em !important;
     width: 1em !important;
     vertical-align: middle;

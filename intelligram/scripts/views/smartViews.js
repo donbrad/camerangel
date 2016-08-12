@@ -2747,7 +2747,7 @@ var smartTripView = {
             obj.set('uuid', uuid.v4());
             obj.set('senderUUID', userModel._user.userUUID);
             obj.set('senderName', userModel._user.name);
-            obj.set('name', userModel._user.name + "'s Trip");
+            obj.set('name', null);
             obj.set('tripType', 'driving');
             obj.set('travelMode', google.maps.TravelMode.DRIVING);
             obj.set('autoStatus', false);
@@ -3246,6 +3246,7 @@ var smartTripView = {
                 smartTripView.activeObject.set('destination',  place);
                 smartTripView.validDestination = true;
                 var value = place.name;
+
                 if (value === null) {
                     value = place.address;
                 }
