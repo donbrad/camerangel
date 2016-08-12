@@ -356,7 +356,7 @@ var privateNotesView = {
                 imageResizable: false, // disable image resize mode on click
                 placeholder: 'Add Note...',
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
-                buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
+                buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule']/*,
                 callbacks: {
                      paste: function(content)
                      {
@@ -371,7 +371,7 @@ var privateNotesView = {
                          this.selection.restore();
                          this.selection.replace("");
                          return(contentOut);
-                     }/*,
+                     }*//*,
 
                     focus: function(e){
                         privateNotesView.activateEditor();
@@ -388,7 +388,7 @@ var privateNotesView = {
                     click : function (e) {
 
                     }*/
-                 }
+                 /*}*/
 
 
                 //toolbarExternal: '#privateNoteToolbar'
@@ -850,11 +850,10 @@ var privateNotesView = {
 
 
     noteEditor : function (e) {
-        if (privateNotesView.editorVisible) {
+        if (!privateNotesView.editorVisible) {
             privateNotesView.activateEditor();
         } else {
             privateNotesView.deactivateEditor();
-            $("#privateNoteToolbar").removeClass('hidden');
         }
     },
 
