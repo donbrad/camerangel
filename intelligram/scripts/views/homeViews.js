@@ -283,7 +283,7 @@ var homeView = {
             case 2 : // Today
                 $('#home-notes').addClass("hidden");
                 $('#home-today').removeClass("hidden");
-                $('#home-alerts').addeClass("hidden");
+                $('#home-alerts').addClass("hidden");
                 break;
         }
     },

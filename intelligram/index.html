@@ -439,7 +439,38 @@
 	         	</div>
 		   	</div>
 			<div id="home-notes" class="hidden">
-				<div class="notify-title ">
+				<div class="privateNoteContent">
+					<p class="helper" style="padding-top: 0.5em;">
+					<span class="hidden">
+						<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
+					</span>
+					</p>
+					<div class="messageMediaBar" style="text-align: center;">
+						<ul>
+							<li>
+								<a data-role="button" data-rel="actionsheet" href="#privateNotePhotoActions">
+									<img src="images/chat-camera.svg" height="24">
+								</a>
+							</li>
+							<li>
+								<a data-role="button" data-click="privateNotesView.noteTitleTag">
+									<img src="images/icon-myNotes.svg" height="20" />
+								</a>
+							</li>
+							<li>
+								<a data-role="button" data-click="privateNotesView.noteSearch">
+									<img src="images/icon-web.svg" height="24">
+								</a>
+							</li>
+							<li>
+								<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
+									<img src="images/icon-smartMenu.svg" height="24">
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="clearfix"></div>
+					<ul id="privateNotesView-listview"></ul>
 
 				</div>
 			</div>
@@ -451,6 +482,36 @@
 
 	  </div>
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
+
+	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
+		<li><a data-action="privateNotesView.noteCalendar"><img src="images/smart-event.svg" class="icon-smart"/> Add Event</a></li>
+		<li><a data-action="privateNotesView.noteFlight"><img src="images/intelliFlight-icon.svg" class="icon-sm"/> Add Flight</a></li>
+		<li><a data-action="privateNotesView.noteMovie"><img src="images/smart-movie.svg" class="icon-smart"/> Add Movie</a></li>
+		<li><a data-action="privateNotesView.noteTrip"><img src="images/intelliTrip-icon.svg" class="icon-sm"/> Add Trip</a></li>
+		<li><a data-action="privateNotesView.noteAccount"><img src="images/icon-lock.svg" class="icon-smart"/> Add Account</a></li>
+		<li><a data-action="privateNotesView.noteMedical"><img src="images/gg-medical.svg" class="icon-smart"/> Add Medical</a></li>
+		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
+	</ul>
+
+	<ul data-role="actionsheet"  id="privateNotePhotoActions" >
+		<li>
+			<a data-action="privateNotesView.addCamera">
+				<img src="images/action-camera.svg" class="icon-action"/> Camera
+			</a>
+		</li>
+		<li>
+			<a data-action="privateNotesView.addPhoto">
+				<img src="images/action-device.svg" class="icon-action">
+				Device Gallery
+			</a>
+		</li>
+		<li>
+			<a data-action="privateNotesView.addGallery">
+				<img src="images/action-memories.svg" class="icon-action"> Memories Gallery
+			</a>
+		</li>
+	</ul>
+
 </div>
 
 <script type="text/x-kendo-template" id="notificationTemplate1">
@@ -5568,7 +5629,7 @@
 			</a>
 		</div>
 	</div>
-	<div class="privateNoteContent">
+	<!--<div class="privateNoteContent">
 		<p class="helper" style="padding-top: 0.5em;">
 			<span class="hidden">
 				<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
@@ -5577,7 +5638,7 @@
 		<div class="clearfix"></div>
 		<ul id="privateNotesView-listview"></ul>
 
-	</div>
+	</div>-->
 	<div data-role="footer" id=privateNoteEditor" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 70vh;">
 		<div class="messageCompose">
 			<div id="privateNoteTitleTag" class="hidden">
@@ -5626,17 +5687,17 @@
 		</div>
 	</div>
 
-	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
+	<!--<ul data-role="actionsheet" id="privateNoteSmartObjects" >
 		<li><a data-action="privateNotesView.noteCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
 		<li><a data-action="privateNotesView.noteFlight"><img src="images/intelliFlight-icon.svg" class="icon-sm"/> Add Flight</a></li>
 		<li><a data-action="privateNotesView.noteTrip"><img src="images/smart-note.svg" class="icon-sm"/> Add Trip</a></li>
 		<li><a data-action="privateNotesView.noteMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
 		<li><a data-action="privateNotesView.noteAccount"><img src="images/smart-note.svg" class="icon-smart"/> Add Account</a></li>
 		<li><a data-action="privateNotesView.noteMedical"><img src="images/smart-note.svg" class="icon-smart"/> Add Medical</a></li>
-		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
-	</ul>
+		&lt;!&ndash;<li><a data-action="channelView.messageMusic"> Add Music</a></li>&ndash;&gt;
+	</ul>-->
 
-	<ul data-role="actionsheet"  id="privateNotePhotoActions" >
+	<!--<ul data-role="actionsheet"  id="privateNotePhotoActions" >
 		<li>
 			<a data-action="privateNotesView.addCamera">
 				<img src="images/action-camera.svg" class="icon-action"/> Camera
@@ -5654,7 +5715,7 @@
 			</a>
 		</li>
 	</ul>
-
+-->
 
 	<ul id="privateNoteViewActions" data-role="actionsheet" data-cancel="Cancel">
 		<li>
