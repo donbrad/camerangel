@@ -988,9 +988,20 @@ var noteEditView = {
     _saveCallback : null,
     _editorActive : false,
     contentObj : new kendo.data.ObservableObject(),
+    tags : null,
+    tagString: null,
 
     onInit: function (e) {
 
+        $('#noteTagString').click(function(){
+            var that = noteEditView;
+            var string = $('#noteTagString').val();
+
+            smartTagView.openModal(that.tags, that.tagString, function (tags, tagString ) {
+
+            })
+
+        });
 
     },
 
@@ -1054,7 +1065,7 @@ var noteEditView = {
                 placeholder: 'Add Note Content...',
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
                 buttons: [ 'format', 'bold', 'italic', 'lists'],
-                plugins: ['photos', 'table', 'iconic']/*,
+                plugins: [ 'table', 'photos', 'iconic']/*,
                  callbacks: {
                  paste: function(content)
                  {

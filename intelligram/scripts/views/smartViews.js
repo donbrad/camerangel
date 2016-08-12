@@ -4325,7 +4325,7 @@ var smartTagView = {
 
     },
 
-    openModal : function (channelUUID, channelName, callback) {
+    openModal : function (tags, tagString, callback) {
 
         smartTagView.callback = null;
 
@@ -4333,7 +4333,7 @@ var smartTagView = {
             smartTagView.callback = callback;
         }
 
-
+        $("#smartTagModal").data("kendoMobileModalView").open();
     },
 
     closeModal : function () {
