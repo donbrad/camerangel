@@ -12,26 +12,17 @@
  */
 var privateNotesView = {
     topOffset: 0,
-
-    // Future expansion -- these notes would be unencrypted
-    notesDS : new kendo.data.DataSource(  {
-        sort: {
-                field: "time",
-                dir: "desc"
-            }
-        }
-    ),
-
     activeNote: new kendo.data.ObservableObject(),
     noteObjects: [],
     notePhotos: [],
+    editorVisible : false,
     _titleTagActive: false,
     _editorActive: false,
     _editorExpanded : false,
     _editMode: false,
     _editorView: false,
     _editorMin : "3em", /// changing to relative sizing
-    _editorMax : "10em", /// changing to relative sizing
+    _editorMax : "16em", /// changing to relative sizing
 
     onInit : function (e) {
        // _preventDefault(e);
@@ -47,15 +38,15 @@ var privateNotesView = {
         });
 
 
-        $('#privateNoteTextArea').click(function() {
+       /* $('#privateNoteTextArea').click(function() {
             if (privateNotesView._editorExpanded)
                 return;
             privateNotesView._editorExpanded = true;
             privateNotesView.activateEditor();
-        });
+        });*/
 
 
-        $("#privateNoteTags").kendoMultiSelect({
+       /* $("#privateNoteTags").kendoMultiSelect({
             dataTextField: "name",
             dataValueField: "uuid",
             autoBind: false,
@@ -72,7 +63,7 @@ var privateNotesView = {
                 // Use the value of the widget
             }
         });
-
+*/
 
     },
 
@@ -95,6 +86,8 @@ var privateNotesView = {
         $('#privateNoteTags').val("");
         $('#privateNoteTextArea').val('');
         $('#privateNoteTextArea').redactor('code.set', "");
+
+        ux.hideKeyboard();
        // $('#privateNote-SaveBtn').addClass('hidden');
 
     },
@@ -108,43 +101,33 @@ var privateNotesView = {
     },
 
     onHide : function (e) {
-        _preventDefault(e);
+       // _preventDefault(e);
         ux.hideKeyboard();
+        privateNotesView.deactivateEditor();
         privateNotesView.noteInit();
         privateNotesView.closeEditor();
     },
 
-    expandEditor : function () {
-        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMax});
+    /*expandEditor : function () {
+        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMax}, {duration: "fast"});
         privateNotesView._editorExpanded = true;
     },
 
     shrinkEditor : function ()  {
-        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMin});
+        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMin}, {duration: "fast"});
         privateNotesView._editorExpanded = false;
-    },
+    },*/
 
-    checkEditor : function () {
+    /*checkEditor : function () {
         if (! privateNotesView._editorExpanded) {
             privateNotesView.expandEditor();
         }
-    },
+    },*/
 
     hideKeyboardBtn: function(){
 
     },
 
-    _initTextArea : function () {
-
-        $('#privateNoteTextArea').val('');
-        $('#privateNoteTextArea').redactor('code.set', "");
-
-        if (privateNotesView._editorActive) {
-            privateNotesView._editorActive = false;
-            privateNotesView.deactivateEditor();
-        }
-
-    },
 
     noteAddPhoto : function (photoId) {
 
@@ -209,8 +192,6 @@ var privateNotesView = {
         privateNotesView.activeNote.tags = tags;
 
 
-       
-
         // Are there any photos in the current message
         if (privateNotesView.notePhotos.length > 0) {
             validNote = true;
@@ -234,7 +215,7 @@ var privateNotesView = {
 
             if (privateNotesView._editMode) {
                 var activeNote = privateNotesView.activeNote;
-                var note = privateNoteModel.findNote(activeNote.noteId);
+                var note = privateNoteModel.findNote(activeNote.noteUUID);
 
                 var contentData = JSON.stringify(activeNote.data);
                 var dataObj = JSON.parse(contentData);
@@ -254,11 +235,19 @@ var privateNotesView = {
                 privateNotesView._saveNote(text, privateNotesView.activeNote);
             }
 
-            privateNotesView._initTextArea();
+
             privateNotesView.noteInit();
 
         }
 
+    },
+
+    _initNoteTextArea : function () {
+
+        $('#privateNoteTextArea').val('');
+        $('#privateNoteTextArea').redactor('code.set', "");
+
+        ux.hideKeyboard();
     },
 
 
@@ -280,7 +269,7 @@ var privateNotesView = {
             ggType = data.ggType;
         }
         var note = {
-            noteId: uuidNote,
+            noteUUID: uuidNote,
             type: 'Note',
             ggType: ggType,
             title: data.title,
@@ -298,6 +287,8 @@ var privateNotesView = {
       //  privateNoteModel.notesDS.sync();
         privateNotesView.scrollToBottom();
 
+        privateNotesView._initNoteTextArea();
+        privateNotesView.deactivateEditor();
         //deviceModel.syncEverlive();
 
     },
@@ -319,8 +310,8 @@ var privateNotesView = {
 */
     activateEditor : function () {
 
-        $(".redactor-editor").velocity({height: privateNotesView._editorMax},{duration: 300});
-        privateNotesView._editorView = true;
+        $(".redactor-editor").velocity({height: privateNotesView._editorMax},{duration: 10});
+        privateNotesView.editorVisible = true;
         $("#privateNoteToolbar").removeClass('hidden');
         $('#privateNoteTitleTag').removeClass('hidden');
         $("#privateNote-hideKeyboard").removeClass('hidden');
@@ -332,8 +323,9 @@ var privateNotesView = {
     deactivateEditor : function () {
         privateNotesView._editorView = false;
       // privateNotesView.hideEditor();
-        $(".redactor-editor").velocity({height: privateNotesView._editorMin},{duration: 300});
+        $(".redactor-editor").velocity({height: privateNotesView._editorMin},{duration: 10});
         $("#privateNoteToolbar").addClass('hidden');
+        privateNotesView.editorVisible = false;
         $('#privateNoteTitleTag').addClass('hidden');
         $("#privateNote-hideKeyboard").addClass('hidden');
         ux.hideKeyboard();
@@ -342,7 +334,7 @@ var privateNotesView = {
 
 
     hideEditor : function () {
-        $(".redactor-editor").velocity({height: "3em"},{duration: 300});
+        $(".redactor-editor").velocity({height: "3em"},{duration: 10});
         $("#privateNoteToolbar").addClass('hidden');
         $('#privateNoteTitleTag').addClass('hidden');
         ux.hideKeyboard();
@@ -354,13 +346,17 @@ var privateNotesView = {
             privateNotesView._editorActive = true;
 
             $('#privateNoteTextArea').redactor({
-                //minHeight: privateNotesView._editorMin,
-                //maxHeight: (privateNotesView._editorMax * 16),
-                focus: false,
-                imageEditable: false, // disable image edit mode on click
-                imageResizable: false, // disable image resize mode on click
+               /* minHeight: 72,
+                maxHeight: 360,*/
+                minHeight: privateNotesView._editorMin,
+                maxHeight: privateNotesView._editorMax,
+                focus: true,
+                toolbarExternal: "#privateNoteToolbar",
+               /* imageEditable: false, // disable image edit mode on click
+                imageResizable: false, // disable image resize mode on click*/
                 placeholder: 'Add Note...',
-
+                formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
+                buttons: [ 'bold', 'italic', 'lists', 'horizontalrule']/*,
                 callbacks: {
                      paste: function(content)
                      {
@@ -375,7 +371,7 @@ var privateNotesView = {
                          this.selection.restore();
                          this.selection.replace("");
                          return(contentOut);
-                     },
+                     }*//*,
 
                     focus: function(e){
                         privateNotesView.activateEditor();
@@ -388,20 +384,17 @@ var privateNotesView = {
                         }
 
 
-                    }/*,
+                    }*//*,
                     click : function (e) {
 
                     }*/
-                 },
+                 /*}*/
 
-                formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
-                buttons: ['format', 'bold', 'italic', 'lists', 'horizontalrule'],
-                plugins: ['clear', 'save'],
-                toolbarExternal: '#privateNoteToolbar'
+
+                //toolbarExternal: '#privateNoteToolbar'
             });
 
-            $.Redactor.prototype.clear = function()
-            {
+           /* $.Redactor.prototype.clear = function() {
                 return {
                     init: function ()
                     {
@@ -428,7 +421,7 @@ var privateNotesView = {
                         privateNotesView.saveNote();
                     }
                 };
-            };
+            };*/
         }
 
     },
@@ -436,7 +429,7 @@ var privateNotesView = {
 
     closeEditor : function () {
 
-        privateNotesView.deactivateEditor()
+        privateNotesView.deactivateEditor();
 
         if (privateNotesView._editorActive) {
             privateNotesView._editorActive = false;
@@ -449,27 +442,21 @@ var privateNotesView = {
 
     deleteNote : function (e) {
         _preventDefault(e);
-       if (privateNotesView.activeNote.noteId !== undefined) {
+       if (privateNotesView.activeNote.noteUUID !== undefined) {
 
            var note = privateNotesView.activeNote;
            var Id = note.Id;
            
            var noteObject = null;
            
-           if (note.data.objects.length > 0) {
+           if (note.data.object !== undefined && note.data.objects.length > 0) {
                 noteObject =   note.data.objects; 
            }
-           if (note.type === privateNoteModel._movie) {
-               
-           } else if (note.type === privateNoteModel._event) {
-               
-           }
 
-
-               everlive.deleteMatching(privateNoteModel._cloudClass, {'noteId': note.noteId}, function (error, data) {
-                   privateNoteModel.deleteNote(privateNotesView.activeNote);
-                   privateNotesView.activeNote = {objects: [], photos: []};
-               });
+           everlive.deleteMatching(privateNoteModel._cloudClass, {'noteUUID': note.noteUUID}, function (error, data) {
+               privateNoteModel.deleteNote(privateNotesView.activeNote);
+               privateNotesView.activeNote = {objects: [], photos: []};
+           });
 
        }
 
@@ -478,7 +465,7 @@ var privateNotesView = {
     editNote : function (e) {
         _preventDefault(e);
 
-        if (privateNotesView.activeNote.noteId !== undefined) {
+        if (privateNotesView.activeNote.noteUUID !== undefined) {
             var content='<p></p>';
            
             privateNotesView._editMode = true;
@@ -795,7 +782,7 @@ var privateNotesView = {
 
         if (photoObj !== undefined) {
             $('#privateNote-SaveBtn').addClass('hidden');
-            privateNotesView.checkEditor();
+           // privateNotesView.checkEditor();
 
             var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
 
@@ -861,6 +848,14 @@ var privateNotesView = {
         return selectedText;
     },
 
+
+    noteEditor : function (e) {
+        if (!privateNotesView.editorVisible) {
+            privateNotesView.activateEditor();
+        } else {
+            privateNotesView.deactivateEditor();
+        }
+    },
 
     noteCalendar : function (e) {
         _preventDefault(e);

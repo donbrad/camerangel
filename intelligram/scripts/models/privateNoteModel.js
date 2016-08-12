@@ -13,6 +13,7 @@
 var privateNoteModel = {
     notesDS: null,
     _cloudClass : 'privatenote',
+    _ggClass : 'Note',
     _note : 'Note',
     _movie : 'Movie',
     _event : 'Event',
@@ -30,7 +31,7 @@ var privateNoteModel = {
             },
             sort: {
                 field: "time",
-                dir: "desc"
+                dir: "asc"
             },
             autoSync: true
         });
@@ -38,11 +39,12 @@ var privateNoteModel = {
         privateNoteModel.notesDS.bind("change", function (e) {
             var changedNotes = e.items;
             var note = e.items[0];
+
             if (e.action !== undefined) {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
-                        var noteId = note.noteId;
+                        var noteId = note.noteUUID;
                         break;
 
                     case "remove" :
@@ -52,7 +54,7 @@ var privateNoteModel = {
                     case "add" :
                         note = e.items[0];
 
-                        if (privateNoteModel.isDuplicateNote(note.noteId)) {
+                        if (privateNoteModel.isDuplicateNote(note.noteUUID)) {
                            // privateNoteModel.notesDS.remove(note);
                             //e.preventDefault();
                         }
@@ -92,7 +94,7 @@ var privateNoteModel = {
 
         var Id = note.Id;
         if (Id !== undefined){
-            everlive.update(privateNoteModel._cloudClass, note, {'noteId' : note.noteId}, function (error, data) {
+            everlive.update(privateNoteModel._cloudClass, note, {'noteUUID' : note.noteUUIE}, function (error, data) {
                 //placeNoteModel.notesDS.remove(note);
             });
         }
@@ -133,7 +135,7 @@ var privateNoteModel = {
 
     isDuplicateNote : function (noteId) {
 
-        var notes = privateNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+        var notes = privateNoteModel.queryNotes({ field: "noteUUID", operator: "eq", value: noteId });
 
         if (notes === undefined) {
             return (false);
@@ -145,7 +147,7 @@ var privateNoteModel = {
     },
 
     findNote : function (noteId) {
-        var notes = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+        var notes = this.queryNotes({ field: "noteUUID", operator: "eq", value: noteId });
 
         if (notes === undefined ) {
             return null;
@@ -166,7 +168,7 @@ var privateNoteModel = {
     },
 
     deleteNoteById : function (noteId) {
-        var note = privateNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+        var note = privateNoteModel.queryNotes({ field: "noteUUID", operator: "eq", value: noteId });
         if (note !== undefined && note !== null) {
             privateNoteModel.notesDS.remove(note);
             privateNoteModel.notesDS.sync();

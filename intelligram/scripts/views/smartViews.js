@@ -3442,18 +3442,7 @@ var smartFlightView = {
     checkFlightComplete : function () {
         if (smartFlightView.validArrival && smartFlightView.validDeparture) {
             // If the user hasnt created a name -- create one from origin and destination
-            var value = smartFlightView.status.name;
-            if( value === null || value === "") {
-                //smartFlightView.status.set(field, value);
-                var ux_departure = smartFlightView.status.get('departureAirport');
-                var ux_arrival = smartFlightView.status.get('arrivalAirport');
-                if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
-                    var nameStr = ux_departure + " / " + ux_arrival;
-                    smartFlightView.status.set('name', nameStr);
-                } else {
-                    smartFlightView.status.set('name', userModel._user.name + "'s Flight");
-                }
-            }
+
             smartFlightView.finalizeFlightStatus();
 
         } else {
@@ -3686,7 +3675,18 @@ var smartFlightView = {
             var arrDateAct = moment(that.arrivalStatus.operationalTimes.actualGateArrival.dateUtc);
             smartFlightView.status.set('actualArrival', arrDateAct.format("M/D/YYYY h:mm a"));
         }
-
+        var value = smartFlightView.status.name;
+        if( value === null || value === "") {
+            //smartFlightView.status.set(field, value);
+            var ux_departure = smartFlightView.status.get('departureAirport');
+            var ux_arrival = smartFlightView.status.get('arrivalAirport');
+            if(ux_departure !== null && ux_departure !== undefined && ux_arrival !== null && ux_arrival !== undefined){
+                var nameStr = ux_departure + " / " + ux_arrival;
+                smartFlightView.status.set('name', nameStr);
+            } else {
+                smartFlightView.status.set('name', userModel._user.name + "'s Flight");
+            }
+        }
 
         $('#smartFlightView-flightStatus').removeClass('hidden');
         $('#smartFlightView-DoneBtn').addClass('hidden');
@@ -4310,6 +4310,44 @@ var smartAlertView = {
             smartAlertView.callback(message);
         }
         $("#smartAlertModal").data("kendoMobileModalView").close();
+    }
+};
+
+
+
+var smartTagView = {
+    callback: null,
+
+    onInit: function () {
+
+    },
+
+    onOpen : function () {
+
+    },
+
+    openModal : function (channelUUID, channelName, callback) {
+
+        smartTagView.callback = null;
+
+        if (callback !== undefined) {
+            smartTagView.callback = callback;
+        }
+
+
+    },
+
+    closeModal : function () {
+        $("#smartTagModal").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#smartTagModal").data("kendoMobileModalView").close();
+    },
+
+    onSave : function () {
+
+        $("#smartTagModal").data("kendoMobileModalView").close();
     }
 };
 

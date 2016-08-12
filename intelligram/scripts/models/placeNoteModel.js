@@ -31,7 +31,7 @@ var placeNoteModel = {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
-                        var noteId = note.noteId;
+                        var noteId = note.noteUUID;
                         break;
 
                     case "remove" :
@@ -41,7 +41,7 @@ var placeNoteModel = {
                     case "add" :
                         note = e.items[0];
 
-                        if (placeNoteModel.isDuplicateNote(note.noteId)) {
+                        if (placeNoteModel.isDuplicateNote(note.noteUUID)) {
                            // placeNoteModel.notesDS.remove(note);
                             //e.preventDefault();
                         }
@@ -88,7 +88,7 @@ var placeNoteModel = {
     },
 
     findNote : function (noteId) {
-        var notes = this.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+        var notes = this.queryNotes({ field: "noteUUID", operator: "eq", value: noteId });
 
         if (notes === undefined ) {
             return null;
@@ -114,7 +114,7 @@ var placeNoteModel = {
     },
 
     deleteNoteById : function (noteId) {
-        var note = placeNoteModel.queryNotes({ field: "noteId", operator: "eq", value: noteId });
+        var note = placeNoteModel.queryNotes({ field: "noteUUID", operator: "eq", value: noteId });
         if (note !== undefined && note !== null) {
             var Id = note.Id;
             if (Id !== undefined){

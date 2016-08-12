@@ -23,8 +23,11 @@ var smartFlight = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync: true
+            autoSync: true,
+            change : function (e) {todayModel.change(e, smartFlight._ggClass);}
         });
+
+
         smartFlight.flightsDS.fetch();
     },
 
@@ -86,7 +89,7 @@ var smartFlight = {
 
     addFlight : function (objectIn, callback) {
 
-
+        var flight = new kendo.data.ObservableObject();
         mobileNotify("Creating IntelliFlight...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
@@ -101,8 +104,9 @@ var smartFlight = {
             objectIn.uuid = uuid.v4();
         }
 
+
         //smartOb.setACL(userModel.parseACL);
-        objectIn.version =  smartFlight._version;
+        flight.version =  smartFlight._version;
         objectIn.ggType = smartFlight._ggClass;
 
 

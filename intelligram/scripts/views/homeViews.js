@@ -13,6 +13,7 @@
 var homeView = {
     _radius: 90, // 90 meters or approx 300 ft
     today : new kendo.data.DataSource(),
+    _activeView : 0,
 
 
     openNotificationAction: function(e){
@@ -267,6 +268,29 @@ var homeView = {
        /* }*/
     },
 
+    selectView : function (index) {
+        switch (index) {
+            case 0: // Alerts
+                $('#home-notes').addClass("hidden");
+                $('#home-today').addClass("hidden");
+                $('#home-alerts').removeClass("hidden");
+                ux.setSearchPlaceholder("Search Alerts...");
+                break;
+            case 1: // Notes
+                $('#home-notes').removeClass("hidden");
+                $('#home-today').addClass("hidden");
+                $('#home-alerts').addClass("hidden");
+                ux.setSearchPlaceholder("Search Notes...");
+                break;
+            case 2 : // Today
+                $('#home-notes').addClass("hidden");
+                $('#home-today').removeClass("hidden");
+                $('#home-alerts').addClass("hidden");
+                ux.setSearchPlaceholder("Search Today...");
+                break;
+        }
+    },
+
     onInit: function(e) {
        // _preventDefault(e);
 
@@ -307,8 +331,28 @@ var homeView = {
             }
         });*/
 
+        $('#home-buttongroup').kendoMobileButtonGroup({
+            select: function(e) {
+                var index = e.index;
+                if (index != homeView._activeView) {
+                    homeView._activeView = index;
+                    homeView.selectView(homeView._activeView);
 
+                }
 
+            },
+            index: homeView._activeView
+        });
+
+        $("#notesView-listview").kendoMobileListView({
+            dataSource: privateNoteModel.notesDS,
+            template: $("#privateNote-template").html()
+
+        }).kendoTouch({
+            filter: "div",
+            tap: privateNotesView.tapNote,
+            hold: privateNotesView.holdNote
+        });
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
             template: $("#notificationTemplate").html(),
@@ -340,10 +384,7 @@ var homeView = {
     },
 
     onShow: function (e) {
-//
-        ux.setSearchPlaceholder("Search notifications");
-
-        // set verified ui for start screen
+       // set verified ui for start screen
         if(userModel._user.phoneValidated) {
             $("#startPhoneVerified").addClass("hidden");
            // notificationModel.addVerifyPhoneNotification();
@@ -354,9 +395,12 @@ var homeView = {
         // Set user availability
         ux.updateHeaderStatusImages();
 
-
         // Hide action button on home
         ux.setAddTarget("images/nav-gear.svg", null, homeView.openSettingsAction);
+
+        // Set the active view and the search text
+        homeView.selectView(homeView._activeView);
+
         /*ux.showActionBtn(true, "#home", "#settingsAction");
         ux.changeActionBtnImg("home","nav-add-white");
         ux.showActionBtnText("#home", "3em", "Shortcuts");
@@ -938,6 +982,189 @@ var modalView = {
 
 };
 
+var noteEditView = {
+    _callback : null,
+    _returnview : null,
+    _saveCallback : null,
+    _editorActive : false,
+    contentObj : new kendo.data.ObservableObject(),
+
+    onInit: function (e) {
+
+
+    },
+
+    onShow : function (e) {
+        //_preventDefault(e);
+        if (e.view.params.callback !== undefined) {
+            noteEditView._callback = e.view.params.callback;
+        } else {
+            noteEditView._callback = null;
+        }
+
+        if (e.view.params.returnview !== undefined) {
+            noteEditView._returnview = e.view.params.returnview;
+        } else {
+            noteEditView._returnview = null;
+        }
+
+        if (e.view.params.savecallback !== undefined) {
+            noteEditView._saveCallback = e.view.params.savecallback;
+        } else {
+            noteEditView._saveCallback = null;
+        }
+
+        noteEditView.openEditor();
+    },
+
+    onHide: function (e) {
+        noteEditView.openEditor();
+
+    },
+
+    onDone : function (e) {
+       // _preventDefault(e);
+
+        if (noteEditView._returnview !== null) {
+            APP.kendo.navigate('#'+noteEditView._returnview);
+        }
+
+    },
+
+    onSave : function (e) {
+        if (noteEditView._saveCallback !== null) {
+            noteEditView._saveCallback (noteEditView.contentObj);
+        }
+        noteEditView.onDone();
+    },
+
+
+    openEditor : function () {
+        if (noteEditView._editorActive === false) {
+
+            noteEditView._editorActive = true;
+
+            $('#noteEditor-textarea').redactor({
+                /* minHeight: 72,
+                 maxHeight: 360,*/
+                focus: true,
+                toolbarExternal: '#noteEditor-toolbar',
+                 imageEditable: false, // disable image edit mode on click
+                 imageResizable: false, // disable image resize mode on click*/
+                placeholder: 'Add Note Content...',
+                formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
+                buttons: [ 'format', 'bold', 'italic', 'lists', 'horizontalrule']/*,
+                 callbacks: {
+                 paste: function(content)
+                 {
+                 var contentOut = '<a data-role="button" class="smart-link btnClear-link" data-click="ggSmartLink" data-url="';
+                 var re = /<\s*a\s+[^>]*href\s*=\s*[\"']?([^\"' >]+)[\"' >]/;
+                 var match;
+
+                 if ((match = re.exec(content)) !== null) {
+                 var url = match[1];
+                 contentOut += encodeURI(url) + '"> ' + privateNotesView.searchQuery + '</a>';
+                 }
+                 this.selection.restore();
+                 this.selection.replace("");
+                 return(contentOut);
+                 }*//*,
+
+                 focus: function(e){
+                 privateNotesView.activateEditor();
+
+
+                 },
+                 blur: function(e){
+                 if (!privateNotesView._editorView) {
+                 privateNotesView.deactivateEditor() ;
+                 }
+
+
+                 }*//*,
+                 click : function (e) {
+
+                 }*/
+                /*}*/
+
+
+                //toolbarExternal: '#privateNoteToolbar'
+            });
+
+            /* $.Redactor.prototype.clear = function() {
+             return {
+             init: function ()
+             {
+             var button = this.button.add('clear', 'Clear');
+             this.button.addCallback(button, this.clear.clear);
+             },
+             clear: function()
+             {
+             privateNotesView.noteInit();
+             }
+             };
+             };
+
+             $.Redactor.prototype.save = function()
+             {
+             return {
+             init: function ()
+             {
+             var button = this.button.add('save', 'Save');
+             this.button.addCallback(button, this.save.save);
+             },
+             save: function()
+             {
+             privateNotesView.saveNote();
+             }
+             };
+             };*/
+        }
+
+    },
+
+
+    closeEditor : function () {
+
+        //noteEditView.deactivateEditor();
+
+        if (noteEditView._editorActive) {
+            noteEditView._editorActive = false;
+            $('#noteEditor-textarea').redactor('core.destroy');
+        }
+
+
+    },
+    sendGhostEmail : function (e) {
+        _preventDefault(e);
+
+       /* var content = $('#ghostEmailEditor').data("kendoEditor").value();
+        var contactKey = contactModel.currentContact.get('publicKey'), email = contactModel.currentContact.get('email');
+        /!* if (contactKey === null) {
+         mobileNotify("Invalid Public Key for " + contactModel.currentContact.get('name'));
+         return;
+         }
+         var encryptContent = cryptico.encrypt(content, contactKey);*!/
+        if (window.navigator.simulator === true){
+            alert("Mail isn't supported in the emulator");
+        } else {
+            var thisUser = userModel._user.get('name');
+            cordova.plugins.email.open({
+                to:          [email],
+                subject:     'ghostgram from ' + thisUser,
+                body:        content,
+                isHtml:      true
+            }, function (msg) {
+                mobileNotify("Email sent to " + thisUser);
+                ghostEditView.onDone();
+                // navigator.notification.alert(JSON.stringify(msg), null, 'EmailComposer callback', 'Close');
+            });
+        }*/
+
+    }
+
+
+};
 
 var ghostEditView = {
     _callback : null,
