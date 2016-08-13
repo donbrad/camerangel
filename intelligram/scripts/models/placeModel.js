@@ -93,12 +93,19 @@ var placesModel = {
                         break;
 
                     case "remove" :
-                        // delete from contact list
+                        // delete from places
+                        break;
+
+                    case "sync" :
+                        // syncing all places...
+                        if (changedPlaces !== undefined) {
+                            var len = changedPlaces.len;
+                        }
                         break;
 
                     case "add" :
                         var place = e.items[0];
-                        // add to contactlist and contacttags
+                        // add to placelist
                         var placeList = placesModel.findPlaceListUUID(place.uuid);
                         if (placeList === undefined)
                             placesModel.placeListDS.add(place);

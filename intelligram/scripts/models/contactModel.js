@@ -97,6 +97,12 @@ var contactModel = {
                         }
                         break;
 
+                    case "sync" :
+                        if (changedContacts !== undefined) {
+                            var len = changedContacts.len;
+                        }
+                        break;
+
                     case "add" :
                         var contact = e.items[0];
                         // add to contactlist and contacttags
