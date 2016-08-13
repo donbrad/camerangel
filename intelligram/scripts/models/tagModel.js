@@ -81,13 +81,14 @@ var tagModel = {
 
 
         tagObj.name = tag;
-        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.tagNorm = tagModel.normalizeTag(tag);
         tagObj.description = description;
         tagObj.category = category;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = semanticCategory;
+        tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
-        tagModel.tagsDS.add(tagObj);
+            tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
 
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
@@ -115,11 +116,12 @@ var tagModel = {
 
 
         tagObj.name = tag;
-        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.tagNorm = tagModel.normalizeTag(tag);
         tagObj.description = description;
         tagObj.category = tagModel._group;
         tagObj.categoryId = null;
         tagObj.semanticCategory = 'Group';
+        tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
         tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
@@ -149,11 +151,12 @@ var tagModel = {
         
         tagObj.name = tag;
         tagObj.alias = alias;
-        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.tagNorm = tagModel.normalizeTag(tag);
         tagObj.description = description;
         tagObj.category = tagModel._contact;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Contact';
+        tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
         tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
@@ -182,11 +185,12 @@ var tagModel = {
 
         tagObj.name = tag;
         tagObj.alias = alias;
-        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.tagNorm = tagModel.normalizeTag(tag);
         tagObj.description = description;
         tagObj.category = tagModel._place;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Place';
+        tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
         tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
@@ -211,7 +215,8 @@ var tagModel = {
         tag.ggType = tagModel._ggClass;
         tag.name = null;
         tag.alias = null;
-        tag.tagName = null;
+        tag.tagNorm = null;
+        tag.tagHash = null;
         tag.category = tagModel._user;
         tag.categoryId = null;
         tag.semanticCategory = null;
@@ -265,7 +270,7 @@ var tagModel = {
 
         for (var i=0; i<tagArray.length; i++) {
 
-            tagString += tagArray[0].tagname + ', ';
+            tagString += tagArray[0].name + ', ';
 
         }
 
@@ -295,7 +300,7 @@ var tagModel = {
 
     findTag : function (tag) {
         var normTag = tagModel.normalizeTag(tag);
-        var tags = tagModel.queryTags({field: "tagName", operator: "eq", value: normTag});
+        var tags = tagModel.queryTags({field: "tagNorm", operator: "eq", value: normTag});
 
         return (tags);
     },
@@ -303,7 +308,7 @@ var tagModel = {
 
     findTagByCategory : function (category, tag) {
         var normTag = tagModel.normalizeTag(tag);
-        var tags = tagModel.queryTags([{field: "tagName", operator: "eq", value: normTag},
+        var tags = tagModel.queryTags([{field: "tagNorm", operator: "eq", value: normTag},
             {field: "category", operator: "eq", value: category}]);
 
         return (tags);
@@ -322,7 +327,7 @@ var tagModel = {
 
     findContactTags : function (tag, alias) {
         var normTag = tagModel.normalizeTag(tag);
-        var tags = tagModel.queryTags([{field: "tagName", operator: "eq", value: normTag},
+        var tags = tagModel.queryTags([{field: "tagNorm", operator: "eq", value: normTag},
             {field: "category", operator: "eq", value: tagModel._contact}]);
 
         return (tags);
