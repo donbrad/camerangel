@@ -70,8 +70,16 @@ var contactModel = {
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
             var changedContacts = e.items;
-
-            if (e.action !== undefined) {
+            if (e.action === undefined) {
+                if (changedContacts !== undefined) {
+                    var len = changedContacts.len;
+                    for (var i=0; i<len; i++) {
+                        var contact = changedContacts[i];
+                        // add to placelist
+                        tagModel.addContactTag(contact.name, contact.alias, '', place.uuid);
+                    }
+                }
+            } else {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;

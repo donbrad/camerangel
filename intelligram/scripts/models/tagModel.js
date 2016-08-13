@@ -67,7 +67,7 @@ var tagModel = {
 
     },
 
-    addTag : function (tag, description, category, categoryId, semanticCategory) {
+    addTag : function (tag, alias, description, category, categoryId, semanticCategory) {
 
         var normTag = tagModel.normalizeTag(tag);
 
@@ -81,6 +81,12 @@ var tagModel = {
 
 
         tagObj.name = tag;
+        tagObj.alias = alias;
+        tagObj.nameCombo = tagObj.name;
+        if (tagObj.alias !== undefined && tagObj.alias !== null) {
+            tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
+        }
+        tagObj.nameCombo = tagObj.name;
         tagObj.tagNorm = tagModel.normalizeTag(tag);
         tagObj.description = description;
         tagObj.category = category;
@@ -103,7 +109,7 @@ var tagModel = {
 
     },
 
-    addGroupTag : function (tag, description) {
+    addGroupTag : function (tag, alias, description, categoryId) {
         var normTag = tagModel.normalizeTag(tag);
 
         var tagExists = tagModel.findTagByCategory(tagModel._group, normTag);
@@ -116,10 +122,16 @@ var tagModel = {
 
 
         tagObj.name = tag;
+        tagObj.alias = alias;
+        tagObj.nameCombo = tagObj.name;
+        if (tagObj.alias !== undefined && tagObj.alias !== null) {
+            tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
+        }
+
         tagObj.tagNorm = tagModel.normalizeTag(tag);
         tagObj.description = description;
         tagObj.category = tagModel._group;
-        tagObj.categoryId = null;
+        tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Group';
         tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
@@ -151,6 +163,10 @@ var tagModel = {
         
         tagObj.name = tag;
         tagObj.alias = alias;
+        tagObj.nameCombo = tagObj.name;
+        if (tagObj.alias !== undefined && tagObj.alias !== null) {
+            tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
+        }
         tagObj.tagNorm = tagModel.normalizeTag(tag);
         tagObj.description = description;
         tagObj.category = tagModel._contact;
@@ -185,7 +201,10 @@ var tagModel = {
 
         tagObj.name = tag;
         tagObj.alias = alias;
-        tagObj.tagNorm = tagModel.normalizeTag(tag);
+        tagObj.nameCombo = tagObj.name;
+        if (tagObj.alias !== undefined && tagObj.alias !== null) {
+            tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
+        }
         tagObj.description = description;
         tagObj.category = tagModel._place;
         tagObj.categoryId = categoryId;
@@ -217,6 +236,7 @@ var tagModel = {
         tag.alias = null;
         tag.tagNorm = null;
         tag.tagHash = null;
+        tag.nameCombo = null;
         tag.category = tagModel._user;
         tag.categoryId = null;
         tag.semanticCategory = null;

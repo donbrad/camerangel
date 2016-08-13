@@ -70,7 +70,17 @@ var placesModel = {
             //placesModel.syncPlaceListDS();
             var changedPlaces = e.items;
 
-            if (e.action !== undefined) {
+            if (e.action === undefined) {
+                if (changedPlaces !== undefined) {
+                    var len = changedPlaces.len;
+                    for (var i=0; i<len; i++) {
+                        var place =changedPlaces[i];
+                        // add to placelist
+                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+                    }
+                }
+            } else {
+
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
