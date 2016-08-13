@@ -26,6 +26,13 @@ var tagModel = {
     _movie: 'movie',
     _family : 'family',
     _friend : 'friend',
+    _trip: 'trip',
+    _flight: 'flight',
+    _team: 'team',
+    _band: 'band',
+    _artist: 'artist',
+    _book: 'book',
+    _tvshow: 'tv',
 
 
     tagsDS: null,
@@ -56,6 +63,9 @@ var tagModel = {
         tagModel.tagsDS.sync();
     },
 
+    change : function (obj, category) {
+
+    },
 
     addTag : function (tag, description, category, categoryId, semanticCategory) {
 
