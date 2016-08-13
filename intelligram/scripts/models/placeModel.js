@@ -72,6 +72,7 @@ var placesModel = {
 
             if (e.action === undefined) {
                 if (changedPlaces !== undefined) {
+                    placesModel.placesFetched = true;
                     var len = changedPlaces.length;
                     for (var i=0; i<len; i++) {
                         var place =changedPlaces[i];

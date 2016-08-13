@@ -13,6 +13,7 @@ var tagModel = {
 
     _ggClass : 'Tag',
     _cloudClass : 'tags',
+    tagsFetched : false,
     _user : 'user',
     _version: 1,
     _tagsSynced : false,
@@ -36,6 +37,7 @@ var tagModel = {
 
 
     tagsDS: null,
+    deferredList : [],
 
     init : function () {
         
@@ -54,8 +56,61 @@ var tagModel = {
             autoSync : true
         });
 
+        tagModel.tagsDS.bind("change", function (e) {
+            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
+            //placesModel.syncPlaceListDS();
+            var changedTags = e.items;
+
+            if (e.action === undefined) {
+                if (changedTags !== undefined) {
+                    tagModel.tagsFetched = true;
+                    tagModel.processDeferred();
+                }
+            }
+        });
 
         tagModel.tagsDS.fetch();
+    },
+
+
+    processDeferred : function () {
+        // If the list is empty -- just return
+        if (tagModel.deferredList.length === 0) {
+            return;
+        }
+
+        for (var i=0; i<tagModel.deferredList.length; i++ ) {
+            var tagObj = tagModel.deferredList[i];
+
+            switch (tagObj.category){
+                case tagModel._group:
+                    tagModel.addGroupTag(tagObj.tag, tagObj.alias, tagObj.description, tagObj.categoryId);
+                    break;
+
+                case tagModel._contact:
+                    tagModel.addContactTag(tagObj.tag, tagObj.alias, tagObj.description, tagObj.categoryId);
+
+                    break;
+
+                case tagModel._place:
+                    tagModel.addPlaceTag(tagObj.tag, tagObj.alias, tagObj.description, tagObj.categoryId);
+
+                    break;
+
+            }
+        }
+    },
+
+    defer : function (tag, alias, description, categoryId, category) {
+        var deferObj = {
+            tag: tag,
+            alias: alias,
+            description: description,
+            categoryId : categoryId,
+            category : category
+        };
+
+        tagModel.deferredList.push(deferObj);
     },
 
 
@@ -79,7 +134,7 @@ var tagModel = {
 
         var tagObj = tagModel.newTag();
 
-
+        tagObj.ggClass = tagModel._class;
         tagObj.name = tag;
         tagObj.alias = alias;
         tagObj.nameCombo = tagObj.name;
@@ -94,7 +149,7 @@ var tagModel = {
         tagObj.semanticCategory = semanticCategory;
         tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
-            tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
 
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
@@ -110,6 +165,11 @@ var tagModel = {
     },
 
     addGroupTag : function (tag, alias, description, categoryId) {
+        if (!tagModel.tagsFetched) {
+            tagModel.defer(tag, alias, description, categoryId, tagModel._group);
+            return;
+        }
+
         var normTag = tagModel.normalizeTag(tag);
 
         var tagExists = tagModel.findTagByCategory(tagModel._group, normTag);
@@ -150,7 +210,10 @@ var tagModel = {
     },
 
     addContactTag : function (tag, alias, description, categoryId) {
-
+        if (!tagModel.tagsFetched) {
+            tagModel.defer(tag, alias, description, categoryId, tagModel._contact);
+            return;
+        }
         var normTag = tagModel.normalizeTag(tag);
 
         var tagExists = tagModel.findTagByCategoryId(categoryId);
@@ -189,6 +252,10 @@ var tagModel = {
     },
 
     addPlaceTag : function (tag, alias, description, categoryId) {
+        if (!tagModel.tagsFetched) {
+            tagModel.defer(tag, alias, description, categoryId, tagModel._place);
+            return;
+        }
         var normTag = tagModel.normalizeTag(tag);
         var tagExists = tagModel.findTagByCategoryId(categoryId);
 
