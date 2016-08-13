@@ -14,6 +14,7 @@ var tagModel = {
     _ggClass : 'Tag',
     _cloudClass : 'tags',
     tagsFetched : false,
+    processingDeferred : false,
     _user : 'user',
     _version: 1,
     _tagsSynced : false,
@@ -75,10 +76,11 @@ var tagModel = {
 
     processDeferred : function () {
         // If the list is empty -- just return
-        if (tagModel.deferredList.length === 0) {
+        if (tagModel.deferredList.length === 0 || tagModel.processingDeferred) {
             return;
         }
 
+        tagModel.processingDeferred = true;
         for (var i=0; i<tagModel.deferredList.length; i++ ) {
             var tagObj = tagModel.deferredList[i];
 
