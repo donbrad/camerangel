@@ -25,7 +25,6 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-vibration",
     "cordova-plugin-whitelist",
-    "de.appplant.cordova.plugin.badge@0.7.1",
     "de.appplant.cordova.plugin.email-composer@0.8.3",
     "de.appplant.cordova.plugin.local-notification@0.8.4",
     "nl.x-services.plugins.calendar@4.5.1",
