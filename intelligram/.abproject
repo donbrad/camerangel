@@ -86,12 +86,6 @@
     "ID_RESOLUTION_WXGA",
     "ID_RESOLUTION_HD720P"
   ],
-  "CorePlugins": [
-    "com.ohh2ahh.plugins.appavailability@0.3.1",
-    "com.phonegap.plugins.barcodescanner@5.0.1",
-    "cordova-plugin-inappbrowser",
-    "uk.co.whiteoctober.cordova.appversion@0.1.7"
-  ],
   "iOSDeploymentTarget": "8.0",
   "CordovaPluginVariables": {
     "nl.x-services.plugins.launchmyapp": {
