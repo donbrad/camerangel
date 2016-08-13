@@ -11,7 +11,6 @@ lesswatch - Shortcut.lnk
 intelligram/.idea
 config.codekit
 
-intelligram/App_Resources/Android/drawable-nodpi/splashscreen.9.png
 
 intelligram/bower_components/emojione/assets/png
 intelligram/bower_components/emojione/assets/png_128x128
@@ -25,21 +24,3 @@ intelligram/bower_components/emojione/lib/python
 intelligram/bower_components/emojione/assets/other
 intelligram/bower_components/emojione/assets/svg
 
-intelligram/App_Resources/iOS/icon-83.5@2x.png
-
-intelligram/App_Resources/iOS/Default-Landscape-1366@2x.png
-
-intelligram/App_Resources/iOS/Default-Portrait-1366@2x.png
-
-
-intelligram/App_Resources/Android/drawable-xxxhdpi/splashscreen.png
-
-intelligram/App_Resources/Android/drawable-xxhdpi/splashscreen.png
-
-intelligram/App_Resources/Android/drawable-xhdpi/splashscreen.png
-
-intelligram/App_Resources/Android/drawable-mdpi/splashscreen.png
-
-intelligram/App_Resources/Android/drawable-ldpi/splashscreen.png
-
-intelligram/App_Resources/Android/drawable-hdpi/splashscreen.png
