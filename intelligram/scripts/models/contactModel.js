@@ -75,10 +75,11 @@ var contactModel = {
                     var len = changedContacts.length;
                     for (var i=0; i<len; i++) {
                         var contact = changedContacts[i];
-                        if (contact.category === 'Member' || contact.category === 'Invited') {
+                        var category = contact.category.toLowerCase();
+                        if (category === 'member' || category === 'invited') {
                             // add to tag list
                             tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
-                        } else if (contact.category === 'Chat') {
+                        } else if (contact.category === 'chat') {
 
                         }
 
