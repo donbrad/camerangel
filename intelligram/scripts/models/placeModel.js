@@ -72,7 +72,7 @@ var placesModel = {
 
             if (e.action === undefined) {
                 if (changedPlaces !== undefined) {
-                    var len = changedPlaces.len;
+                    var len = changedPlaces.length;
                     for (var i=0; i<len; i++) {
                         var place =changedPlaces[i];
                         // add to placelist

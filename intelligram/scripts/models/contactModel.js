@@ -72,7 +72,7 @@ var contactModel = {
             var changedContacts = e.items;
             if (e.action === undefined) {
                 if (changedContacts !== undefined) {
-                    var len = changedContacts.len;
+                    var len = changedContacts.length;
                     for (var i=0; i<len; i++) {
                         var contact = changedContacts[i];
                         // add to placelist
