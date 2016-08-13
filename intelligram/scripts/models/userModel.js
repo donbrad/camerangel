@@ -195,6 +195,7 @@ var userModel = {
         statusTracker.syncObjects();
         notificationModel.sync();
         todayModel.sync();
+        tagModel.sync();
     },
 
     initKendo : function () {

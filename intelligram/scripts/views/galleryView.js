@@ -955,7 +955,7 @@ var modalPhotoView = {
                 var item = e.item;
                 var text = item.text();
             },
-            dataSource: contactModel.contactTagsDS
+            dataSource: tagModel.tagsDS
         });
     },
 

@@ -87,7 +87,7 @@ var tagModel = {
             tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
         }
         tagObj.nameCombo = tagObj.name;
-        tagObj.tagNorm = tagModel.normalizeTag(tag);
+        tagObj.tagNorm = normTag;
         tagObj.description = description;
         tagObj.category = category;
         tagObj.categoryId = categoryId;
@@ -128,7 +128,7 @@ var tagModel = {
             tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
         }
 
-        tagObj.tagNorm = tagModel.normalizeTag(tag);
+        tagObj.tagNorm = normTag;
         tagObj.description = description;
         tagObj.category = tagModel._group;
         tagObj.categoryId = categoryId;
@@ -153,7 +153,7 @@ var tagModel = {
 
         var normTag = tagModel.normalizeTag(tag);
 
-        var tagExists = tagModel.findTagByCategory(tagModel._contact, normTag);
+        var tagExists = tagModel.findTagByCategoryId(categoryId);
 
         if (tagExists.length > 0) {
             return;
@@ -167,7 +167,7 @@ var tagModel = {
         if (tagObj.alias !== undefined && tagObj.alias !== null) {
             tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
         }
-        tagObj.tagNorm = tagModel.normalizeTag(tag);
+        tagObj.tagNorm = normTag;
         tagObj.description = description;
         tagObj.category = tagModel._contact;
         tagObj.categoryId = categoryId;
@@ -190,7 +190,7 @@ var tagModel = {
 
     addPlaceTag : function (tag, alias, description, categoryId) {
         var normTag = tagModel.normalizeTag(tag);
-        var tagExists = tagModel.findTagByCategory(tagModel._place, normTag);
+        var tagExists = tagModel.findTagByCategoryId(categoryId);
 
         if (tagExists.length > 0) {
             return;
@@ -209,6 +209,7 @@ var tagModel = {
         tagObj.category = tagModel._place;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Place';
+        tagObj.tagNorm = normTag;
         tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
         tagModel.tagsDS.add(tagObj);
@@ -219,7 +220,7 @@ var tagModel = {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                tagModel.tagsDS.add(tagObj);
+               // tagModel.tagsDS.add(tagObj);
 
             }
         });

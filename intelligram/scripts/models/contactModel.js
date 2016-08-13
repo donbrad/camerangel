@@ -75,8 +75,13 @@ var contactModel = {
                     var len = changedContacts.length;
                     for (var i=0; i<len; i++) {
                         var contact = changedContacts[i];
-                        // add to placelist
-                        tagModel.addContactTag(contact.name, contact.alias, '', place.uuid);
+                        if (contact.category === 'Member' || contact.category === 'Invited') {
+                            // add to tag list
+                            tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
+                        } else if (contact.category === 'Chat') {
+
+                        }
+
                     }
                 }
             } else {
