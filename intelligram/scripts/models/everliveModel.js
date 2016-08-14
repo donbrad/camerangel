@@ -357,7 +357,8 @@ var everlive = {
             }
 
             if (deviceModel.initialAction !== null) {
-                mobileNotify(deviceModel.initialAction.action + " requested @ " + moment(deviceModel.initialAction.timestamp).format("MM/DD/YY hh:mm a"));
+                var action = deviceModel.initialAction.action.capitalize('title');
+                mobileNotify(action + " requested @ " + moment(deviceModel.initialAction.timestamp).format("MM/DD/YY hh:mm a"));
                 // todo: don - wireup initial action functions here
             }
         });
