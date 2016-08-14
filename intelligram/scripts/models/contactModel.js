@@ -11,7 +11,7 @@ var contactModel = {
     _version: 1,
     _ggClass: 'Contact',
     _cloudClass: 'contacts',
-
+    contactsFetched : false,
    contactsDS: null,
 
 
@@ -72,6 +72,7 @@ var contactModel = {
             var changedContacts = e.items;
             if (e.action === undefined) {
                 if (changedContacts !== undefined) {
+                    contactsModel.contactsFetched = true;
                     var len = changedContacts.length;
                     for (var i=0; i<len; i++) {
                         var contact = changedContacts[i];
