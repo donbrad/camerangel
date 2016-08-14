@@ -346,7 +346,6 @@ var everlive = {
 
             homeView.enableHotButtons();
             userModel._user.bind('change', userModel.sync);
-            
 
             if (phoneValidated) {
                 deviceModel.setAppState('phoneValidated', true);
@@ -355,6 +354,11 @@ var everlive = {
                 mobileNotify("Please verify your phone number");
                 verifyPhoneModal.openModal();
 
+            }
+
+            if (deviceModel.initialAction !== null) {
+                mobileNotify(deviceModel.initialAction.action + " requested @ " + moment(deviceModel.initialAction.timestamp).format("MM/DD/YY hh:mm a"));
+                // todo: don - wireup initial action functions here
             }
         });
     },

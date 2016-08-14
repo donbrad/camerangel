@@ -184,8 +184,32 @@
 					]);
 
 					ThreeDeeTouch.onHomeIconPressed = function (payload) {
-						mobileNotify("3D Touch. Type: " + payload.type + ". Title: " + payload.title + ".");
-						// a few examples of how to deal with various types:
+						console.log("3D Touch. Type: " + payload.type + ". Title: " + payload.title + ".");
+						var actionObj = {action: null, timestamp: new Date() };
+						switch (payload.type) {
+							case 'autotrack' :
+								actionObj.action = 'autotrack';
+								deviceModel.initialAction = actionObj;
+								break;
+
+							case 'camera' :
+								actionObj.action = 'camera';
+								deviceModel.initialAction = actionObj;
+								break;
+
+							case 'panic' :
+								actionObj.action = 'panic';
+								deviceModel.initialAction = actionObj;
+								break;
+
+							case 'emergency' :
+								actionObj.action = 'emergency';
+								deviceModel.initialAction = actionObj;
+								break;
+
+						}
+
+
 					}
 				}
 			});

@@ -13,6 +13,7 @@ var deviceModel = {
     appVersion: '',
     deviceIsReady: false,
     lastEverliveSync: null,
+    initialAction : null,
 
 
     state: {
@@ -291,6 +292,18 @@ var deviceModel = {
 
     inBackground : function () {
         return(deviceModel.state.inBackground);
+    },
+
+    isKeyDataFetched : function () {
+        if (channelModel.channelsFetched && contactsModel.contactsFetched) {
+            return true;
+        }
+
+        return false;
+    },
+
+    processInitialAction : function () {
+
     },
 
     onOffline: function() {

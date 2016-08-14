@@ -522,28 +522,6 @@ var userModel = {
 
     },
 
-    fetchParseData: function() {
-       // APP.models.places.placesDS.fetch();
-
-        // fetch channel (chat) models (objects) from parse.
-       //channelModel.fetch();
-
-        // fetch contact models (objects) from parse.
-        //contactModel.fetch();
-
-       // placesModel.fetch();
-
-       // photoModel.fetch();
-
-       // noteModel.fetch();
-
-        //smartEvent.fetch();
-
-        userStatus.init();
-
-
-    },
-
     enableIdenticon : function () {
         $('.homeProfileImg').addClass('hidden');
         $('.homeProfileIdenticon').removeClass('hidden');
@@ -748,7 +726,5 @@ var userStatus = {
         everlive.updateUserStatus();
 
     }
-
-
 
 };
