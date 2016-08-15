@@ -1010,6 +1010,7 @@ var noteEditView = {
         var that = noteEditView;
 
         that.contentObj.data = {};
+        that.contentObj.uuid = uuid.v4();
         that.contentObj.data.photos = [];
         that.contentObj.data.objects = [];
         that.contentObj.title = '';
@@ -1022,12 +1023,12 @@ var noteEditView = {
         $('#noteEditor-textarea').redactor('code.set', "");
         $('#noteEditor-title').val("");
         $('#noteEditor-tagString').val("");
+        noteEditView._mode = 'create';
     },
 
     onShow : function (e) {
         //_preventDefault(e);
         noteEditView.openEditor();
-
         noteEditView.initNote();
 
         if (e.view.params.noteid !== undefined) {
