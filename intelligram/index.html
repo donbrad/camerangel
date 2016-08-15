@@ -1118,8 +1118,8 @@
 		</div>
 	</div>
 	<div id="noteTitleTag" ">
-		<input style="font-weight: 600;"  type="search" id="noteTitle" placeholder="Add Title...">
-		<input id="noteTagString"  placeholder="Click to add tags..." readonly> </input>
+		<input style="font-weight: 600;"  type="search" id="noteEditor-title" placeholder="Add Title...">
+		<input id="noteEditor-tagString"  placeholder="Click to add tags..." readonly> </input>
 	</div>
 	<div style="width: 100vw; -webkit-touch-callout: none; -webkit-user-select: none;">
 		<div id="noteEditor-toolbar" style=""></div>
@@ -5859,7 +5859,7 @@
 	var tagString = "";
 	if (tagString !== undefined && tagString !== null) { tagString = tagString;}
 	var sender = 'Me';
-	var noteDate = moment(time);
+	var noteDate = moment(timestamp);
 	var today = moment();
 
 	if(moment().isSame(noteDate, 'day')){
@@ -5869,8 +5869,8 @@
 	}
 
 	#
-	# if (ggType === 'Note') { #
-		<div class="private-note" data-id="#:noteUUID#" data-objectId="#:noteUUID#">
+	# if (noteType === 'Note') { #
+		<div class="private-note" data-id="#:uuid#" data-objectId="#:uuid#">
 			<h3 class="textClamp">
 				<img src="images/smart-note-inline.svg" class="icon-sm" />
 				<span>#:titleStr#</span>
@@ -5881,28 +5881,6 @@
 			</p>
 			<p style="margin-top: 0.5em; width: 100%;">#=content#</p>
 		</div>
-	# } #
-	# if (ggType === 'Event') { #
-	<div class="private-note" >
-		<h3 class="textClamp">
-			<img src="images/smart-event.svg" class="icon-md" />
-			<span>#:titleStr#</span>
-			<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
-		</h3>
-		<p>#: tagString #</p>
-		<p style="margin-top: 0.5em; width: 100%;">#=content#</p>
-	</div>
-	# } #
-	# if (ggType === 'Movie') { #
-	<div class="private-note">
-		<h3 class="textClamp">
-			<img src="images/smart-movie-circle.svg" class="icon-md" />
-			<span>#: titleStr #</span>
-			<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
-		</h3>
-		<p>#: tagString #</p>
-		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
-	</div>
 	# } #
 </script>
 

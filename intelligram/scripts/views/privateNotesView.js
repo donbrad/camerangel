@@ -108,22 +108,6 @@ var privateNotesView = {
         privateNotesView.closeEditor();
     },
 
-    /*expandEditor : function () {
-        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMax}, {duration: "fast"});
-        privateNotesView._editorExpanded = true;
-    },
-
-    shrinkEditor : function ()  {
-        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMin}, {duration: "fast"});
-        privateNotesView._editorExpanded = false;
-    },*/
-
-    /*checkEditor : function () {
-        if (! privateNotesView._editorExpanded) {
-            privateNotesView.expandEditor();
-        }
-    },*/
-
     hideKeyboardBtn: function(){
 
     },
@@ -169,13 +153,11 @@ var privateNotesView = {
 
     saveNote: function () {
         var validNote = false; // If message is valid, send is enabled
+
         if (privateNotesView._editMode) {
             validNote = true;
         }
 
-
-        //var text = $('#messageTextArea').val();
-        //var text = $('#messageTextArea').data("kendoEditor").value();
         var text = $('#privateNoteTextArea').redactor('code.get');
         var title = $('#privateNoteTitle').val();
         var tagString =  $('#privateNoteTags').val();
@@ -225,7 +207,7 @@ var privateNotesView = {
                 note.set('content', text);
                 note.set('data', contentData);
                 note.set('dataObject', dataObj);
-                note.set('time',ggTime.currentTime());
+                note.set('timestamp',ggTime.currentTime());
 
                 privateNoteModel.updateNote(note);
 
@@ -269,8 +251,7 @@ var privateNotesView = {
             ggType = data.ggType;
         }
         var note = {
-            noteUUID: uuidNote,
-            type: 'Note',
+            uuid: uuidNote,
             ggType: ggType,
             title: data.title,
             tagString: data.tagString,
@@ -442,7 +423,7 @@ var privateNotesView = {
 
     deleteNote : function (e) {
         _preventDefault(e);
-       if (privateNotesView.activeNote.noteUUID !== undefined) {
+       if (privateNotesView.activeNote.uuid !== undefined) {
 
            var note = privateNotesView.activeNote;
            var Id = note.Id;
@@ -453,7 +434,7 @@ var privateNotesView = {
                 noteObject =   note.data.objects; 
            }
 
-           everlive.deleteMatching(privateNoteModel._cloudClass, {'noteUUID': note.noteUUID}, function (error, data) {
+           everlive.deleteMatching(privateNoteModel._cloudClass, {'uuid': note.uuid}, function (error, data) {
                privateNoteModel.deleteNote(privateNotesView.activeNote);
                privateNotesView.activeNote = {objects: [], photos: []};
            });

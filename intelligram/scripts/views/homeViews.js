@@ -985,9 +985,12 @@ var noteEditView = {
     _returnview : null,
     _saveCallback : null,
     _editorActive : false,
+    _mode : 'create',
+    _noteUUID : null,
     contentObj : new kendo.data.ObservableObject(),
     tags : null,
     tagString: null,
+    photos: [],
 
     onInit: function (e) {
 
@@ -1003,8 +1006,38 @@ var noteEditView = {
 
     },
 
+    initNote : function () {
+        var that = noteEditView;
+
+        that.contentObj.data = {};
+        that.contentObj.data.photos = [];
+        that.contentObj.data.objects = [];
+        that.contentObj.title = '';
+        that.contentObj.tagString = '';
+        that.contentObj.tags = [];
+        that.contentObj.content = '';
+        that.contentObj.timestamp = new Date();
+        that.contentObj.ggType = privateNoteModel._ggClass;
+        that.contentObj.noteType = privateNoteModel._note;
+        $('#noteEditor-textarea').redactor('code.set', "");
+        $('#noteEditor-title').val("");
+        $('#noteEditor-tagString').val("");
+    },
+
     onShow : function (e) {
         //_preventDefault(e);
+
+        if (e.view.params.noteid !== undefined) {
+            noteEditView._noteUUID = e.view.params.noteid;
+            var note = privateNoteModel.findNote(noteEditView._noteUUID);
+            noteEditView._mode = 'edit';
+            noteEditView.contentObj = note;
+        } else {
+            noteEditView._noteUUID = null;
+            noteEditView._mode = 'create';
+        }
+
+
         if (e.view.params.callback !== undefined) {
             noteEditView._callback = e.view.params.callback;
         } else {
@@ -1024,10 +1057,12 @@ var noteEditView = {
         }
 
         noteEditView.openEditor();
+
+        noteEditView.initNote();
     },
 
     onHide: function (e) {
-        noteEditView.openEditor();
+        noteEditView.closeEditor();
 
     },
 
@@ -1044,7 +1079,107 @@ var noteEditView = {
         if (noteEditView._saveCallback !== null) {
             noteEditView._saveCallback (noteEditView.contentObj);
         }
+
+        noteEditView.saveNote();
         noteEditView.onDone();
+    },
+
+
+    addPhoto : function (photoId) {
+
+        var photo = photoModel.findPhotoById(photoId);
+
+        if (photo !== undefined) {
+
+            var photoObj  = {
+                photoId : photo.photoId,
+                thumbnailUrl: photo.thumbnailUrl,
+                imageUrl: photo.imageUrl,
+                deviceUrl : photo.deviceUrl,
+                cloudUrl : photo.cloudUrl
+            };
+        }
+
+        noteEditView.contentObj.data.photos.push(photoObj);
+        // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
+    },
+
+    validatePhotos : function () {
+        var validPhotos = [];
+        // var messageText = $('#messageTextArea').data("kendoEditor").value();
+        var messageText = $('#noteEditor-textarea').redactor('code.get');
+
+        for (var i=0; i< noteEditView.photos.length; i++) {
+            var photoId = noteEditView.photos[i];
+
+            if (messageText.indexOf(photoId) !== -1) {
+                //the photoId is in the current message text
+                noteEditView.addPhoto(photoId);
+            }
+        }
+    },
+
+    saveNote: function () {
+        var validNote = false; // If message is valid, send is enabled
+
+        if (noteEditView._mode === 'edit') {
+            validNote = true;
+        }
+
+        var text = $('#noteEditor-textarea').redactor('code.get');
+        var title = $('#noteEditor-title').val();
+        var tagString =  $('#noteEditor-tagString').val();
+
+        if (text.length > 0) {
+            validNote = true;
+        }
+
+
+        // Are there any photos in the current message
+        if (noteEditView.photos.length > 0) {
+            validNote = true;
+
+            //Need to make sure the user didn't delete the photo reference in the html...
+            noteEditView.validatePhotos();
+        }
+
+
+        if (validNote === true ) {
+
+            var activeNote = noteEditView.contentObj;
+            var contentData = JSON.stringify(activeNote.data);
+            var dataObj = JSON.parse(contentData);
+
+            if (noteEditView._mode === 'edit') {
+
+                var note = privateNoteModel.findNote(activeNote.uuid);
+
+
+                note.set('title', title);
+                note.set('tagString', tagString);
+                note.set('tags', tags);
+                note.set('content', text);
+                note.set('data', contentData);
+                note.set('dataObject', dataObj);
+                note.set('timestamp',ggTime.currentTime());
+
+                privateNoteModel.updateNote(note);
+
+            } else {
+
+                activeNote.title = title;
+                activeNote.content = text;
+                activeNote.tagString = tagString;
+                activeNote.timestamp = ggTime.currentTime();
+                activeNote.data = contentData;
+                activeNote.dataObject = dataObj;
+
+               privateNoteModel.addNote(activeNote);
+            }
+
+
+        }
+
     },
 
 
@@ -1145,6 +1280,7 @@ var noteEditView = {
 
 
     },
+
     sendGhostEmail : function (e) {
         _preventDefault(e);
 
