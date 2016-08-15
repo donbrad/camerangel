@@ -1171,7 +1171,7 @@ var noteEditView = {
     addPhoto : function (e) {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
-       /* devicePhoto.deviceGallery(
+        devicePhoto.deviceGallery(
             devicePhoto._resolution, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
@@ -1179,8 +1179,8 @@ var noteEditView = {
             noteEditView.addImageToNote,  // Optional preview callback
             noteEditView.updateImageUrl
         );
-*/
-        window.imagePicker.getPictures(
+
+        /*window.imagePicker.getPictures(
             function(results) {
                 for (var i = 0; i < results.length; i++) {
                     console.log('Image URI: ' + results[i]);
@@ -1191,7 +1191,7 @@ var noteEditView = {
                 maximumImagesCount: 10,
                 width: devicePhoto._resolution
             }
-        );
+        );*/
     },
 
     addGallery : function (e) {
