@@ -80,6 +80,7 @@ var privateNotesView = {
         privateNotesView.activeNote.tagString = '';
         privateNotesView.activeNote.tags= [];
         privateNotesView.activeNote.content = '';
+        privateNotesView.activeNote.uuid = uuid.v4();
         privateNotesView._editView = false;
        // privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
