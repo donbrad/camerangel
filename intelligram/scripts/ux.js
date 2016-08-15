@@ -5,6 +5,7 @@ var ux = {
 	currentAddTarget : null,
 	currentAddFunction : null,
 	defaultAddIcon : "images/menu-add.svg",
+	mainSearchChange : null,
 
 	// Set the add target (url or function) and option icon for right tool button on all main template views
 	setAddTarget : function (iconUrl, target, func) {

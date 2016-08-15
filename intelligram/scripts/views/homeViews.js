@@ -281,6 +281,8 @@ var homeView = {
                 $('#home-today').addClass("hidden");
                 $('#home-alerts').addClass("hidden");
                 ux.setSearchPlaceholder("Search Notes...");
+                // List View onShow code goes here
+                privateNotesView.topOffset = $("#notesView-listview").data("kendoMobileListView").scroller().scrollTop;
                 break;
             case 2 : // Today
                 $('#home-notes').addClass("hidden");
@@ -344,15 +346,6 @@ var homeView = {
             index: homeView._activeView
         });
 
-        $("#notesView-listview").kendoMobileListView({
-            dataSource: privateNoteModel.notesDS,
-            template: $("#privateNote-template").html()
-
-        }).kendoTouch({
-            filter: "div",
-            tap: privateNotesView.tapNote,
-            hold: privateNotesView.holdNote
-        });
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
             template: $("#notificationTemplate").html(),
@@ -370,17 +363,22 @@ var homeView = {
             }
         });
 
+        privateNotesView.onInit();
+
         homeView.scroller = e.view.scroller;
 
         homeView.scroller.setOptions({
             pullToRefresh: true,
             pull: function() {
-               // photoModel.photosDS.sync();
+
                 ux.toggleSearch();
+                // Add code to selectively sync active view
                 homeView.scroller.pullHandled();
 
             }
         });
+
+
     },
 
     onShow: function (e) {

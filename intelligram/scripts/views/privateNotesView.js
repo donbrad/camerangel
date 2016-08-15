@@ -27,7 +27,7 @@ var privateNotesView = {
     onInit : function (e) {
        // _preventDefault(e);
 
-        $("#privateNotesView-listview").kendoMobileListView({
+        $("#notesView-listview").kendoMobileListView({
             dataSource: privateNoteModel.notesDS,
             template: $("#privateNote-template").html()
 
@@ -95,7 +95,7 @@ var privateNotesView = {
     onShow : function (e) {
       //  _preventDefault(e);
         ux.hideKeyboard();
-        privateNotesView.topOffset = $("#privateNotesView-listview").data("kendoMobileListView").scroller().scrollTop;
+        privateNotesView.topOffset = $("#notesView-listview").data("kendoMobileListView").scroller().scrollTop;
         privateNotesView.openEditor();
         privateNotesView.noteInit();
     },
