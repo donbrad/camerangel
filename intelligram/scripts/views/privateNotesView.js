@@ -151,7 +151,7 @@ var privateNotesView = {
 
     },
 
-    saveNote: function () {
+    /*saveNote: function () {
         var validNote = false; // If message is valid, send is enabled
 
         if (privateNotesView._editMode) {
@@ -272,7 +272,7 @@ var privateNotesView = {
         privateNotesView.deactivateEditor();
         //deviceModel.syncEverlive();
 
-    },
+    },*/
 
   /*  toggleTitleTag : function () {
 
