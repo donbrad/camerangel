@@ -768,7 +768,7 @@ var privateNotesView = {
             $('#privateNote-SaveBtn').addClass('hidden');
            // privateNotesView.checkEditor();
 
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
+            var imgUrl = '<img class="photo-chat" data-id="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 

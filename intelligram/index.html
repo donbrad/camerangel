@@ -1114,7 +1114,7 @@
 		<div data-role="navbar">
 			<span>intelliNote</span>
 			<a data-role="button" data-click="noteEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
-			<a data-role="button" data-click="noteEditView.onSave" data-align="right" class="btnClear">Save</a>
+			<a data-role="button" data-click="noteEditView.onSave" data-align="right" id=noteEditor-saveBtn" class="btnClear">Save</a>
 		</div>
 	</div>
 	<div id="noteTitleTag" ">
@@ -1128,18 +1128,18 @@
 
 	<ul data-role="actionsheet"  id="notePhotoActions" >
 		<li>
-			<a data-action="privateNotesView.addCamera">
+			<a data-action="noteEditView.addCamera">
 				<img src="images/action-camera.svg" class="icon-action"/> Camera
 			</a>
 		</li>
 		<li>
-			<a data-action="privateNotesView.addPhoto">
+			<a data-action="NoteEditView.addPhoto">
 				<img src="images/action-device.svg" class="icon-action">
 				Device Gallery
 			</a>
 		</li>
 		<li>
-			<a data-action="privateNotesView.addGallery">
+			<a data-action="NoteEditView.addGallery">
 				<img src="images/action-memories.svg" class="icon-action"> Memories Gallery
 			</a>
 		</li>

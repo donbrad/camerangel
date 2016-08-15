@@ -1098,8 +1098,29 @@ var noteEditView = {
         noteEditView.onDone();
     },
 
+    addImageToNote: function (photoId, displayUrl) {
+        var photoObj = photoModel.findPhotoById(photoId);
 
-    addPhoto : function (photoId) {
+        if (photoObj !== undefined) {
+
+            // privateNotesView.checkEditor();
+
+            var imgUrl = '<img class="photo-chat" data-id="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
+
+            $('#noteEditor-textarea').redactor('insert.node', $('<div />').html(imgUrl));
+
+            noteEditView.photos.push(photoId);
+
+        }
+
+    },
+
+    updateImageUrl : function (photoId, shareUrl) {
+        $('#notephoto_' + photoId).attr('src', shareUrl);
+        //$('#privateNote-SaveBtn').removeClass('hidden');
+    },
+
+    addPhotoToNote : function (photoId) {
 
         var photo = photoModel.findPhotoById(photoId);
 
@@ -1118,6 +1139,7 @@ var noteEditView = {
         // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
+    // Confirm that the user hasn't delete the display reference to any photos in the note
     validatePhotos : function () {
         var validPhotos = [];
         // var messageText = $('#messageTextArea').data("kendoEditor").value();
@@ -1128,9 +1150,63 @@ var noteEditView = {
 
             if (messageText.indexOf(photoId) !== -1) {
                 //the photoId is in the current message text
-                noteEditView.addPhoto(photoId);
+                noteEditView.addPhotoToNote(photoId);
             }
         }
+    },
+
+    addCamera : function (e) {
+        _preventDefault(e);
+
+        devicePhoto.deviceCamera(
+            devicePhoto._resolution, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            noteEditView.addImageToNote,  // Optional preview callback
+            noteEditView.updateImageUrl
+        );
+    },
+
+    addPhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+       /* devicePhoto.deviceGallery(
+            devicePhoto._resolution, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            noteEditView.addImageToNote,  // Optional preview callback
+            noteEditView.updateImageUrl
+        );
+*/
+        window.imagePicker.getPictures(
+            function(results) {
+                for (var i = 0; i < results.length; i++) {
+                    console.log('Image URI: ' + results[i]);
+                }
+            }, function (error) {
+                console.log('Error: ' + error);
+            }, {
+                maximumImagesCount: 10,
+                width: devicePhoto._resolution
+            }
+        );
+    },
+
+    addGallery : function (e) {
+        _preventDefault(e);
+
+        galleryPicker.openModal(function (photo) {
+
+            var url = photo.thumbnailUrl;
+            if (photo.imageUrl !== undefined && photo.imageUrl !== null)
+                url = photo.imageUrl;
+
+            noteEditView.addImageToNote(photo.photoId, url);
+        });
+        //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
+
     },
 
     saveNote: function () {
