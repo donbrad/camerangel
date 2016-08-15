@@ -1026,12 +1026,25 @@ var noteEditView = {
 
     onShow : function (e) {
         //_preventDefault(e);
+        noteEditView.openEditor();
+
+        noteEditView.initNote();
 
         if (e.view.params.noteid !== undefined) {
             noteEditView._noteUUID = e.view.params.noteid;
             var note = privateNoteModel.findNote(noteEditView._noteUUID);
             noteEditView._mode = 'edit';
+            if (note.tags === undefined) {
+                note.tags = [];
+            }
+            if (note.tagString === undefined) {
+                note.tagString = null;
+            }
             noteEditView.contentObj = note;
+            $('#noteEditor-textarea').redactor('code.set', note.content);
+            $('#noteEditor-title').val(note.title);
+            $('#noteEditor-tagString').val(note.tagString);
+
         } else {
             noteEditView._noteUUID = null;
             noteEditView._mode = 'create';
@@ -1056,9 +1069,9 @@ var noteEditView = {
             noteEditView._saveCallback = null;
         }
 
-        noteEditView.openEditor();
 
-        noteEditView.initNote();
+
+
     },
 
     onHide: function (e) {
@@ -1157,7 +1170,7 @@ var noteEditView = {
 
                 note.set('title', title);
                 note.set('tagString', tagString);
-                note.set('tags', tags);
+                note.set('tags', []); // todo: don integrate tag processing...
                 note.set('content', text);
                 note.set('data', contentData);
                 note.set('dataObject', dataObj);

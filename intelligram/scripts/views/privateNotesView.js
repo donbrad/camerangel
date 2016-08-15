@@ -32,7 +32,7 @@ var privateNotesView = {
             template: $("#privateNote-template").html()
 
         }).kendoTouch({
-            filter: "div",
+            filter: ".private-note",
             tap: privateNotesView.tapNote,
             hold: privateNotesView.holdNote
         });
@@ -447,8 +447,10 @@ var privateNotesView = {
     editNote : function (e) {
         _preventDefault(e);
 
-        if (privateNotesView.activeNote.noteUUID !== undefined) {
-            var content='<p></p>';
+        if (privateNotesView.activeNote.uuid !== undefined) {
+
+            APP.kendo.navigate("#noteEditor?noteid="+privateNotesView.activeNote.uuid+'&returnview=home');
+           /* var content='<p></p>';
            
             privateNotesView._editMode = true;
             $('#privateNoteTitle').val(privateNotesView.activeNote.title);
@@ -460,7 +462,7 @@ var privateNotesView = {
             $('#privateNoteTextArea').redactor('code.set', content);
 
             privateNotesView.activateEditor();
-            $("#privateNoteViewActions").data("kendoMobileActionSheet").close();
+            $("#privateNoteViewActions").data("kendoMobileActionSheet").close();*/
         }
 
     },
@@ -908,8 +910,6 @@ var privateNotesView = {
     tapNote : function (e) {
        // e.preventDefault();
 
-        // User has clicked in message area, so hide the keyboard
-       privateNotesView.hideEditor();
 
 
         var $target = $(e.touch.initialTouch);
@@ -920,26 +920,27 @@ var privateNotesView = {
         // This only works if the user clicks / tpas on a bounding element
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
-            noteId =  $(e.touch.currentTarget).data("uid");
+            noteId =  $(e.touch.currentTarget).data("id");
         } else {
             // New Android
-            noteId =   e.touch.target[0].attributes['data-uid'].value;
+            noteId =   e.touch.target[0].attributes['data-id'].value;
         }
 
 
-        if (noteId === undefined || noteId === null) {
-           var $div = $target.closest( "div" );
-            noteId = $div.data('objectid');
+        if (noteId !== undefined && noteId !== null) {
             note = privateNoteModel.findNote(noteId);
-        } else {
-            note = dataSource.getByUid(noteId);
+            if (note !== undefined && note !== null) {
+                privateNotesView.activeNote = note;
+
+                // todo: don integrate noteViewerModal when ready...
+                if (note.noteType === 'Note') {
+                    APP.kendo.navigate("#noteEditor?noteid="+note.uuid+'&returnview=home');
+
+                }
+            }
         }
 
 
-
-        if (note !== undefined) {
-            privateNotesView.activeNote = note;
-        }
 
         // User actually clicked on the photo so show the open the photo viewer
         if ($target.hasClass('photo-chat')) {
@@ -977,26 +978,20 @@ var privateNotesView = {
         // This only works if the user clicks / tpas on a bounding element
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
-            noteId =  $(e.touch.currentTarget).data("uid");
+            noteId =  $(e.touch.currentTarget).data("id");
         } else {
             // New Android
-            noteId =   e.touch.target[0].attributes['data-uid'].value;
+            noteId =   e.touch.target[0].attributes['data-id'].value;
         }
 
 
-        if (noteId === undefined || noteId === null) {
-            var $div = $target.closest( "div" );
-            noteId = $div.data('objectid');
+        if (noteId !== undefined && noteId !== null) {
             note = privateNoteModel.findNote(noteId);
-        } else {
-            note = dataSource.getByUid(noteId);
+            if (note !== undefined && note !== null) {
+                privateNotesView.activeNote = note;
+            }
         }
 
-
-
-        if (note !== undefined) {
-            privateNotesView.activeNote = note;
-        }
 
         $("#privateNoteViewActions").data("kendoMobileActionSheet").open();
 
