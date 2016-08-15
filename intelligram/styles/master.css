@@ -7333,10 +7333,23 @@ table.k-editor {
   border-bottom: none;
 }
 /* Notes */
-.private-note-content > p {
+.private-note-content {
+  margin-top: 0.5em;
+}
+.private-note-content > * {
+  display: none;
+}
+.private-note-content > p:first-child {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  margin-top: 0.5em;
+  display: inline-block;
+}
+.private-note-content > p:after {
+  content: "...";
+  color: #979797;
+}
+.private-note-content > p:after img {
+  height: 12px;
 }

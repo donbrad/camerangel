@@ -7274,9 +7274,19 @@ table.k-editor {
 
 /* Notes */
 .private-note-content {
-  > p {
+  margin-top: 0.5em;
+  > * {
+    display: none;
+  }
+  > p:first-child {
     .textClamp;
     width: 100%;
-    margin-top: 0.5em;
+    display: inline-block;
   }
+
+}
+
+.private-note-content > p:after {
+  content: "...";
+  .helper;
 }
