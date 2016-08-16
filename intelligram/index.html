@@ -5861,6 +5861,13 @@
 	var sender = 'Me';
 	var noteDate = moment(timestamp);
 	var today = moment();
+	var photoCount = dataObj.photos.length;
+	var photoStr = "";
+	if (photoCount == 1) {
+	 photoStr = "1 photo";
+	} else if (photoCount > 1) {
+	 photoStr = photoCount + " photos";
+	}
 
 	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
@@ -5877,6 +5884,10 @@
 			</h3>
 			<p class="helper" style="font-size: 0.85em;">
 				<span>#:dateString#</span>
+				<span style="float:right">photoStr</span>
+
+			</p>
+			<p class="helper" style="font-size: 0.85em; clear:both;">
 				<span> #:tagString#</span>
 			</p>
 			<div class="private-note-content">
