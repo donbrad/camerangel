@@ -15,6 +15,7 @@ var privateNoteModel = {
     _cloudClass : 'privatenote',
     _ggClass : 'PrivateNote',
     _note : 'Note',
+    _gallery : 'Gallery',
     _movie : 'Movie',
     _event : 'Event',
     _link : 'Link',
