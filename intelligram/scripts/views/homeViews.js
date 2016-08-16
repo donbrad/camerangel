@@ -1042,6 +1042,7 @@ var noteEditView = {
                 note.tagString = null;
             }
             noteEditView.contentObj = note;
+            noteEditView.photos = note.dataObject.photos;
             $('#noteEditor-textarea').redactor('code.set', note.content);
             $('#noteEditor-title').val(note.title);
             $('#noteEditor-tagString').val(note.tagString);
