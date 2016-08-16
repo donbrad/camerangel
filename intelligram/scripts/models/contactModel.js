@@ -72,7 +72,7 @@ var contactModel = {
             var changedContacts = e.items;
             if (e.action === undefined) {
                 if (changedContacts !== undefined) {
-                    contactsModel.contactsFetched = true;
+                    contactModel.contactsFetched = true;
                     var len = changedContacts.length;
                     for (var i=0; i<len; i++) {
                         var contact = changedContacts[i];
