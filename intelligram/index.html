@@ -454,6 +454,11 @@
 							</a>
 						</li>
 						<li>
+							<a data-role="button" href="#galleryEditor?returnview=home">
+								<img src="images/gallery-grid-2.svg" height="24">
+							</a>
+						</li>
+						<li>
 							<a data-role="button" href="#noteEditor?returnview=home">
 								<img src="images/icon-myNotes.svg" height="20" />
 							</a>
@@ -1107,13 +1112,55 @@
 		</div>
 </div>
 
+<div data-role="view" data-title="Gallery Editor" id="galleryEditor" data-init="galleryEditView.onInit" data-show="galleryEditView.onShow"  data-hide="galleryEditView.onHide"   style="width:100%; height: 100%; display: none;" >
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>intelliGallery</span>
+			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
+			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear">Add</a>
+		</div>
+	</div>
+	<div id="noteTitleTag">
+		<input style="font-weight: 600;"  type="search" id="galleryEditor-title" placeholder="Add Title...">
+		<input id="galleryEditor-tagString"  placeholder="Click to add tags..." readonly>
+	</div>
+
+	<div style="width: 100vw;">
+		<ul id="galleryEdit-listview" class="list-inline" data-role="listview"></ul>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnPrimary btnSpan-btm" data-role="button" data-click="galleryEditView.onSave" data-align="right" id=galleryEditor-saveBtn" class="btnClear">Save</a>
+	</div>
+
+
+	<ul data-role="actionsheet"  id="galleryEditPhotoActions" >
+		<li>
+			<a data-action="galleryEditView.addCamera">
+				<img src="images/action-camera.svg" class="icon-action"/> Camera
+			</a>
+		</li>
+		<li>
+			<a data-action="galleryEditView.addPhoto">
+				<img src="images/action-device.svg" class="icon-action">
+				Device Gallery
+			</a>
+		</li>
+		<li>
+			<a data-action="galleryEditView.addGallery">
+				<img src="images/action-memories.svg" class="icon-action"> Memories Gallery
+			</a>
+		</li>
+	</ul>
+</div>
+
 
 <!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
 <div data-role="modalview" id="noteViewer" data-model="noteViewer.activeNote" data-zoom="true" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="noteViewer.onInit">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>intelliNote Viewer</span>
-			<a data-click="noteViewer.closeModal" data-role="button" data-align="right" class="btnClear-grey"><img src="images/close.svg" /></a>
+			<a data-click="noteViewer.closeModal" data-role="button" data-align="left" class="btnClear-grey"><img src="images/close.svg" /></a>
+			<a data-click="noteViewer.editNote" data-role="button" data-align="right" class="btnClear-grey">Edit</a>
 		</div>
 	</div>
 	<div >

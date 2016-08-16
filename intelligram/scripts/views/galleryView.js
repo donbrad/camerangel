@@ -1454,3 +1454,196 @@ var sendViaModal = {
     }
 
 };
+
+
+var galleryEditView = {
+    _callback : null,
+    _returnview : null,
+    _mode : 'create',
+    _galleryUUID : null,
+    activeObj : new kendo.data.ObservableObject(),
+    tags : null,
+    tagString: null,
+    photos: [],
+
+    onInit: function (e) {
+
+        $('#galleryEditor-tagString').click(function(){
+            var that = galleryEditView;
+            var string = $('#galleryEditor-tagString').val();
+
+            smartTagView.openModal(that.tags, that.tagString, function (tags, tagString ) {
+
+            })
+
+        });
+
+    },
+
+    initGallery : function () {
+        var that = galleryEditView;
+
+
+        that.contentObj.photos = [];
+        that.contentObj.title = '';
+        that.contentObj.tagString = '';
+        that.contentObj.tags = [];
+        that.contentObj.timestamp = new Date();
+        that.contentObj.ggType = privateNoteModel._ggClass;
+        that.contentObj.noteType = privateNoteModel._gallery;
+        $('#galleryEditor-title').val("");
+        $('#galleryEditor-tagString').val("");
+        galleryEditView._mode = 'create';
+    },
+
+    onShow : function (e) {
+        //_preventDefault(e);
+
+
+        if (e.view.params.galleryid !== undefined) {
+            galleryEditView._noteUUID = e.view.params.noteid;
+            var gallery = privateNoteModel.findGallery(galleryEditView._galleryUUID);
+            galleryEditView._mode = 'edit';
+            if (gallery.tags === undefined) {
+                gallery.tags = [];
+            }
+            if (gallery.tagString === undefined) {
+                gallery.tagString = null;
+            }
+            galleryEditView.contentObj = gallery;
+            galleryEditView.photos = gallery.photos;
+            $('#galleryEditor-title').val(note.title);
+            $('#galleryEditor-tagString').val(note.tagString);
+
+        } else {
+            galleryEditView._noteUUID = null;
+            galleryEditView._mode = 'create';
+        }
+
+
+        if (e.view.params.callback !== undefined) {
+            galleryEditView._callback = e.view.params.callback;
+        } else {
+            galleryEditView._callback = null;
+        }
+
+        if (e.view.params.returnview !== undefined) {
+            galleryEditView._returnview = e.view.params.returnview;
+        } else {
+            galleryEditView._returnview = null;
+        }
+
+
+
+
+    },
+
+    onHide: function (e) {
+
+
+    },
+
+    onDone : function (e) {
+        // _preventDefault(e);
+
+        if (galleryEditView._returnview !== null) {
+            APP.kendo.navigate('#'+galleryEditView._returnview);
+        }
+
+    },
+
+    addPhotoToGallery : function (photoId, displayUrl) {
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+
+            galleryEditView.photosDS.add(photoObj);
+            galleryEditView.photosDS.sync();
+        }
+
+    },
+
+
+    updateImageUrl : function (photoId, shareUrl) {
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+            // update the cloud url for this gallery photo
+        }
+
+    },
+
+
+    onSave : function (e) {
+
+        galleryEditView.saveGallery();
+        galleryEditView.onDone();
+    },
+
+    addCamera : function (e) {
+        _preventDefault(e);
+
+        devicePhoto.deviceCamera(
+            devicePhoto._resolution, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            galleryEditView.addPhotoToGallery,  // Optional preview callback
+            galleryEditView.updateImageUrl
+        );
+    },
+
+    addPhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+        devicePhoto.deviceGallery(
+            devicePhoto._resolution, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            galleryEditView.addPhotoToGallery,  // Optional preview callback
+            galleryEditView.updateImageUrl
+        );
+
+        /*window.imagePicker.getPictures(
+         function(results) {
+         for (var i = 0; i < results.length; i++) {
+         console.log('Image URI: ' + results[i]);
+         }
+         }, function (error) {
+         console.log('Error: ' + error);
+         }, {
+         maximumImagesCount: 10,
+         width: devicePhoto._resolution
+         }
+         );*/
+    },
+
+    addGallery : function (e) {
+        _preventDefault(e);
+
+        galleryPicker.openModal(function (photo) {
+
+            var url = photo.thumbnailUrl;
+            if (photo.imageUrl !== undefined && photo.imageUrl !== null)
+                url = photo.imageUrl;
+
+            galleryEditView.addPhotoToGallery(photo.photoId, url);
+        });
+
+    },
+
+    saveGallery: function () {
+        var validNote = false; // If message is valid, send is enabled
+
+        if (galleryEditView._mode === 'edit') {
+            validNote = true;
+        }
+
+        var title = $('#galleryEditor-title').val();
+        var tagString =  $('galleryEditor-tagString').val();
+
+    }
+
+
+};

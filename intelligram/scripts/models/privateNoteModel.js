@@ -164,6 +164,21 @@ var privateNoteModel = {
         return notes[0];
     },
 
+
+    findGallery : function (galleryId) {
+        var galleries = this.queryNotes([{ field: "uuid", operator: "eq", value: galleryId },
+            {field: "noteType", operator: "eq", value: privateNoteModel._gallery }]);
+
+        if (galleries === undefined ) {
+            return null;
+        }
+        if (galleries.length === 0) {
+            return null;
+        }
+
+        return galleries[0];
+    },
+
     deleteNote : function (note) {
          if (note !== undefined) {
              privateNoteModel.notesDS.remove(note);

@@ -983,15 +983,28 @@ var modalView = {
 var noteViewer = {
 
     activeNote : new kendo.data.ObservableObject(),
+    noteUUID : null,
 
     onInit : function () {
 
     },
 
+
+    editNote : function () {
+        APP.kendo.navigate("#noteEditor?noteid="+noteViewer.noteUUID+"&returnview=home");
+        noteViewer.closeModal();
+    },
+
     openModal : function (noteId, note) {
+
+        if (noteId !== null) {
+            noteViewer.noteUUID = noteId;
+        }
 
         if (note !== undefined && note !== null) {
 
+            noteViewer.noteUUID = note.uuid;
+            noteViewer.activeNote.set('uuid', note.uuid);
             noteViewer.activeNote.set('title', note.title);
             noteViewer.activeNote.set('tagString', note.tagString);
             noteViewer.activeNote.set('content', note.content);
@@ -1023,9 +1036,9 @@ var noteEditView = {
 
     onInit: function (e) {
 
-        $('#noteTagString').click(function(){
+        $('#noteEditor-tagString').click(function(){
             var that = noteEditView;
-            var string = $('#noteTagString').val();
+            var string = $('#noteEditor-tagString').val();
 
             smartTagView.openModal(that.tags, that.tagString, function (tags, tagString ) {
 
