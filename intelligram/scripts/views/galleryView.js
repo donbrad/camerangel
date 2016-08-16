@@ -1464,7 +1464,7 @@ var galleryEditView = {
     activeObj : new kendo.data.ObservableObject(),
     tags : null,
     tagString: null,
-    photos: [],
+    photosDS:  new kendo.data.DataSource(),
 
     onInit: function (e) {
 
@@ -1478,19 +1478,49 @@ var galleryEditView = {
 
         });
 
+        $("#galleryEdit-listview").kendoMobileListView({
+            dataSource: galleryEditView.photosDS,
+            template: $("#gallery-template").html(),
+            click : function (e) {
+               // _preventDefault(e);
+
+                var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+                modalPhotoView.openModal(photo);
+            }
+            /*dataBound: function(e){
+             ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
+             }*/
+        });
+    },
+
+    galleryActionView: function(e){
+        _preventDefault(e);
+        if(e.index === 0){
+            $(".galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
+            $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid-active.svg");
+            $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt.svg");
+            $("#galleryEdit-listview").data("kendoMobileListView").scroller().reset();
+        } else{
+            $(".galleryImg").addClass("galleryImg-full").removeClass("galleryImg-grid");
+            $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid.svg");
+            $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt-active.svg");
+            $("#galleryEdit-listview").data("kendoMobileListView").scroller().reset();
+        }
     },
 
     initGallery : function () {
         var that = galleryEditView;
 
 
-        that.contentObj.photos = [];
-        that.contentObj.title = '';
-        that.contentObj.tagString = '';
-        that.contentObj.tags = [];
-        that.contentObj.timestamp = new Date();
-        that.contentObj.ggType = privateNoteModel._ggClass;
-        that.contentObj.noteType = privateNoteModel._gallery;
+        that.activeObj.photos = [];
+        that.activeObj.set('photoCount', 0);
+        that.activeObj.title = '';
+        that.activeObj.tagString = '';
+        that.activeObj.tags = [];
+        that.activeObj.timestamp = new Date();
+        that.activeObj.ggType = privateNoteModel._ggClass;
+        that.activeObj.noteType = privateNoteModel._gallery;
         $('#galleryEditor-title').val("");
         $('#galleryEditor-tagString').val("");
         galleryEditView._mode = 'create';
@@ -1499,6 +1529,7 @@ var galleryEditView = {
     onShow : function (e) {
         //_preventDefault(e);
 
+        galleryEditView.initGallery();
 
         if (e.view.params.galleryid !== undefined) {
             galleryEditView._noteUUID = e.view.params.noteid;
@@ -1596,16 +1627,16 @@ var galleryEditView = {
     addPhoto : function (e) {
         _preventDefault(e);
         // Call the device gallery function to get a photo and get it scaled to gg resolution
-        devicePhoto.deviceGallery(
+        /*devicePhoto.deviceGallery(
             devicePhoto._resolution, // max resolution in pixels
             75,  // quality: 1-99.
             true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
             null,  // Current channel Id for offers
             galleryEditView.addPhotoToGallery,  // Optional preview callback
             galleryEditView.updateImageUrl
-        );
+        );*/
 
-        /*window.imagePicker.getPictures(
+        window.imagePicker.getPictures(
          function(results) {
          for (var i = 0; i < results.length; i++) {
          console.log('Image URI: ' + results[i]);
@@ -1616,7 +1647,7 @@ var galleryEditView = {
          maximumImagesCount: 10,
          width: devicePhoto._resolution
          }
-         );*/
+         );
     },
 
     addGallery : function (e) {
