@@ -1288,13 +1288,12 @@ var noteEditView = {
 
                 var note = privateNoteModel.findNote(activeNote.uuid);
 
-
                 note.set('title', title);
                 note.set('tagString', tagString);
                 note.set('tags', []); // todo: don integrate tag processing...
                 note.set('content', text);
                 note.set('data', contentData);
-                note.set('dataObject', dataObj);
+                note.dataObject = dataObj;
                 note.set('timestamp',ggTime.currentTime());
 
                 privateNoteModel.updateNote(note);
