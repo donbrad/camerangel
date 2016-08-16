@@ -934,7 +934,9 @@ var privateNotesView = {
 
                 // todo: don integrate noteViewerModal when ready...
                 if (note.noteType === 'Note') {
-                    APP.kendo.navigate("#noteEditor?noteid="+note.uuid+'&returnview=home');
+
+                    noteViewer.openModal(note.uuid, privateNotesView.activeNote);
+
 
                 }
             }

@@ -980,6 +980,35 @@ var modalView = {
 
 };
 
+var noteViewer = {
+    
+    activeNote : new kendo.data.ObservableObject(),
+
+    onInit : function () {
+
+    },
+
+    openModal : function (noteId, note) {
+
+        if (note !== undefined && note !== null) {
+
+            noteViewer.activeNote.set('title', note.title);
+            noteViewer.activeNote.set('tagString', note.tagString);
+            noteViewer.activeNote.set('content', note.content);
+            noteViewer.activeNote.set('data', note.data);
+            noteViewer.activeNote.set('dataObject', note.dataObject);
+        }
+        $('#noteViewer').data('kendoMobileModalView').open();
+    },
+
+    closeModal : function () {
+        $('#noteViewer').data('kendoMobileModalView').close();
+    }
+};
+
+
+
+
 var noteEditView = {
     _callback : null,
     _returnview : null,
