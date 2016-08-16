@@ -1109,20 +1109,20 @@
 
 
 <!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
-<div data-role="modalview" id="noteViewer" data-model="noteViewer.activeNote" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="noteViewer.onInit">
+<div data-role="modalview" id="noteViewer" data-model="noteViewer.activeNote" data-zoom="true" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="noteViewer.onInit">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>intelliNote Viewer</span>
-			<a data-click="noteViewer.closeModal" data-role="button" data-align="left" class="btnClear-grey">Done</a>
+			<a data-click="noteViewer.closeModal" data-role="button" data-align="right" class="btnClear-grey"><img src="images/close.svg" /></a>
 		</div>
 	</div>
 	<div >
-		<div style="text-align: center; font-size: 1.2em;" data-bind="text: title"></div>
-		<div style="font-size: 1.1em;" data-bind="text: tagString; padding-bottom: 12px;"></div>
+		<div style="text-align: center; font-size: 1.1em; font-weight: bold;" data-bind="text: title"></div>
+		<div style="font-size: 1.1em; padding-bottom: 12px;" data-bind="text: tagString"></div>
 
 	</div>
 
-	<div style="width: 100vw; -webkit-touch-callout: none; -webkit-user-select: none;" data-bind="text: content">
+	<div style="width: 100vw; -webkit-touch-callout: none; -webkit-user-select: none;" data-bind="html: content">
 
 	</div>
 

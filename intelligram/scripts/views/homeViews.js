@@ -981,7 +981,7 @@ var modalView = {
 };
 
 var noteViewer = {
-    
+
     activeNote : new kendo.data.ObservableObject(),
 
     onInit : function () {
