@@ -1285,8 +1285,8 @@ var noteEditView = {
                  maxHeight: 360,*/
                 focus: true,
                 toolbarExternal: '#noteEditor-toolbar',
-                 imageEditable: false, // disable image edit mode on click
-                 imageResizable: false, // disable image resize mode on click*/
+                imageEditable: false, // disable image edit mode on click
+                imageResizable: false, // disable image resize mode on click*/
                 placeholder: 'Add Note Content...',
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
                 buttons: [ 'format', 'bold', 'italic', 'lists'],
