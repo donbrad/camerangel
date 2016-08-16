@@ -1013,6 +1013,7 @@ var noteEditView = {
         that.contentObj.uuid = uuid.v4();
         that.contentObj.data.photos = [];
         that.contentObj.data.objects = [];
+        that.contentObj.dataObject = {};
         that.contentObj.title = '';
         that.contentObj.tagString = '';
         that.contentObj.tags = [];
