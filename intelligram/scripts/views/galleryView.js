@@ -1492,6 +1492,33 @@ var galleryEditView = {
              ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
              }*/
         });
+
+
+        // track photo count on adds and deletes
+        galleryEditView.photosDS.bind("change", function (e) {
+            var changedPhotos = e.items;
+            var photo = e.items[0];
+
+            var photoCount = galleryEditView.photosDS.total();
+
+            galleryEditView.activeObj.set('photoCount'. photoCount);
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+
+                        break;
+                }
+            }
+
+
+        });
+
     },
 
     galleryActionView: function(e){
@@ -1512,12 +1539,15 @@ var galleryEditView = {
     initGallery : function () {
         var that = galleryEditView;
 
-
+        that.activeObj.uuid = uuid.v4();
         that.activeObj.photos = [];
         that.activeObj.set('photoCount', 0);
         that.activeObj.title = '';
         that.activeObj.tagString = '';
         that.activeObj.tags = [];
+        that.activeObj.isShared = false;
+        that.activeObj.isLocked = true;
+        that.activeObj.channelUUID = null;
         that.activeObj.timestamp = new Date();
         that.activeObj.ggType = privateNoteModel._ggClass;
         that.activeObj.noteType = privateNoteModel._gallery;
@@ -1666,14 +1696,39 @@ var galleryEditView = {
     },
 
     saveGallery: function () {
-        var validNote = false; // If message is valid, send is enabled
-
-        if (galleryEditView._mode === 'edit') {
-            validNote = true;
-        }
 
         var title = $('#galleryEditor-title').val();
         var tagString =  $('galleryEditor-tagString').val();
+
+        var activeGallery = galleryEditView.activeObj;
+
+
+        if (galleryEditView._mode === 'edit') {
+
+            var gallery = privateNoteModel.findGallery(activeGallery.uuid);
+
+
+            gallery.set('title', title);
+            gallery.set('tagString', tagString);
+            gallery.set('tags', []); // todo: don integrate tag processing...
+            gallery.set('photoCount', activeGallery.photoCount);
+            gallery.set('photos', galleryEditView.photosDS.data());
+
+            gallery.set('timestamp',ggTime.currentTime());
+
+            privateNoteModel.updateNote(gallery);
+
+        } else {
+
+            activeGallery.title = title;
+            activeGallery.content = text;
+            activeGallery.tagString = tagString;
+            activeGallery.timestamp = ggTime.currentTime();
+            activeGallery.photos = galleryEditView.photosDS.data();
+
+            privateNoteModel.addNote(activeGallery);
+        }
+
 
     }
 

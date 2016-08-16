@@ -5991,6 +5991,24 @@
 
 		</div>
 	# } #
+	# if (noteType === 'Gallery') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
+		<h3 class="textClamp">
+			<img src="images/smart-photo-inline.svg" class="icon-sm" />
+			<span>#:titleStr#</span>
+		</h3>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+
+		</p>
+		<p class="helper" style="font-size: 0.85em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+
+
+	</div>
+	# } #
 </script>
 
 <script type="text/x-kendo-template" id="contactsTemplate">

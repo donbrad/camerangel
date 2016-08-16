@@ -932,11 +932,10 @@ var privateNotesView = {
             if (note !== undefined && note !== null) {
                 privateNotesView.activeNote = note;
 
-                // todo: don integrate noteViewerModal when ready...
+
                 if (note.noteType === 'Note') {
-
                     noteViewer.openModal(note.uuid, privateNotesView.activeNote);
-
+                } else if (note.noteType === 'Gallery') {
 
                 }
             }
