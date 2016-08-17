@@ -94,5 +94,11 @@
     "cc.fovea.cordova.purchase": {
       "BILLING_KEY": "needtoget"
     }
-  }
+  },
+  "CorePlugins": [
+    "cordova-plugin-battery-status",
+    "cordova-plugin-console",
+    "cordova-plugin-inappbrowser",
+    "cordova-plugin-media-capture"
+  ]
 }
