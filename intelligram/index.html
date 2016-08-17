@@ -5963,6 +5963,10 @@
 		}
 	}
 
+	var desc = '';
+
+	if (description !== undefined)
+		desc = description;
 
 	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
@@ -5981,8 +5985,11 @@
 				<span>#:dateString#</span>
 				<span style="float:right;">#:photoStr#</span>
 			</p>
-			<p class="helper" style="font-size: 0.85em; clear:both;">
+			<p class="helper" style="font-size: 1.0em; clear:both;">
 				<span> #:tagString#</span>
+			</p>
+			<p class="helper" style="font-size: 1.0em; clear:both;">
+				<span> #:desc#</span>
 			</p>
 			<div class="private-note-content">
 				#=content#
@@ -6003,6 +6010,85 @@
 		</p>
 		<p class="helper" style="font-size: 0.85em; clear:both;">
 			<span> #:tagString#</span>
+		</p>
+
+
+	</div>
+	# } #
+	# if (noteType === 'Flight') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
+		<h3 class="textClamp">
+			<img src="images/intelliFlight-icon.svg" class="icon-sm" />
+			<span>#:titleStr#</span>
+		</h3>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:desc#</span>
+		</p>
+
+	</div>
+	# } #
+	# if (noteType === 'Trip') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
+		<h3 class="textClamp">
+			<img src="images/intelliTrip-icon.svg" class="icon-sm" />
+			<span>#:titleStr#</span>
+		</h3>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:desc#</span>
+		</p>
+
+
+	</div>
+	# } #
+	# if (noteType === 'Movie') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
+		<h3 class="textClamp">
+			<img src="images/intelliMovie-icon.svg" class="icon-sm" />
+			<span>#:titleStr#</span>
+		</h3>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:desc#</span>
+		</p>
+
+
+	</div>
+	# } #
+	# if (noteType === 'Event') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
+		<h3 class="textClamp">
+			<img src="images/smart-event.svg" class="icon-sm" />
+			<span>#:titleStr#</span>
+		</h3>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:desc#</span>
 		</p>
 
 

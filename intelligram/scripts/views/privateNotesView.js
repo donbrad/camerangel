@@ -846,14 +846,23 @@ var privateNotesView = {
         }
     },
 
-    noteCalendar : function (e) {
+    noteEvent : function (e) {
         _preventDefault(e);
-        //channelView.messageMenuTag();
+        channelView.messageMenuTag();
         smartEventView.openModal(null, function (event) {
 
-            privateNotesView.noteAddSmartEvent(event);
-            mobileNotify("Sending Smart Event...");
-            privateNotesView.saveNote();
+            if (event !== null) {
+                var note = {};
+                note.ggType = 'Note';
+                note.noteType = 'Event';
+                note.title = event.title;
+                note.description = event.description;
+                note.tagString = event.address;
+                note.timestamp = event.date;
+                note.object  = event;
+                privateNoteModel.addNote(note);
+            }
+
         });
     },
 
@@ -862,27 +871,63 @@ var privateNotesView = {
         _preventDefault(e);
         movieListView.openModal( null, function (movie) {
             if (movie !== null) {
-                privateNotesView.noteAddSmartMovie(movie);
-                mobileNotify("Sending Smart Movie...");
-                privateNotesView.saveNote();
+                var note = {};
+                note.ggType = 'Note';
+                note.noteType = 'Movie';
+                note.title = movie.movieTitle;
+                note.description = movie.description;
+                note.tagString = '';
+                note.timestamp = movie.showtime;
+                note.object  = movie;
+                privateNoteModel.addNote(note);
+
             }
-        });
-    },
-
-    noteEvent : function(e) {
-        _preventDefault(e);
-        smartEventView.openModal(null, function (event) {
-
-          //  channelView.messageAddSmartEvent(event);
-            mobileNotify("Creating IntelliEvent...");
-          //  channelView.messageSend();
         });
     },
 
     noteFlight : function (e) {
         _preventDefault(e);
-       smartFlightView.openModal();
+        //channelView.messageMenuTag();
+
+        smartFlightView.openModal(null,function (flight) {
+            if (flight !== undefined && flight !== null) {
+                smartFlight.smartAddFlight(flight, function (flightObj) {
+
+                    var note = {};
+                    note.ggType = 'Note';
+                    note.noteType = 'Flight';
+                    note.title = flightObj.name;
+                    note.tagString = flightObj.departureCity + " " + flightObj.arrivalCity;
+                    note.description = flightObj.departureAirport + '/' + flightObj.departureAirport + " via " + flightObj.airline + flightObj.flight;
+                    note.timestamp = flightObj.estimatedDeparture;
+                    note.object  = flightObj;
+                    privateNoteModel.addNote(note);
+                });
+
+            }
+        });
     },
+
+    noteTrip: function (e) {
+        _preventDefault(e);
+        smartTripView.openModal(null, function (trip) {
+            if (trip !== undefined && trip !== null) {
+                smartTrip.smartAddTrip(trip, function (tripObj) {
+                    var note = {};
+                    note.ggType = 'Note';
+                    note.noteType = 'Trip';
+                    note.title = tripObj.name;
+                    note.tagString = '';
+                    note.description = tripObj.tripType + " from " + tripObj.originName + " to " + tripObj.destinationName;
+                    note.timestamp = tripObj.departure;
+                    note.object  = tripObj;
+                    privateNoteModel.addNote(note);
+                });
+
+            }
+        });
+    },
+
 
     noteAccount : function (e) {
         _preventDefault(e);
@@ -894,18 +939,6 @@ var privateNotesView = {
         smartMedicalView.openModal();
     },
 
-    noteTrip : function (e) {
-        _preventDefault(e);
-        smartTripView.openModal(null, function (trip) {
-            if (trip !== undefined && trip !== null) {
-
-                mobileNotify("Creating IntelliTrip...");
-                /*channelView.messageObjects.push(trip);
-                 mobileNotify("Sending IntelliTrip...");
-                 channelView.messageSend();*/
-            }
-        });
-    },
 
     noteMusic : function (e) {
         _preventDefault(e);
