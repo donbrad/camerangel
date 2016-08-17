@@ -290,15 +290,15 @@ var privateNotesView = {
         privateNotesView.toggleTitleTag();
     },
 */
-    activateEditor : function () {
+   /* activateEditor : function () {
 
         $(".redactor-editor").velocity({height: privateNotesView._editorMax},{duration: 10});
         privateNotesView.editorVisible = true;
         $("#privateNoteToolbar").removeClass('hidden');
         $('#privateNoteTitleTag').removeClass('hidden');
         $("#privateNote-hideKeyboard").removeClass('hidden');
-        /*$("#privateNoteToolbar").removeClass('hidden');
-        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");*/
+        /!*$("#privateNoteToolbar").removeClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");*!/
 
     },
 
@@ -328,17 +328,17 @@ var privateNotesView = {
             privateNotesView._editorActive = true;
 
             $('#privateNoteTextArea').redactor({
-               /* minHeight: 72,
-                maxHeight: 360,*/
+               /!* minHeight: 72,
+                maxHeight: 360,*!/
                 minHeight: privateNotesView._editorMin,
                 maxHeight: privateNotesView._editorMax,
                 focus: true,
                 toolbarExternal: "#privateNoteToolbar",
-               /* imageEditable: false, // disable image edit mode on click
-                imageResizable: false, // disable image resize mode on click*/
+               /!* imageEditable: false, // disable image edit mode on click
+                imageResizable: false, // disable image resize mode on click*!/
                 placeholder: 'Add Note...',
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
-                buttons: [ 'bold', 'italic', 'lists', 'horizontalrule']/*,
+                buttons: [ 'bold', 'italic', 'lists', 'horizontalrule']/!*,
                 callbacks: {
                      paste: function(content)
                      {
@@ -353,7 +353,7 @@ var privateNotesView = {
                          this.selection.restore();
                          this.selection.replace("");
                          return(contentOut);
-                     }*//*,
+                     }*!//!*,
 
                     focus: function(e){
                         privateNotesView.activateEditor();
@@ -366,17 +366,17 @@ var privateNotesView = {
                         }
 
 
-                    }*//*,
+                    }*!//!*,
                     click : function (e) {
 
-                    }*/
-                 /*}*/
+                    }*!/
+                 /!*}*!/
 
 
                 //toolbarExternal: '#privateNoteToolbar'
             });
 
-           /* $.Redactor.prototype.clear = function() {
+           /!* $.Redactor.prototype.clear = function() {
                 return {
                     init: function ()
                     {
@@ -403,7 +403,7 @@ var privateNotesView = {
                         privateNotesView.saveNote();
                     }
                 };
-            };*/
+            };*!/
         }
 
     },
@@ -420,7 +420,7 @@ var privateNotesView = {
 
 
     },
-
+*/
 
     deleteNote : function (e) {
         _preventDefault(e);
@@ -974,7 +974,14 @@ var privateNotesView = {
                 if (note.noteType === 'Note') {
                     noteViewer.openModal(note.uuid, privateNotesView.activeNote);
                 } else if (note.noteType === 'Gallery') {
+                    APP.kendo.navigate('#galleryEditor?galleryid='+note.uuid+"&returnview=home");
+                } else if (note.noteType === 'Movie') {
+                    movieListView.openModal( note.object, function (movie) {
+                        if (movie !== null) {
+                            privateNoteModel.updateNote(note);
 
+                        }
+                    });
                 }
             }
         }

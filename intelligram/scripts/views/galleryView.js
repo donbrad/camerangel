@@ -21,6 +21,7 @@ var galleryView = {
     _currentPhotoUrl: null,
     _previewSize: "33%",
     _viewInitialized : false,
+    _activeView: 0,
     scroller: null,
 
     onInit : function (e) {
@@ -52,6 +53,22 @@ var galleryView = {
         //$("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
 
+    },
+
+    selectView : function (index) {
+        switch (index) {
+            case 0: // Alerts
+                $('#gallery-photos').addClass("hidden");
+                $('#gallery-notes').removeClass("hidden");
+                ux.setSearchPlaceholder("Search Notes...");
+                break;
+            case 1: // Notes
+                $('#gallery-photos').removeClass("hidden");
+                $('#gallery-notes').addClass("hidden");
+                ux.setSearchPlaceholder("Search Photos...");
+                break;
+
+        }
     },
 
 
@@ -87,6 +104,19 @@ var galleryView = {
 
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
+
+            $('#gallery-buttongroup').kendoMobileButtonGroup({
+                select: function(e) {
+                    var index = e.index;
+                    if (index != galleryView._activeView) {
+                        galleryView._activeView = index;
+                        galleryView.selectView(galleryView._activeView);
+
+                    }
+
+                },
+                index: galleryView._activeView
+            });
 
             $("#gallery-listview").kendoMobileListView({
                 dataSource: photoModel.photosDS,

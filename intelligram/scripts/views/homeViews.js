@@ -271,21 +271,12 @@ var homeView = {
     selectView : function (index) {
         switch (index) {
             case 0: // Alerts
-                $('#home-notes').addClass("hidden");
                 $('#home-today').addClass("hidden");
                 $('#home-alerts').removeClass("hidden");
                 ux.setSearchPlaceholder("Search Alerts...");
                 break;
-            case 1: // Notes
-                $('#home-notes').removeClass("hidden");
-                $('#home-today').addClass("hidden");
-                $('#home-alerts').addClass("hidden");
-                ux.setSearchPlaceholder("Search Notes...");
-                // List View onShow code goes here
-                privateNotesView.topOffset = $("#notesView-listview").data("kendoMobileListView").scroller().scrollTop;
-                break;
-            case 2 : // Today
-                $('#home-notes').addClass("hidden");
+
+            case 1 : // Today
                 $('#home-today').removeClass("hidden");
                 $('#home-alerts').addClass("hidden");
                 ux.setSearchPlaceholder("Search Today...");
