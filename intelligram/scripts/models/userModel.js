@@ -172,6 +172,10 @@ var userModel = {
 
         todayModel.init();
 
+        galleryModel.init();
+
+        groupModel.init();
+
         if (window.navigator.simulator === undefined) {
             serverPush.init();
         }
@@ -196,6 +200,8 @@ var userModel = {
         notificationModel.sync();
         todayModel.sync();
         tagModel.sync();
+        galleryModel.sync();
+        groupModel.sync();
     },
 
     initKendo : function () {

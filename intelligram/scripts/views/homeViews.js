@@ -1569,6 +1569,7 @@ var ghostEditView = {
 
         }
     },
+
     insertImage: function(e) {
         galleryPicker.openModal(function (photo) {
 

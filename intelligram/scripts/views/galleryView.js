@@ -1563,14 +1563,17 @@ var galleryEditView = {
         var that = galleryEditView;
 
         that.activeObj.uuid = uuid.v4();
-        that.activeObj.photos = [];
+        that.activeObj.photoArray = [];
         that.activeObj.set('photoCount', 0);
         that.activeObj.title = '';
+        that.activeObj.description = '';
         that.activeObj.tagString = '';
         that.activeObj.tags = [];
         that.activeObj.isShared = false;
-        that.activeObj.isLocked = true;
-        that.activeObj.channelUUID = null;
+        that.activeObj.isOpen = false;
+        that.activeObj.isTracked = false;
+        that.activeObj.senderUUID = userModel._user.userUUID;
+        that.activeObj.senderName = userModel._user.name;
         that.activeObj.timestamp = new Date();
         that.activeObj.ggType = privateNoteModel._ggClass;
         that.activeObj.noteType = privateNoteModel._gallery;
