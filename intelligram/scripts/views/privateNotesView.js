@@ -720,8 +720,8 @@ var privateNotesView = {
         var searchUrl =  'http://www.google.com/search';
         var query = privateNotesView.getSelectionText();
 
-        var selection =  $('#privateNoteTextArea').redactor('selection.save'); //cache the current selection
-
+   /*     var selection =  $('#privateNoteTextArea').redactor('selection.save'); //cache the current selection
+*/
 
         privateNotesView.searchQuery = query;
 
@@ -756,8 +756,8 @@ var privateNotesView = {
                 privateNotesView.searchUrl = searchUrl;
                 privateNotesView.winQuery = '?q=' + query;
                 privateNotesView.winRef = window.open(encodeURI(searchUrl), '_blank', 'location=yes');
-                /* privateNotesView.winRef.addEventListener("exit", privateNotesView.messageSearchEnd);
-                 privateNotesView.winRef.addEventListener("loadstop", privateNotesView.messageSearchLoad);*/
+                privateNotesView.winRef.addEventListener("exit", privateNotesView.messageSearchEnd);
+                privateNotesView.winRef.addEventListener("loadstop", privateNotesView.messageSearchLoad);
                 /* channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
             }
 
