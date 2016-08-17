@@ -424,7 +424,12 @@ var privateNotesView = {
 
     deleteNote : function (e) {
         _preventDefault(e);
-       if (privateNotesView.activeNote.uuid !== undefined) {
+
+        if (privateNotesView.activeNote.uuid !== null) {
+            privateNoteModel.deleteNote(privateNotesView.activeNote);
+            privateNotesView.noteInit();
+        }
+       /*if (privateNotesView.activeNote.uuid !== undefined) {
 
            var note = privateNotesView.activeNote;
            var Id = note.Id;
@@ -440,7 +445,7 @@ var privateNotesView = {
                privateNotesView.activeNote = {objects: [], photos: []};
            });
 
-       }
+       }*/
 
     },
 
