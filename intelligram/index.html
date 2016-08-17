@@ -957,12 +957,20 @@
 	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
 </div>
 
-<div data-role="modalview" id="modalGalleryView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal">
+<div data-role="modalview" id="galleryListModal" data-title="Gallery Picker" style="width: 100%; height:100%; display: none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a class="right closeBox" data-click="galleryListView.closeModal" data-role="button">
+				<img src="images/close.svg" class="icon-sm"  />
+			</a>
+		</div>
 
-	<ul id="modalgallery-listview" class="list-inline" data-role="listview" data-click="modalGalleryView.galleryClick" data-source="photoModel.photosDS" data-template="modalGalleryTemplate"></ul>
-	<div data-role="footer">
-		<a class="btnClear btnFull" data-role="button" data-click="modalGalleryView.closeModal">Close</a>
 	</div>
+	<h3>Please select a gallery from the list below:</h3>
+	<ul id="galleryListModal-listview" class="list-inline" ></ul>
+
+
 </div>
 
 
@@ -2958,7 +2966,22 @@
 			</li>
 		</ul>
 
+
 		<div id="gallery-photos" class="hidden">
+			<div>
+				<ul data-role="buttongroup" style="padding: 6px; font-size: 1.2em;">
+					<li>
+						<a class="btnClear" data-role="button" >Edit </a>
+					</li>
+					<li>
+						<a class="btnClear" data-role="button" data-click="galleryView.openGalleryPicker">All Photos </a>
+					</li>
+					<li>
+						<a class="btnClear" data-role="button" >Add </a>
+					</li>
+				</ul>
+			</div>
+
 			<div class="resultsBar">
 				<div class="results">
 					<span id="resultCount" data-bind="text: _totalPhotos"></span>

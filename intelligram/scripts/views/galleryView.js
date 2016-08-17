@@ -33,13 +33,6 @@ var galleryView = {
             $('#search-archives').height(getSentinelHeight());
         };
 
-        /*
-         archiveView.sentinel.addListener('add', setSentinelHeight);
-         archiveView.sentinel.addListener('remove', setSentinelHeight);
-         setSentinelHeight();
-         */
-
-
         // ToDo: Initialize list view
         var itemWidth = $(window).width()/4;
         photoModel.rotationAngle = 0;
@@ -55,22 +48,39 @@ var galleryView = {
 
     },
 
+    setStuffView : function () {
+        $('#gallery-photos').addClass("hidden");
+        $('#gallery-notes').removeClass("hidden");
+        ux.setSearchPlaceholder("Search Notes...");
+        galleryView._activeView = 0;
+    },
+
+    setPhotoView: function () {
+        $('#gallery-photos').removeClass("hidden");
+        $('#gallery-notes').addClass("hidden");
+        ux.setSearchPlaceholder("Search Photos...");
+        galleryView._activeView = 1;
+    },
+
     selectView : function (index) {
         switch (index) {
             case 0: // Alerts
-                $('#gallery-photos').addClass("hidden");
-                $('#gallery-notes').removeClass("hidden");
-                ux.setSearchPlaceholder("Search Notes...");
+               galleryView.setStuffView();
                 break;
             case 1: // Notes
-                $('#gallery-photos').removeClass("hidden");
-                $('#gallery-notes').addClass("hidden");
-                ux.setSearchPlaceholder("Search Photos...");
+                galleryView.setPhotoView();
                 break;
 
         }
     },
 
+    openGalleryPicker : function () {
+        galleryListView.openModal(function (galleryId) {
+            if (galleryId !== null) {
+                // switch to the new gallery.
+            }
+        })
+    },
 
     updateTotalPhotos : function () {
         // set result count
@@ -1234,57 +1244,40 @@ var modalPhotoView = {
 };
 
 // Removing this legacy view -- gallerypicker is new replacement.  just keeping the code for reference...
-/*var modalGalleryView = {
+var galleryListView = {
 
     _callback: null,
 
     openModal: function (callback) {
 
         if (callback !== undefined) {
-            modalGalleryView._callback = callback;
+            galleryListView._callback = callback;
         }
 
-        $("#modalgallery-listview li").css("width","100%");
-        $("#modalgallery-listview li").css("padding-bottom","100%");
-        $("#modalGalleryView").data("kendoMobileModalView").open();
+       /* $("#modalgallery-listview li").css("width","100%");
+        $("#modalgallery-listview li").css("padding-bottom","100%");*/
+        $("#galleryListModal").data("kendoMobileModalView").open();
 
     },
 
     closeModal: function (e) {
-        _preventDefault(e);
-        $("#modalGalleryView").data("kendoMobileModalView").close();
+
+        $("#galleryListModal").data("kendoMobileModalView").close();
     },
 
     galleryClick : function (e) {
         _preventDefault(e);
 
-        var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl, thumbUrl = e.dataItem.thumbnailUrl;
+        var galleryId = e.dataItem.uuid
 
-        currentChannelModel.currentMessage.photo = {thumbnailUrl: thumbUrl, imageUrl: photoUrl};
-        if (modalGalleryView._callback !== null) {
-            modalGalleryView._callback(photoUrl);
-            modalGalleryView.closeModal();
+        if (galleryListView._callback !== null) {
+            galleryListView._callback(galleryId);
+            galleryListView.closeModal();
         }
-       /!* galleryView._currentPhotoUrl = photoUrl;
-        galleryView._currentPhotoId = photoId;
 
-        galleryView._currentPhoto = photoModel.findPhotoById(photoId);
-
-        $('#photoViewImage').attr('src', photoUrl);
-        $('#photoTagImage').attr('src', photoUrl);
-        //       $('#photoEditImage').attr('src', photoUrl);
-
-        if (galleryView._pickerMode) {
-            channelView.showChatImagePreview(photoUrl);
-            APP.kendo.navigate('#:back');
-
-        } else {
-            var photoParam = LZString.compressToEncodedURIComponent(photoId);
-            APP.kendo.navigate('#photoView?photo='+photoParam);
-        }*!/
     }
 
-};*/
+};
 
 
 var galleryPicker = {
