@@ -97,7 +97,12 @@ var smartTrip = {
         //smartOb.set('Id', objectIn.uuid);
         smartOb.set('senderUUID', objectIn.senderUUID);
         smartOb.set('senderName', objectIn.senderName);
-        smartOb.set('name', objectIn.name);
+
+        if(objectIn.name !== null){
+            smartOb.set('name', objectIn.name);
+        } else {
+            smartOb.set('name', "My Trip");
+        }
         smartOb.set('tripType', objectIn.tripType);
         smartOb.set('travelMode', objectIn.travelMode);
         smartOb.set('autoStatus', objectIn.autoStatus);
@@ -118,7 +123,7 @@ var smartTrip = {
         smartOb.set('dateArrival', objectIn.dateArrival);
         smartOb.set('timeDeparture', objectIn.timeDeparture);
         smartOb.set('timeArrival', objectIn.timeArrival);
-
+        smartOb.set('tripTimeType', objectIn.tripTimeType);
         smartTrip.tripsDS.add(smartOb);
         smartTrip.tripsDS.sync();
 

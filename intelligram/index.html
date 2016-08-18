@@ -717,7 +717,7 @@
 				</li>
 				<li>
 					<label>Password</label>
-					<input type="password" class="signupForm" id="home-signin-password" value=""  name="Password"  required />
+					<input type="password" class="signupForm" id="home-signin-password" value=""  name="Password"  placeholder="••••••" required />
 					<span id="forgotPassword" class="btnClear-grey" data-click="recoverPasswordView.openModal" data-role="button">Forgot password?</span>
 				</li>
 				<li>
@@ -3274,8 +3274,7 @@
 <div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance" data-model="smartTripView.activeObject">
 	<div class="intelli-header">
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
-		<p class="intelli-subheader tripEdit">Quickly share your trip with friends and family.</p>
-		<p class="intelli-subheader tripView">Trip From: <span data-bind="text: senderName"></span></p>
+		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
 		<div class="smartTripView-error hidden">
 			<p class="error-msg">
 				Sorry, we are having trouble processing your route. Try another transport option or change locations.
@@ -3365,7 +3364,7 @@
 				</ul>
 			</form>
 
-				<a data-click="smartTripView.onRouteComplete" data-role="button" id="smartTripView-routeCompleteBtn" class="btnFull-modal btnPrimary tripEdit tripEditRouteNext" data-card="1">
+				<a data-click="smartTripView.onRouteComplete" data-role="button" id="smartTripView-routeCompleteBtn" class="btnFull-modal btnPrimary hidden tripEditRouteNext" data-card="1">
 					Next
 				</a>
 		</div>
@@ -3379,12 +3378,16 @@
 						<p class="helper" id="smartTripView-arrival-text">Intelligram helps you leave on time by calculating future traffic patterns and alerting you when you should leave. Recommended for meetings.</p>
 					</li>
 					<li>
-						<input type="radio" name="arrival" id="smartTripView-arrival-yes" class="k-radio" value="true">
-						<label class="k-radio-label" for="smartTripView-arrival-yes">Yes</label>
+						<input type="radio" name="arrival" id="smartTripView-arrival-yes" class="k-radio" value="0">
+						<label class="k-radio-label" for="smartTripView-arrival-yes">Yes, select arrival time</label>
 					</li>
 					<li>
-						<input type="radio" name="arrival" id="smartTripView-arrival-no" class="k-radio" value="false">
-						<label class="k-radio-label" for="smartTripView-arrival-no">No, I'm flexible</label>
+						<input type="radio" name="arrival" id="smartTripView-arrival-no" class="k-radio" value="1">
+						<label class="k-radio-label" for="smartTripView-arrival-no">No, select departure time</label>
+					</li>
+					<li>
+						<input type="radio" name="arrival" id="smartTripView-arrival-flex" class="k-radio" value="2">
+						<label class="k-radio-label" for="smartTripView-arrival-flex">I'm flexible</label>
 					</li>
 					<li id="smartTripView-departure-time" class="hidden">
 						<label> Departure </label> <br />
@@ -3459,32 +3462,41 @@
 		</div>
 	</div>
 	<div class="intelliTrip tripView">
-		<div class="header">
-			<p class="intelliTrip-title"><span data-bind="text: name"></span> </p>
-			<div class="helper intelliTrip-subheader" style="font-size: 1.3em;">
-				<p><strong>From:</strong> <span data-bind="text: originName"></span> </p>
-				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
-				<p><strong>To:</strong> <span data-bind="text: destinationName"></span></p>
+		<div class="header cardHeader">
+			<p class="intelliTrip-title" data-bind="text: name"></p>
+			<div class="helper intelliTrip-subheader">
+				Sent by <span data-bind="text: senderName"></span>
 			</div>
-			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
-				Departing : <span data-bind="text: dateDeparture"></span> @ <span data-bind="text: timeDeparture"></span>
-			</p>
-			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
-				Arriving : <span data-bind="text: dateArrival"></span> @ <span data-bind="text: timeArrival"></span>
-			</p>
-			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
-				<img src="images/icon-time.svg" class="icon-sm" /> <span data-bind="text: durationString"></span> (<span data-bind="text: distanceString"></span>)
+		</div>
+		<div class="summary">
+			<div class="intelli-update hidden" id="intelliTrip-update">
+				<p class="update-header"><img src="images/icon-time-primary.svg" /> Recent Update</p>
+				<p class="update-content">Stopping for gas</p>
+				<p class="update-time">10 mins ago</p>
+			</div>
+			<div class="origin-summary">
+				<label>Departing</label>
+				<p class="address" data-bind="text: origin.address"></p>
+				<p class="tripTime" data-bind="text: departure"></p>
+			</div>
+			<div class="destination-summary">
+				<label>Arriving</label>
+				<p class="address" data-bind="text: destination.address"></p>
+				<p class="tripTime" data-bind="text: arrival"></p>
+			</div>
+			<p>
+				<img src="images/icon-time.svg" class="icon-sm" />
+				<span data-bind="text: durationString"></span>
+				(<span data-bind="text: distanceString"></span>)
 			</p>
 		</div>
-
 	</div>
 
-	<div class="footer" data-role="footer">
-
+	<div class="modalFooter intelliTrip-action">
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-restartBtn" data-click="smartTripModal.onRestart">Restart</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-returnBtn" data-click="smartTripModal.onReturn">Return</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
-		<a class="btnFull-modal" data-role="button" data-click="smartTripView.onCancel">Cancel</a>
+		<a class="btnFull-modal" data-role="button" data-click="smartTripView.onCancel" id="smartTripModal-cancelBtn">Cancel</a>
 	</div>
 </div>
 
@@ -3501,9 +3513,18 @@
 			</div>
 			<div class="map hidden">
 				<!-- sample static map -->
-				<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+franisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san franisco">
+				<!--<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+francisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san francisco">-->
 			</div>
-			<div class="footer">
+			<div class="footer cardFooter">
+				# if(data.tripTimeType === 'arrival') {#
+					<p class="intelliTrip-details">
+						<img src="images/icon-date.svg" class="icon-sm" /> #:arrival#
+					</p>
+				#} else if(data.tripTimeType === 'departure'){#
+					<p class="intelliTrip-details">
+						<img src="images/icon-date.svg" class="icon-sm" /> #:departure#
+					</p>
+				#}#
 				<p class="intelliTrip-details">
 					<img src="images/icon-time.svg" class="icon-sm" /> #:durationString# (#:distanceString#)
 				</p>
@@ -5224,7 +5245,7 @@
 					<span data-bind="text: durationString"></span>
 				</p>
 			</div>
-			<div class="intelliFlight-updates hidden">
+			<div class="intelli-update hidden" id="intelliFlight-update">
 				<p class="update-header"><img src="images/icon-time-primary.svg" /> Recent Update</p>
 				<p class="update-content">Flight took off at 8:17am</p>
 				<p class="update-time">5 mins ago</p>

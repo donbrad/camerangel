@@ -6877,8 +6877,12 @@ table.k-editor {
   margin-top: 1em;
 }
 
-#smartTripView-step-2 > form > ul > li:nth-child(3) {
+#smartTripView-step-2 > form > ul > li {
   margin-top: 0.5em;
+  //margin-bottom: 1em;
+}
+
+#smartTripView-step-2 > form > ul > li:nth-child(4) {
   margin-bottom: 1em;
 }
 
@@ -6897,7 +6901,7 @@ table.k-editor {
   font-weight: 600;
 }
 
-#smartTripModal > div.footer.km-footer > a.btnFull-modal.km-widget.km-button {
+#smartTripModal > div.footer > a.btnFull-modal.km-widget.km-button {
   background-color: #80CBC4 !important;
   color: #fff;
 }
@@ -6941,6 +6945,10 @@ table.k-editor {
       padding: 0;
       margin: 0;
     }
+    .intelliTrip-title {
+      font-size: 1.2em;
+      font-weight: 600;
+    }
   }
   .map {
     width: 100%;
@@ -6950,14 +6958,15 @@ table.k-editor {
       width: 100%;
     }
   }
+
   .footer {
     .intelliTrip-details {
       font-size: 1em;
-      padding: 0.5em;
+      padding: 0.25em 0.5em;
       img {
         height: 0.875em;
         max-width: 0.875em;
-        vertical-align: middle;
+        vertical-align: baseline;
       }
     }
     border-top: 2px dotted @shade-200;
@@ -6965,6 +6974,64 @@ table.k-editor {
       border-radius: 0 4px 4px 0;
     }
   }
+  .summary {
+    margin: 0.5em;
+    display: inline-block;
+    p {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    .address {
+      font-size: 1.2em;
+    }
+  }
+  .origin-summary {
+    label {
+      .helper;
+    }
+  }
+  .destination-summary {
+    margin: 1em 0 1em;
+    label {
+      .helper;
+    }
+  }
+  /*.destination-summary::before {
+    width: 1em;
+    height: 1em;
+    border-radius: 0.5em;
+    background-color: @shade-200;
+    border: 2px solid @shade-200;
+    display: inline-block;
+  }*/
+}
+
+
+
+#smartTripModal > div > div.intelliTrip.tripView > div.header {
+  border-bottom: 2px dotted @shade-200;
+}
+
+.modalFooter.intelliTrip-action {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0;
+  right: 0;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  >a {
+    color:#fff !important;
+    border-radius: 3em !important;
+  }
+  >a.km-state-active {
+    color: #80CBC4 !important;
+  }
+}
+
+
+#smartTripModal > div > div.intelliTrip.tripView {
+  margin-top: 2em;
 }
 
 .intelliTrip-map {
@@ -6976,8 +7043,8 @@ table.k-editor {
   }
 }
 
-.intelliTrip-title {
-  font-size: 1.2em;
+.cardHeader > .intelliTrip-title {
+  font-size: 1.5em !important;
   font-weight: 600;
 }
 
@@ -7001,7 +7068,11 @@ table.k-editor {
   }
 }
 
-.intelliTrip-details {
+.intelliTrip-details:first-child {
+  padding-top: 0.5em !important;
+}
+
+.intelliTrip-details:last-child {
   border-bottom: 2px dotted @shade-300;
 }
 
@@ -7021,7 +7092,7 @@ table.k-editor {
         max-width: 1.2em;
         vertical-align: sub;
       }
-     >span:not(.info) {
+      >span:not(.info) {
         font-size: 0.85em;
         background-color: @shade-100;
         border-radius: 4px;
@@ -7068,7 +7139,8 @@ table.k-editor {
     }
     .liner {
       width: 20%;
-      height:2px;
+      height:1px;
+      border: 2px dotted;
       background-color: @black;
       margin-top: 1em;
       img {
@@ -7092,8 +7164,8 @@ table.k-editor {
   border-top: 2px dotted @shade-200;
 }
 
-.intelliFlight-updates {
-  margin: 0.5em 1em;
+.intelli-update {
+  margin-bottom: 1em;
   border: 1px solid @shade-200;
   border-radius: 4px;
   padding: 0.5em;
@@ -7271,6 +7343,9 @@ table.k-editor {
     }
   }
 }
+
+
+
 
 .smartTripView-error {
   .error-msg {

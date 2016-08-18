@@ -6972,8 +6972,10 @@ table.k-editor {
 #smartTripView-arrival-time {
   margin-top: 1em;
 }
-#smartTripView-step-2 > form > ul > li:nth-child(3) {
+#smartTripView-step-2 > form > ul > li {
   margin-top: 0.5em;
+}
+#smartTripView-step-2 > form > ul > li:nth-child(4) {
   margin-bottom: 1em;
 }
 #smartTripView-travelTime-box {
@@ -6989,7 +6991,7 @@ table.k-editor {
   font-size: 1.25em;
   font-weight: 600;
 }
-#smartTripModal > div.footer.km-footer > a.btnFull-modal.km-widget.km-button {
+#smartTripModal > div.footer > a.btnFull-modal.km-widget.km-button {
   background-color: #80CBC4 !important;
   color: #fff;
 }
@@ -7017,6 +7019,14 @@ table.k-editor {
   border-radius: 4px;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  /*.destination-summary::before {
+    width: 1em;
+    height: 1em;
+    border-radius: 0.5em;
+    background-color: @shade-200;
+    border: 2px solid @shade-200;
+    display: inline-block;
+  }*/
 }
 .intelliTrip .header {
   padding: 0.5em;
@@ -7029,6 +7039,10 @@ table.k-editor {
   height: 1em;
   max-width: 1em;
   vertical-align: text-top;
+}
+.intelliTrip .header .intelliTrip-title {
+  font-size: 1.2em;
+  font-weight: 600;
 }
 .intelliTrip .map {
   width: 100%;
@@ -7043,15 +7057,63 @@ table.k-editor {
 }
 .intelliTrip .footer .intelliTrip-details {
   font-size: 1em;
-  padding: 0.5em;
+  padding: 0.25em 0.5em;
 }
 .intelliTrip .footer .intelliTrip-details img {
   height: 0.875em;
   max-width: 0.875em;
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 .intelliTrip .footer a {
   border-radius: 0 4px 4px 0;
+}
+.intelliTrip .summary {
+  margin: 0.5em;
+  display: inline-block;
+}
+.intelliTrip .summary p {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.intelliTrip .summary .address {
+  font-size: 1.2em;
+}
+.intelliTrip .origin-summary label {
+  color: #979797;
+}
+.intelliTrip .origin-summary label img {
+  height: 12px;
+}
+.intelliTrip .destination-summary {
+  margin: 1em 0 1em;
+}
+.intelliTrip .destination-summary label {
+  color: #979797;
+}
+.intelliTrip .destination-summary label img {
+  height: 12px;
+}
+#smartTripModal > div > div.intelliTrip.tripView > div.header {
+  border-bottom: 2px dotted #E0E0E0;
+}
+.modalFooter.intelliTrip-action {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0;
+  right: 0;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.modalFooter.intelliTrip-action > a {
+  color: #fff !important;
+  border-radius: 3em !important;
+}
+.modalFooter.intelliTrip-action > a.km-state-active {
+  color: #80CBC4 !important;
+}
+#smartTripModal > div > div.intelliTrip.tripView {
+  margin-top: 2em;
 }
 .intelliTrip-map {
   width: 100%;
@@ -7061,8 +7123,8 @@ table.k-editor {
   max-height: 100%;
   width: 100%;
 }
-.intelliTrip-title {
-  font-size: 1.2em;
+.cardHeader > .intelliTrip-title {
+  font-size: 1.5em !important;
   font-weight: 600;
 }
 .intelliTrip-subheader {
@@ -7083,7 +7145,10 @@ table.k-editor {
   width: 1em !important;
   vertical-align: middle;
 }
-.intelliTrip-details {
+.intelliTrip-details:first-child {
+  padding-top: 0.5em !important;
+}
+.intelliTrip-details:last-child {
   border-bottom: 2px dotted #f5f5f5;
 }
 /* intelliFlight */
@@ -7157,7 +7222,8 @@ table.k-editor {
 }
 .intelliFlight .summary .liner {
   width: 20%;
-  height: 2px;
+  height: 1px;
+  border: 2px dotted;
   background-color: #4A4A4A;
   margin-top: 1em;
 }
@@ -7173,34 +7239,34 @@ table.k-editor {
   margin-top: 0.5em;
   border-top: 2px dotted #E0E0E0;
 }
-.intelliFlight-updates {
-  margin: 0.5em 1em;
+.intelli-update {
+  margin-bottom: 1em;
   border: 1px solid #E0E0E0;
   border-radius: 4px;
   padding: 0.5em;
   background-color: #f5f5f5;
 }
-.intelliFlight-updates p {
+.intelli-update p {
   margin-left: 0;
   margin-right: 0;
 }
-.intelliFlight-updates .update-header {
+.intelli-update .update-header {
   margin-bottom: 0.25em;
   color: #6CADF3;
   font-size: 0.85em;
 }
-.intelliFlight-updates .update-header img {
+.intelli-update .update-header img {
   height: 0.85em;
   max-width: 0.85em;
 }
-.intelliFlight-updates .update-content {
+.intelli-update .update-content {
   font-size: 1em;
 }
-.intelliFlight-updates .update-time {
+.intelli-update .update-time {
   color: #979797;
   font-size: 0.75em;
 }
-.intelliFlight-updates .update-time img {
+.intelli-update .update-time img {
   height: 12px;
 }
 .arrival-summary {
