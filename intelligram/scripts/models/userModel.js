@@ -172,9 +172,9 @@ var userModel = {
 
         todayModel.init();
 
-        galleryModel.init();
+       /* galleryModel.init();
 
-        groupModel.init();
+        groupModel.init();*/
 
         if (window.navigator.simulator === undefined) {
             serverPush.init();
@@ -200,8 +200,8 @@ var userModel = {
         notificationModel.sync();
         todayModel.sync();
         tagModel.sync();
-        galleryModel.sync();
-        groupModel.sync();
+   /*     galleryModel.sync();
+        groupModel.sync();*/
     },
 
     initKendo : function () {
@@ -327,13 +327,13 @@ var userModel = {
         userModel._user.set('emailValidated', emailValidated);
         userModel._user.set('phoneValidated',user.phoneValidated);
 
-        if (!user.phoneValidated) {
+        /*if (!user.phoneValidated) {
             notificationModel.addVerifyPhoneNotification();
         }
 
         if (!user.emailValidated) {
             notificationModel.addVerifyEmailNotification();
-        }
+        }*/
 
 
         if (user.addressValidated === undefined) {
