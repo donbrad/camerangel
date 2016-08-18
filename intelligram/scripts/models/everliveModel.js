@@ -347,7 +347,7 @@ var everlive = {
             homeView.enableHotButtons();
             userModel._user.bind('change', userModel.sync);
 
-            if (phoneValidated) {
+            if (userModel._user.phoneValidated) {
                 deviceModel.setAppState('phoneValidated', true);
                 notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
             } else {
