@@ -1,6 +1,7 @@
 {
   "CorePlugins": [
     "ch.ti8m.documenthandler@0.2.2",
+    "com.ionic.keyboard@2.0.1",
     "com.ohh2ahh.plugins.appavailability@0.3.1",
     "com.phonegap.plugins.barcodescanner@5.0.1",
     "cordova-plugin-3dtouch@1.3.5",
