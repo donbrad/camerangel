@@ -341,20 +341,11 @@ var everlive = {
             userModel.initPubNub();
             userStatus.update();
            
-            deviceModel.syncEverlive();
+          //  deviceModel.syncEverlive();
             APP.kendo.navigate('#home');
 
             homeView.enableHotButtons();
             userModel._user.bind('change', userModel.sync);
-
-            if (userModel._user.phoneValidated) {
-                deviceModel.setAppState('phoneValidated', true);
-                notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
-            } else {
-                mobileNotify("Please verify your phone number");
-                verifyPhoneModal.openModal();
-
-            }
 
             if (deviceModel.initialAction !== null) {
                 var action = deviceModel.initialAction.action.capitalize('title');
