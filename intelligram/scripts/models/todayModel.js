@@ -52,6 +52,7 @@ var todayModel = {
                 break;
 
             case 'add' :
+
                 break;
 
             case 'remove' :

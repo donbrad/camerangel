@@ -11,8 +11,10 @@
 
 var tagModel = {
 
-    _ggClass : 'tag',
+    _ggClass : 'Tag',
     _cloudClass : 'tags',
+    tagsFetched : false,
+    processingDeferred : false,
     _user : 'user',
     _version: 1,
     _tagsSynced : false,
@@ -26,18 +28,24 @@ var tagModel = {
     _movie: 'movie',
     _family : 'family',
     _friend : 'friend',
+    _trip: 'trip',
+    _flight: 'flight',
+    _team: 'team',
+    _band: 'band',
+    _artist: 'artist',
+    _book: 'book',
+    _tvshow: 'tv',
 
 
     tagsDS: null,
+    deferredList : [],
 
     init : function () {
         
         tagModel.tagsDS = new kendo.data.DataSource({
             type: 'everlive',
-         //   offlineStorage: "tags",
             transport: {
-                typeName: 'tags'/*,
-                dataProvider: APP.everlive*/
+                typeName: 'tags'
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -49,8 +57,62 @@ var tagModel = {
             autoSync : true
         });
 
+        tagModel.tagsDS.bind("change", function (e) {
+            // Rebuild the contactList cache when the underlying list changes: add, delete, update...
+            //placesModel.syncPlaceListDS();
+            var changedTags = e.items;
+
+            if (e.action === undefined) {
+                if (changedTags !== undefined) {
+                    tagModel.tagsFetched = true;
+                    tagModel.processDeferred();
+                }
+            }
+        });
 
         tagModel.tagsDS.fetch();
+    },
+
+
+    processDeferred : function () {
+        // If the list is empty -- just return
+        if (tagModel.deferredList.length === 0 || tagModel.processingDeferred) {
+            return;
+        }
+
+        tagModel.processingDeferred = true;
+        for (var i=0; i<tagModel.deferredList.length; i++ ) {
+            var tagObj = tagModel.deferredList[i];
+
+            switch (tagObj.category){
+                case tagModel._group:
+                    tagModel.addGroupTag(tagObj.tag, tagObj.alias, tagObj.description, tagObj.categoryId);
+                    break;
+
+                case tagModel._contact:
+                    tagModel.addContactTag(tagObj.tag, tagObj.alias, tagObj.description, tagObj.categoryId);
+
+                    break;
+
+                case tagModel._place:
+                    tagModel.addPlaceTag(tagObj.tag, tagObj.alias, tagObj.description, tagObj.categoryId);
+
+                    break;
+
+            }
+        }
+    },
+
+    defer : function (tag, alias, description, categoryId, category) {
+        var deferObj = {
+            tag: tag,
+            alias: alias,
+            description: description,
+            categoryId : categoryId,
+            category : category
+        };
+
+        tagModel.deferredList.push(deferObj);
     },
 
 
@@ -58,45 +120,86 @@ var tagModel = {
         tagModel.tagsDS.sync();
     },
 
+    change : function (obj, category) {
 
-    addTag : function (tag, description, category, categoryId, semanticCategory) {
+    },
+
+    addTag : function (tag, alias, description, category, categoryId, semanticCategory) {
+
+        var normTag = tagModel.normalizeTag(tag);
+
+        var tagExists = tagModel.findTagByCategory(category, normTag);
+
+        if (tagExists.length > 0) {
+            return;
+        }
 
         var tagObj = tagModel.newTag();
 
-
+        tagObj.ggClass = tagModel._class;
         tagObj.name = tag;
-        tagObj.tagName = tagModel.normalizeTag(tag)
-        tagObj.tagHash = category + tagObj.tagName;
+        tagObj.alias = alias;
+        tagObj.nameCombo = tagObj.name;
+        if (tagObj.alias !== undefined && tagObj.alias !== null) {
+            tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
+        }
+        tagObj.nameCombo = tagObj.name;
+        tagObj.tagNorm = normTag;
         tagObj.description = description;
         tagObj.category = category;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = semanticCategory;
+        tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
 
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                tagModel.tagsDS.add(tagObj);
+                //tagModel.tagsDS.add(tagObj);
 
             }
         });
 
     },
 
-    addGroupTag : function (tag, description) {
+    addGroupTag : function (tag, alias, description, categoryId) {
+        if (!tagModel.tagsFetched) {
+            tagModel.defer(tag, alias, description, categoryId, tagModel._group);
+            return;
+        }
+
+        var normTag = tagModel.normalizeTag(tag);
+
+        var tagExists = tagModel.findTagByCategory(tagModel._group, normTag);
+
+        if (tagExists.length > 0) {
+            return;
+        }
+
         var tagObj = tagModel.newTag();
 
 
         tagObj.name = tag;
-        tagObj.tagName = tagModel.normalizeTag(tag);
+        tagObj.alias = alias;
+        tagObj.nameCombo = tagObj.name;
+        if (tagObj.alias !== undefined && tagObj.alias !== null) {
+            tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
+        }
+
+        tagObj.tagNorm = normTag;
         tagObj.description = description;
-        tagObj.category = 'Group';
-        tagObj.categoryId = null;
+        tagObj.category = tagModel._group;
+        tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Group';
+        tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
         tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
+
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
@@ -109,10 +212,13 @@ var tagModel = {
     },
 
     addContactTag : function (tag, alias, description, categoryId) {
-
+        if (!tagModel.tagsFetched) {
+            tagModel.defer(tag, alias, description, categoryId, tagModel._contact);
+            return;
+        }
         var normTag = tagModel.normalizeTag(tag);
-        var hash = tagModel._contact+normTag;
-        var tagExists = tagModel.findTagByHash(hash);
+
+        var tagExists = tagModel.findTagByCategoryId(categoryId);
 
         if (tagExists.length > 0) {
             return;
@@ -122,14 +228,19 @@ var tagModel = {
         
         tagObj.name = tag;
         tagObj.alias = alias;
-        tagObj.tagName = tagModel.normalizeTag(tag);
-        tagObj.tagHash  = tagModel._contact + tagObj.tagName;
+        tagObj.nameCombo = tagObj.name;
+        if (tagObj.alias !== undefined && tagObj.alias !== null) {
+            tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
+        }
+        tagObj.tagNorm = normTag;
         tagObj.description = description;
-        tagObj.category = 'Contact';
+        tagObj.category = tagModel._contact;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Contact';
+        tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
 
         tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
 
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
@@ -143,9 +254,12 @@ var tagModel = {
     },
 
     addPlaceTag : function (tag, alias, description, categoryId) {
+        if (!tagModel.tagsFetched) {
+            tagModel.defer(tag, alias, description, categoryId, tagModel._place);
+            return;
+        }
         var normTag = tagModel.normalizeTag(tag);
-        var hash = tagModel._place+normTag;
-        var tagExists = tagModel.findTagByHash(hash);
+        var tagExists = tagModel.findTagByCategoryId(categoryId);
 
         if (tagExists.length > 0) {
             return;
@@ -156,19 +270,26 @@ var tagModel = {
 
         tagObj.name = tag;
         tagObj.alias = alias;
-        tagObj.tagName = tagModel.normalizeTag(tag);
-        tagObj.tagHash = tagModel._place + tagObj.tagName;
+        tagObj.nameCombo = tagObj.name;
+        if (tagObj.alias !== undefined && tagObj.alias !== null) {
+            tagObj.nameCombo = tagObj.name + ' ('+ tagObj.alias + ')';
+        }
         tagObj.description = description;
-        tagObj.category = 'Place';
+        tagObj.category = tagModel._place;
         tagObj.categoryId = categoryId;
         tagObj.semanticCategory = 'Place';
+        tagObj.tagNorm = normTag;
+        tagObj.tagHash = tagObj.category + '|' + tagObj.tagNorm;
+
+        tagModel.tagsDS.add(tagObj);
+        tagModel.tagsDS.sync();
 
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
                 // Add the everlive object with everlive created Id to the datasource
-                tagModel.tagsDS.add(tagObj);
+               // tagModel.tagsDS.add(tagObj);
 
             }
         });
@@ -183,8 +304,9 @@ var tagModel = {
         tag.ggType = tagModel._ggClass;
         tag.name = null;
         tag.alias = null;
-        tag.tagName = null;
+        tag.tagNorm = null;
         tag.tagHash = null;
+        tag.nameCombo = null;
         tag.category = tagModel._user;
         tag.categoryId = null;
         tag.semanticCategory = null;
@@ -238,7 +360,7 @@ var tagModel = {
 
         for (var i=0; i<tagArray.length; i++) {
 
-            tagString += tagArray[0].tagname + ', ';
+            tagString += tagArray[0].name + ', ';
 
         }
 
@@ -268,14 +390,22 @@ var tagModel = {
 
     findTag : function (tag) {
         var normTag = tagModel.normalizeTag(tag);
-        var tags = tagModel.queryTags({field: "tagName", operator: "eq", value: normTag});
+        var tags = tagModel.queryTags({field: "tagNorm", operator: "eq", value: normTag});
+
+        return (tags);
+    },
+
+
+    findTagByCategory : function (category, tag) {
+        var normTag = tagModel.normalizeTag(tag);
+        var tags = tagModel.queryTags([{field: "tagNorm", operator: "eq", value: normTag},
+            {field: "category", operator: "eq", value: category}]);
 
         return (tags);
     },
 
     findTagByCategoryId : function (tagId) {
         var tags = tagModel.queryTags({field: "categoryId", operator: "eq", value: tagId});
-
         return (tags);
     },
 
@@ -287,7 +417,7 @@ var tagModel = {
 
     findContactTags : function (tag, alias) {
         var normTag = tagModel.normalizeTag(tag);
-        var tags = tagModel.queryTags([{field: "tagName", operator: "eq", value: normTag},
+        var tags = tagModel.queryTags([{field: "tagNorm", operator: "eq", value: normTag},
             {field: "category", operator: "eq", value: tagModel._contact}]);
 
         return (tags);

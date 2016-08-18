@@ -11,7 +11,7 @@ var contactModel = {
     _version: 1,
     _ggClass: 'Contact',
     _cloudClass: 'contacts',
-
+    contactsFetched : false,
    contactsDS: null,
 
 
@@ -70,8 +70,23 @@ var contactModel = {
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
             var changedContacts = e.items;
+            if (e.action === undefined) {
+                if (changedContacts !== undefined) {
+                    contactModel.contactsFetched = true;
+                    var len = changedContacts.length;
+                    for (var i=0; i<len; i++) {
+                        var contact = changedContacts[i];
+                        var category = contact.category.toLowerCase();
+                        if (category === 'member' || category === 'invited') {
+                            // add to tag list
+                            tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
+                        } else if (contact.category === 'chat') {
 
-            if (e.action !== undefined) {
+                        }
+
+                    }
+                }
+            } else {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
@@ -94,6 +109,12 @@ var contactModel = {
                         var contactList = contactModel.findContactList(contact.uuid);
                         if (contactList !== undefined) {
                             contactModel.contactListDS.remove(contactList);
+                        }
+                        break;
+
+                    case "sync" :
+                        if (changedContacts !== undefined) {
+                            var len = changedContacts.len;
                         }
                         break;
 

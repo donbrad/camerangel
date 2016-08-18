@@ -271,19 +271,12 @@ var homeView = {
     selectView : function (index) {
         switch (index) {
             case 0: // Alerts
-                $('#home-notes').addClass("hidden");
                 $('#home-today').addClass("hidden");
                 $('#home-alerts').removeClass("hidden");
                 ux.setSearchPlaceholder("Search Alerts...");
                 break;
-            case 1: // Notes
-                $('#home-notes').removeClass("hidden");
-                $('#home-today').addClass("hidden");
-                $('#home-alerts').addClass("hidden");
-                ux.setSearchPlaceholder("Search Notes...");
-                break;
-            case 2 : // Today
-                $('#home-notes').addClass("hidden");
+
+            case 1 : // Today
                 $('#home-today').removeClass("hidden");
                 $('#home-alerts').addClass("hidden");
                 ux.setSearchPlaceholder("Search Today...");
@@ -344,15 +337,6 @@ var homeView = {
             index: homeView._activeView
         });
 
-        $("#notesView-listview").kendoMobileListView({
-            dataSource: privateNoteModel.notesDS,
-            template: $("#privateNote-template").html()
-
-        }).kendoTouch({
-            filter: "div",
-            tap: privateNotesView.tapNote,
-            hold: privateNotesView.holdNote
-        });
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
             template: $("#notificationTemplate").html(),
@@ -370,25 +354,35 @@ var homeView = {
             }
         });
 
+        privateNotesView.onInit();
+
         homeView.scroller = e.view.scroller;
 
         homeView.scroller.setOptions({
             pullToRefresh: true,
             pull: function() {
-               // photoModel.photosDS.sync();
+
                 ux.toggleSearch();
+                // Add code to selectively sync active view
                 homeView.scroller.pullHandled();
 
             }
         });
+
+
     },
 
     onShow: function (e) {
        // set verified ui for start screen
-        if(userModel._user.phoneValidated) {
-            $("#startPhoneVerified").addClass("hidden");
-           // notificationModel.addVerifyPhoneNotification();
+
+        if (userModel._user.phoneValidated) {
+            deviceModel.setAppState('phoneValidated', true);
+            notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
+        } else {
+            mobileNotify("Please verify your phone number");
+            verifyPhoneModal.openModal();
         }
+
       /*  if (!userModel._user.isValidated) {
             notificationModel.addVerifyEmailNotification();
         }*/
@@ -982,20 +976,122 @@ var modalView = {
 
 };
 
+var noteViewer = {
+
+    activeNote : new kendo.data.ObservableObject(),
+    noteUUID : null,
+
+    onInit : function () {
+
+    },
+
+
+    editNote : function () {
+        APP.kendo.navigate("#noteEditor?noteid="+noteViewer.noteUUID+"&returnview=home");
+        noteViewer.closeModal();
+    },
+
+    openModal : function (noteId, note) {
+
+        if (noteId !== null) {
+            noteViewer.noteUUID = noteId;
+        }
+
+        if (note !== undefined && note !== null) {
+
+            noteViewer.noteUUID = note.uuid;
+            noteViewer.activeNote.set('uuid', note.uuid);
+            noteViewer.activeNote.set('title', note.title);
+            noteViewer.activeNote.set('tagString', note.tagString);
+            noteViewer.activeNote.set('content', note.content);
+            noteViewer.activeNote.set('data', note.data);
+            noteViewer.activeNote.set('dataObject', note.dataObject);
+        }
+        $('#noteViewer').data('kendoMobileModalView').open();
+    },
+
+    closeModal : function () {
+        $('#noteViewer').data('kendoMobileModalView').close();
+    }
+};
+
+
+
+
 var noteEditView = {
     _callback : null,
     _returnview : null,
     _saveCallback : null,
     _editorActive : false,
+    _mode : 'create',
+    _noteUUID : null,
     contentObj : new kendo.data.ObservableObject(),
+    tags : null,
+    tagString: null,
+    photos: [],
 
     onInit: function (e) {
 
+        $('#noteEditor-tagString').click(function(){
+            var that = noteEditView;
+            var string = $('#noteEditor-tagString').val();
 
+            smartTagView.openModal(that.tags, that.tagString, function (tags, tagString ) {
+
+            })
+
+        });
+
+    },
+
+    initNote : function () {
+        var that = noteEditView;
+
+        that.contentObj.data = {};
+        that.contentObj.uuid = uuid.v4();
+        that.contentObj.data.photos = [];
+        that.contentObj.data.objects = [];
+        that.contentObj.dataObject = {};
+        that.contentObj.title = '';
+        that.contentObj.tagString = '';
+        that.contentObj.tags = [];
+        that.contentObj.content = '';
+        that.contentObj.timestamp = new Date();
+        that.contentObj.ggType = privateNoteModel._ggClass;
+        that.contentObj.noteType = privateNoteModel._note;
+        $('#noteEditor-textarea').redactor('code.set', "");
+        $('#noteEditor-title').val("");
+        $('#noteEditor-tagString').val("");
+        noteEditView._mode = 'create';
     },
 
     onShow : function (e) {
         //_preventDefault(e);
+        noteEditView.openEditor();
+        noteEditView.initNote();
+
+        if (e.view.params.noteid !== undefined) {
+            noteEditView._noteUUID = e.view.params.noteid;
+            var note = privateNoteModel.findNote(noteEditView._noteUUID);
+            noteEditView._mode = 'edit';
+            if (note.tags === undefined) {
+                note.tags = [];
+            }
+            if (note.tagString === undefined) {
+                note.tagString = null;
+            }
+            noteEditView.contentObj = note;
+            noteEditView.photos = note.dataObject.photos;
+            $('#noteEditor-textarea').redactor('code.set', note.content);
+            $('#noteEditor-title').val(note.title);
+            $('#noteEditor-tagString').val(note.tagString);
+
+        } else {
+            noteEditView._noteUUID = null;
+            noteEditView._mode = 'create';
+        }
+
+
         if (e.view.params.callback !== undefined) {
             noteEditView._callback = e.view.params.callback;
         } else {
@@ -1014,11 +1110,13 @@ var noteEditView = {
             noteEditView._saveCallback = null;
         }
 
-        noteEditView.openEditor();
+
+
+
     },
 
     onHide: function (e) {
-        noteEditView.openEditor();
+        noteEditView.closeEditor();
 
     },
 
@@ -1035,7 +1133,182 @@ var noteEditView = {
         if (noteEditView._saveCallback !== null) {
             noteEditView._saveCallback (noteEditView.contentObj);
         }
+
+        noteEditView.saveNote();
         noteEditView.onDone();
+    },
+
+    addImageToNote: function (photoId, displayUrl) {
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+
+            // privateNotesView.checkEditor();
+
+            var imgUrl = '<img class="photo-chat" data-id="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
+
+            $('#noteEditor-textarea').redactor('insert.node', $('<div />').html(imgUrl));
+
+            noteEditView.photos.push(photoId);
+
+        }
+
+    },
+
+    updateImageUrl : function (photoId, shareUrl) {
+        $('#notephoto_' + photoId).attr('src', shareUrl);
+        //$('#privateNote-SaveBtn').removeClass('hidden');
+    },
+
+    addPhotoToNote : function (photoId) {
+
+        var photo = photoModel.findPhotoById(photoId);
+
+        if (photo !== undefined) {
+
+            var photoObj  = {
+                photoId : photo.photoId,
+                thumbnailUrl: photo.thumbnailUrl,
+                imageUrl: photo.imageUrl,
+                deviceUrl : photo.deviceUrl,
+                cloudUrl : photo.cloudUrl
+            };
+        }
+
+        noteEditView.contentObj.data.photos.push(photoObj);
+        // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
+    },
+
+    // Confirm that the user hasn't delete the display reference to any photos in the note
+    validatePhotos : function () {
+        var validPhotos = [];
+        // var messageText = $('#messageTextArea').data("kendoEditor").value();
+        var messageText = $('#noteEditor-textarea').redactor('code.get');
+
+        for (var i=0; i< noteEditView.photos.length; i++) {
+            var photoId = noteEditView.photos[i];
+
+            if (messageText.indexOf(photoId) !== -1) {
+                //the photoId is in the current message text
+                noteEditView.addPhotoToNote(photoId);
+            }
+        }
+    },
+
+    addCamera : function (e) {
+        _preventDefault(e);
+
+        devicePhoto.deviceCamera(
+            devicePhoto._resolution, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            noteEditView.addImageToNote,  // Optional preview callback
+            noteEditView.updateImageUrl
+        );
+    },
+
+    addPhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+        devicePhoto.deviceGallery(
+            devicePhoto._resolution, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            noteEditView.addImageToNote,  // Optional preview callback
+            noteEditView.updateImageUrl
+        );
+
+        /*window.imagePicker.getPictures(
+            function(results) {
+                for (var i = 0; i < results.length; i++) {
+                    console.log('Image URI: ' + results[i]);
+                }
+            }, function (error) {
+                console.log('Error: ' + error);
+            }, {
+                maximumImagesCount: 10,
+                width: devicePhoto._resolution
+            }
+        );*/
+    },
+
+    addGallery : function (e) {
+        _preventDefault(e);
+
+        galleryPicker.openModal(function (photo) {
+
+            var url = photo.thumbnailUrl;
+            if (photo.imageUrl !== undefined && photo.imageUrl !== null)
+                url = photo.imageUrl;
+
+            noteEditView.addImageToNote(photo.photoId, url);
+        });
+        //  APP.kendo.navigate("views/gallery.html#gallery?mode=picker");
+
+    },
+
+    saveNote: function () {
+        var validNote = false; // If message is valid, send is enabled
+
+        if (noteEditView._mode === 'edit') {
+            validNote = true;
+        }
+
+        var text = $('#noteEditor-textarea').redactor('code.get');
+        var title = $('#noteEditor-title').val();
+        var tagString =  $('#noteEditor-tagString').val();
+
+        if (text.length > 0) {
+            validNote = true;
+        }
+
+
+        // Are there any photos in the current message
+        if (noteEditView.photos.length > 0) {
+            validNote = true;
+
+            //Need to make sure the user didn't delete the photo reference in the html...
+            noteEditView.validatePhotos();
+        }
+
+
+        if (validNote === true ) {
+
+            var activeNote = noteEditView.contentObj;
+            var contentData = JSON.stringify(activeNote.data);
+            var dataObj = JSON.parse(contentData);
+
+            if (noteEditView._mode === 'edit') {
+
+                var note = privateNoteModel.findNote(activeNote.uuid);
+
+                note.set('title', title);
+                note.set('tagString', tagString);
+                note.set('tags', []); // todo: don integrate tag processing...
+                note.set('content', text);
+                note.set('data', contentData);
+                note.dataObject = dataObj;
+                note.set('timestamp',ggTime.currentTime());
+
+                privateNoteModel.updateNote(note);
+
+            } else {
+
+                activeNote.title = title;
+                activeNote.content = text;
+                activeNote.tagString = tagString;
+                activeNote.timestamp = ggTime.currentTime();
+                activeNote.data = contentData;
+                activeNote.dataObject = dataObj;
+
+               privateNoteModel.addNote(activeNote);
+            }
+
+
+        }
+
     },
 
 
@@ -1049,11 +1322,13 @@ var noteEditView = {
                  maxHeight: 360,*/
                 focus: true,
                 toolbarExternal: '#noteEditor-toolbar',
-                 imageEditable: false, // disable image edit mode on click
-                 imageResizable: false, // disable image resize mode on click*/
+                imageEditable: false, // disable image edit mode on click
+                imageResizable: false, // disable image resize mode on click*/
+                imageCaption: false,
                 placeholder: 'Add Note Content...',
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
-                buttons: [ 'format', 'bold', 'italic', 'lists', 'horizontalrule']/*,
+                buttons: [ 'format', 'bold', 'italic', 'lists'],
+                plugins: [ 'table', 'photos', 'iconic']/*,
                  callbacks: {
                  paste: function(content)
                  {
@@ -1135,6 +1410,7 @@ var noteEditView = {
 
 
     },
+
     sendGhostEmail : function (e) {
         _preventDefault(e);
 
@@ -1298,6 +1574,7 @@ var ghostEditView = {
 
         }
     },
+
     insertImage: function(e) {
         galleryPicker.openModal(function (photo) {
 

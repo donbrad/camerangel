@@ -153,6 +153,7 @@
 			window.open = cordova.InAppBrowser.open;
 
 
+
 			ThreeDeeTouch.isAvailable(function (avail) {
 
 				if (avail) {
@@ -183,8 +184,32 @@
 					]);
 
 					ThreeDeeTouch.onHomeIconPressed = function (payload) {
-						mobileNotify("3D Touch. Type: " + payload.type + ". Title: " + payload.title + ".");
-						// a few examples of how to deal with various types:
+						console.log("3D Touch. Type: " + payload.type + ". Title: " + payload.title + ".");
+						var actionObj = {action: null, timestamp: new Date() };
+						switch (payload.type) {
+							case 'autotrack' :
+								actionObj.action = 'autotrack';
+								deviceModel.initialAction = actionObj;
+								break;
+
+							case 'camera' :
+								actionObj.action = 'camera';
+								deviceModel.initialAction = actionObj;
+								break;
+
+							case 'panic' :
+								actionObj.action = 'panic';
+								deviceModel.initialAction = actionObj;
+								break;
+
+							case 'emergency' :
+								actionObj.action = 'emergency';
+								deviceModel.initialAction = actionObj;
+								break;
+
+						}
+
+
 					}
 				}
 			});
@@ -256,7 +281,51 @@
 		emojione.sprites = true;
 		//emojione.imagePathSVGSprites = './bower_components/emojione/assets/sprites/emojione.sprites.svg';
 
+		$.Redactor.prototype.iconic = function()
+		{
+			return {
+				init: function ()
+				{
+					var icons = {
+						'format': '<img src="images/icon-editor.svg" height="18">',
+						'bold': '<img src="images/icon-bold.svg" height="18">',
+						'italic': '<img src="images/icon-italic.svg" height="18">',
+						'lists': '<img src="images/icon-list.svg" height="18">',
+						'horizontalrule': '<img src="images/icon-grid.svg" height="18">'
+					};
 
+					$.each(this.button.all(), $.proxy(function(i,s)
+					{
+						var key = $(s).attr('rel');
+
+						if (typeof icons[key] !== 'undefined')
+						{
+							var icon = icons[key];
+							var button = this.button.get(key);
+							this.button.setIcon(button, icon);
+						}
+
+					}, this));
+				}
+			};
+		};
+		$.Redactor.prototype.photos = function()
+		{
+			return {
+				init: function ()
+				{
+					var button = this.button.add('photos', 'Photos');
+					this.button.addCallback(button, this.photos.showActionSheet);
+
+					// Set icon
+					this.button.setIcon(button, '<img src="images/chat-camera.svg" height="18">');
+				},
+				showActionSheet: function(buttonName)
+				{
+					$("#notePhotoActions").data("kendoMobileActionSheet").open();
+				}
+			};
+		};
 
 		
 		/* $(".email-Autocomplete").emailautocomplete({

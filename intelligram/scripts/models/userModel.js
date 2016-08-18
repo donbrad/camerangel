@@ -172,6 +172,10 @@ var userModel = {
 
         todayModel.init();
 
+       /* galleryModel.init();
+
+        groupModel.init();*/
+
         if (window.navigator.simulator === undefined) {
             serverPush.init();
         }
@@ -195,6 +199,9 @@ var userModel = {
         statusTracker.syncObjects();
         notificationModel.sync();
         todayModel.sync();
+        tagModel.sync();
+   /*     galleryModel.sync();
+        groupModel.sync();*/
     },
 
     initKendo : function () {
@@ -319,7 +326,16 @@ var userModel = {
         var emailValidated = user.Verified;
         userModel._user.set('emailValidated', emailValidated);
         userModel._user.set('phoneValidated',user.phoneValidated);
-      
+
+        /*if (!user.phoneValidated) {
+            notificationModel.addVerifyPhoneNotification();
+        }
+
+        if (!user.emailValidated) {
+            notificationModel.addVerifyEmailNotification();
+        }*/
+
+
         if (user.addressValidated === undefined) {
             user.addressValidated = false;
         }
@@ -518,28 +534,6 @@ var userModel = {
         deviceModel.setAppState('pubnubInit', true);
 
         deviceModel.isPushProvisioned();
-
-    },
-
-    fetchParseData: function() {
-       // APP.models.places.placesDS.fetch();
-
-        // fetch channel (chat) models (objects) from parse.
-       //channelModel.fetch();
-
-        // fetch contact models (objects) from parse.
-        //contactModel.fetch();
-
-       // placesModel.fetch();
-
-       // photoModel.fetch();
-
-       // noteModel.fetch();
-
-        //smartEvent.fetch();
-
-        userStatus.init();
-
 
     },
 
@@ -747,7 +741,5 @@ var userStatus = {
         everlive.updateUserStatus();
 
     }
-
-
 
 };

@@ -60,6 +60,7 @@
 	<script src="scripts/libs/lz-string.js"></script>
 	<script src="scripts/libs/cropper.js"></script>
 	<script src="scripts/libs/redactor.js"></script>
+	<script src="scripts/libs/table.js"></script>
 	<script src="scripts/libs/strength.js"></script>
 	<script src="scripts/libs/jdenticon-1.3.0.js"></script>
 
@@ -82,6 +83,8 @@
 	<script src="scripts/models/contactModel.js"></script>
 	<script src="scripts/models/deviceModel.js"></script>
 	<script src="scripts/models/everliveModel.js"></script>
+	<script src="scripts/models/galleryModel.js"></script>
+	<script src="scripts/models/groupModel.js"></script>
 	<script src="scripts/models/mapModel.js"></script>
 	<script src="scripts/models/memberdirectory.js"></script>
 	<script src="scripts/models/monkeylearnModel.js"></script>
@@ -154,7 +157,7 @@
 			</a>
 			<span data-role="view-title"></span>
 			<a data-role="button" data-align="right" class="user-settings homeToggleSearch" data-click="ux.navigateAddTarget">
-				<img class="nav-search header-add-icon" src="images/menu-add.svg"/>
+				<img class="nav-search header-add-icon" src="images/nav-gear.svg"/>
 			</a>
         </div>
         <div class="gg_mainSearchBox" data-visible="false">
@@ -247,7 +250,7 @@
 							</g>
 						</g>
 					</svg>
-					<span class="menuNav-text">Gallery</span>
+					<span class="menuNav-text">My Safe</span>
                 </a>
             </li>
         </ul>
@@ -420,9 +423,6 @@
 				<img src="images/notify-icon.svg" height="20" /> Alerts
 			</li>
 			<li>
-				<img src="images/icon-myNotes.svg" height="20" /> Notes
-			</li>
-			<li>
 				<img src="images/icon-time-primary.svg" height="20" /> Today
 			</li>
 		</ul>
@@ -438,42 +438,7 @@
 				<img src="images/empty-home.svg" />
 			</div>
 		</div>
-		<div id="home-notes" class="hidden">
-			<div class="privateNoteContent">
-				<p class="helper" style="padding-top: 0.5em;">
-				<span class="hidden">
-					<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
-				</span>
-				</p>
-				<div class="messageMediaBar" style="text-align: center;">
-					<ul>
-						<li>
-							<a data-role="button" data-rel="actionsheet" href="#privateNotePhotoActions">
-								<img src="images/chat-camera.svg" height="24">
-							</a>
-						</li>
-						<li>
-							<a data-role="button" href="#noteEditor?returnview=home">
-								<img src="images/icon-myNotes.svg" height="20" />
-							</a>
-						</li>
-						<li>
-							<a data-role="button" data-click="privateNotesView.noteSearch">
-								<img src="images/icon-web.svg" height="24">
-							</a>
-						</li>
-						<li>
-							<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
-								<img src="images/icon-smartMenu.svg" height="24">
-							</a>
-						</li>
-					</ul>
-				</div>
-				<div class="clearfix"></div>
-				<ul id="notesView-listview" style="padding-left: 10px; padding-right: 10px;"></ul>
 
-			</div>
-		</div>
 		<div id="home-today" class="hidden">
 			<div class="notify-title ">
 
@@ -512,6 +477,33 @@
 		</li>
 	</ul>
 
+	<ul id="privateNoteViewActions" data-role="actionsheet" data-cancel="Cancel">
+		<li>
+			<a data-role="button" data-click="privateNotesView.editNote">
+				<img src="images/action-edit.svg" class="icon-action"/> Edit Note
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-action="privateNotesView.deleteNote">
+				<img src="images/action-delete.svg" class="icon-action"/> Delete Note
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-action="privateNotesView.sendNote">
+				<img src="images/action-contact.svg" class="icon-action" /> Send to Contact
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-action="privateNotesView.sendChatNote">
+				<img src="images/action-chat.svg" class="icon-action" /> Share in Chat
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-action="privateNotesView.shareNote">
+				<img src="images/action-share.svg" class="icon-action" /> Share Note
+			</a>
+		</li>
+	</ul>
 </div>
 
 <script type="text/x-kendo-template" id="notificationTemplate1">
@@ -717,7 +709,9 @@
 				</li>
 				<li>
 					<label>Password</label>
-					<input type="password" class="signupForm" id="home-signin-password" value=""  name="Password"  placeholder="••••••" required />
+
+					<input type="password" class="signupForm" id="home-signin-password" value=""  name="Password" placeholder="password..." required />
+
 					<span id="forgotPassword" class="btnClear-grey" data-click="recoverPasswordView.openModal" data-role="button">Forgot password?</span>
 				</li>
 				<li>
@@ -967,12 +961,20 @@
 	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
 </div>
 
-<div data-role="modalview" id="modalGalleryView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal">
+<div data-role="modalview" id="galleryListModal" data-title="Gallery Picker" style="width: 100%; height:100%; display: none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+			<a class="right closeBox" data-click="galleryListView.closeModal" data-role="button">
+				<img src="images/close.svg" class="icon-sm"  />
+			</a>
+		</div>
 
-	<ul id="modalgallery-listview" class="list-inline" data-role="listview" data-click="modalGalleryView.galleryClick" data-source="photoModel.photosDS" data-template="modalGalleryTemplate"></ul>
-	<div data-role="footer">
-		<a class="btnClear btnFull" data-role="button" data-click="modalGalleryView.closeModal">Close</a>
 	</div>
+	<h3>Please select a gallery from the list below:</h3>
+	<ul id="galleryListModal-listview" class="list-inline" ></ul>
+
+
 </div>
 
 
@@ -1079,23 +1081,129 @@
 		</div>
 </div>
 
+<div data-role="view" data-title="Gallery Editor" id="galleryEditor" data-model="galleryEditView.activeObj" data-init="galleryEditView.onInit" data-show="galleryEditView.onShow"  data-hide="galleryEditView.onHide"   style="width:100%; height: 100%; display: none;" >
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>intelliGallery</span>
+			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
+			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear">Add</a>
+		</div>
+	</div>
+	<div id="galleryEditor-editTitleTag">
+		<input style="font-weight: 600;"  type="search" id="galleryEditor-title" placeholder="Add Title...">
+		<input id="galleryEditor-tagString"  placeholder="Click to add tags..." readonly>
+	</div>
+	<div id="galleryEditor-viewTitleTag" class="hidden">
+		<div data-bind="text: title"></div>
+		<div data-bind="text: tagString"></div>
+	</div>
+	<div class="resultsBar">
+		<div class="results">
+			<span  data-bind="text: photoCount"></span>
+			<span >Photos</span>
+		</div>
+		<div class="photoDisplayView">
+			<ul data-role="buttongroup" data-index="0" data-select="galleryEditView.galleryActionView">
+				<li>
+					<a class="btnClear gallerySelectBtn-grid" data-role="button">
+						<img src="images/icon-grid-active.svg" class="icon-md"/>
+					</a>
+				</li>
+				<li>
+					<a class="btnClear gallerySelectBtn-list" data-role="button">
+						<img src="images/icon-list-alt.svg" class="icon-md"/>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
 
+	<div style="width: 100vw;">
+		<ul id="galleryEdit-listview" class="list-inline" data-role="listview"></ul>
+	</div>
+	<div class="footer" data-role="footer">
+		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" data-align="right" id=galleryEditor-saveBtn" class="btnClear">Save</a>
+	</div>
+
+
+	<ul data-role="actionsheet"  id="galleryEditPhotoActions" >
+		<li>
+			<a data-action="galleryEditView.addCamera">
+				<img src="images/action-camera.svg" class="icon-action"/> Camera
+			</a>
+		</li>
+		<li>
+			<a data-action="galleryEditView.addPhoto">
+				<img src="images/action-device.svg" class="icon-action">
+				Device Gallery
+			</a>
+		</li>
+		<li>
+			<a data-action="galleryEditView.addGallery">
+				<img src="images/action-memories.svg" class="icon-action"> Memories Gallery
+			</a>
+		</li>
+	</ul>
+</div>
+
+
+<!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
+<div data-role="modalview" id="noteViewer" data-model="noteViewer.activeNote" data-zoom="true" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="noteViewer.onInit">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>intelliNote Viewer</span>
+			<a data-click="noteViewer.closeModal" data-role="button" data-align="left" class="btnClear-grey"><img src="images/close.svg" /></a>
+			<a data-click="noteViewer.editNote" data-role="button" data-align="right" class="btnClear-grey">Edit</a>
+		</div>
+	</div>
+	<div >
+		<div style="text-align: center; font-size: 1.1em; font-weight: bold;" data-bind="text: title"></div>
+		<div style="font-size: 1.1em; padding-bottom: 12px;" data-bind="text: tagString"></div>
+
+	</div>
+
+	<div style="width: 100vw; -webkit-touch-callout: none; -webkit-user-select: none;" data-bind="html: content">
+
+	</div>
+
+</div>
 
 <div data-role="view" data-title="Note Editor" id="noteEditor" data-init="noteEditView.onInit" data-show="noteEditView.onShow"  data-hide="noteEditView.onHide"   style="width:100%; height: 100%; display: none;" >
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>intelliNote</span>
 			<a data-role="button" data-click="noteEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
-			<a data-role="button" data-click="noteEditView.onSave" data-align="right" class="btnClear">Save</a>
+			<a data-role="button" data-click="noteEditView.onSave" data-align="right" id=noteEditor-saveBtn" class="btnClear">Save</a>
 		</div>
 	</div>
-
+	<div id="noteTitleTag">
+		<input style="font-weight: 600;"  type="search" id="noteEditor-title" placeholder="Add Title...">
+		<input id="noteEditor-tagString"  placeholder="Click to add tags..." readonly> </input>
+	</div>
 	<div style="width: 100vw; -webkit-touch-callout: none; -webkit-user-select: none;">
 		<div id="noteEditor-toolbar" style=""></div>
 		<textarea id="noteEditor-textarea" style="height: 80vh;  -webkit-touch-callout: none; -webkit-user-select: none; " type="text"></textarea>
 	</div>
 
-
+	<ul data-role="actionsheet"  id="notePhotoActions" >
+		<li>
+			<a data-action="noteEditView.addCamera">
+				<img src="images/action-camera.svg" class="icon-action"/> Camera
+			</a>
+		</li>
+		<li>
+			<a data-action="noteEditView.addPhoto">
+				<img src="images/action-device.svg" class="icon-action">
+				Device Gallery
+			</a>
+		</li>
+		<li>
+			<a data-action="noteEditView.addGallery">
+				<img src="images/action-memories.svg" class="icon-action"> Memories Gallery
+			</a>
+		</li>
+	</ul>
 </div>
 
 
@@ -2850,41 +2958,109 @@
 <!--/*
  * gallery
  */-->
-<div data-role="view" data-title="Memories Gallery" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
-	<div>
-		<div class="resultsBar">
-			<div class="results">
-				<span id="resultCount" data-bind="text: _totalPhotos"></span>
-				<span id="resultsName">Photos</span>
-			</div>
-			<div class="photoDisplayView">
-				<ul data-role="buttongroup" data-index="0" data-select="galleryView.galleryActionView">
+<div data-role="view" data-title="My Safe" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
+	<div  class="appBox">
+
+		<ul id="gallery-buttongroup" style="padding: 6px; font-size: 1.2em;">
+			<li>
+				<img src="images/icon-myNotes.svg" height="20" /> Notes
+			</li>
+			<li>
+				<img src="images/gallery-grid-2.svg" height="20" /> Photos
+			</li>
+		</ul>
+
+
+		<div id="gallery-photos" class="hidden">
+			<div>
+				<ul data-role="buttongroup" style="padding: 6px; font-size: 1.2em;">
 					<li>
-						<a class="btnClear gallerySelectBtn-grid" data-role="button">
-							<img src="images/icon-grid-active.svg" class="icon-md"/>
-						</a>
+						<a class="btnClear" data-role="button" >Edit </a>
 					</li>
 					<li>
-						<a class="btnClear gallerySelectBtn-list" data-role="button">
-							<img src="images/icon-list-alt.svg" class="icon-md"/>
-						</a>
+						<a class="btnClear" data-role="button" data-click="galleryView.openGalleryPicker">All Photos </a>
+					</li>
+					<li>
+						<a class="btnClear" data-role="button" >Add </a>
 					</li>
 				</ul>
-
-			</div>
-			<div class="filter">
-				<a class="btnClear" data-role="button" href="#filterGallery" id="toggleFilterBtn">
-					<img src="images/icon-filter-link.svg" />
-					<span id="filterCount"></span>
-					<span id="filterText"> Filter </span>
-				</a>
 			</div>
 
-			<div class="clearfix"></div>
+			<div class="resultsBar">
+				<div class="results">
+					<span id="resultCount" data-bind="text: _totalPhotos"></span>
+					<span id="resultsName">Photos</span>
+				</div>
+				<div class="photoDisplayView">
+					<ul data-role="buttongroup" data-index="0" data-select="galleryView.galleryActionView">
+						<li>
+							<a class="btnClear gallerySelectBtn-grid" data-role="button">
+								<img src="images/icon-grid-active.svg" class="icon-md"/>
+							</a>
+						</li>
+						<li>
+							<a class="btnClear gallerySelectBtn-list" data-role="button">
+								<img src="images/icon-list-alt.svg" class="icon-md"/>
+							</a>
+						</li>
+					</ul>
+
+				</div>
+				<div class="filter">
+					<a class="btnClear" data-role="button" href="#filterGallery" id="toggleFilterBtn">
+						<img src="images/icon-filter-link.svg" />
+						<span id="filterCount"></span>
+						<span id="filterText"> Filter </span>
+					</a>
+				</div>
+
+				<div class="clearfix"></div>
+			</div>
+			<!-- Photos -->
+			<ul id="gallery-listview" class="list-inline" data-role="listview" ></ul>
 		</div>
-		<!-- Photos -->
-		<ul id="gallery-listview" class="list-inline" data-role="listview" ></ul>
 
+		<div id="gallery-notes" >
+			<div class="privateNoteContent">
+				<p class="helper" style="padding-top: 0.5em;">
+				<span class="hidden">
+					<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
+				</span>
+				</p>
+				<div class="messageMediaBar" style="text-align: center;">
+					<ul>
+						<li>
+							<a data-role="button" data-rel="actionsheet" href="#privateNotePhotoActions">
+								<img src="images/chat-camera.svg" height="24">
+							</a>
+						</li>
+						<li>
+							<a data-role="button" href="#galleryEditor?returnview=home">
+								<img src="images/gallery-grid-2.svg" height="24">
+							</a>
+						</li>
+						<li>
+							<a data-role="button" href="#noteEditor?returnview=home">
+								<img src="images/icon-myNotes.svg" height="20" />
+							</a>
+						</li>
+						<li>
+							<a data-role="button" data-click="privateNotesView.noteSearch">
+								<img src="images/icon-web.svg" height="24">
+							</a>
+						</li>
+						<li>
+							<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
+								<img src="images/icon-smartMenu.svg" height="24">
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="clearfix"></div>
+				<ul id="notesView-listview" style="padding-left: 10px; padding-right: 10px;"></ul>
+
+			</div>
+		</div>
 	</div>
 	<ul data-role="actionsheet" id="galleryActions1" data-popup='{"direction": "left"}'>
 		<li>
@@ -2902,6 +3078,10 @@
 	</ul>
 
 </div>
+
+
+
+
 
 <div data-role="view" data-title="Filter" id="filterGallery" data-layout="main" data-transition="overlay:up" data-init="archiveView.onFilterInit" style="display: none;">
 	<div data-role="header">
@@ -2984,6 +3164,11 @@
 		</p>
 		<ul class="tagList list-inline" data-role="listview" data-template="tag-template"></ul>
 	</div>
+
+
+
+
+
 	<div data-role="footer">
 		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="archiveView.saveFilters"> Save </a>
 	</div>
@@ -5777,6 +5962,7 @@
 	</ul>
 -->
 
+<!--
 	<ul id="privateNoteViewActions" data-role="actionsheet" data-cancel="Cancel">
 		<li>
 			<a data-role="button" data-click="privateNotesView.editNote">
@@ -5804,6 +5990,7 @@
 			</a>
 		</li>
 	</ul>
+-->
 
 
 </div>
@@ -5819,8 +6006,23 @@
 	var tagString = "";
 	if (tagString !== undefined && tagString !== null) { tagString = tagString;}
 	var sender = 'Me';
-	var noteDate = moment(time);
+	var noteDate = moment(timestamp);
 	var today = moment();
+	var photoStr = "";
+	if (dataObject !== undefined && dataObject.photos !== undefined) {
+		var photoCount = dataObject.photos.length;
+
+		if (photoCount === 1) {
+			photoStr = "1 photo";
+		} else if (photoCount > 1) {
+			photoStr = photoCount + " photos";
+		}
+	}
+
+	var desc = '';
+
+	if (description !== undefined)
+		desc = description;
 
 	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
@@ -5829,39 +6031,123 @@
 	}
 
 	#
-	# if (ggType === 'Note') { #
-		<div class="private-note" data-id="#:noteUUID#" data-objectId="#:noteUUID#">
+	# if (noteType === 'Note') { #
+		<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
 			<h3 class="textClamp">
 				<img src="images/smart-note-inline.svg" class="icon-sm" />
 				<span>#:titleStr#</span>
 			</h3>
 			<p class="helper" style="font-size: 0.85em;">
 				<span>#:dateString#</span>
+				<span style="float:right;">#:photoStr#</span>
+			</p>
+			<p class="helper" style="font-size: 1.0em; clear:both;">
 				<span> #:tagString#</span>
 			</p>
-			<p style="margin-top: 0.5em; width: 100%;">#=content#</p>
+			<p class="helper" style="font-size: 1.0em; clear:both;">
+				<span> #:desc#</span>
+			</p>
+			<div class="private-note-content">
+				#=content#
+			</div>
+
 		</div>
 	# } #
-	# if (ggType === 'Event') { #
-	<div class="private-note" >
+	# if (noteType === 'Gallery') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
 		<h3 class="textClamp">
-			<img src="images/smart-event.svg" class="icon-md" />
+			<img src="images/smart-photo-inline.svg" class="icon-sm" />
 			<span>#:titleStr#</span>
-			<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 		</h3>
-		<p>#: tagString #</p>
-		<p style="margin-top: 0.5em; width: 100%;">#=content#</p>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+
+		</p>
+		<p class="helper" style="font-size: 0.85em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+
+
 	</div>
 	# } #
-	# if (ggType === 'Movie') { #
-	<div class="private-note">
+	# if (noteType === 'Flight') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
 		<h3 class="textClamp">
-			<img src="images/smart-movie-circle.svg" class="icon-md" />
-			<span>#: titleStr #</span>
-			<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
+			<img src="images/intelliFlight-icon.svg" class="icon-sm" />
+			<span>#:titleStr#</span>
 		</h3>
-		<p>#: tagString #</p>
-		<p style="margin-top: 0.5em; width: 100%;">#= content #</p>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:desc#</span>
+		</p>
+
+	</div>
+	# } #
+	# if (noteType === 'Trip') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
+		<h3 class="textClamp">
+			<img src="images/intelliTrip-icon.svg" class="icon-sm" />
+			<span>#:titleStr#</span>
+		</h3>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:desc#</span>
+		</p>
+
+
+	</div>
+	# } #
+	# if (noteType === 'Movie') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
+		<h3 class="textClamp">
+			<img src="images/intelliMovie-icon.svg" class="icon-sm" />
+			<span>#:titleStr#</span>
+		</h3>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:desc#</span>
+		</p>
+
+
+	</div>
+	# } #
+	# if (noteType === 'Event') { #
+	<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
+		<h3 class="textClamp">
+			<img src="images/smart-event.svg" class="icon-sm" />
+			<span>#:titleStr#</span>
+		</h3>
+		<p class="helper" style="font-size: 0.85em;">
+			<span>#:dateString#</span>
+			<span style="float:right;">#:photoStr#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:tagString#</span>
+		</p>
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+			<span> #:desc#</span>
+		</p>
+
+
 	</div>
 	# } #
 </script>

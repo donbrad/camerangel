@@ -13,12 +13,16 @@
 var privateNoteModel = {
     notesDS: null,
     _cloudClass : 'privatenote',
-    _ggClass : 'Note',
+    _ggClass : 'PrivateNote',
     _note : 'Note',
+    _gallery : 'Gallery',
     _movie : 'Movie',
     _event : 'Event',
     _link : 'Link',
     _account : 'Account',
+    _flight : 'Flight',
+    _trip: 'Trip',
+    _medical : 'Medical',
     
     init: function () {
         privateNoteModel.notesDS = new kendo.data.DataSource({
@@ -44,7 +48,7 @@ var privateNoteModel = {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
-                        var noteId = note.noteUUID;
+                        var noteId = note.uuid;
                         break;
 
                     case "remove" :
@@ -54,7 +58,7 @@ var privateNoteModel = {
                     case "add" :
                         note = e.items[0];
 
-                        if (privateNoteModel.isDuplicateNote(note.noteUUID)) {
+                        if (privateNoteModel.isDuplicateNote(note.uuid)) {
                            // privateNoteModel.notesDS.remove(note);
                             //e.preventDefault();
                         }
@@ -77,6 +81,7 @@ var privateNoteModel = {
     },
     
     addNote : function (note) {
+
         privateNoteModel.notesDS.add(note);
         privateNoteModel.notesDS.sync();
 
@@ -90,14 +95,14 @@ var privateNoteModel = {
         });
     },
 
+
+
     updateNote : function (note) {
 
-        var Id = note.Id;
-        if (Id !== undefined){
-            everlive.update(privateNoteModel._cloudClass, note, {'noteUUID' : note.noteUUIE}, function (error, data) {
-                //placeNoteModel.notesDS.remove(note);
-            });
-        }
+        everlive.update(privateNoteModel._cloudClass, note, {'uuid' : note.uuid}, function (error, data) {
+            //placeNoteModel.notesDS.remove(note);
+        });
+
     },
 
     encryptNote : function (note) {
@@ -135,7 +140,7 @@ var privateNoteModel = {
 
     isDuplicateNote : function (noteId) {
 
-        var notes = privateNoteModel.queryNotes({ field: "noteUUID", operator: "eq", value: noteId });
+        var notes = privateNoteModel.queryNotes({ field: "uuid", operator: "eq", value: noteId });
 
         if (notes === undefined) {
             return (false);
@@ -147,7 +152,7 @@ var privateNoteModel = {
     },
 
     findNote : function (noteId) {
-        var notes = this.queryNotes({ field: "noteUUID", operator: "eq", value: noteId });
+        var notes = this.queryNotes({ field: "uuid", operator: "eq", value: noteId });
 
         if (notes === undefined ) {
             return null;
@@ -159,6 +164,21 @@ var privateNoteModel = {
         return notes[0];
     },
 
+
+    findGallery : function (galleryId) {
+        var galleries = this.queryNotes([{ field: "uuid", operator: "eq", value: galleryId },
+            {field: "noteType", operator: "eq", value: privateNoteModel._gallery }]);
+
+        if (galleries === undefined ) {
+            return null;
+        }
+        if (galleries.length === 0) {
+            return null;
+        }
+
+        return galleries[0];
+    },
+
     deleteNote : function (note) {
          if (note !== undefined) {
              privateNoteModel.notesDS.remove(note);
@@ -168,7 +188,7 @@ var privateNoteModel = {
     },
 
     deleteNoteById : function (noteId) {
-        var note = privateNoteModel.queryNotes({ field: "noteUUID", operator: "eq", value: noteId });
+        var note = privateNoteModel.queryNotes({ field: "uuid", operator: "eq", value: noteId });
         if (note !== undefined && note !== null) {
             privateNoteModel.notesDS.remove(note);
             privateNoteModel.notesDS.sync();

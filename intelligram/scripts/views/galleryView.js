@@ -21,6 +21,7 @@ var galleryView = {
     _currentPhotoUrl: null,
     _previewSize: "33%",
     _viewInitialized : false,
+    _activeView: 0,
     scroller: null,
 
     onInit : function (e) {
@@ -31,13 +32,6 @@ var galleryView = {
         var setSentinelHeight = function () {
             $('#search-archives').height(getSentinelHeight());
         };
-
-        /*
-         archiveView.sentinel.addListener('add', setSentinelHeight);
-         archiveView.sentinel.addListener('remove', setSentinelHeight);
-         setSentinelHeight();
-         */
-
 
         // ToDo: Initialize list view
         var itemWidth = $(window).width()/4;
@@ -54,6 +48,39 @@ var galleryView = {
 
     },
 
+    setStuffView : function () {
+        $('#gallery-photos').addClass("hidden");
+        $('#gallery-notes').removeClass("hidden");
+        ux.setSearchPlaceholder("Search Notes...");
+        galleryView._activeView = 0;
+    },
+
+    setPhotoView: function () {
+        $('#gallery-photos').removeClass("hidden");
+        $('#gallery-notes').addClass("hidden");
+        ux.setSearchPlaceholder("Search Photos...");
+        galleryView._activeView = 1;
+    },
+
+    selectView : function (index) {
+        switch (index) {
+            case 0: // Alerts
+               galleryView.setStuffView();
+                break;
+            case 1: // Notes
+                galleryView.setPhotoView();
+                break;
+
+        }
+    },
+
+    openGalleryPicker : function () {
+        galleryListView.openModal(function (galleryId) {
+            if (galleryId !== null) {
+                // switch to the new gallery.
+            }
+        })
+    },
 
     updateTotalPhotos : function () {
         // set result count
@@ -87,6 +114,19 @@ var galleryView = {
 
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
+
+            $('#gallery-buttongroup').kendoMobileButtonGroup({
+                select: function(e) {
+                    var index = e.index;
+                    if (index != galleryView._activeView) {
+                        galleryView._activeView = index;
+                        galleryView.selectView(galleryView._activeView);
+
+                    }
+
+                },
+                index: galleryView._activeView
+            });
 
             $("#gallery-listview").kendoMobileListView({
                 dataSource: photoModel.photosDS,
@@ -955,7 +995,7 @@ var modalPhotoView = {
                 var item = e.item;
                 var text = item.text();
             },
-            dataSource: contactModel.contactTagsDS
+            dataSource: tagModel.tagsDS
         });
     },
 
@@ -1204,57 +1244,40 @@ var modalPhotoView = {
 };
 
 // Removing this legacy view -- gallerypicker is new replacement.  just keeping the code for reference...
-/*var modalGalleryView = {
+var galleryListView = {
 
     _callback: null,
 
     openModal: function (callback) {
 
         if (callback !== undefined) {
-            modalGalleryView._callback = callback;
+            galleryListView._callback = callback;
         }
 
-        $("#modalgallery-listview li").css("width","100%");
-        $("#modalgallery-listview li").css("padding-bottom","100%");
-        $("#modalGalleryView").data("kendoMobileModalView").open();
+       /* $("#modalgallery-listview li").css("width","100%");
+        $("#modalgallery-listview li").css("padding-bottom","100%");*/
+        $("#galleryListModal").data("kendoMobileModalView").open();
 
     },
 
     closeModal: function (e) {
-        _preventDefault(e);
-        $("#modalGalleryView").data("kendoMobileModalView").close();
+
+        $("#galleryListModal").data("kendoMobileModalView").close();
     },
 
     galleryClick : function (e) {
         _preventDefault(e);
 
-        var photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl, thumbUrl = e.dataItem.thumbnailUrl;
+        var galleryId = e.dataItem.uuid
 
-        currentChannelModel.currentMessage.photo = {thumbnailUrl: thumbUrl, imageUrl: photoUrl};
-        if (modalGalleryView._callback !== null) {
-            modalGalleryView._callback(photoUrl);
-            modalGalleryView.closeModal();
+        if (galleryListView._callback !== null) {
+            galleryListView._callback(galleryId);
+            galleryListView.closeModal();
         }
-       /!* galleryView._currentPhotoUrl = photoUrl;
-        galleryView._currentPhotoId = photoId;
 
-        galleryView._currentPhoto = photoModel.findPhotoById(photoId);
-
-        $('#photoViewImage').attr('src', photoUrl);
-        $('#photoTagImage').attr('src', photoUrl);
-        //       $('#photoEditImage').attr('src', photoUrl);
-
-        if (galleryView._pickerMode) {
-            channelView.showChatImagePreview(photoUrl);
-            APP.kendo.navigate('#:back');
-
-        } else {
-            var photoParam = LZString.compressToEncodedURIComponent(photoId);
-            APP.kendo.navigate('#photoView?photo='+photoParam);
-        }*!/
     }
 
-};*/
+};
 
 
 var galleryPicker = {
@@ -1452,5 +1475,288 @@ var sendViaModal = {
 
         $("#sendViaModal").kendoMobileModalView("close");
     }
+
+};
+
+
+var galleryEditView = {
+    _callback : null,
+    _returnview : null,
+    _mode : 'create',
+    _galleryUUID : null,
+    activeObj : new kendo.data.ObservableObject(),
+    tags : null,
+    tagString: null,
+    photosDS:  new kendo.data.DataSource(),
+
+    onInit: function (e) {
+
+        $('#galleryEditor-tagString').click(function(){
+            var that = galleryEditView;
+            var string = $('#galleryEditor-tagString').val();
+
+            smartTagView.openModal(that.tags, that.tagString, function (tags, tagString ) {
+
+            })
+
+        });
+
+        $("#galleryEdit-listview").kendoMobileListView({
+            dataSource: galleryEditView.photosDS,
+            template: $("#gallery-template").html(),
+            click : function (e) {
+               // _preventDefault(e);
+
+                var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+                modalPhotoView.openModal(photo);
+            }
+            /*dataBound: function(e){
+             ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
+             }*/
+        });
+
+
+        // track photo count on adds and deletes
+        galleryEditView.photosDS.bind("change", function (e) {
+            var changedPhotos = e.items;
+            var photo = e.items[0];
+
+            var photoCount = galleryEditView.photosDS.total();
+
+            galleryEditView.activeObj.set('photoCount'. photoCount);
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+
+                        break;
+                }
+            }
+
+
+        });
+
+    },
+
+    galleryActionView: function(e){
+        _preventDefault(e);
+        if(e.index === 0){
+            $(".galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
+            $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid-active.svg");
+            $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt.svg");
+            $("#galleryEdit-listview").data("kendoMobileListView").scroller().reset();
+        } else{
+            $(".galleryImg").addClass("galleryImg-full").removeClass("galleryImg-grid");
+            $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid.svg");
+            $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt-active.svg");
+            $("#galleryEdit-listview").data("kendoMobileListView").scroller().reset();
+        }
+    },
+
+    initGallery : function () {
+        var that = galleryEditView;
+
+        that.activeObj.uuid = uuid.v4();
+        that.activeObj.photoArray = [];
+        that.activeObj.set('photoCount', 0);
+        that.activeObj.title = '';
+        that.activeObj.description = '';
+        that.activeObj.tagString = '';
+        that.activeObj.tags = [];
+        that.activeObj.isShared = false;
+        that.activeObj.isOpen = false;
+        that.activeObj.isTracked = false;
+        that.activeObj.senderUUID = userModel._user.userUUID;
+        that.activeObj.senderName = userModel._user.name;
+        that.activeObj.timestamp = new Date();
+        that.activeObj.ggType = privateNoteModel._ggClass;
+        that.activeObj.noteType = privateNoteModel._gallery;
+        $('#galleryEditor-title').val("");
+        $('#galleryEditor-tagString').val("");
+        galleryEditView._mode = 'create';
+    },
+
+    onShow : function (e) {
+        //_preventDefault(e);
+
+        galleryEditView.initGallery();
+
+        if (e.view.params.galleryid !== undefined) {
+            galleryEditView._noteUUID = e.view.params.noteid;
+            var gallery = privateNoteModel.findGallery(galleryEditView._galleryUUID);
+            galleryEditView._mode = 'edit';
+            if (gallery.tags === undefined) {
+                gallery.tags = [];
+            }
+            if (gallery.tagString === undefined) {
+                gallery.tagString = null;
+            }
+            galleryEditView.contentObj = gallery;
+            galleryEditView.photos = gallery.photos;
+            $('#galleryEditor-title').val(note.title);
+            $('#galleryEditor-tagString').val(note.tagString);
+
+        } else {
+            galleryEditView._noteUUID = null;
+            galleryEditView._mode = 'create';
+        }
+
+
+        if (e.view.params.callback !== undefined) {
+            galleryEditView._callback = e.view.params.callback;
+        } else {
+            galleryEditView._callback = null;
+        }
+
+        if (e.view.params.returnview !== undefined) {
+            galleryEditView._returnview = e.view.params.returnview;
+        } else {
+            galleryEditView._returnview = null;
+        }
+
+
+
+
+    },
+
+    onHide: function (e) {
+
+
+    },
+
+    onDone : function (e) {
+        // _preventDefault(e);
+
+        if (galleryEditView._returnview !== null) {
+            APP.kendo.navigate('#'+galleryEditView._returnview);
+        }
+
+    },
+
+    addPhotoToGallery : function (photoId, displayUrl) {
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+
+            galleryEditView.photosDS.add(photoObj);
+            galleryEditView.photosDS.sync();
+        }
+
+    },
+
+
+    updateImageUrl : function (photoId, shareUrl) {
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+            // update the cloud url for this gallery photo
+        }
+
+    },
+
+
+    onSave : function (e) {
+
+        galleryEditView.saveGallery();
+        galleryEditView.onDone();
+    },
+
+    addCamera : function (e) {
+        _preventDefault(e);
+
+        devicePhoto.deviceCamera(
+            devicePhoto._resolution, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            galleryEditView.addPhotoToGallery,  // Optional preview callback
+            galleryEditView.updateImageUrl
+        );
+    },
+
+    addPhoto : function (e) {
+        _preventDefault(e);
+        // Call the device gallery function to get a photo and get it scaled to gg resolution
+
+        devicePhoto.deviceGallery(
+            devicePhoto._resolution, // max resolution in pixels
+            75,  // quality: 1-99.
+            true,  // isChat -- generate thumbnails and autostore in gallery.  photos imported in gallery are treated like chat photos
+            null,  // Current channel Id for offers
+            galleryEditView.addPhotoToGallery,  // Optional preview callback
+            galleryEditView.updateImageUrl
+        );
+
+       /* window.imagePicker.getPictures(
+         function(results) {
+         for (var i = 0; i < results.length; i++) {
+         console.log('Image URI: ' + results[i]);
+         }
+         }, function (error) {
+         console.log('Error: ' + error);
+         }, {
+         maximumImagesCount: 10,
+         width: devicePhoto._resolution
+         }
+         );*/
+    },
+
+    addGallery : function (e) {
+        _preventDefault(e);
+
+        galleryPicker.openModal(function (photo) {
+
+            var url = photo.thumbnailUrl;
+            if (photo.imageUrl !== undefined && photo.imageUrl !== null)
+                url = photo.imageUrl;
+
+            galleryEditView.addPhotoToGallery(photo.photoId, url);
+        });
+
+    },
+
+    saveGallery: function () {
+
+        var title = $('#galleryEditor-title').val();
+        var tagString =  $('galleryEditor-tagString').val();
+
+        var activeGallery = galleryEditView.activeObj;
+
+
+        if (galleryEditView._mode === 'edit') {
+
+            var gallery = privateNoteModel.findGallery(activeGallery.uuid);
+
+
+            gallery.set('title', title);
+            gallery.set('tagString', tagString);
+            gallery.set('tags', []); // todo: don integrate tag processing...
+            gallery.set('photoCount', activeGallery.photoCount);
+            gallery.set('photos', galleryEditView.photosDS.data());
+
+            gallery.set('timestamp',ggTime.currentTime());
+
+            privateNoteModel.updateNote(gallery);
+
+        } else {
+
+            activeGallery.title = title;
+            activeGallery.content = text;
+            activeGallery.tagString = tagString;
+            activeGallery.timestamp = ggTime.currentTime();
+            activeGallery.photos = galleryEditView.photosDS.data();
+
+            privateNoteModel.addNote(activeGallery);
+        }
+
+
+    }
+
 
 };

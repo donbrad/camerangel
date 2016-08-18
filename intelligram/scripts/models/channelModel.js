@@ -11,11 +11,27 @@ var channelModel = {
     _ggClass: 'Chat',
     _channelName : "channels",
     _channelMemberName : "channelMember",
+
+    _actionUnread : 'unread',
+    _actionAdd : 'add',
+    _actionAddPrivate : 'addprivate',
+    _actionAddMember : 'addmember',
+    _actionAddGroup : 'addgroup',
+    _actionAddPlace : 'addplace',
+
+    _actionUpdate: 'update',
+    _actionDelete : 'delete',
+    _actionMute : 'mute',
+
     currentChannel: new kendo.data.ObservableObject(),
     intervalTimer : undefined,
     _sentMessages : "sentMessages",
     activeChannels: [],
     _syncingChannels : false,
+    channelsFetched : false,
+
+    deferredArray : [],
+    processingDeferred : false,
 
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
 
@@ -31,6 +47,7 @@ var channelModel = {
     recalledPhotosDS : null,
 
     groupMessagesDS : null,
+
 
     init :  function () {
 
@@ -115,8 +132,19 @@ var channelModel = {
         channelModel.channelsDS.bind("change", function (e) {
             // Rebuild the channelView.channelListDS when the underlying list changes: add, delete, update...
            //channelView._channelListDS.data(channelModel.channelsDS.data());
-
-            if (e.action !== undefined) {
+            var changedChannels = e.items;
+            if (e.action === undefined) {
+                if (changedChannels !== undefined) {
+                    channelModel.channelsFetched = true;
+                    channelModel.processDeferred();
+                    var len = changedChannels.length;
+                    /*for (var i=0; i<len; i++) {
+                        var place =changedPlaces[i];
+                        // add to placelist
+                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+                    }*/
+                }
+            } else {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
@@ -175,110 +203,31 @@ var channelModel = {
         channelModel.activeChannels[channelUUID] = 1;
     },
 
+    defer : function (action, actionObj) {
 
-/*    fetch : function () {
-        var Channel = Parse.Object.extend(channelModel._cloudClass);
-        var query = new Parse.Query(Channel);
-        query.limit(1000);
+    },
 
-        query.find({
-            success: function(collection) {
-                var models =[];
-                for (var i = 0; i < collection.length; i++) {
-                    var object = collection[i];
-                    var dirty = false;
+    processDeferred : function () {
 
-                    if (object.get('category') === undefined) {
-                        if (object.get('isPrivate') === true) {
-                            object.set('category', "Private");
-                        } else {
-                            object.set('category', "Group");
-                        }
+        if (channelModel.deferredArray.length === 0 || channelModel.processingDeferred) {
+            return;
+        }
 
-                        if (object.get('isPlace') === true) {
-                            object.set('category', "Place");
-                        }
-                        if (object.get('isEvent') === true) {
-                            object.set('category', "Event");
-                        }
-                        dirty = true;
-                    }
+        channelModel.processingDeferred = true;
 
-                    if (object.get('isMuted') === undefined) {
-                        object.set('isMuted', false);
-                        dirty = true;
-                    }
+        for (var i=0; i<channelModel.deferredArray.length;  i++ ) {
+            var obj = channelModel.deferredArray[0];
 
-                    if (object.get('ggType') === undefined) {
-                        object.set('ggType', channelModel._ggClass);
-                        dirty = true;
-                    }
-                    
-                    if (object.get('isDeleted') === undefined) {
-                        object.set('isDeleted', false);
-                        dirty = true;
-                    }
+            switch (obj.action) {
+                case channelModel._actionUnread :
+                break;
 
-                    if (object.get('isOwner')) {
-                        if (object.get('ownerId') === undefined) {
-                            object.set('ownerId', userModel._user.userUUID);
-                            dirty = true;
-                        }
-
-                        if (object.get('ownerName') === undefined) {
-                            object.set('ownerName', userModel._user.name);
-                            dirty = true;
-                        }
-                    }
-
-                    if (dirty) {
-                        object.save();
-                    }
-                    var data = object.toJSON();
-                    models.push(data);
-                }
-
-                everlive.getCount('channels', function(error, count){
-                    if (error === null && count === 0) {
-                        everlive.createAll('channels', models, function (error1, data) {
-                            if (error1 !== null) {
-                                mobileNotify("Everlive Channels error " + JSON.stringify(error1));
-                            }
-                            channelModel.channelsDS.sync();
-                            //channelModel.channelsDS.fetch();
-                            deviceModel.setAppState('hasChannels', true);
-                            deviceModel.isParseSyncComplete();
-
-                            notificationModel.processUnreadChannels();
-                        });
-                    } else {
-                        if (error !== null)
-                            mobileNotify("Everlive Channels error " + JSON.stringify(error));
-
-                        channelModel.channelsDS.fetch();
-                        deviceModel.setAppState('hasChannels', true);
-                        deviceModel.isParseSyncComplete();
-
-                        notificationModel.processUnreadChannels();
-                    }
-
-                });
-
-            },
-            error: function(error) {
-                handleParseError(error);
             }
-        });
-
-        //Todo: load offline messages.
-        deviceModel.setAppState('hasMessages', true);
-        deviceModel.isParseSyncComplete();
-
-        deviceModel.setAppState('hasPrivateChannels', true);
-        deviceModel.isParseSyncComplete();
+        }
 
 
-    },*/
+    },
+
 
     getGroupChannels : function () {
         var query = [{ field: "category", operator: "neq", value: 'Private' },
@@ -589,6 +538,11 @@ var channelModel = {
     },
 
     zeroUnreadCount: function (channelUUID) {
+
+        if (!channelModel.channelsFetched) {
+            channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: 0});
+            return;
+        }
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
             mobileNotify('updateUnreadCount: unknown channel ' + channelUUID);
@@ -604,7 +558,10 @@ var channelModel = {
     },
 
     updateUnreadCount: function (channelUUID, count) {
-
+        if (!channelModel.channelsFetched) {
+            channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: count, lastAccess : null});
+            return;
+        }
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
             mobileNotify('updateUnreadCount: unknown channel ' + channelUUID);
@@ -620,8 +577,10 @@ var channelModel = {
     },
 
     updatePrivateUnreadCount: function (channelUUID, count) {
-        if (lastAccess === undefined || lastAccess === null) {
-            lastAccess = ggTime.currentTime();
+
+        if (!channelModel.channelsFetched) {
+            channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: count, lastAccess: null});
+            return;
         }
 
         var channel = channelModel.findChannelModel(channelUUID);
@@ -633,7 +592,7 @@ var channelModel = {
                     notificationModel.updateUnreadNotification(result.channelUUID, result.name, count);
                     channel.set('unreadCount', channel.get('unreadCount') + count);
                     //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
-                    channelModel.updateLastAccess(result.channelUUID, lastAccess);
+                    channelModel.updateLastMessageTime(result.channelUUID, lastAccess);
                 }
             });
         } else {
@@ -649,6 +608,12 @@ var channelModel = {
     },
 
     incrementUnreadCount: function (channelUUID, count, lastAccess) {
+
+        if (!channelModel.channelsFetched) {
+            channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: count, lastAccess: lastAccess});
+            return;
+        }
+
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
             mobileNotify('incrementUnreadCount: unknown channel ' + channelUUID);
@@ -703,42 +668,6 @@ var channelModel = {
         }
     },
 
-/*    syncParseChannels : function (callback) {
-        // Only sync channels for users with atleast email or phone validated
-
-       if (userModel._user.phoneValidated || userModel._user.emailValidated)  {
-           var uuid = userModel._user.userUUID;
-
-           getUserChannels(uuid, function (result) {
-               if (result.found) {
-                   var channels = result.channels;
-
-                   for (var i=0; i< channels.length; i++) {
-                        var channel = channels[i].attributes;
-                        // Need to ignore this users private channel in other users accounts
-                        if (channel.channelUUID !== uuid) {
-                            var channelObj = channelModel.findChannelModel(channel.channelUUID);
-                            if ( channelObj=== undefined) {
-
-                                if (channel.isPrivate) {
-                                    channelModel.addPrivateChannel(channel.contactUUID, channel.contactKey, channel.name);
-                                } else {
-
-                                    channelModel.addChannel(channel.name, channel.description);
-                                    channelModel.updateChannelMembers(channel.channelUUID, channel.members);
-                                }
-                            }
-
-                        }
-
-                   }
-               }
-               if (callback !== undefined) {
-                   callback();
-               }
-           });
-       }
-    },*/
 
     updateChannel : function (channelUUID, channelName, channelDescription, channelMembers) {
         var channel = channelModel.findChannelModel(channelUUID);
@@ -762,9 +691,6 @@ var channelModel = {
             channel.set('members', channelMembers);
             channel.set('isDirty', true);
 
-            //updateParseObject('channels', 'channelUUID', channelUUID, 'name', channelName );
-            //updateParseObject('channels', 'channelUUID', channelUUID, 'description', channelDescription );
-            //updateParseObject('channels', 'channelUUID', channelUUID, 'members', channelMembers );
         }
 
     },
@@ -906,6 +832,13 @@ var channelModel = {
 
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName, callback) {
+
+        if (!channelModel.channelsFetched) {
+            channelModel.defer(channelModel._actionAddPrivate, {action: channelModel._actionUnread, channel: channelUUID, contactUUID: contactUUID, contactPublicKey: contactPublicKey, contactName: contactName});
+            return;
+        }
+
+
         var channelCheck = channelModel.findChannelModel(contactUUID);
         if (channelCheck !== undefined)  {
             // Channel already exists
@@ -1013,6 +946,12 @@ var channelModel = {
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
     addMemberChannel : function (channelUUID, channelName, channelDescription, channelMembers, ownerUUID, ownerName, options, isDeleted) {
+        if (!channelModel.channelsFetched) {
+            channelModel.defer(channelModel._actionAddMember, {action: channelModel._actionUnread, channel: channelUUID,
+                channelUULD: channelUUID, channelName: channelName, channelDescription : channelDescription,
+            channelMembers: channelMembers, ownerUUID : ownerUUID, ownerName : ownerName, options: options});
+            return;
+        }
 
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel !== undefined)  {
@@ -1026,7 +965,7 @@ var channelModel = {
         channel.set('placeUUID', null);
         channel.set('placeName', null);
         channel.set('isPrivatePlace', true);
-        channel.set('isEmergency', false)
+        channel.set('isEmergency', false);
         if (options !== undefined && options !== null) {
             if (options.chatType === 'Place') {
                 channel.set('isPlace', true);

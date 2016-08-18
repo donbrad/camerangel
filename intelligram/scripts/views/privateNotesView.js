@@ -27,12 +27,12 @@ var privateNotesView = {
     onInit : function (e) {
        // _preventDefault(e);
 
-        $("#privateNotesView-listview").kendoMobileListView({
+        $("#notesView-listview").kendoMobileListView({
             dataSource: privateNoteModel.notesDS,
             template: $("#privateNote-template").html()
 
         }).kendoTouch({
-            filter: "div",
+            filter: ".private-note",
             tap: privateNotesView.tapNote,
             hold: privateNotesView.holdNote
         });
@@ -80,6 +80,7 @@ var privateNotesView = {
         privateNotesView.activeNote.tagString = '';
         privateNotesView.activeNote.tags= [];
         privateNotesView.activeNote.content = '';
+        privateNotesView.activeNote.uuid = uuid.v4();
         privateNotesView._editView = false;
        // privateNotesView.deactivateEditor();
        $('#privateNoteTitle').val("");
@@ -95,7 +96,7 @@ var privateNotesView = {
     onShow : function (e) {
       //  _preventDefault(e);
         ux.hideKeyboard();
-        privateNotesView.topOffset = $("#privateNotesView-listview").data("kendoMobileListView").scroller().scrollTop;
+        privateNotesView.topOffset = $("#notesView-listview").data("kendoMobileListView").scroller().scrollTop;
         privateNotesView.openEditor();
         privateNotesView.noteInit();
     },
@@ -107,22 +108,6 @@ var privateNotesView = {
         privateNotesView.noteInit();
         privateNotesView.closeEditor();
     },
-
-    /*expandEditor : function () {
-        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMax}, {duration: "fast"});
-        privateNotesView._editorExpanded = true;
-    },
-
-    shrinkEditor : function ()  {
-        $('#privateNoteTextArea').velocity({height: privateNotesView._editorMin}, {duration: "fast"});
-        privateNotesView._editorExpanded = false;
-    },*/
-
-    /*checkEditor : function () {
-        if (! privateNotesView._editorExpanded) {
-            privateNotesView.expandEditor();
-        }
-    },*/
 
     hideKeyboardBtn: function(){
 
@@ -167,15 +152,13 @@ var privateNotesView = {
 
     },
 
-    saveNote: function () {
+    /*saveNote: function () {
         var validNote = false; // If message is valid, send is enabled
+
         if (privateNotesView._editMode) {
             validNote = true;
         }
 
-
-        //var text = $('#messageTextArea').val();
-        //var text = $('#messageTextArea').data("kendoEditor").value();
         var text = $('#privateNoteTextArea').redactor('code.get');
         var title = $('#privateNoteTitle').val();
         var tagString =  $('#privateNoteTags').val();
@@ -225,7 +208,7 @@ var privateNotesView = {
                 note.set('content', text);
                 note.set('data', contentData);
                 note.set('dataObject', dataObj);
-                note.set('time',ggTime.currentTime());
+                note.set('timestamp',ggTime.currentTime());
 
                 privateNoteModel.updateNote(note);
 
@@ -269,8 +252,7 @@ var privateNotesView = {
             ggType = data.ggType;
         }
         var note = {
-            noteUUID: uuidNote,
-            type: 'Note',
+            uuid: uuidNote,
             ggType: ggType,
             title: data.title,
             tagString: data.tagString,
@@ -291,7 +273,7 @@ var privateNotesView = {
         privateNotesView.deactivateEditor();
         //deviceModel.syncEverlive();
 
-    },
+    },*/
 
   /*  toggleTitleTag : function () {
 
@@ -308,15 +290,15 @@ var privateNotesView = {
         privateNotesView.toggleTitleTag();
     },
 */
-    activateEditor : function () {
+   /* activateEditor : function () {
 
         $(".redactor-editor").velocity({height: privateNotesView._editorMax},{duration: 10});
         privateNotesView.editorVisible = true;
         $("#privateNoteToolbar").removeClass('hidden');
         $('#privateNoteTitleTag').removeClass('hidden');
         $("#privateNote-hideKeyboard").removeClass('hidden');
-        /*$("#privateNoteToolbar").removeClass('hidden');
-        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");*/
+        /!*$("#privateNoteToolbar").removeClass('hidden');
+        $("#privateNote-editorBtnImg").attr("src","images/icon-editor-active.svg");*!/
 
     },
 
@@ -346,17 +328,17 @@ var privateNotesView = {
             privateNotesView._editorActive = true;
 
             $('#privateNoteTextArea').redactor({
-               /* minHeight: 72,
-                maxHeight: 360,*/
+               /!* minHeight: 72,
+                maxHeight: 360,*!/
                 minHeight: privateNotesView._editorMin,
                 maxHeight: privateNotesView._editorMax,
                 focus: true,
                 toolbarExternal: "#privateNoteToolbar",
-               /* imageEditable: false, // disable image edit mode on click
-                imageResizable: false, // disable image resize mode on click*/
+               /!* imageEditable: false, // disable image edit mode on click
+                imageResizable: false, // disable image resize mode on click*!/
                 placeholder: 'Add Note...',
                 formatting: ['p', 'blockquote', 'h1', 'h2','h3'],
-                buttons: [ 'bold', 'italic', 'lists', 'horizontalrule']/*,
+                buttons: [ 'bold', 'italic', 'lists', 'horizontalrule']/!*,
                 callbacks: {
                      paste: function(content)
                      {
@@ -371,7 +353,7 @@ var privateNotesView = {
                          this.selection.restore();
                          this.selection.replace("");
                          return(contentOut);
-                     }*//*,
+                     }*!//!*,
 
                     focus: function(e){
                         privateNotesView.activateEditor();
@@ -384,17 +366,17 @@ var privateNotesView = {
                         }
 
 
-                    }*//*,
+                    }*!//!*,
                     click : function (e) {
 
-                    }*/
-                 /*}*/
+                    }*!/
+                 /!*}*!/
 
 
                 //toolbarExternal: '#privateNoteToolbar'
             });
 
-           /* $.Redactor.prototype.clear = function() {
+           /!* $.Redactor.prototype.clear = function() {
                 return {
                     init: function ()
                     {
@@ -421,7 +403,7 @@ var privateNotesView = {
                         privateNotesView.saveNote();
                     }
                 };
-            };*/
+            };*!/
         }
 
     },
@@ -438,11 +420,16 @@ var privateNotesView = {
 
 
     },
-
+*/
 
     deleteNote : function (e) {
         _preventDefault(e);
-       if (privateNotesView.activeNote.noteUUID !== undefined) {
+
+        if (privateNotesView.activeNote.uuid !== null) {
+            privateNoteModel.deleteNote(privateNotesView.activeNote);
+            privateNotesView.noteInit();
+        }
+       /*if (privateNotesView.activeNote.uuid !== undefined) {
 
            var note = privateNotesView.activeNote;
            var Id = note.Id;
@@ -453,20 +440,22 @@ var privateNotesView = {
                 noteObject =   note.data.objects; 
            }
 
-           everlive.deleteMatching(privateNoteModel._cloudClass, {'noteUUID': note.noteUUID}, function (error, data) {
+           everlive.deleteMatching(privateNoteModel._cloudClass, {'uuid': note.uuid}, function (error, data) {
                privateNoteModel.deleteNote(privateNotesView.activeNote);
                privateNotesView.activeNote = {objects: [], photos: []};
            });
 
-       }
+       }*/
 
     },
 
     editNote : function (e) {
         _preventDefault(e);
 
-        if (privateNotesView.activeNote.noteUUID !== undefined) {
-            var content='<p></p>';
+        if (privateNotesView.activeNote.uuid !== undefined) {
+
+            APP.kendo.navigate("#noteEditor?noteid="+privateNotesView.activeNote.uuid+'&returnview=home');
+           /* var content='<p></p>';
            
             privateNotesView._editMode = true;
             $('#privateNoteTitle').val(privateNotesView.activeNote.title);
@@ -478,7 +467,7 @@ var privateNotesView = {
             $('#privateNoteTextArea').redactor('code.set', content);
 
             privateNotesView.activateEditor();
-            $("#privateNoteViewActions").data("kendoMobileActionSheet").close();
+            $("#privateNoteViewActions").data("kendoMobileActionSheet").close();*/
         }
 
     },
@@ -731,8 +720,8 @@ var privateNotesView = {
         var searchUrl =  'http://www.google.com/search';
         var query = privateNotesView.getSelectionText();
 
-        var selection =  $('#privateNoteTextArea').redactor('selection.save'); //cache the current selection
-
+   /*     var selection =  $('#privateNoteTextArea').redactor('selection.save'); //cache the current selection
+*/
 
         privateNotesView.searchQuery = query;
 
@@ -767,8 +756,8 @@ var privateNotesView = {
                 privateNotesView.searchUrl = searchUrl;
                 privateNotesView.winQuery = '?q=' + query;
                 privateNotesView.winRef = window.open(encodeURI(searchUrl), '_blank', 'location=yes');
-                /* privateNotesView.winRef.addEventListener("exit", privateNotesView.messageSearchEnd);
-                 privateNotesView.winRef.addEventListener("loadstop", privateNotesView.messageSearchLoad);*/
+                privateNotesView.winRef.addEventListener("exit", privateNotesView.messageSearchEnd);
+                privateNotesView.winRef.addEventListener("loadstop", privateNotesView.messageSearchLoad);
                 /* channelView.winRef.addEventListener('loaderror', channelView.messageSearchError); */
             }
 
@@ -784,7 +773,7 @@ var privateNotesView = {
             $('#privateNote-SaveBtn').addClass('hidden');
            // privateNotesView.checkEditor();
 
-            var imgUrl = '<img class="photo-chat" data-photoid="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
+            var imgUrl = '<img class="photo-chat" data-id="'+ photoId + '" id="notephoto_' + photoId + '" src="'+ photoObj.deviceUrl +'" />';
 
             $('#privateNoteTextArea').redactor('insert.node', $('<div />').html(imgUrl));
 
@@ -857,14 +846,23 @@ var privateNotesView = {
         }
     },
 
-    noteCalendar : function (e) {
+    noteEvent : function (e) {
         _preventDefault(e);
-        //channelView.messageMenuTag();
+        channelView.messageMenuTag();
         smartEventView.openModal(null, function (event) {
 
-            privateNotesView.noteAddSmartEvent(event);
-            mobileNotify("Sending Smart Event...");
-            privateNotesView.saveNote();
+            if (event !== null) {
+                var note = {};
+                note.ggType = 'Note';
+                note.noteType = 'Event';
+                note.title = event.title;
+                note.description = event.description;
+                note.tagString = event.address;
+                note.timestamp = event.date;
+                note.object  = event;
+                privateNoteModel.addNote(note);
+            }
+
         });
     },
 
@@ -873,27 +871,63 @@ var privateNotesView = {
         _preventDefault(e);
         movieListView.openModal( null, function (movie) {
             if (movie !== null) {
-                privateNotesView.noteAddSmartMovie(movie);
-                mobileNotify("Sending Smart Movie...");
-                privateNotesView.saveNote();
+                var note = {};
+                note.ggType = 'Note';
+                note.noteType = 'Movie';
+                note.title = movie.movieTitle;
+                note.description = movie.description;
+                note.tagString = '';
+                note.timestamp = movie.showtime;
+                note.object  = movie;
+                privateNoteModel.addNote(note);
+
             }
-        });
-    },
-
-    noteEvent : function(e) {
-        _preventDefault(e);
-        smartEventView.openModal(null, function (event) {
-
-          //  channelView.messageAddSmartEvent(event);
-            mobileNotify("Creating IntelliEvent...");
-          //  channelView.messageSend();
         });
     },
 
     noteFlight : function (e) {
         _preventDefault(e);
-       smartFlightView.openModal();
+        //channelView.messageMenuTag();
+
+        smartFlightView.openModal(null,function (flight) {
+            if (flight !== undefined && flight !== null) {
+                smartFlight.smartAddFlight(flight, function (flightObj) {
+
+                    var note = {};
+                    note.ggType = 'Note';
+                    note.noteType = 'Flight';
+                    note.title = flightObj.name;
+                    note.tagString = flightObj.departureCity + " " + flightObj.arrivalCity;
+                    note.description = flightObj.departureAirport + '/' + flightObj.departureAirport + " via " + flightObj.airline + flightObj.flight;
+                    note.timestamp = flightObj.estimatedDeparture;
+                    note.object  = flightObj;
+                    privateNoteModel.addNote(note);
+                });
+
+            }
+        });
     },
+
+    noteTrip: function (e) {
+        _preventDefault(e);
+        smartTripView.openModal(null, function (trip) {
+            if (trip !== undefined && trip !== null) {
+                smartTrip.smartAddTrip(trip, function (tripObj) {
+                    var note = {};
+                    note.ggType = 'Note';
+                    note.noteType = 'Trip';
+                    note.title = tripObj.name;
+                    note.tagString = '';
+                    note.description = tripObj.tripType + " from " + tripObj.originName + " to " + tripObj.destinationName;
+                    note.timestamp = tripObj.departure;
+                    note.object  = tripObj;
+                    privateNoteModel.addNote(note);
+                });
+
+            }
+        });
+    },
+
 
     noteAccount : function (e) {
         _preventDefault(e);
@@ -905,18 +939,6 @@ var privateNotesView = {
         smartMedicalView.openModal();
     },
 
-    noteTrip : function (e) {
-        _preventDefault(e);
-        smartTripView.openModal(null, function (trip) {
-            if (trip !== undefined && trip !== null) {
-
-                mobileNotify("Creating IntelliTrip...");
-                /*channelView.messageObjects.push(trip);
-                 mobileNotify("Sending IntelliTrip...");
-                 channelView.messageSend();*/
-            }
-        });
-    },
 
     noteMusic : function (e) {
         _preventDefault(e);
@@ -926,8 +948,6 @@ var privateNotesView = {
     tapNote : function (e) {
        // e.preventDefault();
 
-        // User has clicked in message area, so hide the keyboard
-       privateNotesView.hideEditor();
 
 
         var $target = $(e.touch.initialTouch);
@@ -938,26 +958,35 @@ var privateNotesView = {
         // This only works if the user clicks / tpas on a bounding element
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
-            noteId =  $(e.touch.currentTarget).data("uid");
+            noteId =  $(e.touch.currentTarget).data("id");
         } else {
             // New Android
-            noteId =   e.touch.target[0].attributes['data-uid'].value;
+            noteId =   e.touch.target[0].attributes['data-id'].value;
         }
 
 
-        if (noteId === undefined || noteId === null) {
-           var $div = $target.closest( "div" );
-            noteId = $div.data('objectid');
+        if (noteId !== undefined && noteId !== null) {
             note = privateNoteModel.findNote(noteId);
-        } else {
-            note = dataSource.getByUid(noteId);
+            if (note !== undefined && note !== null) {
+                privateNotesView.activeNote = note;
+
+
+                if (note.noteType === 'Note') {
+                    noteViewer.openModal(note.uuid, privateNotesView.activeNote);
+                } else if (note.noteType === 'Gallery') {
+                    APP.kendo.navigate('#galleryEditor?galleryid='+note.uuid+"&returnview=home");
+                } else if (note.noteType === 'Movie') {
+                    movieListView.openModal( note.object, function (movie) {
+                        if (movie !== null) {
+                            privateNoteModel.updateNote(note);
+
+                        }
+                    });
+                }
+            }
         }
 
 
-
-        if (note !== undefined) {
-            privateNotesView.activeNote = note;
-        }
 
         // User actually clicked on the photo so show the open the photo viewer
         if ($target.hasClass('photo-chat')) {
@@ -995,26 +1024,20 @@ var privateNotesView = {
         // This only works if the user clicks / tpas on a bounding element
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
-            noteId =  $(e.touch.currentTarget).data("uid");
+            noteId =  $(e.touch.currentTarget).data("id");
         } else {
             // New Android
-            noteId =   e.touch.target[0].attributes['data-uid'].value;
+            noteId =   e.touch.target[0].attributes['data-id'].value;
         }
 
 
-        if (noteId === undefined || noteId === null) {
-            var $div = $target.closest( "div" );
-            noteId = $div.data('objectid');
+        if (noteId !== undefined && noteId !== null) {
             note = privateNoteModel.findNote(noteId);
-        } else {
-            note = dataSource.getByUid(noteId);
+            if (note !== undefined && note !== null) {
+                privateNotesView.activeNote = note;
+            }
         }
 
-
-
-        if (note !== undefined) {
-            privateNotesView.activeNote = note;
-        }
 
         $("#privateNoteViewActions").data("kendoMobileActionSheet").open();
 

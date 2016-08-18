@@ -195,7 +195,7 @@ var notificationModel = {
     },
     
     addVerifyEmailNotification : function () {
-        this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", launchVerifyPhone , null, false);
+        this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", verifyEmailModal.openModal , null, false);
     },
 
 

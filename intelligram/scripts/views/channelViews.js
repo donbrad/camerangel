@@ -84,6 +84,7 @@ var channelsView = {
         });
 
 		ux.checkEmptyUIState(channelsView._channelListDS, "#channels");
+
         channelsView.scroller = e.view.scroller;
 
         channelsView.scroller.setOptions({

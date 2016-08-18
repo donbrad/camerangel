@@ -7362,3 +7362,22 @@ table.k-editor {
 .chat-message-text > .intelliFlight > a > div.summary {
   border-bottom: none;
 }
+
+/* Notes */
+.private-note-content {
+  margin-top: 0.5em;
+  > * {
+    display: none;
+  }
+  > p:first-child {
+    .textClamp;
+    width: 100%;
+    display: inline-block;
+  }
+
+}
+
+.private-note-content > p:after {
+  content: "...";
+  .helper;
+}
