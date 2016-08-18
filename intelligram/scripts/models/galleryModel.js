@@ -4,18 +4,18 @@
 
 'use strict';
 
-var groupModel = {
+var galleryModel = {
 
     _version: 1,
-    _cloudClass : 'group',
-    _ggClass : 'Group',
-    groupsDS : null,
+    _cloudClass : 'gallery',
+    _ggClass : 'Gallery',
+    galleryDS : null,
 
     init : function() {
-        groupModel.groupsDS = new kendo.data.DataSource({
+        galleryModel.galleryDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'group'
+                typeName: 'gallery'
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -24,17 +24,17 @@ var groupModel = {
         });
 
         // Reflect any core contact changes to contactList
-        groupModel.groupsDS.bind("change", function (e) {
+        galleryModel.galleryDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
             //placesModel.syncPlaceListDS();
-            var changedGroups = e.items;
+            var changedGalleries = e.items;
 
             if (e.action !== undefined) {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
-                        var group = e.items[0], groupUUID = group.uuid;
-                      /*  var groupList = groupModel.findGroup(placeUUID);
+                       /* var group = e.items[0], groupUUID = place.uuid;
+                        var groupList = placesModel.findPlaceListUUID(placeUUID);
 
                         // if the places's name or alias has been updated, need to update the tag...
                         var tagList = tagModel.findTagByCategoryId(place.uuid);
@@ -47,8 +47,8 @@ var groupModel = {
 
                         if (groupList !== undefined)
                         //placeList[field] = place [field];
-                            placeList.set(field, place[field]);
-*/
+                            placeList.set(field, place[field]);*/
+
                         break;
 
                     case "remove" :
@@ -65,7 +65,7 @@ var groupModel = {
                     case "add" :
                         var group = e.items[0];
                         // add to group tags
-                        tagModel.addGroupTag(group.name, group.alias, '', group.uuid);
+                        //tagModel.addGalleryTag(group.name, group.alias, '', group.uuid);
                         break;
                 }
             }
@@ -73,36 +73,18 @@ var groupModel = {
 
         });
 
-        groupModel.groupsDS.fetch();
+        galleryModel.galleryDS.fetch();
     },
 
     sync : function () {
-        groupModel.groupsDS.sync();
+        galleryModel.galleryDS.sync();
     },
 
-    normalizeGroup : function (groupString) {
 
-        var normGroup = groupString.toLowerCase();
-
-        // normTag = normTag.replace(' ', '_');
-
-        return (normGroup);
-    },
-
-    unnormalizeGroup: function (groupString) {
-
-        // var tag = normTag.replace('_', ' ');
-
-        var group = groupString.capitalize('title');
-
-        return(group);
-
-    },
-
-    queryGroups: function (query) {
+    queryGalleries: function (query) {
         if (query === undefined)
             return(undefined);
-        var dataSource = groupModel.groupsDS;
+        var dataSource = galleryModel.galleryDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -115,10 +97,10 @@ var groupModel = {
         return(view);
     },
 
-    findGroup : function (uuid) {
+    findGallery: function (uuid) {
 
-        var groups = groupModel.queryGroups({field: "uuid", operator: "eq", value: uuid});
+        var galleries = galleryModel.queryGalleries({field: "uuid", operator: "eq", value: uuid});
 
-        return (groups);
+        return (galleries);
     }
 };
