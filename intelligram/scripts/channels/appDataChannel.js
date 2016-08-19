@@ -18,7 +18,7 @@ var appDataChannel = {
     _version: 1,
     messagesDS : null,
     _fetched : false,
-    needHistory : false,
+    needHistory : true,
 
     init: function () {
 
@@ -35,6 +35,10 @@ var appDataChannel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
+            sort: {
+                field: "time",
+                dir: "asc"
+            },
             autoSync : true,
             sync : function () {
                 if (!appDataChannel._fetched) {
@@ -44,7 +48,7 @@ var appDataChannel = {
 
             }
         });
-        
+
         appDataChannel.messagesDS.fetch();
         
         appDataChannel.channelUUID = channel;
@@ -118,22 +122,48 @@ var appDataChannel = {
         }
     },
 
+    isArchivedMessage : function (id) {
+        var messages = appDataChannel.queryMessages({ field: "Id", operator: "eq", value: id });
+
+        if (messages === undefined) {
+            return (false);
+        } else if (messages.length === 0) {
+            return (false);
+        } else {
+            return(true);
+        }
+    },
+
+
     getContactAppChannel : function (channelUUID) {
         return(channelUUID.replace(/-/g,'_'));
     },
 
     history : function () {
-        // Just look back 7 days -- can expand or shorten this window.
-
+        if (!appDataChannel.needHistory) {
+            return;
+        }
         if (APP.pubnub === null) {
             appDataChannel.needHistory = true;
             return;
         }
 
+        appDataChannel.needHistory = false;
         var timeStamp = ggTime.toPubNubTime(appDataChannel.lastAccess);
         // Get any messages in the channel
 
-        APP.pubnub.history({
+
+        if (appDataChannel.lastAccess > ggTime.lastMonth() || appDataChannel.lastAccess) {
+            appDataChannel.lastAccess = ggTime.lastMonth();
+            localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
+        }
+        var lastAccess = ggTime.toPubNubTime(appDataChannel.lastAccess);
+
+        var end = ggTime.toPubNubTime(ggTime.currentTime());
+        appDataChannel._fetchHistory(lastAccess, end);
+
+
+        /*APP.pubnub.history({
             channel: appDataChannel.channelUUID,
             start: timeStamp,
             reverse: true,
@@ -147,17 +177,79 @@ var appDataChannel = {
             }
         });
 
-        appDataChannel.updateTimeStamp();
+        appDataChannel.updateTimeStamp();*/
+    },
+
+    _fetchHistory : function (start, end) {
+
+        // Get any messages in the channel
+        APP.pubnub.history({
+            channel: appDataChannel.channelUUID,
+            start: start.toString(),
+            end: end.toString(),
+            error: appDataChannel.error,
+            callback: function(messages) {
+                messages = messages[0];
+                var pnStart = messages[1], pnEnd = messages[2];
+                messages = messages || [];
+                if (messages.length === 0) {
+                    //userDataChannel.messagesDS.sync();
+                    appDataChannel.updateTimeStamp();
+                    return;
+                }
+
+                var latestTime = 0;
+                for (var i = 0; i < messages.length; i++) {
+                    var msg  =  messages[i];
+                    appDataChannel.archiveMessage(msg);
+                }
+
+                appDataChannel.messagesDS.sync();
+                appDataChannel.updateTimeStamp();
+                /*   channelKeys = Object.keys(channelList);
+                 channelModel.updatePrivateChannels(channelKeys, channelList);*/
+
+                var endTime = parseInt(pnStart);
+                if (messages.length === 100 && endTime >= start) {
+
+                    appDataChannel._fetchHistory(start, endTime );
+                } else {
+                    appDataChannel._historyFetchComplete = true;
+
+                    appDataChannel.processMessages();
+                }
+
+            }
+
+
+        });
+    },
+
+    processMessages : function () {
+        var total = appDataChannel.messagesDS.total();
+        for (var i=0; i<total; i++) {
+            var msg = appDataChannel.messagesDS.at(i);
+
+            if (msg.processed === undefined) {
+                appDataChannel.channelRead(msg);
+            }
+        }
     },
 
     archiveMessage : function (message) {
        /* if (message.Id === undefined) {
             message.Id = message.msgID;
         }*/
-        message.processed = true;
-        message.processTime = ggTime.currentTime();
+
+        if (appDataChannel.isProcessedMessage(message.msgID)) {
+            return;
+        }
+
+
+
         appDataChannel.messagesDS.add(message);
         appDataChannel.messagesDS.sync();
+
         everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
             if (error !== null) {
                 ggError ("App Channel cache error " + JSON.stringify(error));
@@ -169,14 +261,15 @@ var appDataChannel = {
 
     channelRead : function (m) {
 
-        appDataChannel.updateTimeStamp();
 
         if (m.msgID === undefined || appDataChannel.isProcessedMessage(m.msgID)) {
             return;
         }
 
-        appDataChannel.archiveMessage(m);
+        m.set('processed', true);
+        m.set('processTime', ggTime.currentTime());
 
+        appDataChannel.messagesDS.sync();
 
         switch(m.type) {
             //  { type: 'newUser',  userId: <userUUID>,  phone: <phone>, email: <email>}
@@ -501,7 +594,7 @@ var appDataChannel = {
 
     },
 
-    connectReponse: function (recipientId, accept, comment) {
+    connectResponse: function (recipientId, accept, comment) {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
 

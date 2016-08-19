@@ -16,7 +16,8 @@ var userDataChannel = {
     _cloudClass : 'privatemessages',
     RSAKey : null,
     _fetched : false,
-    needHistory : false,
+    _historyFetchComplete : false,
+    needHistory : true,
     
 
     init: function (channelUUID) {
@@ -240,6 +241,8 @@ var userDataChannel = {
                 if (messages.length === 100 && endTime >= start) {
 
                     userDataChannel._fetchHistory(start, endTime );
+                } else {
+                    userDataChannel._historyFetchComplete = true;
                 }
 
             }
@@ -250,10 +253,14 @@ var userDataChannel = {
 
     history : function () {
 
+        if (!userDataChannel.needHistory) {
+            return;
+        }
         if (APP.pubnub === null) {
             userDataChannel.needHistory = true;
             return;
         }
+        userDataChannel.needHistory = false;
 
         if (userDataChannel.lastAccess > ggTime.last72Hours() || userDataChannel.lastAccess) {
             userDataChannel.lastAccess = ggTime.last72Hours();

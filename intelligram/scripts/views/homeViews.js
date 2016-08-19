@@ -395,6 +395,8 @@ var homeView = {
         // Set the active view and the search text
         homeView.selectView(homeView._activeView);
 
+        appDataChannel.history();
+
         /*ux.showActionBtn(true, "#home", "#settingsAction");
         ux.changeActionBtnImg("home","nav-add-white");
         ux.showActionBtnText("#home", "3em", "Shortcuts");

@@ -138,6 +138,7 @@ var channelsView = {
     onShow : function(e) {
        // _preventDefault(e);
 
+        userDataChannel.history();
         channelModel.syncMemberChannels();
         channelsView.updateChannelListDS();
 
