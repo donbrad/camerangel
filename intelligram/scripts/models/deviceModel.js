@@ -117,6 +117,10 @@ var deviceModel = {
     },
 
     isPushProvisioned : function ()  {
+        if (device.state.devicePushEnabled) {
+            return;
+        }
+
         if (deviceModel.state.pubnubInit && deviceModel.state.isDeviceRegistered) {
             mobileNotify("Provisioning Server Push");
             serverPush.provisionDataChannels();
@@ -275,7 +279,7 @@ var deviceModel = {
         }
 
         userDataChannel.history();
-        userModel.syncCloudModels();
+        appDataChannel.history();
         everlive.syncCloud();
         photoModel.processCloudPushList();
         profilePhotoModel.processCloudPushList();

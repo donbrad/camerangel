@@ -197,7 +197,7 @@ var userModel = {
         notificationModel.sync();
         todayModel.sync();
         tagModel.sync();
-       galleryModel.sync();
+        galleryModel.sync();
         groupModel.sync();
     },
 
@@ -519,7 +519,10 @@ var userModel = {
             ssl: true,
             jsonp: true,
             restore: true,
-            uuid: uuid
+            uuid: uuid,
+            error : function (error) {
+                ggError("PubNub: Init" + error);
+            }
         });
 
         // Initialize application data channel with gg's unique ID

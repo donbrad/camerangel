@@ -183,7 +183,8 @@ var everlive = {
 
             everlive.updateTimeStamp();
             APP.everlive.online();
-            APP.everlive.sync();
+            userModel.syncCloudModels();
+            //APP.everlive.sync();
 
         }
     },
@@ -226,7 +227,7 @@ var everlive = {
                     everlive._syncComplete = false;
                     everlive.loadUserData();
                     userModel.initialView = '#home';
-                    //APP.kendo.navigate(userModel.initialView);
+                    APP.kendo.navigate(userModel.initialView);
 
                 }  else if (status === "authenticating") {
                     mobileNotify("Authenticating your account...");
@@ -340,8 +341,9 @@ var everlive = {
             userModel.initCloudModels();
             userModel.initPubNub();
             userStatus.update();
-           
-          //  deviceModel.syncEverlive();
+            userModel.syncCloudModels();
+
+            //deviceModel.syncEverlive();
             APP.kendo.navigate('#home');
 
             homeView.enableHotButtons();
@@ -350,7 +352,7 @@ var everlive = {
             if (deviceModel.initialAction !== null) {
                 var action = deviceModel.initialAction.action.capitalize('title');
                 mobileNotify(action + " requested @ " + moment(deviceModel.initialAction.timestamp).format("MM/DD/YY hh:mm a"));
-                // todo: don - wireup initial action functions here
+
             }
         });
     },
