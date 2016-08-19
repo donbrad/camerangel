@@ -72,6 +72,7 @@ var placesModel = {
                     // add to placelist
                     tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
                 }
+            }
         });
         
         // Reflect any core contact changes to contactList

@@ -12,7 +12,7 @@
  */
 var privateNoteModel = {
     notesDS: null,
-    _fetched : false;
+    _fetched : false,
     _cloudClass : 'privatenote',
     _ggClass : 'PrivateNote',
     _note : 'Note',
