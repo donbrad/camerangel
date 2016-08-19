@@ -294,7 +294,6 @@ var privateChannel = {
 
     getMessageHistory: function (callBack) {
 
-        userDataChannel.removeExpiredMessages();
 
         var dataSource = userDataChannel.messagesDS;
         var queryCache = dataSource.filter();

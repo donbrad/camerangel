@@ -218,45 +218,6 @@ var userModel = {
         });
     },
 
-    /*initCloud: function () {
-
-        // Check the status of kendo auth
-        everlive.currentUser(function (error, data) {
-            if (error === null ) {
-
-                if (data !== null) {
-                    everlive.loadUserData();
-                } else {
-                    // no error and no data -- user isnt signed in
-                    if (userModel.hasAccount) {
-                        mobileNotify("Please signin to ghostgrams");
-                        APP.kendo.navigate('#usersignin');
-                    } else {
-                        APP.kendo.navigate('#newuserhome');
-                    }
-
-                }
-              
-            } else {
-                if (error !== undefined && error.code !== 301) { // 301 = no auth credentials, could be new user or member not signed it
-                    // So other error - just notify for now...
-                    mobileNotify("Kendo Auth Error " + JSON.stringify(error));
-                } else {
-                    // no error and no data -- user isnt signed in
-                    if (userModel.hasAccount) {
-                        mobileNotify("Please login to ghostgrams");
-                        APP.kendo.navigate('#usersignin');
-                    } else {
-                        APP.kendo.navigate('#newuserhome');
-                    }
-                }
-
-            }
-
-        });
-
-    },*/
-
     update_user : function (user) {
 
         userModel.setUserUUID(user.userUUID);

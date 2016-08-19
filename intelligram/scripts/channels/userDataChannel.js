@@ -74,7 +74,7 @@ var userDataChannel = {
         }
 
        /* userDataChannel.messagesDS.online(false);*/
-        userDataChannel.messagesDS.fetch();
+        //userDataChannel.messagesDS.fetch();
 
         userDataChannel.expireMessages = setInterval(function(){  userDataChannel.removeExpiredMessages(); }, 60000);
 
