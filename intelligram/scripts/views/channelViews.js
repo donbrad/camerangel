@@ -218,6 +218,14 @@ var channelsView = {
         return(channel);
     },
 
+    updateUnreadCount : function (channelUUID, unreadCount) {
+        var channel = channelsView.findChannelModel(channelUUID);
+
+        if (channel !== undefined) {
+            channel.set('unreadCount', unreadCount);
+        }
+    },
+
     findChannelModel: function (channelUUID) {
 
         return(channelsView.queryChannel({ field: "channelUUID", operator: "eq", value: channelUUID }));
@@ -1330,7 +1338,8 @@ var channelView = {
         channelView._channelName = thisChannel.name;
 
         notificationModel.updateUnreadNotification(channelView._channelUUID, channelView._channelName, 0);
-
+        channelsView.updateUnreadCount(channelUUID, 0);
+        
         channelView.openEditor();
         channelView.toggleTitleTag();
 
