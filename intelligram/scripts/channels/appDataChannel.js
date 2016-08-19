@@ -216,6 +216,7 @@ var appDataChannel = {
                 } else {
                     appDataChannel._historyFetchComplete = true;
 
+                    appDataChannel.removeExpiredMessages();
                     appDataChannel.processMessages();
                 }
 
@@ -225,6 +226,34 @@ var appDataChannel = {
         });
     },
 
+    removeExpiredMessages : function () {
+        var dataSource = appDataChannel.messagesDS;
+
+        if (dataSource === null ) {
+            return;
+        }
+        if (dataSource.total() === 0) {
+            return;
+        }
+
+        var lastMonth = ggTime.lastMonth();
+
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = [];
+        }
+        dataSource.filter({ field: "time", operator: "lt", value:  lastMonth});
+        var messageList = dataSource.view();
+        dataSource.filter(queryCache);
+        if (messageList.length > 0) {
+            for (var i=0; i< messageList.length; i++) {
+                var msg = messageList[i];
+                dataSource.remove(msg);
+            }
+        }
+        dataSource.sync();
+
+    },
     processMessages : function () {
         var total = appDataChannel.messagesDS.total();
         for (var i=0; i<total; i++) {
@@ -260,7 +289,6 @@ var appDataChannel = {
 
 
     channelRead : function (m) {
-
 
         if (m.msgID === undefined || appDataChannel.isProcessedMessage(m.msgID)) {
             return;
