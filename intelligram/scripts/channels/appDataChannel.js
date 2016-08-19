@@ -37,8 +37,11 @@ var appDataChannel = {
             },
             autoSync : true,
             sync : function () {
-                appDataChannel._fetched = true;
-                appDataChannel.history();
+                if (!appDataChannel._fetched) {
+                    appDataChannel._fetched = true;
+                    appDataChannel.history();
+                }
+
             }
         });
         

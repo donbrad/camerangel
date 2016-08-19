@@ -31,10 +31,13 @@ var userDataChannel = {
             },
             autoSync: true,
             sync : function () {
-                userDataChannel._fetched = true;
-                userDataChannel.history();
-                userDataChannel.removeExpiredMessages();
-                notificationModel.processUnreadChannels();
+                if (!userDataChannel._fetched) {
+                    userDataChannel._fetched = true;
+                    userDataChannel.history();
+                    userDataChannel.removeExpiredMessages();
+                    notificationModel.processUnreadChannels();
+                }
+
             }
         });
 
