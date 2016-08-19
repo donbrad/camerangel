@@ -233,6 +233,7 @@ var deviceModel = {
 
             deviceModel.onOnline();
             notificationModel.processUnreadChannels();
+            appDataChannel.history();
             userDataChannel.history();
         } else {
             if (APP.everlive !== null)
@@ -299,7 +300,7 @@ var deviceModel = {
     },
 
     isKeyDataFetched : function () {
-        if (channelModel.channelsFetched && contactsModel.contactsFetched) {
+        if (channelModel.fetched && contactsModel._fetched) {
             return true;
         }
 
