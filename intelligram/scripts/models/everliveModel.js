@@ -227,7 +227,7 @@ var everlive = {
                     everlive._syncComplete = false;
                     everlive.loadUserData();
                     userModel.initialView = '#home';
-                    APP.kendo.navigate(userModel.initialView);
+                   // APP.kendo.navigate(userModel.initialView);
 
                 }  else if (status === "authenticating") {
                     mobileNotify("Authenticating your account...");

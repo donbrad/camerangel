@@ -344,8 +344,8 @@ var userModel = {
         }
         
         userModel._user.set('isValidated', user.Verified);
-        
-        
+
+        APP.kendo.navigate('#home');
         memberdirectory.update();
 
     },
