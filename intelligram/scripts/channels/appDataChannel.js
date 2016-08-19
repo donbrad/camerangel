@@ -274,8 +274,6 @@ var appDataChannel = {
             return;
         }
 
-
-
         appDataChannel.messagesDS.add(message);
         appDataChannel.messagesDS.sync();
 

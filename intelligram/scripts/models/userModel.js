@@ -128,8 +128,6 @@ var userModel = {
             userModel.hasAccount = false;
             //userModel.initialView = '#newuserhome';
         }
-
-        userModel.initKendo();
         
     },
 

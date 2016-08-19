@@ -74,7 +74,8 @@
 		document.addEventListener("resign", deviceModel.onResign, false);
 		document.addEventListener("active", deviceModel.onActive, false);
 
-
+		userModel.initKendo();
+		
 		deviceModel.getAppState();
 
 		deviceModel.getNetworkState();
