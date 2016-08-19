@@ -22,6 +22,7 @@ var photoModel = {
     currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
+    _fetched : false,
 
     photosDS: null,
 
@@ -40,7 +41,11 @@ var photoModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            }
+            },
+            sync : function () {
+                photoModel._fetched = true;
+            },
+            autoSync: true,
         });
 
 

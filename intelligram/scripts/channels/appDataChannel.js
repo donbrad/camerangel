@@ -17,6 +17,8 @@ var appDataChannel = {
     _cloudClass: 'appmessages',
     _version: 1,
     messagesDS : null,
+    _fetched : false,
+    needHistory : false,
 
     init: function () {
 
@@ -33,7 +35,11 @@ var appDataChannel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync : true
+            autoSync : true,
+            sync : function () {
+                appDataChannel._fetched = true;
+                appDataChannel.history();
+            }
         });
         
         appDataChannel.messagesDS.fetch();
@@ -115,6 +121,11 @@ var appDataChannel = {
 
     history : function () {
         // Just look back 7 days -- can expand or shorten this window.
+
+        if (APP.pubnub === null) {
+            appDataChannel.needHistory = true;
+            return;
+        }
 
         var timeStamp = ggTime.toPubNubTime(appDataChannel.lastAccess);
         // Get any messages in the channel

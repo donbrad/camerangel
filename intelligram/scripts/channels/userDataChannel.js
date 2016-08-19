@@ -15,6 +15,8 @@ var userDataChannel = {
     messagesDS : null,
     _cloudClass : 'privatemessages',
     RSAKey : null,
+    _fetched : false,
+    needHistory : false,
     
 
     init: function (channelUUID) {
@@ -27,7 +29,13 @@ var userDataChannel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync: true
+            autoSync: true,
+            sync : function () {
+                userDataChannel._fetched = true;
+                userDataChannel.history();
+                userDataChannel.removeExpiredMessages();
+                notificationModel.processUnreadChannels();
+            }
         });
 
         if (channelUUID !== undefined) {
@@ -63,8 +71,7 @@ var userDataChannel = {
 
        /* userDataChannel.messagesDS.online(false);*/
         userDataChannel.messagesDS.fetch();
-       // userDataChannel.history();
-        //userDataChannel.removeExpiredMessages();
+
         userDataChannel.expireMessages = setInterval(function(){  userDataChannel.removeExpiredMessages(); }, 60000);
 
     },
@@ -240,6 +247,10 @@ var userDataChannel = {
 
     history : function () {
 
+        if (APP.pubnub === null) {
+            userDataChannel.needHistory = true;
+            return;
+        }
 
         if (userDataChannel.lastAccess > ggTime.last72Hours() || userDataChannel.lastAccess) {
             userDataChannel.lastAccess = ggTime.last72Hours();

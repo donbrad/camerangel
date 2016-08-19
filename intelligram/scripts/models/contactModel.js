@@ -11,7 +11,7 @@ var contactModel = {
     _version: 1,
     _ggClass: 'Contact',
     _cloudClass: 'contacts',
-    contactsFetched : false,
+    _fetched : false,
    contactsDS: null,
 
 
@@ -62,17 +62,11 @@ var contactModel = {
                 field: "name",
                 dir: "asc"
             },
-            autoSync: true
-        });
-
-
-
-        // Reflect any core contact changes to contactList
-        contactModel.contactsDS.bind("change", function (e) {
-            var changedContacts = e.items;
-            if (e.action === undefined) {
+            sync : function (e) {
+                contactModel._fetched = true;
+                var changedContacts = contactModel.contactsDS.data();
                 if (changedContacts !== undefined) {
-                    contactModel.contactsFetched = true;
+
                     var len = changedContacts.length;
                     for (var i=0; i<len; i++) {
                         var contact = changedContacts[i];
@@ -86,7 +80,17 @@ var contactModel = {
 
                     }
                 }
-            } else {
+            },
+            autoSync: true
+        });
+
+
+
+        // Reflect any core contact changes to contactList
+        contactModel.contactsDS.bind("change", function (e) {
+            var changedContacts = e.items;
+            if (e.action !== undefined) {
+
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;

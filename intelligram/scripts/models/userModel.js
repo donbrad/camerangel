@@ -172,10 +172,9 @@ var userModel = {
 
         todayModel.init();
 
-       /* galleryModel.init();
+       galleryModel.init();
 
-        groupModel.init();*/
-
+        groupModel.init();
         if (window.navigator.simulator === undefined) {
             serverPush.init();
         }
@@ -200,8 +199,8 @@ var userModel = {
         notificationModel.sync();
         todayModel.sync();
         tagModel.sync();
-   /*     galleryModel.sync();
-        groupModel.sync();*/
+       galleryModel.sync();
+        groupModel.sync();
     },
 
     initKendo : function () {
@@ -594,7 +593,7 @@ var userStatus = {
 
                 },
                 function(error){
-                    mobileNotify("User Status Init error : " + JSON.stringify(error));
+                    ggError("User Status Init error : " + JSON.stringify(error));
                 });
 
         /*userStatus._statusObj.on('change', function () {
@@ -688,7 +687,7 @@ var userStatus = {
                 //userStatus.updateEverlive();
             },
             function(error){
-                mobileNotify("User Status Init error : " + JSON.stringify(error));
+                ggError("User Status create error : " + JSON.stringify(error));
             });
     },
 

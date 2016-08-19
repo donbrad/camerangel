@@ -13,7 +13,7 @@ var tagModel = {
 
     _ggClass : 'Tag',
     _cloudClass : 'tags',
-    tagsFetched : false,
+    _fetched : false,
     processingDeferred : false,
     _user : 'user',
     _version: 1,
@@ -54,10 +54,16 @@ var tagModel = {
                 field: "tagName",
                 dir: "asc"
             },
+
+            sync : function (e) {
+                tagModel._fetched = true;
+                tagModel.processDeferred();
+            },
+
             autoSync : true
         });
 
-        tagModel.tagsDS.bind("change", function (e) {
+        /*tagModel.tagsDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
             //placesModel.syncPlaceListDS();
             var changedTags = e.items;
@@ -68,7 +74,7 @@ var tagModel = {
                     tagModel.processDeferred();
                 }
             }
-        });
+        });*/
 
         tagModel.tagsDS.fetch();
     },

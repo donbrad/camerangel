@@ -654,7 +654,7 @@ var everlive = {
 
         }, function (error) {
                 if (error !== null) {
-                    mobileNotify("Error clearing device storage : " + JSON.stringify(error));
+                    ggError("Error clearing device storage : " + JSON.stringify(error));
                 }
             });
     },
@@ -669,17 +669,15 @@ var everlive = {
         var err = syncInfo.error !== undefined;
         var failedItems = syncInfo.failedItems, syncedItems = syncInfo.syncedItems;
 
-      //  $('#modalview-syncEverlive').kendoMobileModalView("close");
+
         everlive._syncInProgress = false;
         if (!everlive._syncComplete) {
             everlive._syncComplete = true;
-            appDataChannel.history();
-            userDataChannel.history();
-            notificationModel.processUnreadChannels();
+
         }
       
         if (err ) {
-            mobileNotify('Cloud Sync Error : ' + JSON.stringify(syncInfo.error));
+            ggError('Cloud Sync Error : ' + JSON.stringify(syncInfo.error));
         }
 
 

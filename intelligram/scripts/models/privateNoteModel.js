@@ -12,6 +12,7 @@
  */
 var privateNoteModel = {
     notesDS: null,
+    _fetched : false;
     _cloudClass : 'privatenote',
     _ggClass : 'PrivateNote',
     _note : 'Note',
@@ -37,7 +38,10 @@ var privateNoteModel = {
                 field: "time",
                 dir: "asc"
             },
-            autoSync: true
+            autoSync: true,
+            sync : function (e) {
+                privateNoteModel._fetched = true;
+            }
         });
 
         privateNoteModel.notesDS.bind("change", function (e) {

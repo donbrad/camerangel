@@ -375,13 +375,13 @@ var homeView = {
     onShow: function (e) {
        // set verified ui for start screen
 
-        if (userModel._user.phoneValidated) {
+      /*  if (userModel._user.phoneValidated) {
             deviceModel.setAppState('phoneValidated', true);
             notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
         } else {
             mobileNotify("Please verify your phone number");
             verifyPhoneModal.openModal();
-        }
+        }*/
 
       /*  if (!userModel._user.isValidated) {
             notificationModel.addVerifyEmailNotification();

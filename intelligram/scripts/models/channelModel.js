@@ -28,7 +28,10 @@ var channelModel = {
     _sentMessages : "sentMessages",
     activeChannels: [],
     _syncingChannels : false,
-    channelsFetched : false,
+    _fetched : false,
+    recalledMessagesFetched : false,
+    recalledPhotosFetched : false,
+    photosFetched : false,
 
     deferredArray : [],
     processingDeferred : false,
@@ -65,6 +68,11 @@ var channelModel = {
                 field: "lastAccess",
                 dir: "desc"
             },
+            sync : function () {
+                 channelModel._fetched = true;
+                 channelModel.processDeferred();
+
+            },
             autoSync: true
         });
         
@@ -88,6 +96,10 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
+            sync : function () {
+                channelModel.recalledMessagesFetched = true;
+            },
+
             autoSync : true
         });
 
@@ -102,7 +114,10 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync : true
+            autoSync : true,
+            sync : function () {
+                channelModel.recalledPhotosFetched = true;
+            }
         });
 
         channelModel.photosDS = new kendo.data.DataSource({
@@ -114,7 +129,10 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync : true
+            autoSync : true,
+            sync : function () {
+                channelModel.photosFetched = true;
+            }
         });
 
         channelModel.groupMessagesDS = new kendo.data.DataSource({
@@ -133,18 +151,7 @@ var channelModel = {
             // Rebuild the channelView.channelListDS when the underlying list changes: add, delete, update...
            //channelView._channelListDS.data(channelModel.channelsDS.data());
             var changedChannels = e.items;
-            if (e.action === undefined) {
-                if (changedChannels !== undefined) {
-                    channelModel.channelsFetched = true;
-                    channelModel.processDeferred();
-                    var len = changedChannels.length;
-                    /*for (var i=0; i<len; i++) {
-                        var place =changedPlaces[i];
-                        // add to placelist
-                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
-                    }*/
-                }
-            } else {
+            if (e.action !== undefined) {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
