@@ -577,6 +577,7 @@ var channelModel = {
             var lastAccess = ggTime.currentTime();
             channel.set('unreadCount',channel.get('unreadCount') + count);
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
+            channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
             channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
@@ -608,6 +609,7 @@ var channelModel = {
 
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);
+            channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
             channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
@@ -627,13 +629,15 @@ var channelModel = {
             debugger;
         } else {
 
+
             if (lastAccess === undefined || lastAccess === null) {
                 lastAccess = ggTime.currentTime();
             }
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount', channel.unreadCount + count);
+            channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', channel.unreadCount + count);
-            channelModel.updateLastAccess(channelUUID, lastAccess);
+            channelModel.updateLastMessageTime(channelUUID, lastAccess);
         }
 
     },
