@@ -2630,7 +2630,7 @@ var channelView = {
 
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
-            messageId =  $(e.touch.currentTarget).data("uid");
+            messageId =  e.touch.currentTarget.attributes['data-uid'].value;
 
         } else {
             // New Android
@@ -2640,6 +2640,7 @@ var channelView = {
 
         if (messageId === undefined || messageId === null) {
             mobileNotify("No message content to display...");
+            return;
         }
 
         var message = dataSource.getByUid(messageId);

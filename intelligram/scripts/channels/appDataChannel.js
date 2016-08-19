@@ -53,18 +53,18 @@ var appDataChannel = {
         
         appDataChannel.channelUUID = channel;
 
-        var ts = localStorage.getItem('appDataChannel');
+        var ts = localStorage.getItem('ggAppDataTimeStamp');
 
         if (ts !== undefined) {
             appDataChannel.lastAccess = parseInt(ts);
             // Was last access more than a month ago -- if yes set it to a month ago
             if (appDataChannel.lastAccess < ggTime.lastMonth()) {
                 appDataChannel.lastAccess = ggTime.lastMonth();
-                localStorage.setItem('appDataChannel', appDataChannel.lastAccess);
+                localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
             }
         } else {
             appDataChannel.lastAccess = ggTime.lastMonth();
-            localStorage.setItem('appDataChannel', appDataChannel.lastAccess);
+            localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
         }
 
 
@@ -149,11 +149,10 @@ var appDataChannel = {
         }
 
         appDataChannel.needHistory = false;
-        var timeStamp = ggTime.toPubNubTime(appDataChannel.lastAccess);
         // Get any messages in the channel
 
 
-        if (appDataChannel.lastAccess > ggTime.lastMonth() || appDataChannel.lastAccess) {
+        if (appDataChannel.lastAccess < ggTime.lastMonth() || appDataChannel.lastAccess) {
             appDataChannel.lastAccess = ggTime.lastMonth();
             localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
         }
