@@ -1338,8 +1338,9 @@ var channelView = {
         channelView._channelName = thisChannel.name;
 
         notificationModel.updateUnreadNotification(channelView._channelUUID, channelView._channelName, 0);
+        channelModel.zeroUnreadCount(channelUUID);
         channelsView.updateUnreadCount(channelUUID, 0);
-        
+
         channelView.openEditor();
         channelView.toggleTitleTag();
 

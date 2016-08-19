@@ -546,7 +546,7 @@ var channelModel = {
 
     zeroUnreadCount: function (channelUUID) {
 
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: 0});
             return;
         }
@@ -565,7 +565,7 @@ var channelModel = {
     },
 
     updateUnreadCount: function (channelUUID, count) {
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: count, lastAccess : null});
             return;
         }
@@ -585,7 +585,7 @@ var channelModel = {
 
     updatePrivateUnreadCount: function (channelUUID, count) {
 
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: count, lastAccess: null});
             return;
         }
@@ -616,7 +616,7 @@ var channelModel = {
 
     incrementUnreadCount: function (channelUUID, count, lastAccess) {
 
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: count, lastAccess: lastAccess});
             return;
         }
@@ -840,7 +840,7 @@ var channelModel = {
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName, callback) {
 
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionAddPrivate, {action: channelModel._actionUnread, channel: channelUUID, contactUUID: contactUUID, contactPublicKey: contactPublicKey, contactName: contactName});
             return;
         }
@@ -953,7 +953,7 @@ var channelModel = {
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
     addMemberChannel : function (channelUUID, channelName, channelDescription, channelMembers, ownerUUID, ownerName, options, isDeleted) {
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionAddMember, {action: channelModel._actionUnread, channel: channelUUID,
                 channelUULD: channelUUID, channelName: channelName, channelDescription : channelDescription,
             channelMembers: channelMembers, ownerUUID : ownerUUID, ownerName : ownerName, options: options});

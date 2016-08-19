@@ -280,18 +280,18 @@ var notificationModel = {
                 notificationModel.notificationDS.remove(notObj);
                 notificationModel.notificationDS.sync();
 
-                everlive.deleteMatching(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
+             /*   everlive.deleteMatching(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
 
-                });
+                });*/
 
 
             } else {
                 notObj.set('unreadCount', unreadCount);
 
                 notificationModel.notificationDS.sync();
-                everlive.update(notificationModel._cloudClass, notObj, {'uuid' : notObj.uuid}, function (error, data) {
+               /* everlive.update(notificationModel._cloudClass, notObj, {'uuid' : notObj.uuid}, function (error, data) {
                     //placeNoteModel.notesDS.remove(note);
-                });
+                });*/
 
             }
         }
