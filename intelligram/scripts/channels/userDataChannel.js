@@ -35,7 +35,7 @@ var userDataChannel = {
                 if (!userDataChannel._fetched) {
                     userDataChannel._fetched = true;
                     userDataChannel.history();
-                    userDataChannel.removeExpiredMessages();
+                    //userDataChannel.removeExpiredMessages();
                     notificationModel.processUnreadChannels();
                 }
 
@@ -76,7 +76,7 @@ var userDataChannel = {
        /* userDataChannel.messagesDS.online(false);*/
         //userDataChannel.messagesDS.fetch();
 
-        userDataChannel.expireMessages = setInterval(function(){  userDataChannel.removeExpiredMessages(); }, 60000);
+        //userDataChannel.expireMessages = setInterval(function(){  userDataChannel.removeExpiredMessages(); }, 60000);
 
     },
 

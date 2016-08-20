@@ -225,7 +225,7 @@ var everlive = {
                     everlive._authenticating = false;
                     everlive._signedIn = true;
                     everlive._syncComplete = false;
-                    everlive.loadUserData();
+                    everlive.checkCurrentUser();
                     userModel.initialView = '#home';
                    // APP.kendo.navigate(userModel.initialView);
 
@@ -327,34 +327,40 @@ var everlive = {
             });
     },
 
-    loadUserData : function () {
-        mobileNotify("Loading user information...");
-
+    checkCurrentUser : function () {
         everlive.currentUser( function (err, user) {
             if (err!== undefined && err !== null) {
                 ggError("Can't access User's Account : " + err.message);
                 return;
             }
 
-            userModel.update_user(user);
-            everlive.updateUser();
-            userModel.initCloudModels();
-            userModel.initPubNub();
-            userStatus.update();
-            userModel.syncCloudModels();
-
-            //deviceModel.syncEverlive();
-            APP.kendo.navigate('#home');
-
-            homeView.enableHotButtons();
-            userModel._user.bind('change', userModel.sync);
-
-            if (deviceModel.initialAction !== null) {
-                var action = deviceModel.initialAction.action.capitalize('title');
-                mobileNotify(action + " requested @ " + moment(deviceModel.initialAction.timestamp).format("MM/DD/YY hh:mm a"));
-
-            }
+            everlive.loadUserData(user);
         });
+    },
+
+    loadUserData : function (user) {
+        mobileNotify("Loading user information...");
+
+
+        userModel.update_user(user);
+        everlive.updateUser();
+        userModel.initCloudModels();
+        userModel.initPubNub();
+        userStatus.update();
+        //userModel.syncCloudModels();
+
+
+        //deviceModel.syncEverlive();
+
+        homeView.enableHotButtons();
+        userModel._user.bind('change', userModel.sync);
+
+        if (deviceModel.initialAction !== null) {
+            var action = deviceModel.initialAction.action.capitalize('title');
+            mobileNotify(action + " requested @ " + moment(deviceModel.initialAction.timestamp).format("MM/DD/YY hh:mm a"));
+
+        }
+
     },
     
     logout : function (callback) {

@@ -2171,8 +2171,7 @@ var signInView = {
 
                 if (error !== null) {
                     mobileNotify ("Sign In error : " + error.message);
-                    http://res.cloudinary.com/ghostgrams/image/upload/v1461774012/userphoto/755c477043ab4bb394922aacb9ab76ed.jpg
-                        return;
+                    return;
 
                 }
                 window.localStorage.setItem('ggHasAccount', true);
@@ -2181,8 +2180,8 @@ var signInView = {
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
 
-                everlive.loadUserData();
-            
+                everlive.checkCurrentUser();
+
                // channelModel.syncMemberChannels();
                 
         });
