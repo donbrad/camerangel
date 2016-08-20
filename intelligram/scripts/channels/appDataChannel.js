@@ -39,13 +39,18 @@ var appDataChannel = {
                 field: "time",
                 dir: "asc"
             },
-            autoSync : true,
-            sync : function () {
-                if (!appDataChannel._fetched) {
-                    appDataChannel._fetched = true;
-                    appDataChannel.history();
-                }
 
+            autoSync : true,
+
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read') {
+                    if (!appDataChannel._fetched) {
+                        appDataChannel._fetched = true;
+                        appDataChannel.history();
+                    }
+                }
             }
         });
 
@@ -143,7 +148,7 @@ var appDataChannel = {
         if (!appDataChannel.needHistory) {
             return;
         }
-        if (APP.pubnub === null) {
+        if (APP.pubnub === null || !appDataChannel._fetched) {
             appDataChannel.needHistory = true;
             return;
         }

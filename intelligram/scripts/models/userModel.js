@@ -177,6 +177,12 @@ var userModel = {
             serverPush.init();
         }
 
+        // Initialize application data channel with gg's unique ID
+        appDataChannel.init();
+
+        var uuid = userModel._user.userUUID;
+        // Initialize the user's data channel with the user's UUID...
+        userDataChannel.init(uuid);
     },
 
 
@@ -487,11 +493,7 @@ var userModel = {
             }
         });
 
-        // Initialize application data channel with gg's unique ID
-        appDataChannel.init();
 
-        // Initialize the user's data channel with the user's UUID...
-        userDataChannel.init(uuid);
 
         deviceModel.setAppState('pubnubInit', true);
 

@@ -13,6 +13,7 @@ var notificationModel = {
     // Types of notifications...
     _cloudClass : 'notifications',
     _ggClass : 'Notification',
+    _fetched : false,
     _intro: 'intelligram recommends',
     _unreadCount : 'Unread Messages',
     _newChat : 'New Chat',
@@ -29,7 +30,7 @@ var notificationModel = {
     _userAlert: 'Urgent Message',
 
 
-    notificationDS: null, 
+    notificationDS: null,
     
     
     init : function () {
@@ -45,7 +46,20 @@ var notificationModel = {
                field: "date",
                dir: "desc"
            },
-           autoSync: true
+           autoSync: true,
+
+           requestEnd : function (e) {
+               var response = e.response,  type = e.type;
+
+               if (type === 'read') {
+                   if (!notificationModel._fetched) {
+                       notificationModel._fetched = true;
+
+                       // Perform initial load logic
+                   }
+
+               }
+           }
        });
 
         notificationModel.notificationDS.fetch();

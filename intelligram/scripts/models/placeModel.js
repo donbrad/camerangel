@@ -63,14 +63,20 @@ var placesModel = {
                 model: { Id:  Everlive.idField}
             },
             autoSync: true,
-            sync : function () {
-                 var changedPlaces = placesModel.placesDS.data();
-                placesModel._fetched = true;
-                var len = changedPlaces.length;
-                for (var i=0; i<len; i++) {
-                    var place =changedPlaces[i];
-                    // add to placelist
-                    tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (!placesModel._fetched) {
+                    if (type === 'read') {
+                        var changedPlaces = placesModel.placesDS.data();
+                        placesModel._fetched = true;
+                        var len = changedPlaces.length;
+                        for (var i = 0; i < len; i++) {
+                            var place = changedPlaces[i];
+                            // add to placelist
+                            tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+                        }
+                    }
                 }
             }
         });

@@ -39,8 +39,16 @@ var privateNoteModel = {
                 dir: "asc"
             },
             autoSync: true,
-            sync : function (e) {
-                privateNoteModel._fetched = true;
+
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (!privateNoteModel._fetched) {
+                    if (type === 'read') {
+                        privateNoteModel._fetched = true;
+                    }
+
+                }
             }
         });
 

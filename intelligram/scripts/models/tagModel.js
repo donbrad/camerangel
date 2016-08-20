@@ -55,9 +55,15 @@ var tagModel = {
                 dir: "asc"
             },
 
-            sync : function (e) {
-                tagModel._fetched = true;
-                tagModel.processDeferred();
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (!tagModel._fetched) {
+                    if (type === 'read') {
+                        tagModel._fetched = true;
+                        tagModel.processDeferred();
+                    }
+                }
             },
 
             autoSync : true

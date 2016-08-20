@@ -62,22 +62,28 @@ var contactModel = {
                 field: "name",
                 dir: "asc"
             },
-            sync : function (e) {
-                contactModel._fetched = true;
-                var changedContacts = contactModel.contactsDS.data();
-                if (changedContacts !== undefined) {
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
 
-                    var len = changedContacts.length;
-                    for (var i=0; i<len; i++) {
-                        var contact = changedContacts[i];
-                        var category = contact.category.toLowerCase();
-                        if (category === 'member' || category === 'invited') {
-                            // add to tag list
-                            tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
-                        } else if (contact.category === 'chat') {
+                if (type === 'read') {
+                    if (!contactModel._fetched) {
+                        contactModel._fetched = true;
+                        var changedContacts = contactModel.contactsDS.data();
+                        if (changedContacts !== undefined) {
 
+                            var len = changedContacts.length;
+                            for (var i = 0; i < len; i++) {
+                                var contact = changedContacts[i];
+                                var category = contact.category.toLowerCase();
+                                if (category === 'member' || category === 'invited') {
+                                    // add to tag list
+                                    tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
+                                } else if (contact.category === 'chat') {
+
+                                }
+
+                            }
                         }
-
                     }
                 }
             },

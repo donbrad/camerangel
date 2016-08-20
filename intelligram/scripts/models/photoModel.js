@@ -42,10 +42,18 @@ var photoModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            sync : function () {
-                photoModel._fetched = true;
+
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (!photoModel._fetched) {
+                    if (type === 'read') {
+                        photoModel._fetched = true;
+                        // Do any special processing for initial read of cloud data
+                    }
+                }
             },
-            autoSync: true,
+            autoSync: true
         });
 
 

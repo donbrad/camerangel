@@ -68,10 +68,17 @@ var channelModel = {
                 field: "lastAccess",
                 dir: "desc"
             },
-            sync : function () {
-                 channelModel._fetched = true;
-                 channelModel.processDeferred();
-                channelsView.updateChannelListDS();
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read') {
+                    if (!channelModel._fetched){
+                        channelModel._fetched = true;
+                        channelModel.processDeferred();
+                        channelsView.updateChannelListDS();
+                    }
+
+                }
 
             },
             autoSync: true
@@ -97,8 +104,12 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            sync : function () {
-                channelModel.recalledMessagesFetched = true;
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read') {
+                    channelModel.recalledMessagesFetched = true;
+                }
             },
 
             autoSync : true
@@ -116,8 +127,12 @@ var channelModel = {
                 model: { Id:  Everlive.idField}
             },
             autoSync : true,
-            sync : function () {
-                channelModel.recalledPhotosFetched = true;
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read') {
+                    channelModel.recalledPhotosFetched = true;
+                }
             }
         });
 
@@ -131,8 +146,12 @@ var channelModel = {
                 model: { Id:  Everlive.idField}
             },
             autoSync : true,
-            sync : function () {
-                channelModel.photosFetched = true;
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read') {
+                    channelModel.photosFetched = true;
+                }
             }
         });
 
@@ -578,7 +597,7 @@ var channelModel = {
             var lastAccess = ggTime.currentTime();
             channel.set('unreadCount',channel.get('unreadCount') + count);
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
-            channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
+            //channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
             channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
@@ -610,7 +629,7 @@ var channelModel = {
 
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);
-            channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
+            //channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
             channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
@@ -636,7 +655,7 @@ var channelModel = {
             }
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount', channel.unreadCount + count);
-            channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
+            //channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', channel.unreadCount + count);
             channelModel.updateLastMessageTime(channelUUID, lastAccess);
         }
