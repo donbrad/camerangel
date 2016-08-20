@@ -302,10 +302,12 @@ var deviceModel = {
 
     isOnline : function () {
         $("#network-offline").addClass('hidden');
+        deviceModel.getNetworkState();
         return(deviceModel.state.isOnline);
     },
     
     isWifi : function () {
+        deviceModel.getNetworkState();
        return(deviceModel.state.connection === 'internet');
     },
 
