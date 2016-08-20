@@ -208,7 +208,36 @@ var everlive = {
     },
 
     isUserSignedIn : function () {
-        everlive.checkAuthStatus(function (error, status) {
+
+        APP.everlive.Users.currentUser(
+            function (data) {
+                if (data.result) {
+                    everlive._user = data.result;
+                    everlive._authenticating = false;
+                    everlive._signedIn = true;
+                    everlive._syncComplete = false;
+                   // everlive.checkCurrentUser();
+                    everlive.loadUserData(everlive._user);
+                    everlive.isAuthenticated = true;
+                    userModel.initialView = '#home';
+                } else {
+                    if (userModel.hasAccount) {
+                        everlive._signedIn = false;
+                        everlive._syncComplete = false;
+                        everlive.isAuthenticated = false;
+                        userModel.initialView = '#usersignin';
+                    } else {
+                        userModel.initialView = '#newuserhome';
+                    }
+                }
+                APP.kendo.navigate(userModel.initialView);
+            },
+            function(error){
+                ggError("Everlive Current User: " + error);
+
+            });
+
+       /* everlive.checkAuthStatus(function (error, status) {
             if (error === null) {
                 if (status === "unauthenticated" || status === "invalidAuthentication" ||
                     status === "expiredAuthentication" ) {
@@ -255,11 +284,11 @@ var everlive = {
                     }
                 }
             }
-        });
+        });*/
 
     },
 
-    checkAuthStatus : function (callback) {
+/*    checkAuthStatus : function (callback) {
         APP.everlive.authInfo(
             function (data) {
                 if (data.status === "unauthenticated") {
@@ -284,7 +313,7 @@ var everlive = {
                 callback(error, null);
                 
             });
-    },
+    },*/
     
 
     createAccount: function (username, name, password, callback) {

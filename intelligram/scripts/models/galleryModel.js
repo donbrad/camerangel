@@ -26,7 +26,7 @@ var galleryModel = {
         // Reflect any core contact changes to contactList
         galleryModel.galleryDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
-            
+
             var changedGalleries = e.items;
 
             if (e.action !== undefined) {

@@ -2178,7 +2178,7 @@ var signInView = {
                 // Clear sign in form
                 $("#home-signin-username, #home-signin-password").val("");
 
-                everlive.checkCurrentUser();
+                everlive.isUserSignedIn();
                // channelModel.syncMemberChannels();
                 
         });
