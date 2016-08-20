@@ -74,8 +74,8 @@
 		document.addEventListener("resign", deviceModel.onResign, false);
 		document.addEventListener("active", deviceModel.onActive, false);
 
-		deviceModel.getNetworkState();
-		
+
+
 		userModel.initKendo();
 
 		deviceModel.getAppState();
@@ -83,6 +83,8 @@
 		deviceModel.getNetworkState();
 
 		deviceModel.init();
+
+		deviceModel.getNetworkState();
 
 		deviceModel.loadGoogleMaps();
 		
