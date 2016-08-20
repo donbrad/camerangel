@@ -117,7 +117,7 @@ var deviceModel = {
     },
 
     isPushProvisioned : function ()  {
-        if (device.state.devicePushEnabled) {
+        if (deviceModel.state.devicePushEnabled) {
             return;
         }
 

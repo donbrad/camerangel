@@ -645,6 +645,7 @@ var userStatusView = {
             serverPush.unprovisionGroupChannels();
             serverPush.unprovisionDataChannels();
 
+            everlive.isAuthenticated = false;
             deviceModel.resetDeviceState();
             everlive.clearLocalStorage();
             userStatusView.closeModal();
@@ -2181,7 +2182,6 @@ var signInView = {
                 $("#home-signin-username, #home-signin-password").val("");
 
                 everlive.checkCurrentUser();
-
                // channelModel.syncMemberChannels();
                 
         });

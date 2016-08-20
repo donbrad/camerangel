@@ -216,6 +216,7 @@ var everlive = {
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
                         everlive._syncComplete = false;
+                        everlive.isAuthenticated = false;
                         userModel.initialView = '#usersignin';
                     } else {
                         userModel.initialView = '#newuserhome';
@@ -226,6 +227,7 @@ var everlive = {
                     everlive._signedIn = true;
                     everlive._syncComplete = false;
                     everlive.checkCurrentUser();
+                    everlive.isAuthenticated = true;
                     userModel.initialView = '#home';
                    // APP.kendo.navigate(userModel.initialView);
 
