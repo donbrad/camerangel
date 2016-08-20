@@ -71,6 +71,7 @@ var channelModel = {
             sync : function () {
                  channelModel._fetched = true;
                  channelModel.processDeferred();
+                channelsView.updateChannelListDS();
 
             },
             autoSync: true
