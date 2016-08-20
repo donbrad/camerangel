@@ -1935,9 +1935,6 @@ var signUpView = {
         //user.set("publicKey", publicKey);
         //user.set("privateKey", privateKey);
 
-
-
-
         userModel.hasAccount = true;
         window.localStorage.setItem('ggHasAccount', true);
         if (window.navigator.simulator === undefined) {

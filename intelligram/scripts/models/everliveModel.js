@@ -260,7 +260,7 @@ var everlive = {
     },
 
     checkAuthStatus : function (callback) {
-        APP.everlive.authentication.getAuthenticationStatus(
+        APP.everlive.authInfo(
             function (data) {
                 if (data.status === "unauthenticated") {
                     everlive._status = data.status;

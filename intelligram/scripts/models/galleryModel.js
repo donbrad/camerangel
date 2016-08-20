@@ -57,9 +57,7 @@ var galleryModel = {
 
                     case "sync" :
                         // syncing all places...
-                        if (changedGroups !== undefined) {
-                            var len = changedGroups.len;
-                        }
+                       
                         break;
 
                     case "add" :
