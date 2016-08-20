@@ -1274,6 +1274,24 @@ form p {
 .km-material .k-toolbar .km-button.km-state-active {
   background: none;
 }
+.verifyPhone-code-sent {
+  background-color: #009688;
+  color: #fff;
+  position: absolute;
+  bottom: 2em;
+  width: 100%;
+  display: none;
+  margin-bottom: 0.25em;
+}
+.verifyPhone-code-error {
+  background-color: #E57373;
+  color: #fff;
+  position: absolute;
+  bottom: 2em;
+  width: 100%;
+  display: none;
+  margin-bottom: 0.25em;
+}
 .gg-read-value {
   font-size: 1.2em;
 }
@@ -2052,6 +2070,9 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-modalview {
   border: inherit;
 }
+div.footer.km-footer {
+  border-radius: 0 0 4px 4px !important;
+}
 .km-material .km-switch-handle {
   background: #fff;
 }
@@ -2138,6 +2159,16 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-material .km-navbar.home-smallHeader .km-view-title {
   padding: 0px !important;
   font-size: 14px;
+}
+#home-buttongroup > li.km-button > span > img {
+  vertical-align: text-top;
+  margin-right: 0.15em;
+  height: 1em;
+  max-width: 1em;
+}
+#home-buttongroup {
+  margin-top: 0.25em;
+  font-size: 1.2em;
 }
 .home-header > div.view-content.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
   background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);

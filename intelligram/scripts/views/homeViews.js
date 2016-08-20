@@ -379,6 +379,7 @@ var homeView = {
             deviceModel.setAppState('phoneValidated', true);
             notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
         } else {
+
             mobileNotify("Please verify your phone number");
             verifyPhoneModal.openModal();
         }
@@ -395,12 +396,7 @@ var homeView = {
         // Set the active view and the search text
         homeView.selectView(homeView._activeView);
 
-        /*ux.showActionBtn(true, "#home", "#settingsAction");
-        ux.changeActionBtnImg("home","nav-add-white");
-        ux.showActionBtnText("#home", "3em", "Shortcuts");
 
-        ux.addDataProp("rel", "actionsheet");
-*/
         everlive.syncCloud();
 
         // Todo:Don schedule unread channel notifications after sync complete
@@ -2328,7 +2324,10 @@ var verifyPhoneModal = {
         sendPhoneVerificationCode(phone, function (result) {
             if (result.status === 'ok') {
                 userModel._user.set('phoneVerificationCode', result.code);
-
+                // display ui
+                $(".verifyPhone-code-sent").velocity("slideDown").velocity("slideUp", {delay: 4000});
+            } else {
+                $(".verifyPhone-code-error").velocity("slideDown").velocity("slideUp", {delay: 4000});
             }
         });
     },

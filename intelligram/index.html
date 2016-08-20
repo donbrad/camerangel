@@ -243,10 +243,14 @@
             </li>
             <li>
                 <a data-role="button" href="#gallery" data-click-on="down">
-                	<svg height="24px" viewBox="0 0 26 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-							<g id="nav-gallery" transform="translate(-323.000000, -636.000000)" fill="#979797">
-								<path d="M325.31504,634.21632 L325.31504,649.49632 L345.82128,649.49632 L345.82128,634.21632 L325.31504,634.21632 Z M345.01488,648.6912 L326.1176,648.6912 L326.1176,635.01856 L345.01488,635.01856 L345.01488,648.6912 Z M323.30384,631.80256 L341.79888,631.80256 L341.79888,633.4112 L342.6024,633.4112 L342.6024,631 L322.5,631 L322.5,646.28 L324.50864,646.28 L324.50864,645.47488 L323.30384,645.47488 L323.30384,631.80256 Z" id="Imported-Layers-Copy-2" transform="translate(334.500000, 643.000000) scale(-1, -1) translate(-334.500000, -643.000000) "></path>
+					<svg width="15px" height="24px" viewBox="0 0 15 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+							<g id="nav-gallery" fill="#979797">
+								<g id="Page-1">
+									<g id="Shape">
+										<path d="M13.1,9 L13.1,6 C13.1,2.69173333 10.4082667,0 7.1,0 C3.79173333,0 1.1,2.69173333 1.1,6 L1.1,9 L0,9 L0,20 L14.2,20 L14.2,9 L13.1,9 L13.1,9 Z M2.7,6 C2.7,3.57386667 4.67386667,1.6 7.1,1.6 C9.52613333,1.6 11.5,3.57386667 11.5,6 L11.5,9 L2.7,9 L2.7,6 L2.7,6 Z"></path>
+									</g>
+								</g>
 							</g>
 						</g>
 					</svg>
@@ -418,12 +422,12 @@
 <!-- home - for signed in users -->
 <div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
 	<div class="appBox">
-		<ul id="home-buttongroup" style="padding: 6px; font-size: 1.2em;">
+		<ul id="home-buttongroup">
 			<li>
-				<img src="images/notify-icon.svg" height="20" /> Alerts
+				<img src="images/notify-icon.svg"  /> Alerts
 			</li>
 			<li>
-				<img src="images/icon-time-primary.svg" height="20" /> Today
+				<img src="images/icon-today.svg" /> Today
 			</li>
 		</ul>
 		<div id="home-alerts">
@@ -683,7 +687,7 @@
 		   </ul>
 	   </div>
     </div>
-	 <a class="btnSpan testingHome" href="#usersignin" type="button" data-role="button">
+	 <a class="btnSpan testingHome" href="#usersignin" data-role="button">
 		 <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>
     <div class="footer" data-role="footer" id="newuserhome-footer">
     	<a class="btnSecondary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
@@ -784,12 +788,18 @@
 	            <li>
 	                <div>Enter 6 Number code </div>
 	                <input type="tel" id="verifyPhone-code" value="" />
-	              	<span class="helper helper-right btnClear-grey" data-click="verifyPhoneModal.sendCode" data-role="button">
+	              	<a class="btnClear-sm" data-click="verifyPhoneModal.sendCode" data-role="button">
 	              		Resend Verification code
-	              	</span>
+	              	</a>
 	            </li>
 	        </ul>
    	</div>
+	<div class="verifyPhone-code-sent">
+		<p>Text message sent!</p>
+	</div>
+	<div class="verifyPhone-code-error">
+		<p>Error sending text message.</p>
+	</div>
 	<div class="footer" data-role="footer">
 		<a class="btnIncomplete btnFull-modal" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" id="modalview-verifyPhone-btn">Cancel</a>
 	</div>
