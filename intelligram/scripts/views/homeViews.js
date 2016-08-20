@@ -403,7 +403,7 @@ var homeView = {
 
         ux.addDataProp("rel", "actionsheet");
 */
-        everlive.syncCloud();
+        //everlive.syncCloud();
 
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();

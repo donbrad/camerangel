@@ -42,7 +42,7 @@ var userDataChannel = {
             }
         });
 
-        if (channelUUID !== undefined) {
+        if (channelUUID !== undefined && channelUUID !== null) {
             userDataChannel.channelUUID = channelUUID;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
@@ -50,15 +50,13 @@ var userDataChannel = {
                 userDataChannel.lastAccess = parseInt(ts);
 
                 // Was last access more than 72 hours ago -- if yes set it to 72 hours ago
-                if (userDataChannel.lastAccess > ggTime.last72Hours() || userDataChannel.lastAccess) {
+                if (userDataChannel.lastAccess < ggTime.last72Hours() || userDataChannel.lastAccess) {
 
                     userDataChannel.lastAccess = ggTime.last72Hours();
                     localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
+                } else {
+                    localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
                 }
-            } else {
-                // No lastAccess stored so set it to 72 hours
-                userDataChannel.lastAccess = ggTime.last72Hours();
-                localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
             }
 
             APP.pubnub.subscribe({
@@ -74,7 +72,7 @@ var userDataChannel = {
         }
 
        /* userDataChannel.messagesDS.online(false);*/
-        //userDataChannel.messagesDS.fetch();
+        userDataChannel.messagesDS.fetch();
 
         //userDataChannel.expireMessages = setInterval(function(){  userDataChannel.removeExpiredMessages(); }, 60000);
 

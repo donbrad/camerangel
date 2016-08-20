@@ -279,15 +279,16 @@ var deviceModel = {
             everlive.updateUserStatus();
         }
 
-        userDataChannel.history();
-        appDataChannel.history();
-        everlive.syncCloud();
-        photoModel.processCloudPushList();
-        profilePhotoModel.processCloudPushList();
+
 
         if (everlive._isAuthenticated) {
             // Device is online and user is authenticated -- init pubnub
             userModel.initPubNub();
+            userDataChannel.history();
+            appDataChannel.history();
+            everlive.syncCloud();
+            photoModel.processCloudPushList();
+            profilePhotoModel.processCloudPushList();
         }
 
         deviceModel.getNetworkState();
