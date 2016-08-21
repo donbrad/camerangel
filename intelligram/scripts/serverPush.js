@@ -22,10 +22,17 @@ var serverPush = {
             return;
 
        // window.serverPush = serverPush;
-        serverPush._initialized = true;
+
 
         serverPush.plugin = window.plugins.pushNotification;
 
+        if (serverPush.plugin === undefined) {
+            ggError("Server Push: Plug In Error!");
+            return;
+        }
+
+
+        serverPush._initialized = true;
         if (device.platform === 'android' || device.platform === 'Android' || device.platform === 'amazon-fireos' ) {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
                 {senderID: serverPush._googleSenderId, icon: 'icon', iconColor: '#FFFFFF', ecb: 'serverPush.onNotificationECM', badge: true});
