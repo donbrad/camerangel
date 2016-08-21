@@ -133,8 +133,22 @@ var userModel = {
 
     
     initCloudModels : function () {
-        
+
+        tagModel.init();
+
+        channelModel.init();
+
         contactModel.init();
+
+        notificationModel.init();
+
+        // Initialize application data channel with gg's unique ID
+        appDataChannel.init();
+
+        var uuid = userModel._user.userUUID;
+        // Initialize the user's data channel with the user's UUID...
+
+        userDataChannel.init(uuid);
 
         mapModel.init();
 
@@ -152,7 +166,6 @@ var userModel = {
 
         sharedPhotoModel.init();
 
-        channelModel.init();
 
         smartEvent.init();
 
@@ -164,25 +177,19 @@ var userModel = {
 
         statusTracker.init();
 
-        tagModel.init();
 
-        notificationModel.init();
 
         todayModel.init();
 
-       galleryModel.init();
+        galleryModel.init();
 
         groupModel.init();
+
         if (window.navigator.simulator === undefined) {
             serverPush.init();
         }
 
-        // Initialize application data channel with gg's unique ID
-        appDataChannel.init();
 
-        var uuid = userModel._user.userUUID;
-        // Initialize the user's data channel with the user's UUID...
-        userDataChannel.init(uuid);
     },
 
 
@@ -496,6 +503,9 @@ var userModel = {
 
 
         deviceModel.setAppState('pubnubInit', true);
+
+        appDataChannel.history();
+        userDataChannel.history();
 
         deviceModel.isPushProvisioned();
 

@@ -76,6 +76,8 @@ var channelModel = {
                         channelModel._fetched = true;
                         channelModel.processDeferred();
                         channelsView.updateChannelListDS();
+                        appDataChannel.history();
+                        userDataChannel.history();
                     }
 
                 }

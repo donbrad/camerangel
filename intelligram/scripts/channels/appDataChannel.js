@@ -148,7 +148,7 @@ var appDataChannel = {
         if (!appDataChannel.needHistory) {
             return;
         }
-        if (APP.pubnub === null || !appDataChannel._fetched) {
+        if (APP.pubnub === null || !appDataChannel._fetched || !channelModel._fetched || !contactModel._fetched || !notificationModel._fetched) {
             appDataChannel.needHistory = true;
             return;
         }

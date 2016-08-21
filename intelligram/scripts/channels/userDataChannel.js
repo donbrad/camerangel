@@ -30,13 +30,11 @@ var userDataChannel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync: true,
-
             sort : {
                 field : "time",
                 dir: 'asc'
             },
-
+            autoSync: true,
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
@@ -101,7 +99,7 @@ var userDataChannel = {
         var dataSource = userDataChannel.messagesDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
-            cacheFilter = {};
+            cacheFilter = [];
         }
         dataSource.filter( query);
         var view = dataSource.view();
@@ -145,7 +143,52 @@ var userDataChannel = {
         
         return (decryptContent.plaintext);
     },
-    
+
+    decryptMessage : function (msg) {
+
+        var data = null;
+
+        var content = null;
+
+        if (msg.content.cipher !== undefined) {
+            content = userDataChannel.decryptBlock(msg.content.cipher);
+        } else {
+            content = userDataChannel.decryptBlock(msg.content);
+        }
+
+        if (content === undefined) {
+            content = "<p>Unable to decrypt messages...</p>"
+        }
+
+        if (msg.data.cipher !== undefined) {
+            data = userDataChannel.decryptBlock(msg.data.cipher);
+        } else {
+            data = userDataChannel.decryptBlock(msg.data);
+        }
+
+        if (data !== undefined) {
+            data = JSON.parse(data);
+        } else {
+            data = {};
+        }
+
+
+        var parsedMsg = {
+            type: msg.type,
+            fromHistory : msg.fromHistory,
+            msgID: msg.msgID,
+            channelUUID: msg.channelUUID,  //For private channels, channelUUID is just sender ID
+            content: content,
+            data: data,
+            TTL: msg.ttl,
+            time: msg.time,
+            sender: msg.sender,
+            recipient: msg.recipient
+        };
+
+        return(parsedMsg);
+    },
+
     addMessage : function (message) {
         if (userDataChannel.isDuplicateMessage(message.msgID))
             return;
@@ -159,7 +202,7 @@ var userDataChannel = {
         
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-        if (deviceModel.isOnline()) {
+        /*if (deviceModel.isOnline()) {
             everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
                 if (error !== null) {
                     ggError("Error creating private message " + JSON.stringify(error));
@@ -167,7 +210,7 @@ var userDataChannel = {
                 }
             });
         }
-
+*/
     },
 
     archiveMessage : function (message) {
@@ -177,17 +220,17 @@ var userDataChannel = {
 
         message.channelUUID = message.recipient;
 
-        var content = userDataChannel.encryptBlock(message.content);
+     /*   var content = userDataChannel.encryptBlock(message.content);
         message.content = content;
 
 
         var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
         message.data = data;
-
+*/
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
 
-        if (deviceModel.isOnline()) {
+       /* if (deviceModel.isOnline()) {
            everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
                  if (error !== null) {
                      ggError ("Error archiving private message " + JSON.stringify(error));
@@ -197,13 +240,14 @@ var userDataChannel = {
         } else {
             userDataChannel.messagesDS.sync();
         }
-
+*/
     },
 
     updateTimeStamp : function () {
         userDataChannel.lastAccess = ggTime.currentTime();
         localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
     },
+
 
     // Iterative function to get all messages in the user data channel for the last 72 hours
     // Note: pubnubs api will only return a max of 100 messsges so need to iterate until
@@ -235,8 +279,10 @@ var userDataChannel = {
                     var msg  =  messages[i];
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
                         
+
+                        var message = userDataChannel.decryptMessage(msg);
+                        userDataChannel.addMessage(message);
                         channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
-                        userDataChannel.addMessage(msg);
 
                     }
                 }
@@ -253,7 +299,7 @@ var userDataChannel = {
                 } else {
                     userDataChannel._historyFetchComplete = true;
 
-                    userDataChannel.removeExpiredMessages();
+                   // userDataChannel.removeExpiredMessages();
                 }
 
             }
@@ -267,13 +313,13 @@ var userDataChannel = {
         if (!userDataChannel.needHistory) {
             return;
         }
-        if (APP.pubnub === null || !userDataChannel._fetched) {
+        if (APP.pubnub === null || !userDataChannel._fetched || !channelModel._fetched || !contactModel._fetched || !notificationModel._fetched) {
             userDataChannel.needHistory = true;
             return;
         }
         userDataChannel.needHistory = false;
 
-        var lastAccess = userDataChannel.lastAccess
+        var lastAccess = userDataChannel.lastAccess;
         if ( lastAccess < ggTime.last72Hours()) {
             lastAccess = ggTime.last72Hours()
         }

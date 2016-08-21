@@ -9,7 +9,7 @@
 var everlive = {
 
     _token : null,
-    _tokenType: null,
+    _tokenType: 'bearer',
     _id : null,
     _signedIn : false,
     _isAuthenticated : false,
@@ -21,6 +21,7 @@ var everlive = {
     _syncComplete: true,
     _delta : 30,
     _initialized: false,
+    _triedToken: false,
 
     reset : function () {
         everlive._initialized = false;
@@ -49,7 +50,7 @@ var everlive = {
       /*  var provider = Everlive.Constants.StorageProvider.FileSystem;
         if (window.navigator.simulator === undefined) {*/
             // Use local storage in the emulator
-            var provider = Everlive.Constants.StorageProvider.LocalStorage;
+            var provider = Everlive.Constants.StorageProvider.FileSystem;
     /*    }*/
 
         if (everlive._initialized) {
@@ -60,6 +61,7 @@ var everlive = {
         
         if (deviceModel.isOnline()) {
             everlive._initialized = true;
+
             APP.everlive = new Everlive({
                 appId: 's2fo2sasaubcx7qe',
                 scheme: 'https',
@@ -74,11 +76,16 @@ var everlive = {
                  }
                  },*/
 
-                offline: {
-                    // syncUnmodified: true,
+                offlineStorage: {
+                    syncUnmodified: true,
+                    storage: {
+                        provider: Everlive.Constants.StorageProvider.LocalStorage
+                    },
                     encryption: {
-                        provider: Everlive.Constants.EncryptionProvider.Default,
-                        key : 'intelligram'
+                        key : 'kkwllc2016'
+                    },
+                    conflicts: {
+                        strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
                     }
                 },
                 /* storage: {
@@ -219,6 +226,7 @@ var everlive = {
                    // everlive.checkCurrentUser();
                     everlive.loadUserData(everlive._user);
                     everlive.isAuthenticated = true;
+                    everlive.triedToken = false;
                     userModel.initialView = '#home';
                 } else {
                     if (userModel.hasAccount) {
@@ -233,7 +241,42 @@ var everlive = {
                 APP.kendo.navigate(userModel.initialView);
             },
             function(error){
-                ggError("Everlive Current User: " + error);
+
+                if (error.code === 302) {
+                    everlive.getCredentials();
+                    if (everlive._token !== null) {
+                        APP.everlive.users.setAuthorization(everlive._token, everlive._tokenType, everlive._id);
+                        if (!everlive._triedToken) {
+                            everlive.isUserSignedIn();
+                            everlive._triedToken = true;
+                        } else {
+                            if (userModel.hasAccount) {
+                                everlive._signedIn = false;
+                                everlive._syncComplete = false;
+                                everlive.isAuthenticated = false;
+                                userModel.initialView = '#usersignin';
+                            } else {
+                                userModel.initialView = '#newuserhome';
+                            }
+                            APP.kendo.navigate(userModel.initialView);
+                        }
+
+                    } else {
+                        if (userModel.hasAccount) {
+                            everlive._signedIn = false;
+                            everlive._syncComplete = false;
+                            everlive.isAuthenticated = false;
+                            userModel.initialView = '#usersignin';
+                        } else {
+                            userModel.initialView = '#newuserhome';
+                        }
+                        APP.kendo.navigate(userModel.initialView);
+                    }
+                } else {
+                    ggError("Everlive Current User: " + JSON.stringify(error));
+                }
+
+
 
             });
 

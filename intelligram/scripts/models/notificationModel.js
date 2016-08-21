@@ -54,7 +54,8 @@ var notificationModel = {
                if (type === 'read') {
                    if (!notificationModel._fetched) {
                        notificationModel._fetched = true;
-
+                       appDataChannel.history();
+                       userDataChannel.history();
                        // Perform initial load logic
                    }
 
@@ -288,7 +289,6 @@ var notificationModel = {
             if (unreadCount > 0)
                 notificationModel.addUnreadNotification(channelUUID, channelName, unreadCount);
         } else {
-            var Id = notObj.Id;
             if (unreadCount === undefined || unreadCount === 0) {
 
                 notificationModel.notificationDS.remove(notObj);

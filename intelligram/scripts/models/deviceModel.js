@@ -332,17 +332,20 @@ var deviceModel = {
 
     getNetworkState: function () {
         var networkState = navigator.connection.type;
+        var con = deviceModel.state.connection;
         switch (networkState) {
             case Connection.NONE:
                 deviceModel.setAppState('connection', "none");
                 deviceModel.setAppState('isOnline', false);
-                mobileNotify("Offline");
+                 if (con !==  deviceModel.state.connection)
+                     mobileNotify("Offline");
                 break;
             case Connection.ETHERNET:
             case Connection.WIFI:
                 deviceModel.setAppState('connection', "internet");
                 deviceModel.setAppState('isOnline', true);
-                mobileNotify("Online via Wifi");
+                if (con !==  deviceModel.state.connection)
+                    mobileNotify("Online via Wifi");
                 break;
             case Connection.CELL:
             case Connection.CELL_2G:
@@ -350,7 +353,8 @@ var deviceModel = {
             case Connection.CELL_4G:
                 deviceModel.setAppState('connection', "cell");
                 deviceModel.setAppState('isOnline', true);
-                mobileNotify("Online via Cell");
+                if (con !==  deviceModel.state.connection)
+                    mobileNotify("Online via Cell");
                 break;
         }
     }

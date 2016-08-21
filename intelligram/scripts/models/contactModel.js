@@ -68,6 +68,9 @@ var contactModel = {
                 if (type === 'read') {
                     if (!contactModel._fetched) {
                         contactModel._fetched = true;
+                        appDataChannel.history();
+                        userDataChannel.history();
+
                         var changedContacts = contactModel.contactsDS.data();
                         if (changedContacts !== undefined) {
 

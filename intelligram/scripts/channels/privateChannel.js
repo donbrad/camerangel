@@ -328,11 +328,12 @@ var privateChannel = {
             var message  = privateChannel.decryptMessage(messages[m]);
             messages[m] = message;
         }
+        dataSource.filter(queryCache);
 
         if (callBack)
             callBack(messages);
 
-        dataSource.filter(queryCache);
+
 
 
 
