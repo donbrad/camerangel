@@ -60,7 +60,7 @@ var appDataChannel = {
 
         var ts = localStorage.getItem('ggAppDataTimeStamp');
 
-        if (ts !== undefined) {
+        if (ts !== undefined && ts !== "NaN") {
             appDataChannel.lastAccess = parseInt(ts);
             // Was last access more than a month ago -- if yes set it to a month ago
             if (appDataChannel.lastAccess < ggTime.lastMonth()) {

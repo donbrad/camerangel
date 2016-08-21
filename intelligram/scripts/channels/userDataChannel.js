@@ -54,7 +54,7 @@ var userDataChannel = {
             userDataChannel.channelUUID = channelUUID;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
-            if (ts !== undefined) {
+            if (ts !== undefined && ts !== "NaN") {
                 userDataChannel.lastAccess = parseInt(ts);
 
                 // Was last access more than 72 hours ago -- if yes set it to 72 hours ago
