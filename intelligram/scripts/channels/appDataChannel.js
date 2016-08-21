@@ -156,7 +156,7 @@ var appDataChannel = {
         appDataChannel.needHistory = false;
         // Get any messages in the channel
 
-
+        mobileNotify("Loading System Messages...");
         if (appDataChannel.lastAccess < ggTime.lastMonth() || appDataChannel.lastAccess) {
             appDataChannel.lastAccess = ggTime.lastMonth();
             localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
