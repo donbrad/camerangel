@@ -65,6 +65,9 @@ var userDataChannel = {
                 } else {
                     localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
                 }
+            } else {
+                userDataChannel.lastAccess = ggTime.last72Hours();
+                localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
             }
 
             APP.pubnub.subscribe({
