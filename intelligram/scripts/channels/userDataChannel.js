@@ -18,10 +18,17 @@ var userDataChannel = {
     _fetched : false,
     _historyFetchComplete : false,
     needHistory : true,
+    _inited : false,
+
     
 
     init: function (channelUUID) {
 
+        if (userDataChannel._inited) {
+            return;
+        }
+
+      userDataChannel._inited = true;
         userDataChannel.messagesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
@@ -68,16 +75,16 @@ var userDataChannel = {
             if (ts !== undefined && ts !== "NaN") {
                 userDataChannel.lastAccess = parseInt(ts);
 
-                // Was last access more than 72 hours ago -- if yes set it to 72 hours ago
-                if (userDataChannel.lastAccess < ggTime.last72Hours() || userDataChannel.lastAccess) {
+                // Was last access more than 1 week ago -- if yes set it to 1 week ago
+                if (userDataChannel.lastAccess < ggTime.lastWeek() || userDataChannel.lastAccess) {
 
-                    userDataChannel.lastAccess = ggTime.last72Hours();
+                    userDataChannel.lastAccess = ggTime.lastWeek();
                     localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
                 } else {
                     localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
                 }
             } else {
-                userDataChannel.lastAccess = ggTime.last72Hours();
+                userDataChannel.lastAccess = ggTime.lastWeek();
                 localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
             }
 
@@ -152,7 +159,7 @@ var userDataChannel = {
     decryptBlock : function (block) {
         var RSAKey = userModel.RSAKey;
         var decryptContent = cryptico.decrypt(block, RSAKey);
-        
+
         return (decryptContent.plaintext);
     },
 
@@ -191,7 +198,7 @@ var userDataChannel = {
             msgID: msg.msgID,
             channelUUID: msg.channelUUID,  //For private channels, channelUUID is just sender ID
             content: content,
-            dataBlob: data,
+            dataBlob: JSON.stringify(data),
             TTL: msg.ttl,
             time: msg.time,
             sender: msg.sender,
@@ -212,16 +219,18 @@ var userDataChannel = {
         message.data = data;*/
 
        // message.data = JSON.stringify(message.data)
-        userDataChannel.messagesDS.add(message);
-        userDataChannel.messagesDS.sync();
-       /* if (deviceModel.isOnline()) {
+
+
+        if (deviceModel.isOnline()) {
             everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
                 if (error !== null) {
                     ggError("Error creating private message " + JSON.stringify(error));
                 }
             });
-        }*/
-
+        } else {
+            userDataChannel.messagesDS.add(message);
+        }
+        userDataChannel.messagesDS.sync();
     },
 
     archiveMessage : function (message) {
@@ -231,12 +240,6 @@ var userDataChannel = {
 
         message.channelUUID = message.recipient;
 
-        var msgObj = new kendo.data.ObservableObject();
-
-        msgObj.set('msgID', message.msgID);
-        msgObj.set('content', message.content);
-
-
      /*  var content = userDataChannel.encryptBlock(message.content);
         message.content = content;*/
 
@@ -245,17 +248,19 @@ var userDataChannel = {
         message.data = data;*/
         //message.data = JSON.stringify(message.data);
 
-        userDataChannel.messagesDS.add(message);
-        userDataChannel.messagesDS.sync();
 
-       /*if (deviceModel.isOnline()) {
+
+
+       if (deviceModel.isOnline()) {
            everlive.createOne(userDataChannel._cloudClass, message, function (error, data) {
                if (error !== null) {
                    ggError("Error archiving private message " + JSON.stringify(error));
                }
            });
-       }*/
-
+       } else {
+           userDataChannel.messagesDS.add(message);
+       }
+        userDataChannel.messagesDS.sync();
     },
 
     updateTimeStamp : function () {
@@ -294,12 +299,11 @@ var userDataChannel = {
                     var msg  =  messages[i];
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
                         var msgClear= userDataChannel.decryptMessage(msg);
+                        msgClear.fromHistory = true;
                         userDataChannel.addMessage(msgClear);
                         channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
-
                     }
                 }
-
 
                 userDataChannel.updateTimeStamp();
                 /*   channelKeys = Object.keys(channelList);
@@ -311,8 +315,6 @@ var userDataChannel = {
                     userDataChannel._fetchHistory(start, endTime );
                 } else {
                     userDataChannel._historyFetchComplete = true;
-                    userDataChannel.messagesDS.sync();
-                   // userDataChannel.removeExpiredMessages();
                 }
 
             }
@@ -333,13 +335,13 @@ var userDataChannel = {
         userDataChannel.needHistory = false;
 
         var lastAccess = userDataChannel.lastAccess;
-        if ( lastAccess < ggTime.last72Hours()) {
-            lastAccess = ggTime.last72Hours()
+        if ( lastAccess < ggTime.lastWeek()) {
+            lastAccess = ggTime.lastWeek()
         }
 
         var total = userDataChannel.messagesDS.total();
         if (total === 0 ) {
-            lastAccess = ggTime.last72Hours();
+            lastAccess = ggTime.lastWeek();
         } else {
             var lastMessage = userDataChannel.messagesDS.at(total-1);
             lastAccess =  lastMessage.time;
@@ -358,7 +360,7 @@ var userDataChannel = {
 
 
     channelRead : function (m) {
-        
+
         switch(m.type) {
 
             case 'privateMessage' : {
@@ -373,7 +375,7 @@ var userDataChannel = {
 
     removeExpiredMessages : function () {
         var dataSource = userDataChannel.messagesDS;
-        
+
         if (dataSource === null ) {
             return;
         }
@@ -381,7 +383,7 @@ var userDataChannel = {
             return;
         }
 
-        var yesterday = ggTime.last72Hours();
+        var yesterday = ggTime.lastWeek();
        
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
@@ -390,6 +392,7 @@ var userDataChannel = {
         dataSource.filter({ field: "time", operator: "lt", value:  yesterday});
         var messageList = dataSource.view();
         dataSource.filter(queryCache);
+
         if (messageList.length > 0) {
             for (var i=0; i< messageList.length; i++) {
                 var msg = messageList[i];
@@ -399,6 +402,7 @@ var userDataChannel = {
         dataSource.sync();
 
     },
+
 
 
     publishCallback : function (m) {

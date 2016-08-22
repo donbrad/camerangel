@@ -292,29 +292,15 @@ var privateChannel = {
     },
 
 
-    getMessageHistory: function (callBack) {
+    getMessageHistory: function (channelUUID, callBack) {
 
 
-        var dataSource = userDataChannel.messagesDS;
-        var queryCache = dataSource.filter();
-        if (queryCache === undefined) {
-            queryCache = {};
-        }
-
-        privateChannel.last72Hours = ggTime.last72Hours();
-        dataSource.filter(
-            [
-            { field: "channelUUID", operator: "eq", value: privateChannel.channelUUID },
-            { field: "time", operator: "gte", value:  privateChannel.last72Hours}
-        ]);
-
-        var messages = dataSource.view();
-        dataSource.filter(queryCache);
+        var messages = userDataChannel.queryMessages( [{ field: "channelUUID", operator: "eq", value: channelUUID }]);
 
         var clearMessageArray = [];
 
         // Does this channel have recalled messages
-        var recalledMessages = channelModel.getRecalledMessages(privateChannel.channelUUID);
+        var recalledMessages = channelModel.getRecalledMessages(channelUUID);
 
         if (recalledMessages.length > 0) {
             // Has recalled messages -- remove by brute force
@@ -328,16 +314,12 @@ var privateChannel = {
 
         for (var m=0; m<messages.length; m++) {
             //var message  = privateChannel.decryptMessage(messages[m]);
-            messages[m].data = messages[m].dataBlob;
+            messages[m].data = JSON.parse(messages[m].dataBlob);
         }
 
 
         if (callBack)
             callBack(messages);
-
-
-
-
 
      }
 };

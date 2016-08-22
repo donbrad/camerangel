@@ -198,7 +198,6 @@ var appDataChannel = {
                 var pnStart = messages[1], pnEnd = messages[2];
                 messages = messages || [];
                 if (messages.length === 0) {
-                    //userDataChannel.messagesDS.sync();
                     appDataChannel.updateTimeStamp();
                     return;
                 }
@@ -206,7 +205,8 @@ var appDataChannel = {
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
                     var msg  =  messages[i];
-                    appDataChannel.archiveMessage(msg);
+                    if (!appDataChannel.isArchivedMessage(msg.msgID))
+                        appDataChannel.archiveMessage(msg);
                 }
 
                 appDataChannel.messagesDS.sync();
@@ -221,8 +221,9 @@ var appDataChannel = {
                 } else {
                     appDataChannel._historyFetchComplete = true;
 
-                    appDataChannel.removeExpiredMessages();
+
                     appDataChannel.processMessages();
+                    appDataChannel.removeExpiredMessages();
                 }
 
             }
@@ -259,6 +260,7 @@ var appDataChannel = {
         dataSource.sync();
 
     },
+
     processMessages : function () {
         var total = appDataChannel.messagesDS.total();
         for (var i=0; i<total; i++) {
@@ -279,15 +281,17 @@ var appDataChannel = {
             return;
         }
 
-        appDataChannel.messagesDS.add(message);
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
+                if (error !== null) {
+                    ggError("App Channel cache error " + JSON.stringify(error));
+                }
+            });
+        } else {
+            appDataChannel.messagesDS.add(message);
+        }
         appDataChannel.messagesDS.sync();
-
-        everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
-            if (error !== null) {
-                ggError ("App Channel cache error " + JSON.stringify(error));
-            }
-        });
-
     },
 
 

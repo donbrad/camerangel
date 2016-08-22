@@ -1504,10 +1504,9 @@ var channelView = {
               $('#channelImage').attr('src', photoUrl).removeClass("hidden");
 
               privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
-              channelView.messagesDS.data([]);
 
 
-              privateChannel.getMessageHistory(function (messages) {
+              privateChannel.getMessageHistory(thisContact.contactUUID, function (messages) {
 
                   channelView.preprocessMessages(messages);
 

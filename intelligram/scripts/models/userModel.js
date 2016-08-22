@@ -166,7 +166,6 @@ var userModel = {
 
         sharedPhotoModel.init();
 
-
         smartEvent.init();
 
         smartMovie.init();
@@ -176,8 +175,6 @@ var userModel = {
         smartFlight.init();
 
         statusTracker.init();
-
-
 
         todayModel.init();
 
