@@ -309,6 +309,8 @@ var privateChannel = {
         ]);
 
         var messages = dataSource.view();
+        dataSource.filter(queryCache);
+
         var clearMessageArray = [];
 
         // Does this channel have recalled messages
@@ -324,11 +326,11 @@ var privateChannel = {
             messages = clearMessageArray;
         }
 
-        for (var m=0; m<messages.length; m++) {
+       /* for (var m=0; m<messages.length; m++) {
             var message  = privateChannel.decryptMessage(messages[m]);
             messages[m] = message;
-        }
-        dataSource.filter(queryCache);
+        }*/
+
 
         if (callBack)
             callBack(messages);
