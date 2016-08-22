@@ -83,13 +83,13 @@ var everlive = {
                 offlineStorage: {
                     storage: {
                         provider: Everlive.Constants.StorageProvider.LocalStorage
-                    }/*,
+                    },
                     encryption: {
                         key : 'kkwllc2016'
-                    }*/
+                    }
                 },
                 authentication: {
-                    persist: true,
+                    persist: true/*,
                      onAuthenticationRequired: function() {
                          if (userModel.hasAccount) {
                              everlive._signedIn = false;
@@ -99,7 +99,7 @@ var everlive = {
                          }
                         APP.kendo.navigate(userModel.initialView);
 
-                    }
+                    }*/
                 }
             });
 

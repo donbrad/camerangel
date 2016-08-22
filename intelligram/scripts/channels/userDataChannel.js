@@ -37,7 +37,7 @@ var userDataChannel = {
                         recipient :  {type: 'string'},
                         channelUUID :  {type: 'string'},
                         content :  {type: 'string'},
-                        data :  {type: 'string'},
+                        data :  {type: 'object'},
                         TTL: {type: 'number'},
                         fromHistory: {type: 'boolean'},
                         time:  {type: 'date'}
@@ -211,16 +211,16 @@ var userDataChannel = {
       /*  var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
         message.data = data;*/
 
-        message.data = JSON.stringify(message.data)
+       // message.data = JSON.stringify(message.data)
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-        if (deviceModel.isOnline()) {
+       /* if (deviceModel.isOnline()) {
             everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
                 if (error !== null) {
                     ggError("Error creating private message " + JSON.stringify(error));
                 }
             });
-        }
+        }*/
 
     },
 
@@ -237,18 +237,18 @@ var userDataChannel = {
 
        /* var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
         message.data = data;*/
-        message.data = JSON.stringify(message.data);
+        //message.data = JSON.stringify(message.data);
 
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
 
-       if (deviceModel.isOnline()) {
+       /*if (deviceModel.isOnline()) {
            everlive.createOne(userDataChannel._cloudClass, message, function (error, data) {
                if (error !== null) {
                    ggError("Error archiving private message " + JSON.stringify(error));
                }
            });
-       }
+       }*/
 
     },
 
