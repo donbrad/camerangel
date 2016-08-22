@@ -82,7 +82,7 @@ var everlive = {
                /* offlineStorage: true,*/
                 offlineStorage: {
                     storage: {
-                        provider: Everlive.Constants.StorageProvider.LocalStorage
+                        provider: Everlive.Constants.StorageProvider.FileSystem
                     }/*,
                     encryption: {
                         key : 'kkwllc2016'
