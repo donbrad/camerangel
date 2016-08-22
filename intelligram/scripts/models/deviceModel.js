@@ -271,7 +271,7 @@ var deviceModel = {
         }
 
         deviceModel.getNetworkState();
-        $("#network-offline").addClass('hidden');
+        $(".network-offline").addClass('hidden');
     },
 
 
@@ -293,7 +293,7 @@ var deviceModel = {
 
     onOffline: function() {
         deviceModel.setAppState('isOnline', false);
-        $("#network-offline").removeClass('hidden');
+        $(".network-offline").removeClass('hidden');
         // Take all data sources offline
         if (APP.everlive !== null)
             APP.everlive.offline();

@@ -1610,7 +1610,7 @@ var channelView = {
             message.displayName = ux.returnUXPrimaryName(name, alias);
         }
 
-        //
+
         if (message.data.photos !== undefined && message.data.photos.length > 0 ) {
             var photos = message.data.photos;
 

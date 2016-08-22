@@ -82,7 +82,7 @@ var everlive = {
                /* offlineStorage: true,*/
                 offlineStorage: {
                     storage: {
-                        provider: Everlive.Constants.StorageProvider.LocalStorage
+                        provider: Everlive.Constants.StorageProvider.FileStorage
                     },
                     encryption: {
                         key : 'kkwllc2016'
@@ -118,9 +118,9 @@ var everlive = {
 
             everlive.isUserSignedIn();
 
-        } else {
+        } /*else {
             APP.everlive.offline();
-        }
+        }*/
     },
 
     getCredentials : function () {

@@ -29,7 +29,7 @@ var userDataChannel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { id:  Everlive.idField,
+                model: { Id:  Everlive.idField,
                     fields : {
                         type : {defaultValue: 'privatemessage', type: 'string'},
                         msgID : {type: 'string'},
@@ -37,7 +37,7 @@ var userDataChannel = {
                         recipient :  {type: 'string'},
                         channelUUID :  {type: 'string'},
                         content :  {type: 'string'},
-                        data :  {type: 'object'},
+                        dataObj :  {type: 'object'},
                         TTL: {type: 'number'},
                         fromHistory: {type: 'boolean'},
                         time:  {type: 'date'}
@@ -191,7 +191,7 @@ var userDataChannel = {
             msgID: msg.msgID,
             channelUUID: msg.channelUUID,  //For private channels, channelUUID is just sender ID
             content: content,
-            data: data,
+            dataObj: data,
             TTL: msg.ttl,
             time: msg.time,
             sender: msg.sender,
