@@ -649,6 +649,7 @@ var userStatusView = {
             everlive.isAuthenticated = false;
             deviceModel.resetDeviceState();
             everlive.clearLocalStorage();
+            everlive.clearAuthentication();
             userStatusView.closeModal();
             APP.kendo.navigate('#usersignin');
         });

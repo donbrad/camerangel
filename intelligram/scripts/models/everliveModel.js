@@ -417,6 +417,9 @@ var everlive = {
 
         }
 
+        if (APP.kendo.view().id !== 'home') {
+            APP.kendo.navigate("#home");
+        }
     },
     
     logout : function (callback) {

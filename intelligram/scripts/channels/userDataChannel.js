@@ -231,6 +231,12 @@ var userDataChannel = {
 
         message.channelUUID = message.recipient;
 
+        var msgObj = new kendo.data.ObservableObject();
+
+        msgObj.set('msgID', message.msgID);
+        msgObj.set('content', message.content);
+
+
      /*  var content = userDataChannel.encryptBlock(message.content);
         message.content = content;*/
 
