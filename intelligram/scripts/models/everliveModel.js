@@ -64,7 +64,11 @@ var everlive = {
 
             APP.everlive = new Everlive({
                 appId: 's2fo2sasaubcx7qe',
-                scheme: 'https',
+                scheme: 'https',/*,
+                caching: {
+                    maxAge: 10, //Global setting for maximum age of cached items in minutes. Default: 60.
+                    enabled: true
+                },*/
                 /*caching: {
                      maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
                      enabled: true, //Global setting for enabling/disabling cache. Default is FALSE.
@@ -110,7 +114,7 @@ var everlive = {
     
             everlive.getCredentials();
     
-            everlive.updateCredentials();
+            //everlive.updateCredentials();
 
             // Wire up the everlive sync monitors
             APP.everlive.on('syncStart', everlive.syncStart);

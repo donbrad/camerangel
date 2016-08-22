@@ -327,8 +327,8 @@ var privateChannel = {
         }
 
         for (var m=0; m<messages.length; m++) {
-            var message  = privateChannel.decryptMessage(messages[m]);
-            messages[m] = message;
+            //var message  = privateChannel.decryptMessage(messages[m]);
+            messages[m].data = JSON.parse(messages[m].data);
         }
 
 

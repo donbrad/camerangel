@@ -29,7 +29,20 @@ var userDataChannel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField,
+                    fields : {
+                        type : {defaultValue: 'privatemessage', type: 'string'},
+                        msgID : {type: 'string'},
+                        sender: {type: 'string'},
+                        recipient :  {type: 'string'},
+                        channelUUID :  {type: 'string'},
+                        content :  {type: 'string'},
+                        data :  {type: 'string'},
+                        TTL: {type: 'number'},
+                        fromHistory: {type: 'boolean'},
+                        time:  {type: 'date'}
+                    }
+                }
             },
             sort : {
                 field : "time",
@@ -192,13 +205,13 @@ var userDataChannel = {
         if (userDataChannel.isDuplicateMessage(message.msgID))
             return;
 
-        var content = userDataChannel.encryptBlock(message.content);
-        message.content = content;
+       /* var content = userDataChannel.encryptBlock(message.content);
+        message.content = content;*/
 
-       
-        var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
-        message.data = data;
-        
+      /*  var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
+        message.data = data;*/
+
+        message.data = JSON.stringify(message.data)
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
         if (deviceModel.isOnline()) {
@@ -218,12 +231,13 @@ var userDataChannel = {
 
         message.channelUUID = message.recipient;
 
-       var content = userDataChannel.encryptBlock(message.content);
-        message.content = content;
+     /*  var content = userDataChannel.encryptBlock(message.content);
+        message.content = content;*/
 
 
-        var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
-        message.data = data;
+       /* var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
+        message.data = data;*/
+        message.data = JSON.stringify(message.data);
 
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
@@ -273,16 +287,14 @@ var userDataChannel = {
                 for (var i = 0; i < messages.length; i++) {
                     var msg  =  messages[i];
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
-                        
-
-                        var message = userDataChannel.decryptMessage(msg);
-                        userDataChannel.addMessage(message);
+                        var msgClear= userDataChannel.decryptMessage(msg);
+                        userDataChannel.addMessage(msgClear);
                         channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
 
                     }
                 }
-                
-                userDataChannel.messagesDS.sync();
+
+
                 userDataChannel.updateTimeStamp();
                 /*   channelKeys = Object.keys(channelList);
                  channelModel.updatePrivateChannels(channelKeys, channelList);*/
@@ -293,7 +305,7 @@ var userDataChannel = {
                     userDataChannel._fetchHistory(start, endTime );
                 } else {
                     userDataChannel._historyFetchComplete = true;
-
+                    userDataChannel.messagesDS.sync();
                    // userDataChannel.removeExpiredMessages();
                 }
 
