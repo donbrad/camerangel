@@ -89,22 +89,17 @@ var everlive = {
                     }*/
                 },
                 authentication: {
-                    persist: true/*,
+                    persist: true,
                      onAuthenticationRequired: function() {
-                     if (everlive._token !== null) {
-                     everlive.updateCredentials();
-                     } else {
-                     mobileNotify("Auth Required - kendo...");
-                     if (userModel.hasAccount) {
-                     everlive._signedIn = false;
-                     userModel.initialView = '#usersignin';
-                     } else {
-                     userModel.initialView = '#newuserhome';
-                     }
-                     APP.kendo.navigate(userModel.initialView);
-                     }
+                         if (userModel.hasAccount) {
+                             everlive._signedIn = false;
+                             userModel.initialView = '#usersignin';
+                         } else {
+                            userModel.initialView = '#newuserhome';
+                         }
+                        APP.kendo.navigate(userModel.initialView);
 
-                     }*/
+                    }
                 }
             });
 
