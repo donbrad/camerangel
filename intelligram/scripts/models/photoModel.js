@@ -53,8 +53,7 @@ var photoModel = {
                         // Do any special processing for initial read of cloud data
                     }
                 }
-            },
-            autoSync: true
+            }
         });
 
 

@@ -326,10 +326,10 @@ var privateChannel = {
             messages = clearMessageArray;
         }
 
-       /* for (var m=0; m<messages.length; m++) {
+        for (var m=0; m<messages.length; m++) {
             var message  = privateChannel.decryptMessage(messages[m]);
             messages[m] = message;
-        }*/
+        }
 
 
         if (callBack)

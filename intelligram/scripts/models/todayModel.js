@@ -26,8 +26,7 @@ var todayModel = {
             sort: {
                 field: "date",
                 dir: "desc"
-            },
-            autoSync: true
+            }
         });
 
         todayModel.objectsDS.fetch();

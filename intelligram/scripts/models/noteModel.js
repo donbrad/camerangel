@@ -29,8 +29,7 @@ var noteModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
         
         noteModel.notesDS.fetch();

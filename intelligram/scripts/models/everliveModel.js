@@ -75,30 +75,15 @@ var everlive = {
                     }
                  },
 */
+               /* offlineStorage: true,*/
                 offlineStorage: {
                     storage: {
-                        provider: Everlive.Constants.StorageProvider.FileSystem
-                    },
+                        provider: Everlive.Constants.StorageProvider.LocalStorage
+                    }/*,
                     encryption: {
                         key : 'kkwllc2016'
-                    }/*,
-                    conflicts: {
-                        strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
                     }*/
                 },
-                /* storage: {
-                 provider: provider
-                 /!*,
-                 conflicts: {
-                 strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
-                 }*!/
-                 }/!*,
-
-                 files: {
-                 storagePath: 'ghostgrams',
-                 metaPath: 'ghostrams_meta'
-                 }*!/
-                 },*/
                 authentication: {
                     persist: true/*,
                      onAuthenticationRequired: function() {

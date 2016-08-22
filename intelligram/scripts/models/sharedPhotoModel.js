@@ -16,8 +16,7 @@ var sharedPhotoModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
         sharedPhotoModel.photosDS.fetch();
     },

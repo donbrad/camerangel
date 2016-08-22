@@ -83,8 +83,7 @@ var channelModel = {
 
                 }
 
-            },
-            autoSync: true
+            }
         });
         
         channelModel.privateChannelsDS = new kendo.data.DataSource({
@@ -95,8 +94,7 @@ var channelModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
 
         channelModel.recalledMessagesDS = new kendo.data.DataSource({
@@ -115,9 +113,7 @@ var channelModel = {
                 if (type === 'read') {
                     channelModel.recalledMessagesFetched = true;
                 }
-            },
-
-            autoSync : true
+            }
         });
 
 
@@ -131,7 +127,6 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync : true,
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
@@ -167,11 +162,10 @@ var channelModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
 
-        // Reflect any core channel changes to channelList
+      /*  // Reflect any core channel changes to channelList
         channelModel.channelsDS.bind("change", function (e) {
             // Rebuild the channelView.channelListDS when the underlying list changes: add, delete, update...
            //channelView._channelListDS.data(channelModel.channelsDS.data());
@@ -205,7 +199,7 @@ var channelModel = {
 
 
         });
-
+*/
 
         channelModel.channelsDS.fetch();
         channelModel.photosDS.fetch();
@@ -550,7 +544,7 @@ var channelModel = {
             if (lastMessage === undefined || lastMessage === null) {
                 lastMessage = ggTime.currentTime();
             }
-            channel.set('lastMessageTime', lastMessage);
+            channel.set('lastMessage', lastMessage);
 
         }
     },
@@ -560,7 +554,7 @@ var channelModel = {
         if (channel === undefined) {
             mobileNotify('getLastMessageTime: unknown channel ' + channelUUID);
         } else {
-            return(channel.get('lastMessageTime'));
+            return(channel.get('lastMessage'));
         }
     },
 
@@ -619,14 +613,12 @@ var channelModel = {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
             channelModel.confirmPrivateChannel(channelUUID, function(result){
-                if (result !== null) {
-                    var lastAccess = ggTime.currentTime();
+            if (result !== null) {
+                var lastAccess = ggTime.currentTime();
 
-                    notificationModel.updateUnreadNotification(result.channelUUID, result.name, count);
-                    channel.set('unreadCount', channel.get('unreadCount') + count);
-                    //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
-                    channelModel.updateLastMessageTime(result.channelUUID, lastAccess);
-                }
+                notificationModel.updateUnreadNotification(result.channelUUID, result.name, count);
+                channelModel.updateLastMessageTime(result.channelUUID, lastAccess);
+            }
             });
         } else {
 

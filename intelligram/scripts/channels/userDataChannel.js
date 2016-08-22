@@ -28,11 +28,13 @@ var userDataChannel = {
                 typeName: 'privatemessages',
                 dataProvider: APP.everlive
             },
+            schema: {
+                model: { Id:  Everlive.idField}
+            },
             sort : {
                 field : "time",
                 dir: 'asc'
             },
-
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
@@ -190,12 +192,12 @@ var userDataChannel = {
         if (userDataChannel.isDuplicateMessage(message.msgID))
             return;
 
-        /*var content = userDataChannel.encryptBlock(message.content);
+        var content = userDataChannel.encryptBlock(message.content);
         message.content = content;
 
        
         var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
-        message.data = data;*/
+        message.data = data;
         
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
@@ -216,25 +218,23 @@ var userDataChannel = {
 
         message.channelUUID = message.recipient;
 
-     /*   var content = userDataChannel.encryptBlock(message.content);
+       var content = userDataChannel.encryptBlock(message.content);
         message.content = content;
 
 
         var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
         message.data = data;
-*/
+
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
 
        if (deviceModel.isOnline()) {
-           everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
-                 if (error !== null) {
-                     ggError ("Error archiving private message " + JSON.stringify(error));
-                 }
-            });
-        } else {
-            userDataChannel.messagesDS.sync();
-        }
+           everlive.createOne(userDataChannel._cloudClass, message, function (error, data) {
+               if (error !== null) {
+                   ggError("Error archiving private message " + JSON.stringify(error));
+               }
+           });
+       }
 
     },
 

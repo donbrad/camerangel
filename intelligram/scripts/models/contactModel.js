@@ -90,8 +90,7 @@ var contactModel = {
                         }
                     }
                 }
-            },
-            autoSync: true
+            }
         });
 
 

@@ -20,8 +20,7 @@ var placeNoteModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
 
         placeNoteModel.notesDS.bind("change", function (e) {
