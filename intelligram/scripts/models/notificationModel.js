@@ -37,7 +37,8 @@ var notificationModel = {
        notificationModel.notificationDS = new kendo.data.DataSource({
            type: 'everlive',
            transport: {
-               typeName: 'notifications'
+               typeName: 'notifications',
+               dataProvider: APP.everlive
            },
            schema: {
                model: { Id:  Everlive.idField}
@@ -46,7 +47,7 @@ var notificationModel = {
                field: "date",
                dir: "desc"
            },
-           autoSync: true,
+
 
            requestEnd : function (e) {
                var response = e.response,  type = e.type;

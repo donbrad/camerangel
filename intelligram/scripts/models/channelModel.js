@@ -59,7 +59,8 @@ var channelModel = {
         channelModel.channelsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'channels'
+                typeName: 'channels',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -89,7 +90,8 @@ var channelModel = {
         channelModel.privateChannelsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'privatechannels'
+                typeName: 'privatechannels',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -101,7 +103,8 @@ var channelModel = {
             type: 'everlive',
           
             transport: {
-                typeName: 'recalledMessages'
+                typeName: 'recalledMessages',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

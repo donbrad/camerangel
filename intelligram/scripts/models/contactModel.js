@@ -53,7 +53,8 @@ var contactModel = {
         contactModel.contactsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'contacts'
+                typeName: 'contacts',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -156,7 +157,7 @@ var contactModel = {
 
         contactModel.contactsDS.fetch();
       
-        contactModel.syncContactTags();
+      //  contactModel.syncContactTags();
         deviceModel.setAppState('hasContacts', true);
        /* deviceModel.isParseSyncComplete();*/
 

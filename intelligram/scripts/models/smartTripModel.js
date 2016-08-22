@@ -20,7 +20,6 @@ var smartTrip = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync: true,
             change :  function (e) {todayModel.change(e, smartTrip._ggClass);}
         });
         smartTrip.tripsDS.fetch();

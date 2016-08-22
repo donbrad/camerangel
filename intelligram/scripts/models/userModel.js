@@ -504,7 +504,7 @@ var userModel = {
 
         deviceModel.setAppState('pubnubInit', true);
         deviceModel.isPushProvisioned();
-        
+
         appDataChannel.history();
         userDataChannel.history();
 

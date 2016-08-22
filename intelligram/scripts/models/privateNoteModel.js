@@ -29,7 +29,8 @@ var privateNoteModel = {
         privateNoteModel.notesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'privatenote'
+                typeName: 'privatenote',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -38,7 +39,7 @@ var privateNoteModel = {
                 field: "time",
                 dir: "asc"
             },
-            autoSync: true,
+
 
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;

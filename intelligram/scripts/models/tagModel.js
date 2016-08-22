@@ -45,7 +45,8 @@ var tagModel = {
         tagModel.tagsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'tags'
+                typeName: 'tags',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

@@ -35,7 +35,7 @@ var userDataChannel = {
                 field : "time",
                 dir: 'asc'
             },
-            autoSync: true,
+
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 

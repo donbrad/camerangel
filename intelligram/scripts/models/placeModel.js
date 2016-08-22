@@ -57,12 +57,13 @@ var placesModel = {
         placesModel.placesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'places'
+                typeName: 'places',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync: true,
+
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 

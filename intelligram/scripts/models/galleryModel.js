@@ -15,7 +15,8 @@ var galleryModel = {
         galleryModel.galleryDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'gallery'
+                typeName: 'gallery',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

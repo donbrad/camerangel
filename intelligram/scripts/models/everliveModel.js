@@ -50,7 +50,7 @@ var everlive = {
       /*  var provider = Everlive.Constants.StorageProvider.FileSystem;
         if (window.navigator.simulator === undefined) {*/
             // Use local storage in the emulator
-            var provider = Everlive.Constants.StorageProvider.FileSystem;
+            var provider = Everlive.Constants.StorageProvider.LocalStorage;
     /*    }*/
 
         if (everlive._initialized) {
@@ -77,9 +77,8 @@ var everlive = {
                  },*/
 
                 offlineStorage: {
-                    syncUnmodified: true,
                     storage: {
-                        provider: Everlive.Constants.StorageProvider.LocalStorage
+                        provider: Everlive.Constants.StorageProvider.FileSystem
                     },
                     encryption: {
                         key : 'kkwllc2016'
