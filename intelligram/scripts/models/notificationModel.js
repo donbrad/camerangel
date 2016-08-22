@@ -301,7 +301,7 @@ var notificationModel = {
 
 
             } else {
-                notObj.set('unreadCount', unreadCount);
+                notObj.set('unreadCount', notObj.unreadCount + unreadCount);
 
                 notificationModel.notificationDS.sync();
                /* everlive.update(notificationModel._cloudClass, notObj, {'uuid' : notObj.uuid}, function (error, data) {

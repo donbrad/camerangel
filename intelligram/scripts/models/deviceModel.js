@@ -252,13 +252,6 @@ var deviceModel = {
             everlive.init();
         }
 
-        if (userModel._needSync) {
-            everlive.updateUser();
-        }
-        if (userModel._needStatusSync) {
-            everlive.updateUserStatus();
-        }
-
 
 
         if (everlive._isAuthenticated) {
@@ -269,6 +262,12 @@ var deviceModel = {
             everlive.syncCloud();
             photoModel.processCloudPushList();
             profilePhotoModel.processCloudPushList();
+            if (userModel._needSync) {
+                everlive.updateUser();
+            }
+            if (userModel._needStatusSync) {
+                everlive.updateUserStatus();
+            }
         }
 
         deviceModel.getNetworkState();
@@ -281,7 +280,7 @@ var deviceModel = {
     },
 
     isKeyDataFetched : function () {
-        if (channelModel.fetched && contactsModel._fetched) {
+        if (channelModel.fetched && contactModel._fetched) {
             return true;
         }
 
@@ -298,6 +297,9 @@ var deviceModel = {
         // Take all data sources offline
         if (APP.everlive !== null)
             APP.everlive.offline();
+
+        appDataChannel.needHistory = true;
+        userDataChannel.needHistory = true;
     },
 
     isOnline : function () {

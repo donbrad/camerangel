@@ -675,7 +675,7 @@ var channelModel = {
             if (contact !== undefined && contact.contactUUID !== undefined && !contact.isBlocked) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
                 if (callback !== undefined)
-                    callback(channel.channelUUID);
+                    callback(channelUUID);
             } else {
                 if (callback !== undefined)
                     callback(null);
