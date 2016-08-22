@@ -28,9 +28,6 @@ var userDataChannel = {
                 typeName: 'privatemessages',
                 dataProvider: APP.everlive
             },
-            schema: {
-                model: { Id:  Everlive.idField}
-            },
             sort : {
                 field : "time",
                 dir: 'asc'
@@ -202,15 +199,14 @@ var userDataChannel = {
         
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
-        /*if (deviceModel.isOnline()) {
+        if (deviceModel.isOnline()) {
             everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
                 if (error !== null) {
                     ggError("Error creating private message " + JSON.stringify(error));
-                    debugger;
                 }
             });
         }
-*/
+
     },
 
     archiveMessage : function (message) {
@@ -230,17 +226,16 @@ var userDataChannel = {
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
 
-       /* if (deviceModel.isOnline()) {
+       if (deviceModel.isOnline()) {
            everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
                  if (error !== null) {
                      ggError ("Error archiving private message " + JSON.stringify(error));
-                     debugger;
                  }
             });
         } else {
             userDataChannel.messagesDS.sync();
         }
-*/
+
     },
 
     updateTimeStamp : function () {
