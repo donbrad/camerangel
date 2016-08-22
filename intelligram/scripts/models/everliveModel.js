@@ -211,6 +211,10 @@ var everlive = {
                     everlive.triedToken = false;
                     userModel.initialView = '#home';
                 } else {
+                    // current user returned null without an error
+                    // seems to happen when the emulator or simulator is munged -- never seen on device.
+                    ggError("Null user data - please delete BlackDragon...");
+                    everlive.clearAuthentication();
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
                         everlive._syncComplete = false;
@@ -223,8 +227,18 @@ var everlive = {
                 APP.kendo.navigate(userModel.initialView);
             },
             function(error){
-
-                if (error.code === 302) {
+                if (error.code === undefined) {
+                    everlive.clearAuthentication();
+                    if (userModel.hasAccount) {
+                        everlive._signedIn = false;
+                        everlive._syncComplete = false;
+                        everlive.isAuthenticated = false;
+                        everlive._triedToken = true;
+                        userModel.initialView = '#usersignin';
+                    } else {
+                        userModel.initialView = '#newuserhome';
+                    }
+                } else if (error.code === 302) {
                     everlive.getCredentials();
                     if (everlive._token !== null) {
                         APP.everlive.users.setAuthorization(everlive._token, everlive._tokenType, everlive._id);
@@ -708,9 +722,10 @@ var everlive = {
 
     clearAuthentication : function () {
 
-     /*   APP.everlive.authentication.clearAuthorization(); */
+       // APP.everlive.authentication.logout();
         APP.everlive.authentication.clearPersistedAuthentication();
-        //APP.everlive.authentication.logout();
+        APP.everlive.authentication.clearAuthorization();
+
        
     },
 

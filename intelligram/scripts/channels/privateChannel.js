@@ -268,7 +268,7 @@ var privateChannel = {
                         msgID: message.msgID,
                         channelUUID: message.recipient,
                         content: content,
-                        data: contentData,
+                        dataBlob: contentData,
                         time: message.time,
                         wasSent: true,
                         fromHistory: false,
@@ -328,7 +328,7 @@ var privateChannel = {
 
         for (var m=0; m<messages.length; m++) {
             //var message  = privateChannel.decryptMessage(messages[m]);
-            messages[m].data = JSON.parse(messages[m].data);
+            messages[m].data = messages[m].dataBlob;
         }
 
 

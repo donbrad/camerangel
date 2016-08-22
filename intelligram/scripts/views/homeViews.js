@@ -2181,7 +2181,7 @@ var signInView = {
                 $("#home-signin-username, #home-signin-password").val("");
 
                 everlive.isUserSignedIn();
-               // channelModel.syncMemberChannels();
+
                 
         });
 

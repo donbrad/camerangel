@@ -37,7 +37,7 @@ var userDataChannel = {
                         recipient :  {type: 'string'},
                         channelUUID :  {type: 'string'},
                         content :  {type: 'string'},
-                        dataObj :  {type: 'object'},
+                        dataBlob :  {type: 'text'},
                         TTL: {type: 'number'},
                         fromHistory: {type: 'boolean'},
                         time:  {type: 'date'}
@@ -191,7 +191,7 @@ var userDataChannel = {
             msgID: msg.msgID,
             channelUUID: msg.channelUUID,  //For private channels, channelUUID is just sender ID
             content: content,
-            dataObj: data,
+            dataBlob: data,
             TTL: msg.ttl,
             time: msg.time,
             sender: msg.sender,
