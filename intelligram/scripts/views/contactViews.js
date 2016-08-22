@@ -56,6 +56,7 @@ var contactsView = {
                     if (contactList !== undefined) {
                         contactModel.contactListDS.remove(contactList);
                     }
+                    return;
                 }
 
 

@@ -142,7 +142,7 @@ var channelsView = {
         appDataChannel.history();
         userDataChannel.history();
 
-      
+
        // channelModel.syncMemberChannels();
         channelsView.updateChannelListDS();
 

@@ -66,26 +66,25 @@ var everlive = {
                 appId: 's2fo2sasaubcx7qe',
                 scheme: 'https',
                 /*caching: {
-                 maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
-                 enabled: true, //Global setting for enabling/disabling cache. Default is FALSE.
-                 typeSettings: { //Specify content type-specific settings that override the global settings.
-                 "userstatus": {
-                 maxAge: 5
-
-                 }
-                 }
-                 },*/
-
+                     maxAge: 30, //Global setting for maximum age of cached items in minutes. Default: 60.
+                     enabled: true, //Global setting for enabling/disabling cache. Default is FALSE.
+                     typeSettings: { //Specify content type-specific settings that override the global settings.
+                     "userstatus": {
+                         maxAge: 5
+                     }
+                    }
+                 },
+*/
                 offlineStorage: {
                     storage: {
                         provider: Everlive.Constants.StorageProvider.FileSystem
                     },
                     encryption: {
                         key : 'kkwllc2016'
-                    },
+                    }/*,
                     conflicts: {
                         strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
-                    }
+                    }*/
                 },
                 /* storage: {
                  provider: provider
