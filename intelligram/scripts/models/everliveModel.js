@@ -210,6 +210,7 @@ var everlive = {
                     everlive.isAuthenticated = true;
                     everlive.triedToken = false;
                     userModel.initialView = '#home';
+                    APP.kendo.navigate(userModel.initialView);
                 } else {
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
@@ -219,11 +220,13 @@ var everlive = {
                     } else {
                         userModel.initialView = '#newuserhome';
                     }
+                    APP.kendo.navigate(userModel.initialView);
                 }
-                APP.kendo.navigate(userModel.initialView);
+
             },
             function(error){
-                everlive.logout(function (){
+                everlive.clearAuthentication();
+          //      everlive.logout(function (){
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
                         everlive._syncComplete = false;
@@ -233,7 +236,7 @@ var everlive = {
                         userModel.initialView = '#newuserhome';
                     }
                     APP.kendo.navigate(userModel.initialView);
-                });
+  //              });
 
         });
 
@@ -682,7 +685,7 @@ var everlive = {
 
     clearAuthentication : function () {
 
-     /*   APP.everlive.authentication.clearAuthorization(); */
+        APP.everlive.users.clearAuthorization();
         APP.everlive.authentication.clearPersistedAuthentication();
         //APP.everlive.authentication.logout();
        
