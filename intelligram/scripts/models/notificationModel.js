@@ -191,15 +191,11 @@ var notificationModel = {
 
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
-        
-
 
         if (deviceModel.isOnline()) {
             everlive.createOne(notificationModel._cloudClass, notification, function (error, data) {
                 if (error !== null) {
-                    mobileNotify("Error creating Notification " + JSON.stringify(error));
-                } else {
-                    notificationModel._cleanDupNotifications(notification.uuid);
+                    ggError("Error creating Notification " + JSON.stringify(error));
                 }
             });
         } else {
@@ -225,11 +221,16 @@ var notificationModel = {
     },
 
     addVerifyPhoneNotification : function () {
+        var that = notificationModel;
+        if (!that.findNotificationByType(notificationModel._verifyPhone))
         this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", 'verifyphone' , null, false);
     },
     
     addVerifyEmailNotification : function () {
-        this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", 'verifyemail' , null, false);
+        var that = notificationModel;
+        if (!that.findNotificationByType(notificationModel._verifyEmail)) {
+            this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", 'verifyemail' , null, false);
+        }
     },
 
 
@@ -313,18 +314,10 @@ var notificationModel = {
                 notificationModel.notificationDS.remove(notObj);
                 notificationModel.notificationDS.sync();
 
-             /*   everlive.deleteMatching(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
-
-                });*/
-
-
             } else {
                 notObj.set('unreadCount', notObj.unreadCount + unreadCount);
 
                 notificationModel.notificationDS.sync();
-               /* everlive.update(notificationModel._cloudClass, notObj, {'uuid' : notObj.uuid}, function (error, data) {
-                    //placeNoteModel.notesDS.remove(note);
-                });*/
 
             }
         }
@@ -349,6 +342,10 @@ var notificationModel = {
 
     findNotificationByPrivateId : function (privateId) {
         return (notificationModel.queryNotification({ field: "privateId", operator: "eq", value: privateId }));
+    },
+
+    findNotificationByType : function (typeName) {
+        return (notificationModel.queryNotification({ field: "type", operator: "eq", value: typeName }));
     },
 
     deleteAllNotifications : function () {

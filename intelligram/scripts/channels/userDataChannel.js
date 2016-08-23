@@ -289,9 +289,10 @@ var userDataChannel = {
                 messages = messages[0];
                 var pnStart = messages[1], pnEnd = messages[2];
                 messages = messages || [];
+                userDataChannel.updateTimeStamp();
                 if (messages.length === 0) {
                     //userDataChannel.messagesDS.sync();
-                    userDataChannel.updateTimeStamp();
+
                     return;
                 }
                 if (userDataChannel.RSAKey === null) {
@@ -308,10 +309,6 @@ var userDataChannel = {
                         channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
                     }
                 }
-
-                userDataChannel.updateTimeStamp();
-                /*   channelKeys = Object.keys(channelList);
-                 channelModel.updatePrivateChannels(channelKeys, channelList);*/
 
                 var endTime = parseInt(pnStart);
                 if (messages.length === 100 && endTime >= start) {
@@ -346,9 +343,6 @@ var userDataChannel = {
         var count = userDataChannel.messagesDS.total();
         if (userDataChannel.messagesDS.total() === 0) {
            lastAccess  = ggTime.lastWeek();
-        } else {
-            var msg = userDataChannel.messagesDS.at(count-1);
-            lastAccess = msg.time;
         }
         if ( lastAccess < ggTime.lastWeek()) {
             lastAccess = ggTime.lastWeek()
