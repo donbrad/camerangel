@@ -17,7 +17,7 @@ var placesModel = {
 
     placesArray : [],
     deferredList : [],
-    fetched : false,
+    _fetched : false,
     _placeModel : {   // Schema and default values to place model
         uuid: null,
         category: "Venue",
@@ -63,12 +63,11 @@ var placesModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
                 if (!placesModel._fetched) {
-                    if (type === 'read') {
+                    if (type === 'read' && response) {
                         var changedPlaces = placesModel.placesDS.data();
                         placesModel._fetched = true;
                         var len = changedPlaces.length;

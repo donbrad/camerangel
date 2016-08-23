@@ -52,7 +52,7 @@ var notificationModel = {
            requestEnd : function (e) {
                var response = e.response,  type = e.type;
 
-               if (type === 'read') {
+               if (type === 'read' && response) {
                    if (!notificationModel._fetched) {
                        notificationModel._fetched = true;
                        appDataChannel.history();

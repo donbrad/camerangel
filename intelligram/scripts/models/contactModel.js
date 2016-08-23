@@ -65,7 +65,7 @@ var contactModel = {
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
-                if (type === 'read') {
+                if (type === 'read' && response) {
                     if (!contactModel._fetched) {
                         contactModel._fetched = true;
                         appDataChannel.history();

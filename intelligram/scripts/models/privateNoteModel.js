@@ -40,11 +40,10 @@ var privateNoteModel = {
                 dir: "asc"
             },
 
-
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
-                if (!privateNoteModel._fetched) {
+                if (!privateNoteModel._fetched && response) {
                     if (type === 'read') {
                         privateNoteModel._fetched = true;
                     }

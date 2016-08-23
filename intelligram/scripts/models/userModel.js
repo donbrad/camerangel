@@ -142,13 +142,14 @@ var userModel = {
 
         notificationModel.init();
 
-        // Initialize application data channel with gg's unique ID
-        appDataChannel.init();
-
         var uuid = userModel._user.userUUID;
         // Initialize the user's data channel with the user's UUID...
 
         userDataChannel.init(uuid);
+
+        // Initialize application data channel with gg's unique ID
+        appDataChannel.init();
+
 
         mapModel.init();
 

@@ -43,7 +43,7 @@ var appDataChannel = {
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
-                if (type === 'read') {
+                if (type === 'read' && response) {
                     if (!appDataChannel._fetched) {
                         appDataChannel._fetched = true;
                         appDataChannel.history();

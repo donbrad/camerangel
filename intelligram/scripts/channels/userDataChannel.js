@@ -36,36 +36,13 @@ var userDataChannel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField,
-                    fields : {
-                        type : {defaultValue: 'privatemessage', type: 'string'},
-                        msgID : {type: 'string'},
-                        sender: {type: 'string'},
-                        recipient :  {type: 'string'},
-                        channelUUID :  {type: 'string'},
-                        content :  {type: 'string'},
-                        dataBlob :  {type: 'text'},
-                        TTL: {type: 'number'},
-                        fromHistory: {type: 'boolean'},
-                        time:  {type: 'date'}
-                    }
-                }
+                model: { Id:  Everlive.idField }
             },
             sort : {
                 field : "time",
                 dir: 'asc'
-            },
-            requestEnd : function (e) {
-                var response = e.response,  type = e.type;
-
-                if (type === 'read') {
-                    if (!userDataChannel._fetched) {
-                        userDataChannel._fetched = true;
-                        userDataChannel.history();
-                        //notificationModel.processUnreadChannels();
-                    }
-                }
             }
+
         });
 
         if (channelUUID !== undefined && channelUUID !== null) {
@@ -88,17 +65,43 @@ var userDataChannel = {
                 localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
             }
 
-            APP.pubnub.subscribe({
-                channel: userDataChannel.channelUUID,
-                windowing: 100,
-                message: userDataChannel.channelRead,
-                connect: userDataChannel.channelConnect,
-                disconnect:userDataChannel.channelDisconnect,
-                reconnect: userDataChannel.channelReconnect,
-                error: userDataChannel.channelError
-
-            });
         }
+
+        dataSource.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && e.response) {
+
+                if (!userDataChannel._fetched) {
+                    userDataChannel._fetched = true;
+
+                    //notificationModel.processUnreadChannels();
+
+                   /* var total = response.length;
+                    if (total === 0 ) {
+                        var lastAccess = ggTime.lastWeek();
+                    } else {
+                        var lastMessage = response[(total-1)];
+                        lastAccess =  lastMessage.time;
+                    }
+                    userDataChannel.lastAccess = lastAccess;
+                    localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);*/
+
+                    APP.pubnub.subscribe({
+                        channel: userDataChannel.channelUUID,
+                        windowing: 100,
+                        message: userDataChannel.channelRead,
+                        connect: userDataChannel.channelConnect,
+                        disconnect:userDataChannel.channelDisconnect,
+                        reconnect: userDataChannel.channelReconnect,
+                        error: userDataChannel.channelError
+
+                    });
+
+                    userDataChannel.history();
+                }
+            }
+        });
 
         userDataChannel.messagesDS.fetch();
 
@@ -334,18 +337,18 @@ var userDataChannel = {
         }
         userDataChannel.needHistory = false;
 
+        mobileNotify ("Getting Private Messages...");
+
         var lastAccess = userDataChannel.lastAccess;
         if ( lastAccess < ggTime.lastWeek()) {
             lastAccess = ggTime.lastWeek()
         }
 
-        var total = userDataChannel.messagesDS.total();
-        if (total === 0 ) {
-            lastAccess = ggTime.lastWeek();
-        } else {
-            var lastMessage = userDataChannel.messagesDS.at(total-1);
-            lastAccess =  lastMessage.time;
+        if (userDataChannel.messagesDS.total() === 0) {
+            userDataChannel.lastAccess  = ggTime.lastWeek();
         }
+
+
 
         localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
 
@@ -353,7 +356,7 @@ var userDataChannel = {
         
         var end = ggTime.toPubNubTime(ggTime.currentTime());
 
-        mobileNotify ("Getting Private Messages...");
+
         userDataChannel._fetchHistory(start, end);
 
     },
@@ -365,7 +368,6 @@ var userDataChannel = {
 
             case 'privateMessage' : {
                 userDataChannel.updateTimeStamp();
-
                 privateChannel.receiveHandler(m);
 
             } break;

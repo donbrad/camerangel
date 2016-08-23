@@ -414,8 +414,8 @@ var everlive = {
 
         userModel.update_user(user);
         userModel.initPubNub();
-        everlive.updateUser();
         userModel.initCloudModels();
+        everlive.updateUser();
         userStatus.update();
         //userModel.syncCloudModels();
 

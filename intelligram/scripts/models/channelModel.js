@@ -72,7 +72,7 @@ var channelModel = {
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
-                if (type === 'read') {
+                if (type === 'read' && response) {
                     if (!channelModel._fetched){
                         channelModel._fetched = true;
                         channelModel.processDeferred();
