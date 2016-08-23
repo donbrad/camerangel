@@ -68,21 +68,6 @@ var channelModel = {
             sort: {
                 field: "lastAccess",
                 dir: "desc"
-            },
-            requestEnd : function (e) {
-                var response = e.response,  type = e.type;
-
-                if (type === 'read' && response) {
-                    if (!channelModel._fetched){
-                        channelModel._fetched = true;
-                        channelModel.processDeferred();
-                        channelsView.updateChannelListDS();
-                        appDataChannel.history();
-                        userDataChannel.history();
-                    }
-
-                }
-
             }
         });
         
@@ -207,14 +192,25 @@ var channelModel = {
         channelModel.recalledPhotosDS.fetch();
         channelModel.recalledMessagesDS.fetch();
 
-        deviceModel.setAppState('hasChannels', true);
-       /* deviceModel.isParseSyncComplete();*/
 
-        // Start the updateMessageCount async after 5 seconds...
-     /*   setTimeout(function(){
-           // channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
-            channelModel.updateChannelsMessageCount();
-        }, 5000);*/
+        channelModel.channelsDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!channelModel._fetched){
+                    channelModel._fetched = true;
+                    channelModel.processDeferred();
+                    channelsView.updateChannelListDS();
+                    appDataChannel.history();
+                    userDataChannel.history();
+                }
+
+            }
+
+        });
+
+        deviceModel.setAppState('hasChannels', true);
+
     },
 
     sync : function () {

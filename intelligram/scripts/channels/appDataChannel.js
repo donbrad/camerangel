@@ -39,15 +39,16 @@ var appDataChannel = {
             sort: {
                 field: "time",
                 dir: "asc"
-            },
-            requestEnd : function (e) {
-                var response = e.response,  type = e.type;
+            }
+        });
 
-                if (type === 'read' && response) {
-                    if (!appDataChannel._fetched) {
-                        appDataChannel._fetched = true;
-                        appDataChannel.history();
-                    }
+        appDataChannel.messagesDS.bind("requestEnd", function (e) {
+            var response = e.response, type = e.type;
+
+            if (type === 'read' && response) {
+                if (!appDataChannel._fetched) {
+                    appDataChannel._fetched = true;
+                    appDataChannel.history();
                 }
             }
         });

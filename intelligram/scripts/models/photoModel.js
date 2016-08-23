@@ -42,18 +42,9 @@ var photoModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-
-            requestEnd : function (e) {
-                var response = e.response,  type = e.type;
-
-                if (!photoModel._fetched ) {
-                    if (type === 'read' && response) {
-                        photoModel._fetched = true;
-                        // Do any special processing for initial read of cloud data
-                    }
-                }
             }
+
+
         });
 
 
@@ -128,6 +119,16 @@ var photoModel = {
             }
         });
 
+
+        photoModel.photosDS.bind('requestEnd',function (e) {
+            var response = e.response,  type = e.type;
+            if (!photoModel._fetched ) {
+                if (type === 'read' && response) {
+                    photoModel._fetched = true;
+                    // Do any special processing for initial read of cloud data
+                }
+            }
+        });
 
         photoModel.photosDS.fetch();
       //  photoModel.deletedPhotosDS.fetch();
@@ -373,7 +374,12 @@ var photoModel = {
                 }
 
                 if (photoObj !== undefined && photoData !== null) {
-                    var secureUrl = photoData.secure_url, thumbUrl = photoData.eager[0].secure_url;
+                    var secureUrl = photoData.secure_url,
+                        thumbUrl = photoData.secure_url;
+
+                    if (photoData.eager !== undefined)
+                        thumbUrl = photoData.eager[0].secure_url;
+                    
                     photoObj.set('imageUrl', secureUrl);
                     photoObj.set('cloudUrl', secureUrl);
                     photoObj.set('thumbnailUrl', thumbUrl);
@@ -643,7 +649,9 @@ var photoModel = {
             photo.tags = [];
         }
         photo.set('tags', photoObj.tags);
-
+        photo.set('placeUUID', _nullString(photoObj.placeUUID));
+        photo.set('placeName', _nullString(photoObj.placeName));
+        photo.set('address', _nullString(photoObj.address));
         photo.set('isProfilePhoto', false);
 
        /* photo.set('title', photoObj.title);
@@ -663,32 +671,13 @@ var photoModel = {
         photo.set('imageUrl',photoObj.imageUrl);
 
        // var photoObj = photo.toJSON();
-        photoModel.photosDS.add(photo);
+        photoModel.cloudCreate(photo);
       //  photoModel.syncLocal();
 
         if (callback !== undefined)
             callback(photo);
 
-        /*everlive.createOne(photoModel._cloudClass, photo, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating photo " + JSON.stringify(error));
-            } else {
-                // Add the everlive object with everlive created Id to the datasource
-                var photoList = photoModel.findPhotosById(data.result.photoId);
 
-                if (photoList.length > 1) {
-                    var length = photoList.length;
-
-                    for (var i=0; i<length; i++) {
-                        if (photoList[i].Id === undefined) {
-                            photoModel.photosDS.remove(photoList[i]);
-                        }
-                    }
-                }
-
-            }
-        });
-*/
     },
 
     addOfferImage : function (photoId, imageUrl) {
@@ -772,8 +761,9 @@ var photoModel = {
         photo.set('contactUUID', contactId);
         photo.set('isProfilePhoto', true);
 
-        photoModel.photosDS.add(photo);
-        photoModel.photosDS.sync();
+
+       photoModel.cloudCreate(photo);
+
 
         devicePhoto.convertImgToDataURL(url, function (dataUrl) {
             var imageBase64= dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");
@@ -801,71 +791,20 @@ var photoModel = {
             });
         });
 
-        /*everlive.createOne(photoModel._cloudClass, photo, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating photo " + JSON.stringify(error));
-
-            } else {
-                // look up the photo (and remove duplicate local copy if there is one)
-                var photoList = photoModel.findPhotosById(data.photoId);
-
-                if (photoList.length > 1) {
-                    var length = photoList.length;
-
-                    for (var i=0; i<length; i++) {
-                        if (photoList[i].id === undefined) {
-                            photoModel.photosDS.remove(photoList[i]);
-                        }
-                    }
-                } else {
-
-                }
-
-            }
-        });
-
-*/
-
-    },
-
-    processCloudPushList : function () {
-        var len = photoModel.cloudPushList.length;
-        if (len === 0)
-            return;
-        for (var i = 0; i<len; i++ ){
-            photoModel.cloudCreate(photoModel.cloudPushList[i]);
-        }
-        photoModel.cloudPushList = [];
     },
 
     cloudCreate : function (photo) {
-        everlive.createOne(photoModel._cloudClass, photo, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating photo " + JSON.stringify(error));
+        if (deviceModel.isOnline()) {
+            everlive.createOne(photoModel._cloudClass, photo, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating photo " + JSON.stringify(error));
 
-            } else {
-                // look up the photo (and remove duplicate local copy if there is one)
-                var photoList = photoModel.findPhotosById(data.photoId);
-
-                if (photoList.length > 1) {
-                    var length = photoList.length;
-
-                    for (var i=0; i<length; i++) {
-                        if (photoList[i].id === undefined) {
-                            photoModel.photosDS.remove(photoList[i]);
-                        }
-                    }
-                } else if (photoList.length === 1) {
-                    if (photoList[0].id === undefined) {
-                        photoList[0].id = data.id;
-                    }
-
-                    photoModel.photosDS.sync();
                 }
-
-
-            }
-        });
+            });
+        } else {
+            photoModel.photosDS.add(photo);
+        }
+        photoModel.photosDS.sync();
     },
 
     addDevicePhoto: function (devicePhoto, isCamera, isProfilePhoto,  callback) {
@@ -964,19 +903,17 @@ var photoModel = {
         }
        
         // For perf reasons add the photo before it's stored on everlive
-        photoModel.photosDS.add(photo);
-        photoModel.photosDS.sync();
+
+
 
         
         if (callback !== undefined) {
             callback(null, photo);
         }
 
-        if (deviceModel.isOnline()) {
-            photoModel.cloudCreate(photo);
-        } else {
-           photoModel.cloudPushList.push(photo);
-        }
+
+        photoModel.cloudCreate(photo);
+
 
     },
 

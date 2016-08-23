@@ -46,23 +46,25 @@ var notificationModel = {
            sort: {
                field: "date",
                dir: "desc"
-           },
-
-
-           requestEnd : function (e) {
-               var response = e.response,  type = e.type;
-
-               if (type === 'read' && response) {
-                   if (!notificationModel._fetched) {
-                       notificationModel._fetched = true;
-                       appDataChannel.history();
-                       userDataChannel.history();
-                       // Perform initial load logic
-                   }
-
-               }
            }
+
+
+
        });
+
+        notificationModel.notificationDS.bind('requestEnd',function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!notificationModel._fetched) {
+                    notificationModel._fetched = true;
+                    appDataChannel.history();
+                    userDataChannel.history();
+                    // Perform initial load logic
+                }
+
+            }
+        });
 
         notificationModel.notificationDS.fetch();
     },

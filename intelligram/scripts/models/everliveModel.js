@@ -211,10 +211,6 @@ var everlive = {
                     everlive.triedToken = false;
                     userModel.initialView = '#home';
                 } else {
-                    // current user returned null without an error
-                    // seems to happen when the emulator or simulator is munged -- never seen on device.
-                    ggError("Null user data - please delete BlackDragon...");
-                    everlive.clearAuthentication();
                     if (userModel.hasAccount) {
                         everlive._signedIn = false;
                         everlive._syncComplete = false;
@@ -227,18 +223,8 @@ var everlive = {
                 APP.kendo.navigate(userModel.initialView);
             },
             function(error){
-                if (error.code === undefined) {
-                    everlive.clearAuthentication();
-                    if (userModel.hasAccount) {
-                        everlive._signedIn = false;
-                        everlive._syncComplete = false;
-                        everlive.isAuthenticated = false;
-                        everlive._triedToken = true;
-                        userModel.initialView = '#usersignin';
-                    } else {
-                        userModel.initialView = '#newuserhome';
-                    }
-                } else if (error.code === 302) {
+
+                if (error.code === 302) {
                     everlive.getCredentials();
                     if (everlive._token !== null) {
                         APP.everlive.users.setAuthorization(everlive._token, everlive._tokenType, everlive._id);
@@ -347,13 +333,13 @@ var everlive = {
                     everlive._isAuthenticated = false;
                 }
                 callback(null, data.status);
-            }, 
+            },
             function (error) {
                 callback(error, null);
-                
+
             });
     },*/
-    
+
 
     createAccount: function (username, name, password, callback) {
         var attrs = {
@@ -409,13 +395,12 @@ var everlive = {
     },
 
     loadUserData : function (user) {
-        mobileNotify("Loading user information...");
-
+        mobileNotify("Loading user data...");
 
         userModel.update_user(user);
         userModel.initPubNub();
-        userModel.initCloudModels();
         everlive.updateUser();
+        userModel.initCloudModels();
         userStatus.update();
         //userModel.syncCloudModels();
 
@@ -435,7 +420,7 @@ var everlive = {
             APP.kendo.navigate("#home");
         }
     },
-    
+
     logout : function (callback) {
         if (!everlive.isConnected()) {
             callback(false);
@@ -456,7 +441,7 @@ var everlive = {
         }
         var username = userModel._user.get('Username');
         var password = userModel._getRecoveryPassword();
-        APP.everlive.users.changePassword(username, password, newPassword, true, 
+        APP.everlive.users.changePassword(username, password, newPassword, true,
             function (data) {
                 callback(null, true);
             },
@@ -494,7 +479,7 @@ var everlive = {
         if (updateObj.useIdenticon) {
             updateObj.photo = null;     //Don't store the image on the cloud -- just create it when the user logs in.
         }
-        
+
         if (updateObj.RSAKey !== undefined) {
             delete updateObj.RSAKey;
         }
@@ -525,7 +510,7 @@ var everlive = {
 
     updateUserStatus : function () {
         var updateObj = {Id : everlive._id};
-       
+
         updateObj.isAvailable  = userModel._user.isAvailable;
         updateObj.isVisible  = userModel._user.isVisible;
         updateObj.statusMessage  = userModel._user.statusMessage;
@@ -543,7 +528,7 @@ var everlive = {
             APP.everlive.Users.updateSingle(updateObj,
                 function(data){
                     var result = data.result;
-                  
+
                 },
                 function(error){
                     if (error !== undefined && error !== null && error !== "") {
@@ -561,10 +546,10 @@ var everlive = {
         }
 
     },
-    
+
     updateUserField : function (field, value) {
         var updateObj = {Id : userModel._user.Id};
-        
+
         updateObj[field] = value;
         APP.everlive.Users.updateSingle(updateObj,
             function(data){
@@ -572,8 +557,8 @@ var everlive = {
             },
             function(error){
                 mobileNotify("User UpdateField Error : " + JSON.stringify(error));
-            }); 
-        
+            });
+
     },
 
 
@@ -597,7 +582,7 @@ var everlive = {
 
             });
     },
-    
+
 
     getCount : function (dataType, callback) {
         var data = APP.everlive.data(dataType);
@@ -692,8 +677,8 @@ var everlive = {
                 callback(error, null);
             });
     },
-    
-    
+
+
     deleteMatching : function (dataType, query, callback) {
         var data = APP.everlive.data(dataType);
         data.destroy( query, // filter expression
@@ -722,10 +707,9 @@ var everlive = {
 
     clearAuthentication : function () {
 
-       // APP.everlive.authentication.logout();
+     /*   APP.everlive.authentication.clearAuthorization(); */
         APP.everlive.authentication.clearPersistedAuthentication();
-        APP.everlive.authentication.clearAuthorization();
-
+        //APP.everlive.authentication.logout();
        
     },
 

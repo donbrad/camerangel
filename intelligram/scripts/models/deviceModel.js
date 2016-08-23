@@ -252,8 +252,6 @@ var deviceModel = {
             everlive.init();
         }
 
-
-
         if (everlive._isAuthenticated) {
             // Device is online and user is authenticated -- init pubnub
             userModel.initPubNub();
@@ -261,6 +259,7 @@ var deviceModel = {
             appDataChannel.history();
             everlive.syncCloud();
             photoModel.processCloudPushList();
+            photoModel.syncPhotosToCloud();
             profilePhotoModel.processCloudPushList();
             if (userModel._needSync) {
                 everlive.updateUser();

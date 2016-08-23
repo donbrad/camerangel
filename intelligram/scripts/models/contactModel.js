@@ -61,38 +61,8 @@ var contactModel = {
             sort: {
                 field: "name",
                 dir: "asc"
-            },
-            requestEnd : function (e) {
-                var response = e.response,  type = e.type;
-
-                if (type === 'read' && response) {
-                    if (!contactModel._fetched) {
-                        contactModel._fetched = true;
-                        appDataChannel.history();
-                        userDataChannel.history();
-
-                        var changedContacts = contactModel.contactsDS.data();
-                        if (changedContacts !== undefined) {
-
-                            var len = changedContacts.length;
-                            for (var i = 0; i < len; i++) {
-                                var contact = changedContacts[i];
-                                var category = contact.category.toLowerCase();
-                                if (category === 'member' || category === 'invited') {
-                                    // add to tag list
-                                    tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
-                                } else if (contact.category === 'chat') {
-
-                                }
-
-                            }
-                        }
-                    }
-                }
             }
         });
-
-
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
@@ -153,13 +123,43 @@ var contactModel = {
 
         });
 
+        contactModel.contactsDS.bind("requestEnd", function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read' && response) {
+                    if (!contactModel._fetched) {
+                        contactModel._fetched = true;
+                        appDataChannel.history();
+                        userDataChannel.history();
+
+                        var changedContacts = contactModel.contactsDS.data();
+                        if (changedContacts !== undefined) {
+
+                            var len = changedContacts.length;
+                            for (var i = 0; i < len; i++) {
+                                var contact = changedContacts[i];
+                                var category = contact.category.toLowerCase();
+                                if (category === 'member' || category === 'invited') {
+                                    // add to tag list
+                                    tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
+                                } else if (contact.category === 'chat') {
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+        });
+
+
         contactModel.contactsDS.fetch();
       
       //  contactModel.syncContactTags();
         deviceModel.setAppState('hasContacts', true);
        /* deviceModel.isParseSyncComplete();*/
 
-        contactModel.contactListDS.online(false);
+        //contactModel.contactListDS.online(false);
 
     },
 

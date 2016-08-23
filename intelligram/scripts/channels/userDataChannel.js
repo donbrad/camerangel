@@ -67,7 +67,8 @@ var userDataChannel = {
 
         }
 
-        dataSource.bind("requestEnd", function (e) {
+
+        userDataChannel.messagesDS.bind("requestEnd", function (e) {
             var response = e.response,  type = e.type;
 
             if (type === 'read' && e.response) {
