@@ -149,15 +149,14 @@ var privateChannel = {
             msg.fromHistory = false;
         }
 
+        var message = privateChannel.decryptMessage(msg);
         // Add the message to the archive
-        userDataChannel.addMessage(msg);
+
         channelModel.updateLastMessageTime(channelView._channelUUID, null);
         
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
-            var message = privateChannel.decryptMessage(msg);
 
-            message.data = JSON.parse(message.dataBlob);
             channelView.preprocessMessage(message);
             channelModel.updateLastAccess(channelView._channelUUID, null);
             channelView.messagesDS.add(message);
@@ -187,6 +186,12 @@ var privateChannel = {
             // Is there a private channel for this sender?
             channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
         }
+
+        // create the blob and delete the offending key word before we ask kendo to save
+        message.dataBlob = JSON.stringify(message.data);
+        delete message.data;
+
+        userDataChannel.archiveMessage(message);
     },
 
 
