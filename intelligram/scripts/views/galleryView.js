@@ -121,9 +121,7 @@ var galleryView = {
                     if (index != galleryView._activeView) {
                         galleryView._activeView = index;
                         galleryView.selectView(galleryView._activeView);
-
                     }
-
                 },
                 index: galleryView._activeView
             });

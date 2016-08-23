@@ -134,11 +134,11 @@
   text-align: left;
 }
 
-.appBox {
+.appBox:not(.noPad) {
   padding: 0.5rem 1rem;
   h1, h2, h3, h4, h5, p {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
@@ -1600,6 +1600,37 @@ div.footer.km-footer {
 
 }
 
+.tabBar {
+  a {
+    background-color: @shade-300 !important;
+    color: @black !important;
+    font-size: 1em !important;
+    padding: 0.5em !important;
+    border-radius: 0 !important;
+    > span {
+      display: inline-block !important;
+    }
+    img {
+      margin-right: 0.25em !important;
+      vertical-align: middle;
+    }
+  }
+  a.km-button.km-state-active {
+    background-color: @primary-200 !important;
+    color: #fff !important;
+  }
+}
+
+#home-buttongroup {
+  box-shadow: none !important;
+}
+
+#home-buttongroup > a.km-button.km-state-active
+
+#home-buttongroup > a.km-button > span {
+  display: inline-block;
+}
+
 #home-buttongroup > li.km-button {
 
 }
@@ -1609,11 +1640,6 @@ div.footer.km-footer {
   margin-right: 0.15em;
   height: 1em;
   max-width: 1em;
-}
-
-#home-buttongroup {
-  margin-top: 0.25em;
-  font-size: 1.2em;
 }
 
 .home-header > div.view-content.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {

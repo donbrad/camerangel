@@ -243,14 +243,10 @@
             </li>
             <li>
                 <a data-role="button" href="#gallery" data-click-on="down">
-					<svg width="15px" height="24px" viewBox="0 0 15 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+					<svg width="23px" height="24px" viewBox="0 0 23 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 						<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-							<g id="nav-gallery" fill="#979797">
-								<g id="Page-1">
-									<g id="Shape">
-										<path d="M13.1,9 L13.1,6 C13.1,2.69173333 10.4082667,0 7.1,0 C3.79173333,0 1.1,2.69173333 1.1,6 L1.1,9 L0,9 L0,20 L14.2,20 L14.2,9 L13.1,9 L13.1,9 Z M2.7,6 C2.7,3.57386667 4.67386667,1.6 7.1,1.6 C9.52613333,1.6 11.5,3.57386667 11.5,6 L11.5,9 L2.7,9 L2.7,6 L2.7,6 Z"></path>
-									</g>
-								</g>
+							<g id="nav-gallery" transform="translate(-42.000000, -254.000000)" stroke="#979797">
+								<path d="M53.5332188,255 C52.6229679,255 51.5014416,255.21422 50.5742592,255.9143 C49.6467088,256.614748 48.9521502,257.809521 48.9521502,259.598 L48.9521502,260.451935 C48.9521502,262.216122 49.4196062,263.357892 49.866818,264.230599 C50.3140298,265.103306 50.7034538,265.685602 50.7034538,266.421753 C50.7034538,266.963929 50.4837127,267.34047 50.0825103,267.690142 C49.6813079,268.039445 49.0901785,268.328385 48.4000368,268.595976 C47.0212257,269.130789 45.2901662,269.556285 44.0092632,270.407276 L44.0004294,270.407276 C43.4008343,270.812895 43,271.45261 43,272.391571 L43,274.945279 C43,275.121956 43.1593767,275.2817 43.3364211,275.2817 L63.790381,275.2817 C63.9670572,275.2817 64.126802,275.121956 64.126802,274.945279 L64.126802,272.391571 C64.126802,271.45261 63.7226551,270.812895 63.1260045,270.407276 L63.1175388,270.407276 C61.8347954,269.556285 60.1096252,269.130789 58.7263972,268.595976 C58.0347831,268.328385 57.4296669,268.039445 57.0269922,267.690142 C56.6243175,267.34047 56.4145144,266.963929 56.4145144,266.421753 C56.4145144,265.682658 56.7895835,265.103306 57.2253849,264.230599 C57.6611864,263.357892 58.1139194,262.215017 58.1139194,260.451935 L58.1139194,259.598 C58.1139194,257.809521 57.4267223,256.614748 56.5006441,255.9143 C55.5749341,255.21422 54.4419974,255 53.5332188,255 L53.5332188,255 L53.5332188,255 Z"></path>
 							</g>
 						</g>
 					</svg>
@@ -421,34 +417,33 @@
    
 <!-- home - for signed in users -->
 <div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
-	<div class="appBox">
-		<ul id="home-buttongroup">
-			<li>
-				<img src="images/notify-icon.svg"  /> Alerts
-			</li>
-			<li>
-				<img src="images/icon-today.svg" /> Today
-			</li>
-		</ul>
-		<div id="home-alerts">
-			<div class="notify-title ">
+	<div class="appBox noPad">
+			<div data-role="tabstrip" id="home-buttongroup" class="tabBar" data-select="homeView.tabSelect">
+				<a data-tab="0">
+					<img src="images/icon-notify-light.svg"  id="home-tab-alert-img" /> Alerts
+				</a>
+				<a data-tab="1">
+					<img src="images/icon-today.svg" id="home-tab-today-img" /> Today
+				</a>
+			</div>
+			<div id="home-alerts">
+				<div class="notify-title ">
 				<span class="right">
 					<a class="btnClear-grey-sm" data-role="button" data-click="homeView.clearNotifications">Clear</a>
 				</span>
+				</div>
+				<div class="clearfix"></div>
+				<ul class="home-notification" id="notification-listview"></ul>
+				<div class="emptyState hidden">
+					<img src="images/empty-home.svg" />
+				</div>
 			</div>
-			<div class="clearfix"></div>
-			<ul class="home-notification" id="notification-listview"></ul>
-			<div class="emptyState hidden">
-				<img src="images/empty-home.svg" />
+
+			<div id="home-today" class="hidden">
+				<div class="notify-title ">
+
+				</div>
 			</div>
-		</div>
-
-		<div id="home-today" class="hidden">
-			<div class="notify-title ">
-
-			</div>
-		</div>
-
   	</div>
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
 
@@ -2969,14 +2964,13 @@
  * gallery
  */-->
 <div data-role="view" data-title="My Safe" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
-	<div  class="appBox">
-
-		<ul id="gallery-buttongroup" style="padding: 6px; font-size: 1.2em;">
+	<div  class="appBox noPad">
+		<ul id="gallery-buttongroup" class="buttonBar">
 			<li>
-				<img src="images/icon-myNotes.svg" height="20" /> Notes
+				Notes
 			</li>
 			<li>
-				<img src="images/gallery-grid-2.svg" height="20" /> Photos
+				Photos
 			</li>
 		</ul>
 
