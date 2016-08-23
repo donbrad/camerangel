@@ -40,9 +40,6 @@ var appDataChannel = {
                 field: "time",
                 dir: "asc"
             },
-
-            autoSync : true,
-
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
@@ -116,20 +113,8 @@ var appDataChannel = {
         return(view);
     },
 
-    isProcessedMessage : function (msgID) {
+    isArchivedMessage : function (msgID) {
         var messages = appDataChannel.queryMessages({ field: "msgID", operator: "eq", value: msgID });
-
-        if (messages === undefined) {
-            return (false);
-        } else if (messages.length === 0) {
-            return (false);
-        } else {
-            return(true);
-        }
-    },
-
-    isArchivedMessage : function (id) {
-        var messages = appDataChannel.queryMessages({ field: "Id", operator: "eq", value: id });
 
         if (messages === undefined) {
             return (false);
@@ -158,11 +143,16 @@ var appDataChannel = {
         // Get any messages in the channel
 
         mobileNotify("Loading System Messages...");
-        if (appDataChannel.lastAccess < ggTime.lastMonth() || appDataChannel.lastAccess) {
+
+
+        if (appDataChannel.lastAccess < ggTime.lastMonth() || appDataChannel.messagesDS.total() === 0 ) {
             appDataChannel.lastAccess = ggTime.lastMonth();
-            localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
         }
+
+        localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
+
         var lastAccess = ggTime.toPubNubTime(appDataChannel.lastAccess);
+
 
         var end = ggTime.toPubNubTime(ggTime.currentTime());
         appDataChannel._fetchHistory(lastAccess, end);
@@ -248,9 +238,10 @@ var appDataChannel = {
         if (queryCache === undefined) {
             queryCache = [];
         }
-        dataSource.filter({ field: "time", operator: "lt", value:  lastMonth});
+        dataSource.filter({ field: "time", operator: "lte", value:  lastMonth});
         var messageList = dataSource.view();
         dataSource.filter(queryCache);
+
         if (messageList.length > 0) {
             for (var i=0; i< messageList.length; i++) {
                 var msg = messageList[i];
@@ -273,15 +264,6 @@ var appDataChannel = {
     },
 
     archiveMessage : function (message) {
-       /* if (message.Id === undefined) {
-            message.Id = message.msgID;
-        }*/
-
-        if (appDataChannel.isProcessedMessage(message.msgID)) {
-            return;
-        }
-
-
         if (deviceModel.isOnline()) {
             everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
                 if (error !== null) {
@@ -297,7 +279,7 @@ var appDataChannel = {
 
     channelRead : function (m) {
 
-        if (m.msgID === undefined || appDataChannel.isProcessedMessage(m.msgID)) {
+        if (m.msgID === undefined || m.processed !== undefined) {
             return;
         }
 

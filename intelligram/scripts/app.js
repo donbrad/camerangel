@@ -76,13 +76,14 @@
 
 
 
-		userModel.initKendo();
+
+		deviceModel.init();
 
 		deviceModel.getAppState();
 
 		deviceModel.getNetworkState();
 
-		deviceModel.init();
+
 
 		deviceModel.getNetworkState();
 
@@ -99,7 +100,9 @@
 		//Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
 		userModel.init();
-		
+		userModel.initKendo();
+
+
 		everlive.init();
 
 	/*	if (!deviceModel.state.introFetched) {
