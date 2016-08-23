@@ -412,6 +412,14 @@
 <!-- home - for signed in users -->
 <div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
 	<div class="appBox">
+		<div id="home-verify-div"  >
+			<span class="left">
+					<a class="btnClear-red" data-role="button" id="home-verify-phone" data-click="verifyPhoneModal.openModal">Verify My Phone</a>
+				</span>
+			<span class="right">
+					<a class="btnClear-red" data-role="button" id="home-verify-email" data-click="verifyEmailModal.openModal">Verify My Email</a>
+				</span>
+		</div>
 		<ul id="home-buttongroup" style="padding: 6px; font-size: 1.2em;">
 			<li>
 				<img src="images/notify-icon.svg" height="20" /> Alerts
