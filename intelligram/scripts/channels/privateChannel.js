@@ -268,7 +268,7 @@ var privateChannel = {
                         msgID: message.msgID,
                         channelUUID: message.recipient,
                         content: content,
-                        dataBlob: contentData,
+                        dataBlob: JSON.stringify(contentData),
                         time: message.time,
                         wasSent: true,
                         fromHistory: false,
@@ -279,9 +279,12 @@ var privateChannel = {
                     //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
                     channelView.preprocessMessage(parsedMsg);
+                    userDataChannel.archiveMessage(parsedMsg);
+
+                    parsedMsg.data = contentData;
                     channelView.messagesDS.add(parsedMsg);
                     // archive sedn message
-                    userDataChannel.archiveMessage(parsedMsg);
+
 
                     channelView.scrollToBottom();
 
