@@ -341,15 +341,20 @@ var userDataChannel = {
         mobileNotify ("Getting Private Messages...");
 
         var lastAccess = userDataChannel.lastAccess;
+
+
+        var count = userDataChannel.messagesDS.total();
+        if (userDataChannel.messagesDS.total() === 0) {
+           lastAccess  = ggTime.lastWeek();
+        } else {
+            var msg = userDataChannel.messagesDS.at(count-1);
+            lastAccess = msg.time;
+        }
         if ( lastAccess < ggTime.lastWeek()) {
             lastAccess = ggTime.lastWeek()
         }
 
-        if (userDataChannel.messagesDS.total() === 0) {
-            userDataChannel.lastAccess  = ggTime.lastWeek();
-        }
-
-
+        userDataChannel.lastAccess = lastAccess;
 
         localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);
 

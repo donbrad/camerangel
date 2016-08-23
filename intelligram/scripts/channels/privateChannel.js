@@ -157,6 +157,7 @@ var privateChannel = {
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
             var message = privateChannel.decryptMessage(msg);
 
+            message.data = JSON.parse(message.dataBlob);
             channelView.preprocessMessage(message);
             channelModel.updateLastAccess(channelView._channelUUID, null);
             channelView.messagesDS.add(message);
@@ -276,12 +277,12 @@ var privateChannel = {
 
                     };
 
+                    userDataChannel.archiveMessage(parsedMsg);
                     //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
-                    channelView.preprocessMessage(parsedMsg);
-                    userDataChannel.archiveMessage(parsedMsg);
 
                     parsedMsg.data = contentData;
+                    channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
                     // archive sedn message
 
