@@ -20,7 +20,7 @@
     "cordova-plugin-media",
     "cordova-plugin-media-capture",
     "cordova-plugin-network-information",
-    "cordova-plugin-safariviewcontroller@1.4.3",
+    "cordova-plugin-safariviewcontroller@1.4.4",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "cordova-plugin-vibration",
