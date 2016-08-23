@@ -41,8 +41,7 @@ var statusReporter = {
             sort: {
                 field: "date",
                 dir: "desc"
-            },
-            autoSync: true
+            }
         });
 
         statusReporter.reportsDS.fetch();

@@ -128,15 +128,28 @@ var userModel = {
             userModel.hasAccount = false;
             //userModel.initialView = '#newuserhome';
         }
-
-        userModel.initKendo();
         
     },
 
     
     initCloudModels : function () {
-        
+
+        tagModel.init();
+
+        channelModel.init();
+
         contactModel.init();
+
+        notificationModel.init();
+
+        var uuid = userModel._user.userUUID;
+        // Initialize the user's data channel with the user's UUID...
+
+        userDataChannel.init(uuid);
+
+        // Initialize application data channel with gg's unique ID
+        appDataChannel.init();
+
 
         mapModel.init();
 
@@ -154,8 +167,6 @@ var userModel = {
 
         sharedPhotoModel.init();
 
-        channelModel.init();
-
         smartEvent.init();
 
         smartMovie.init();
@@ -166,19 +177,16 @@ var userModel = {
 
         statusTracker.init();
 
-        tagModel.init();
-
-        notificationModel.init();
-
         todayModel.init();
 
-       /* galleryModel.init();
+        galleryModel.init();
 
-        groupModel.init();*/
+        groupModel.init();
 
         if (window.navigator.simulator === undefined) {
             serverPush.init();
         }
+
 
     },
 
@@ -200,8 +208,8 @@ var userModel = {
         notificationModel.sync();
         todayModel.sync();
         tagModel.sync();
-   /*     galleryModel.sync();
-        groupModel.sync();*/
+        galleryModel.sync();
+        groupModel.sync();
     },
 
     initKendo : function () {
@@ -220,45 +228,6 @@ var userModel = {
             initial: '#startUpView'
         });
     },
-
-    /*initCloud: function () {
-
-        // Check the status of kendo auth
-        everlive.currentUser(function (error, data) {
-            if (error === null ) {
-
-                if (data !== null) {
-                    everlive.loadUserData();
-                } else {
-                    // no error and no data -- user isnt signed in
-                    if (userModel.hasAccount) {
-                        mobileNotify("Please signin to ghostgrams");
-                        APP.kendo.navigate('#usersignin');
-                    } else {
-                        APP.kendo.navigate('#newuserhome');
-                    }
-
-                }
-              
-            } else {
-                if (error !== undefined && error.code !== 301) { // 301 = no auth credentials, could be new user or member not signed it
-                    // So other error - just notify for now...
-                    mobileNotify("Kendo Auth Error " + JSON.stringify(error));
-                } else {
-                    // no error and no data -- user isnt signed in
-                    if (userModel.hasAccount) {
-                        mobileNotify("Please login to ghostgrams");
-                        APP.kendo.navigate('#usersignin');
-                    } else {
-                        APP.kendo.navigate('#newuserhome');
-                    }
-                }
-
-            }
-
-        });
-
-    },*/
 
     update_user : function (user) {
 
@@ -326,15 +295,14 @@ var userModel = {
         var emailValidated = user.Verified;
         userModel._user.set('emailValidated', emailValidated);
         userModel._user.set('phoneValidated',user.phoneValidated);
-
-        /*if (!user.phoneValidated) {
+/*
+        if (!user.phoneValidated) {
             notificationModel.addVerifyPhoneNotification();
         }
 
         if (!user.emailValidated) {
             notificationModel.addVerifyEmailNotification();
         }*/
-
 
         if (user.addressValidated === undefined) {
             user.addressValidated = false;
@@ -347,8 +315,9 @@ var userModel = {
         }
         
         userModel._user.set('isValidated', user.Verified);
-        
-        
+
+        APP.kendo.navigate('#home');
+
         memberdirectory.update();
 
     },
@@ -522,18 +491,21 @@ var userModel = {
             ssl: true,
             jsonp: true,
             restore: true,
-            uuid: uuid
+            uuid: uuid,
+            error : function (error) {
+                ggError("PubNub: Init" + error);
+            }
         });
 
-        // Initialize application data channel with gg's unique ID
-        appDataChannel.init();
 
-        // Initialize the user's data channel with the user's UUID...
-        userDataChannel.init(uuid);
 
         deviceModel.setAppState('pubnubInit', true);
-
         deviceModel.isPushProvisioned();
+
+        appDataChannel.history();
+        userDataChannel.history();
+
+
 
     },
 
@@ -594,7 +566,7 @@ var userStatus = {
 
                 },
                 function(error){
-                    mobileNotify("User Status Init error : " + JSON.stringify(error));
+                    ggError("User Status Init error : " + JSON.stringify(error));
                 });
 
         /*userStatus._statusObj.on('change', function () {
@@ -688,7 +660,7 @@ var userStatus = {
                 //userStatus.updateEverlive();
             },
             function(error){
-                mobileNotify("User Status Init error : " + JSON.stringify(error));
+                ggError("User Status create error : " + JSON.stringify(error));
             });
     },
 

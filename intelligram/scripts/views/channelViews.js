@@ -138,7 +138,12 @@ var channelsView = {
     onShow : function(e) {
        // _preventDefault(e);
 
-        channelModel.syncMemberChannels();
+
+        appDataChannel.history();
+        userDataChannel.history();
+
+
+       // channelModel.syncMemberChannels();
         channelsView.updateChannelListDS();
 
         if (!channelsView._viewInitialized) {
@@ -215,6 +220,14 @@ var channelsView = {
         var channel = view[0];
         dataSource.filter(cacheFilter);
         return(channel);
+    },
+
+    updateUnreadCount : function (channelUUID, unreadCount) {
+        var channel = channelsView.findChannelModel(channelUUID);
+
+        if (channel !== undefined) {
+            channel.set('unreadCount', unreadCount);
+        }
     },
 
     findChannelModel: function (channelUUID) {
@@ -1329,6 +1342,8 @@ var channelView = {
         channelView._channelName = thisChannel.name;
 
         notificationModel.updateUnreadNotification(channelView._channelUUID, channelView._channelName, 0);
+        channelModel.zeroUnreadCount(channelUUID);
+        channelsView.updateUnreadCount(channelUUID, 0);
 
         channelView.openEditor();
         channelView.toggleTitleTag();
@@ -1489,10 +1504,9 @@ var channelView = {
               $('#channelImage').attr('src', photoUrl).removeClass("hidden");
 
               privateChannel.open(thisUser.userUUID, thisUser.alias, name, contactUUID, contactKey, channelView.privateContact.name);
-              channelView.messagesDS.data([]);
 
 
-              privateChannel.getMessageHistory(function (messages) {
+              privateChannel.getMessageHistory(thisContact.contactUUID, function (messages) {
 
                   channelView.preprocessMessages(messages);
 
@@ -1595,7 +1609,10 @@ var channelView = {
             message.displayName = ux.returnUXPrimaryName(name, alias);
         }
 
-        //
+        if (message.dataBlob !== undefined) {
+            message.data = JSON.parse(message.dataBlob);
+        }
+
         if (message.data.photos !== undefined && message.data.photos.length > 0 ) {
             var photos = message.data.photos;
 
@@ -2630,7 +2647,7 @@ var channelView = {
 
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
-            messageId =  $(e.touch.currentTarget).data("uid");
+            messageId =  e.touch.currentTarget.attributes['data-uid'].value;
 
         } else {
             // New Android
@@ -2640,6 +2657,7 @@ var channelView = {
 
         if (messageId === undefined || messageId === null) {
             mobileNotify("No message content to display...");
+            return;
         }
 
         var message = dataSource.getByUid(messageId);

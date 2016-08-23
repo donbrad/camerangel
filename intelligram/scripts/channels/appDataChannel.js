@@ -17,6 +17,8 @@ var appDataChannel = {
     _cloudClass: 'appmessages',
     _version: 1,
     messagesDS : null,
+    _fetched : false,
+    needHistory : true,
 
     init: function () {
 
@@ -28,30 +30,45 @@ var appDataChannel = {
         appDataChannel.messagesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'appmessages'
+                typeName: 'appmessages',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync : true
+            sort: {
+                field: "time",
+                dir: "asc"
+            }
         });
-        
+
+        appDataChannel.messagesDS.bind("requestEnd", function (e) {
+            var response = e.response, type = e.type;
+
+            if (type === 'read' && response) {
+                if (!appDataChannel._fetched) {
+                    appDataChannel._fetched = true;
+                    appDataChannel.history();
+                }
+            }
+        });
+
         appDataChannel.messagesDS.fetch();
         
         appDataChannel.channelUUID = channel;
 
-        var ts = localStorage.getItem('appDataChannel');
+        var ts = localStorage.getItem('ggAppDataTimeStamp');
 
-        if (ts !== undefined) {
+        if (ts !== undefined && ts !== "NaN") {
             appDataChannel.lastAccess = parseInt(ts);
             // Was last access more than a month ago -- if yes set it to a month ago
             if (appDataChannel.lastAccess < ggTime.lastMonth()) {
                 appDataChannel.lastAccess = ggTime.lastMonth();
-                localStorage.setItem('appDataChannel', appDataChannel.lastAccess);
+                localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
             }
         } else {
             appDataChannel.lastAccess = ggTime.lastMonth();
-            localStorage.setItem('appDataChannel', appDataChannel.lastAccess);
+            localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
         }
 
 
@@ -97,7 +114,7 @@ var appDataChannel = {
         return(view);
     },
 
-    isProcessedMessage : function (msgID) {
+    isArchivedMessage : function (msgID) {
         var messages = appDataChannel.queryMessages({ field: "msgID", operator: "eq", value: msgID });
 
         if (messages === undefined) {
@@ -109,17 +126,40 @@ var appDataChannel = {
         }
     },
 
+
     getContactAppChannel : function (channelUUID) {
         return(channelUUID.replace(/-/g,'_'));
     },
 
     history : function () {
-        // Just look back 7 days -- can expand or shorten this window.
+        if (!appDataChannel.needHistory) {
+            return;
+        }
+        if (APP.pubnub === null || !appDataChannel._fetched || !channelModel._fetched || !contactModel._fetched || !notificationModel._fetched) {
+            appDataChannel.needHistory = true;
+            return;
+        }
 
-        var timeStamp = ggTime.toPubNubTime(appDataChannel.lastAccess);
+        appDataChannel.needHistory = false;
         // Get any messages in the channel
 
-        APP.pubnub.history({
+        mobileNotify("Loading System Messages...");
+
+
+        if (appDataChannel.lastAccess < ggTime.lastMonth() || appDataChannel.messagesDS.total() === 0 ) {
+            appDataChannel.lastAccess = ggTime.lastMonth();
+        }
+
+        localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
+
+        var lastAccess = ggTime.toPubNubTime(appDataChannel.lastAccess);
+
+
+        var end = ggTime.toPubNubTime(ggTime.currentTime());
+        appDataChannel._fetchHistory(lastAccess, end);
+
+
+        /*APP.pubnub.history({
             channel: appDataChannel.channelUUID,
             start: timeStamp,
             reverse: true,
@@ -133,36 +173,121 @@ var appDataChannel = {
             }
         });
 
-        appDataChannel.updateTimeStamp();
+        appDataChannel.updateTimeStamp();*/
+    },
+
+    _fetchHistory : function (start, end) {
+
+        // Get any messages in the channel
+        APP.pubnub.history({
+            channel: appDataChannel.channelUUID,
+            start: start.toString(),
+            end: end.toString(),
+            error: appDataChannel.error,
+            callback: function(messages) {
+                messages = messages[0];
+                var pnStart = messages[1], pnEnd = messages[2];
+                messages = messages || [];
+                if (messages.length === 0) {
+                    appDataChannel.updateTimeStamp();
+                    return;
+                }
+
+                var latestTime = 0;
+                for (var i = 0; i < messages.length; i++) {
+                    var msg  =  messages[i];
+                    if (!appDataChannel.isArchivedMessage(msg.msgID))
+                        appDataChannel.archiveMessage(msg);
+                }
+
+                appDataChannel.messagesDS.sync();
+                appDataChannel.updateTimeStamp();
+                /*   channelKeys = Object.keys(channelList);
+                 channelModel.updatePrivateChannels(channelKeys, channelList);*/
+
+                var endTime = parseInt(pnStart);
+                if (messages.length === 100 && endTime >= start) {
+
+                    appDataChannel._fetchHistory(start, endTime );
+                } else {
+                    appDataChannel._historyFetchComplete = true;
+
+
+                    appDataChannel.processMessages();
+                    appDataChannel.removeExpiredMessages();
+                }
+
+            }
+
+
+        });
+    },
+
+    removeExpiredMessages : function () {
+        var dataSource = appDataChannel.messagesDS;
+
+        if (dataSource === null ) {
+            return;
+        }
+        if (dataSource.total() === 0) {
+            return;
+        }
+
+        var lastMonth = ggTime.lastMonth();
+
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = [];
+        }
+        dataSource.filter({ field: "time", operator: "lte", value:  lastMonth});
+        var messageList = dataSource.view();
+        dataSource.filter(queryCache);
+
+        if (messageList.length > 0) {
+            for (var i=0; i< messageList.length; i++) {
+                var msg = messageList[i];
+                dataSource.remove(msg);
+            }
+        }
+        dataSource.sync();
+
+    },
+
+    processMessages : function () {
+        var total = appDataChannel.messagesDS.total();
+        for (var i=0; i<total; i++) {
+            var msg = appDataChannel.messagesDS.at(i);
+
+            if (msg.processed === undefined) {
+                appDataChannel.channelRead(msg);
+            }
+        }
     },
 
     archiveMessage : function (message) {
-       /* if (message.Id === undefined) {
-            message.Id = message.msgID;
-        }*/
-        message.processed = true;
-        message.processTime = ggTime.currentTime();
-        appDataChannel.messagesDS.add(message);
+        if (deviceModel.isOnline()) {
+            everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
+                if (error !== null) {
+                    ggError("App Channel cache error " + JSON.stringify(error));
+                }
+            });
+        } else {
+            appDataChannel.messagesDS.add(message);
+        }
         appDataChannel.messagesDS.sync();
-        everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
-            if (error !== null) {
-                ggError ("App Channel cache error " + JSON.stringify(error));
-            }
-        });
-
     },
 
 
     channelRead : function (m) {
 
-        appDataChannel.updateTimeStamp();
-
-        if (m.msgID === undefined || appDataChannel.isProcessedMessage(m.msgID)) {
+        if (m.msgID === undefined || m.processed !== undefined) {
             return;
         }
 
-        appDataChannel.archiveMessage(m);
+        m.set('processed', true);
+        m.set('processTime', ggTime.currentTime());
 
+        appDataChannel.messagesDS.sync();
 
         switch(m.type) {
             //  { type: 'newUser',  userId: <userUUID>,  phone: <phone>, email: <email>}
@@ -487,7 +612,7 @@ var appDataChannel = {
 
     },
 
-    connectReponse: function (recipientId, accept, comment) {
+    connectResponse: function (recipientId, accept, comment) {
         var channel = appDataChannel.getContactAppChannel(recipientId);
         var msg = new Object();
 

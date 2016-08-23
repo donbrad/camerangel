@@ -13,7 +13,7 @@ var tagModel = {
 
     _ggClass : 'Tag',
     _cloudClass : 'tags',
-    tagsFetched : false,
+    _fetched : false,
     processingDeferred : false,
     _user : 'user',
     _version: 1,
@@ -45,7 +45,8 @@ var tagModel = {
         tagModel.tagsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'tags'
+                typeName: 'tags',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -54,10 +55,22 @@ var tagModel = {
                 field: "tagName",
                 dir: "asc"
             },
+
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (!tagModel._fetched) {
+                    if (type === 'read') {
+                        tagModel._fetched = true;
+                        tagModel.processDeferred();
+                    }
+                }
+            },
+
             autoSync : true
         });
 
-        tagModel.tagsDS.bind("change", function (e) {
+        /*tagModel.tagsDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
             //placesModel.syncPlaceListDS();
             var changedTags = e.items;
@@ -68,7 +81,7 @@ var tagModel = {
                     tagModel.processDeferred();
                 }
             }
-        });
+        });*/
 
         tagModel.tagsDS.fetch();
     },

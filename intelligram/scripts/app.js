@@ -75,11 +75,17 @@
 		document.addEventListener("active", deviceModel.onActive, false);
 
 
+
+
+		deviceModel.init();
+
 		deviceModel.getAppState();
 
 		deviceModel.getNetworkState();
 
-		deviceModel.init();
+
+
+		deviceModel.getNetworkState();
 
 		deviceModel.loadGoogleMaps();
 		
@@ -94,7 +100,9 @@
 		//Parse.initialize("lbIysFqoATM1uTxebFf5s8teshcznua2GQLsx22F", "MmrJS8jR0QpKxbhS2cPjjxsLQKAuGuUHKtVPfVj5");
 		//Parse.User.enableRevocableSession();
 		userModel.init();
-		
+		userModel.initKendo();
+
+
 		everlive.init();
 
 	/*	if (!deviceModel.state.introFetched) {
@@ -136,14 +144,14 @@
 
 				cordova.plugins.notification.local.registerPermission(function (granted) {
 
-					cordova.plugins.notification.local.schedule({
+					/*cordova.plugins.notification.local.schedule({
 						id         : 1,
 						title      : 'Welcome Back!',
 						text       : 'intelligram missed you...',
 						sound      : null,
 						autoClear  : true,
 						at         : new Date(new Date().getTime())
-					});
+					});*/
 				});
 
 			});

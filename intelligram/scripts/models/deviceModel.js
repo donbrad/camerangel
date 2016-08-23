@@ -117,6 +117,10 @@ var deviceModel = {
     },
 
     isPushProvisioned : function ()  {
+        if (deviceModel.state.devicePushEnabled) {
+            return;
+        }
+
         if (deviceModel.state.pubnubInit && deviceModel.state.isDeviceRegistered) {
             mobileNotify("Provisioning Server Push");
             serverPush.provisionDataChannels();
@@ -176,26 +180,6 @@ var deviceModel = {
         });
     },
 
-    isParseSyncComplete: function () {
-
-       /* var channels = deviceModel.state.hasChannels, photos = deviceModel.state.hasPhotos,
-            contacts = deviceModel.state.hasContacts, objects = deviceModel.state.hasSmartEvents,
-            notes = deviceModel.state.hasNotes, tags = deviceModel.state.hasTags;
-
-        if (channels && photos && contacts && objects /!* & notes & tags*!/) {
-
-            deviceModel.state.parseSyncComplete = true;
-
-            if (!deviceModel.state.pubnubInit) {
-                userModel.initPubNub();
-                deviceModel.setAppState('pubnubInit', true);
-
-                deviceModel.isPushProvisioned();
-           }
-
-            tagModel.syncTags();
-        }*/
-    },
 
     onResign : function () {
         deviceModel.setAppState('inBackground', true);
@@ -229,6 +213,7 @@ var deviceModel = {
 
             deviceModel.onOnline();
             notificationModel.processUnreadChannels();
+            appDataChannel.history();
             userDataChannel.history();
         } else {
             if (APP.everlive !== null)
@@ -267,26 +252,25 @@ var deviceModel = {
             everlive.init();
         }
 
-        if (userModel._needSync) {
-            everlive.updateUser();
-        }
-        if (userModel._needStatusSync) {
-            everlive.updateUserStatus();
-        }
-
-        userDataChannel.history();
-        userModel.syncCloudModels();
-        everlive.syncCloud();
-        photoModel.processCloudPushList();
-        profilePhotoModel.processCloudPushList();
-
         if (everlive._isAuthenticated) {
             // Device is online and user is authenticated -- init pubnub
             userModel.initPubNub();
+            userDataChannel.history();
+            appDataChannel.history();
+            everlive.syncCloud();
+            photoModel.processCloudPushList();
+            photoModel.syncPhotosToCloud();
+            profilePhotoModel.processCloudPushList();
+            if (userModel._needSync) {
+                everlive.updateUser();
+            }
+            if (userModel._needStatusSync) {
+                everlive.updateUserStatus();
+            }
         }
 
         deviceModel.getNetworkState();
-        $("#network-offline").addClass('hidden');
+        $(".network-offline").addClass('hidden');
     },
 
 
@@ -295,7 +279,7 @@ var deviceModel = {
     },
 
     isKeyDataFetched : function () {
-        if (channelModel.channelsFetched && contactsModel.contactsFetched) {
+        if (channelModel.fetched && contactModel._fetched) {
             return true;
         }
 
@@ -308,18 +292,23 @@ var deviceModel = {
 
     onOffline: function() {
         deviceModel.setAppState('isOnline', false);
-        $("#network-offline").removeClass('hidden');
+        $(".network-offline").removeClass('hidden');
         // Take all data sources offline
         if (APP.everlive !== null)
             APP.everlive.offline();
+
+        appDataChannel.needHistory = true;
+        userDataChannel.needHistory = true;
     },
 
     isOnline : function () {
         $("#network-offline").addClass('hidden');
+        deviceModel.getNetworkState();
         return(deviceModel.state.isOnline);
     },
     
     isWifi : function () {
+        deviceModel.getNetworkState();
        return(deviceModel.state.connection === 'internet');
     },
 
@@ -344,17 +333,20 @@ var deviceModel = {
 
     getNetworkState: function () {
         var networkState = navigator.connection.type;
+        var con = deviceModel.state.connection;
         switch (networkState) {
             case Connection.NONE:
                 deviceModel.setAppState('connection', "none");
                 deviceModel.setAppState('isOnline', false);
-                mobileNotify("Offline");
+                 if (con !==  deviceModel.state.connection)
+                     mobileNotify("Offline");
                 break;
             case Connection.ETHERNET:
             case Connection.WIFI:
                 deviceModel.setAppState('connection', "internet");
                 deviceModel.setAppState('isOnline', true);
-                mobileNotify("Online via Wifi");
+                if (con !==  deviceModel.state.connection)
+                    mobileNotify("Online via Wifi");
                 break;
             case Connection.CELL:
             case Connection.CELL_2G:
@@ -362,7 +354,8 @@ var deviceModel = {
             case Connection.CELL_4G:
                 deviceModel.setAppState('connection', "cell");
                 deviceModel.setAppState('isOnline', true);
-                mobileNotify("Online via Cell");
+                if (con !==  deviceModel.state.connection)
+                    mobileNotify("Online via Cell");
                 break;
         }
     }

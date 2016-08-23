@@ -22,8 +22,7 @@ var statusTracker = {
             sort: {
                 field: "date",
                 dir: "desc"
-            },
-            autoSync: true
+            }
         });
 
         statusTracker.objectsDS.fetch();

@@ -137,7 +137,7 @@ var smartEvent = {
                 field: "date",
                 dir: "desc"
             },
-            autoSync: true,
+
             change :  function (e) {todayModel.change(e, smartEvent._ggClass);}
         });
 

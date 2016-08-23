@@ -23,7 +23,7 @@ var smartFlight = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync: true,
+
             change : function (e) {todayModel.change(e, smartFlight._ggClass);}
         });
 

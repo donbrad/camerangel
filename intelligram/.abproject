@@ -4,10 +4,10 @@
   "projectVersion": 1,
   "AppIdentifier": "com.kyburzcodeworks.ghostgrams",
   "DisplayName": "intelligram",
-  "Author": "kyburz codeworks",
+  "Author": "kyburz codeworks llc",
   "Description": "intelligram for iOS and Android phones",
-  "BundleVersion": "0.0.171",
-  "AndroidVersionCode": "170",
+  "BundleVersion": "0.0.176",
+  "AndroidVersionCode": "176",
   "iOSDeviceFamily": [
     "1"
   ],

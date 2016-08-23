@@ -15,18 +15,18 @@ var galleryModel = {
         galleryModel.galleryDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'gallery'
+                typeName: 'gallery',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
 
         // Reflect any core contact changes to contactList
         galleryModel.galleryDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
-            //placesModel.syncPlaceListDS();
+
             var changedGalleries = e.items;
 
             if (e.action !== undefined) {
@@ -57,9 +57,7 @@ var galleryModel = {
 
                     case "sync" :
                         // syncing all places...
-                        if (changedGroups !== undefined) {
-                            var len = changedGroups.len;
-                        }
+
                         break;
 
                     case "add" :

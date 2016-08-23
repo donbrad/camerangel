@@ -16,7 +16,8 @@ var placesModel = {
     _radius : 500,
 
     placesArray : [],
-    placesFetched : false,
+    deferredList : [],
+    _fetched : false,
     _placeModel : {   // Schema and default values to place model
         uuid: null,
         category: "Venue",
@@ -56,12 +57,28 @@ var placesModel = {
         placesModel.placesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'places'
+                typeName: 'places',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync: true
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (!placesModel._fetched) {
+                    if (type === 'read' && response) {
+                        var changedPlaces = placesModel.placesDS.data();
+                        placesModel._fetched = true;
+                        var len = changedPlaces.length;
+                        for (var i = 0; i < len; i++) {
+                            var place = changedPlaces[i];
+                            // add to placelist
+                            tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+                        }
+                    }
+                }
+            }
         });
         
         // Reflect any core contact changes to contactList
@@ -70,17 +87,8 @@ var placesModel = {
             //placesModel.syncPlaceListDS();
             var changedPlaces = e.items;
 
-            if (e.action === undefined) {
-                if (changedPlaces !== undefined) {
-                    placesModel.placesFetched = true;
-                    var len = changedPlaces.length;
-                    for (var i=0; i<len; i++) {
-                        var place =changedPlaces[i];
-                        // add to placelist
-                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
-                    }
-                }
-            } else {
+            if (e.action !== undefined) {
+
 
                 switch (e.action) {
                     case "itemchange" :

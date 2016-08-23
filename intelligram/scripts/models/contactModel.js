@@ -11,7 +11,7 @@ var contactModel = {
     _version: 1,
     _ggClass: 'Contact',
     _cloudClass: 'contacts',
-    contactsFetched : false,
+    _fetched : false,
    contactsDS: null,
 
 
@@ -49,11 +49,11 @@ var contactModel = {
 
     init : function () {
 
-
         contactModel.contactsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'contacts'
+                typeName: 'contacts',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -61,32 +61,14 @@ var contactModel = {
             sort: {
                 field: "name",
                 dir: "asc"
-            },
-            autoSync: true
+            }
         });
-
-
 
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
             var changedContacts = e.items;
-            if (e.action === undefined) {
-                if (changedContacts !== undefined) {
-                    contactModel.contactsFetched = true;
-                    var len = changedContacts.length;
-                    for (var i=0; i<len; i++) {
-                        var contact = changedContacts[i];
-                        var category = contact.category.toLowerCase();
-                        if (category === 'member' || category === 'invited') {
-                            // add to tag list
-                            tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
-                        } else if (contact.category === 'chat') {
+            if (e.action !== undefined) {
 
-                        }
-
-                    }
-                }
-            } else {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
@@ -141,13 +123,43 @@ var contactModel = {
 
         });
 
+        contactModel.contactsDS.bind("requestEnd", function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read' && response) {
+                    if (!contactModel._fetched) {
+                        contactModel._fetched = true;
+                        appDataChannel.history();
+                        userDataChannel.history();
+
+                        var changedContacts = contactModel.contactsDS.data();
+                        if (changedContacts !== undefined) {
+
+                            var len = changedContacts.length;
+                            for (var i = 0; i < len; i++) {
+                                var contact = changedContacts[i];
+                                var category = contact.category.toLowerCase();
+                                if (category === 'member' || category === 'invited') {
+                                    // add to tag list
+                                    tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
+                                } else if (contact.category === 'chat') {
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+        });
+
+
         contactModel.contactsDS.fetch();
       
-        contactModel.syncContactTags();
+      //  contactModel.syncContactTags();
         deviceModel.setAppState('hasContacts', true);
        /* deviceModel.isParseSyncComplete();*/
 
-        contactModel.contactListDS.online(false);
+        //contactModel.contactListDS.online(false);
 
     },
 
@@ -210,9 +222,12 @@ var contactModel = {
     },
 
     checkIdenticon : function (contact) {
-        if (contact.identicon === undefined || contact.identicon === null) {
-            contact.identicon = contactModel.createIdenticon(contact.uuid);
+        if (contact !== undefined && contact !== null) {
+            if (contact.identicon === undefined || contact.identicon === null) {
+                contact.identicon = contactModel.createIdenticon(contact.uuid);
+            }
         }
+
     },
 
     totalContacts : function () {
@@ -638,17 +653,17 @@ var contactModel = {
                // contact.lastUpdate =  ggTime.currentTimeInSeconds();
                 if (contactId !== undefined && contactId !== null) {
                     userStatus.getMemberStatus(contactId, function (error, user) {
-                        if (error == null && user !== null) {
+                        if (error === null && user !== null) {
                             var userId = user.get('userUUID');
-                            var contact = contactModel.findContactList(userId);
-                            contact.set('statusMessage', user.statusMessage);
-                            contact.set('currentPlace', user.currentPlace);
-                            contact.set('currentPlaceUUID', user.currentPlaceUUID);
-                            contact.set('googlePlaceId', user.googlePlaceId);
-                            contact.set('lat', user.lat);
-                            contact.set('lng', user.lng);
-                            contact.set('isAvailable', user.getisAvailable);
-                            contact.set('lastUpdate', ggTime.currentTimeInSeconds());
+                            var contactl = contactModel.findContactList(userId);
+                            contactl.set('statusMessage', user.statusMessage);
+                            contactl.set('currentPlace', user.currentPlace);
+                            contactl.set('currentPlaceUUID', user.currentPlaceUUID);
+                            contactl.set('googlePlaceId', user.googlePlaceId);
+                            contactl.set('lat', user.lat);
+                            contactl.set('lng', user.lng);
+                            contactl.set('isAvailable', user.getisAvailable);
+                            contactl.set('lastUpdate', ggTime.currentTimeInSeconds());
                         }
                     });
                 }
@@ -736,18 +751,20 @@ var contactModel = {
                 contact.photo = null;
                 contact.identicon = url;
 
-                contactModel.contactsDS.add(contact);
-                contactModel.contactsDS.sync();
 
-                everlive.createOne(contactModel._cloudClass, contact, function (error, data) {
-                    if (error !== null) {
-                        mobileNotify("Error creating Contact " + JSON.stringify(error));
-                    } else {
 
-                        contactModel._cleanDupContacts(contact.uuid);
+                if (deviceModel.isOnline()) {
+                    everlive.createOne(contactModel._cloudClass, contact, function (error, data) {
+                        if (error !== null) {
+                            ggError("Error creating Contact " + JSON.stringify(error));
+                        }
+                    });
+                } else {
+                    contactModel.contactsDS.add(contact);
+                }
 
-                    }
-                });
+                contactModel.sync();
+
                 mobileNotify("Added New Member : " + result.name);
 
                 if (callback !== undefined) {
@@ -773,71 +790,68 @@ var contactModel = {
         if (contact !== undefined) {
             return;
         } else {
-            contact = new kendo.data.ObservableObject();
-            var chatName = userName;
-            
-            if (chatName === null) {
-                chatName = "Anonymous Chatter"
-            }
 
-            contact.set("uuid", contactGuid);
-            contact.set('ownerUUID', userModel._user.userUUID);
-            contact.set('version', contactModel._version);
-            contact.set('ggType', contactModel._ggClass);
-            contact.set("name", chatName);
-            contact.set("alias", null);
-            contact.set('category', "Chat");
-            contact.set('phone', null);
-            contact.set('email', null);
-            contact.set("address", null);
-            contact.set("group", null);
-            contact.set("priority", 0);
-            contact.set("isFavorite", false);
-            contact.set("isBlocked", false);
-            var url = contactModel.createIdenticon(contactGuid);
-            contact.photo = null;
-            contact.identicon = url;
-            contact.set("contactUUID", userId);
-            contact.set("contactPublcKey", null);
-            
+            memberdirectory.findMemberByUUID(userId,  function (result) {
+                if (result !== null) {
 
-            contactModel.contactsDS.add(contact);
-            contactModel.contactsDS.sync();
+                    contact = new kendo.data.ObservableObject();
+                    var chatName = userName;
 
-            everlive.createOne(contactModel._cloudClass, contact, function (error, data) {
-                if (error !== null) {
-                    mobileNotify("Error creating Chat Contact " + JSON.stringify(error));
+                    contact.set("uuid", contactGuid);
+                    contact.set('ownerUUID', userModel._user.userUUID);
+                    contact.set('version', contactModel._version);
+                    contact.set('ggType', contactModel._ggClass);
+                    contact.set("name", result.name);
+                    contact.set("alias", result.alias);
+                    contact.set('category', "member");
+                    contact.set('phone', result.phone);
+                    contact.set('email', result.email);
+                    contact.set("address", null);
+                    contact.set("group", null);
+                    contact.set("priority", 0);
+                    contact.set("isFavorite", false);
+                    contact.set("isBlocked", false);
+                    var url = contactModel.createIdenticon(contactGuid);
+                    contact.photo = null;
+                    contact.identicon = url;
+                    contact.set("contactUUID", result.userUUID);
+                    contact.set("contactPublcKey", result.publicKey);
+
+                    if (deviceModel.isOnline()) {
+                        everlive.createOne(contactModel._cloudClass, contact, function (error, data) {
+                            if (error !== null) {
+                                ggError ("Error creating Chat Contact " + JSON.stringify(error));
+                            }
+
+                        });
+                    } else {
+                        contactModel.contactsDS.add(contact);
+                    }
+                    contactModel.contactsDS.sync();
+
+                    mobileNotify("Added Member Info for : " + result.name);
+
+                    if (callback !== undefined) {
+                        callback(contact);
+                    }
+
                 } else {
-
-                    contactModel._cleanDupContacts(contact.uuid);
-
+                    ggError("Can't find member " + userName);
+                    callback(null);
                 }
+
             });
+
         }
         
-       memberdirectory.findMemberByUUID(userId,  function (result) {
-            if (result !== null) {
 
-                contactModel.updateChatContact(result.name, result.alias, result.userUUID, result.phone, result.email, result.publicKey);
-                mobileNotify("Added Member Info for : " + result.name);
-
-                if (callback !== undefined) {
-                    callback(result);
-                } 
-
-            } else {
-                ggError("Can't find member " + userId);
-                callback(null);
-            }
-
-        });
 
     },
 
 
     updateChatContact : function (name, alias, contactUUID, contactPhone, contactEmail, contactKey) {
 
-        mobileNotify("Updating contact datae for : " + name);
+        mobileNotify("Updating contact data for : " + name);
         var contact = contactModel.findContact(contactUUID);
         var create = false;
 
@@ -851,6 +865,7 @@ var contactModel = {
         var url = contactModel.createIdenticon(guid);
         contact.photo = null;
         contact.identicon = url;
+        contact.set('category', 'member');
         contact.set('contactUUID', contactUUID);
         contact.set('phone', contactPhone);
         contact.set('email', contactEmail);
@@ -858,14 +873,14 @@ var contactModel = {
         contact.set('contactEmail', contactEmail);
         contact.set('publicKey', contactKey);
 
+        contactModel.sync();
 
-
-        everlive.update(contactModel._cloudClass, contact, {contactUUID : contactUUID}, function (error, data) {
+       /* everlive.update(contactModel._cloudClass, contact, {contactUUID : contactUUID}, function (error, data) {
             if (error !== null) {
                 mobileNotify("Error updating Chat Contact " + JSON.stringify(error));
             }
         });
-
+*/
 
     },
 

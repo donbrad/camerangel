@@ -149,13 +149,13 @@ var privateChannel = {
             msg.fromHistory = false;
         }
 
+        var message = privateChannel.decryptMessage(msg);
         // Add the message to the archive
-        userDataChannel.addMessage(msg);
+
         channelModel.updateLastMessageTime(channelView._channelUUID, null);
         
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
-            var message = privateChannel.decryptMessage(msg);
 
             channelView.preprocessMessage(message);
             channelModel.updateLastAccess(channelView._channelUUID, null);
@@ -186,6 +186,12 @@ var privateChannel = {
             // Is there a private channel for this sender?
             channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
         }
+
+        // create the blob and delete the offending key word before we ask kendo to save
+        message.dataBlob = JSON.stringify(message.data);
+        delete message.data;
+
+        userDataChannel.archiveMessage(message);
     },
 
 
@@ -268,7 +274,7 @@ var privateChannel = {
                         msgID: message.msgID,
                         channelUUID: message.recipient,
                         content: content,
-                        data: contentData,
+                        dataBlob: JSON.stringify(contentData),
                         time: message.time,
                         wasSent: true,
                         fromHistory: false,
@@ -276,12 +282,15 @@ var privateChannel = {
 
                     };
 
+                    userDataChannel.archiveMessage(parsedMsg);
                     //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                     channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
+
+                    parsedMsg.data = contentData;
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
                     // archive sedn message
-                    userDataChannel.archiveMessage(parsedMsg);
+
 
                     channelView.scrollToBottom();
 
@@ -292,28 +301,15 @@ var privateChannel = {
     },
 
 
-    getMessageHistory: function (callBack) {
+    getMessageHistory: function (channelUUID, callBack) {
 
-        userDataChannel.removeExpiredMessages();
 
-        var dataSource = userDataChannel.messagesDS;
-        var queryCache = dataSource.filter();
-        if (queryCache === undefined) {
-            queryCache = {};
-        }
+        var messages = userDataChannel.queryMessages( [{ field: "channelUUID", operator: "eq", value: channelUUID }]);
 
-        privateChannel.last72Hours = ggTime.last72Hours();
-        dataSource.filter(
-            [
-            { field: "channelUUID", operator: "eq", value: privateChannel.channelUUID },
-            { field: "time", operator: "gte", value:  privateChannel.last72Hours}
-        ]);
-
-        var messages = dataSource.view();
         var clearMessageArray = [];
 
         // Does this channel have recalled messages
-        var recalledMessages = channelModel.getRecalledMessages(privateChannel.channelUUID);
+        var recalledMessages = channelModel.getRecalledMessages(channelUUID);
 
         if (recalledMessages.length > 0) {
             // Has recalled messages -- remove by brute force
@@ -326,16 +322,13 @@ var privateChannel = {
         }
 
         for (var m=0; m<messages.length; m++) {
-            var message  = privateChannel.decryptMessage(messages[m]);
-            messages[m] = message;
+            //var message  = privateChannel.decryptMessage(messages[m]);
+            messages[m].data = JSON.parse(messages[m].dataBlob);
         }
+
 
         if (callBack)
             callBack(messages);
-
-        dataSource.filter(queryCache);
-
-
 
      }
 };

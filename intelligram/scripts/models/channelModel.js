@@ -28,7 +28,10 @@ var channelModel = {
     _sentMessages : "sentMessages",
     activeChannels: [],
     _syncingChannels : false,
-    channelsFetched : false,
+    _fetched : false,
+    recalledMessagesFetched : false,
+    recalledPhotosFetched : false,
+    photosFetched : false,
 
     deferredArray : [],
     processingDeferred : false,
@@ -56,7 +59,8 @@ var channelModel = {
         channelModel.channelsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'channels'
+                typeName: 'channels',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
@@ -64,31 +68,37 @@ var channelModel = {
             sort: {
                 field: "lastAccess",
                 dir: "desc"
-            },
-            autoSync: true
+            }
         });
         
         channelModel.privateChannelsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'privatechannels'
+                typeName: 'privatechannels',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
 
         channelModel.recalledMessagesDS = new kendo.data.DataSource({
             type: 'everlive',
           
             transport: {
-                typeName: 'recalledMessages'
+                typeName: 'recalledMessages',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync : true
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read') {
+                    channelModel.recalledMessagesFetched = true;
+                }
+            }
         });
 
 
@@ -102,7 +112,13 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync : true
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read') {
+                    channelModel.recalledPhotosFetched = true;
+                }
+            }
         });
 
         channelModel.photosDS = new kendo.data.DataSource({
@@ -114,7 +130,14 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             },
-            autoSync : true
+            autoSync : true,
+            requestEnd : function (e) {
+                var response = e.response,  type = e.type;
+
+                if (type === 'read') {
+                    channelModel.photosFetched = true;
+                }
+            }
         });
 
         channelModel.groupMessagesDS = new kendo.data.DataSource({
@@ -124,27 +147,15 @@ var channelModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
 
-        // Reflect any core channel changes to channelList
+      /*  // Reflect any core channel changes to channelList
         channelModel.channelsDS.bind("change", function (e) {
             // Rebuild the channelView.channelListDS when the underlying list changes: add, delete, update...
            //channelView._channelListDS.data(channelModel.channelsDS.data());
             var changedChannels = e.items;
-            if (e.action === undefined) {
-                if (changedChannels !== undefined) {
-                    channelModel.channelsFetched = true;
-                    channelModel.processDeferred();
-                    var len = changedChannels.length;
-                    /*for (var i=0; i<len; i++) {
-                        var place =changedPlaces[i];
-                        // add to placelist
-                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
-                    }*/
-                }
-            } else {
+            if (e.action !== undefined) {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
@@ -173,7 +184,7 @@ var channelModel = {
 
 
         });
-
+*/
 
         channelModel.channelsDS.fetch();
         channelModel.photosDS.fetch();
@@ -181,14 +192,25 @@ var channelModel = {
         channelModel.recalledPhotosDS.fetch();
         channelModel.recalledMessagesDS.fetch();
 
-        deviceModel.setAppState('hasChannels', true);
-       /* deviceModel.isParseSyncComplete();*/
 
-        // Start the updateMessageCount async after 5 seconds...
-     /*   setTimeout(function(){
-           // channelModel.intervalTimer = setInterval(channelModel.updateChannelsMessageCount, channelModel._messageCountRefresh);
-            channelModel.updateChannelsMessageCount();
-        }, 5000);*/
+        channelModel.channelsDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!channelModel._fetched){
+                    channelModel._fetched = true;
+                    channelModel.processDeferred();
+                    channelsView.updateChannelListDS();
+                    appDataChannel.history();
+                    userDataChannel.history();
+                }
+
+            }
+
+        });
+
+        deviceModel.setAppState('hasChannels', true);
+
     },
 
     sync : function () {
@@ -518,7 +540,7 @@ var channelModel = {
             if (lastMessage === undefined || lastMessage === null) {
                 lastMessage = ggTime.currentTime();
             }
-            channel.set('lastMessageTime', lastMessage);
+            channel.set('lastMessage', lastMessage);
 
         }
     },
@@ -528,7 +550,7 @@ var channelModel = {
         if (channel === undefined) {
             mobileNotify('getLastMessageTime: unknown channel ' + channelUUID);
         } else {
-            return(channel.get('lastMessageTime'));
+            return(channel.get('lastMessage'));
         }
     },
 
@@ -539,7 +561,7 @@ var channelModel = {
 
     zeroUnreadCount: function (channelUUID) {
 
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: 0});
             return;
         }
@@ -558,7 +580,7 @@ var channelModel = {
     },
 
     updateUnreadCount: function (channelUUID, count) {
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: count, lastAccess : null});
             return;
         }
@@ -570,6 +592,7 @@ var channelModel = {
             var lastAccess = ggTime.currentTime();
             channel.set('unreadCount',channel.get('unreadCount') + count);
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
+            //channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
             channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
@@ -578,7 +601,7 @@ var channelModel = {
 
     updatePrivateUnreadCount: function (channelUUID, count) {
 
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: count, lastAccess: null});
             return;
         }
@@ -586,14 +609,12 @@ var channelModel = {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined) {
             channelModel.confirmPrivateChannel(channelUUID, function(result){
-                if (result !== null) {
-                    var lastAccess = ggTime.currentTime();
+            if (result !== null) {
+                var lastAccess = ggTime.currentTime();
 
-                    notificationModel.updateUnreadNotification(result.channelUUID, result.name, count);
-                    channel.set('unreadCount', channel.get('unreadCount') + count);
-                    //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
-                    channelModel.updateLastMessageTime(result.channelUUID, lastAccess);
-                }
+                notificationModel.updateUnreadNotification(result.channelUUID, result.name, count);
+                channelModel.updateLastMessageTime(result.channelUUID, lastAccess);
+            }
             });
         } else {
 
@@ -601,6 +622,7 @@ var channelModel = {
 
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);
+            //channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
             channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
@@ -609,7 +631,7 @@ var channelModel = {
 
     incrementUnreadCount: function (channelUUID, count, lastAccess) {
 
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionUnread, {action: channelModel._actionUnread, channel: channelUUID, count: count, lastAccess: lastAccess});
             return;
         }
@@ -620,13 +642,15 @@ var channelModel = {
             debugger;
         } else {
 
+
             if (lastAccess === undefined || lastAccess === null) {
                 lastAccess = ggTime.currentTime();
             }
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount', channel.unreadCount + count);
+            //channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
             //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', channel.unreadCount + count);
-            channelModel.updateLastAccess(channelUUID, lastAccess);
+            channelModel.updateLastMessageTime(channelUUID, lastAccess);
         }
 
     },
@@ -639,7 +663,7 @@ var channelModel = {
             if (contact !== undefined && contact.contactUUID !== undefined && !contact.isBlocked) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
                 if (callback !== undefined)
-                    callback(channel.channelUUID);
+                    callback(channelUUID);
             } else {
                 if (callback !== undefined)
                     callback(null);
@@ -833,7 +857,7 @@ var channelModel = {
     // Add a new private channel that this user created -- create a channel object
     addPrivateChannel : function (contactUUID, contactPublicKey,  contactName, callback) {
 
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionAddPrivate, {action: channelModel._actionUnread, channel: channelUUID, contactUUID: contactUUID, contactPublicKey: contactPublicKey, contactName: contactName});
             return;
         }
@@ -946,7 +970,7 @@ var channelModel = {
     // Add group channel for members...
     // Get's the current owner details from parse and then creates a local channel for this user
     addMemberChannel : function (channelUUID, channelName, channelDescription, channelMembers, ownerUUID, ownerName, options, isDeleted) {
-        if (!channelModel.channelsFetched) {
+        if (!channelModel._fetched) {
             channelModel.defer(channelModel._actionAddMember, {action: channelModel._actionUnread, channel: channelUUID,
                 channelUULD: channelUUID, channelName: channelName, channelDescription : channelDescription,
             channelMembers: channelMembers, ownerUUID : ownerUUID, ownerName : ownerName, options: options});

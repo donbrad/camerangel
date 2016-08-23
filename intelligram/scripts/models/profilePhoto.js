@@ -23,8 +23,7 @@ var profilePhotoModel = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            autoSync: true
+            }
         });
 
         profilePhotoModel.photosDS.fetch();

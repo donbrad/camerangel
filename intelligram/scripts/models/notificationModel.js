@@ -13,6 +13,7 @@ var notificationModel = {
     // Types of notifications...
     _cloudClass : 'notifications',
     _ggClass : 'Notification',
+    _fetched : false,
     _intro: 'intelligram recommends',
     _unreadCount : 'Unread Messages',
     _newChat : 'New Chat',
@@ -28,15 +29,18 @@ var notificationModel = {
     _connectResponse: 'Connect Response',
     _userAlert: 'Urgent Message',
 
+    _actionMap : [],
+    _actionCache : [],
 
-    notificationDS: null, 
+    notificationDS: null,
     
     
     init : function () {
        notificationModel.notificationDS = new kendo.data.DataSource({
            type: 'everlive',
            transport: {
-               typeName: 'notifications'
+               typeName: 'notifications',
+               dataProvider: APP.everlive
            },
            schema: {
                model: { Id:  Everlive.idField}
@@ -44,9 +48,33 @@ var notificationModel = {
            sort: {
                field: "date",
                dir: "desc"
-           },
-           autoSync: true
+           }
+
+
+
        });
+        notificationModel._actionMap = [ {name: 'verifyemail', action : verifyEmailModal.openModal },
+            {name: 'verifyphone', action : verifyPhoneModal.openModal }];
+
+        for (var i=0; i< notificationModel._actionMap.length; i++) {
+            notificationModel._actionCache [notificationModel._actionMap.name] = notificationModel._actionMap.action;
+        }
+
+        notificationModel.notificationDS.bind('requestEnd',function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!notificationModel._fetched) {
+                    notificationModel._fetched = true;
+                    appDataChannel.history();
+                    userDataChannel.history();
+
+
+                    // Perform initial load logic
+                }
+
+            }
+        });
 
         notificationModel.notificationDS.fetch();
     },
@@ -163,16 +191,18 @@ var notificationModel = {
 
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
-        
-        notificationModel.notificationDS.add(notification);
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(notificationModel._cloudClass, notification, function (error, data) {
+                if (error !== null) {
+                    ggError("Error creating Notification " + JSON.stringify(error));
+                }
+            });
+        } else {
+            notificationModel.notificationDS.add(notification);
+        }
+
         notificationModel.notificationDS.sync();
-        everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating Notification " + JSON.stringify(error));
-            } else {
-                notificationModel._cleanDupNotifications(notification.uuid);
-            }
-        });
 
         return(notification);
     },
@@ -191,11 +221,16 @@ var notificationModel = {
     },
 
     addVerifyPhoneNotification : function () {
-        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", verifyPhoneModal.openModal , null, false);
+        var that = notificationModel;
+        if (!that.findNotificationByType(notificationModel._verifyPhone))
+        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", 'verifyphone' , null, false);
     },
     
     addVerifyEmailNotification : function () {
-        this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", verifyEmailModal.openModal , null, false);
+        var that = notificationModel;
+        if (!that.findNotificationByType(notificationModel._verifyEmail)) {
+            this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", 'verifyemail' , null, false);
+        }
     },
 
 
@@ -274,24 +309,15 @@ var notificationModel = {
             if (unreadCount > 0)
                 notificationModel.addUnreadNotification(channelUUID, channelName, unreadCount);
         } else {
-            var Id = notObj.Id;
             if (unreadCount === undefined || unreadCount === 0) {
 
                 notificationModel.notificationDS.remove(notObj);
                 notificationModel.notificationDS.sync();
 
-                everlive.deleteMatching(notificationModel._cloudClass, {'uuid' : notObj.uuid}, function (error, data) {
-
-                });
-
-
             } else {
-                notObj.set('unreadCount', unreadCount);
+                notObj.set('unreadCount', notObj.unreadCount + unreadCount);
 
                 notificationModel.notificationDS.sync();
-                everlive.update(notificationModel._cloudClass, notObj, {'uuid' : notObj.uuid}, function (error, data) {
-                    //placeNoteModel.notesDS.remove(note);
-                });
 
             }
         }
@@ -316,6 +342,10 @@ var notificationModel = {
 
     findNotificationByPrivateId : function (privateId) {
         return (notificationModel.queryNotification({ field: "privateId", operator: "eq", value: privateId }));
+    },
+
+    findNotificationByType : function (typeName) {
+        return (notificationModel.queryNotification({ field: "type", operator: "eq", value: typeName }));
     },
 
     deleteAllNotifications : function () {
