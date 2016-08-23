@@ -399,13 +399,13 @@ var homeView = {
         userDataChannel.history();
 
         // Display notifications for user to validate phone or email
-        if (!userModel._user.phoneValidated) {
+       /* if (!userModel._user.phoneValidated) {
             notificationModel.addVerifyPhoneNotification();
         }
 
         if (!userModel._user.emailValidated) {
             notificationModel.addVerifyEmailNotification();
-        }
+        }*/
 
         /*ux.showActionBtn(true, "#home", "#settingsAction");
         ux.changeActionBtnImg("home","nav-add-white");

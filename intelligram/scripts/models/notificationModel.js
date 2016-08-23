@@ -29,10 +29,7 @@ var notificationModel = {
     _connectResponse: 'Connect Response',
     _userAlert: 'Urgent Message',
 
-    _actionMap : [
-        {name: 'verifyemail', action : verifyEmailModal.openModal },
-        {name: 'verifyphone', action : verifyPhoneModal.openModal }
-    ],
+    _actionMap : [],
     _actionCache : [],
 
     notificationDS: null,
@@ -56,6 +53,8 @@ var notificationModel = {
 
 
        });
+        notificationModel._actionMap = [ {name: 'verifyemail', action : verifyEmailModal.openModal },
+            {name: 'verifyphone', action : verifyPhoneModal.openModal }];
 
         for (var i=0; i< notificationModel._actionMap.length; i++) {
             notificationModel._actionCache [notificationModel._actionMap.name] = notificationModel._actionMap.action;
