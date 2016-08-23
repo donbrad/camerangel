@@ -222,9 +222,12 @@ var contactModel = {
     },
 
     checkIdenticon : function (contact) {
-        if (contact.identicon === undefined || contact.identicon === null) {
-            contact.identicon = contactModel.createIdenticon(contact.uuid);
+        if (contact !== undefined && contact !== null) {
+            if (contact.identicon === undefined || contact.identicon === null) {
+                contact.identicon = contactModel.createIdenticon(contact.uuid);
+            }
         }
+
     },
 
     totalContacts : function () {

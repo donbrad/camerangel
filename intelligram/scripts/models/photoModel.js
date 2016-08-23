@@ -379,7 +379,7 @@ var photoModel = {
 
                     if (photoData.eager !== undefined)
                         thumbUrl = photoData.eager[0].secure_url;
-                    
+
                     photoObj.set('imageUrl', secureUrl);
                     photoObj.set('cloudUrl', secureUrl);
                     photoObj.set('thumbnailUrl', thumbUrl);
