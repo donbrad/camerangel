@@ -60,6 +60,8 @@ var notificationModel = {
                     notificationModel._fetched = true;
                     appDataChannel.history();
                     userDataChannel.history();
+
+
                     // Perform initial load logic
                 }
 
