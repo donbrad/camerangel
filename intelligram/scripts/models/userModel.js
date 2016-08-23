@@ -157,6 +157,7 @@ var userModel = {
 
         privateNoteModel.init();  // Depends on everlive...
 
+        userStatus.init();
         memberdirectory.init();
 
         noteModel.init();
@@ -292,17 +293,10 @@ var userModel = {
         if (photo === undefined || photo === null) {
             userModel._user.photo =  userModel.identiconUrl;
         }
-        var emailValidated = user.Verified;
-        userModel._user.set('emailValidated', emailValidated);
-        userModel._user.set('phoneValidated',user.phoneValidated);
-/*
-        if (!user.phoneValidated) {
-            notificationModel.addVerifyPhoneNotification();
-        }
+        var emailValidated = user.isVerified;   // this is everlive's flag for email validation
 
-        if (!user.emailValidated) {
-            notificationModel.addVerifyEmailNotification();
-        }*/
+        userModel._user.set('emailValidated', emailValidated);
+        userModel._user.set('phoneValidated', user.phoneValidated);
 
         if (user.addressValidated === undefined) {
             user.addressValidated = false;
@@ -314,7 +308,7 @@ var userModel = {
             userModel._user.set('availImgUrl', 'images/status-available.svg');
         }
         
-        userModel._user.set('isValidated', user.Verified);
+        userModel._user.set('isValidated', emailValidated && user.phoneValidated);
 
         APP.kendo.navigate('#home');
 
@@ -515,7 +509,6 @@ var userModel = {
 
         $('#profileStatusPhoto').addClass('hidden');
         $('#profileStatusIdenticon').removeClass('hidden');
-
         var hash = userModel._user.userUUID;
         if (hash === undefined) {
             hash = "01234567890ABCDE";
@@ -569,9 +562,6 @@ var userStatus = {
                     ggError("User Status Init error : " + JSON.stringify(error));
                 });
 
-        /*userStatus._statusObj.on('change', function () {
-            userStatus.update();
-        });*/
 
     },
 
@@ -657,7 +647,7 @@ var userStatus = {
             function(data){
 
                 userStatus.update();
-                //userStatus.updateEverlive();
+
             },
             function(error){
                 ggError("User Status create error : " + JSON.stringify(error));

@@ -68,7 +68,13 @@ var notificationModel = {
                     notificationModel._fetched = true;
                     appDataChannel.history();
                     userDataChannel.history();
-
+                    notificationModel._actionMap =[
+                        {name: 'verifyemail', action : verifyEmailModal.openModal },
+                        {name: 'verifyphone', action : verifyPhoneModal.openModal }
+                    ];
+                    for (var i=0; i< notificationModel._actionMap.length; i++) {
+                        notificationModel._actionCache [notificationModel._actionMap.name] = notificationModel._actionMap.action;
+                    }
 
                     // Perform initial load logic
                 }

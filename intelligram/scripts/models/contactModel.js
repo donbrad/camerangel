@@ -194,7 +194,6 @@ var contactModel = {
         var array = contactModel.contactsDS.data();
         contactModel.contactListDS.data([]);
 
-
         for (var i=0; i<array.length; i++) {
             var contact = (array[i]).toJSON();
             if (contact.category !== 'Chat') {

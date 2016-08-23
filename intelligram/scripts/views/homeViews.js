@@ -1962,11 +1962,13 @@ var signUpView = {
         verifyPhoneModal.sendAndOpenModal();
 
 
+
         everlive.updateUser();
         userModel.initCloudModels();
         userModel.initPubNub();
         userStatus.update();
-        APP.kendo.navigate('#home');
+        if (APP.kendo.view().id !== 'home')
+            APP.kendo.navigate('#home');
         userModel._user.bind('change', userModel.sync);
         mobileNotify('Welcome to intelligram!');
     },
