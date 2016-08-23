@@ -29,6 +29,11 @@ var notificationModel = {
     _connectResponse: 'Connect Response',
     _userAlert: 'Urgent Message',
 
+    _actionMap : [
+        {name: 'verifyemail', action : verifyEmailModal.openModal },
+        {name: 'verifyphone', action : verifyPhoneModal.openModal }
+    ],
+    _actionCache : [],
 
     notificationDS: null,
     
@@ -51,6 +56,10 @@ var notificationModel = {
 
 
        });
+
+        for (var i=0; i< notificationModel._actionMap.length; i++) {
+            notificationModel._actionCache [notificationModel._actionMap.name] = notificationModel._actionMap.action;
+        }
 
         notificationModel.notificationDS.bind('requestEnd',function (e) {
             var response = e.response,  type = e.type;
@@ -184,15 +193,21 @@ var notificationModel = {
     newNotification: function(type, id, title, date, description, actionTitle, action, href, dismissable) {
         var notification = new notificationModel.Notification(type, id, title, date, description, actionTitle, action, href, dismissable);
         
-        notificationModel.notificationDS.add(notification);
+
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(notificationModel._cloudClass, notification, function (error, data) {
+                if (error !== null) {
+                    mobileNotify("Error creating Notification " + JSON.stringify(error));
+                } else {
+                    notificationModel._cleanDupNotifications(notification.uuid);
+                }
+            });
+        } else {
+            notificationModel.notificationDS.add(notification);
+        }
+
         notificationModel.notificationDS.sync();
-        everlive.createOne(notificationModel._cloudClass, notification, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating Notification " + JSON.stringify(error));
-            } else {
-                notificationModel._cleanDupNotifications(notification.uuid);
-            }
-        });
 
         return(notification);
     },
@@ -211,11 +226,11 @@ var notificationModel = {
     },
 
     addVerifyPhoneNotification : function () {
-        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", verifyPhoneModal.openModal , null, false);
+        this.newNotification(notificationModel._verifyPhone, 0, 'Please Verify Phone', null, "Please verify your mobile phone", "Verify", 'verifyphone' , null, false);
     },
     
     addVerifyEmailNotification : function () {
-        this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", verifyEmailModal.openModal , null, false);
+        this.newNotification(notificationModel._verifyEmail, 0, 'Please Verify Email', null, "Please verify your email address", "Verify", 'verifyemail' , null, false);
     },
 
 
