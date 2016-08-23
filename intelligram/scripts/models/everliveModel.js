@@ -223,44 +223,19 @@ var everlive = {
                 APP.kendo.navigate(userModel.initialView);
             },
             function(error){
-
-                if (error.code === 302) {
-                    everlive.getCredentials();
-                    if (everlive._token !== null) {
-                        APP.everlive.users.setAuthorization(everlive._token, everlive._tokenType, everlive._id);
-                        if (!everlive._triedToken) {
-                            everlive.isUserSignedIn();
-                            everlive._triedToken = true;
-                        } else {
-                            if (userModel.hasAccount) {
-                                everlive._signedIn = false;
-                                everlive._syncComplete = false;
-                                everlive.isAuthenticated = false;
-                                userModel.initialView = '#usersignin';
-                            } else {
-                                userModel.initialView = '#newuserhome';
-                            }
-                            APP.kendo.navigate(userModel.initialView);
-                        }
-
+                everlive.logout(function (){
+                    if (userModel.hasAccount) {
+                        everlive._signedIn = false;
+                        everlive._syncComplete = false;
+                        everlive.isAuthenticated = false;
+                        userModel.initialView = '#usersignin';
                     } else {
-                        if (userModel.hasAccount) {
-                            everlive._signedIn = false;
-                            everlive._syncComplete = false;
-                            everlive.isAuthenticated = false;
-                            userModel.initialView = '#usersignin';
-                        } else {
-                            userModel.initialView = '#newuserhome';
-                        }
-                        APP.kendo.navigate(userModel.initialView);
+                        userModel.initialView = '#newuserhome';
                     }
-                } else {
-                    ggError("Everlive Current User: " + JSON.stringify(error));
-                }
+                    APP.kendo.navigate(userModel.initialView);
+                });
 
-
-
-            });
+        });
 
        /* everlive.checkAuthStatus(function (error, status) {
             if (error === null) {
