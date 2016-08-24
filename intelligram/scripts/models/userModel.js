@@ -147,6 +147,8 @@ var userModel = {
 
         userDataChannel.init(uuid);
 
+        userStatusChannel.init(uuid);
+
         // Initialize application data channel with gg's unique ID
         appDataChannel.init();
 
@@ -156,6 +158,8 @@ var userModel = {
         placesModel.init();
 
         privateNoteModel.init();  // Depends on everlive...
+
+        userStatus.init();
 
         memberdirectory.init();
 
@@ -292,17 +296,33 @@ var userModel = {
         if (photo === undefined || photo === null) {
             userModel._user.photo =  userModel.identiconUrl;
         }
-        var emailValidated = user.Verified;
-        userModel._user.set('emailValidated', emailValidated);
-        userModel._user.set('phoneValidated',user.phoneValidated);
-/*
-        if (!user.phoneValidated) {
-            notificationModel.addVerifyPhoneNotification();
-        }
+        var emailValidated = user.isVerified;   // this is everlive's flag for email validation
 
-        if (!user.emailValidated) {
-            notificationModel.addVerifyEmailNotification();
-        }*/
+        userModel._user.set('emailValidated', emailValidated);
+        if (!emailValidated) {
+            if (window.navigator.simulator === undefined) {
+                cordova.plugins.notification.local.add({
+                    id: 'verifyPhone',
+                    title: 'intelligram suggests...',
+                    message: 'Please verify your phone',
+                    autoCancel: true,
+                    date: new Date(new Date().getTime() + 30)
+                });
+            }
+        }
+        userModel._user.set('phoneValidated', user.phoneValidated);
+
+        if (!user.phoneValidated) {
+            if (window.navigator.simulator === undefined) {
+                cordova.plugins.notification.local.add({
+                    id: 'verifyEmail',
+                    title: 'intelligram suggests...',
+                    message: 'Please verify your email',
+                    autoCancel: true,
+                    date: new Date(new Date().getTime() + 30)
+                });
+            }
+        }
 
         if (user.addressValidated === undefined) {
             user.addressValidated = false;
@@ -314,11 +334,18 @@ var userModel = {
             userModel._user.set('availImgUrl', 'images/status-available.svg');
         }
         
-        userModel._user.set('isValidated', user.Verified);
+        userModel._user.set('isValidated', emailValidated && user.phoneValidated);
 
-        APP.kendo.navigate('#home');
+
 
         memberdirectory.update();
+
+        if (user.phoneValidated) {
+            APP.kendo.navigate('#home');
+        } else {
+            verifyPhoneModal.openModal();
+        }
+
 
     },
     
@@ -487,7 +514,6 @@ var userModel = {
         APP.pubnub = PUBNUB.init({
             publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
             subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
-            secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
             ssl: true,
             jsonp: true,
             restore: true,
@@ -515,7 +541,6 @@ var userModel = {
 
         $('#profileStatusPhoto').addClass('hidden');
         $('#profileStatusIdenticon').removeClass('hidden');
-
         var hash = userModel._user.userUUID;
         if (hash === undefined) {
             hash = "01234567890ABCDE";
@@ -569,9 +594,6 @@ var userStatus = {
                     ggError("User Status Init error : " + JSON.stringify(error));
                 });
 
-        /*userStatus._statusObj.on('change', function () {
-            userStatus.update();
-        });*/
 
     },
 
@@ -657,7 +679,7 @@ var userStatus = {
             function(data){
 
                 userStatus.update();
-                //userStatus.updateEverlive();
+
             },
             function(error){
                 ggError("User Status create error : " + JSON.stringify(error));
@@ -667,11 +689,6 @@ var userStatus = {
     update : function () {
         var status = userStatus._statusObj;
 
-        var everliveData =  APP.everlive.data(userStatus._ggClass);
-
-        if (status.Id === undefined || status.Id === null) {
-            status.Id = everlive._id;
-        }
         status.set('userUUID', userModel._user.userUUID);
         status.set('isAvailable', userModel._user.isAvailable);
         status.set('isVisible', userModel._user.isVisible);
@@ -693,24 +710,7 @@ var userStatus = {
         status.set('lastUpdate', ggTime.currentTime());
 
 
-        everliveData.updateSingle( status,
-            function ( data) {
-                mobileNotify("User Status Updated");
-
-            },
-            function (error) {
-                if (error !== null) {
-                    if (error !== undefined && error.code === 801) {
-                        userStatus.create();
-                        return;
-                    }
-                   // mobileNotify("Update User Status error : " + JSON.stringify(error));
-                }
-
-            }
-        );
-
-        everlive.updateUserStatus();
+       userStatusChannel.sendStatus(status)
 
     }
 

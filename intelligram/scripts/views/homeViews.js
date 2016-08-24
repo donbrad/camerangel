@@ -355,10 +355,8 @@ var homeView = {
             }
         });
 
-        var tabstrip = $("#home-buttongroup").data("kendoMobileTabStrip");
-        tabstrip.badge(0, 5);
-
     },
+
 
     onTabSelect: function(e){
         var tab;
@@ -388,21 +386,30 @@ var homeView = {
         homeView._activeView = tab;
     },
 
-    onShow: function (e) {
-       // set verified ui for start screen
 
-      /*  if (userModel._user.phoneValidated) {
-            deviceModel.setAppState('phoneValidated', true);
-            notificationModel.deleteNotificationsByType(notificationModel._verifyPhone, 0);
+
+    updateValidationUX : function () {
+        if (userModel._user.isValidated) {
+            $('#home-verify-div').addClass('hidden');
         } else {
+            $('#home-verify-div').removeClass('hidden');
+            if (userModel._user.emailValidated) {
+                $('#home-verify-email').addClass('hidden');
+            } else {
+                $('#home-verify-email').removeClass('hidden');
+            }
 
-            mobileNotify("Please verify your phone number");
-            verifyPhoneModal.openModal();
-        }*/
+            if (userModel._user.phoneValidated) {
+                $('#home-verify-phone').addClass('hidden');
+            } else {
+                $('#home-verify-phone').removeClass('hidden');
+            }
+        }
+    },
 
-      /*  if (!userModel._user.isValidated) {
-            notificationModel.addVerifyEmailNotification();
-        }*/
+    onShow: function (e) {
+
+
         // Set user availability
         ux.updateHeaderStatusImages();
 
@@ -412,24 +419,11 @@ var homeView = {
         // Set the active view and the search text
         homeView.onTabSelect(homeView._activeView);
 
+        homeView.updateValidationUX();
+
         appDataChannel.history();
         userDataChannel.history();
 
-        // Display notifications for user to validate phone or email
-       /* if (!userModel._user.phoneValidated) {
-            notificationModel.addVerifyPhoneNotification();
-        }
-
-        if (!userModel._user.emailValidated) {
-            notificationModel.addVerifyEmailNotification();
-        }*/
-
-        /*ux.showActionBtn(true, "#home", "#settingsAction");
-        ux.changeActionBtnImg("home","nav-add-white");
-        ux.showActionBtnText("#home", "3em", "Shortcuts");
-
-        ux.addDataProp("rel", "actionsheet");
-*/
         //everlive.syncCloud();
 
 
@@ -1971,10 +1965,11 @@ var signUpView = {
             cordova.plugins.notification.local.add({
                 id: 'userWelcome',
                 title: 'Welcome to intelligram',
-                message: 'You have a secure connection to your family, friends and favorite places',
+                message: 'Stay connected to those closest to you!',
                 autoCancel: true,
                 date: new Date(new Date().getTime() + 120)
             });
+
         }
 
         verifyPhoneModal.sendAndOpenModal();
@@ -1984,7 +1979,8 @@ var signUpView = {
         userModel.initCloudModels();
         userModel.initPubNub();
         userStatus.update();
-        APP.kendo.navigate('#home');
+        if (APP.kendo.view().id !== 'home')
+            APP.kendo.navigate('#home');
         userModel._user.bind('change', userModel.sync);
         mobileNotify('Welcome to intelligram!');
     },
@@ -2292,6 +2288,19 @@ var verifyEmailModal = {
         $("#modalview-verifyEmail").data("kendoMobileModalView").close();
     },
 
+    confirmVerify : function (e) {
+
+        if (userModel._user.isVerified) {
+            mobileNotify("Your email is verified!!!");
+            memberdirectory.update();
+            userStatus.update();
+            homeView.updateValidationUX();
+        } else {
+            mobileNotify("Your email verification is still pending...");
+        }
+
+    },
+
     sendEmail : function (e) {
         var email = userModel._user.get('email');
         everlive.resendEmailValidation(email);
@@ -2380,17 +2389,23 @@ var verifyPhoneModal = {
                 mobileNotify("Your phone number is verified.  Thank You!");
                 var thisUser = userModel._user;
                 thisUser.set('phoneValidated', true);
-                thisUser.set('isValidated', true);
                 var isVerified = thisUser.get('isVerified');
 
-                appDataChannel.userValidatedMessage(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
+                if (isVerified) {
+                    thisUser.set('isValidated', true);
+                    appDataChannel.userValidatedMessage(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
+
+                }
+                memberdirectory.update();
+                userStatus.update();
+
+                homeView.updateValidationUX();
                 verifyPhoneModal.closeModal();
+
             } else {
                 mobileNotify("Sorry, your code didn't match. ");
             }
 
-        } else {
-            verifyPhoneModal.closeModal();
         }
 
     }

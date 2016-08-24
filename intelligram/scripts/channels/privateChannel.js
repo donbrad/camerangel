@@ -8,6 +8,9 @@
 
 var privateChannel = {
 
+    _class : 'private',
+    _message : 'message',
+    _alert : 'alert',
     thisUser: {},
     userId: '',
     users: [],
@@ -124,11 +127,19 @@ var privateChannel = {
         } else {
             data = {};
         }
+        if (message.msgClass === undefined) {
+            message.msgClass = privateChannel._class;
+        }
 
+        if (message.msgType === undefined) {
+            message.msgType = privateChannel._message;
+        }
         
         var parsedMsg = {
             type: 'privateMessage',
             msgID: msg.msgID,
+            msgClass : msg.msgClass,
+            msgType : msg.msgType,
             channelUUID: msg.channelUUID,  //For private channels, channelUUID is just sender ID
             content: content,
             data: data,
@@ -153,9 +164,18 @@ var privateChannel = {
         // Add the message to the archive
 
         channelModel.updateLastMessageTime(channelView._channelUUID, null);
-        
+
+        if (message.msgClass === undefined) {
+            message.msgClass = privateChannel._class;
+        }
+
+        if (message.msgType === undefined) {
+            message.msgType = privateChannel._message;
+        }
+
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
+
 
             channelView.preprocessMessage(message);
             channelModel.updateLastAccess(channelView._channelUUID, null);
@@ -184,7 +204,7 @@ var privateChannel = {
             }
         } else {
             // Is there a private channel for this sender?
-            channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
+            channelModel.updatePrivateUnreadCount(message.channelUUID, 1);
         }
 
         // create the blob and delete the offending key word before we ask kendo to save
@@ -217,6 +237,9 @@ var privateChannel = {
         APP.pubnub.uuid(function (msgID) {
             var notificationString = "Message from: " + userModel._user.name;
             var message = {
+                msgID: msgID,
+                msgClass : privateChannel._class,
+                msgType : privateChannel._message,
                 type: 'privateMessage',
                 recipient: recipient,
                 sender: userModel._user.userUUID,
@@ -244,7 +267,7 @@ var privateChannel = {
                         isPrivate: true
                     }
                 },
-                msgID: msgID,
+
                 channelUUID: privateChannel.userId,
                 content: encryptMessage,  // publish the encryptedMessage
                 data: encryptData,        // publish the encryptedData.
@@ -267,11 +290,20 @@ var privateChannel = {
                     // Store a local copy of the sent message.  Need to update channelUUID :
                     // for the recipient, its this users uuid.
                     // for the sender, it's the recipients uuid
+                    if (message.msgClass === undefined) {
+                        message.msgClass = privateChannel._class;
+                    }
+
+                    if (message.msgType === undefined) {
+                        message.msgType = privateChannel._message;
+                    }
                     var parsedMsg = {
                         type: 'privateMessage',
                         recipient: message.recipient,
                         sender: userModel._user.userUUID,
                         msgID: message.msgID,
+                        msgClass : message.msgClass,
+                        msgType: message.msgType,
                         channelUUID: message.recipient,
                         content: content,
                         dataBlob: JSON.stringify(contentData),
