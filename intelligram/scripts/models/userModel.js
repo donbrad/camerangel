@@ -310,9 +310,16 @@ var userModel = {
         
         userModel._user.set('isValidated', emailValidated && user.phoneValidated);
 
-        APP.kendo.navigate('#home');
+
 
         memberdirectory.update();
+
+        if (user.phoneValidated) {
+            APP.kendo.navigate('#home');
+        } else {
+            verifyPhoneModal.openModal();
+        }
+
 
     },
     

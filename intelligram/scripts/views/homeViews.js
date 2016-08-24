@@ -2361,17 +2361,22 @@ var verifyPhoneModal = {
                 mobileNotify("Your phone number is verified.  Thank You!");
                 var thisUser = userModel._user;
                 thisUser.set('phoneValidated', true);
-                thisUser.set('isValidated', true);
+
                 var isVerified = thisUser.get('isVerified');
 
-                appDataChannel.userValidatedMessage(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
+                if (isVerified) {
+                    appDataChannel.userValidatedMessage(thisUser.userUUID, thisUser.phone, thisUser.email, thisUser.publicKey);
+                }
+                userStatus.update();
+                memberdirectory.update();
+
+                APP.kendo.navigate('#home');
                 verifyPhoneModal.closeModal();
+
             } else {
                 mobileNotify("Sorry, your code didn't match. ");
             }
 
-        } else {
-            verifyPhoneModal.closeModal();
         }
 
     }

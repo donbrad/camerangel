@@ -291,8 +291,6 @@ var userDataChannel = {
                 messages = messages || [];
                 userDataChannel.updateTimeStamp();
                 if (messages.length === 0) {
-                    //userDataChannel.messagesDS.sync();
-
                     return;
                 }
                 if (userDataChannel.RSAKey === null) {
