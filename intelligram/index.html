@@ -795,7 +795,7 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalview-verifyEmail" style="width: 90%; display: none;" class="appearance">
+<div data-role="modalview" id="modalview-verifyEmail" style="width: 90%; height: 90%; display: none;" class="appearance">
 	<div class="appBox">
 		<h3>
 			Verify Your Email Address
@@ -804,13 +804,19 @@
 			</a>
 		</h3>
 		<p class="zero"> Sent From: <strong>The intelligram Team</strong>.</p>
-		<p class="zero"> If it's not in your inbox, please check your junk mail folder for email from <em>support@ghostgrams.com</em>.</p>
+		<p class="zero"> If it's not in your inbox, please check your junk mail folder for email from <em>support@ghostgrams.com</em>.  When you find the verification email, please click on the link to confirm your email address. </p>
 		<ul data-role="listview" data-style="inset">
 			<li>
 				<div>Click the button below to resend the validation </div>
 	              	<span class="helper helper-right btnClear-grey" data-click="verifyEmailModal.sendEmail" data-role="button">
 	              		Resend Verification Email
 	              	</span>
+			</li>
+			<li>
+				<div>Click the button below to confirm your email verification.  </div>
+				<span class="helper helper-right btnClear-grey" data-click="verifyEmailModal.confirmVerify" data-role="button">
+	              		Confirm Email Verified
+				</span>
 			</li>
 		</ul>
 	</div>

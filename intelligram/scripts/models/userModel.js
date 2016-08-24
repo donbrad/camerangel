@@ -158,6 +158,7 @@ var userModel = {
         privateNoteModel.init();  // Depends on everlive...
 
         userStatus.init();
+
         memberdirectory.init();
 
         noteModel.init();
@@ -296,7 +297,30 @@ var userModel = {
         var emailValidated = user.isVerified;   // this is everlive's flag for email validation
 
         userModel._user.set('emailValidated', emailValidated);
+        if (!emailValidated) {
+            if (window.navigator.simulator === undefined) {
+                cordova.plugins.notification.local.add({
+                    id: 'verifyPhone',
+                    title: 'intelligram suggests...',
+                    message: 'Please verify your phone',
+                    autoCancel: true,
+                    date: new Date(new Date().getTime() + 30)
+                });
+            }
+        }
         userModel._user.set('phoneValidated', user.phoneValidated);
+
+        if (!user.phoneValidated) {
+            if (window.navigator.simulator === undefined) {
+                cordova.plugins.notification.local.add({
+                    id: 'verifyEmail',
+                    title: 'intelligram suggests...',
+                    message: 'Please verify your email',
+                    autoCancel: true,
+                    date: new Date(new Date().getTime() + 30)
+                });
+            }
+        }
 
         if (user.addressValidated === undefined) {
             user.addressValidated = false;

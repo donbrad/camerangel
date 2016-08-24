@@ -46,8 +46,6 @@ var memberdirectory = {
     create : function () {
         var query = APP.everlive.data(memberdirectory._ggClass);
 
-        var validated = userModel._user.emailValidated || userModel._user.phoneValidated;
-
         var dirObj = {
             userUUID : userModel._user.userUUID,
             name : userModel._user.name,
@@ -59,7 +57,7 @@ var memberdirectory = {
             emailValidated: userModel._user.emailValidated,
             phoneValidated : userModel._user.phoneValidated,
             addressValidated : userModel._user.addressValidated,
-            isValidated: validated
+            isValidated: userModel._user.isValidated
 
         };
 
@@ -75,7 +73,6 @@ var memberdirectory = {
     update : function () {
         var everliveData = APP.everlive.data(memberdirectory._ggClass);
 
-        var validated = userModel._user.Validated;
 
         var dirObj = {
             userUUID : userModel._user.userUUID,
@@ -89,7 +86,7 @@ var memberdirectory = {
             emailValidated: userModel._user.emailValidated,
             phoneValidated : userModel._user.phoneValidated,
             addressValidated : userModel._user.addressValidated,
-            isValidated: validated
+            isValidated: userModel._user.isValidated
         };
         
         everliveData.update(dirObj, {userUUID : userModel._user.userUUID},
