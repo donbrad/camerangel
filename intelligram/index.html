@@ -124,7 +124,7 @@
 	<script src="scripts/channels/groupChannel.js"></script>
 	<script src="scripts/channels/galleryChannel.js"></script>
 	<script src="scripts/channels/privateChannel.js"></script>
-	<script src="scripts/channels/trackerChannel.js"></script>
+	<script src="scripts/channels/statusChannel.js"></script>
 	<script src="scripts/channels/userDataChannel.js"></script>
 
 
@@ -1303,6 +1303,11 @@
 	</div>
 	<div class="modal-bottom">
 		<ul class="list-inline hasMotion" id="contactActionBtns">
+			<li>
+				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking" >
+					<img src="images/icon-checkin.svg" /> Start Tracking
+				</a>
+			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.privateChat" >
 					<img src="images/icon-private-alt.svg" /> Private Chat
