@@ -360,7 +360,7 @@ var homeView = {
 
     },
 
-    tabSelect: function(e){
+    onTabSelect: function(e){
         var tab;
         if(_.isNumber(e)){
             tab = e;
@@ -410,7 +410,7 @@ var homeView = {
         ux.setAddTarget("images/nav-gear.svg", null, homeView.openSettingsAction);
 
         // Set the active view and the search text
-        homeView.tabSelect(homeView._activeView);
+        homeView.onTabSelect(homeView._activeView);
 
         appDataChannel.history();
         userDataChannel.history();

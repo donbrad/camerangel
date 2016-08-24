@@ -1122,7 +1122,7 @@
 		<ul id="galleryEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" data-align="right" id=galleryEditor-saveBtn" class="btnClear">Save</a>
+		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" data-align="right" id="galleryEditor-saveBtn">Save</a>
 	</div>
 
 
@@ -2959,14 +2959,14 @@
  */-->
 <div data-role="view" data-title="My Safe" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
 	<div  class="appBox noPad">
-		<ul id="gallery-buttongroup" class="buttonBar">
-			<li>
-				Notes
-			</li>
-			<li>
-				Photos
-			</li>
-		</ul>
+		<div id="gallery-buttongroup" class="tabBar" data-role="tabstrip" data-select="galleryView.onTabSelect">
+			<a data-tab="0">
+				<img src="images/icon-myNotes-light.svg" id="galleryView-tab-notes" /> Notes
+			</a>
+			<a data-tab="1">
+				<img src="images/chat-photo.svg" id="galleryView-tab-photos" /> Photos
+			</a>
+		</div>
 
 
 		<div id="gallery-photos" class="hidden">
@@ -3074,11 +3074,7 @@
 			</a>
 		</li>
 	</ul>
-
 </div>
-
-
-
 
 
 <div data-role="view" data-title="Filter" id="filterGallery" data-layout="main" data-transition="overlay:up" data-init="archiveView.onFilterInit" style="display: none;">

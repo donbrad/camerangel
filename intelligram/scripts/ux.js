@@ -25,7 +25,7 @@ var ux = {
 	},
 
 	// Add target navigation function -- will navigate to currentAddTarget if not null, if null with call currentAddFunction if not null.
-	// if both are null doees nothing....
+	// if both are null does nothing....
 	navigateAddTarget : function (object) {
 		if (ux.currentAddTarget !== null)
 			APP.kendo.navigate(ux.currentAddTarget);

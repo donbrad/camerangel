@@ -115,7 +115,7 @@ var galleryView = {
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
 
-            $('#gallery-buttongroup').kendoMobileButtonGroup({
+            /*$('#gallery-buttongroup').kendoMobileButtonGroup({
                 select: function(e) {
                     var index = e.index;
                     if (index != galleryView._activeView) {
@@ -124,7 +124,7 @@ var galleryView = {
                     }
                 },
                 index: galleryView._activeView
-            });
+            });*/
 
             $("#gallery-listview").kendoMobileListView({
                 dataSource: photoModel.photosDS,
@@ -259,11 +259,35 @@ var galleryView = {
         }
 
     },
+    onTabSelect: function(e){
+        var tab;
+        if(_.isNumber(e)){
+            tab = e;
+        } else {
+            tab = $(e.item[0]).data("tab");
+        }
+
+        if(tab == 0){
+            // Notes
+            $("#gallery-photos").addClass("hidden");
+            $("#gallery-notes").removeClass("hidden");
+
+            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes-light.svg");
+            $("#galleryView-tab-photos").attr("src", "images/icon-photo.svg");
+        } else {
+            // Photos
+            $("#gallery-photos").removeClass("hidden");
+            $("#gallery-notes").addClass("hidden");
+
+            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes.svg");
+            $("#galleryView-tab-photos").attr("src", "images/icon-photo-light.svg");
+        }
+        galleryView._activeView = tab;
+    },
 
     onAddGallery : function (e) {
         $("#galleryActions1").data("kendoMobileActionSheet").open();
     },
-
 
     onHide: function(e){
     	var $actionBtn = $("#gallery > div.footerMenu.km-footer > a");
@@ -762,7 +786,7 @@ var modalChatPhotoView = {
         if (photo === undefined) {
             return;
         }
-        //console.log(photo);
+
         var photoId = photo.photoId;
         if (photoId === undefined) {
             photoId = photo.photoUUID;
