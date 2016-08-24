@@ -1476,6 +1476,26 @@ var contactActionView = {
         contactActionView._returnModalId = modalId;
     },
 
+    updateTrackingUX : function () {
+        var tracking = contactActionView._activeContact.activeTracking;
+        if (tracking) {
+            $("#contactActions-track").html('<img src="images/icon-checkout.svg" /> Stop Tracking');
+
+        } else {
+            $("#contactActions-track").html('<img src="images/icon-checkin.svg" /> Start Tracking');
+        }
+    },
+
+    contactTracking : function () {
+        var tracking = contactActionView._activeContact.activeTracking;
+
+        tracking = !tracking;
+
+        contactActionView._activeContact.set('activeTracking', tracking);
+
+        contactActionView.updateTrackingUX();
+    },
+
     openModal : function (contactId) {
 
         var time = ggTime.currentTimeInSeconds();
@@ -1581,7 +1601,11 @@ var contactActionView = {
                 var contactGroup = contact.group;
 
                 var contactIsAvailable = contact.isAvailable;
-
+                var contactTracking = contact.activeTracking;
+                if (contactTracking === undefined) {
+                    contactTracking = false;
+                }
+                contactActionView.updateTrackingUX();
                 // Add group name
                 if (contactGroup !== '' && contactGroup !== null) {
                     $("#currentGroup").removeClass("hidden");
@@ -1597,6 +1621,7 @@ var contactActionView = {
                 contactActionView._activeContact.set('category', contact.category);
                 contactActionView._activeContact.set('name', contactName);
                 contactActionView._activeContact.set('alias', contactAlias);
+                contactActionView._activeContact.set('activeTracking', contactTracking);
                 if (contact.photo !== undefined && contact.photo !== null) {
                     contactActionView._activeContact.set('photo', contact.photo);
                 } else {

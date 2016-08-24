@@ -2380,12 +2380,11 @@ var verifyPhoneModal = {
 
                 homeView.updateValidationUX();
                 verifyPhoneModal.closeModal();
+
             } else {
                 mobileNotify("Sorry, your code didn't match. ");
             }
 
-        } else {
-            verifyPhoneModal.closeModal();
         }
 
     }

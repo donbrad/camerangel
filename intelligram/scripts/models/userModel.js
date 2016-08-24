@@ -147,6 +147,8 @@ var userModel = {
 
         userDataChannel.init(uuid);
 
+        userStatusChannel.init(uuid);
+
         // Initialize application data channel with gg's unique ID
         appDataChannel.init();
 
@@ -334,9 +336,16 @@ var userModel = {
         
         userModel._user.set('isValidated', emailValidated && user.phoneValidated);
 
-        APP.kendo.navigate('#home');
+
 
         memberdirectory.update();
+
+        if (user.phoneValidated) {
+            APP.kendo.navigate('#home');
+        } else {
+            verifyPhoneModal.openModal();
+        }
+
 
     },
     
@@ -505,7 +514,6 @@ var userModel = {
         APP.pubnub = PUBNUB.init({
             publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
             subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
-            secret_key: 'sec-c-NDFiNzlmNTUtNWEyNy00OGUzLWExZjYtNDc3ZTI2ZGRlOGMw',
             ssl: true,
             jsonp: true,
             restore: true,

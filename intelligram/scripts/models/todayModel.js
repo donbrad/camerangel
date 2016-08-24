@@ -58,5 +58,13 @@ var todayModel = {
                 break;
 
         }
-    }
+    },
+
+    create : function (obj) {
+
+    },
+
+    delete : function (obj) {
+
+    },
 };
