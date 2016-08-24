@@ -656,7 +656,7 @@ var userStatus = {
             case 'currentPlaceUUID' :
 
                 updateObject.set(field, userModel._user.get(field));
-                
+
         }
     },
 
