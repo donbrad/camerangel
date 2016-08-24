@@ -179,9 +179,9 @@ var everlive = {
     },
 
     resendEmailValidation : function (email) {
-        var updateObject = {Id: userModel.currentUser.Id, Email : email};
+        var updateObject = {Id: userModel._user.Id, Email : email};
 
-        APP.everlive.Users.updateSingle(updateObj,
+        APP.everlive.Users.updateSingle(updateObject,
             function (data) {
                 var result = data.result;
                 mobileNotify("Email verification instructtions were sent to " + email);

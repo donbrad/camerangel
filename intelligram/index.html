@@ -3051,23 +3051,8 @@
 				<div class="messageMediaBar" style="text-align: center;">
 					<ul>
 						<li>
-							<a data-role="button" data-rel="actionsheet" href="#privateNotePhotoActions">
-								<img src="images/chat-camera.svg" height="24">
-							</a>
-						</li>
-						<li>
-							<a data-role="button" href="#galleryEditor?returnview=home">
-								<img src="images/gallery-grid-2.svg" height="24">
-							</a>
-						</li>
-						<li>
-							<a data-role="button" href="#noteEditor?returnview=home">
+							<a data-role="button" href="#noteEditor?returnview=gallery">
 								<img src="images/icon-myNotes.svg" height="20" />
-							</a>
-						</li>
-						<li>
-							<a data-role="button" data-click="privateNotesView.noteSearch">
-								<img src="images/icon-web.svg" height="24">
 							</a>
 						</li>
 						<li>
@@ -3083,7 +3068,7 @@
 			</div>
 		</div>
 	</div>
-	<ul data-role="actionsheet" id="galleryActions1" data-popup='{"direction": "left"}'>
+	<ul data-role="actionsheet" id="galleryActionsPhoto" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="galleryView.galleryCamera">
 				<img src="images/action-camera.svg" class="icon-action"/>
@@ -3094,6 +3079,18 @@
 			<a data-action="galleryView.galleryPhoto">
 				<img src="images/action-device.svg" class="icon-action">
 				Device Gallery
+			</a>
+		</li>
+	</ul>
+	<ul data-role="actionsheet" id="galleryActionsNote" data-popup='{"direction": "left"}'>
+		<li>
+			<a data-role="button" href="#noteEditor?returnview=home">
+				<img src="images/icon-myNotes.svg" height="20" />
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
+				<img src="images/icon-smartMenu.svg" height="24">
 			</a>
 		</li>
 	</ul>

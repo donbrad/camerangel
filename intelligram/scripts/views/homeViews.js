@@ -1099,6 +1099,7 @@ var noteEditView = {
         noteEditView.openEditor();
         noteEditView.initNote();
 
+
         if (e.view.params.noteid !== undefined) {
             noteEditView._noteUUID = e.view.params.noteid;
             var note = privateNoteModel.findNote(noteEditView._noteUUID);
@@ -1130,7 +1131,8 @@ var noteEditView = {
         if (e.view.params.returnview !== undefined) {
             noteEditView._returnview = e.view.params.returnview;
         } else {
-            noteEditView._returnview = null;
+
+            noteEditView._returnview = APP.kendo.view().id;
         }
 
         if (e.view.params.savecallback !== undefined) {

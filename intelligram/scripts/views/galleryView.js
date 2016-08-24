@@ -277,7 +277,7 @@ var galleryView = {
     },
 
     onAddGallery : function (e) {
-        $("#galleryActions1").data("kendoMobileActionSheet").open();
+        $("#galleryActionsPhoto").data("kendoMobileActionSheet").open();
     },
 
     onHide: function(e){
