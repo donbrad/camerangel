@@ -268,21 +268,6 @@ var homeView = {
        /* }*/
     },
 
-    selectView : function (index) {
-        switch (index) {
-            case 0: // Alerts
-                $('#home-today').addClass("hidden");
-                $('#home-alerts').removeClass("hidden");
-                ux.setSearchPlaceholder("Search Alerts...");
-                break;
-
-            case 1 : // Today
-                $('#home-today').removeClass("hidden");
-                $('#home-alerts').addClass("hidden");
-                ux.setSearchPlaceholder("Search Today...");
-                break;
-        }
-    },
 
     onInit: function(e) {
        // _preventDefault(e);
@@ -324,7 +309,7 @@ var homeView = {
             }
         });*/
 
-        $('#home-buttongroup').kendoMobileButtonGroup({
+        /*$('#home-buttongroup').kendoMobileButtonGroup({
             select: function(e) {
                 var index = e.index;
                 if (index != homeView._activeView) {
@@ -335,7 +320,8 @@ var homeView = {
 
             },
             index: homeView._activeView
-        });
+        });*/
+
 
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
@@ -369,8 +355,38 @@ var homeView = {
             }
         });
 
-
     },
+
+
+    onTabSelect: function(e){
+        var tab;
+        if(_.isNumber(e)){
+            tab = e;
+        } else {
+            tab = $(e.item[0]).data("tab");
+        }
+
+        if(tab == 0){
+            $("#home-tab-alert-img").attr("src", "images/icon-notify-light.svg");
+            $("#home-tab-today-img").attr("src", "images/icon-today.svg");
+
+            $("#home-alerts").removeClass("hidden");
+            $("#home-today").addClass("hidden");
+
+            ux.setSearchPlaceholder("Search Alerts...");
+        } else {
+            $("#home-tab-alert-img").attr("src", "images/icon-notify.svg");
+            $("#home-tab-today-img").attr("src", "images/icon-today-alt.svg");
+
+            $("#home-alerts").addClass("hidden");
+            $("#home-today").removeClass("hidden");
+
+            ux.setSearchPlaceholder("Search Today...");
+        }
+        homeView._activeView = tab;
+    },
+
+
 
     updateValidationUX : function () {
         if (userModel._user.isValidated) {
@@ -393,6 +409,7 @@ var homeView = {
 
     onShow: function (e) {
 
+
         // Set user availability
         ux.updateHeaderStatusImages();
 
@@ -400,7 +417,7 @@ var homeView = {
         ux.setAddTarget("images/nav-gear.svg", null, homeView.openSettingsAction);
 
         // Set the active view and the search text
-        homeView.selectView(homeView._activeView);
+        homeView.onTabSelect(homeView._activeView);
 
         homeView.updateValidationUX();
 
@@ -408,6 +425,7 @@ var homeView = {
         userDataChannel.history();
 
         //everlive.syncCloud();
+
 
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();
@@ -2349,7 +2367,10 @@ var verifyPhoneModal = {
         sendPhoneVerificationCode(phone, function (result) {
             if (result.status === 'ok') {
                 userModel._user.set('phoneVerificationCode', result.code);
-
+                // display ui
+                $(".verifyPhone-code-sent").velocity("slideDown").velocity("slideUp", {delay: 4000});
+            } else {
+                $(".verifyPhone-code-error").velocity("slideDown").velocity("slideUp", {delay: 4000});
             }
         });
     },
