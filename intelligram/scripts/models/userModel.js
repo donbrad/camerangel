@@ -689,11 +689,6 @@ var userStatus = {
     update : function () {
         var status = userStatus._statusObj;
 
-        var everliveData =  APP.everlive.data(userStatus._ggClass);
-
-        if (status.Id === undefined || status.Id === null) {
-            status.Id = everlive._id;
-        }
         status.set('userUUID', userModel._user.userUUID);
         status.set('isAvailable', userModel._user.isAvailable);
         status.set('isVisible', userModel._user.isVisible);
@@ -715,24 +710,7 @@ var userStatus = {
         status.set('lastUpdate', ggTime.currentTime());
 
 
-        everliveData.updateSingle( status,
-            function ( data) {
-                mobileNotify("User Status Updated");
-
-            },
-            function (error) {
-                if (error !== null) {
-                    if (error !== undefined && error.code === 801) {
-                        userStatus.create();
-                        return;
-                    }
-                   // mobileNotify("Update User Status error : " + JSON.stringify(error));
-                }
-
-            }
-        );
-
-        everlive.updateUserStatus();
+       userStatusChannel.sendStatus(status)
 
     }
 

@@ -10,6 +10,13 @@ var groupChannel = {
     users: [],
     channelUUID : '',
     channelName : '',
+
+    _class : 'group',
+    _message : 'message',   // message from member
+    _add : 'add',           // add member (from owner)
+    _remove : 'remove',     // remove member (from owner)
+    _delete : 'delete',     // delete chat (from owner)
+    _update : 'update',     // update (from owner)
     userId : '',
     userName : '',
     userAlias : '',
@@ -30,7 +37,6 @@ var groupChannel = {
             groupChannel.channelName = null;
             groupChannel.users = [];
         }
-
     },
     
     open : function (channelUUID, channelName, userId, name, alias, phoneNumber) {
@@ -52,15 +58,44 @@ var groupChannel = {
             windowing: 500,
             restore: true,
             callback: groupChannel.receiveHandler,
-           presence: groupChannel.presenceHandler,
+            presence: groupChannel.presenceHandler,
             // Set our state to our user object, which contains our username and public key.
             state: groupChannel.thisUser
         });
     },
     
     receiveHandler : function (msg) {
+
+        if (msg.msgType === undefined) {
+            msg.msgType = groupChannel._message;
+        }
+
+        switch (msg.msgType) {
+
+            case groupChannel._message :
+                    groupChannel.receiveMessage(msg);
+                break;
+
+            case groupChannel._add :
+
+                break;
+
+            case groupChannel._remove :
+
+                break;
+
+            case groupChannel._delete :
+
+                break;
+
+            case groupChannel._update :
+
+                break;
+
+
+        }
        
-        groupChannel.receiveMessage(msg);
+
   
     },
 
@@ -168,9 +203,11 @@ var groupChannel = {
         var currentTime =  ggTime.currentTime();
 
         APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Group Chat : " + groupChannel.channelName;
+            var notificationString = "Chat : " + groupChannel.channelName;
             var thisMessage = {
                 msgID: msgID,
+                msgClass : groupChannel._class,
+                msgType : groupChannel._message,
                 channelUUID : groupChannel.channelUUID,
                 pn_apns: {
                     aps: {
@@ -182,6 +219,7 @@ var groupChannel = {
                     senderName :  userModel._user.name,
                     target: '#channel?channelUUID='+ groupChannel.channelUUID,
                     channelUUID: groupChannel.channelUUID,
+                    msgType : groupChannel._message,
                     isMessage: true,
                     isPrivate: false
                 },
@@ -193,6 +231,7 @@ var groupChannel = {
                         senderName :  userModel._user.name,
                         target: '#channel?channelUUID='+ groupChannel.channelUUID,
                         channelUUID: groupChannel.channelUUID,
+                        msgType : groupChannel._message,
                         isMessage: true,
                         isPrivate: false
                     }
@@ -308,6 +347,7 @@ var groupChannel = {
     
     getMessageHistory: function (callBack) {
         var channel = channelModel.findChannelModel(groupChannel.channelUUID);
+
         groupChannel.end = ggTime.toPubNubTime(ggTime.currentTime());
         groupChannel.start = ggTime.toPubNubTime(ggTime.lastMonth());
         groupChannel.channelFetchCallBack = callBack;

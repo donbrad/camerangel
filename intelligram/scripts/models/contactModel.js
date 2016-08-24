@@ -36,6 +36,7 @@ var contactModel = {
     currentDeviceContact: {},
     unifiedDeviceContact: false,
     currentContact: null,
+    _initialSync: false,
     lastSyncTime : ggTime.currentTimeInSeconds() - 900,
     phoneDS: new kendo.data.DataSource(),
     emailDS: new kendo.data.DataSource(),
@@ -67,7 +68,34 @@ var contactModel = {
         // Reflect any core contact changes to contactList
         contactModel.contactsDS.bind("change", function (e) {
             var changedContacts = e.items;
-            if (e.action !== undefined) {
+            if (e.action === undefined) {
+                if (changedContacts !== undefined && !contactModel._initialSync) {
+
+                    contactModel._initialSync = true;
+                    appDataChannel.history();
+                    userDataChannel.history();
+                    if ( changedContacts.length > 0) {
+
+                        var len = changedContacts.length;
+                        for (var i = 0; i < len; i++) {
+                            var contact = changedContacts[i];
+                            var category = contact.category.toLowerCase();
+                            if (category === 'member' || category === 'invited') {
+                                // add to tag list
+                                tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
+                            } else if (contact.category === 'chat') {
+
+                            }
+
+                        }
+                    }
+
+                    contactModel.buildContactList();
+
+                    userStatusChannel.subscribeContacts();
+                }
+
+            } else {
 
                 switch (e.action) {
                     case "itemchange" :
@@ -92,6 +120,7 @@ var contactModel = {
                         if (contactList !== undefined) {
                             contactModel.contactListDS.remove(contactList);
                         }
+                        //todo: don - remove to update userStatusChannel
                         break;
 
                     case "sync" :
@@ -101,6 +130,7 @@ var contactModel = {
                         break;
 
                     case "add" :
+
                         var contact = e.items[0];
                         // add to contactlist and contacttags
                         var contactList = contactModel.findContactList(contact.uuid);
@@ -116,42 +146,22 @@ var contactModel = {
                             }
                         }
                         tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
-                         break;
+
+                        //todo: don - add to update userStatusChannel
+                        break;
                 }
             }
 
 
         });
 
+        // Cloud request is complete but hasn't been loaded into datasource
         contactModel.contactsDS.bind("requestEnd", function (e) {
                 var response = e.response,  type = e.type;
 
                 if (type === 'read' && response) {
                     if (!contactModel._fetched) {
                         contactModel._fetched = true;
-                        appDataChannel.history();
-                        userDataChannel.history();
-
-                        userStatusChannel.subscribeContacts();
-
-                        var changedContacts = contactModel.contactsDS.data();
-                        if (changedContacts !== undefined) {
-
-                            var len = changedContacts.length;
-                            for (var i = 0; i < len; i++) {
-                                var contact = changedContacts[i];
-                                var category = contact.category.toLowerCase();
-                                if (category === 'member' || category === 'invited') {
-                                    // add to tag list
-                                    tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
-                                } else if (contact.category === 'chat') {
-
-                                }
-
-                            }
-                        }
-
-                        contactModel.buildContactList();
                     }
                 }
         });
@@ -206,7 +216,7 @@ var contactModel = {
                 contactModel.contactListDS.add(contact);
             }
             
-            if (contact.category === 'Member') {
+            if (contact.category === 'member') {
                 var contactList = contactsView.contactCache[contact.contactUUID];
                 if (contactList !== undefined) {
                     contact.lat = contactList.lat;

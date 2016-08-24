@@ -421,6 +421,7 @@ var appDataChannel = {
             case 'packageRequest' : {
 
             } break;
+
             //  { type: 'userBlock',  userID: <userUUID>,  phone: <phone>, email: <email>}
             case 'userBlock' : {
                 // Todo:  user has violated terms of service or is spamming.  notify all contacts

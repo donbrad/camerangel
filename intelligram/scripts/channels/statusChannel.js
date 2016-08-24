@@ -12,15 +12,20 @@ var userStatusChannel = {
     _version: 1,
     _cloudClass: "statuschannel",
     _ggClass: 'StatusChannel',
+    _class : 'userstatus',
+    _status : 'status',
+    _update : 'update',
+    _alert : 'alert',
+    _event : 'event',
     _inited : false,
-    myChannelUUID : null,
+    channelUUID : null,
     myChannel : null,
     messagesDS : null,
     eventActive : false,
     eventUUID : null,
     eventName : null,
-    statusChannels  : [],  // Array of channel id's for pubnub subscribe.
-    trackChannels  : [],
+    statusArray  : [],  // Array of channel id's for pubnub subscribe.
+    trackArray  : [],
 
     init : function (userId) {
         if (userStatusChannel._inited) {
@@ -52,18 +57,6 @@ var userStatusChannel = {
                 if (!userStatusChannel._fetched) {
                     userStatusChannel._fetched = true;
 
-                    //notificationModel.processUnreadChannels();
-
-                    /* var total = response.length;
-                     if (total === 0 ) {
-                     var lastAccess = ggTime.lastWeek();
-                     } else {
-                     var lastMessage = response[(total-1)];
-                     lastAccess =  lastMessage.time;
-                     }
-                     userDataChannel.lastAccess = lastAccess;
-                     localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);*/
-
                     APP.pubnub.subscribe({
                         channel: userStatusChannel.channelUUID,
                         windowing: 100,
@@ -75,7 +68,7 @@ var userStatusChannel = {
 
                     });
 
-                    userStatusChannel.history();
+                    //userStatusChannel.history();
                 }
             }
         });
@@ -83,7 +76,7 @@ var userStatusChannel = {
         userStatusChannel.messagesDS.fetch();
     },
 
-    // Process contacts to build statusChannels and trackChannels
+    // Process contacts to build statusArray and trackArray
     subscribeContacts : function () {
         var count = contactModel.contactsDS.total();
 
@@ -95,15 +88,15 @@ var userStatusChannel = {
 
             if (contact.contactUUID !== null) {
                 var statusUUID = 'status-' + contact.contactUUID;
-                    userStatusChannel.statusChannels.push(statusUUID);
+                    userStatusChannel.statusArray.push(statusUUID);
                 if (contact.activeTracking) {
-                    userStatusChannel.trackChannels.push(statusUUID);
+                    userStatusChannel.trackArray.push(statusUUID);
                 }
             }
         }
 
         APP.pubnub.subscribe({
-            channel: userStatusChannel.statusChannels,
+            channel: userStatusChannel.statusArray,
             windowing: 100,
             message: userStatusChannel.channelStatusRead,
             connect: userStatusChannel.channelConnect,
@@ -113,6 +106,88 @@ var userStatusChannel = {
 
         });
 
+        userStatusChannel.trackContacts();
+    },
+
+    unsubscribeContacts : function () {
+        APP.pubnub.unsubscribe({
+            channel: userStatusChannel.statusArray
+        });
+    },
+
+    trackContacts : function () {
+        var list = userStatusChannel.trackArray;
+        
+        if (list.length === 0) {
+            return;
+        } 
+        
+        for (var i=0; i< list.length; i++) {
+            serverPush.provisionGroupChannel(list[i]);
+        }
+
+    },
+
+    untrackContacts : function () {
+        var list = userStatusChannel.trackArray;
+
+        if (list.length === 0) {
+            return;
+        }
+
+        for (var i=0; i< list.length; i++) {
+            serverPush.unprovisionGroupChannel(list[i]);
+        }
+    },
+
+    history : function () {
+
+    },
+
+    sendStatus : function (status) {
+
+        APP.pubnub.uuid(function (msgID) {
+
+            var truncStr = status.statusMessage.smartTruncate(24, true);
+            var notificationString =  userModel._user.name + ': "' + truncStr + '"';
+            var message = {
+                msgID: msgID,
+                msgClass : userStatusChannel._class,
+                msgType : userStatusChannel.status,
+                sender: userModel._user.userUUID,
+                time: ggTime.currentTimeInSeconds(),
+                status : status,
+                pn_apns: {
+                    aps: {
+                        alert : notificationString,
+                        badge: 1,
+                        'content-available' : 1
+                    },
+                    target: '#contacts',
+                    contactId: userModel._user.userUUID
+                },
+                pn_gcm : {
+                    data : {
+                        title: notificationString,
+                        message: status.statusMessage,
+                        image: "icon",
+                        target: '#contacts',
+                        contactId: userModel._user.userUUID
+                    }
+                }
+            };
+
+            APP.pubnub.publish({
+                channel: userStatusChannel.channelUUID,
+                message: message,
+                error: userStatusChannel.channelError,
+                callback: function (m) {
+                    var status = m[0], statusText = m[1];
+                   // userStatusChannel.addMessage(m);
+
+                }
+            });
+        });
     },
 
     channelRead : function (msg) {
@@ -133,6 +208,10 @@ var userStatusChannel = {
 
          case 'status' : {
             // contact status message
+             var contact = contactModel.findContact(msg.contactId);
+             if (contact !== undefined && contact !== null) {
+
+             }
 
              } break;
 
@@ -151,6 +230,7 @@ var userStatusChannel = {
     },
 
     addMessage : function (message) {
+
         if (userStatusChannel.isDuplicateMessage(message.msgID))
             return;
 
