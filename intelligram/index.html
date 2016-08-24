@@ -245,10 +245,10 @@
             </li>
             <li>
                 <a data-role="button" href="#gallery" data-click-on="down">
-                	<svg height="24px" viewBox="0 0 26 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-							<g id="nav-gallery" transform="translate(-323.000000, -636.000000)" fill="#979797">
-								<path d="M325.31504,634.21632 L325.31504,649.49632 L345.82128,649.49632 L345.82128,634.21632 L325.31504,634.21632 Z M345.01488,648.6912 L326.1176,648.6912 L326.1176,635.01856 L345.01488,635.01856 L345.01488,648.6912 Z M323.30384,631.80256 L341.79888,631.80256 L341.79888,633.4112 L342.6024,633.4112 L342.6024,631 L322.5,631 L322.5,646.28 L324.50864,646.28 L324.50864,645.47488 L323.30384,645.47488 L323.30384,631.80256 Z" id="Imported-Layers-Copy-2" transform="translate(334.500000, 643.000000) scale(-1, -1) translate(-334.500000, -643.000000) "></path>
+					<svg width="23px" height="24px" viewBox="0 0 23 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+							<g id="nav-gallery" transform="translate(-42.000000, -254.000000)" stroke="#979797">
+								<path d="M53.5332188,255 C52.6229679,255 51.5014416,255.21422 50.5742592,255.9143 C49.6467088,256.614748 48.9521502,257.809521 48.9521502,259.598 L48.9521502,260.451935 C48.9521502,262.216122 49.4196062,263.357892 49.866818,264.230599 C50.3140298,265.103306 50.7034538,265.685602 50.7034538,266.421753 C50.7034538,266.963929 50.4837127,267.34047 50.0825103,267.690142 C49.6813079,268.039445 49.0901785,268.328385 48.4000368,268.595976 C47.0212257,269.130789 45.2901662,269.556285 44.0092632,270.407276 L44.0004294,270.407276 C43.4008343,270.812895 43,271.45261 43,272.391571 L43,274.945279 C43,275.121956 43.1593767,275.2817 43.3364211,275.2817 L63.790381,275.2817 C63.9670572,275.2817 64.126802,275.121956 64.126802,274.945279 L64.126802,272.391571 C64.126802,271.45261 63.7226551,270.812895 63.1260045,270.407276 L63.1175388,270.407276 C61.8347954,269.556285 60.1096252,269.130789 58.7263972,268.595976 C58.0347831,268.328385 57.4296669,268.039445 57.0269922,267.690142 C56.6243175,267.34047 56.4145144,266.963929 56.4145144,266.421753 C56.4145144,265.682658 56.7895835,265.103306 57.2253849,264.230599 C57.6611864,263.357892 58.1139194,262.215017 58.1139194,260.451935 L58.1139194,259.598 C58.1139194,257.809521 57.4267223,256.614748 56.5006441,255.9143 C55.5749341,255.21422 54.4419974,255 53.5332188,255 L53.5332188,255 L53.5332188,255 Z"></path>
 							</g>
 						</g>
 					</svg>
@@ -413,8 +413,9 @@
    
 <!-- home - for signed in users -->
 <div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
-	<div class="appBox">
-		<div id="home-verify-div"  >
+
+	<div class="appBox noPad">
+		<div id="home-verify-div">
 			<span class="left">
 					<a class="btnClear-red" data-role="button" id="home-verify-phone" data-click="verifyPhoneModal.openModal">Verify My Phone</a>
 				</span>
@@ -422,43 +423,42 @@
 					<a class="btnClear-red" data-role="button" id="home-verify-email" data-click="verifyEmailModal.openModal">Verify My Email</a>
 				</span>
 		</div>
-		<ul id="home-buttongroup" style="padding: 6px; font-size: 1.2em;">
-			<li>
-				<img src="images/notify-icon.svg" height="20" /> Alerts
-			</li>
-			<li>
-				<img src="images/icon-time-primary.svg" height="20" /> Today
-			</li>
-		</ul>
-		<div id="home-alerts">
-			<div class="notify-title ">
+			<div data-role="tabstrip" id="home-buttongroup" class="tabBar" data-select="homeView.onTabSelect">
+				<a data-tab="0">
+					<img src="images/icon-notify-light.svg"  id="home-tab-alert-img" /> Alerts
+				</a>
+				<a data-tab="1">
+					<img src="images/icon-today.svg" id="home-tab-today-img" /> Today
+				</a>
+			</div>
+			<div id="home-alerts">
+				<div class="notify-title ">
 				<span class="right">
 					<a class="btnClear-grey-sm" data-role="button" data-click="homeView.clearNotifications">Clear</a>
 				</span>
+				</div>
+				<div class="clearfix"></div>
+				<ul class="home-notification" id="notification-listview"></ul>
+				<div class="emptyState hidden">
+					<img src="images/empty-home.svg" />
+				</div>
 			</div>
-			<div class="clearfix"></div>
-			<ul class="home-notification" id="notification-listview"></ul>
-			<div class="emptyState hidden">
-				<img src="images/empty-home.svg" />
+
+			<div id="home-today" class="hidden">
+				<div class="notify-title ">
+
+				</div>
 			</div>
-		</div>
-
-		<div id="home-today" class="hidden">
-			<div class="notify-title ">
-
-			</div>
-		</div>
-
   	</div>
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
 
 	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
-		<li><a data-action="privateNotesView.noteEvent"><img src="images/smart-event.svg" class="icon-smart"/> Add Event</a></li>
-		<li><a data-action="privateNotesView.noteFlight"><img src="images/intelliFlight-icon.svg" class="icon-sm"/> Add Flight</a></li>
-		<li><a data-action="privateNotesView.noteMovie"><img src="images/smart-movie.svg" class="icon-smart"/> Add Movie</a></li>
-		<li><a data-action="privateNotesView.noteTrip"><img src="images/intelliTrip-icon.svg" class="icon-sm"/> Add Trip</a></li>
-		<li><a data-action="privateNotesView.noteAccount"><img src="images/icon-lock.svg" class="icon-smart"/> Add Account</a></li>
-		<li><a data-action="privateNotesView.noteMedical"><img src="images/gg-medical.svg" class="icon-smart"/> Add Medical</a></li>
+		<li><a data-action="privateNotesView.noteCalendar"><img src="images/icon-event.svg" class="icon-smart"/> Add Event</a></li>
+		<li><a data-action="privateNotesView.noteFlight"><img src="images/intelliFlight-icon.svg" class="icon-smart"/> Add Flight</a></li>
+		<li><a data-action="privateNotesView.noteTrip"><img src="images/intelliTrip-icon.svg" class="icon-smart"/> Add Trip</a></li>
+		<li><a data-action="privateNotesView.noteMovie"><img src="images/intelliMovie-icon.svg" class="icon-smart"/> Add Movie</a></li>
+		<li><a data-action="privateNotesView.noteAccount"><img src="images/icon-account.svg" class="icon-smart"/> Add Account</a></li>
+		<li><a data-action="privateNotesView.noteMedical"><img src="images/icon-medical.svg" class="icon-smart"/> Add Medical</a></li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
@@ -687,7 +687,7 @@
 		   </ul>
 	   </div>
     </div>
-	 <a class="btnSpan testingHome" href="#usersignin" type="button" data-role="button">
+	 <a class="btnSpan testingHome" href="#usersignin" data-role="button">
 		 <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>
     <div class="footer" data-role="footer" id="newuserhome-footer">
     	<a class="btnSecondary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
@@ -713,7 +713,9 @@
 				</li>
 				<li>
 					<label>Password</label>
+
 					<input type="password" class="signupForm" id="home-signin-password" value=""  name="Password" placeholder="password..." required />
+
 					<span id="forgotPassword" class="btnClear-grey" data-click="recoverPasswordView.openModal" data-role="button">Forgot password?</span>
 				</li>
 				<li>
@@ -787,12 +789,18 @@
 	            <li>
 	                <div>Enter 6 Number code </div>
 	                <input type="tel" id="verifyPhone-code" value="" />
-	              	<span class="helper helper-right btnClear-grey" data-click="verifyPhoneModal.sendCode" data-role="button">
+	              	<a class="btnClear-sm" data-click="verifyPhoneModal.sendCode" data-role="button">
 	              		Resend Verification code
-	              	</span>
+	              	</a>
 	            </li>
 	        </ul>
    	</div>
+	<div class="verifyPhone-code-sent">
+		<p>Text message sent!</p>
+	</div>
+	<div class="verifyPhone-code-error">
+		<p>Error sending text message.</p>
+	</div>
 	<div class="footer" data-role="footer">
 		<a class="btnIncomplete btnFull-modal" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" id="modalview-verifyPhone-btn">Verify</a>
 	</div>
@@ -1132,7 +1140,7 @@
 		<ul id="galleryEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" data-align="right" id=galleryEditor-saveBtn" class="btnClear">Save</a>
+		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" data-align="right" id="galleryEditor-saveBtn">Save</a>
 	</div>
 
 
@@ -1311,7 +1319,7 @@
 		<ul class="list-inline hasMotion" id="contactActionBtns">
 			<li>
 				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking" >
-					<img src="images/icon-checkin.svg" /> Start Tracking
+					<img src="images/icon-tracking.svg" /> Start Tracking
 				</a>
 			</li>
 			<li>
@@ -2241,10 +2249,10 @@
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
 		<li><a id="messageAlertLi" data-action="channelView.messageAlert"><img src="images/icon-unmute.svg" class="icon-smart"/> Add Alert</a></li>
-		<li><a data-action="channelView.messageCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
+		<li><a data-action="channelView.messageCalendar"><img src="images/icon-event.svg" class="icon-smart"/> Add Event</a></li>
 		<li><a data-action="channelView.messageFlight"><img src="images/intelliFlight-icon.svg" class="icon-smart"/> Add Flight</a></li>
-		<li><a data-action="channelView.messageMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
-		<li><a data-action="channelView.messagePlace"><img src="images/smart-coffee.svg" class="icon-smart"/> Add Place</a></li>
+		<li><a data-action="channelView.messageMovie"><img src="images/intelliMovie-icon.svg" class="icon-smart"/> Add Movie</a></li>
+		<li><a data-action="channelView.messagePlace"><img src="images/icon-place-dark.svg" class="icon-smart"/> Add Place</a></li>
 		<li><a data-action="channelView.messageTrip"><img src="images/intelliTrip-icon.svg" class="icon-smart"/> Add Trip</a></li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
@@ -2973,16 +2981,15 @@
  * gallery
  */-->
 <div data-role="view" data-title="My Safe" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
-	<div  class="appBox">
-
-		<ul id="gallery-buttongroup" style="padding: 6px; font-size: 1.2em;">
-			<li>
-				<img src="images/icon-myNotes.svg" height="20" /> Notes
-			</li>
-			<li>
-				<img src="images/gallery-grid-2.svg" height="20" /> Photos
-			</li>
-		</ul>
+	<div  class="appBox noPad">
+		<div id="gallery-buttongroup" class="tabBar" data-role="tabstrip" data-select="galleryView.onTabSelect">
+			<a data-tab="0">
+				<img src="images/icon-myNotes-light.svg" id="galleryView-tab-notes" /> Notes
+			</a>
+			<a data-tab="1">
+				<img src="images/chat-photo.svg" id="galleryView-tab-photos" /> Photos
+			</a>
+		</div>
 
 
 		<div id="gallery-photos" class="hidden">
@@ -3090,11 +3097,7 @@
 			</a>
 		</li>
 	</ul>
-
 </div>
-
-
-
 
 
 <div data-role="view" data-title="Filter" id="filterGallery" data-layout="main" data-transition="overlay:up" data-init="archiveView.onFilterInit" style="display: none;">
@@ -3473,8 +3476,7 @@
 <div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance" data-model="smartTripView.activeObject">
 	<div class="intelli-header">
 		<img src="images/intelliTrip-light.svg" alt="intelliTrip"/>
-		<p class="intelli-subheader tripEdit">Quickly share your trip with friends and family.</p>
-		<p class="intelli-subheader tripView">Trip From: <span data-bind="text: senderName"></span></p>
+		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
 		<div class="smartTripView-error hidden">
 			<p class="error-msg">
 				Sorry, we are having trouble processing your route. Try another transport option or change locations.
@@ -3564,7 +3566,7 @@
 				</ul>
 			</form>
 
-				<a data-click="smartTripView.onRouteComplete" data-role="button" id="smartTripView-routeCompleteBtn" class="btnFull-modal btnPrimary tripEdit tripEditRouteNext" data-card="1">
+				<a data-click="smartTripView.onRouteComplete" data-role="button" id="smartTripView-routeCompleteBtn" class="btnFull-modal btnPrimary hidden tripEditRouteNext" data-card="1">
 					Next
 				</a>
 		</div>
@@ -3578,12 +3580,16 @@
 						<p class="helper" id="smartTripView-arrival-text">Intelligram helps you leave on time by calculating future traffic patterns and alerting you when you should leave. Recommended for meetings.</p>
 					</li>
 					<li>
-						<input type="radio" name="arrival" id="smartTripView-arrival-yes" class="k-radio" value="true">
-						<label class="k-radio-label" for="smartTripView-arrival-yes">Yes</label>
+						<input type="radio" name="arrival" id="smartTripView-arrival-yes" class="k-radio" value="0">
+						<label class="k-radio-label" for="smartTripView-arrival-yes">Yes, select arrival time</label>
 					</li>
 					<li>
-						<input type="radio" name="arrival" id="smartTripView-arrival-no" class="k-radio" value="false">
-						<label class="k-radio-label" for="smartTripView-arrival-no">No, I'm flexible</label>
+						<input type="radio" name="arrival" id="smartTripView-arrival-no" class="k-radio" value="1">
+						<label class="k-radio-label" for="smartTripView-arrival-no">No, select departure time</label>
+					</li>
+					<li>
+						<input type="radio" name="arrival" id="smartTripView-arrival-flex" class="k-radio" value="2">
+						<label class="k-radio-label" for="smartTripView-arrival-flex">I'm flexible</label>
 					</li>
 					<li id="smartTripView-departure-time" class="hidden">
 						<label> Departure </label> <br />
@@ -3658,32 +3664,41 @@
 		</div>
 	</div>
 	<div class="intelliTrip tripView">
-		<div class="header">
-			<p class="intelliTrip-title"><span data-bind="text: name"></span> </p>
-			<div class="helper intelliTrip-subheader" style="font-size: 1.3em;">
-				<p><strong>From:</strong> <span data-bind="text: originName"></span> </p>
-				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
-				<p><strong>To:</strong> <span data-bind="text: destinationName"></span></p>
+		<div class="header cardHeader">
+			<p class="intelliTrip-title" data-bind="text: name"></p>
+			<div class="helper intelliTrip-subheader">
+				Sent by <span data-bind="text: senderName"></span>
 			</div>
-			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
-				Departing : <span data-bind="text: dateDeparture"></span> @ <span data-bind="text: timeDeparture"></span>
-			</p>
-			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
-				Arriving : <span data-bind="text: dateArrival"></span> @ <span data-bind="text: timeArrival"></span>
-			</p>
-			<p class="helper intelliTrip-subheader" style="font-size: 1.2em;">
-				<img src="images/icon-time.svg" class="icon-sm" /> <span data-bind="text: durationString"></span> (<span data-bind="text: distanceString"></span>)
+		</div>
+		<div class="summary">
+			<div class="intelli-update hidden" id="intelliTrip-update">
+				<p class="update-header"><img src="images/icon-time-primary.svg" /> Recent Update</p>
+				<p class="update-content">Stopping for gas</p>
+				<p class="update-time">10 mins ago</p>
+			</div>
+			<div class="origin-summary">
+				<label>Departing</label>
+				<p class="address" data-bind="text: origin.address"></p>
+				<p class="tripTime" data-bind="text: departure"></p>
+			</div>
+			<div class="destination-summary">
+				<label>Arriving</label>
+				<p class="address" data-bind="text: destination.address"></p>
+				<p class="tripTime" data-bind="text: arrival"></p>
+			</div>
+			<p>
+				<img src="images/icon-time.svg" class="icon-sm" />
+				<span data-bind="text: durationString"></span>
+				(<span data-bind="text: distanceString"></span>)
 			</p>
 		</div>
-
 	</div>
 
-	<div class="footer" data-role="footer">
-
+	<div class="modalFooter intelliTrip-action">
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-restartBtn" data-click="smartTripModal.onRestart">Restart</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-returnBtn" data-click="smartTripModal.onReturn">Return</a>
 		<a class="btnFull-modal btnPrimary hidden" data-role="button" id="smartTripModal-doneBtn" data-click="smartTripModal.onViewDone">Done</a>
-		<a class="btnFull-modal" data-role="button" data-click="smartTripView.onCancel">Cancel</a>
+		<a class="btnFull-modal" data-role="button" data-click="smartTripView.onCancel" id="smartTripModal-cancelBtn">Cancel</a>
 	</div>
 </div>
 
@@ -3694,23 +3709,27 @@
 				<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
 				<p class="helper intelliTrip-subheader">
 					<span>#:origin#</span>
-					<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" class="icon-sm" /> </span>
+					<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" /> </span>
 					<span>#:destination#</span>
-				</p>
-				<p class="helper intelliTrip-subheader">
-					Departing : <span>#:departure#</span>
 				</p>
 			</div>
 			<div class="map hidden">
 				<!-- sample static map -->
-				<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+franisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san franisco">
+				<!--<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+francisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san francisco">-->
 			</div>
-			<div class="footer">
-				<ul class="list-unstyled intelliTrip-details">
-					<li>
-						<img src="images/icon-time.svg" class="icon-sm" /> #:durationString# (#:distanceString#)
-					</li>
-				</ul>
+			<div class="footer cardFooter">
+				# if(data.tripTimeType === 'arrival') {#
+					<p class="intelliTrip-details">
+						<img src="images/icon-date.svg" class="icon-sm" /> #:arrival#
+					</p>
+				#} else if(data.tripTimeType === 'departure'){#
+					<p class="intelliTrip-details">
+						<img src="images/icon-date.svg" class="icon-sm" /> #:departure#
+					</p>
+				#}#
+				<p class="intelliTrip-details">
+					<img src="images/icon-time.svg" class="icon-sm" /> #:durationString# (#:distanceString#)
+				</p>
 			</div>
 	</div>
 </script>
@@ -5428,7 +5447,7 @@
 					<span data-bind="text: durationString"></span>
 				</p>
 			</div>
-			<div class="intelliFlight-updates hidden">
+			<div class="intelli-update hidden" id="intelliFlight-update">
 				<p class="update-header"><img src="images/icon-time-primary.svg" /> Recent Update</p>
 				<p class="update-content">Flight took off at 8:17am</p>
 				<p class="update-time">5 mins ago</p>
@@ -5936,15 +5955,9 @@
 		</div>
 	</div>
 
-	<!--<ul data-role="actionsheet" id="privateNoteSmartObjects" >
-		<li><a data-action="privateNotesView.noteCalendar"><img src="images/smart-event-alt.svg" class="icon-smart"/> Add Event</a></li>
-		<li><a data-action="privateNotesView.noteFlight"><img src="images/intelliFlight-icon.svg" class="icon-sm"/> Add Flight</a></li>
-		<li><a data-action="privateNotesView.noteTrip"><img src="images/smart-note.svg" class="icon-sm"/> Add Trip</a></li>
-		<li><a data-action="privateNotesView.noteMovie"><img src="images/smart-movie-circle.svg" class="icon-smart"/> Add Movie</a></li>
-		<li><a data-action="privateNotesView.noteAccount"><img src="images/smart-note.svg" class="icon-smart"/> Add Account</a></li>
-		<li><a data-action="privateNotesView.noteMedical"><img src="images/smart-note.svg" class="icon-smart"/> Add Medical</a></li>
-		&lt;!&ndash;<li><a data-action="channelView.messageMusic"> Add Music</a></li>&ndash;&gt;
-	</ul>-->
+
+
+
 
 	<!--<ul data-role="actionsheet"  id="privateNotePhotoActions" >
 		<li>

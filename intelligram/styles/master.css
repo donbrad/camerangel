@@ -688,17 +688,17 @@
 .left-txt {
   text-align: left;
 }
-.appBox {
+.appBox:not(.noPad) {
   padding: 0.5rem 1rem;
 }
-.appBox h1,
-.appBox h2,
-.appBox h3,
-.appBox h4,
-.appBox h5,
-.appBox p {
-  margin-left: 0px;
-  margin-right: 0px;
+.appBox:not(.noPad) h1,
+.appBox:not(.noPad) h2,
+.appBox:not(.noPad) h3,
+.appBox:not(.noPad) h4,
+.appBox:not(.noPad) h5,
+.appBox:not(.noPad) p {
+  margin-left: 0;
+  margin-right: 0;
 }
 .listBox {
   padding-left: 1rem;
@@ -1273,6 +1273,24 @@ form p {
 .km-material .km-navbar .km-button.km-state-active,
 .km-material .k-toolbar .km-button.km-state-active {
   background: none;
+}
+.verifyPhone-code-sent {
+  background-color: #009688;
+  color: #fff;
+  position: absolute;
+  bottom: 2em;
+  width: 100%;
+  display: none;
+  margin-bottom: 0.25em;
+}
+.verifyPhone-code-error {
+  background-color: #E57373;
+  color: #fff;
+  position: absolute;
+  bottom: 2em;
+  width: 100%;
+  display: none;
+  margin-bottom: 0.25em;
 }
 .gg-read-value {
   font-size: 1.2em;
@@ -2052,6 +2070,9 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-modalview {
   border: inherit;
 }
+div.footer.km-footer {
+  border-radius: 0 0 4px 4px !important;
+}
 .km-material .km-switch-handle {
   background: #fff;
 }
@@ -2138,6 +2159,48 @@ div.footerMenu.km-footer > ul > li > a:active {
 .km-material .km-navbar.home-smallHeader .km-view-title {
   padding: 0px !important;
   font-size: 14px;
+}
+.km-material .km-navbar,
+.km-material .k-toolbar,
+.km-material .km-tabstrip {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.tabBar {
+  box-shadow: none !important;
+  border-bottom: 1px solid #E0E0E0;
+}
+.tabBar a {
+  background-color: #f5f5f5 !important;
+  color: #4A4A4A !important;
+  font-size: 1em !important;
+  padding: 0.5em !important;
+  border-radius: 0 !important;
+}
+.tabBar a > span {
+  display: inline-block !important;
+}
+.tabBar a img {
+  margin-right: 0.25em !important;
+  vertical-align: middle;
+  height: 1.25em;
+  max-width: 1.25em;
+}
+.tabBar a.km-button.km-state-active {
+  background-color: #6CADF3 !important;
+  color: #fff !important;
+}
+#home-buttongroup {
+  box-shadow: none !important;
+}
+#home-buttongroup > a.km-button.km-state-active #home-buttongroup > a.km-button > span {
+  display: inline-block;
+}
+#home-buttongroup > li.km-button > span > img {
+  vertical-align: text-top;
+  margin-right: 0.15em;
+  height: 1em;
+  max-width: 1em;
 }
 .home-header > div.view-content.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
   background-image: linear-gradient(-1deg, #F5F5F5 53%, #FFFFFF 100%);
@@ -3452,8 +3515,7 @@ a:hover {
   padding: 0 !important;
 }
 .km-material .km-navbar,
-.km-material .k-toolbar,
-.km-material .km-tabstrip {
+.km-material .k-toolbar {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
 }
@@ -6972,8 +7034,10 @@ table.k-editor {
 #smartTripView-arrival-time {
   margin-top: 1em;
 }
-#smartTripView-step-2 > form > ul > li:nth-child(3) {
+#smartTripView-step-2 > form > ul > li {
   margin-top: 0.5em;
+}
+#smartTripView-step-2 > form > ul > li:nth-child(4) {
   margin-bottom: 1em;
 }
 #smartTripView-travelTime-box {
@@ -6989,7 +7053,7 @@ table.k-editor {
   font-size: 1.25em;
   font-weight: 600;
 }
-#smartTripModal > div.footer.km-footer > a.btnFull-modal.km-widget.km-button {
+#smartTripModal > div.footer > a.btnFull-modal.km-widget.km-button {
   background-color: #80CBC4 !important;
   color: #fff;
 }
@@ -7006,6 +7070,10 @@ table.k-editor {
 .tripEditOptions:last-child {
   margin-bottom: 2em;
 }
+.chat-message-text > .intelliTrip {
+  width: 100%;
+  margin: 0 !important;
+}
 .intelliTrip {
   width: 90%;
   margin-left: 5%;
@@ -7013,17 +7081,30 @@ table.k-editor {
   border-radius: 4px;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  /*.destination-summary::before {
+    width: 1em;
+    height: 1em;
+    border-radius: 0.5em;
+    background-color: @shade-200;
+    border: 2px solid @shade-200;
+    display: inline-block;
+  }*/
 }
 .intelliTrip .header {
-  padding: 0.5em 1em;
+  padding: 0.5em;
 }
 .intelliTrip .header p {
   padding: 0;
   margin: 0;
 }
-.intelliTrip .header p img {
-  height: 1.2em;
-  max-width: 1.2em;
+.intelliTrip .header p > img {
+  height: 1em;
+  max-width: 1em;
+  vertical-align: text-top;
+}
+.intelliTrip .header .intelliTrip-title {
+  font-size: 1.2em;
+  font-weight: 600;
 }
 .intelliTrip .map {
   width: 100%;
@@ -7033,8 +7114,68 @@ table.k-editor {
   max-height: 100%;
   width: 100%;
 }
+.intelliTrip .footer {
+  border-top: 2px dotted #E0E0E0;
+}
+.intelliTrip .footer .intelliTrip-details {
+  font-size: 1em;
+  padding: 0.25em 0.5em;
+}
+.intelliTrip .footer .intelliTrip-details img {
+  height: 0.875em;
+  max-width: 0.875em;
+  vertical-align: baseline;
+}
 .intelliTrip .footer a {
   border-radius: 0 4px 4px 0;
+}
+.intelliTrip .summary {
+  margin: 0.5em;
+  display: inline-block;
+}
+.intelliTrip .summary p {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.intelliTrip .summary .address {
+  font-size: 1.2em;
+}
+.intelliTrip .origin-summary label {
+  color: #979797;
+}
+.intelliTrip .origin-summary label img {
+  height: 12px;
+}
+.intelliTrip .destination-summary {
+  margin: 1em 0 1em;
+}
+.intelliTrip .destination-summary label {
+  color: #979797;
+}
+.intelliTrip .destination-summary label img {
+  height: 12px;
+}
+#smartTripModal > div > div.intelliTrip.tripView > div.header {
+  border-bottom: 2px dotted #E0E0E0;
+}
+.modalFooter.intelliTrip-action {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0;
+  right: 0;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.modalFooter.intelliTrip-action > a {
+  color: #fff !important;
+  border-radius: 3em !important;
+}
+.modalFooter.intelliTrip-action > a.km-state-active {
+  color: #80CBC4 !important;
+}
+#smartTripModal > div > div.intelliTrip.tripView {
+  margin-top: 2em;
 }
 .intelliTrip-map {
   width: 100%;
@@ -7044,12 +7185,12 @@ table.k-editor {
   max-height: 100%;
   width: 100%;
 }
-.intelliTrip-title {
-  font-size: 1.2em;
+.cardHeader > .intelliTrip-title {
+  font-size: 1.5em !important;
   font-weight: 600;
 }
 .intelliTrip-subheader {
-  font-size: 0.75em;
+  font-size: 0.875em;
 }
 #intelliCard-back-2,
 #intelliCard-back-3 {
@@ -7061,12 +7202,15 @@ table.k-editor {
   margin-left: 0.25em;
   margin-right: 0.25em;
 }
-.intelliTrip-arrow img {
+.intelliTrip-arrow > img {
   max-height: 1em !important;
   width: 1em !important;
   vertical-align: middle;
 }
-.intelliTrip-details {
+.intelliTrip-details:first-child {
+  padding-top: 0.5em !important;
+}
+.intelliTrip-details:last-child {
   border-bottom: 2px dotted #f5f5f5;
 }
 /* intelliFlight */
@@ -7140,7 +7284,8 @@ table.k-editor {
 }
 .intelliFlight .summary .liner {
   width: 20%;
-  height: 2px;
+  height: 1px;
+  border: 2px dotted;
   background-color: #4A4A4A;
   margin-top: 1em;
 }
@@ -7156,34 +7301,34 @@ table.k-editor {
   margin-top: 0.5em;
   border-top: 2px dotted #E0E0E0;
 }
-.intelliFlight-updates {
-  margin: 0.5em 1em;
+.intelli-update {
+  margin-bottom: 1em;
   border: 1px solid #E0E0E0;
   border-radius: 4px;
   padding: 0.5em;
   background-color: #f5f5f5;
 }
-.intelliFlight-updates p {
+.intelli-update p {
   margin-left: 0;
   margin-right: 0;
 }
-.intelliFlight-updates .update-header {
+.intelli-update .update-header {
   margin-bottom: 0.25em;
   color: #6CADF3;
   font-size: 0.85em;
 }
-.intelliFlight-updates .update-header img {
+.intelli-update .update-header img {
   height: 0.85em;
   max-width: 0.85em;
 }
-.intelliFlight-updates .update-content {
+.intelli-update .update-content {
   font-size: 1em;
 }
-.intelliFlight-updates .update-time {
+.intelli-update .update-time {
   color: #979797;
   font-size: 0.75em;
 }
-.intelliFlight-updates .update-time img {
+.intelli-update .update-time img {
   height: 12px;
 }
 .arrival-summary {

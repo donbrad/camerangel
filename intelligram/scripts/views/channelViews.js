@@ -2478,11 +2478,12 @@ var channelView = {
             name: smartTrip.name,
             origin: orig,
             destination: dest,
-            departure: moment(smartTrip.departure).format ("ddd, MMM Do, YYYY @ h:mm a"),
-            arrival: moment(smartTrip.arrival).format ("ddd, MMM Do, YYYY @ h:mm a"),
+            departure: moment(smartTrip.departure).format ("ddd, M/D @ h:mm a"),
+            arrival: moment(smartTrip.arrival).format ("ddd, M/D @ h:mm a"),
             durationString: smartTrip.durationString,
             distanceString: smartTrip.distanceString,
-            objectId : objectId
+            objectId : objectId,
+            tripTimeType: smartTrip.tripTimeType
         };
 
         var objectUrl = template(dataObj);

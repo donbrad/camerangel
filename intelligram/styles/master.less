@@ -134,11 +134,11 @@
   text-align: left;
 }
 
-.appBox {
+.appBox:not(.noPad) {
   padding: 0.5rem 1rem;
   h1, h2, h3, h4, h5, p {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
@@ -671,6 +671,26 @@ form {
 
 .km-material .km-navbar .km-button.km-state-active, .km-material .k-toolbar .km-button.km-state-active {
   background: none;
+}
+
+.verifyPhone-code-sent {
+  background-color: @success-100;
+  color: #fff;
+  position: absolute;
+  bottom: 2em;
+  width: 100%;
+  display: none;
+  margin-bottom: 0.25em;
+}
+
+.verifyPhone-code-error {
+  background-color: @warning-100;
+  color: #fff;
+  position: absolute;
+  bottom: 2em;
+  width: 100%;
+  display: none;
+  margin-bottom: 0.25em;
 }
 
 .gg-read-value {
@@ -1471,6 +1491,10 @@ div.footerMenu.km-footer > ul > li > a:active {
   border: inherit;
 }
 
+div.footer.km-footer {
+  border-radius: 0 0 4px 4px !important;
+}
+
 .km-material .km-switch-handle {
   background: #fff;
 }
@@ -1574,6 +1598,57 @@ div.footerMenu.km-footer > ul > li > a:active {
 
 .home-header > div.km-header > div {
 
+}
+
+.km-material .km-navbar, .km-material .k-toolbar, .km-material .km-tabstrip {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.tabBar {
+  box-shadow: none !important;
+  border-bottom: 1px solid @shade-200;
+  a {
+    background-color: @shade-300 !important;
+    color: @black !important;
+    font-size: 1em !important;
+    padding: 0.5em !important;
+    border-radius: 0 !important;
+    > span {
+      display: inline-block !important;
+    }
+    img {
+      margin-right: 0.25em !important;
+      vertical-align: middle;
+      height: 1.25em;
+      max-width: 1.25em;
+    }
+  }
+  a.km-button.km-state-active {
+    background-color: @primary-200 !important;
+    color: #fff !important;
+  }
+}
+
+#home-buttongroup {
+  box-shadow: none !important;
+}
+
+#home-buttongroup > a.km-button.km-state-active
+
+#home-buttongroup > a.km-button > span {
+  display: inline-block;
+}
+
+#home-buttongroup > li.km-button {
+
+}
+
+#home-buttongroup > li.km-button > span > img {
+  vertical-align: text-top;
+  margin-right: 0.15em;
+  height: 1em;
+  max-width: 1em;
 }
 
 .home-header > div.view-content.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
@@ -3004,7 +3079,7 @@ a:hover {
   padding: 0 !important;
 }
 
-.km-material .km-navbar, .km-material .k-toolbar, .km-material .km-tabstrip {
+.km-material .km-navbar, .km-material .k-toolbar {
   -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important;
 }
@@ -6877,8 +6952,12 @@ table.k-editor {
   margin-top: 1em;
 }
 
-#smartTripView-step-2 > form > ul > li:nth-child(3) {
+#smartTripView-step-2 > form > ul > li {
   margin-top: 0.5em;
+  //margin-bottom: 1em;
+}
+
+#smartTripView-step-2 > form > ul > li:nth-child(4) {
   margin-bottom: 1em;
 }
 
@@ -6897,7 +6976,7 @@ table.k-editor {
   font-weight: 600;
 }
 
-#smartTripModal > div.footer.km-footer > a.btnFull-modal.km-widget.km-button {
+#smartTripModal > div.footer > a.btnFull-modal.km-widget.km-button {
   background-color: #80CBC4 !important;
   color: #fff;
 }
@@ -6918,6 +6997,11 @@ table.k-editor {
   margin-bottom: 2em;
 }
 
+.chat-message-text > .intelliTrip {
+  width: 100%;
+  margin: 0 !important;
+}
+
 .intelliTrip {
   width: 90%;
   margin-left: 5%;
@@ -6926,14 +7010,19 @@ table.k-editor {
   background: #fff;
   .shadowHelper(1);
   .header {
-    padding: 0.5em 1em;
+    padding: 0.5em;
     p {
-      img {
-        height: 1.2em;
-        max-width: 1.2em;
+      >img {
+        height: 1em;
+        max-width: 1em;
+        vertical-align: text-top;
       }
       padding: 0;
       margin: 0;
+    }
+    .intelliTrip-title {
+      font-size: 1.2em;
+      font-weight: 600;
     }
   }
   .map {
@@ -6944,11 +7033,80 @@ table.k-editor {
       width: 100%;
     }
   }
+
   .footer {
+    .intelliTrip-details {
+      font-size: 1em;
+      padding: 0.25em 0.5em;
+      img {
+        height: 0.875em;
+        max-width: 0.875em;
+        vertical-align: baseline;
+      }
+    }
+    border-top: 2px dotted @shade-200;
     a {
       border-radius: 0 4px 4px 0;
     }
   }
+  .summary {
+    margin: 0.5em;
+    display: inline-block;
+    p {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    .address {
+      font-size: 1.2em;
+    }
+  }
+  .origin-summary {
+    label {
+      .helper;
+    }
+  }
+  .destination-summary {
+    margin: 1em 0 1em;
+    label {
+      .helper;
+    }
+  }
+  /*.destination-summary::before {
+    width: 1em;
+    height: 1em;
+    border-radius: 0.5em;
+    background-color: @shade-200;
+    border: 2px solid @shade-200;
+    display: inline-block;
+  }*/
+}
+
+
+
+#smartTripModal > div > div.intelliTrip.tripView > div.header {
+  border-bottom: 2px dotted @shade-200;
+}
+
+.modalFooter.intelliTrip-action {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0;
+  right: 0;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  >a {
+    color:#fff !important;
+    border-radius: 3em !important;
+  }
+  >a.km-state-active {
+    color: #80CBC4 !important;
+  }
+}
+
+
+#smartTripModal > div > div.intelliTrip.tripView {
+  margin-top: 2em;
 }
 
 .intelliTrip-map {
@@ -6960,13 +7118,13 @@ table.k-editor {
   }
 }
 
-.intelliTrip-title {
-  font-size: 1.2em;
+.cardHeader > .intelliTrip-title {
+  font-size: 1.5em !important;
   font-weight: 600;
 }
 
 .intelliTrip-subheader {
-  font-size: 0.75em;
+  font-size: 0.875em;
 }
 
 #intelliCard-back-2, #intelliCard-back-3 {
@@ -6978,14 +7136,18 @@ table.k-editor {
   line-height: 1em;
   margin-left: 0.25em;
   margin-right: 0.25em;
-  img {
+  >img {
     max-height: 1em !important;
     width: 1em !important;
     vertical-align: middle;
   }
 }
 
-.intelliTrip-details {
+.intelliTrip-details:first-child {
+  padding-top: 0.5em !important;
+}
+
+.intelliTrip-details:last-child {
   border-bottom: 2px dotted @shade-300;
 }
 
@@ -7005,7 +7167,7 @@ table.k-editor {
         max-width: 1.2em;
         vertical-align: sub;
       }
-     >span:not(.info) {
+      >span:not(.info) {
         font-size: 0.85em;
         background-color: @shade-100;
         border-radius: 4px;
@@ -7052,7 +7214,8 @@ table.k-editor {
     }
     .liner {
       width: 20%;
-      height:2px;
+      height:1px;
+      border: 2px dotted;
       background-color: @black;
       margin-top: 1em;
       img {
@@ -7076,8 +7239,8 @@ table.k-editor {
   border-top: 2px dotted @shade-200;
 }
 
-.intelliFlight-updates {
-  margin: 0.5em 1em;
+.intelli-update {
+  margin-bottom: 1em;
   border: 1px solid @shade-200;
   border-radius: 4px;
   padding: 0.5em;
@@ -7255,6 +7418,9 @@ table.k-editor {
     }
   }
 }
+
+
+
 
 .smartTripView-error {
   .error-msg {
