@@ -148,8 +148,12 @@ var userStatusChannel = {
 
         APP.pubnub.uuid(function (msgID) {
 
-            var truncStr = status.statusMessage.smartTruncate(24, true);
-            var notificationString =  userModel._user.name + ': "' + truncStr + '"';
+            var truncStr = status.statusMessage.smartTruncate(32, true);
+            var availStr = ' (avail)';
+            if (!status.isAvailable) {
+                availStr = ' (busy)';
+            }
+            var notificationString =  userModel._user.name + availStr + ': "' + truncStr + '"';
             var message = {
                 msgID: msgID,
                 msgClass : userStatusChannel._class,
@@ -163,7 +167,7 @@ var userStatusChannel = {
                         badge: 1,
                         'content-available' : 1
                     },
-                    target: '#contacts',
+                    target: '#contacts?contactaction='+ userModel._user.userUUID,
                     contactId: userModel._user.userUUID
                 },
                 pn_gcm : {
@@ -171,7 +175,7 @@ var userStatusChannel = {
                         title: notificationString,
                         message: status.statusMessage,
                         image: "icon",
-                        target: '#contacts',
+                        target: '#contacts?contactaction='+ userModel._user.userUUID,
                         contactId: userModel._user.userUUID
                     }
                 }
@@ -206,14 +210,32 @@ var userStatusChannel = {
 
         switch(msg.type) {
 
-         case 'status' : {
+         case 'status' :
             // contact status message
              var contact = contactModel.findContact(msg.contactId);
              if (contact !== undefined && contact !== null) {
+                var contactList = contactModel.findContactList(msg.contactId);
+                 contact.lat = status.lat;
+                 contact.lng = status.lng;
+                 contact.geopPoint = status.geoPoint;
+                 contact.statusMessage = status.statusMessage;
+                 contact.isAvailable = status.isAvailable;
+                 contact.currentPlace = status.currentPlace;
+                 contact.currentPlaceUUID = status.currentPlaceUUID;
+                 contact.googlePlaceId = status.googlePlaceId;
+
+                 contactList.set('lat', status.lat);
+                 contactList.set('lng', status.lng);
+                 contactList.set('geopPoint', status.geoPoint);
+                 contactList.set('statusMessage', status.statusMessage);
+                 contactList.set('isAvailable', status.isAvailable );
+                 contactList.set('currentPlace', status.currentPlace);
+                 contactList.set('currentPlaceUUID', status.currentPlaceUUID);
+                 contactList.set('googlePlaceId', status.googlePlaceId);
 
              }
 
-             } break;
+              break;
 
             case 'update' :
                 // contact data update - now member, change phone, email, address, mood photo

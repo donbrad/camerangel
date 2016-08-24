@@ -563,6 +563,7 @@ var userStatusView = {
     _returnView : null,
     _modalId : "#modalview-profileStatus",
     _profileStatusMax: 35,
+    _oldStatus : null,
 
     _update : function () {
         var status = userStatusView._activeStatus, user = userModel._user;
@@ -666,6 +667,8 @@ var userStatusView = {
 
         ux.hideKeyboard();
 
+        userStatusView.oldStatus =  userModel._user.statusMessage;
+
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
 
@@ -707,7 +710,7 @@ var userStatusView = {
         $(userStatusView._modalId).data("kendoMobileModalView").close();
 
         var updatedStatus = $("#profileStatusUpdate").val();
-        if(updatedStatus !== "") {
+        if(updatedStatus !== "" && updatedStatus !== userStatusView.oldStatus) {
             // Save new status
             userModel._user.set("statusMessage", updatedStatus);
             userStatus.update();

@@ -657,16 +657,6 @@ var userStatus = {
 
                 updateObject.set(field, userModel._user.get(field));
                 
-               /* userStatus.parseUserStatus.set(field, userModel._user.get(field));
-                userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
-                userStatus.parseUserStatus.save(null, {
-                    success : function (user){
-                        mobileNotify("User status update: " + field);
-                    },
-                    error: function (user, error){
-                        mobileNotify("User Status update error: " + error);
-                    }
-                });*/
         }
     },
 
