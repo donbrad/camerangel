@@ -132,6 +132,8 @@ var contactModel = {
                         appDataChannel.history();
                         userDataChannel.history();
 
+                        userStatusChannel.subscribeContacts();
+
                         var changedContacts = contactModel.contactsDS.data();
                         if (changedContacts !== undefined) {
 
@@ -148,6 +150,8 @@ var contactModel = {
 
                             }
                         }
+
+                        contactModel.buildContactList();
                     }
                 }
         });

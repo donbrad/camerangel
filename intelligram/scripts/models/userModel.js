@@ -147,6 +147,8 @@ var userModel = {
 
         userDataChannel.init(uuid);
 
+        userStatusChannel.init(uuid);
+
         // Initialize application data channel with gg's unique ID
         appDataChannel.init();
 

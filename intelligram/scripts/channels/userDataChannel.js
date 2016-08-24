@@ -216,15 +216,6 @@ var userDataChannel = {
         if (userDataChannel.isDuplicateMessage(message.msgID))
             return;
 
-       /* var content = userDataChannel.encryptBlock(message.content);
-        message.content = content;*/
-
-      /*  var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
-        message.data = data;*/
-
-       // message.data = JSON.stringify(message.data)
-
-
         if (deviceModel.isOnline()) {
             everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
                 if (error !== null) {
