@@ -258,7 +258,7 @@ var deviceModel = {
             userDataChannel.history();
             appDataChannel.history();
             everlive.syncCloud();
-            photoModel.processCloudPushList();
+           // photoModel.processCloudPushList();
             photoModel.syncPhotosToCloud();
             profilePhotoModel.processCloudPushList();
             if (userModel._needSync) {
