@@ -299,23 +299,23 @@ var userModel = {
         var emailValidated = user.isVerified;   // these is everlive's flags for email validation from july 2016 it's supposed to be isVerified.
 
         userModel._user.set('emailValidated', emailValidated);
-        if (!emailValidated) {
+       /* if (!emailValidated) {
             if (window.navigator.simulator === undefined) {
                 cordova.plugins.notification.local.add({
-                    id: 'verifyPhone',
+                    id: 1,
                     title: 'intelligram suggests...',
                     message: 'Please verify your phone',
                     autoCancel: true,
                     date: new Date(new Date().getTime() + 30)
                 });
             }
-        }
+        }*/
         userModel._user.set('phoneValidated', user.phoneValidated);
 
-        if (!user.phoneValidated) {
+        /*if (!user.phoneValidated) {
             if (window.navigator.simulator === undefined) {
                 cordova.plugins.notification.local.add({
-                    id: 'verifyEmail',
+                    id: 1
                     title: 'intelligram suggests...',
                     message: 'Please verify your email',
                     autoCancel: true,
@@ -323,7 +323,7 @@ var userModel = {
                 });
             }
         }
-
+*/
         if (user.addressValidated === undefined) {
             user.addressValidated = false;
         }

@@ -1965,7 +1965,8 @@ var signUpView = {
 
         userModel.hasAccount = true;
         window.localStorage.setItem('ggHasAccount', true);
-        if (window.navigator.simulator === undefined) {
+  /*      if (window.navigator.simulator === undefined) {
+
 
             cordova.plugins.notification.local.add({
                 id: 'userWelcome',
@@ -1976,6 +1977,7 @@ var signUpView = {
             });
 
         }
+*/
 
         verifyPhoneModal.sendAndOpenModal();
 
@@ -2329,7 +2331,7 @@ var verifyPhoneModal = {
             if (result.status === 'ok') {
                 userModel._user.set('phoneVerificationCode', result.code);
                 verifyPhoneModal.openModal();
-                if (window.navigator.simulator === undefined) {
+               /* if (window.navigator.simulator === undefined) {
 
                     cordova.plugins.notification.local.add({
                         id: 'verifyPhone',
@@ -2338,7 +2340,7 @@ var verifyPhoneModal = {
                         autoCancel: true,
                         date: new Date(new Date().getTime() + 30)
                     });
-                }
+                }*/
             }
         });
     },
