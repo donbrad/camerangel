@@ -794,6 +794,9 @@ var photoModel = {
     },
 
     cloudCreate : function (photo) {
+        photoModel.photosDS.add(photo);
+        photoModel.photosDS.sync();
+        
         if (deviceModel.isOnline()) {
             everlive.createOne(photoModel._cloudClass, photo, function (error, data){
                 if (error !== null) {
@@ -801,10 +804,8 @@ var photoModel = {
 
                 }
             });
-        } else {
-            photoModel.photosDS.add(photo);
         }
-        photoModel.photosDS.sync();
+
     },
 
     addDevicePhoto: function (devicePhoto, isCamera, isProfilePhoto,  callback) {
