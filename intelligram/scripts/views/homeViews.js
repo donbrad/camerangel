@@ -2300,7 +2300,6 @@ var verifyEmailModal = {
         if (userModel._user.isVerified) {
             mobileNotify("Your email is verified!!!");
             memberdirectory.update();
-            userStatus.update();
             homeView.updateValidationUX();
         } else {
             mobileNotify("Your email verification is still pending...");
@@ -2310,7 +2309,14 @@ var verifyEmailModal = {
 
     sendEmail : function (e) {
         var email = userModel._user.get('email');
-        everlive.resendEmailValidation(email);
+        everlive.resendEmailValidation(email, function (result) {
+            if (result.error === null && result.isVerified) {
+                mobileNotify("Your email is verified!!!");
+                userModel._user("emailValidated", true);
+                memberdirectory.update();
+                homeView.updateValidationUX();
+            }
+        });
         
     }
 };

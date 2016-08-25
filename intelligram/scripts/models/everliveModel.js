@@ -178,7 +178,7 @@ var everlive = {
         }
     },
 
-    resendEmailValidation : function (email) {
+    resendEmailValidation : function (email, callback) {
 
         var object = {
             "Username": userModel._user.username
@@ -191,9 +191,23 @@ var everlive = {
             data: JSON.stringify(object),
             success: function(data){
                 mobileNotify("Email verification instructtions were sent to " + email);
+                if (callback !== undefined && callback !== null) {
+                    callback({error: null, wasSent: true, isVerifed: false});
+                }
             },
             error: function(error){
-                ggError("Email Validation Resend Error : " + JSON.stringify(error));
+                if (error.responseJSON.errorCode === 210) {
+                    if (callback !== undefined && callback !== null) {
+                        callback({error: null, wasSent: true, isVerified: true});
+                    }
+                } else {
+                    ggError("Email Validation Resend Error : " + JSON.stringify(error));
+                    if (callback !== undefined && callback !== null) {
+                        callback({error: error, wasSent: false, isVerifed: false});
+                    }
+                }
+
+
             }
         });
 
