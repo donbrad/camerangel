@@ -43,8 +43,6 @@ var photoModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             }
-
-
         });
 
 
@@ -796,7 +794,7 @@ var photoModel = {
     cloudCreate : function (photo) {
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
-        
+
         if (deviceModel.isOnline()) {
             everlive.createOne(photoModel._cloudClass, photo, function (error, data){
                 if (error !== null) {
