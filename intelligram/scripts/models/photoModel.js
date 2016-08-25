@@ -327,7 +327,7 @@ var photoModel = {
                         // Photo exists just need to update local photo model]
                         thisPhoto.set('cloudUrl', result.url);
                         thisPhoto.set('imageUrl', result.url);
-                        thisPhoto.set('thumbnailUrl', result.url.replace('upload//','upload//c_scale,h_512,w_512//'));
+                        thisPhoto.set('thumbnailUrl', result.url.replace('upload//','upload//c_fit,h_256,w_256//'));
                         thisPhoto.set('cloudinaryPublicId', result.publicId);
                         photoModel.photosDS.sync();
                         if (!photoModel.isValidDeviceUrl(photo.deviceUrl)) {
@@ -373,10 +373,7 @@ var photoModel = {
 
                 if (photoObj !== undefined && photoData !== null) {
                     var secureUrl = photoData.secure_url,
-                        thumbUrl = photoData.secure_url;
-
-                    if (photoData.eager !== undefined)
-                        thumbUrl = photoData.eager[0].secure_url;
+                        thumbUrl = photoData.secure_url.replace('upload//','upload//c_fit,h_256,w_256//');
 
                     photoObj.set('imageUrl', secureUrl);
                     photoObj.set('cloudUrl', secureUrl);
