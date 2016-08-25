@@ -275,6 +275,7 @@ var userDataChannel = {
             channel: userDataChannel.channelUUID,
             start: start.toString(),
             end: end.toString(),
+            include_token : true,
             error: userDataChannel.error,
             callback: function(messages) {
                 messages = messages[0];

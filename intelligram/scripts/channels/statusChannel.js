@@ -26,6 +26,8 @@ var userStatusChannel = {
     eventName : null,
     statusArray  : [],  // Array of channel id's for pubnub subscribe.
     trackArray  : [],
+    cacheList : [],
+    pendingDS : new kendo.data.DataSource(),
 
     init : function (userId) {
         if (userStatusChannel._inited) {
@@ -68,7 +70,7 @@ var userStatusChannel = {
 
                     });
 
-                    //userStatusChannel.history();
+                    userStatusChannel.userHistory();
                 }
             }
         });
@@ -107,6 +109,8 @@ var userStatusChannel = {
         });
 
         userStatusChannel.trackContacts();
+
+        userStatusChannel.contactHistory();
     },
 
     unsubscribeContacts : function () {
@@ -140,11 +144,90 @@ var userStatusChannel = {
         }
     },
 
-    history : function () {
+    userHistory : function () {
+        APP.pubnub.history({
+            channel: userStatusChannel.channelUUID,
+            include_token : true,
+            error: userStatusChannel.error,
+            callback: function(messages) {
+                messages = messages[0];
+                var chanStart = messages[1], chanEnd = messages[2];
+                messages = messages || [];
 
+                if (messages.length > 0) {
+                    for (var i=0; i<messages.length; i++) {
+                        var msg = messages[i];
+
+                        if (msg.msgType === userStatusChannel._status) {
+                            userStatusChannel.cacheList[msg.contactId] = msg.status;
+                            return;
+                        }
+                    }
+                }
+
+            }
+
+
+        });
     },
 
+    contactHistory : function () {
+
+        var length = userStatusChannel.statusArray;
+
+        if (length > 0) {
+
+            for (var i=0; i<length; i++) {
+
+                APP.pubnub.history({
+                    channel: userStatusChannel.statusArray[i],
+                    include_token: true,
+                    error: userStatusChannel.error,
+                    callback: function (messages) {
+                        messages = messages[0];
+                        var chanStart = messages[1], chanEnd = messages[2];
+                        messages = messages || [];
+
+                        if (messages.length > 0) {
+                            for (var i = 0; i < messages.length; i++) {
+                                var msg = messages[i];
+
+                                if (msg.msgType === userStatusChannel._status) {
+                                    userStatusChannel.cacheList[msg.contactId] = msg.status;
+                                    return;
+                                }
+                            }
+                        }
+
+                    }
+
+                });
+            }
+        }
+    },
+
+    processPending : function () {
+        var len = userStatusChannel.pendingDS.total();
+        if (len > 0 ) {
+            for (var i=0; i<len; i++) {
+                if (deviceModel.isOnline()) {
+                    var stat = userStatusChannel.pendingDS.at(i);
+
+                    userStatusChannel.send(stat);
+                    userStatusChannel.pendingDS.remove(status);
+
+                }
+            }
+        }
+    },
+
+
     sendStatus : function (status) {
+
+        if (!deviceModel.isOnline()) {
+            userStatusChannel.pendingDS.add(status);
+            return;
+        }
 
         APP.pubnub.uuid(function (msgID) {
 
@@ -194,6 +277,18 @@ var userStatusChannel = {
         });
     },
 
+    sendUpdate : function (update) {
+
+    },
+
+    sendAlert : function (alert) {
+
+    },
+
+    sendEvent : function (event) {
+
+    },
+
     channelRead : function (msg) {
 
        /* switch(m.type) {
@@ -208,10 +303,13 @@ var userStatusChannel = {
 
     channelStatusRead : function (msg) {
 
+
         switch(msg.type) {
 
          case 'status' :
             // contact status message
+             var status = msg.status;
+             userStatusChannel.cacheList[msg.contactId] = status;
              var contact = contactModel.findContact(msg.contactId);
              if (contact !== undefined && contact !== null) {
                 var contactList = contactModel.findContactList(msg.contactId);

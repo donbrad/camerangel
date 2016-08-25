@@ -261,11 +261,10 @@ var deviceModel = {
            // photoModel.processCloudPushList();
             photoModel.syncPhotosToCloud();
             profilePhotoModel.processCloudPushList();
+            userStatusChannel.processPending();
+
             if (userModel._needSync) {
                 everlive.updateUser();
-            }
-            if (userModel._needStatusSync) {
-                everlive.updateUserStatus();
             }
         }
 

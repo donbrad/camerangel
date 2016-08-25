@@ -26,9 +26,13 @@ var photoModel = {
 
     photosDS: null,
 
+    deferredDS : new kendo.data.DataSource(),
+
     offersDS : null,
     
-    deletedPhotosDS: null, 
+    deletedPhotosDS: null,
+
+
 
     init: function () {
 
@@ -241,6 +245,7 @@ var photoModel = {
         if (photoModel.localPushList[url] !== undefined && photoModel.localPushList[url]) {
             return;
         }
+
         photoModel.localPushList[url] = true;
         var fileTransfer = new FileTransfer();
         fileTransfer.download(url, localUrl,

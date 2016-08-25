@@ -597,6 +597,8 @@ var userStatus = {
 
     },
 
+
+
     getStatus : function (uuid, callback) {
         var filter = new Everlive.Query();
         filter.where().eq('userUUID', uuid);
