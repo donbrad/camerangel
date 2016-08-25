@@ -296,7 +296,7 @@ var userModel = {
         if (photo === undefined || photo === null) {
             userModel._user.photo =  userModel.identiconUrl;
         }
-        var emailValidated = user.isVerified;   // this is everlive's flag for email validation
+        var emailValidated = user.isVerified;   // these is everlive's flags for email validation from july 2016 it's supposed to be isVerified.
 
         userModel._user.set('emailValidated', emailValidated);
         if (!emailValidated) {

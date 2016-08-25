@@ -179,9 +179,25 @@ var everlive = {
     },
 
     resendEmailValidation : function (email) {
-        var updateObject = {Id: userModel._user.Id, Email : email};
 
-        APP.everlive.Users.updateSingle(updateObject,
+        var object = {
+            "Username": userModel._user.username
+        };
+
+        $.ajax({
+            type: "POST",
+            url: 'http://api.everlive.com/v1/s2fo2sasaubcx7qe/Users/verify/resend',
+            contentType: "application/json",
+            data: JSON.stringify(object),
+            success: function(data){
+                mobileNotify("Email verification instructtions were sent to " + email);
+            },
+            error: function(error){
+                ggError("Email Validation Resend Error : " + JSON.stringify(error));
+            }
+        });
+
+        /*APP.everlive.Users.updateSingle(updateObject,
             function (data) {
                 var result = data.result;
                 mobileNotify("Email verification instructtions were sent to " + email);
@@ -193,7 +209,7 @@ var everlive = {
                     ggError("Emall Validation Resend Error : " + JSON.stringify(error));
                 }
 
-            });
+            });*/
     },
 
     isUserSignedIn : function () {
