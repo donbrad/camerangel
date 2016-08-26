@@ -361,7 +361,7 @@ var smartEventView = {
 
         var finalDateStr = moment(date).format("MM/DD/YYYY") + " " + time;
 
-        var finalDate =  moment(finalDateStr);
+        var finalDate =  moment(finalDateStr, "MM/DD/YYYY HH:mm");
         smartEventView._activeObject.set('date', finalDate);
 
     },
@@ -382,19 +382,19 @@ var smartEventView = {
             return (false);
         }
         var time = moment(timeIn, "HH:mm");
+        var timeIsValid = time.isValid();
 
         var date = moment(dateIn, "MMM, DD YYYY");
+        var dateIsValid = date.isValid();
 
-        if (time === null && date === null) {
+        if (!timeIsValid && !dateIsValid) {
             mobileNotify("Please enter a valid Date and Time");
             return(false);
-        } else if (time === null) {
+        } else if (!timeIsValid) {
             mobileNotify("Please enter a valid Time");
-        } else if (date === null) {
+        } else if (!dateIsValid) {
             mobileNotify("Please enter a valid Date");
         } else {
-            var timeComp = moment(time).format("HH:mm");
-            var dateComp = moment(date).format('MMM Dd, YYYY');
             smartEventView.updateDateString();
             return (true);
         }
