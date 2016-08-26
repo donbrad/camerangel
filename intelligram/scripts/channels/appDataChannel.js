@@ -1150,13 +1150,13 @@ var appDataChannel = {
         var status = m[0], message = m[1], time = m[2];
 
         if (status !== 1) {
-            mobileNotify('appDataChannel: Error publishing invite: ' + message);
+            console.log('appDataChannel: Error publishing invite: ' + message);
         }
 
     },
 
     errorCallback : function (error) {
-        mobileNotify('appDataChannel Error : ' + error);
+        console.log('appDataChannel Error : ' + error);
     },
 
     channelConnect: function () {

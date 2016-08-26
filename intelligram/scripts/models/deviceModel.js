@@ -268,7 +268,6 @@ var deviceModel = {
                 everlive.updateUser();
             }
         }
-        $("#messageSend").html('<img src="images/icon-send.svg" class="icon-send" />');
 
         deviceModel.getNetworkState();
         $(".network-offline").addClass('hidden');
@@ -294,15 +293,12 @@ var deviceModel = {
     onOffline: function() {
         deviceModel.setAppState('isOnline', false);
 
-        $("#messageSend").html('<img src="images/icon-download.svg" class="icon-send" />');
-
         $(".online-only").addClass('hidden');
 
         $(".network-offline").removeClass('hidden');
         // Take all data sources offline
         if (APP.everlive !== null)
             APP.everlive.offline();
-
 
         appDataChannel.needHistory = true;
         userDataChannel.needHistory = true;

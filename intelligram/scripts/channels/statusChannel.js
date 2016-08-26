@@ -211,10 +211,10 @@ var userStatusChannel = {
         if (len > 0 ) {
             for (var i=0; i<len; i++) {
                 if (deviceModel.isOnline()) {
-                    var stat = userStatusChannel.pendingDS.at(i);
+                    var message = userStatusChannel.pendingDS.at(i);
 
-                    userStatusChannel.send(stat);
-                    userStatusChannel.pendingDS.remove(status);
+                    userStatusChannel.publish(message);
+                    userStatusChannel.pendingDS.remove(message);
 
                 }
             }
@@ -224,60 +224,101 @@ var userStatusChannel = {
 
     sendStatus : function (status) {
 
-        if (!deviceModel.isOnline()) {
-            userStatusChannel.pendingDS.add(status);
-            return;
+        var msgID = uuid.v4();
+
+        var truncStr = status.statusMessage.smartTruncate(32, true);
+        var availStr = ' (avail)';
+        if (!status.isAvailable) {
+            availStr = ' (busy)';
         }
-
-        APP.pubnub.uuid(function (msgID) {
-
-            var truncStr = status.statusMessage.smartTruncate(32, true);
-            var availStr = ' (avail)';
-            if (!status.isAvailable) {
-                availStr = ' (busy)';
-            }
-            var notificationString =  userModel._user.name + availStr + ': "' + truncStr + '"';
-            var message = {
-                msgID: msgID,
-                msgClass : userStatusChannel._class,
-                msgType : userStatusChannel.status,
-                sender: userModel._user.userUUID,
-                time: ggTime.currentTimeInSeconds(),
-                status : status,
-                pn_apns: {
-                    aps: {
-                        alert : notificationString,
-                        badge: 1,
-                        'content-available' : 1
-                    },
+        var notificationString =  userModel._user.name + availStr + ': "' + truncStr + '"';
+        var message = {
+            msgID: msgID,
+            msgClass : userStatusChannel._class,
+            msgType : userStatusChannel._status,
+            sender: userModel._user.userUUID,
+            time: ggTime.currentTimeInSeconds(),
+            status : status,
+            pn_apns: {
+                aps: {
+                    alert : notificationString,
+                    badge: 1,
+                    'content-available' : 1
+                },
+                target: '#contacts?contactaction='+ userModel._user.userUUID,
+                contactId: userModel._user.userUUID
+            },
+            pn_gcm : {
+                data : {
+                    title: notificationString,
+                    message: status.statusMessage,
+                    image: "icon",
                     target: '#contacts?contactaction='+ userModel._user.userUUID,
                     contactId: userModel._user.userUUID
-                },
-                pn_gcm : {
-                    data : {
-                        title: notificationString,
-                        message: status.statusMessage,
-                        image: "icon",
-                        target: '#contacts?contactaction='+ userModel._user.userUUID,
-                        contactId: userModel._user.userUUID
-                    }
                 }
-            };
+            }
+        };
 
-            APP.pubnub.publish({
-                channel: userStatusChannel.channelUUID,
-                message: message,
-                error: userStatusChannel.channelError,
-                callback: function (m) {
-                    var status = m[0], statusText = m[1];
-                   // userStatusChannel.addMessage(m);
+        if (!deviceModel.isOnline()) {
+            userStatusChannel.pendingDS.add(message);
+        } else {
+            userStatusChannel.publish(message);
+        }
 
-                }
-            });
+    },
+
+    publish : function (message) {
+        APP.pubnub.publish({
+            channel: userStatusChannel.channelUUID,
+            message: message,
+            error: userStatusChannel.channelError,
+            callback: function (m) {
+                var status = m[0], statusText = m[1];
+                // userStatusChannel.addMessage(m);
+
+            }
         });
     },
 
-    sendUpdate : function (update) {
+    sendUpdate : function () {
+        var user = userModel._user;
+        var update = {
+            userUUID : user.userUUID,
+            name: user.name,
+            alias: user.alias,
+            photo: user.photo,
+            publicKey : user.publicKey,
+            phone : user.phone,
+            email : user.email,
+            address : user.address,
+            birthday : user.birthday,
+            isCheckedIn : user.isCheckedIn,
+            isAvailable : user.isAvailable,
+            currentPlace : user.currentPlace,
+            currentPlaceUUID : user.currentPlaceUUID,
+            googlePlaceId : user.googlePlaceId,
+            lat : user.lat,
+            lng : user.lng,
+            geoPoint : user.geoPoint,
+            emailValidated : user.emailValidated,
+            phoneValidated : user.phoneValidated,
+            addressValidated : user.addressValidated
+        };
+
+        var message = {
+            msgID: msgID,
+            msgClass : userStatusChannel._class,
+            msgType : userStatusChannel._update,
+            sender: userModel._user.userUUID,
+            time: ggTime.currentTimeInSeconds(),
+            update : update
+        };
+
+        if (!deviceModel.isOnline()) {
+            userStatusChannel.pendingDS.add(message);
+        } else {
+            userStatusChannel.publish(message);
+        }
 
     },
 

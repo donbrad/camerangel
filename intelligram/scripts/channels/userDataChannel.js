@@ -143,6 +143,18 @@ var userDataChannel = {
             return(true);
         }
     },
+
+    findMessage : function (msgID) {
+        var messages = userDataChannel.queryMessages({ field: "msgID", operator: "eq", value: msgID });
+
+        if (messages === undefined) {
+            return (null);
+        } else if (messages.length === 0) {
+            return (null);
+        } else {
+            return(messages);
+        }
+    },
     
 
 
@@ -243,8 +255,8 @@ var userDataChannel = {
         message.data = data;*/
         //message.data = JSON.stringify(message.data);
 
-
-
+        userDataChannel.messagesDS.add(message);
+        userDataChannel.messagesDS.sync();
 
        if (deviceModel.isOnline()) {
            everlive.createOne(userDataChannel._cloudClass, message, function (error, data) {
@@ -252,10 +264,8 @@ var userDataChannel = {
                    ggError("Error archiving private message " + JSON.stringify(error));
                }
            });
-       } else {
-           userDataChannel.messagesDS.add(message);
        }
-        userDataChannel.messagesDS.sync();
+
     },
 
     updateTimeStamp : function () {
