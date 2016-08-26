@@ -144,6 +144,16 @@ var userStatusChannel = {
         }
     },
 
+    getStatus : function (contactUUID) {
+        var status = userStatusChannel.cacheList[contactUUID];
+
+        if (status === undefined) {
+            status = null;
+        }
+
+        return(status);
+    },
+
     userHistory : function () {
         APP.pubnub.history({
             channel: userStatusChannel.channelUUID,
@@ -232,6 +242,7 @@ var userStatusChannel = {
             availStr = ' (busy)';
         }
         var notificationString =  userModel._user.name + availStr + ': "' + truncStr + '"';
+        status.time = ggTime.currentTimeInSeconds();
         var message = {
             msgID: msgID,
             msgClass : userStatusChannel._class,
@@ -283,6 +294,7 @@ var userStatusChannel = {
     sendUpdate : function () {
         var user = userModel._user;
         var update = {
+            time: ggTime.currentTimeInSeconds(),
             userUUID : user.userUUID,
             name: user.name,
             alias: user.alias,
@@ -363,20 +375,27 @@ var userStatusChannel = {
                  contact.currentPlaceUUID = status.currentPlaceUUID;
                  contact.googlePlaceId = status.googlePlaceId;
 
-                 contactList.set('lat', status.lat);
-                 contactList.set('lng', status.lng);
-                 contactList.set('geopPoint', status.geoPoint);
-                 contactList.set('statusMessage', status.statusMessage);
-                 contactList.set('isAvailable', status.isAvailable );
-                 contactList.set('currentPlace', status.currentPlace);
-                 contactList.set('currentPlaceUUID', status.currentPlaceUUID);
-                 contactList.set('googlePlaceId', status.googlePlaceId);
+                 if (contactList !== undefined && contactList !== null) {
+                     contactList.set('lat', status.lat);
+                     contactList.set('lng', status.lng);
+                     contactList.set('geopPoint', status.geoPoint);
+                     contactList.set('statusMessage', status.statusMessage);
+                     contactList.set('isAvailable', status.isAvailable);
+                     contactList.set('currentPlace', status.currentPlace);
+                     contactList.set('currentPlaceUUID', status.currentPlaceUUID);
+                     contactList.set('googlePlaceId', status.googlePlaceId);
+                 }
 
              }
 
               break;
 
             case 'update' :
+                var update = msg.update;
+                var cont= contactModel.findContact(msg.userUUID);
+                if (cont!== undefined && cont !== null) {
+
+                }
                 // contact data update - now member, change phone, email, address, mood photo
                 break;
 

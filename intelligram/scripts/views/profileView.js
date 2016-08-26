@@ -101,6 +101,10 @@ var profileEditView = {
 
     doChangePassword : function () {
         changePasswordView.openModal();
+    },
+
+    doChangePhone : function () {
+        mobileNotify("Coming Soon!!!");
     }
 };
 

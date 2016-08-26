@@ -4949,8 +4949,8 @@
 					</label>
 				</li>
 				<li>
-					<label>Address
-						<input type="search"  name="Birthday" data-bind="value: address" />
+					<label>Home Address
+						<input type="search"  name="Address" data-bind="value: address" />
 					</label>
 				</li>
 				<li>
@@ -4968,6 +4968,12 @@
 	</div>
 
 	<ul id="profileEditOptions" data-role="actionsheet" data-cancel="Cancel">
+		<li>
+			<a data-role="button" data-action="profileEditView.doChangePhone">
+				<img src="images/contact-call.svg" class="icon-action" />
+				Change Phone Number
+			</a>
+		</li>
 		<li>
 			<a data-role="button" data-action="profileEditView.doChangePassword">
 				<img src="images/action-password.svg" class="icon-action" />

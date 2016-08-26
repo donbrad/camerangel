@@ -1511,78 +1511,49 @@ var contactActionView = {
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
 
-            mobileNotify("Looking up status...");
-          /*  if (thisContact.lastUpdate === undefined) {
-                thisContact.lastUpdate = time - 150;
-            }
-            if ( (thisContact.lastUpdate + 150) <= time ) {
-*/
-                // Need to get current data for this contact
-                userStatus.getMemberStatus(thisContact.contactUUID, function (error, user) {
-                    thisContact.lastUpdate = ggTime.currentTimeInSeconds();
-                    if (error === null && user !== null) {
-                        var contactIsAvailable = user.isAvailable;
-                        var contactPlace = user.currentPlace;
-                        contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
-                        contactActionView._activeContact.set('statusMessage', user.statusMessage);
-                        contactActionView._activeContact.set('currentPlace', user.currentPlace);
-                        contactActionView._activeContact.set('currentPlaceUUID', user.currentPlaceUUID);
-                        contactActionView._activeContact.set('googlePlaceId', user.googlePlaceId);
-                        contactActionView._activeContact.set('lat', user.lat);
-                        contactActionView._activeContact.set('lng', user.lng);
-                        contactActionView._activeContact.set('isAvailable', contactIsAvailable);
-                        // set available
-                        if (contactIsAvailable) {
-                            $(".statusContactCard-icon").attr("src", "images/status-available.svg");
-                        }
+            if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
 
-                        // Update the contactList object too
-                        var contactList = contactModel.findContactList(thisContact.contactUUID);
-                        if (contactList !== undefined) {
-                            contactList.set('statusMessage', user.statusMessage);
-                            contactList.set('currentPlace', contactPlace);
-                            contactList.set('currentPlaceUUID', user.currentPlaceUUID);
-                            contactList.set('googlePlaceId', user.googlePlaceId);
-                            contactList.set('lat', user.lat);
-                            contactList.set('lng', user.lng);
-                            contactList.set('isAvailable', contactIsAvailable);
-
-                            contactsView.contactCache[thisContact.contactUUID] = contactList;
-
-                            // set current place
-                            if (contactPlace !== ""  && contactPlace !== null && contactPlace !== undefined) {
-                                $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
-                            } else {
-                                $("#contactCurrentPlace").addClass('hidden').text("");
-                            }
-
-                        }
-
-                    }
-                });
-
-
-            /*} else {
-
+            var user = userStatusChannel.getStatus(thisContact.contactUUID);
+            if (user !== null) {
+                var contactIsAvailable = user.isAvailable;
+                var contactPlace = user.currentPlace;
                 contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
-                contactActionView._activeContact.set('statusMessage', thisContact.statusMessage);
-                contactActionView._activeContact.set('currentPlace', thisContact.currentPlace);
-                contactActionView._activeContact.set('currentPlaceUUID', thisContact.currentPlaceUUID);
-                contactActionView._activeContact.set('isAvailable', thisContact.isAvailable);
+                contactActionView._activeContact.set('statusMessage', user.statusMessage);
+                contactActionView._activeContact.set('currentPlace', user.currentPlace);
+                contactActionView._activeContact.set('currentPlaceUUID', user.currentPlaceUUID);
+                contactActionView._activeContact.set('googlePlaceId', user.googlePlaceId);
+                contactActionView._activeContact.set('lat', user.lat);
+                contactActionView._activeContact.set('lng', user.lng);
+                contactActionView._activeContact.set('isAvailable', contactIsAvailable);
                 // set available
-                if (thisContact.isAvailable) {
+                if (contactIsAvailable) {
                     $(".statusContactCard-icon").attr("src", "images/status-available.svg");
                 }
 
-                // todo Don - is there a fn that exposes the user object here (for currentplace etc.)?
+                // Update the contactList object too
+                var contactList = contactModel.findContactList(thisContact.contactUUID);
+                if (contactList !== undefined) {
+                    contactList.set('statusMessage', user.statusMessage);
+                    contactList.set('currentPlace', contactPlace);
+                    contactList.set('currentPlaceUUID', user.currentPlaceUUID);
+                    contactList.set('googlePlaceId', user.googlePlaceId);
+                    contactList.set('lat', user.lat);
+                    contactList.set('lng', user.lng);
+                    contactList.set('isAvailable', contactIsAvailable);
 
-                // set current place
-                if (thisContact.currentPlace !== "" && thisContact.currentPlace !== undefined) {
-                    $("#contactCurrentPlace").removeClass('hidden').text("@" + thisContact.currentPlace);
-                } else {
-                    $("#contactCurrentPlace").addClass('hidden').text("");
+                    contactsView.contactCache[thisContact.contactUUID] = contactList;
+
+                    // set current place
+                    if (contactPlace !== ""  && contactPlace !== null && contactPlace !== undefined) {
+                        $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
+                    } else {
+                        $("#contactCurrentPlace").addClass('hidden').text("");
+                    }
+
                 }
-            }*/
+
+            }
+
         }
 
         if (thisContact.category !== 'unknown') {
