@@ -420,7 +420,7 @@ var userDataChannel = {
     },
 
     errorCallback : function (error) {
-        mobileNotify('UserDataChannel Error : ' + error);
+        console.log('UserDataChannel Error : ' + error);
     },
 
     channelConnect: function () {
@@ -428,11 +428,11 @@ var userDataChannel = {
     },
 
     channelDisconnect: function () {
-        mobileNotify("Data Channel Disconnected");
+        console.log("Data Channel Disconnected");
     },
 
     channelReconnect: function () {
-        mobileNotify("Data Channel Reconnected");
+        console.log("Data Channel Reconnected");
     },
 
     channelSuccess : function (status) {
@@ -440,7 +440,7 @@ var userDataChannel = {
     },
 
     channelError : function (error) {
-        mobileNotify('Data Channel Error : ' + JSON.stringify(error));
+        console.log('Data Channel Error : ' + JSON.stringify(error));
     }
 };
 

@@ -267,7 +267,6 @@ var deviceModel = {
                 everlive.updateUser();
             }
         }
-        $("#messageSend").html('<img src="images/icon-send.svg" class="icon-send" />');
 
         deviceModel.getNetworkState();
         $(".network-offline").addClass('hidden');
@@ -298,7 +297,6 @@ var deviceModel = {
         if (APP.everlive !== null)
             APP.everlive.offline();
 
-        $("#messageSend").html('<img src="images/icon-save.svg" class="icon-send" />');
         appDataChannel.needHistory = true;
         userDataChannel.needHistory = true;
     },

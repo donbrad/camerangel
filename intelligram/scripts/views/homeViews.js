@@ -2312,9 +2312,11 @@ var verifyEmailModal = {
         everlive.resendEmailValidation(email, function (result) {
             if (result.error === null && result.isVerified) {
                 mobileNotify("Your email is verified!!!");
-                userModel._user("emailValidated", true);
+                userModel._user.set("emailValidated", true);
+                everlive.updateUser();
                 memberdirectory.update();
                 homeView.updateValidationUX();
+                verifyEmailModal.closeModal();
             }
         });
         

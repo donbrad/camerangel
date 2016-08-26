@@ -1150,13 +1150,13 @@ var appDataChannel = {
         var status = m[0], message = m[1], time = m[2];
 
         if (status !== 1) {
-            mobileNotify('appDataChannel: Error publishing invite: ' + message);
+            console.log('appDataChannel: Error publishing invite: ' + message);
         }
 
     },
 
     errorCallback : function (error) {
-        mobileNotify('appDataChannel Error : ' + error);
+        console.log('appDataChannel Error : ' + error);
     },
 
     channelConnect: function () {
@@ -1164,11 +1164,11 @@ var appDataChannel = {
     },
 
     channelDisconnect: function () {
-        mobileNotify("App Data Channel Disconnected");
+        console.log("App Data Channel Disconnected");
     },
 
     channelReconnect: function () {
-        mobileNotify("App Data Channel Reconnected");
+        console.log("App Data Channel Reconnected");
     },
 
     channelSuccess : function (status) {
@@ -1176,6 +1176,6 @@ var appDataChannel = {
     },
 
     channelError : function (error) {
-        mobileNotify('appDataChannel Error : ' + error)
+        console.log('appDataChannel Error : ' + error)
     }
 };
