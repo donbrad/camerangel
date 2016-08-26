@@ -240,7 +240,7 @@ var userStatusChannel = {
             var message = {
                 msgID: msgID,
                 msgClass : userStatusChannel._class,
-                msgType : userStatusChannel.status,
+                msgType : userStatusChannel._status,
                 sender: userModel._user.userUUID,
                 time: ggTime.currentTimeInSeconds(),
                 status : status,

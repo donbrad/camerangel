@@ -55,43 +55,6 @@ var privateChannel = {
 
     },
 
-    // archive the message in the private channel with this user's public key and send to user.
-    // this provides a secure roamable private sent folder without localstorage and parse...
-/*
-    archiveMessage : function (msg) {
-        var archiveMsg = {};
-        archiveMsg.type = 'privateMessage';
-        archiveMsg.msgID = msg.msgID;
-        archiveMsg.time = msg.time;
-        archiveMsg.ttl = msg.ttl;
-        archiveMsg.sender = msg.sender;
-        archiveMsg.recipient = privateChannel.userId;
-        archiveMsg.channelUUID = msg.recipient;   // private channelUUID is just the contacts Id;
-        archiveMsg.actualRecipient = msg.recipient;  // since we're echoing back to sender, need to store recipient.
-        var encryptMessage = '', encryptData = '';
-        var currentTime =  msg.time;  // use the current message time (time sent by this user)
-
-        // encrypt the message with this users public key
-        encryptMessage = cryptico.encrypt(msg.content, privateChannel.publicKey);
-        archiveMsg.content = encryptMessage;
-
-        if (msg.data !== undefined && msg.data !== null)
-            encryptData = cryptico.encrypt(JSON.stringify(msg.data), privateChannel.publicKey);
-        else
-            encryptData = null;
-        archiveMsg.data = encryptData;
-
-        // Archive the message in this users data channel
-        APP.pubnub.publish({
-            channel: userDataChannel.channelUUID,
-            message: archiveMsg,
-            error: function (error) {
-                mobileNotify("Archive message error : " + error);
-            }
-        });
-
-    },
-*/
 
     receiveHandler : function (msg) {
 
@@ -222,7 +185,7 @@ var privateChannel = {
             for (var i=0; i<len; i++) {
                 if (deviceModel.isOnline()) {
                     var msg = privateChannel.deferredDS.at(i);
-                    privateChannel.sendMessage(msg.recipient, msg.text, msg.data, msg.ttl, msg.deferredFrom)
+                    privateChannel.deferredSend(msg);
                 }
             }
         }
@@ -248,10 +211,7 @@ var privateChannel = {
         else
             encryptData = null;
 
-        if (!deviceModel.isOnline()) {
-            var defObj = {recipient: recipient, text: text, data: data, ttl: ttl, deferredFrom: ggTime.currentTimeInSeconds()};
-            privateChannel.deferredDS.add(defObj);
-        }
+
 
         var msgID = uuid.v4();
 
@@ -263,6 +223,7 @@ var privateChannel = {
             type: 'privateMessage',
             recipient: recipient,
             sender: userModel._user.userUUID,
+            wasSent : false,
             pn_apns: {
                 aps: {
                     alert : notificationString,
@@ -298,6 +259,17 @@ var privateChannel = {
 
         if (deferredTime !== undefined) {
             message.deferredFrom = deferredTime;
+
+        }
+
+        if (!deviceModel.isOnline()) {
+
+            privateChannel.deferredDS.add(message);
+            userDataChannel.archiveMessage(message);
+            parsedMsg.data = contentData;
+            channelView.preprocessMessage(message);
+            channelView.messagesDS.add(message);
+            return;
         }
 
         APP.pubnub.publish({
@@ -335,7 +307,6 @@ var privateChannel = {
                     wasSent: true,
                     fromHistory: false,
                     ttl: ttl
-
                 };
 
                 userDataChannel.archiveMessage(parsedMsg);
@@ -355,6 +326,49 @@ var privateChannel = {
 
     },
 
+
+    deferredSend : function (message) {
+        var recipient = message.recipient;
+
+        APP.pubnub.publish({
+            channel: recipient,
+            message: message,
+            error: userDataChannel.channelError,
+            callback: function (m) {
+                var status = m[0], statusText = m[1];
+
+                if (status !== 1) {
+                    ggError("Private Channel Publish error "  + statusText);
+                }
+
+                // Store a local copy of the sent message.  Need to update channelUUID :
+                // for the recipient, its this users uuid.
+                // for the sender, it's the recipients uuid
+                if (message.msgClass === undefined) {
+                    message.msgClass = privateChannel._class;
+                }
+
+                if (message.msgType === undefined) {
+                    message.msgType = privateChannel._message;
+                }
+
+
+                var savedMessage = userDataChannel.findMessage(message.msgID);
+
+                if (savedMessage === null) {
+                    ggError("Deferred message - can't find message " + message.msgID);
+                } else {
+                    savedMessage.set("wasSent", true);
+                }
+                var chatMessage = channelView.findMessageById(message.msgID);
+
+                if (chatMessage !== undefined && chatMessage !== null) {
+                    chatMessage.set('wasSent', true);
+                }
+
+            }
+        });
+    },
 
     getMessageHistory: function (channelUUID, callBack) {
 
