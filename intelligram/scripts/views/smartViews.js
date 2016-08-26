@@ -376,14 +376,14 @@ var smartEventView = {
     },
     
     validDateTime : function () {
-        var timeIn =  $("#smartEventView-time").val(), dateIn = $("#smartEventView-time").val();
+        var timeIn =  $("#smartEventView-time").val(), dateIn = $("#smartEventView-date").val();
 
         if (timeIn === null || dateIn === null) {
             return (false);
         }
-        var time = moment(timeIn);
+        var time = moment(timeIn, "HH:mm");
 
-        var date = moment(dateIn);
+        var date = moment(dateIn, "MMM, DD YYYY");
 
         if (time === null && date === null) {
             mobileNotify("Please enter a valid Date and Time");
