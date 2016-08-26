@@ -277,6 +277,7 @@ var smartEventView = {
 
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
+        $("#searchEventPlace-actionBtns").removeClass('hidden');
     },
 
 
@@ -287,7 +288,7 @@ var smartEventView = {
             mobileNotify("Adding place : " + smartEventView._geoObj.name);
         });
 
-        $("#smartEventView-placeadddiv").addClass('hidden');
+        $("#searchEventPlace-actionBtns").addClass('hidden');
     },
 
     onPlaceSearch : function (e) {
