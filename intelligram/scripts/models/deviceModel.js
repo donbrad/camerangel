@@ -253,6 +253,8 @@ var deviceModel = {
         }
 
         $(".online-only").removeClass('hidden');
+        $(".offline-only").addClass('hidden');
+
         if (everlive._isAuthenticated) {
             // Device is online and user is authenticated -- init pubnub
             userModel.initPubNub();
@@ -294,6 +296,7 @@ var deviceModel = {
         deviceModel.setAppState('isOnline', false);
 
         $(".online-only").addClass('hidden');
+        $(".offline-only").removeClass('hidden');
 
         $(".network-offline").removeClass('hidden');
         // Take all data sources offline
