@@ -407,7 +407,7 @@ var userStatusChannel = {
     },
 
     errorCallback : function (error) {
-        mobileNotify('UserStatusChannel Error : ' + error);
+        console.log('UserStatusChannel Error : ' + error);
     },
 
     channelConnect: function () {
@@ -415,11 +415,11 @@ var userStatusChannel = {
     },
 
     channelDisconnect: function () {
-        mobileNotify("Status Channel Disconnected");
+        console.log("Status Channel Disconnected");
     },
 
     channelReconnect: function () {
-        mobileNotify("Status Channel Reconnected");
+        console.log("Status Channel Reconnected");
     },
 
     channelSuccess : function (status) {
@@ -427,7 +427,7 @@ var userStatusChannel = {
     },
 
     channelError : function (error) {
-        mobileNotify('Status Channel Error : ' + JSON.stringify(error));
+        console.log('Status Channel Error : ' + JSON.stringify(error));
     }
 
 

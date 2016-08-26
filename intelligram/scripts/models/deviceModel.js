@@ -252,6 +252,7 @@ var deviceModel = {
             everlive.init();
         }
 
+        $(".online-only").removeClass('hidden');
         if (everlive._isAuthenticated) {
             // Device is online and user is authenticated -- init pubnub
             userModel.initPubNub();
@@ -293,12 +294,16 @@ var deviceModel = {
     onOffline: function() {
         deviceModel.setAppState('isOnline', false);
 
+        $("#messageSend").html('<img src="images/icon-download.svg" class="icon-send" />');
+
+        $(".online-only").addClass('hidden');
+
         $(".network-offline").removeClass('hidden');
         // Take all data sources offline
         if (APP.everlive !== null)
             APP.everlive.offline();
 
-        $("#messageSend").html('<img src="images/icon-save.svg" class="icon-send" />');
+
         appDataChannel.needHistory = true;
         userDataChannel.needHistory = true;
     },
