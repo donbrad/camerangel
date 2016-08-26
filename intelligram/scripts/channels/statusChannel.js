@@ -384,6 +384,10 @@ var userStatusChannel = {
                      contactList.set('currentPlace', status.currentPlace);
                      contactList.set('currentPlaceUUID', status.currentPlaceUUID);
                      contactList.set('googlePlaceId', status.googlePlaceId);
+                     if (status.time === undefined) {
+                         status.time = ggTime.currentTimeInSeconds();
+                     }
+                     contactList.set('time', status.time);
                  }
 
              }

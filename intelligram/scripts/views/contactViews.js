@@ -1511,8 +1511,6 @@ var contactActionView = {
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
 
-            if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
-
             var user = userStatusChannel.getStatus(thisContact.contactUUID);
             if (user !== null) {
                 var contactIsAvailable = user.isAvailable;
