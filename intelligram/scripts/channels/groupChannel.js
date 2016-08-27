@@ -225,7 +225,7 @@ var groupChannel = {
         if (message.channelUUID !== channelView._channelUUID) {
             mobileNotify("Deferred message sent...");
         }
-        
+
         APP.pubnub.publish({
             channel: message.channelUUID,
             message: message,

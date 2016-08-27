@@ -12,6 +12,7 @@ var smartFlight = {
     airline : null,
     flight: null,
     date: null,
+    _fetched : null,
     flightsDS : null,
 
     init : function (e) {
@@ -33,6 +34,21 @@ var smartFlight = {
 
     sync : function ()  {
         smartFlight.flightsDS.sync();
+    },
+
+    getTodayList : function () {
+        // Does flight span today
+        var len = smartFlight.flightsDS.total();
+        var todayArray = [];
+        var today = moment();
+        for (var i=0; i<len; i++) {
+            var flight = smartFlight.flightsDS.at(i);
+            if (moment(today).isBetween(flight.estimatedDeparture, flight.estimatedArrival, 'day') ) {
+                todayArray.push(movie);
+            }
+
+        }
+        return(todayArray);
     },
 
     queryFlight : function (query) {

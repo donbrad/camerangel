@@ -207,6 +207,20 @@ var smartEvent = {
         return(result);
     },
 
+    getTodayList : function () {
+        // is Showtime Today?
+        var len = smartEvent.eventsDS.total();
+        var todayArray = [];
+        var today = moment();
+        for (var i=0; i<len; i++) {
+            var event = smartEvent.eventsDS.at(i);
+            if (moment(event.date).isSame(today, 'day') ) {
+                todayArray.push(event);
+            }
+
+        }
+        return(todayArray);
+    },
 
     getActionNames : function () {
 

@@ -9,6 +9,7 @@ var smartTrip = {
     _cloudClass : 'smartTrip',
     _ggClass : 'Trip',
     _version : 1,
+    _fetched : false,
     tripsDS : null,
 
     init : function (e) {
@@ -51,7 +52,20 @@ var smartTrip = {
         return (view[0]);
     },
 
+    getTodayList : function () {
+        // Does flight span today
+        var len = smartTrip.tripsDS.total();
+        var todayArray = [];
+        var today = moment();
+        for (var i=0; i<len; i++) {
+            var trip = smartTrip.tripsDS.at(i);
+            if (moment(today).isBetween(trip.departure, trip.arrival, 'day') ) {
+                todayArray.push(trip);
+            }
 
+        }
+        return(todayArray);
+    },
     smartAddTrip : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 

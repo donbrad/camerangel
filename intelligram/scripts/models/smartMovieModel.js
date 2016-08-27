@@ -10,6 +10,7 @@ var smartMovie = {
     _cloudClass : 'smartMovie',
     _ggClass : 'Movie',
     _version : 1,
+    _fetched : false,
 
     moviesDS: null,
 
@@ -36,7 +37,22 @@ var smartMovie = {
     sync: function ()  {
         smartMovie.moviesDS.sync();
     },
-    
+
+    getTodayList : function () {
+        // is Showtime Today?
+        var len = smartMovie.moviesDS.total();
+        var todayArray = [];
+        var today = moment();
+        for (var i=0; i<len; i++) {
+            var movie = smartMovie.moviesDS.at(i);
+            if (moment(movie.showtime).isSame(today, 'day') ) {
+                todayArray.push(movie);
+            }
+
+        }
+        return(todayArray);
+    },
+
     queryMovie: function (query) {
         if (query === undefined)
             return(undefined);
