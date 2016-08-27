@@ -24,6 +24,7 @@ var groupChannel = {
     end: null,
     moreMessages: false,
     messageDS: [],
+    deferredDS : new kendo.data.DataSource(),
     nextFetchEnd : null,
     channelFetchCallBack : null,
 
@@ -57,10 +58,10 @@ var groupChannel = {
             channel: groupChannel.channelUUID,
             windowing: 500,
             restore: true,
-            callback: groupChannel.receiveHandler,
+            callback: groupChannel.receiveHandler/*,
             presence: groupChannel.presenceHandler,
             // Set our state to our user object, which contains our username and public key.
-            state: groupChannel.thisUser
+            state: groupChannel.thisUser*/
         });
     },
     
@@ -109,6 +110,13 @@ var groupChannel = {
         if (channelView.isDuplicateMessage(message.msgID)) {
             return;
         }
+        if (message.msgClass === undefined) {
+            message.msgClass = groupChannel._class;
+        }
+
+        if (message.msgType === undefined) {
+            message.msgType = groupChannel._message;
+        }
         channelView.preprocessMessage(message);
 
         channelView.messagesDS.add(message);
@@ -136,7 +144,7 @@ var groupChannel = {
 
     },
 
-    presenceHandler : function (msg) {
+/*    presenceHandler : function (msg) {
         
         if (msg.action === "join" || msg.action === "state-change") {
             // If the presence message contains data aka *state*, add this to our users object.
@@ -149,14 +157,14 @@ var groupChannel = {
                 }
 
             }
-           /* // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
+           /!* // Otherwise, we have to call `here_now` to get the state of the new subscriber to the channel.
             else {
                 APP.pubnub.here_now({
                     channel: groupChannel.channelUUID,
                     state: true,
                     callback: groupChannel.hereNowHandler
                 });
-            }*/
+            }*!/
            
         }
         // A user has left or timed out of intelligram so we remove them from our users object.
@@ -194,6 +202,46 @@ var groupChannel = {
             }
         });
 
+    },*/
+
+    processDeferred : function () {
+        var len = groupChannel.deferredDS.total();
+
+        if (len > 0) {
+            for (var i=0; i<len; i++) {
+                if (deviceModel.isOnline()) {
+                    var msg = groupChannel.deferredDS.at(i);
+                    groupChannel.deferredSend(msg);
+                    groupChannel.deferredDS.remove(msg);
+                }
+            }
+        }
+    },
+
+    deferredSend : function (message) {
+
+        message.set('wasSent', true);
+        message.actualSend = ggTime.currentTimeInSeconds();
+        if (message.channelUUID !== channelView._channelUUID) {
+            mobileNotify("Deferred message sent...");
+        }
+        
+        APP.pubnub.publish({
+            channel: message.channelUUID,
+            message: message,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('Group Channel publish error: ' + message);
+                }
+
+
+            }
+        });
     },
 
     sendMessage: function (text, data, ttl) {
@@ -202,19 +250,32 @@ var groupChannel = {
 
         var currentTime =  ggTime.currentTime();
 
-        APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Chat : " + groupChannel.channelName;
-            var thisMessage = {
-                msgID: msgID,
-                msgClass : groupChannel._class,
+       var msgID = uuid.v4();
+
+        var notificationString = "Chat : " + groupChannel.channelName;
+        var thisMessage = {
+            msgID: msgID,
+            msgClass : groupChannel._class,
+            msgType : groupChannel._message,
+            channelUUID : groupChannel.channelUUID,
+            pn_apns: {
+                aps: {
+                    alert : notificationString,
+                    badge: 1,
+                    'content-available' : 1
+                },
+                senderId: userModel._user.userUUID,
+                senderName :  userModel._user.name,
+                target: '#channel?channelUUID='+ groupChannel.channelUUID,
+                channelUUID: groupChannel.channelUUID,
                 msgType : groupChannel._message,
-                channelUUID : groupChannel.channelUUID,
-                pn_apns: {
-                    aps: {
-                        alert : notificationString,
-                        badge: 1,
-                        'content-available' : 1
-                    },
+                isMessage: true,
+                isPrivate: false
+            },
+            pn_gcm : {
+                data : {
+                    title: notificationString,
+                    message: "Message from " + userModel._user.name,
                     senderId: userModel._user.userUUID,
                     senderName :  userModel._user.name,
                     target: '#channel?channelUUID='+ groupChannel.channelUUID,
@@ -222,61 +283,45 @@ var groupChannel = {
                     msgType : groupChannel._message,
                     isMessage: true,
                     isPrivate: false
-                },
-                pn_gcm : {
-                    data : {
-                        title: notificationString,
-                        message: "Message from " + userModel._user.name,
-                        senderId: userModel._user.userUUID,
-                        senderName :  userModel._user.name,
-                        target: '#channel?channelUUID='+ groupChannel.channelUUID,
-                        channelUUID: groupChannel.channelUUID,
-                        msgType : groupChannel._message,
-                        isMessage: true,
-                        isPrivate: false
-                    }
-                },
-                sender: userModel._user.userUUID,
-                senderName :  userModel._user.name,
-                content: text,
-                data: data,
-                time: currentTime,
-                fromHistory: false,
-                ttl: ttl
-            };
-
-            APP.pubnub.publish({
-                channel: groupChannel.channelUUID,
-                message: thisMessage,
-                callback: function (m) {
-                    if (m === undefined)
-                        return;
-
-                    var status = m[0], message = m[1], time = m[2];
-
-                    if (status !== 1) {
-                        mobileNotify('Group Channel publish error: ' + message);
-                    }
-
-                    /*var parsedMsg = {
-                         msgID: msgID,
-                         channelUUID: groupChannel.channelUUID,
-                         content: message,
-                         data: data,
-                         ttl: ttl,
-                         time: currentTime,
-                         sender: userModel._user.userUUID,
-                         fromHistory: false
-
-                     };*/
-
-                    channelModel.updateLastMessageTime(groupChannel.channelUUID, null);
-                    channelView.scrollToBottom();
-                   // groupChannel.receiveMessage(thisMessage);
-
                 }
-            });
+            },
+            sender: userModel._user.userUUID,
+            senderName :  userModel._user.name,
+            content: text,
+            data: data,
+            time: currentTime,
+            fromHistory: false,
+            ttl: ttl
+        };
+
+        if (!deviceModel.isOnline()) {
+
+            thisMessage.wasSent = false;
+            groupChannel.deferredDS.add(thisMessage);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: groupChannel.channelUUID,
+            message: thisMessage,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('Group Channel publish error: ' + message);
+                }
+
+
+                channelModel.updateLastMessageTime(groupChannel.channelUUID, null);
+                channelView.scrollToBottom();
+
+
+            }
         });
+
 
     },
 

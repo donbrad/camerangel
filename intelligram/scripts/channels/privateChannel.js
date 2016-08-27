@@ -186,6 +186,7 @@ var privateChannel = {
                 if (deviceModel.isOnline()) {
                     var msg = privateChannel.deferredDS.at(i);
                     privateChannel.deferredSend(msg);
+                    privateChannel.deferredDS.remove(msg);
                 }
             }
         }
@@ -359,11 +360,13 @@ var privateChannel = {
                     ggError("Deferred message - can't find message " + message.msgID);
                 } else {
                     savedMessage.set("wasSent", true);
+                    savedMessage.set("actualSend", ggTime.currentTimeInSeconds());
                 }
                 var chatMessage = channelView.findMessageById(message.msgID);
 
                 if (chatMessage !== undefined && chatMessage !== null) {
                     chatMessage.set('wasSent', true);
+                    chatMessage.set("actualSend", ggTime.currentTimeInSeconds());
                 }
 
             }

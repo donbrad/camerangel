@@ -258,6 +258,8 @@ var deviceModel = {
         if (everlive._isAuthenticated) {
             // Device is online and user is authenticated -- init pubnub
             userModel.initPubNub();
+            userDataChannel.processDeferred();
+            groupChannel.processDeferred();
             userDataChannel.history();
             appDataChannel.history();
             everlive.syncCloud();
