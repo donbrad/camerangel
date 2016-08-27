@@ -10,61 +10,104 @@
 var todayModel = {
 
     objectsDS : null,
-
     _cloudClass : 'today',
     _ggClass : 'Today',
 
     init : function () {
         todayModel.objectsDS = new kendo.data.DataSource({
-            type: 'everlive',
-            transport: {
-                typeName: 'today'
-            },
-            schema: {
-                model: { Id:  Everlive.idField}
-            },
             sort: {
                 field: "date",
                 dir: "desc"
             }
         });
 
-        todayModel.objectsDS.fetch();
     },
 
     sync: function () {
         todayModel.objectsDS.sync();
     },
 
-    change : function (e, dataType) {
-        var action = e.action;
-        var data = e.items;
-        var dataLength  = 0;
-        if (data !== undefined) {
-            dataLength = data.length;
+    buildTodayDS : function () {
+        todayModel.objectsDS.data([]);
+        var movies = smartMovie.getTodayList();
+        var events = smartEvent.getTodayList();
+        var trips = smartTrip.getTodayList();
+        var flights = smartTrip.getTodayList();
+
+        todayModel.addList(movies);
+        todayModel.addList(events);
+        todayModel.addList(flights);
+        todayModel.addList(trips);
+
+    },
+
+    addList : function (array) {
+        if (array === null || array.length === 0 ) {
+            return;
         }
-        switch(action) {
-            case 'itemchange' :
-                break;
 
-            case 'sync' :
-                break;
-
-            case 'add' :
-
-                break;
-
-            case 'remove' :
-                break;
-
+        for (var i=0; i<array.length; i++) {
+            todayModel.add(array[i]);
         }
     },
 
-    create : function (obj) {
+
+    queryToday : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = todayModel.todayDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var object = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(object);
+    },
+
+    findTodayById : function (todayUUID) {
+
+        var obj = todayModel.queryToday([{ field: "uuid", operator: "eq", value: todayUUID }])
+
+        if (obj === undefined)
+            obj = null;
+
+        return(obj);
+    },
+
+    findTodayByObjectId : function (objectUUID) {
+        var obj = todayModel.queryToday([{ field: "objectId", operator: "eq", value: objectUUID }])
+
+        if (obj === undefined)
+            obj = null;
+
+        return(obj);
+    },
+
+    add : function (obj, date) {
+        var todayObj = {uuid: uuid.v4, date: date, objectId : obj.uuid, objectType: obj.ggType, object: obj};
+
+        var testObj = todayModel.findTodayByObjectId(obj.uuid);
+
+        if(testObj === null) {
+            todayModel.objectsDS.add(obj);
+        }
 
     },
 
-    delete : function (obj) {
+    remove : function (obj) {
+        var testObj = todayModel.findTodayByObjectId(obj.uuid);
 
+        if(testObj !== null) {
+            todayModel.objectsDS.remove(testObj);
+        }
     },
+
+    update : function (obj) {
+
+    }
 };

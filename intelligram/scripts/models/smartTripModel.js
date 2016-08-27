@@ -10,6 +10,7 @@ var smartTrip = {
     _ggClass : 'Trip',
     _version : 1,
     _fetched : false,
+    _initialSync : false,
     tripsDS : null,
 
     init : function (e) {
@@ -20,10 +21,59 @@ var smartTrip = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-            change :  function (e) {todayModel.change(e, smartTrip._ggClass);}
+            }
         });
         smartTrip.tripsDS.fetch();
+
+        smartTrip.tripsDS.bind("change", function (e) {
+            var changedTrips = e.items;
+            if (e.action === undefined) {
+                if (changedTrips !== undefined && !smartTrip.tripsDS._initialSync) {
+
+                    smartTrip.tripsDS._initialSync = true;
+                    smartTrip.tripsDS._todayArray = smartTrip.tripsDS.getTodayList();
+                }
+
+            } else {
+
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var movie = e.items[0];
+
+                        break;
+
+                    case "remove" :
+                        var trip = e.items[0];
+                        todayModel.remove(trip);
+                        break;
+
+                    case "sync" :
+
+                        break;
+
+                    case "add" :
+                        var today = moment();
+                        var trip = e.items[0];
+                        if (moment(today).isBetween(trip.departure, trip.arrival, 'day') ) {
+                            todayModel.add(trip);
+                        }
+                        break;
+                }
+            }
+
+
+        });
+        
+        smartTrip.tripsDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!smartTrip._fetched) {
+                    smartTrip._fetched = true;
+                }
+            }
+        });
     },
 
     sync : function () {
