@@ -11,6 +11,7 @@ var smartTrip = {
     _version : 1,
     _fetched : false,
     _initialSync : false,
+    _todayArray : [],
     tripsDS : null,
 
     init : function (e) {
@@ -28,10 +29,10 @@ var smartTrip = {
         smartTrip.tripsDS.bind("change", function (e) {
             var changedTrips = e.items;
             if (e.action === undefined) {
-                if (changedTrips !== undefined && !smartTrip.tripsDS._initialSync) {
+                if (changedTrips !== undefined && !smartTrip._initialSync) {
 
-                    smartTrip.tripsDS._initialSync = true;
-                    smartTrip.tripsDS._todayArray = smartTrip.tripsDS.getTodayList();
+                    smartTrip._initialSync = true;
+                    smartTrip._todayArray = smartTrip.getTodayList();
                 }
 
             } else {
@@ -39,8 +40,7 @@ var smartTrip = {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
-                        var movie = e.items[0];
-
+                        var trip = e.items[0];
                         break;
 
                     case "remove" :
@@ -64,7 +64,7 @@ var smartTrip = {
 
 
         });
-        
+
         smartTrip.tripsDS.bind("requestEnd", function (e) {
             var response = e.response,  type = e.type;
 
