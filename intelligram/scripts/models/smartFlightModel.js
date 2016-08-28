@@ -12,7 +12,9 @@ var smartFlight = {
     airline : null,
     flight: null,
     date: null,
-    _fetched : null,
+    _fetched : false,
+    _initialSync : false,
+    _todayArray : [],
     flightsDS : null,
 
     init : function (e) {
@@ -23,12 +25,57 @@ var smartFlight = {
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
-
-            change : function (e) {todayModel.change(e, smartFlight._ggClass);}
+            }
         });
 
+        smartFlight.flightsDS.bind("change", function (e) {
+            var changedTrips = e.items;
+            if (e.action === undefined) {
+                if (changedTrips !== undefined && !smartFlight._initialSync) {
 
+                    smartFlight._initialSync = true;
+                    smartFlight._todayArray = smartTrip.getTodayList();
+                }
+
+            } else {
+
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var flight = e.items[0];
+                        break;
+
+                    case "remove" :
+                        var flight = e.items[0];
+                        todayModel.remove(trip);
+                        break;
+
+                    case "sync" :
+
+                        break;
+
+                    case "add" :
+                        var today = moment();
+                        var flight = e.items[0];
+                        if (moment(today).isBetween(flight.estimatedDeparture, flight.estimatedArrival, 'day') ) {
+                            todayModel.add(flight);
+                        }
+                        break;
+                }
+            }
+
+
+        });
+
+        smartFlight.flightsDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!smartFlight._fetched) {
+                    smartFlight._fetched = true;
+                }
+            }
+        });
         smartFlight.flightsDS.fetch();
     },
 
