@@ -331,7 +331,9 @@ var devicePhoto = {
                                         var photoObj = photoModel.findPhotoById(photouuid);
 
                                         if (photoObj !== undefined && photoData !== null) {
-                                            var secureUrl = photoData.secure_url, thumbUrl = photoData.eager[0].secure_url;
+                                            var secureUrl = photoData.secure_url, thumbUrl = photoData.secure_url.replace('upload//','upload//c_fit,h_256,w_256//');
+
+
                                             photoObj.set('imageUrl', secureUrl);
                                             photoObj.set('cloudUrl', secureUrl);
                                             photoObj.set('thumbnailUrl', thumbUrl);
@@ -463,7 +465,7 @@ var devicePhoto = {
                         var secureUrl = photoData.secure_url;
                         photoObj.set('imageUrl', secureUrl);
                         photoObj.set('cloudUrl', secureUrl);
-                        photoObj.set('thumbnailUrl', secureUrl);
+                        photoObj.set('thumbnailUrl', secureUrl.replace('upload//','upload//c_fit,h_64,w_64//'));
                         photoObj.set('width', Number(photoData.width));
                         photoObj.set('height', Number(photoData.height));
                         photoObj.set('size', Number(photoData.bytes));
@@ -496,7 +498,7 @@ var devicePhoto = {
                     var photoObj = photoModel.findPhotoById(photouuid);
 
                     if (photoObj !== undefined && photoData !== null) {
-                        var secureUrl = photoData.secure_url, thumbUrl = photoData.eager[0].secure_url;
+                        var secureUrl = photoData.secure_url, thumbUrl = photoData.secure_url.replace('upload//','upload//c_fit,h_256,w_256//');
                         photoObj.set('imageUrl', secureUrl);
                         photoObj.set('cloudUrl', secureUrl);
                         photoObj.set('thumbnailUrl', thumbUrl);
