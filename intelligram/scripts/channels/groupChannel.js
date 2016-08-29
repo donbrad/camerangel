@@ -13,10 +13,10 @@ var groupChannel = {
 
     _class : 'group',
     _message : 'message',   // message from member
-    _add : 'add',           // add member (from owner)
-    _remove : 'remove',     // remove member (from owner)
-    _delete : 'delete',     // delete chat (from owner)
-    _update : 'update',     // update (from owner)
+    _addMember : 'addmember',           // add member (from owner)
+    _removeMember : 'removemember',     // remove member (from owner)
+    _deleteChannel : 'deletechannel',     // delete chat (from owner)
+    _updateChannel : 'updatechannel',     // update (from owner)
     _recallMessage : 'recallmessage',
     _recallPhoto : 'recallphoto',
     userId : '',
@@ -80,19 +80,19 @@ var groupChannel = {
                     groupChannel.receiveMessage(msg);
                 break;
 
-            case groupChannel._add :
+            case groupChannel._addMember :
                     groupChannel.doAddMember(msg);
                 break;
 
-            case groupChannel._remove :
+            case groupChannel._removeMember :
                     groupChannel.doRemoveMember(msg);
                 break;
 
-            case groupChannel._delete :
+            case groupChannel._deleteChannel :
                     groupChannel.doDeleteChannel(msg);
                 break;
 
-            case groupChannel._update :
+            case groupChannel._updateChannel :
                 groupChannel.doUpdateChannel(msg);
                 break;
 
@@ -141,11 +141,81 @@ var groupChannel = {
     },
 
     addMember : function (channelId, memberId) {
+        var currentTime =  ggTime.currentTime();
 
+        var msgID = uuid.v4();
+
+        var thisMessage = {
+            msgID: msgID,
+            msgClass : groupChannel._class,
+            msgType : groupChannel._addMember,
+            channelUUID : channelId,
+            sender: userModel._user.userUUID,
+            senderName :  userModel._user.name,
+            memberId : memberId
+        };
+
+        if (!deviceModel.isOnline()) {
+
+            thisMessage.wasSent = false;
+            groupChannel.deferredDS.add(thisMessage);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: channelId,
+            message: thisMessage,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('Group Channel publish error: ' + message);
+                }
+
+            }
+        });
     },
 
     removeMember : function (channelId, memberId) {
+        var currentTime =  ggTime.currentTime();
 
+        var msgID = uuid.v4();
+
+        var thisMessage = {
+            msgID: msgID,
+            msgClass : groupChannel._class,
+            msgType : groupChannel._removeMember,
+            channelUUID : channelId,
+            sender: userModel._user.userUUID,
+            senderName :  userModel._user.name,
+            memberId : memberId
+        };
+
+        if (!deviceModel.isOnline()) {
+
+            thisMessage.wasSent = false;
+            groupChannel.deferredDS.add(thisMessage);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: channelId,
+            message: thisMessage,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('Group Channel publish error: ' + message);
+                }
+
+            }
+        });
     },
 
     updateChannel : function (name, description, memberList) {

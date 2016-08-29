@@ -187,8 +187,8 @@ var channelModel = {
         channelModel.channelsDS.fetch();
         channelModel.photosDS.fetch();
         channelModel.groupMessagesDS.fetch();
-        channelModel.recalledPhotosDS.fetch();
-        channelModel.recalledMessagesDS.fetch();
+       /* channelModel.recalledPhotosDS.fetch();
+        channelModel.recalledMessagesDS.fetch();*/
 
 
         channelModel.channelsDS.bind("requestEnd", function (e) {
@@ -214,8 +214,8 @@ var channelModel = {
     sync : function () {
         channelModel.channelsDS.sync();
         channelModel.photosDS.sync();
-        channelModel.recalledPhotosDS.sync();
-        channelModel.recalledMessagesDS.sync();
+     /*   channelModel.recalledPhotosDS.sync();
+        channelModel.recalledMessagesDS.sync();*/
         channelModel.groupMessagesDS.sync();
     },
     
@@ -392,7 +392,7 @@ var channelModel = {
 
     isPhotoRecalled : function (photoId, channelId) {
         var message = channelModel.queryRecalledPhoto([{ field: "photoUUID", operator: "eq", value: photoId },
-            { field: "channelUUID", operator: "eq", value: photoId }]);
+            { field: "channelUUID", operator: "eq", value: channelId }]);
 
         if (message === undefined) {
             //msgID not found in recall list
