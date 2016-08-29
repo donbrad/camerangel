@@ -725,7 +725,8 @@ var modalChatPhotoView = {
                     }
                 }
                 var photo = channelView.photosDS.at(modalChatPhotoView._currentPhotoPage);
-                var url = photo.thumbnailUrl;
+                var url = null;
+
                 if (photo.imageUrl !== null)
                     url = photo.imageUrl;
                 if (url === null && photo.deviceUrl !== null) {
@@ -733,6 +734,7 @@ var modalChatPhotoView = {
                         url = photo.deviceUrl;
                     }
                 }
+
                 modalChatPhotoView._photoUrl = url;
 
                 $('#modalChatPhotoView-photoView').attr('src', url);

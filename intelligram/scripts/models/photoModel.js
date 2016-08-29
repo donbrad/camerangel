@@ -794,6 +794,7 @@ var photoModel = {
     },
 
     cloudCreate : function (photo) {
+
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
 
@@ -905,7 +906,7 @@ var photoModel = {
        
         // For perf reasons add the photo before it's stored on everlive
 
-
+        photoModel.cloudCreate(photo);
 
         
         if (callback !== undefined) {
@@ -913,7 +914,7 @@ var photoModel = {
         }
 
 
-        photoModel.cloudCreate(photo);
+
 
 
     },

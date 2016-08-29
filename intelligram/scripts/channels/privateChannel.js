@@ -11,6 +11,8 @@ var privateChannel = {
     _class : 'private',
     _message : 'message',
     _alert : 'alert',
+    _recallMessage : 'recallmessage',
+    _recallPhoto : 'recallphoto',
     thisUser: {},
     userId: '',
     users: [],
@@ -58,10 +60,129 @@ var privateChannel = {
 
     receiveHandler : function (msg) {
 
+        if (msg.msgType === undefined) {
+            msg.msgType = privateChannel._message;
+        }
 
-        privateChannel.receiveMessage(msg);
-       // deleteMessage(msg.sender, msg.msgID, msg.ttl);
+        switch (msg.msgType) {
 
+            case privateChannel._message :
+                privateChannel.receiveMessage(msg);
+                break;
+
+            case privateChannel._alert :
+                privateChannel.doAlertMessage(msg);
+                break;
+
+            case privateChannel._recallMessage :
+                privateChannel.doRecallMessage(msg);
+                break;
+
+            case privateChannel._recallPhoto :
+                privateChannel.doRecallPhoto(msg);
+                break;
+
+
+        }
+
+    },
+
+    alertMessage : function (channelId, alertText) {
+
+    },
+
+    recallMessage : function (channelId, messageId) {
+        var currentTime =  ggTime.currentTime();
+
+        var msgID = uuid.v4();
+
+        var thisMessage = {
+            msgID: msgID,
+            msgClass : privateChannel._class,
+            msgType : privateChannel._recallMessage,
+            channelUUID : channelId,
+            sender: userModel._user.userUUID,
+            senderName :  userModel._user.name,
+            messageId : messageId
+        };
+
+        if (!deviceModel.isOnline()) {
+
+            thisMessage.wasSent = false;
+            privateChannel.deferredDS.add(thisMessage);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: channelId,
+            message: thisMessage,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('Group Channel publish error: ' + message);
+                }
+
+            }
+        });
+    },
+
+
+    recallPhoto : function (channelId, photoId) {
+        var currentTime =  ggTime.currentTime();
+
+        var msgID = uuid.v4();
+
+        var thisMessage = {
+            msgID: msgID,
+            msgClass : privateChannel._class,
+            msgType : privateChannel._recallPhoto,
+            channelUUID : channelId,
+            sender: userModel._user.userUUID,
+            senderName :  userModel._user.name,
+            photoId : photoId
+        };
+
+        if (!deviceModel.isOnline()) {
+
+            thisMessage.wasSent = false;
+            privateChannel.deferredDS.add(thisMessage);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: channelId,
+            message: thisMessage,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('recall photo publish error: ' + message);
+                }
+
+            }
+        });
+    },
+
+    doAlertMessage : function (msg) {
+
+    },
+
+    doRecallPhoto : function (msg) {
+        var recallObj = {type: 'photo', channelId: msg.channelUUID, photoId : channel.photoId};
+        channelModel.recallDS.add(recallObj);
+    },
+
+    doRecallMessage : function (msg) {
+        var recallObj = {type: 'message', channelId: msg.channelUUID, messageId : channel.msgID};
+
+        channelModel.recallDS.add(recallObj);
     },
 
     decryptMessage : function (msg) {
@@ -139,7 +260,6 @@ var privateChannel = {
 
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
-
 
             channelView.preprocessMessage(message);
             channelModel.updateLastAccess(channelView._channelUUID, null);

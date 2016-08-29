@@ -17,6 +17,8 @@ var groupChannel = {
     _remove : 'remove',     // remove member (from owner)
     _delete : 'delete',     // delete chat (from owner)
     _update : 'update',     // update (from owner)
+    _recallMessage : 'recallmessage',
+    _recallPhoto : 'recallphoto',
     userId : '',
     userName : '',
     userAlias : '',
@@ -25,6 +27,7 @@ var groupChannel = {
     moreMessages: false,
     messageDS: [],
     deferredDS : new kendo.data.DataSource(),
+    recallDS : new kendo.data.DataSource(),
     nextFetchEnd : null,
     channelFetchCallBack : null,
 
@@ -78,19 +81,27 @@ var groupChannel = {
                 break;
 
             case groupChannel._add :
-
+                    groupChannel.doAddMember(msg);
                 break;
 
             case groupChannel._remove :
-
+                    groupChannel.doRemoveMember(msg);
                 break;
 
             case groupChannel._delete :
-
+                    groupChannel.doDeleteChannel(msg);
                 break;
 
             case groupChannel._update :
+                groupChannel.doUpdateChannel(msg);
+                break;
 
+            case groupChannel._recallMessage :
+                groupChannel.doRecallMessage(msg);
+                break;
+
+            case groupChannel._recallPhoto :
+                groupChannel.doRecallPhoto(msg);
                 break;
 
 
@@ -98,6 +109,126 @@ var groupChannel = {
        
 
   
+    },
+
+    doRecallMessage : function (msg) {
+        var recallObj = {type: 'message', channelId: msg.channelUUID, messageId : channel.msgID};
+
+        channelModel.recallDS.add(recallObj);
+
+    },
+
+    doRecallPhoto : function (msg) {
+        var recallObj = {type: 'photo', channelId: msg.channelUUID, photoId : channel.photoId};
+        channelModel.recallDS.add(recallObj);
+    },
+
+    doAddMember : function (msg) {
+        var channelId = msg.channelUUID, memberId = msg.memberUUID;
+    },
+
+    doRemoveMember : function (msg) {
+        var channelId = msg.channelUUID, memberId = msg.memberUUID;
+    },
+
+    doDeleteChannel : function (msg) {
+        var channelId = msg.channelUUID;
+    },
+
+    doUpdateChannel : function (msg) {
+        var channelName = msg.name, channelDescription = msg.description, member = msg.members;
+
+    },
+
+    addMember : function (channelId, memberId) {
+
+    },
+
+    removeMember : function (channelId, memberId) {
+
+    },
+
+    updateChannel : function (name, description, memberList) {
+
+    },
+
+    recallMessage : function (channelId, messageId) {
+        var currentTime =  ggTime.currentTime();
+
+        var msgID = uuid.v4();
+
+        var thisMessage = {
+            msgID: msgID,
+            msgClass : groupChannel._class,
+            msgType : groupChannel._recallMessage,
+            channelUUID : channelId,
+            sender: userModel._user.userUUID,
+            senderName :  userModel._user.name,
+            messageId : messageId
+        };
+
+        if (!deviceModel.isOnline()) {
+
+            thisMessage.wasSent = false;
+            groupChannel.deferredDS.add(thisMessage);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: channelId,
+            message: thisMessage,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('Group Channel publish error: ' + message);
+                }
+
+            }
+        });
+    },
+
+    recallPhoto : function (channelId,  photoId) {
+        var currentTime =  ggTime.currentTime();
+
+        var msgID = uuid.v4();
+
+
+        var thisMessage = {
+            msgID: msgID,
+            msgClass : groupChannel._class,
+            msgType : groupChannel._recallPhoto,
+            channelUUID : channelId,
+            sender: userModel._user.userUUID,
+            senderName :  userModel._user.name,
+            photoId : photoId
+        };
+
+        if (!deviceModel.isOnline()) {
+
+            thisMessage.wasSent = false;
+            groupChannel.deferredDS.add(thisMessage);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: channelId,
+            message: thisMessage,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('Group Channel publish error: ' + message);
+                }
+
+            }
+        });
     },
 
     receiveMessage : function (message) {

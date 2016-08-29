@@ -45,9 +45,7 @@ var channelModel = {
     // List of all active private channels (those with messages)
     privateChannelsDS: null, 
 
-    recalledMessagesDS : null,
-
-    recalledPhotosDS : null,
+    recallDS : new kendo.data.DataSource(),
 
     groupMessagesDS : null,
 
@@ -82,11 +80,11 @@ var channelModel = {
             }
         });
 
-        channelModel.recalledMessagesDS = new kendo.data.DataSource({
+        /*channelModel.recalledMessagesDS = new kendo.data.DataSource({
             type: 'everlive',
           
             transport: {
-                typeName: 'recalledMessages',
+                typeName: 'recall',
                 dataProvider: APP.everlive
             },
             schema: {
@@ -119,7 +117,7 @@ var channelModel = {
                     channelModel.recalledPhotosFetched = true;
                 }
             }
-        });
+        });*/
 
         channelModel.photosDS = new kendo.data.DataSource({
             type: 'everlive',

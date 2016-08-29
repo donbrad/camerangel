@@ -96,8 +96,6 @@
 	<script src="scripts/models/placeNoteModel.js"></script>
 	<script src="scripts/models/privateNoteModel.js"></script>
 	<script src="scripts/models/profilePhoto.js"></script>
-	<script src="scripts/models/recalledMessage.js"></script>
-	<script src="scripts/models/recalledPhoto.js"></script>
 	<script src="scripts/models/smartEventModel.js"></script>
 	<script src="scripts/models/smartFlightModel.js"></script>
 	<script src="scripts/models/smartListModel.js"></script>
@@ -4272,7 +4270,7 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit" data-use-native-scrolling="true" data-zoom="true">
+<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit" data-zoom="true">
 	<div data-role="header">
 		<div style="margin: 0.5em 1em;">
 			<div class="left" style="color: #fff">
@@ -4302,27 +4300,6 @@
 		In Gallery
 	</div>-->
 	<div class="photoViewBox" data-role="content">
-		<!--<div style="margin: 0.5em 1em;">
-			<div class="left" style="color: #fff">
-				<p style="font-size: 0.875em; margin-left: 0;">
-					<span>Sent by </span>
-					<span id="modalChatPhotoOwnerName"></span>
-				</p>
-				<p style="font-size: 0.75em; margin-left: 0;">
-					<span id="modalChatPhotoView-userhascopy">In Gallery • </span>
-					<span>2d ago</span>
-				</p>
-			</div>
-			<div class="right" id="modalChatPhotoView-recipientlist">
-				<a class="hidden" data-role="button" id="modalChatPhotoViewUnlocked" data-align="right" data-click="modalChatPhotoView.savePhoto">
-					<img src="images/icon-save.svg" class="icon-md"/>
-				</a>
-				<a data-role="button" data-align="right" data-click="modalChatPhotoView.confirmRecall">
-					<img src="images/action-recall-light.svg" class="icon-md"/>
-				</a>
-			</div>
-			<div class="clearfix"></div>
-		</div>-->
 		<img id="modalChatPhotoView-photoView" src="" />
 	</div>
 	<div class="footer" data-role="footer">

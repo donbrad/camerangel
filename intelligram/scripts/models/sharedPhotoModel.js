@@ -65,7 +65,7 @@ var sharedPhotoModel = {
             share.set('isUploaded', false);
         } else {
             share.set('imageUrl',imageUrl);
-            share.set('thumbnailUrl', imageUrl.replace('upload//', 'upload//c_scale,h_512,w_512//')); 
+            share.set('thumbnailUrl', imageUrl.replace('upload//', 'upload//c_fit,h_256,w_256//'));
             share.set('isUploaded', true);
         }
         
@@ -80,10 +80,7 @@ var sharedPhotoModel = {
 
         everlive.createOne(sharedPhotoModel._cloudClass, share, function (error, data){
             if (error !== null) {
-                mobileNotify ("Error creating sharedphoto " + JSON.stringify(error));
-
-            } else {
-
+                ggError ("Error creating sharedphoto " + JSON.stringify(error));
             }
         });
 
