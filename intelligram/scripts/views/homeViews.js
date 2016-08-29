@@ -14,6 +14,8 @@ var homeView = {
     _radius: 90, // 90 meters or approx 300 ft
     today : new kendo.data.DataSource(),
     _activeView : 0,
+    _needPhoneValidation : false,
+    _needEmailValidation : false,
 
 
     openNotificationAction: function(e){
@@ -421,12 +423,19 @@ var homeView = {
 
         homeView.updateValidationUX();
 
+
+
         appDataChannel.history();
         userDataChannel.history();
 
         //everlive.syncCloud();
 
 
+        if (homeView._needPhoneValidation) {
+            verifyPhoneModal.openModal();
+            // toggle off so user only sees every launch or login
+            homeView._needPhoneValidation = false;
+        }
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();
     },
@@ -1859,6 +1868,10 @@ var signUpView = {
       //  _preventDefault(e);
         $("#home-signup-welcomebanner").removeClass('hidden');
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
+        if (!deviceModel.isOnline()) {
+            mobileNotify("Phone is offline - can't Sign Up");
+            APP.kendo.navigate("#:back");
+        }
     },
 
     signUpPhoneValid: function(){
@@ -2192,7 +2205,7 @@ var signInView = {
             return;
         }
 
-        APP.everlive.online();
+       everlive.goOnline();
         
         mobileNotify("Signing you in to intelligram....");
 

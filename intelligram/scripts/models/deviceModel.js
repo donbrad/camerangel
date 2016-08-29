@@ -243,20 +243,22 @@ var deviceModel = {
     onOnline: function() {
         deviceModel.setAppState('isOnline', true);
         // Take all data sources online
-
-        APP.everlive.online();
-
-        deviceModel.loadGoogleMaps();
-
         if (!everlive._initialized) {
             everlive.init();
         }
+
+        if (APP.everlive !== null)
+            everlive.goOnline();
+
+        deviceModel.loadGoogleMaps();
+
 
         $(".online-only").removeClass('hidden');
         $(".offline-only").addClass('hidden');
 
         if (everlive._isAuthenticated) {
             // Device is online and user is authenticated -- init pubnub
+
             userModel.initPubNub();
             userDataChannel.processDeferred();
             groupChannel.processDeferred();
@@ -303,7 +305,7 @@ var deviceModel = {
         $(".network-offline").removeClass('hidden');
         // Take all data sources offline
         if (APP.everlive !== null)
-            APP.everlive.offline();
+            everlive.goOffline();
 
         appDataChannel.needHistory = true;
         userDataChannel.needHistory = true;

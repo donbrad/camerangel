@@ -86,6 +86,9 @@ var everlive = {
                     },
                     encryption: {
                         key : 'kkwllc2016'
+                    },
+                    conflicts: {
+                        strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
                     }
                 },
                 authentication: {
@@ -103,7 +106,7 @@ var everlive = {
                 }
             });
 
-            APP.everlive.online();
+
 
             everlive.getTimeStamp();
     
@@ -160,7 +163,13 @@ var everlive = {
         }
     },
 
+    goOnline : function () {
+        APP.everlive.online();
+    },
 
+    goOffline : function () {
+        APP.everlive.online();
+    },
 
     syncCloud : function (){
         if (!everlive.isConnected()) {

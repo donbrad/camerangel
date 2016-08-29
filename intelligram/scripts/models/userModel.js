@@ -344,12 +344,11 @@ var userModel = {
 
         memberdirectory.update();
 
-        if (user.phoneValidated) {
-            APP.kendo.navigate('#home');
-        } else {
-            verifyPhoneModal.openModal();
+        if (!user.phoneValidated) {
+            homeView._needPhoneValidation = true;
         }
 
+        APP.kendo.navigate('#home');
 
     },
     
