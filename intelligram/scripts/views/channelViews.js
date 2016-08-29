@@ -1621,7 +1621,6 @@ var channelView = {
             for (var i=0; i<photos.length; i++) {
                 var photo = photos[i];
 
-
                 if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
 
                     var isRecalled = channelModel.isPhotoRecalled(photo.photoUUID, channelView._channelUUID);
