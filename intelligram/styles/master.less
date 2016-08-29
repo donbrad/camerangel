@@ -199,9 +199,9 @@
 }
 
 html, .km-root {
-  font-size: 1.2em;
+  font-size: 18px !important;
   @media @mobile {
-    font-size: 1em;
+    font-size: 18px !important;
   }
 }
 
@@ -216,7 +216,7 @@ body {
   line-height: 1.5;
   margin: 1rem;
   background: #fff;
-  font-size: @baseFontSize;
+  //font-size: @baseFontSize;
 }
 h1 {
   .font-size(34); /* 34px */
@@ -1042,6 +1042,12 @@ form {
   padding-top: 0.5rem !important;
 }
 
+.km-tabstrip .km-button {
+  font-family: @defaultFont !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
+}
+
 .footer-twoBtn .twoBtn:nth-child(1){
   border-right: 1px solid @shade-200;
 }
@@ -1448,6 +1454,8 @@ div.km-header a img{
   line-height: 1.5;
   font-size: 1.5em;
   padding: 0.8rem;
+  text-align: left;
+  padding-left: 3em;
 }
 
 .km-root * {
@@ -1605,15 +1613,25 @@ div.footer.km-footer {
   box-shadow: none !important;
 }
 
+#home-tab-alert-img {
+  max-height: 1em;
+}
+
+#gallery-photos > a > span > img {
+  vertical-align: middle;
+  margin-left: 0.15em;
+}
+
 .tabBar {
   box-shadow: none !important;
   border-bottom: 1px solid @shade-200;
   a {
     background-color: @shade-300 !important;
     color: @black !important;
-    font-size: 1em !important;
+    font-size: 1.125em !important;
     padding: 0.5em !important;
     border-radius: 0 !important;
+    border-bottom: 1px solid @shade-300 !important;
     > span {
       display: inline-block !important;
     }
@@ -1625,13 +1643,18 @@ div.footer.km-footer {
     }
   }
   a.km-button.km-state-active {
-    background-color: @primary-200 !important;
-    color: #fff !important;
+    color: @primary-200 !important;
+    //background-color: @shade-200 !important;
+    border-bottom: 2px solid @primary-200 !important;
   }
 }
 
 #home-buttongroup {
   box-shadow: none !important;
+}
+
+#home-verify-div {
+  width: 100%;
 }
 
 #home-buttongroup > a.km-button.km-state-active
@@ -1709,11 +1732,19 @@ div.footer.km-footer {
   padding: 0px;
 }
 
+#channels > div.km-header > div.km-widget.km-navbar > div.km-view-title
+#contacts > div.km-header > div.km-widget.km-navbar > div.km-view-title,
+#places > div.km-header > div.km-widget.km-navbar > div.km-view-title,
+#gallery > div.km-header > div.km-widget.km-navbar > div.km-view-title {
+  padding-left: 3em;
+}
+
 #home > div.km-header > div > div.km-view-title > span {
   font-family: 'Ubuntu', sans-serif !important;
   color: @primary-200;
   font-weight: 500;
   font-size: 1.125em;
+  padding-left: 0.75em;
 }
 
 #profilePhotoForm > div > ul > li:nth-child(4) > div > span {
@@ -1758,8 +1789,8 @@ div.footer.km-footer {
 
 .circle-img-home {
   border-radius: 50%;
-  width: 2.5em;
-  height: 2.5em !important;
+  width: 2.375em;
+  height: 2.375em !important;
   margin-right: 0.5rem;
   position: absolute;
   top: 0.5em;
@@ -1776,7 +1807,7 @@ div.footer.km-footer {
 }
 
 .nav-search {
-  height: 20px !important;
+  height: 1.5em !important;
   vertical-align: -webkit-baseline-middle;
   vertical-align: middle;
 }
@@ -1784,8 +1815,8 @@ div.footer.km-footer {
 .home-status {
   z-index: 1;
   position: absolute;
-  top: 2em;
-  left: 2em;
+  top: 1.75em;
+  left: 1.75em;
 }
 
 .profileLocation {
@@ -3628,7 +3659,7 @@ div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
 }
 
 #placeView > div.km-header > div.km-widget.km-navbar > div.km-view-title > span {
-  width: 60%;
+  //width: 60%;
 }
 
 .placeType-list {
@@ -5415,15 +5446,12 @@ div.contactListBox.activeContact > div > div > ul {
 .resultsBar {
   background: #fff;
   border-bottom: 1px solid @shade-200;
-  padding: 0.25em 0 0.25em 0;
+  padding: 0.25em 1em;
   .results {
-    width: 20%;
-    padding-top: 0.55rem;
+    width: 50%;
     float: left;
-    text-align: right;
-    font-size: 1em;
-    @media @mobile {
-      width: 25%;
+    p {
+      margin: 0.25em 0 0 0 !important;
     }
   }
   .tags {
@@ -5457,6 +5485,28 @@ div.contactListBox.activeContact > div > div > ul {
       width: 45%;
     }
   }
+  .galleryName {
+    text-align: left;
+    .helper;
+  }
+  .galleries {
+    float: left;
+    width: 50%;
+    a {
+      float: right;
+    }
+  }
+}
+
+#galleryListModal-listview {
+  li {
+    padding: 0 !important;
+    border-bottom: 1px solid @shade-100;
+  }
+}
+
+#gallery-photos > div.resultsBar > div.galleries > a > span > img {
+  vertical-align: middle;
 }
 
 #gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span > span.k-input > img {
@@ -6735,7 +6785,7 @@ table.k-editor {
 }
 
 .feature-body-text {
-  font-size: 14px;
+  font-size: 1em;
 }
 
 .icon-feature-img {

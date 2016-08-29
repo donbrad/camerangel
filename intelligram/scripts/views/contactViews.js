@@ -1478,11 +1478,11 @@ var contactActionView = {
 
     updateTrackingUX : function () {
         var tracking = contactActionView._activeContact.activeTracking;
+        console.log(contactActionView._activeContact);
         if (tracking) {
-            $("#contactActions-track").html('<img src="images/icon-checkout.svg" /> Stop Tracking');
-
+            $("#contactActions-track").html('<img src="images/icon-tracking-active.svg" /> Stop Tracking');
         } else {
-            $("#contactActions-track").html('<img src="images/icon-checkin.svg" /> Start Tracking');
+            $("#contactActions-track").html('<img src="images/icon-tracking-active.svg" /> Start Tracking');
         }
     },
 

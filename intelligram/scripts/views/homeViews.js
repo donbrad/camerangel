@@ -367,7 +367,7 @@ var homeView = {
         }
 
         if(tab == 0){
-            $("#home-tab-alert-img").attr("src", "images/icon-notify-light.svg");
+            $("#home-tab-alert-img").attr("src", "images/icon-notify-active.svg");
             $("#home-tab-today-img").attr("src", "images/icon-today.svg");
 
             $("#home-alerts").removeClass("hidden");

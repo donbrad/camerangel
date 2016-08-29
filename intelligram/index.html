@@ -415,24 +415,25 @@
 <div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
 
 	<div class="appBox noPad">
-		<div id="home-verify-div">
-			<span class="left">
-					<a class="btnClear-red" data-role="button" id="home-verify-phone" data-click="verifyPhoneModal.openModal">Verify My Phone</a>
-				</span>
-			<span class="right">
-					<a class="btnClear-red" data-role="button" id="home-verify-email" data-click="verifyEmailModal.openModal">Verify My Email</a>
-				</span>
-		</div>
 			<div data-role="tabstrip" id="home-buttongroup" class="tabBar" data-select="homeView.onTabSelect">
 				<a data-tab="0">
-					<img src="images/icon-notify-light.svg"  id="home-tab-alert-img" /> Alerts
+					<img src="images/icon-notify-active.svg"  id="home-tab-alert-img" /> Alerts
 				</a>
 				<a data-tab="1">
 					<img src="images/icon-today.svg" id="home-tab-today-img" /> Today
 				</a>
 			</div>
 			<div id="home-alerts">
-				<div class="notify-title ">
+				<div id="home-verify-div">
+			<span class="left">
+					<a class="btnClear-red" data-role="button" id="home-verify-phone" data-click="verifyPhoneModal.openModal">Verify My Phone</a>
+				</span>
+			<span class="right">
+					<a class="btnClear-red" data-role="button" id="home-verify-email" data-click="verifyEmailModal.openModal">Verify My Email</a>
+				</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="notify-title">
 				<span class="right">
 					<a class="btnClear-grey-sm" data-role="button" data-click="homeView.clearNotifications">Clear</a>
 				</span>
@@ -978,21 +979,28 @@
 	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
 </div>
 
-<div data-role="modalview" id="galleryListModal" data-title="Gallery Picker" style="width: 100%; height:100%; display: none;" class="appearance">
+<div data-role="modalview" id="galleryListModal" data-title="Gallery Picker" style="width: 100%; height:100%; display: none;" class="appearance" data-init="galleryListView.onInit">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a class="right closeBox" data-click="galleryListView.closeModal" data-role="button">
-				<img src="images/close.svg" class="icon-sm"  />
+			<a data-click="galleryListView.closeModal" data-role="button" data-align="right">
+				<img src="images/close.svg" />
 			</a>
 		</div>
-
 	</div>
 	<h3>Please select a gallery from the list below:</h3>
-	<ul id="galleryListModal-listview" class="list-inline" ></ul>
-
+	<ul id="galleryListModal-listview"></ul>
 
 </div>
+
+<script type="text/x-kendo-template" id="galleryList-template">
+	<h3>#: data.name #</h3>
+	<p class="helper">#: data.photoCount # photos</p>
+</script>
+
+
+<!-- User Gallery View -->
+
 
 
 <!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
@@ -1014,7 +1022,7 @@
     <div>
         <ul id="galleryPicker-listview" class="list-inline" data-role="listview"></ul>
     </div>
-	<div class="footer" data-role="footer">
+	<div class="footer hidden" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" data-click="galleryPicker.setView">
 			<p class="actionBtn-text">Cancel</p>
 			<img src="images/gallery-list.svg"/>
@@ -1116,8 +1124,10 @@
 	</div>
 	<div class="resultsBar">
 		<div class="results">
-			<span  data-bind="text: photoCount"></span>
-			<span >Photos</span>
+
+			<p>
+				<span data-bind="text: photoCount"></span> <span>Photos</span>
+			</p>
 		</div>
 		<div class="photoDisplayView">
 			<ul data-role="buttongroup" data-index="0" data-select="galleryEditView.galleryActionView">
@@ -1136,15 +1146,15 @@
 		<div style="clear:both;"></div>
 	</div>
 
-	<div style="width: 100vw;">
+	<div style="width: 100vh;">
 		<ul id="galleryEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" data-align="right" id="galleryEditor-saveBtn">Save</a>
+		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" id="galleryEditor-saveBtn">Save</a>
 	</div>
 
 
-	<ul data-role="actionsheet"  id="galleryEditPhotoActions" >
+	<ul data-role="actionsheet" id="galleryEditPhotoActions">
 		<li>
 			<a data-action="galleryEditView.addCamera">
 				<img src="images/action-camera.svg" class="icon-action"/> Camera
@@ -1319,7 +1329,7 @@
 		<ul class="list-inline hasMotion" id="contactActionBtns">
 			<li>
 				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking" >
-					<img src="images/icon-checkin.svg" /> Start Tracking
+					<img src="images/icon-tracking-active.svg" /> Start Tracking
 				</a>
 			</li>
 			<li>
@@ -2984,16 +2994,16 @@
 	<div  class="appBox noPad">
 		<div id="gallery-buttongroup" class="tabBar" data-role="tabstrip" data-select="galleryView.onTabSelect">
 			<a data-tab="0">
-				<img src="images/icon-myNotes-light.svg" id="galleryView-tab-notes" /> Notes
+				<img src="images/icon-myNotes-alt.svg" id="galleryView-tab-notes" /> Notes
 			</a>
 			<a data-tab="1">
-				<img src="images/chat-photo.svg" id="galleryView-tab-photos" /> Photos
+				<img src="images/icon-photo-dark.svg" id="galleryView-tab-photos" /> Photos
 			</a>
 		</div>
 
 
 		<div id="gallery-photos" class="hidden">
-			<div>
+			<!--<div>
 				<ul data-role="buttongroup" style="padding: 6px; font-size: 1.2em;">
 					<li>
 						<a class="btnClear-grey-sm" data-role="button" >Edit </a>
@@ -3002,17 +3012,25 @@
 						<a class="btnHighlight" data-role="button" data-click="galleryView.openGalleryPicker">All Photos </a>
 					</li>
 					<li>
-						<a class="btnClear-grey-sm" data-role="button" >Add </a>
+						<a class="btnClear-grey-sm" data-role="button">Add </a>
 					</li>
 				</ul>
-			</div>
+			</div>-->
 
-			<div class="resultsBar hidden">
+
+			<div class="resultsBar">
 				<div class="results">
-					<span id="resultCount" data-bind="text: _totalPhotos"></span>
-					<span id="resultsName">Photos</span>
+					<p class="galleryName">All
+						<span id="resultCount" data-bind="text: _totalPhotos"></span>
+						<span id="resultsName">Photos</span>
+					</p>
 				</div>
-				<div class="photoDisplayView">
+				<div class="galleries">
+					<a class="btnClear" data-role="button" data-click="galleryView.openGalleryPicker">
+						Galleries <img src="images/icon-arrow-right-active.svg" />
+					</a>
+				</div>
+				<!--<div class="photoDisplayView">
 					<ul data-role="buttongroup" data-index="0" data-select="galleryView.galleryActionView">
 						<li>
 							<a class="btnClear gallerySelectBtn-grid" data-role="button">
@@ -3026,15 +3044,7 @@
 						</li>
 					</ul>
 
-				</div>
-				<div class="filter">
-					<a class="btnClear" data-role="button" href="#filterGallery" id="toggleFilterBtn">
-						<img src="images/icon-filter-link.svg" />
-						<span id="filterCount"></span>
-						<span id="filterText"> Filter </span>
-					</a>
-				</div>
-
+				</div>-->
 				<div class="clearfix"></div>
 			</div>
 			<!-- Photos -->
@@ -5020,7 +5030,7 @@
 		<h2>
 			Let's do this
             <span class="closeBox" style="float:right;">
-                <a data-click="closeChooseGhost;" data-role="button"><img src="images/close.svg" /></a>
+                <a data-click="closeChooseGhost" data-role="button"><img src="images/close.svg" /></a>
             </span>
 		</h2>
 		<p>
@@ -5731,7 +5741,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Personal Safety</span>
-			<a data-role="button"  data-align="left" data-click="localAlertView.onDone" ><img src="images/nav-back.svg" /></a>
+			<a data-role="button" data-align="left" data-click="localAlertView.onDone" ><img src="images/nav-back.svg" /></a>
 		</div>
 	</div>
 	<div style="text-align: center;">

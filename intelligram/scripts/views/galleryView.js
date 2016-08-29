@@ -136,11 +136,9 @@ var galleryView = {
 
                     modalPhotoView.openModal(photo);
                 }
-                /*dataBound: function(e){
-                    ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
-                }*/
+
             });
-            
+
             //data-source="photoModel.photosDS" data-template="gallery-template" data-click="galleryView.galleryClick"
             $("#gallery .gg_mainSearchInput").on('input', function() {
                 var query = this.value;
@@ -199,7 +197,7 @@ var galleryView = {
 
         }
 
-        $('#gallery .gg_mainSearchInput').attr('placeholder', 'Search memories...');
+        ux.setSearchPlaceholder("Search safe...");
 
 
         if (e.view.params.mode !== undefined && e.view.params.mode === 'picker') {
@@ -272,15 +270,15 @@ var galleryView = {
             $("#gallery-photos").addClass("hidden");
             $("#gallery-notes").removeClass("hidden");
 
-            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes-light.svg");
-            $("#galleryView-tab-photos").attr("src", "images/icon-photo.svg");
+            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes-alt.svg");
+            $("#galleryView-tab-photos").attr("src", "images/icon-photo-dark.svg");
         } else {
             // Photos
             $("#gallery-photos").removeClass("hidden");
             $("#gallery-notes").addClass("hidden");
 
-            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes.svg");
-            $("#galleryView-tab-photos").attr("src", "images/icon-photo-light.svg");
+            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes-dark.svg");
+            $("#galleryView-tab-photos").attr("src", "images/icon-photo-active.svg");
         }
         galleryView._activeView = tab;
     },
@@ -1270,6 +1268,30 @@ var galleryListView = {
 
     _callback: null,
 
+    onInit: function(){
+        // todo - delete, used only for ui testing
+        var testDS = new kendo.data.DataSource({
+            data: [
+                {
+                    name: "My 1st Gallery",
+                    photoCount: 32
+                },
+                {
+                    name: "Road Trip",
+                    photoCount: 17
+                }
+            ]
+        });
+
+        $("#galleryListModal-listview").kendoMobileListView({
+            dataSource: testDS,
+            template: $("#galleryList-template").html(),
+            click: function (e) {
+                console.log(e);
+            }
+        });
+    },
+
     openModal: function (callback) {
 
         if (callback !== undefined) {
@@ -1290,7 +1312,7 @@ var galleryListView = {
     galleryClick : function (e) {
         _preventDefault(e);
 
-        var galleryId = e.dataItem.uuid
+        var galleryId = e.dataItem.uuid;
 
         if (galleryListView._callback !== null) {
             galleryListView._callback(galleryId);
@@ -1371,7 +1393,7 @@ var galleryPicker = {
 
     onGalleryClick : function (e) {
         var photo = e.dataItem;
-        galleryPicker.photo = photo;
+        galleryPicker._photo = photo;
 
         galleryPicker.closeModal();
         if (galleryPicker._callback !== null) {
@@ -1380,6 +1402,8 @@ var galleryPicker = {
     },
 
     openModal : function (callback)  {
+        ux.setSearchPlaceholder("Search gallery");
+
         if (callback !== undefined) {
             galleryPicker._callback = callback;
         }
@@ -1394,8 +1418,7 @@ var galleryPicker = {
                     _preventDefault(e);
 
                     var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
-
-                    galleryPicker.photo = photo;
+                    galleryPicker._photo = photo;
 
                     galleryPicker.closeModal();
                     if (galleryPicker._callback !== null) {
@@ -1781,4 +1804,11 @@ var galleryEditView = {
     }
 
 
+};
+
+var userGalleryView = {
+    _modelWindow: '#',
+    onDone: function(){
+
+    }
 };
