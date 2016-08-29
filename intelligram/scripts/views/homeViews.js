@@ -430,7 +430,6 @@ var homeView = {
 
         //everlive.syncCloud();
 
-
         if (homeView._needPhoneValidation) {
             verifyPhoneModal.sendAndOpenModal();
             // toggle off so user only sees every launch or login
@@ -2335,6 +2334,7 @@ var verifyEmailModal = {
     }
 };
 var verifyPhoneModal = {
+    _maskedCode : null,
 
     onOpen: function (e) {
         _preventDefault(e);
@@ -2350,8 +2350,15 @@ var verifyPhoneModal = {
         sendPhoneVerificationCode(phone, function (result) {
             if (result.status === 'ok') {
                 userModel._user.set('phoneVerificationCode', result.code);
+                var code = result.code;
+
+                code[1] = code[2] = code[3] = code[4] = '?';
+
+                verifyPhoneModal._maskedCode = code;
+                $('#verifyPhone-maskedcode').text( verifyPhoneModal._maskedCode);
+
                 verifyPhoneModal.openModal();
-               /* if (window.navigator.simulator === undefined) {
+               if (window.navigator.simulator === undefined) {
 
                     cordova.plugins.notification.local.add({
                         id: 'verifyPhone',
@@ -2360,7 +2367,7 @@ var verifyPhoneModal = {
                         autoCancel: true,
                         date: new Date(new Date().getTime() + 30)
                     });
-                }*/
+                }
             }
         });
     },
