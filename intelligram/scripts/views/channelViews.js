@@ -15,7 +15,6 @@
 var channelsView = {
     _viewInitialized : false,
     _showDeletedChannels : false,
-
     _channelListDS : null,
 
 
@@ -1576,7 +1575,6 @@ var channelView = {
                 }
                 channelView.preprocessMessages(filteredMessages);
                 channelView.messagesDS.data(filteredMessages);
-                //channelView.updateMessageTimeStamps();
 
                 channelView.loadImagesThenScroll();
 
@@ -1623,48 +1621,58 @@ var channelView = {
             for (var i=0; i<photos.length; i++) {
                 var photo = photos[i];
 
-                var url = photo.imageUrl;
-                if (url === null || !channelView.isAvailable(url)) {
-                    photoModel.findCloudinaryPhoto(photo.photoUUID, function (result) {
-                        if (result.found) {
-                            var updatePhoto =  channelView.photos[result.photoId];
-                            updatePhoto.imageUrl = result.url;
-                            var channelPhotoUpdate = channelModel.findChannelPhoto(channelView._channelUUID, result.photoId);
-                            if (channelPhotoUpdate !== null)
-                                channelPhotoUpdate.set('imageUrl',result.url);
+                if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
+
+                    var isRecalled = channelModel.isPhotoRecalled(photo.photoUUID, channelView._channelUUID);
+
+                    if (!isRecalled ) {
+                        var photoItem = channelView.photos[photo.photoUUID];
+
+                        var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
+                        if (photoItem === undefined) {
+                            // Photo isn't in the channel cache
+                            channelView.photos[photo.photoUUID] = photo;
+                            channelView.photosDS.add(photo);
+                        }
+                        if (photo.thumbnailUrl === undefined) {
+                            photo.thumbnailUrl = null;
+                        }
+
+                        if (channelPhoto === null) {
+                            var photoObj = {
+                                uuid: uuid.v4(),
+                                photoUUID: photo.photoUUID,
+                                channelUUID: channelView._channelUUID,
+                                isPrivateChat: channelView.isPrivateChat,
+                                thumbnailUrl: photo.thumbnailUrl,
+                                imageUrl: photo.imageUrl,
+                                canCopy: photo.canCopy,
+                                isRecalled: false,
+                                ownerUUID: photo.senderUUID,
+                                ownerName: photo.senderName,
+                                timestamp: ggTime.currentTime()
+                            };
+
+                            // Photos isn't in the the channel photo data source
+                            channelModel.addPhoto(photoObj);
 
                         }
-                    })
-                }
-                if (photo.photoUUID !== undefined && photo.photoUUID !== null) {
-                    var photoItem = channelView.photos[photo.photoUUID];
 
-                    var channelPhoto = channelModel.findChannelPhoto(channelView._channelUUID, photo.photoUUID);
-                    if (photoItem === undefined) {
-                        // Photo isn't in the channel cache
-                          channelView.photos[photo.photoUUID] = photo;
-                          channelView.photosDS.add(photo);
+
+                        var url = photo.imageUrl;
+                        if (url === null || !channelView.isAvailable(url)) {
+                            photoModel.findCloudinaryPhoto(photo.photoUUID, function (result) {
+                                if (result.found) {
+                                    var updatePhoto = channelView.photos[result.photoId];
+                                    updatePhoto.imageUrl = result.url;
+                                    var channelPhotoUpdate = channelModel.findChannelPhoto(channelView._channelUUID, result.photoId);
+                                    if (channelPhotoUpdate !== null)
+                                        channelPhotoUpdate.set('imageUrl', result.url);
+
+                                }
+                            })
+                        }
                     }
-                    if (channelPhoto === null) {
-                        var photoObj  = {
-                            uuid: uuid.v4(),
-                            photoUUID: photo.photoUUID,
-                            channelUUID: channelView._channelUUID,
-                            isPrivateChat: channelView.isPrivateChat,
-                            thumbnailUrl: null,
-                            imageUrl: photo.imageUrl,
-                            canCopy: photo.canCopy,
-                            isRecalled: false,
-                            ownerUUID: photo.senderUUID,
-                            ownerName: photo.senderName,
-                            timestamp: ggTime.currentTime()
-                        };
-
-                        // Photos isn't in the the channel photo data source
-                        channelModel.addPhoto(photoObj);
-
-                    }
-
                 }
             }
         }

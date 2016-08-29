@@ -12,6 +12,8 @@ var channelModel = {
     _channelName : "channels",
     _channelMemberName : "channelMember",
 
+    _messageType : 'message',
+    _photoType : 'photo',
     _actionUnread : 'unread',
     _actionAdd : 'add',
     _actionAddPrivate : 'addprivate',
@@ -29,6 +31,7 @@ var channelModel = {
     activeChannels: [],
     _syncingChannels : false,
     _fetched : false,
+    _initialSync : false,
     recalledMessagesFetched : false,
     recalledPhotosFetched : false,
     photosFetched : false,
@@ -40,14 +43,14 @@ var channelModel = {
 
     channelsDS: null,
     
-    photosDS: null,
+    photosDS: new kendo.data.DataSource(),
 
     // List of all active private channels (those with messages)
     privateChannelsDS: null, 
 
     recallDS : new kendo.data.DataSource(),
 
-    groupMessagesDS : null,
+    groupMessagesDS : new kendo.data.DataSource(),
 
 
     init :  function () {
@@ -69,7 +72,7 @@ var channelModel = {
             }
         });
         
-        channelModel.privateChannelsDS = new kendo.data.DataSource({
+        /*channelModel.privateChannelsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
                 typeName: 'privatechannels',
@@ -78,7 +81,7 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             }
-        });
+        });*/
 
         /*channelModel.recalledMessagesDS = new kendo.data.DataSource({
             type: 'everlive',
@@ -119,7 +122,7 @@ var channelModel = {
             }
         });*/
 
-        channelModel.photosDS = new kendo.data.DataSource({
+       /* channelModel.photosDS = new kendo.data.DataSource({
             type: 'everlive',
 
             transport: {
@@ -146,15 +149,27 @@ var channelModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             }
-        });
+        });*/
 
-      /*  // Reflect any core channel changes to channelList
+
+
+        // Reflect any core channel changes to channelList
         channelModel.channelsDS.bind("change", function (e) {
             // Rebuild the channelView.channelListDS when the underlying list changes: add, delete, update...
            //channelView._channelListDS.data(channelModel.channelsDS.data());
             var changedChannels = e.items;
-            if (e.action !== undefined) {
+            if (e.action === undefined) {
+                if (changedChannels !== undefined && !channelModel._initialSync) {
+
+                    channelModel._initialSync = true;
+
+                    appDataChannel.history();
+                    userDataChannel.history();
+                    channelsView.updateChannelListDS();
+                }
+            } else {
                 switch (e.action) {
+
                     case "itemchange" :
                         var field  =  e.field;
                         var channel = e.items[0], channelUUID = channel.channelUUID;
@@ -180,15 +195,13 @@ var channelModel = {
                 }
             }
 
-
         });
-*/
+
 
         channelModel.channelsDS.fetch();
-        channelModel.photosDS.fetch();
+    /*    channelModel.photosDS.fetch();
         channelModel.groupMessagesDS.fetch();
-       /* channelModel.recalledPhotosDS.fetch();
-        channelModel.recalledMessagesDS.fetch();*/
+*/
 
 
         channelModel.channelsDS.bind("requestEnd", function (e) {
@@ -197,10 +210,6 @@ var channelModel = {
             if (type === 'read' && response) {
                 if (!channelModel._fetched){
                     channelModel._fetched = true;
-                    channelModel.processDeferred();
-                    channelsView.updateChannelListDS();
-                    appDataChannel.history();
-                    userDataChannel.history();
                 }
 
             }
@@ -213,10 +222,8 @@ var channelModel = {
 
     sync : function () {
         channelModel.channelsDS.sync();
-        channelModel.photosDS.sync();
-     /*   channelModel.recalledPhotosDS.sync();
-        channelModel.recalledMessagesDS.sync();*/
-        channelModel.groupMessagesDS.sync();
+     /*   channelModel.photosDS.sync();
+        channelModel.groupMessagesDS.sync();*/
     },
     
     updateActiveChannel : function (channelUUID) {
@@ -247,7 +254,6 @@ var channelModel = {
 
 
     },
-
 
     getGroupChannels : function () {
         var query = [{ field: "category", operator: "neq", value: 'Private' },
@@ -339,13 +345,15 @@ var channelModel = {
     },
 
     getRecalledMessages : function (channelUUID) {
-        var messages = channelModel.queryRecalledMessages({ field: "channelUUID", operator: "eq", value: channelUUID });
+        var messages = channelModel.queryRecalledMessages([{ field: "channelUUID", operator: "eq", value: channelUUID },
+            { field: "type", operator: "eq", value: channelModel._messageType }]);
 
         return(messages);
     },
 
     isMessageRecalled : function (msgID) {
-        var message = channelModel.queryRecalledMessage({ field: "messageId", operator: "eq", value: msgID });
+        var message = channelModel.queryRecalledMessage([{ field: "messageId", operator: "eq", value: msgID },
+            { field: "type", operator: "eq", value: channelModel._messageType }]);
 
         if (message === undefined) {
             //msgID not found in recall list
@@ -354,6 +362,27 @@ var channelModel = {
             //msgID exists in recall list
             return(true);
         }
+    },
+
+    isPhotoRecalled : function (photoId, channelId) {
+        var message = channelModel.queryRecalledMessage([{ field: "photoId", operator: "eq", value: photoId },
+            { field: "channelId", operator: "eq", value: channelId },
+            { field: "type", operator: "eq", value: channelModel._photoType }]);
+
+        if (message === undefined) {
+            //msgID not found in recall list
+            return(false);
+        } else {
+            //msgID exists in recall list
+            return(true);
+        }
+    },
+
+    getRecalledPhotos : function (channelUUID) {
+        var photos = channelModel.queryRecalledMessages([{ field: "channelUUID", operator: "eq", value: channelUUID },
+            { field: "type", operator: "eq", value: channelModel._photoType }]);
+
+        return(photos);
     },
 
     addMessageRecall : function (channelUUID, msgId, ownerId, isPrivateChat) {
@@ -382,39 +411,25 @@ var channelModel = {
 */
     },
 
-    queryRecalledPhoto : function (query) {
-        if (query === undefined)
-            return(undefined);
-        var dataSource = channelModel.recallDS;
-        var cacheFilter = dataSource.filter();
-        if (cacheFilter === undefined) {
-            cacheFilter = {};
-        }
-        dataSource.filter( query);
-        var view = dataSource.view();
-        var channel = view[0];
-        dataSource.filter(cacheFilter);
-        return(channel);
-    },
-
-    isPhotoRecalled : function (photoId, channelId) {
-        var message = channelModel.queryRecalledPhoto([{ field: "photoId", operator: "eq", value: photoId },
-            { field: "channelId", operator: "eq", value: channelId }]);
-
-        if (message === undefined) {
-            //msgID not found in recall list
-            return(false);
-        } else {
-            //msgID exists in recall list
-            return(true);
-        }
-    },
 
     addPhotoRecall : function (channelUUID, photoId, ownerId, isPrivateChat) {
-        var recallObj = {channelUUID : channelUUID, photoId: photoId, ownerId:  ownerId,  isPrivateChat: isPrivateChat, timestamp: ggTime.currentTime()};
 
-        var channel = channelModel.findChannelModel(channelUUID);
 
+
+        if (isPrivateChat) {
+            privateChannel.recallPhoto(channelUUID, photoId);
+        } else {
+            groupChannel.recallPhoto(channelUUID, photoId);
+        }
+
+        if (channelUUID === channelView._channelUUID) {
+
+            // Todo -- need to decide how to handle recall in active channel, could force refresh
+        }
+
+
+        /* var channel = channelModel.findChannelModel(channelUUID);
+         var recallObj = {channelUUID : channelUUID, photoId: photoId, ownerId:  ownerId,  isPrivateChat: isPrivateChat, timestamp: ggTime.currentTime()};
         if (channel === undefined) {
             return;
         }
@@ -429,7 +444,7 @@ var channelModel = {
             if (error !== null) {
                 mobileNotify("Error creating Chat Recall Photo " + JSON.stringify(error));
             }
-        });
+        });*/
 
     },
 
@@ -445,7 +460,7 @@ var channelModel = {
         channelModel.photosDS.add(photoObj);
         channelModel.photosDS.sync();
 
-        everlive.createOne('channelPhotos', photoObj, function (error, data) {
+       /* everlive.createOne('channelPhotos', photoObj, function (error, data) {
             if (error !== null) {
                 mobileNotify("Error creating Chat Shared Photo " + JSON.stringify(error));
             } else {
@@ -471,7 +486,7 @@ var channelModel = {
 
             }
         });
-
+*/
     },
 
     queryPhotos : function (query) {

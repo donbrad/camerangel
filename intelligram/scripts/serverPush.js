@@ -21,16 +21,12 @@ var serverPush = {
         if (serverPush._initialized)
             return;
 
-       // window.serverPush = serverPush;
-
-
-        serverPush.plugin = window.plugins.pushNotification;
+       serverPush.plugin = window.plugins.pushNotification;
 
         if (serverPush.plugin === undefined) {
             ggError("Server Push: Plug In Error!");
             return;
         }
-
 
         serverPush._initialized = true;
         if (device.platform === 'android' || device.platform === 'Android' || device.platform === 'amazon-fireos' ) {
@@ -50,7 +46,7 @@ var serverPush = {
             return;
 
         serverPush._registered = true;
-        mobileNotify("Server Push enabled : " + data);
+        //mobileNotify("Server Push enabled : " + data);
 
         serverPush._regId =  data;
 
@@ -385,7 +381,7 @@ var serverPush = {
     },
 
     _success : function (data) {
-        mobileNotify("Data channel server push enabled!");
+       // ggError("Data channel server push enabled!");
     },
 
     _error : function (error) {
