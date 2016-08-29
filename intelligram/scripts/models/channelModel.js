@@ -169,6 +169,7 @@ var channelModel = {
                 }
             } else {
                 switch (e.action) {
+
                     case "itemchange" :
                         var field  =  e.field;
                         var channel = e.items[0], channelUUID = channel.channelUUID;

@@ -18,6 +18,7 @@ var appDataChannel = {
     _version: 1,
     messagesDS : null,
     _fetched : false,
+    _intialSync : false,
     needHistory : true,
 
     init: function () {
@@ -25,6 +26,24 @@ var appDataChannel = {
         // Generate a unique channel name for the app data channel that is recognizable to related userDataChannel
         // replacing - with _ should achive this...
         var channel = userModel._user.userUUID.replace(/-/g,'_');
+
+        appDataChannel.channelUUID = channel;
+
+
+        var ts = localStorage.getItem('ggAppDataTimeStamp');
+
+        if (ts !== undefined && ts !== "NaN") {
+            appDataChannel.lastAccess = parseInt(ts);
+            // Was last access more than a month ago -- if yes set it to a month ago
+            if (appDataChannel.lastAccess < ggTime.lastMonth()) {
+                appDataChannel.lastAccess = ggTime.lastMonth();
+                localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
+            }
+        } else {
+            appDataChannel.lastAccess = ggTime.lastMonth();
+            localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
+        }
+
 
 
         appDataChannel.messagesDS = new kendo.data.DataSource({
@@ -42,49 +61,43 @@ var appDataChannel = {
             }
         });
 
+
+        appDataChannel.messagesDS.bind("change", function (e) {
+            var changedMessages = e.items;
+            if (e.action === undefined) {
+                if (changedMessages !== undefined && !appDataChannel._initialSync) {
+                    appDataChannel._initialSync = true;
+
+
+                    APP.pubnub.subscribe({
+                        channel: appDataChannel.channelUUID,
+                        windowing: 200,
+                        restore : true,
+                        message: appDataChannel.channelRead,
+                        connect: appDataChannel.channelConnect,
+                        disconnect: appDataChannel.channelDisconnect,
+                        reconnect:appDataChannel.channelReconnect,
+                        error: appDataChannel.channelError
+
+                    });
+                    appDataChannel.history();
+                }
+            }
+        });
+
         appDataChannel.messagesDS.bind("requestEnd", function (e) {
             var response = e.response, type = e.type;
 
             if (type === 'read' && response) {
                 if (!appDataChannel._fetched) {
                     appDataChannel._fetched = true;
-                    appDataChannel.history();
+
                 }
             }
         });
 
         appDataChannel.messagesDS.fetch();
-        
-        appDataChannel.channelUUID = channel;
 
-        var ts = localStorage.getItem('ggAppDataTimeStamp');
-
-        if (ts !== undefined && ts !== "NaN") {
-            appDataChannel.lastAccess = parseInt(ts);
-            // Was last access more than a month ago -- if yes set it to a month ago
-            if (appDataChannel.lastAccess < ggTime.lastMonth()) {
-                appDataChannel.lastAccess = ggTime.lastMonth();
-                localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
-            }
-        } else {
-            appDataChannel.lastAccess = ggTime.lastMonth();
-            localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
-        }
-
-
-        APP.pubnub.subscribe({
-            channel: appDataChannel.channelUUID,
-            windowing: 500,
-            message: appDataChannel.channelRead,
-            connect: appDataChannel.channelConnect,
-            disconnect: appDataChannel.channelDisconnect,
-            reconnect:appDataChannel.channelReconnect,
-            error: appDataChannel.channelError
-
-        });
-
-        // Load the appData message queue
-       // appDataChannel.history();
     },
 
     closeChannel : function () {

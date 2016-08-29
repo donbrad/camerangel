@@ -381,7 +381,7 @@ var serverPush = {
     },
 
     _success : function (data) {
-        mobileNotify("Data channel server push enabled!");
+       // ggError("Data channel server push enabled!");
     },
 
     _error : function (error) {

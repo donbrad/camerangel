@@ -19,6 +19,7 @@ var userDataChannel = {
     _historyFetchComplete : false,
     needHistory : true,
     _inited : false,
+    _initialSync: false,
 
     
 
@@ -28,7 +29,8 @@ var userDataChannel = {
             return;
         }
 
-      userDataChannel._inited = true;
+        userDataChannel._inited = true;
+
         userDataChannel.messagesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
@@ -67,6 +69,28 @@ var userDataChannel = {
 
         }
 
+        userDataChannel.messagesDS.bind("change", function (e) {
+            var changedMessages = e.items;
+            if (e.action === undefined) {
+                if (changedMessages !== undefined && !userDataChannel._initialSync) {
+                    userDataChannel._initialSync = true;
+
+                    APP.pubnub.subscribe({
+                        channel: userDataChannel.channelUUID,
+                        windowing: 100,
+                        restore: true,
+                        message: userDataChannel.channelRead,
+                        connect: userDataChannel.channelConnect,
+                        disconnect: userDataChannel.channelDisconnect,
+                        reconnect: userDataChannel.channelReconnect,
+                        error: userDataChannel.channelError
+
+                    });
+
+                    userDataChannel.history();
+                }
+            }
+        });
 
         userDataChannel.messagesDS.bind("requestEnd", function (e) {
             var response = e.response,  type = e.type;
@@ -75,31 +99,6 @@ var userDataChannel = {
 
                 if (!userDataChannel._fetched) {
                     userDataChannel._fetched = true;
-
-                    //notificationModel.processUnreadChannels();
-
-                   /* var total = response.length;
-                    if (total === 0 ) {
-                        var lastAccess = ggTime.lastWeek();
-                    } else {
-                        var lastMessage = response[(total-1)];
-                        lastAccess =  lastMessage.time;
-                    }
-                    userDataChannel.lastAccess = lastAccess;
-                    localStorage.setItem('ggUserDataTimeStamp', userDataChannel.lastAccess);*/
-
-                    APP.pubnub.subscribe({
-                        channel: userDataChannel.channelUUID,
-                        windowing: 100,
-                        message: userDataChannel.channelRead,
-                        connect: userDataChannel.channelConnect,
-                        disconnect:userDataChannel.channelDisconnect,
-                        reconnect: userDataChannel.channelReconnect,
-                        error: userDataChannel.channelError
-
-                    });
-
-                    userDataChannel.history();
                 }
             }
         });
