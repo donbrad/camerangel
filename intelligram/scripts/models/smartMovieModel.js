@@ -10,6 +10,9 @@ var smartMovie = {
     _cloudClass : 'smartMovie',
     _ggClass : 'Movie',
     _version : 1,
+    _fetched : false,
+    _initialSync : false,
+    _todayArray : [],
 
     moviesDS: null,
 
@@ -25,18 +28,80 @@ var smartMovie = {
             sort: {
                 field: "date",
                 dir: "desc"
-            },
-
-            change :  function (e) {todayModel.change(e, smartMovie._ggClass);}
+            }
         });
-        
+
+        smartMovie.moviesDS.bind("change", function (e) {
+            var changedMovies = e.items;
+            if (e.action === undefined) {
+                if (changedMovies !== undefined && !smartMovie._initialSync) {
+
+                    smartMovie._initialSync = true;
+                    smartMovie._todayArray = smartMovie.getTodayList();
+                }
+
+            } else {
+
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var movie = e.items[0];
+
+                        break;
+
+                    case "remove" :
+                        var movie = e.items[0];
+                        todayModel.remove(movie);
+                        break;
+
+                    case "sync" :
+
+                        break;
+
+                    case "add" :
+                        var movie = e.items[0];
+                        var today = moment();
+                        if (moment(movie.showtime).isSame(today, 'day') ) {
+                            todayModel.add(movie);
+                        }
+                        break;
+                }
+            }
+
+
+        });
+        smartMovie.moviesDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!smartMovie._fetched) {
+                    smartMovie._fetched = true;
+                }
+            }
+        });
+
         smartMovie.moviesDS.fetch();
     },
 
     sync: function ()  {
         smartMovie.moviesDS.sync();
     },
-    
+
+    getTodayList : function () {
+        // is Showtime Today?
+        var len = smartMovie.moviesDS.total();
+        var todayArray = [];
+        var today = moment();
+        for (var i=0; i<len; i++) {
+            var movie = smartMovie.moviesDS.at(i);
+            if (moment(movie.showtime).isSame(today, 'day') ) {
+                todayArray.push(movie);
+            }
+
+        }
+        return(todayArray);
+    },
+
     queryMovie: function (query) {
         if (query === undefined)
             return(undefined);

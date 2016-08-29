@@ -96,8 +96,6 @@
 	<script src="scripts/models/placeNoteModel.js"></script>
 	<script src="scripts/models/privateNoteModel.js"></script>
 	<script src="scripts/models/profilePhoto.js"></script>
-	<script src="scripts/models/recalledMessage.js"></script>
-	<script src="scripts/models/recalledPhoto.js"></script>
 	<script src="scripts/models/smartEventModel.js"></script>
 	<script src="scripts/models/smartFlightModel.js"></script>
 	<script src="scripts/models/smartListModel.js"></script>
@@ -2207,7 +2205,7 @@
 							<img src="images/icon-editor.svg" height="22" id="chat-editorBtnImg"/>
 						</a>
 					</li>
-					<li>
+					<li class="online-only">
 						<a data-role="button" data-click="channelView.messageSearch">
 							<img src="images/icon-web.svg" height="22" id="messageSearchImg">
 						</a>
@@ -2217,7 +2215,7 @@
 							<img id="chatSmartTagBtn" src="images/icon-smart.svg" height="22">
 						</a>
 					</li>
-					<li>
+					<li class="online-only">
 						<a data-role="button" data-rel="actionsheet" href="#newMessageActions">
 							<img src="images/icon-smartMenu.svg" height="22">
 						</a>
@@ -2446,7 +2444,9 @@
 		if (fromHistory !== undefined && fromHistory === true ) {
 			isPrivate = "privateMode"; }
 	}
-	if (time !== undefined && time !== null) {
+	if (wasSent !== undefined && wasSent === false) {
+	 formattedTime = "(Pending)";
+	} else  if (time !== undefined && time !== null) {
 		formattedTime = timeSince(time);
 		if(formattedTime === "0s"){
 			formattedTime = "Just now";
@@ -3061,23 +3061,8 @@
 				<div class="messageMediaBar" style="text-align: center;">
 					<ul>
 						<li>
-							<a data-role="button" data-rel="actionsheet" href="#privateNotePhotoActions">
-								<img src="images/chat-camera.svg" height="24">
-							</a>
-						</li>
-						<li>
-							<a data-role="button" href="#galleryEditor?returnview=home">
-								<img src="images/gallery-grid-2.svg" height="24">
-							</a>
-						</li>
-						<li>
-							<a data-role="button" href="#noteEditor?returnview=home">
+							<a data-role="button" href="#noteEditor?returnview=gallery">
 								<img src="images/icon-myNotes.svg" height="20" />
-							</a>
-						</li>
-						<li>
-							<a data-role="button" data-click="privateNotesView.noteSearch">
-								<img src="images/icon-web.svg" height="24">
 							</a>
 						</li>
 						<li>
@@ -3093,7 +3078,7 @@
 			</div>
 		</div>
 	</div>
-	<ul data-role="actionsheet" id="galleryActions1" data-popup='{"direction": "left"}'>
+	<ul data-role="actionsheet" id="galleryActionsPhoto" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="galleryView.galleryCamera">
 				<img src="images/action-camera.svg" class="icon-action"/>
@@ -3104,6 +3089,18 @@
 			<a data-action="galleryView.galleryPhoto">
 				<img src="images/action-device.svg" class="icon-action">
 				Device Gallery
+			</a>
+		</li>
+	</ul>
+	<ul data-role="actionsheet" id="galleryActionsNote" data-popup='{"direction": "left"}'>
+		<li>
+			<a data-role="button" href="#noteEditor?returnview=home">
+				<img src="images/icon-myNotes.svg" height="20" />
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
+				<img src="images/icon-smartMenu.svg" height="24">
 			</a>
 		</li>
 	</ul>
@@ -3744,6 +3741,36 @@
 	</div>
 </script>
 
+<script id="intelliTrip-home" type="text/x-kendo-template">
+	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
+		<div class="header">
+			<p class="intelliTrip-title"><img src="images/intelliTrip-icon.svg" /> #:name# </p>
+			<p class="helper intelliTrip-subheader">
+				<span>#:origin#</span>
+				<span class="intelliTrip-arrow"> <img src="images/intelliTrip-arrow.svg" /> </span>
+				<span>#:destination#</span>
+			</p>
+		</div>
+		<div class="map hidden">
+			<!-- sample static map -->
+			<!--<img src="http://maps.googleapis.com/maps/api/staticmap?center=san+francisco&zoom=13&scale=2&size=600x300&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of san francisco">-->
+		</div>
+		<div class="footer cardFooter">
+
+			<p class="intelliTrip-details">
+				<img src="images/icon-date.svg" class="icon-sm" /> Depart : #:departure#
+			</p>
+
+			<p class="intelliTrip-details">
+				<img src="images/icon-date.svg" class="icon-sm" /> Arrive : #:arrival#
+			</p>
+
+			<p class="intelliTrip-details">
+				<img src="images/icon-time.svg" class="icon-sm" /> #:durationString# (#:distanceString#)
+			</p>
+		</div>
+	</div>
+</script>
 
 <script id="intelliFlight-chat" type="text/x-kendo-template">
 	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
@@ -3823,7 +3850,7 @@
 
 <script id="intelliMovie-chat-1" type="text/x-kendo-template">
 	<div class="intelliMovie">
-		<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick" >
+		<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick" >
 			<div class="btnSmart-poster">
 				<img src="#:imageUrl#" class="btnSmart-img" />
 			</div>
@@ -3841,7 +3868,7 @@
 
 
 <script id="intelliMovie-chat" type="text/x-kendo-template">
-	<div class="intelliMovie" data-role="button" data-objectid="#:objectId#" data-objectType="movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliMovie" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
 			<p class="title textClamp">
 				<img src="images/intelliMovie-icon.svg" />
@@ -3890,7 +3917,7 @@
 	</div>
 </script>
 
-<!-- smartMovie movieGram modal -->
+<!-- smartMovie modal -->
 <div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView.activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
@@ -4164,9 +4191,6 @@
 				<a class="btnFull-modal btnSecondary event-expired event-owner hidden" data-role="button" data-click="smartEventView.onRescheduleEvent">Reschedule Event</a>
 			</div>
 			<div id="event-owner-save" class="hidden">
-<!--
-				<a data-role="button" type="button" class="btnFull-modal btnSecondary"  id="smartEventView-eventchat"  data-click="smartEventView.doEventChat">Add Event Chat</a>
--->
 				<a class="btnFull-modal btnPrimary" data-role="button" data-click="smartEventView.onSaveEvent">Save and Send Event</a>
 			</div>
 		</div>
@@ -4256,7 +4280,7 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit" data-use-native-scrolling="true" data-zoom="true">
+<div data-role="modalview" id="modalChatPhotoView" style="width: 100%; height:100%; display: none;" class="fullPhotoModal"  data-init="modalChatPhotoView.onInit" data-zoom="true">
 	<div data-role="header">
 		<div style="margin: 0.5em 1em;">
 			<div class="left" style="color: #fff">
@@ -4286,27 +4310,6 @@
 		In Gallery
 	</div>-->
 	<div class="photoViewBox" data-role="content">
-		<!--<div style="margin: 0.5em 1em;">
-			<div class="left" style="color: #fff">
-				<p style="font-size: 0.875em; margin-left: 0;">
-					<span>Sent by </span>
-					<span id="modalChatPhotoOwnerName"></span>
-				</p>
-				<p style="font-size: 0.75em; margin-left: 0;">
-					<span id="modalChatPhotoView-userhascopy">In Gallery • </span>
-					<span>2d ago</span>
-				</p>
-			</div>
-			<div class="right" id="modalChatPhotoView-recipientlist">
-				<a class="hidden" data-role="button" id="modalChatPhotoViewUnlocked" data-align="right" data-click="modalChatPhotoView.savePhoto">
-					<img src="images/icon-save.svg" class="icon-md"/>
-				</a>
-				<a data-role="button" data-align="right" data-click="modalChatPhotoView.confirmRecall">
-					<img src="images/action-recall-light.svg" class="icon-md"/>
-				</a>
-			</div>
-			<div class="clearfix"></div>
-		</div>-->
 		<img id="modalChatPhotoView-photoView" src="" />
 	</div>
 	<div class="footer" data-role="footer">
@@ -4955,12 +4958,20 @@
 					</label>
 				</li>
 				<li>
-
 					<label>Contact email
 						<input type="email"  name="Contact Email" data-bind="value: email" placeholder="me@example.com"/>
 					</label>
 				</li>
-				
+				<li>
+					<label>Home Address
+						<input type="search"  name="Address" data-bind="value: address" />
+					</label>
+				</li>
+				<li>
+					<label>Birthday
+						<input type="date"  name="Birthday" data-bind="value: birthday" />
+					</label>
+				</li>
 
 			</ul>
 			
@@ -4971,6 +4982,12 @@
 	</div>
 
 	<ul id="profileEditOptions" data-role="actionsheet" data-cancel="Cancel">
+		<li>
+			<a data-role="button" data-action="profileEditView.doChangePhone">
+				<img src="images/contact-call.svg" class="icon-action" />
+				Change Phone Number
+			</a>
+		</li>
 		<li>
 			<a data-role="button" data-action="profileEditView.doChangePassword">
 				<img src="images/action-password.svg" class="icon-action" />
@@ -5942,15 +5959,18 @@
 							<img src="images/icon-editor.svg" height="24" id="privateNote-editorBtnImg"/>
 						</a>
 					</li>
-					<li>
+					<li class="online-only">
 						<a data-role="button" data-click="privateNotesView.noteSearch">
 							<img src="images/icon-web.svg" height="24">
 						</a>
 					</li>
-					<li>
+					<li class="online-only">
 						<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
 							<img src="images/icon-smartMenu.svg" height="24">
 						</a>
+					</li>
+					<li class="offline-only hidden">
+						<a data-role="button" class="btnClear-grey-sm">*offline#</a>
 					</li>
 					<li id="privateNote-hideKeyboard" class="hidden">
 						<a data-role="button" data-align="right" data-click="privateNotesView.closeEditor">

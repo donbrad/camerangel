@@ -14,6 +14,8 @@ var homeView = {
     _radius: 90, // 90 meters or approx 300 ft
     today : new kendo.data.DataSource(),
     _activeView : 0,
+    _needPhoneValidation : false,
+    _needEmailValidation : false,
 
 
     openNotificationAction: function(e){
@@ -421,12 +423,19 @@ var homeView = {
 
         homeView.updateValidationUX();
 
+
+
         appDataChannel.history();
         userDataChannel.history();
 
         //everlive.syncCloud();
 
 
+        if (homeView._needPhoneValidation) {
+            verifyPhoneModal.openModal();
+            // toggle off so user only sees every launch or login
+            homeView._needPhoneValidation = false;
+        }
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();
     },
@@ -581,6 +590,7 @@ var userStatusView = {
     _returnView : null,
     _modalId : "#modalview-profileStatus",
     _profileStatusMax: 35,
+    _oldStatus : null,
 
     _update : function () {
         var status = userStatusView._activeStatus, user = userModel._user;
@@ -684,6 +694,8 @@ var userStatusView = {
 
         ux.hideKeyboard();
 
+        userStatusView.oldStatus =  userModel._user.statusMessage;
+
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
 
@@ -725,7 +737,7 @@ var userStatusView = {
         $(userStatusView._modalId).data("kendoMobileModalView").close();
 
         var updatedStatus = $("#profileStatusUpdate").val();
-        if(updatedStatus !== "") {
+        if(updatedStatus !== "" && updatedStatus !== userStatusView.oldStatus) {
             // Save new status
             userModel._user.set("statusMessage", updatedStatus);
             userStatus.update();
@@ -1096,6 +1108,7 @@ var noteEditView = {
         noteEditView.openEditor();
         noteEditView.initNote();
 
+
         if (e.view.params.noteid !== undefined) {
             noteEditView._noteUUID = e.view.params.noteid;
             var note = privateNoteModel.findNote(noteEditView._noteUUID);
@@ -1127,7 +1140,8 @@ var noteEditView = {
         if (e.view.params.returnview !== undefined) {
             noteEditView._returnview = e.view.params.returnview;
         } else {
-            noteEditView._returnview = null;
+
+            noteEditView._returnview = APP.kendo.view().id;
         }
 
         if (e.view.params.savecallback !== undefined) {
@@ -1854,6 +1868,10 @@ var signUpView = {
       //  _preventDefault(e);
         $("#home-signup-welcomebanner").removeClass('hidden');
         $("#signUpBox").velocity({translateY: "-10px;", opacity: 1}, {duration: 1000, easing: "easeIn"});
+        if (!deviceModel.isOnline()) {
+            mobileNotify("Phone is offline - can't Sign Up");
+            APP.kendo.navigate("#:back");
+        }
     },
 
     signUpPhoneValid: function(){
@@ -1904,7 +1922,6 @@ var signUpView = {
     _createAccount : function (username, password, name, phone) {
         var userUUID = uuid.v4(); var user = userModel._user;
 
-        
         window.localStorage.setItem('ggUsername', username);
         window.localStorage.setItem('ggUserUUID', userUUID);
 
@@ -1960,7 +1977,8 @@ var signUpView = {
 
         userModel.hasAccount = true;
         window.localStorage.setItem('ggHasAccount', true);
-        if (window.navigator.simulator === undefined) {
+  /*      if (window.navigator.simulator === undefined) {
+
 
             cordova.plugins.notification.local.add({
                 id: 'userWelcome',
@@ -1971,6 +1989,7 @@ var signUpView = {
             });
 
         }
+*/
 
         verifyPhoneModal.sendAndOpenModal();
 
@@ -2186,7 +2205,7 @@ var signInView = {
             return;
         }
 
-        APP.everlive.online();
+       everlive.goOnline();
         
         mobileNotify("Signing you in to intelligram....");
 
@@ -2293,7 +2312,6 @@ var verifyEmailModal = {
         if (userModel._user.isVerified) {
             mobileNotify("Your email is verified!!!");
             memberdirectory.update();
-            userStatus.update();
             homeView.updateValidationUX();
         } else {
             mobileNotify("Your email verification is still pending...");
@@ -2303,7 +2321,16 @@ var verifyEmailModal = {
 
     sendEmail : function (e) {
         var email = userModel._user.get('email');
-        everlive.resendEmailValidation(email);
+        everlive.resendEmailValidation(email, function (result) {
+            if (result.error === null && result.isVerified) {
+                mobileNotify("Your email is verified!!!");
+                userModel._user.set("emailValidated", true);
+                everlive.updateUser();
+                memberdirectory.update();
+                homeView.updateValidationUX();
+                verifyEmailModal.closeModal();
+            }
+        });
         
     }
 };
@@ -2324,7 +2351,7 @@ var verifyPhoneModal = {
             if (result.status === 'ok') {
                 userModel._user.set('phoneVerificationCode', result.code);
                 verifyPhoneModal.openModal();
-                if (window.navigator.simulator === undefined) {
+               /* if (window.navigator.simulator === undefined) {
 
                     cordova.plugins.notification.local.add({
                         id: 'verifyPhone',
@@ -2333,7 +2360,7 @@ var verifyPhoneModal = {
                         autoCancel: true,
                         date: new Date(new Date().getTime() + 30)
                     });
-                }
+                }*/
             }
         });
     },

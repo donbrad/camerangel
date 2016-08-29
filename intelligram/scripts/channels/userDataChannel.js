@@ -143,6 +143,18 @@ var userDataChannel = {
             return(true);
         }
     },
+
+    findMessage : function (msgID) {
+        var messages = userDataChannel.queryMessages({ field: "msgID", operator: "eq", value: msgID });
+
+        if (messages === undefined) {
+            return (null);
+        } else if (messages.length === 0) {
+            return (null);
+        } else {
+            return(messages);
+        }
+    },
     
 
 
@@ -243,8 +255,8 @@ var userDataChannel = {
         message.data = data;*/
         //message.data = JSON.stringify(message.data);
 
-
-
+        userDataChannel.messagesDS.add(message);
+        userDataChannel.messagesDS.sync();
 
        if (deviceModel.isOnline()) {
            everlive.createOne(userDataChannel._cloudClass, message, function (error, data) {
@@ -252,10 +264,8 @@ var userDataChannel = {
                    ggError("Error archiving private message " + JSON.stringify(error));
                }
            });
-       } else {
-           userDataChannel.messagesDS.add(message);
        }
-        userDataChannel.messagesDS.sync();
+
     },
 
     updateTimeStamp : function () {
@@ -275,6 +285,7 @@ var userDataChannel = {
             channel: userDataChannel.channelUUID,
             start: start.toString(),
             end: end.toString(),
+            include_token : true,
             error: userDataChannel.error,
             callback: function(messages) {
                 messages = messages[0];
@@ -409,7 +420,7 @@ var userDataChannel = {
     },
 
     errorCallback : function (error) {
-        mobileNotify('UserDataChannel Error : ' + error);
+        console.log('UserDataChannel Error : ' + error);
     },
 
     channelConnect: function () {
@@ -417,11 +428,11 @@ var userDataChannel = {
     },
 
     channelDisconnect: function () {
-        mobileNotify("Data Channel Disconnected");
+        console.log("Data Channel Disconnected");
     },
 
     channelReconnect: function () {
-        mobileNotify("Data Channel Reconnected");
+        console.log("Data Channel Reconnected");
     },
 
     channelSuccess : function (status) {
@@ -429,7 +440,7 @@ var userDataChannel = {
     },
 
     channelError : function (error) {
-        mobileNotify('Data Channel Error : ' + JSON.stringify(error));
+        console.log('Data Channel Error : ' + JSON.stringify(error));
     }
 };
 

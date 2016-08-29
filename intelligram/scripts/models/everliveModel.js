@@ -86,6 +86,9 @@ var everlive = {
                     },
                     encryption: {
                         key : 'kkwllc2016'
+                    },
+                    conflicts: {
+                        strategy: Everlive.Constants.ConflictResolutionStrategy.ClientWins
                     }
                 },
                 authentication: {
@@ -103,7 +106,7 @@ var everlive = {
                 }
             });
 
-            APP.everlive.online();
+
 
             everlive.getTimeStamp();
     
@@ -160,7 +163,13 @@ var everlive = {
         }
     },
 
+    goOnline : function () {
+        APP.everlive.online();
+    },
 
+    goOffline : function () {
+        APP.everlive.online();
+    },
 
     syncCloud : function (){
         if (!everlive.isConnected()) {
@@ -178,10 +187,40 @@ var everlive = {
         }
     },
 
-    resendEmailValidation : function (email) {
-        var updateObject = {Id: userModel.currentUser.Id, Email : email};
+    resendEmailValidation : function (email, callback) {
 
-        APP.everlive.Users.updateSingle(updateObj,
+        var object = {
+            "Username": userModel._user.username
+        };
+
+        $.ajax({
+            type: "POST",
+            url: 'http://api.everlive.com/v1/s2fo2sasaubcx7qe/Users/verify/resend',
+            contentType: "application/json",
+            data: JSON.stringify(object),
+            success: function(data){
+                mobileNotify("Email verification instructtions were sent to " + email);
+                if (callback !== undefined && callback !== null) {
+                    callback({error: null, wasSent: true, isVerifed: false});
+                }
+            },
+            error: function(error){
+                if (error.responseJSON.errorCode === 210) {
+                    if (callback !== undefined && callback !== null) {
+                        callback({error: null, wasSent: true, isVerified: true});
+                    }
+                } else {
+                    ggError("Email Validation Resend Error : " + JSON.stringify(error));
+                    if (callback !== undefined && callback !== null) {
+                        callback({error: error, wasSent: false, isVerifed: false});
+                    }
+                }
+
+
+            }
+        });
+
+        /*APP.everlive.Users.updateSingle(updateObject,
             function (data) {
                 var result = data.result;
                 mobileNotify("Email verification instructtions were sent to " + email);
@@ -193,7 +232,7 @@ var everlive = {
                     ggError("Emall Validation Resend Error : " + JSON.stringify(error));
                 }
 
-            });
+            });*/
     },
 
     isUserSignedIn : function () {

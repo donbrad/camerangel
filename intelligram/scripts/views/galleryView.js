@@ -51,7 +51,7 @@ var galleryView = {
     setStuffView : function () {
         $('#gallery-photos').addClass("hidden");
         $('#gallery-notes').removeClass("hidden");
-        ux.setSearchPlaceholder("Search Notes...");
+
         galleryView._activeView = 0;
     },
 
@@ -227,22 +227,9 @@ var galleryView = {
         });
 
 
-        // Set action btn
-       /* ux.showActionBtn(true, "#gallery", "");
-        ux.changeActionBtnImg("#gallery", "icon-camera");
-        ux.showActionBtnText("#gallery", "3.5rem", "Camera");*/
-
         galleryView.updateTotalPhotos();
 
         ux.setAddTarget(null, null, galleryView.onAddGallery);
-
-       /* $("#gallery > div.footerMenu.km-footer > a").removeAttr("href").on("click", function(e){
-            _preventDefault(e);
-            $("#galleryActions1").data("kendoMobileActionSheet").open();
-        });*/
-        
-
-
         // set filter count
         var filterCount = 0;
         $("#filterCount").text(filterCount);
@@ -257,6 +244,7 @@ var galleryView = {
         }
 
     },
+
     onTabSelect: function(e){
         var tab;
         if(_.isNumber(e)){
@@ -270,8 +258,11 @@ var galleryView = {
             $("#gallery-photos").addClass("hidden");
             $("#gallery-notes").removeClass("hidden");
 
-            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes-alt.svg");
-            $("#galleryView-tab-photos").attr("src", "images/icon-photo-dark.svg");
+            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes-light.svg");
+            $("#galleryView-tab-photos").attr("src", "images/icon-Photo.svg");
+
+            ux.setSearchPlaceholder("Search Notes...");
+
         } else {
             // Photos
             $("#gallery-photos").removeClass("hidden");
@@ -279,12 +270,15 @@ var galleryView = {
 
             $("#galleryView-tab-notes").attr("src", "images/icon-myNotes-dark.svg");
             $("#galleryView-tab-photos").attr("src", "images/icon-photo-active.svg");
+
+            ux.setSearchPlaceholder("Search Photos...");
+
         }
         galleryView._activeView = tab;
     },
 
     onAddGallery : function (e) {
-        $("#galleryActions1").data("kendoMobileActionSheet").open();
+        $("#galleryActionsPhoto").data("kendoMobileActionSheet").open();
     },
 
     onHide: function(e){
@@ -732,7 +726,8 @@ var modalChatPhotoView = {
                     }
                 }
                 var photo = channelView.photosDS.at(modalChatPhotoView._currentPhotoPage);
-                var url = photo.thumbnailUrl;
+                var url = null;
+
                 if (photo.imageUrl !== null)
                     url = photo.imageUrl;
                 if (url === null && photo.deviceUrl !== null) {
@@ -740,6 +735,7 @@ var modalChatPhotoView = {
                         url = photo.deviceUrl;
                     }
                 }
+
                 modalChatPhotoView._photoUrl = url;
 
                 $('#modalChatPhotoView-photoView').attr('src', url);

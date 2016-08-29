@@ -7,6 +7,9 @@ var smartEvent = {
     _cloudClass : 'smartEvent',
     _ggClass : 'Event',
     _version : 1,
+    _fetched : false,
+    _initialSync : false,
+    _todayArray : [],
 
     // date/place : -1 optional, 0 not used,  1  required
     termMap : [
@@ -136,11 +139,58 @@ var smartEvent = {
             sort: {
                 field: "date",
                 dir: "desc"
-            },
-
-            change :  function (e) {todayModel.change(e, smartEvent._ggClass);}
+            }
         });
 
+        smartEvent.eventsDS.bind("change", function (e) {
+            var changedEvents = e.items;
+            if (e.action === undefined) {
+                if (changedEvents !== undefined && !smartTrip.tripsDS._initialSync) {
+
+                    smartEvent._initialSync = true;
+                    smartEvent._todayArray = smartEvent.getTodayList();
+                }
+
+            } else {
+
+                switch (e.action) {
+                    case "itemchange" :
+                        var field  =  e.field;
+                        var movie = e.items[0];
+
+                        break;
+
+                    case "remove" :
+                        var event = e.items[0];
+                        todayModel.remove(event);
+                        break;
+
+                    case "sync" :
+
+                        break;
+
+                    case "add" :
+                        var today = moment();
+                        var event = e.items[0];
+                        if (moment(event.date).isSame(today, 'day') ) {
+                            todayModel.add(event);
+                        }
+                        break;
+                }
+            }
+
+
+        });
+
+        smartEvent.eventsDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!smartEvent._fetched) {
+                    smartEvent._fetched = true;
+                }
+            }
+        });
         smartEvent.eventsDS.fetch();
     },
     
@@ -207,6 +257,20 @@ var smartEvent = {
         return(result);
     },
 
+    getTodayList : function () {
+        // is Showtime Today?
+        var len = smartEvent.eventsDS.total();
+        var todayArray = [];
+        var today = moment();
+        for (var i=0; i<len; i++) {
+            var event = smartEvent.eventsDS.at(i);
+            if (moment(event.date).isSame(today, 'day') ) {
+                todayArray.push(event);
+            }
+
+        }
+        return(todayArray);
+    },
 
     getActionNames : function () {
 

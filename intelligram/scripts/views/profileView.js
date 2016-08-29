@@ -48,6 +48,8 @@ var profileEditView = {
         profileEditView._activeProfile.set('email', userModel._user.get('email'));
         profileEditView._activeProfile.set('photo', photoUrl );
         profileEditView._activeProfile.set('phone', userModel._user.get('phone'));
+        profileEditView._activeProfile.set('address', userModel._user.get('address'));
+        profileEditView._activeProfile.set('birthday', userModel._user.get('birthday'));
 
         $(".phone").val(profileEditView._activeProfile.phone);
 
@@ -74,9 +76,14 @@ var profileEditView = {
         userModel._user.set('alias', profileEditView._activeProfile.get('alias'));
         userModel._user.set('email', profileEditView._activeProfile.get('email'));
         userModel._user.set('photo', profileEditView._activeProfile.get('photo'));
+        userModel._user.set('phone', profileEditView._activeProfile.get('phone'));
+        userModel._user.set('address', profileEditView._activeProfile.get('address'));
+        userModel._user.set('birthday', profileEditView._activeProfile.get('birthday'));
 
         everlive.updateUser();
+        userStatus.update();
         memberdirectory.update();
+
         APP.kendo.navigate('#home');
     }, 
 
@@ -94,6 +101,10 @@ var profileEditView = {
 
     doChangePassword : function () {
         changePasswordView.openModal();
+    },
+
+    doChangePhone : function () {
+        mobileNotify("Coming Soon!!!");
     }
 };
 

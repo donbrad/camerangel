@@ -1613,6 +1613,10 @@ var channelView = {
             message.data = JSON.parse(message.dataBlob);
         }
 
+        if (message.wasSent === undefined) {
+            message.wasSent = true;
+        }
+
         if (message.data.photos !== undefined && message.data.photos.length > 0 ) {
             var photos = message.data.photos;
 

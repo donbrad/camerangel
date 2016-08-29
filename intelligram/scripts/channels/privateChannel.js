@@ -11,6 +11,8 @@ var privateChannel = {
     _class : 'private',
     _message : 'message',
     _alert : 'alert',
+    _recallMessage : 'recallmessage',
+    _recallPhoto : 'recallphoto',
     thisUser: {},
     userId: '',
     users: [],
@@ -21,6 +23,7 @@ var privateChannel = {
     contactName : '',
     last72hours : 0,
     RSAKey : null,
+    deferredDS : new kendo.data.DataSource(),
 
 
 
@@ -54,50 +57,132 @@ var privateChannel = {
 
     },
 
-    // archive the message in the private channel with this user's public key and send to user.
-    // this provides a secure roamable private sent folder without localstorage and parse...
-/*
-    archiveMessage : function (msg) {
-        var archiveMsg = {};
-        archiveMsg.type = 'privateMessage';
-        archiveMsg.msgID = msg.msgID;
-        archiveMsg.time = msg.time;
-        archiveMsg.ttl = msg.ttl;
-        archiveMsg.sender = msg.sender;
-        archiveMsg.recipient = privateChannel.userId;
-        archiveMsg.channelUUID = msg.recipient;   // private channelUUID is just the contacts Id;
-        archiveMsg.actualRecipient = msg.recipient;  // since we're echoing back to sender, need to store recipient.
-        var encryptMessage = '', encryptData = '';
-        var currentTime =  msg.time;  // use the current message time (time sent by this user)
-
-        // encrypt the message with this users public key
-        encryptMessage = cryptico.encrypt(msg.content, privateChannel.publicKey);
-        archiveMsg.content = encryptMessage;
-
-        if (msg.data !== undefined && msg.data !== null)
-            encryptData = cryptico.encrypt(JSON.stringify(msg.data), privateChannel.publicKey);
-        else
-            encryptData = null;
-        archiveMsg.data = encryptData;
-
-        // Archive the message in this users data channel
-        APP.pubnub.publish({
-            channel: userDataChannel.channelUUID,
-            message: archiveMsg,
-            error: function (error) {
-                mobileNotify("Archive message error : " + error);
-            }
-        });
-
-    },
-*/
 
     receiveHandler : function (msg) {
 
+        if (msg.msgType === undefined) {
+            msg.msgType = privateChannel._message;
+        }
 
-        privateChannel.receiveMessage(msg);
-       // deleteMessage(msg.sender, msg.msgID, msg.ttl);
+        switch (msg.msgType) {
 
+            case privateChannel._message :
+                privateChannel.receiveMessage(msg);
+                break;
+
+            case privateChannel._alert :
+                privateChannel.doAlertMessage(msg);
+                break;
+
+            case privateChannel._recallMessage :
+                privateChannel.doRecallMessage(msg);
+                break;
+
+            case privateChannel._recallPhoto :
+                privateChannel.doRecallPhoto(msg);
+                break;
+
+
+        }
+
+    },
+
+    alertMessage : function (channelId, alertText) {
+
+    },
+
+    recallMessage : function (channelId, messageId) {
+        var currentTime =  ggTime.currentTime();
+
+        var msgID = uuid.v4();
+
+        var thisMessage = {
+            msgID: msgID,
+            msgClass : privateChannel._class,
+            msgType : privateChannel._recallMessage,
+            channelUUID : channelId,
+            sender: userModel._user.userUUID,
+            senderName :  userModel._user.name,
+            messageId : messageId
+        };
+
+        if (!deviceModel.isOnline()) {
+
+            thisMessage.wasSent = false;
+            privateChannel.deferredDS.add(thisMessage);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: channelId,
+            message: thisMessage,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('Group Channel publish error: ' + message);
+                }
+
+            }
+        });
+    },
+
+
+    recallPhoto : function (channelId, photoId) {
+        var currentTime =  ggTime.currentTime();
+
+        var msgID = uuid.v4();
+
+        var thisMessage = {
+            msgID: msgID,
+            msgClass : privateChannel._class,
+            msgType : privateChannel._recallPhoto,
+            channelUUID : channelId,
+            sender: userModel._user.userUUID,
+            senderName :  userModel._user.name,
+            photoId : photoId
+        };
+
+        if (!deviceModel.isOnline()) {
+
+            thisMessage.wasSent = false;
+            privateChannel.deferredDS.add(thisMessage);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: channelId,
+            message: thisMessage,
+            callback: function (m) {
+                if (m === undefined)
+                    return;
+
+                var status = m[0], message = m[1], time = m[2];
+
+                if (status !== 1) {
+                    mobileNotify('recall photo publish error: ' + message);
+                }
+
+            }
+        });
+    },
+
+    doAlertMessage : function (msg) {
+
+    },
+
+    doRecallPhoto : function (msg) {
+        var recallObj = {type: 'photo', channelId: msg.channelUUID, photoId : channel.photoId};
+        channelModel.recallDS.add(recallObj);
+    },
+
+    doRecallMessage : function (msg) {
+        var recallObj = {type: 'message', channelId: msg.channelUUID, messageId : channel.msgID};
+
+        channelModel.recallDS.add(recallObj);
     },
 
     decryptMessage : function (msg) {
@@ -176,7 +261,6 @@ var privateChannel = {
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
 
-
             channelView.preprocessMessage(message);
             channelModel.updateLastAccess(channelView._channelUUID, null);
             channelView.messagesDS.add(message);
@@ -214,8 +298,22 @@ var privateChannel = {
         userDataChannel.archiveMessage(message);
     },
 
+    processDeferred : function () {
+        var len = privateChannel.deferredDS.total();
 
-    sendMessage: function (recipient, text, data, ttl) {
+        if (len > 0) {
+            for (var i=0; i<len; i++) {
+                if (deviceModel.isOnline()) {
+                    var msg = privateChannel.deferredDS.at(i);
+                    privateChannel.deferredSend(msg);
+                    privateChannel.deferredDS.remove(msg);
+                }
+            }
+        }
+    },
+
+
+    sendMessage: function (recipient, text, data, ttl, deferredTime) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
         // if (recipient in users) {
@@ -234,104 +332,166 @@ var privateChannel = {
         else
             encryptData = null;
 
-        APP.pubnub.uuid(function (msgID) {
-            var notificationString = "Message from: " + userModel._user.name;
-            var message = {
-                msgID: msgID,
-                msgClass : privateChannel._class,
-                msgType : privateChannel._message,
-                type: 'privateMessage',
-                recipient: recipient,
-                sender: userModel._user.userUUID,
-                pn_apns: {
-                    aps: {
-                        alert : notificationString,
-                        badge: 1,
-                        'content-available' : 1
-                    },
+
+
+        var msgID = uuid.v4();
+
+        var notificationString = "Message from: " + userModel._user.name;
+        var message = {
+            msgID: msgID,
+            msgClass : privateChannel._class,
+            msgType : privateChannel._message,
+            type: 'privateMessage',
+            recipient: recipient,
+            sender: userModel._user.userUUID,
+            wasSent : false,
+            pn_apns: {
+                aps: {
+                    alert : notificationString,
+                    badge: 1,
+                    'content-available' : 1
+                },
+                target: '#channel?channelUUID=' + privateChannel.userId,
+                channelUUID : privateChannel.userId,
+                senderId: userModel._user.userUUID,
+                isMessage: true,
+                isPrivate: true
+            },
+            pn_gcm : {
+                data : {
+                    title: notificationString,
+                    message: 'You have an new private message from ' + userModel._user.name,
                     target: '#channel?channelUUID=' + privateChannel.userId,
+                    image: "icon",
                     channelUUID : privateChannel.userId,
                     senderId: userModel._user.userUUID,
                     isMessage: true,
                     isPrivate: true
-                },
-                pn_gcm : {
-                    data : {
-                        title: notificationString,
-                        message: 'You have an new private message from ' + userModel._user.name,
-                        target: '#channel?channelUUID=' + privateChannel.userId,
-                        image: "icon",
-                        channelUUID : privateChannel.userId,
-                        senderId: userModel._user.userUUID,
-                        isMessage: true,
-                        isPrivate: true
-                    }
-                },
-
-                channelUUID: privateChannel.userId,
-                content: encryptMessage,  // publish the encryptedMessage
-                data: encryptData,        // publish the encryptedData.
-                time: currentTime,
-                fromHistory: false,
-                ttl: ttl
-            };
-
-            APP.pubnub.publish({
-                channel: recipient,
-                message: message,
-                error: userDataChannel.channelError,
-                callback: function (m) {
-                    var status = m[0], statusText = m[1];
-
-                    if (status !== 1) {
-                        ggError("Private Channel Publish error "  + statusText);
-                    }
-
-                    // Store a local copy of the sent message.  Need to update channelUUID :
-                    // for the recipient, its this users uuid.
-                    // for the sender, it's the recipients uuid
-                    if (message.msgClass === undefined) {
-                        message.msgClass = privateChannel._class;
-                    }
-
-                    if (message.msgType === undefined) {
-                        message.msgType = privateChannel._message;
-                    }
-                    var parsedMsg = {
-                        type: 'privateMessage',
-                        recipient: message.recipient,
-                        sender: userModel._user.userUUID,
-                        msgID: message.msgID,
-                        msgClass : message.msgClass,
-                        msgType: message.msgType,
-                        channelUUID: message.recipient,
-                        content: content,
-                        dataBlob: JSON.stringify(contentData),
-                        time: message.time,
-                        wasSent: true,
-                        fromHistory: false,
-                        ttl: ttl
-
-                    };
-
-                    userDataChannel.archiveMessage(parsedMsg);
-                    //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
-                    channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
-
-                    parsedMsg.data = contentData;
-                    channelView.preprocessMessage(parsedMsg);
-                    channelView.messagesDS.add(parsedMsg);
-                    // archive sedn message
-
-
-                    channelView.scrollToBottom();
-
                 }
-            });
+            },
+
+            channelUUID: privateChannel.userId,
+            content: encryptMessage,  // publish the encryptedMessage
+            data: encryptData,        // publish the encryptedData.
+            time: currentTime,
+            fromHistory: false,
+            ttl: ttl
+        };
+
+        if (deferredTime !== undefined) {
+            message.deferredFrom = deferredTime;
+
+        }
+
+        if (!deviceModel.isOnline()) {
+
+            privateChannel.deferredDS.add(message);
+            userDataChannel.archiveMessage(message);
+            parsedMsg.data = contentData;
+            channelView.preprocessMessage(message);
+            channelView.messagesDS.add(message);
+            return;
+        }
+
+        APP.pubnub.publish({
+            channel: recipient,
+            message: message,
+            error: userDataChannel.channelError,
+            callback: function (m) {
+                var status = m[0], statusText = m[1];
+
+                if (status !== 1) {
+                    ggError("Private Channel Publish error "  + statusText);
+                }
+
+                // Store a local copy of the sent message.  Need to update channelUUID :
+                // for the recipient, its this users uuid.
+                // for the sender, it's the recipients uuid
+                if (message.msgClass === undefined) {
+                    message.msgClass = privateChannel._class;
+                }
+
+                if (message.msgType === undefined) {
+                    message.msgType = privateChannel._message;
+                }
+                var parsedMsg = {
+                    type: 'privateMessage',
+                    recipient: message.recipient,
+                    sender: userModel._user.userUUID,
+                    msgID: message.msgID,
+                    msgClass : message.msgClass,
+                    msgType: message.msgType,
+                    channelUUID: message.recipient,
+                    content: content,
+                    dataBlob: JSON.stringify(contentData),
+                    time: message.time,
+                    wasSent: true,
+                    fromHistory: false,
+                    ttl: ttl
+                };
+
+                userDataChannel.archiveMessage(parsedMsg);
+                //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
+                channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
+
+                parsedMsg.data = contentData;
+                channelView.preprocessMessage(parsedMsg);
+                channelView.messagesDS.add(parsedMsg);
+                // archive sedn message
+
+
+                channelView.scrollToBottom();
+
+            }
         });
 
     },
 
+
+    deferredSend : function (message) {
+        var recipient = message.recipient;
+
+        APP.pubnub.publish({
+            channel: recipient,
+            message: message,
+            error: userDataChannel.channelError,
+            callback: function (m) {
+                var status = m[0], statusText = m[1];
+
+                if (status !== 1) {
+                    ggError("Private Channel Publish error "  + statusText);
+                }
+
+                // Store a local copy of the sent message.  Need to update channelUUID :
+                // for the recipient, its this users uuid.
+                // for the sender, it's the recipients uuid
+                if (message.msgClass === undefined) {
+                    message.msgClass = privateChannel._class;
+                }
+
+                if (message.msgType === undefined) {
+                    message.msgType = privateChannel._message;
+                }
+
+
+                var savedMessage = userDataChannel.findMessage(message.msgID);
+
+                if (savedMessage === null) {
+                    ggError("Deferred message - can't find message " + message.msgID);
+                } else {
+                    savedMessage.set("wasSent", true);
+                    savedMessage.set("actualSend", ggTime.currentTimeInSeconds());
+                }
+                var chatMessage = channelView.findMessageById(message.msgID);
+
+                if (chatMessage !== undefined && chatMessage !== null) {
+                    chatMessage.set('wasSent', true);
+                    chatMessage.set("actualSend", ggTime.currentTimeInSeconds());
+                }
+
+            }
+        });
+    },
 
     getMessageHistory: function (channelUUID, callBack) {
 

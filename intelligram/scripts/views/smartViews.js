@@ -277,6 +277,7 @@ var smartEventView = {
 
         $("#smartEventView-placeadddiv").addClass('hidden');
         $("#searchEventPlace-input").removeClass('hidden');
+        $("#searchEventPlace-actionBtns").removeClass('hidden');
     },
 
 
@@ -287,7 +288,7 @@ var smartEventView = {
             mobileNotify("Adding place : " + smartEventView._geoObj.name);
         });
 
-        $("#smartEventView-placeadddiv").addClass('hidden');
+        $("#searchEventPlace-actionBtns").addClass('hidden');
     },
 
     onPlaceSearch : function (e) {
@@ -360,7 +361,7 @@ var smartEventView = {
 
         var finalDateStr = moment(date).format("MM/DD/YYYY") + " " + time;
 
-        var finalDate =  moment(finalDateStr);
+        var finalDate =  moment(finalDateStr, "MM/DD/YYYY HH:mm");
         smartEventView._activeObject.set('date', finalDate);
 
     },
@@ -375,25 +376,25 @@ var smartEventView = {
     },
     
     validDateTime : function () {
-        var timeIn =  $("#smartEventView-time").val(), dateIn = $("#smartEventView-time").val();
+        var timeIn =  $("#smartEventView-time").val(), dateIn = $("#smartEventView-date").val();
 
         if (timeIn === null || dateIn === null) {
             return (false);
         }
-        var time = moment(timeIn);
+        var time = moment(timeIn, "HH:mm");
+        var timeIsValid = time.isValid();
 
-        var date = moment(dateIn);
+        var date = moment(dateIn, "MMM, DD YYYY");
+        var dateIsValid = date.isValid();
 
-        if (time === null && date === null) {
+        if (!timeIsValid && !dateIsValid) {
             mobileNotify("Please enter a valid Date and Time");
             return(false);
-        } else if (time === null) {
+        } else if (!timeIsValid) {
             mobileNotify("Please enter a valid Time");
-        } else if (date === null) {
+        } else if (!dateIsValid) {
             mobileNotify("Please enter a valid Date");
         } else {
-            var timeComp = moment(time).format("HH:mm");
-            var dateComp = moment(date).format('MMM Dd, YYYY');
             smartEventView.updateDateString();
             return (true);
         }

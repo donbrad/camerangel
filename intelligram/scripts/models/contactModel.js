@@ -221,6 +221,7 @@ var contactModel = {
                 if (contactList !== undefined) {
                     contact.lat = contactList.lat;
                     contact.lng = contactList.lng;
+                    contact.geopPoint = contactList.geoPoint;
                     contact.statusMessage = contactList.statusMessage;
                     contact.isAvailable = contactList.isAvailable;
                     contact.currentPlace = contactList.currentPlace;

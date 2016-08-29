@@ -296,26 +296,30 @@ var userModel = {
         if (photo === undefined || photo === null) {
             userModel._user.photo =  userModel.identiconUrl;
         }
-        var emailValidated = user.isVerified;   // this is everlive's flag for email validation
+        var emailValidated = user.emailValidated;   // these is everlive's flags for email validation from july 2016 it's supposed to be isVerified.
+
+        if (!emailValidated) {
+            emailValidated = user.isVerified;
+        }
 
         userModel._user.set('emailValidated', emailValidated);
-        if (!emailValidated) {
+       /* if (!emailValidated) {
             if (window.navigator.simulator === undefined) {
                 cordova.plugins.notification.local.add({
-                    id: 'verifyPhone',
+                    id: 1,
                     title: 'intelligram suggests...',
                     message: 'Please verify your phone',
                     autoCancel: true,
                     date: new Date(new Date().getTime() + 30)
                 });
             }
-        }
+        }*/
         userModel._user.set('phoneValidated', user.phoneValidated);
 
-        if (!user.phoneValidated) {
+        /*if (!user.phoneValidated) {
             if (window.navigator.simulator === undefined) {
                 cordova.plugins.notification.local.add({
-                    id: 'verifyEmail',
+                    id: 1
                     title: 'intelligram suggests...',
                     message: 'Please verify your email',
                     autoCancel: true,
@@ -323,7 +327,7 @@ var userModel = {
                 });
             }
         }
-
+*/
         if (user.addressValidated === undefined) {
             user.addressValidated = false;
         }
@@ -340,12 +344,11 @@ var userModel = {
 
         memberdirectory.update();
 
-        if (user.phoneValidated) {
-            APP.kendo.navigate('#home');
-        } else {
-            verifyPhoneModal.openModal();
+        if (!user.phoneValidated) {
+            homeView._needPhoneValidation = true;
         }
 
+        APP.kendo.navigate('#home');
 
     },
     
@@ -597,6 +600,8 @@ var userStatus = {
 
     },
 
+
+
     getStatus : function (uuid, callback) {
         var filter = new Everlive.Query();
         filter.where().eq('userUUID', uuid);
@@ -656,17 +661,7 @@ var userStatus = {
             case 'currentPlaceUUID' :
 
                 updateObject.set(field, userModel._user.get(field));
-                
-               /* userStatus.parseUserStatus.set(field, userModel._user.get(field));
-                userStatus.parseUserStatus.set('lastUpdate', ggTime.currentTime());
-                userStatus.parseUserStatus.save(null, {
-                    success : function (user){
-                        mobileNotify("User status update: " + field);
-                    },
-                    error: function (user, error){
-                        mobileNotify("User Status update error: " + error);
-                    }
-                });*/
+
         }
     },
 
