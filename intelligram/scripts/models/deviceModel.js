@@ -262,6 +262,7 @@ var deviceModel = {
             userModel.initPubNub();
             userDataChannel.processDeferred();
             groupChannel.processDeferred();
+            channelModel.processDeferred();
             userDataChannel.history();
             appDataChannel.history();
             everlive.syncCloud();
