@@ -1273,6 +1273,39 @@ form p {
 .km-material .k-toolbar .km-button.km-state-active {
   background: none;
 }
+#modalview-verifyPhone > div {
+  padding: 0;
+  background-color: #4B6CB7;
+  background-image: none !important;
+  z-index: 100;
+}
+.verify-device-img {
+  top: 6em;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  opacity: 0;
+  z-index: -1;
+}
+.verify-device-img img {
+  height: 12em;
+}
+.verifyPhone-codeBox {
+  margin: 0.5em 1em;
+}
+#modalview-verifyPhone > div > div.km-scroll-container > div.card {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 0;
+  margin-top: -5em;
+  position: relative;
+  top: 0;
+}
+#modalview-verifyPhone > div > div.km-scroll-container > div.card h2 {
+  margin-bottom: 0.5em;
+  padding-top: 0.5em;
+}
 .verifyPhone-code-sent {
   background-color: #009688;
   color: #fff;

@@ -2379,7 +2379,8 @@ var verifyPhoneModal = {
         if (window.navigator.simulator !== true) {
             $("#verifyPhone-code").mask("999999", {placeholder: " "})
         }
-
+        $(".verify-device-img").velocity({opacity: 1, top: "3em"}, {delay: 1000, easing: [ 250, 15 ], duration: 1000});
+        $("#verifyPhone-card").velocity({top: "2em"}, {delay: 1000, duration: 1000});
         $("#verifyPhone-code").on('keyup', function(e){
             var val = $(this).val();
             if(val.length > 4){
@@ -2388,6 +2389,8 @@ var verifyPhoneModal = {
                 $("#modalview-verifyPhone-btn").addClass('btnIncomplete').removeClass('btnPrimary').text("Cancel");
             }
         });
+        console.log(userModel._user);
+        $("#verifyPhone-userName").text(userModel._user.name);
         $("#modalview-verifyPhone").data("kendoMobileModalView").open();
     },
 

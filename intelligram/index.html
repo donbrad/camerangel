@@ -774,35 +774,36 @@
 </div>
     
 <div data-role="modalview" id="modalview-verifyPhone" style="width: 100%; height:100%; display: none;" class="appearance">
-    <div class="appBox">
-	    <h3>
-	    	Please Verify Your Phone Number
-	    </h3>
-		<p>Intelligram requires that all users verify their phone number.
-			This not only prevents wrong numbers, it enables  users to be confident that everyone is who they say they are!</p>
-		</br>
-		<p class="zero">Check your phone's text (SMS/MMS) application for a message containing a 6 number code: <span id="verifyPhone-maskedcode">123456</span>.</p>
-		   	<p class="zero"> <strong>From: (530) 206-8126</strong>.</p>
+	<div class="verify-device-img">
+		<img src="images/verify-ios.png"/>
+	</div>
+	<div class="card" id="verifyPhone-card">
+		<h2>
+			Hey <span id="verifyPhone-userName"></span>,
+		</h2>
+		<p>Intelligram is all about privacy and connecting with the people close to you. For your protection, we ask every user to confirm their mobile phone number via text message. Check your text messages!</p>
 
-	        <ul data-role="listview" data-style="inset">
-	            <li>
-	                <div>Enter 6 Number code </div>
-	                <input type="tel" id="verifyPhone-code" value="" />
-	              	<a class="btnClear-sm" data-click="verifyPhoneModal.sendCode" data-role="button">
-	              		Resend Verification code
-	              	</a>
-	            </li>
-	        </ul>
-   	</div>
-	<div class="verifyPhone-code-sent">
-		<p>Text message sent!</p>
+		<p class="helper hidden"> From: (530) 206-8126</p>
+		<div class="verifyPhone-codeBox">
+			<label>
+				6 Digit Code from (530) 206-8126
+				<input type="tel" id="verifyPhone-code" value="" />
+			</label>
+			<a class="btnClear-sm" data-click="verifyPhoneModal.sendCode" data-role="button">
+				Resend Verification code
+			</a>
+		</div>
+		<div class="verifyPhone-code-sent">
+			<p>Text message sent!</p>
+		</div>
+		<div class="verifyPhone-code-error">
+			<p>Error sending text message.</p>
+		</div>
+		<div class="footer" data-role="footer">
+			<a class="btnIncomplete btnFull-modal" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" id="modalview-verifyPhone-btn">Verify</a>
+		</div>
 	</div>
-	<div class="verifyPhone-code-error">
-		<p>Error sending text message.</p>
-	</div>
-	<div class="footer" data-role="footer">
-		<a class="btnIncomplete btnFull-modal" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" id="modalview-verifyPhone-btn">Verify</a>
-	</div>
+
 </div>
 
 <div data-role="modalview" id="modalview-verifyEmail" style="width: 90%; height: 90%; display: none;" class="appearance">
