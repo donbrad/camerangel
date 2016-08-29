@@ -311,7 +311,7 @@ var channelModel = {
     queryRecalledMessages : function (query) {
         if (query === undefined)
             return([]);
-        var dataSource = channelModel.recalledMessagesDS;
+        var dataSource = channelModel.recallDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -326,7 +326,7 @@ var channelModel = {
     queryRecalledMessage : function (query) {
         if (query === undefined)
             return(undefined);
-        var dataSource = channelModel.recalledMessagesDS;
+        var dataSource = channelModel.recallDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -345,7 +345,7 @@ var channelModel = {
     },
 
     isMessageRecalled : function (msgID) {
-        var message = channelModel.queryRecalledMessage({ field: "msgID", operator: "eq", value: msgID });
+        var message = channelModel.queryRecalledMessage({ field: "messageId", operator: "eq", value: msgID });
 
         if (message === undefined) {
             //msgID not found in recall list
@@ -357,7 +357,14 @@ var channelModel = {
     },
 
     addMessageRecall : function (channelUUID, msgId, ownerId, isPrivateChat) {
-        var recallObj = {channelUUID : channelUUID, msgID: msgId, ownerId:  ownerId, isPrivateChat: isPrivateChat};
+
+
+        if (isPrivateChat) {
+            privateChannel.recallMessage(channelUUID, msgId);
+        } else {
+            groupChannel.recallMessage(channelUUID, msgId);
+        }
+        /*var recallObj = {channelUUID : channelUUID, msgID: msgId, ownerId:  ownerId, isPrivateChat: isPrivateChat};
 
         var channel = channelModel.findChannelModel(channelUUID);
 
@@ -372,13 +379,13 @@ var channelModel = {
             channelView.messagesDS.remove(liveMessage);
             channelView.messagesDS.sync();
         }
-
+*/
     },
 
     queryRecalledPhoto : function (query) {
         if (query === undefined)
             return(undefined);
-        var dataSource = channelModel.recalledPhotosDS;
+        var dataSource = channelModel.recallDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -391,8 +398,8 @@ var channelModel = {
     },
 
     isPhotoRecalled : function (photoId, channelId) {
-        var message = channelModel.queryRecalledPhoto([{ field: "photoUUID", operator: "eq", value: photoId },
-            { field: "channelUUID", operator: "eq", value: channelId }]);
+        var message = channelModel.queryRecalledPhoto([{ field: "photoId", operator: "eq", value: photoId },
+            { field: "channelId", operator: "eq", value: channelId }]);
 
         if (message === undefined) {
             //msgID not found in recall list

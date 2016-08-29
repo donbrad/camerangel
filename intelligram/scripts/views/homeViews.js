@@ -432,7 +432,7 @@ var homeView = {
 
 
         if (homeView._needPhoneValidation) {
-            verifyPhoneModal.openModal();
+            verifyPhoneModal.sendAndOpenModal();
             // toggle off so user only sees every launch or login
             homeView._needPhoneValidation = false;
         }
@@ -2366,6 +2366,9 @@ var verifyPhoneModal = {
     },
 
     openModal: function (e) {
+
+        var code = userModel._user.phoneVerificationCode;
+
         if (window.navigator.simulator !== true) {
             $("#verifyPhone-code").mask("999999", {placeholder: " "})
         }
