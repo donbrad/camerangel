@@ -263,8 +263,8 @@ var deviceModel = {
             userDataChannel.processDeferred();
             groupChannel.processDeferred();
             channelModel.processDeferred();
-            userDataChannel.history();
-            appDataChannel.history();
+         /*   userDataChannel.history();
+            appDataChannel.history();*/
             everlive.syncCloud();
            // photoModel.processCloudPushList();
             photoModel.syncPhotosToCloud();

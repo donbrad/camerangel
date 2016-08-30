@@ -9,6 +9,7 @@
 var privateChannel = {
 
     _class : 'private',
+    _version : 1,
     _message : 'message',
     _alert : 'alert',
     _recallMessage : 'recallmessage',
@@ -64,6 +65,10 @@ var privateChannel = {
             msg.msgType = privateChannel._message;
         }
 
+        if (msg.version === undefined) {
+            return;
+        }
+
         switch (msg.msgType) {
 
             case privateChannel._message :
@@ -98,6 +103,7 @@ var privateChannel = {
 
         var thisMessage = {
             msgID: msgID,
+            version : privateChannel._version,
             msgClass : privateChannel._class,
             msgType : privateChannel._recallMessage,
             channelUUID : channelId,
@@ -138,6 +144,7 @@ var privateChannel = {
 
         var thisMessage = {
             msgID: msgID,
+            version : privateChannel._version,
             msgClass : privateChannel._class,
             msgType : privateChannel._recallPhoto,
             channelUUID : channelId,
@@ -192,9 +199,9 @@ var privateChannel = {
         var content = null;
         
         if (msg.content.cipher !== undefined) {
-            content = userDataChannel.decryptBlock(msg.content.cipher);
+            content = userDataChannel.decryptBlock(msg.contentBlob.cipher);
         } else {
-            content = userDataChannel.decryptBlock(msg.content);
+            content = userDataChannel.decryptBlock(msg.contentBlob);
         }
 
         if (content === undefined) {
@@ -202,9 +209,9 @@ var privateChannel = {
         }
 
         if (msg.data.cipher !== undefined) {
-            data = userDataChannel.decryptBlock(msg.data.cipher);
+            data = userDataChannel.decryptBlock(msg.dataBlob.cipher);
         } else {
-            data = userDataChannel.decryptBlock(msg.data);
+            data = userDataChannel.decryptBlock(msg.dataBlob);
         }
 
         if (data !== undefined) {
@@ -226,7 +233,9 @@ var privateChannel = {
             msgClass : msg.msgClass,
             msgType : msg.msgType,
             channelUUID: msg.channelUUID,  //For private channels, channelUUID is just sender ID
+            contentBlob: msg.contentBlob,
             content: content,
+            dataBlob: msg.dataBlob,
             data: data,
             TTL: msg.ttl,
             time: msg.time,
@@ -244,6 +253,9 @@ var privateChannel = {
         if (msg.fromHistory === undefined) {
             msg.fromHistory = false;
         }
+
+        // Archive the encrypted message
+        userDataChannel.archiveMessage(msg);
 
         var message = privateChannel.decryptMessage(msg);
         // Add the message to the archive
@@ -292,10 +304,8 @@ var privateChannel = {
         }
 
         // create the blob and delete the offending key word before we ask kendo to save
-        message.dataBlob = JSON.stringify(message.data);
-        delete message.data;
 
-        userDataChannel.archiveMessage(message);
+
     },
 
     processDeferred : function () {
@@ -339,6 +349,7 @@ var privateChannel = {
         var notificationString = "Message from: " + userModel._user.name;
         var message = {
             msgID: msgID,
+            version : privateChannel._version,
             msgClass : privateChannel._class,
             msgType : privateChannel._message,
             type: 'privateMessage',
@@ -371,8 +382,8 @@ var privateChannel = {
             },
 
             channelUUID: privateChannel.userId,
-            content: encryptMessage,  // publish the encryptedMessage
-            data: encryptData,        // publish the encryptedData.
+            contentBlob: encryptMessage,  // publish the encryptedMessage
+            dataBlob: encryptData,        // publish the encryptedData.
             time: currentTime,
             fromHistory: false,
             ttl: ttl
@@ -387,7 +398,10 @@ var privateChannel = {
 
             privateChannel.deferredDS.add(message);
             userDataChannel.archiveMessage(message);
-            parsedMsg.data = contentData;
+
+            // Add the clear content to the message before passing to channelview
+            message.data = contentData;
+            message.content = content;
             channelView.preprocessMessage(message);
             channelView.messagesDS.add(message);
             return;
@@ -414,6 +428,10 @@ var privateChannel = {
                 if (message.msgType === undefined) {
                     message.msgType = privateChannel._message;
                 }
+
+                userDataChannel.archiveMessage(message);
+
+
                 var parsedMsg = {
                     type: 'privateMessage',
                     recipient: message.recipient,
@@ -422,22 +440,22 @@ var privateChannel = {
                     msgClass : message.msgClass,
                     msgType: message.msgType,
                     channelUUID: message.recipient,
+                    contentBlob: message.contentBlob,
                     content: content,
-                    dataBlob: JSON.stringify(contentData),
+                    dataBlob: message.dataBlob,
+                    data: contentData,
                     time: message.time,
                     wasSent: true,
                     fromHistory: false,
                     ttl: ttl
                 };
 
-                userDataChannel.archiveMessage(parsedMsg);
+
                 //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                 channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
 
-                parsedMsg.data = contentData;
                 channelView.preprocessMessage(parsedMsg);
                 channelView.messagesDS.add(parsedMsg);
-                // archive sedn message
 
 
                 channelView.scrollToBottom();
@@ -514,8 +532,8 @@ var privateChannel = {
         }
 
         for (var m=0; m<messages.length; m++) {
-            //var message  = privateChannel.decryptMessage(messages[m]);
-            messages[m].data = JSON.parse(messages[m].dataBlob);
+            var message  = privateChannel.decryptMessage(messages[m]);
+            messages[m] = message;
         }
 
 
