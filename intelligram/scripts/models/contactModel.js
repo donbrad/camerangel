@@ -11,9 +11,21 @@ var contactModel = {
     _version: 1,
     _ggClass: 'Contact',
     _cloudClass: 'contacts',
+    _shareContact : 'Contact',
+    _shareChat : 'Chat',
+    _shareGroup : 'Group',
     _fetched : false,
+
    contactsDS: null,
 
+
+    shareDS : new kendo.data.DataSource({
+        group: 'category',
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
 
     deviceContactsDS: new kendo.data.DataSource({
         sort: {
@@ -74,6 +86,7 @@ var contactModel = {
                     contactModel._initialSync = true;
                     appDataChannel.history();
                     userDataChannel.history();
+                    contactModel.updateShareDS();
                     if ( changedContacts.length > 0) {
 
                         var len = changedContacts.length;
@@ -989,6 +1002,62 @@ var contactModel = {
                 mobileNotify(error);
             }, options);
 
+    },
+
+    queryShare : function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = contactModel.shareDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+
+    findShareById : function (objectId) {
+
+        var share = contactModel.queryShare({ field: "objectId", operator: "eq", value: objectId });
+
+        return(share);
+
+    },
+
+    addShareTarget : function (name, alias, objectId, channelId, category) {
+        var shareObj = {objectId : objectId, name : name, alias: alias, channelUUID: channelId, category : category};
+
+        var share = contactModel.findShareById(objectId);
+
+        if (share === undefined || share === null) {
+            contactModel.shareDS.add(shareObj);
+        }
+    },
+
+    updateContactShares : function () {
+        var len = contactModel.contactsDS.total();
+
+        for (var i=0; i<len; i++) {
+            var contact = contactModel.contactsDS.at(i);
+            contactModel.addShareTarget(contact.name, contact.alias, contact.uuid, contact.contactUUID, contactModel._shareContact);
+        }
+    },
+
+    updateChatShares : function () {
+        var len = channelModel.channelsDS.total();
+
+        for (var i=0; i<len; i++) {
+            var channel = channelModel.channelsDS.at(i);
+            var alias = "Group Chat";
+            // Dont include private channels are they're included in contacts
+            if (!channel.isPrivate)
+                contactModel.addShareTarget(channel.name, alias, channel.uuid, channel.uuid, contactModel._shareChat);
+        }
     }
 };
 

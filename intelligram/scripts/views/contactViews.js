@@ -1793,3 +1793,53 @@ var contactActionView = {
     }
 
 };
+
+
+var sharePickerView = {
+    callback: null,
+    _shareObj : null,
+
+    onInit: function () {
+        $("#contacts-listview").kendoMobileListView({
+            dataSource: contactModel.shareDS,
+            template: $("#sharePicker-Template").html(),
+            //headerTemplate: $("#contactsHeaderTemplate").html(),
+            fixedHeaders: true,
+            dataBound: function(e){
+               // ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
+            }
+
+        })
+    },
+
+    onOpen : function () {
+
+    },
+
+    openModal : function (shareObj, callback) {
+
+        sharePickerView.callback = null;
+
+        if (callback !== undefined) {
+            sharePickerView.callback = callback;
+        }
+
+        $("#sharePickerView").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#sharePickerView").data("kendoMobileModalView").close();
+        if (sharePickerView.callback !== null) {
+            sharePickerView.callback(null);
+        }
+    },
+
+    onDone: function () {
+        $("#sharePickerView").data("kendoMobileModalView").close();
+        if (sharePickerView.callback !== null) {
+            sharePickerView.callback(null);
+        }
+    }
+
+
+};

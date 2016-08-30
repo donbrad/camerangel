@@ -166,6 +166,7 @@ var channelModel = {
                     appDataChannel.history();
                     userDataChannel.history();
                     channelsView.updateChannelListDS();
+                    contactModel.updateChatShares();
                 }
             } else {
                 switch (e.action) {
