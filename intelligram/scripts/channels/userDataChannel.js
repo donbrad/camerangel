@@ -79,7 +79,7 @@ var userDataChannel = {
                         channel: userDataChannel.channelUUID,
                         windowing: 100,
                         restore: true,
-                        message: privateChannel.channelRead,
+                        message: userDataChannel.channelRead,
                         connect: userDataChannel.channelConnect,
                         disconnect: userDataChannel.channelDisconnect,
                         reconnect: userDataChannel.channelReconnect,
@@ -318,8 +318,7 @@ var userDataChannel = {
 
 
     channelRead : function (m) {
-
-
+        
         privateChannel.receiveHandler(m);
 
     },

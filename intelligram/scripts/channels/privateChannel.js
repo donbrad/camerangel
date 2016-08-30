@@ -453,7 +453,7 @@ var privateChannel = {
 
                 //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                 channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
-                
+
                 channelView.preprocessMessage(parsedMsg);
                 channelView.messagesDS.add(parsedMsg);
 
