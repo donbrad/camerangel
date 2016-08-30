@@ -178,50 +178,6 @@ var userDataChannel = {
         return (decryptContent.plaintext);
     },
 
-    decryptMessage : function (msg) {
-
-        var data = null;
-
-        var content = null;
-
-        if (msg.content.cipher !== undefined) {
-            content = userDataChannel.decryptBlock(msg.content.cipher);
-        } else {
-            content = userDataChannel.decryptBlock(msg.content);
-        }
-
-        if (content === undefined) {
-            content = "<p>Unable to decrypt messages...</p>"
-        }
-
-        if (msg.data.cipher !== undefined) {
-            data = userDataChannel.decryptBlock(msg.data.cipher);
-        } else {
-            data = userDataChannel.decryptBlock(msg.data);
-        }
-
-        if (data !== undefined) {
-            data = JSON.parse(data);
-        } else {
-            data = {};
-        }
-
-
-        var parsedMsg = {
-            type: msg.type,
-            fromHistory : msg.fromHistory,
-            msgID: msg.msgID,
-            channelUUID: msg.channelUUID,  //For private channels, channelUUID is just sender ID
-            content: content,
-            dataBlob: JSON.stringify(data),
-            TTL: msg.ttl,
-            time: msg.time,
-            sender: msg.sender,
-            recipient: msg.recipient
-        };
-
-        return(parsedMsg);
-    },
 
     addMessage : function (message) {
         if (userDataChannel.isDuplicateMessage(message.msgID))
@@ -362,15 +318,9 @@ var userDataChannel = {
 
 
     channelRead : function (m) {
+        
+        privateChannel.receiveHandler(m);
 
-        switch(m.type) {
-
-            case 'privateMessage' : {
-                userDataChannel.updateTimeStamp();
-                privateChannel.receiveHandler(m);
-
-            } break;
-        }
     },
 
 
