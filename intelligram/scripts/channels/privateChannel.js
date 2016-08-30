@@ -219,12 +219,12 @@ var privateChannel = {
         } else {
             data = {};
         }
-        if (message.msgClass === undefined) {
-            message.msgClass = privateChannel._class;
+        if (msg.msgClass === undefined) {
+            msg.msgClass = privateChannel._class;
         }
 
-        if (message.msgType === undefined) {
-            message.msgType = privateChannel._message;
+        if (msg.msgType === undefined) {
+            msg.msgType = privateChannel._message;
         }
         
         var parsedMsg = {
@@ -338,7 +338,7 @@ var privateChannel = {
         encryptMessage = userDataChannel.encryptBlockWithKey(text, privateChannel.contactKey);
         
         if (data !== undefined && data !== null)
-            encryptData =userDataChannel.encryptBlockWithKey(JSON.stringify(data), privateChannel.contactKey);
+            encryptData = userDataChannel.encryptBlockWithKey(JSON.stringify(data), privateChannel.contactKey);
         else
             encryptData = null;
 
@@ -429,6 +429,9 @@ var privateChannel = {
                     message.msgType = privateChannel._message;
                 }
 
+                // Encrypt the send message with this users key...
+                message.dataBlob = userDataChannel.encryptBlockWithKey(JSON.stringify(data), userModel._user.publicKey);
+                message.contentBlob = userDataChannel.encryptBlockWithKey(JSON.stringify(text), userModel._user.publicKey);
                 userDataChannel.archiveMessage(message);
 
 
