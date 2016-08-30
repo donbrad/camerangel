@@ -437,7 +437,7 @@ var privateChannel = {
 
                 // Encrypt the send message with this users key...
                 message.dataBlob = userDataChannel.encryptBlockWithKey(JSON.stringify(data), userModel._user.publicKey);
-                message.contentBlob = userDataChannel.encryptBlockWithKey(JSON.stringify(text), userModel._user.publicKey);
+                message.contentBlob = userDataChannel.encryptBlockWithKey(text, userModel._user.publicKey);
                 userDataChannel.archiveMessage(message);
 
 
