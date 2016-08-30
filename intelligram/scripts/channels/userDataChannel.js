@@ -175,6 +175,9 @@ var userDataChannel = {
         var RSAKey = userModel.RSAKey;
         var decryptContent = cryptico.decrypt(block, RSAKey);
 
+        if (decryptContent.status === 'failure' || decryptContent.plaintext === undefined) {
+            return(null);
+        }
         return (decryptContent.plaintext);
     },
 
