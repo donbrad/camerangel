@@ -987,18 +987,15 @@
 <script type="text/x-kendo-template" id="sharePicker-Template">
 	#
 	var name = data.name;
-	var alias = data.alias;
-	var icon = 'images/icon-contact.svg';
-	if (category === 'Chat') {
+	var icon = 'images/icon-contact-img.svg';
+	if (data.category === 'Chat') {
 		icon = 'images/icon-Chat.svg';
 	}
-	if (alias !== undefined && alias !== null) {
-		name = name + ' (' + alias + ')';
-	}
+
 
 	#
-	<div>
-		<span><img src=#=icon# height="20"/> </span> <span>#:name#</span>
+	<div style="padding: 8px;">
+		<span> <img src=#=icon# height="20"/> </span> <span>#:name#</span>
 	</div>
 </script>
 
@@ -1019,8 +1016,8 @@
 		</div>
 	</div>
 
-	<div>
-		<ul id="sharePickerView-listview" class="list-inline" data-role="listview"></ul>
+	<div style="width: 95%;">
+		<ul id="sharePickerView-listview" class="list-inline" ></ul>
 	</div>
 
 </div>

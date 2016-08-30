@@ -1034,9 +1034,19 @@ var contactModel = {
 
         var share = contactModel.findShareById(objectId);
 
-        if (share === undefined || share === null) {
+        if (share.length === 0) {
             contactModel.shareDS.add(shareObj);
         }
+    },
+
+    updateAllShares : function () {
+        contactModel.updateContactShares();
+        contactModel.updateChatShares();
+        contactModel.updateGroupShares();
+    },
+
+    updateGroupShares : function () {
+
     },
 
     updateContactShares : function () {
@@ -1055,8 +1065,8 @@ var contactModel = {
             var channel = channelModel.channelsDS.at(i);
             var alias = "Group Chat";
             // Dont include private channels are they're included in contacts
-            if (!channel.isPrivate)
-                contactModel.addShareTarget(channel.name, alias, channel.uuid, channel.uuid, contactModel._shareChat);
+            if (!channel.isPrivate && !channel.isDeleted)
+                contactModel.addShareTarget(channel.name, alias, channel.channelUUID, channel.channelUUID, contactModel._shareChat);
         }
     }
 };

@@ -1800,11 +1800,15 @@ var sharePickerView = {
     _shareObj : null,
 
     onInit: function () {
-        $("#contacts-listview").kendoMobileListView({
+
+        $("#sharePickerView-listview").kendoMobileListView({
             dataSource: contactModel.shareDS,
             template: $("#sharePicker-Template").html(),
             //headerTemplate: $("#contactsHeaderTemplate").html(),
             fixedHeaders: true,
+            click: function (e) {
+                var share = e.dataItem;
+            },
             dataBound: function(e){
                // ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
             }
@@ -1817,6 +1821,8 @@ var sharePickerView = {
     },
 
     openModal : function (shareObj, callback) {
+
+        contactModel.updateAllShares();
 
         sharePickerView.callback = null;
 
