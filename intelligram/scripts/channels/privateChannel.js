@@ -255,7 +255,7 @@ var privateChannel = {
         }
 
         if (msg.sender !== userModel._user.userUUID) {
-            // The user is a recipient.  Set the channelUUID to the sender id
+            // The user is the recipient.  Set the channelUUID to the sender id
             msg.channelUUID = msg.sender;
 
         }
