@@ -623,8 +623,9 @@ var editChannelView = {
         if (membersDeleted !== undefined ) {
 
             for (var md = 0; md < membersDeleted.length; md++) {
-                var contactId = membersDeleted[md].contactUUID;
-                if (contactId !== null && ($.inArray(contactId, memberArray) == -1)) {  // if this user is still in the member array don't send a delete
+                var contactIdRm = membersDeleted[md].contactUUID;
+                groupChannel.removeMember(editChannelView._activechannelUUID, contactIdRm);
+                /*if (contactId !== null && ($.inArray(contactId, memberArray) == -1)) {  // if this user is still in the member array don't send a delete
                     // This is a ggMember -- send delete.
                     appDataChannel.groupChannelDelete(contactId, channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.name + " has been deleted.");
                 } else {
@@ -640,7 +641,7 @@ var editChannelView = {
                         });
                     }
 
-                }
+                }*/
             }
         }
         
@@ -664,6 +665,7 @@ var editChannelView = {
                 inviteArray.push(contactId);
                 appDataChannel.groupChannelInvite(contactId, channelUUID,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
                     options);
+                groupChannel.addMember(editChannelView._activechannelUUID, contactId);
             } else {
                 console.error("Invalid Contact " + contactId);
             }
@@ -671,14 +673,15 @@ var editChannelView = {
         }
         
 
-        for (var m=0; m< memberArray.length; m++) {
+        groupChannel.updateChannel( channelUUID, editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
+       /* for (var m=0; m< memberArray.length; m++) {
 
             var invited = ($.inArray(memberArray[m],inviteArray) !== -1);
             // Only send updates to current members (new members got an invite above)
             if (memberArray[m] !== userModel._user.userUUID &&  invited === false) {
                 appDataChannel.groupChannelUpdate(memberArray[m], channelUUID,  editChannelView._activeChannel.name, editChannelView._activeChannel.description, memberArray);
             }
-        }
+        }*/
 
 
 
