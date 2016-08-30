@@ -1614,7 +1614,10 @@ var channelView = {
             message.wasSent = true;
         }
 
-        if (message.data == null) {
+        if (message.content === null) {
+            message.content = '<p>Sorry, Message is unavailable.</p>'
+        }
+        if (message.data === null) {
             message.data = {canCopy: false, photos:[], objects: []};
 
         } else if(message.data.photos !== undefined && message.data.photos.length > 0 ) {
