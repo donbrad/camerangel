@@ -781,13 +781,11 @@
 		<h2>
 			Hey <span id="verifyPhone-userName"></span>,
 		</h2>
-		<p>Intelligram is all about privacy and connecting with the people close to you. For your protection, we ask every user to confirm their mobile phone number via text message. Check your text messages!</p>
-
-		<p class="helper hidden"> From: (530) 206-8126</p>
+		<p>Intelligram is all about privacy and connecting with the people close to you. For your protection, we ask every user to do a one-time verification via text message. It's fast and simple!</p>
 		<div class="verifyPhone-codeBox">
 			<label>
-				6 Digit Code from (530) 206-8126
-				<input type="tel" id="verifyPhone-code" value="" />
+				6 Digit Code from <span>(530) 206-8126</span>
+				<input type="tel" id="verifyPhone-code" value="" maxlength="6" class="input-text-lg"/>
 			</label>
 			<a class="btnClear-sm" data-click="verifyPhoneModal.sendCode" data-role="button">
 				Resend Verification code

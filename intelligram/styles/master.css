@@ -1291,7 +1291,10 @@ form p {
   height: 12em;
 }
 .verifyPhone-codeBox {
-  margin: 0.5em 1em;
+  margin: 1em 1rem 2em 1rem;
+}
+.verifyPhone-codeBox label {
+  font-weight: 600;
 }
 #modalview-verifyPhone > div > div.km-scroll-container > div.card {
   width: 90%;
