@@ -198,7 +198,7 @@ var privateChannel = {
         
         var content = null;
         
-        if (msg.content.cipher !== undefined) {
+        if (msg.contentBlob.cipher !== undefined) {
             content = userDataChannel.decryptBlock(msg.contentBlob.cipher);
         } else {
             content = userDataChannel.decryptBlock(msg.contentBlob);
@@ -208,7 +208,7 @@ var privateChannel = {
             content = "<p>Unable to decrypt messages...</p>"
         }
 
-        if (msg.data.cipher !== undefined) {
+        if (msg.dataBlob.cipher !== undefined) {
             data = userDataChannel.decryptBlock(msg.dataBlob.cipher);
         } else {
             data = userDataChannel.decryptBlock(msg.dataBlob);
