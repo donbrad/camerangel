@@ -254,6 +254,11 @@ var privateChannel = {
             msg.fromHistory = false;
         }
 
+        if (msg.sender !== userModel._user.userUUID) {
+            // The user is a recipient.  Set the channelUUID to the sender id
+            msg.channelUUID = msg.sender;
+
+        }
         // Archive the encrypted message
         userDataChannel.archiveMessage(msg);
 
@@ -269,6 +274,7 @@ var privateChannel = {
         if (message.msgType === undefined) {
             message.msgType = privateChannel._message;
         }
+
 
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
