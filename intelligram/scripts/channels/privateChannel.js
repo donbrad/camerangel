@@ -369,7 +369,7 @@ var privateChannel = {
                     'content-available' : 1
                 },
                 target: '#channel?channelUUID=' + privateChannel.userId,
-                channelUUID : privateChannel.userId,
+                channelUUID : userModel._user.userUUID,
                 senderId: userModel._user.userUUID,
                 isMessage: true,
                 isPrivate: true
@@ -380,7 +380,7 @@ var privateChannel = {
                     message: 'You have an new private message from ' + userModel._user.name,
                     target: '#channel?channelUUID=' + privateChannel.userId,
                     image: "icon",
-                    channelUUID : privateChannel.userId,
+                    channelUUID : userModel._user.userUUID,
                     senderId: userModel._user.userUUID,
                     isMessage: true,
                     isPrivate: true
