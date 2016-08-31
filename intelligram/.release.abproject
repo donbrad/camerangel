@@ -27,7 +27,7 @@
     "cordova-plugin-whitelist",
     "de.appplant.cordova.plugin.email-composer@0.8.3.1",
     "de.appplant.cordova.plugin.local-notification@0.8.4",
-    "de.appplant.cordova.plugin.printer@0.7.1",
+    "de.appplant.cordova.plugin.printer@0.7.2",
     "nl.x-services.plugins.calendar@4.5.1",
     "nl.x-services.plugins.launchmyapp@4.1.5",
     "nl.x-services.plugins.socialsharing@5.1.1",
