@@ -254,13 +254,13 @@ var privateChannel = {
             msg.fromHistory = false;
         }
 
-        if (msg.sender !== userModel._user.userUUID) {
-            // The user is the recipient.  Set the channelUUID to the sender id
-            msg.channelUUID = msg.sender;
 
-        }
+        // The user is the recipient.  Set the channelUUID to the sender id
+        msg.channelUUID = msg.sender;
+
+
         // Archive the encrypted message
-        userDataChannel.archiveMessage(msg);
+        userDataChannel.addMessage(msg);
 
         var message = privateChannel.decryptMessage(msg);
         // Add the message to the archive

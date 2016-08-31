@@ -38,7 +38,7 @@ var userDataChannel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField }
+                model: { id:  Everlive.idField }
             },
             sort : {
                 field : "time",
