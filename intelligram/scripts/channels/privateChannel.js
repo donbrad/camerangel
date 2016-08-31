@@ -217,7 +217,7 @@ var privateChannel = {
         if (data !== undefined) {
             data = JSON.parse(data);
         } else {
-            data = {};
+            data = {canCopy: false, photos: [], objects:[]};
         }
         if (msg.msgClass === undefined) {
             msg.msgClass = privateChannel._class;
@@ -403,7 +403,8 @@ var privateChannel = {
         if (!deviceModel.isOnline()) {
 
             privateChannel.deferredDS.add(message);
-            userDataChannel.archiveMessage(message);
+            message.channelUUID = message.recipient;
+            userDataChannel.addMessage(message);
 
             // Add the clear content to the message before passing to channelview
             message.data = contentData;
@@ -438,7 +439,8 @@ var privateChannel = {
                 // Encrypt the send message with this users key...
                 message.dataBlob = userDataChannel.encryptBlockWithKey(JSON.stringify(data), userModel._user.publicKey);
                 message.contentBlob = userDataChannel.encryptBlockWithKey(text, userModel._user.publicKey);
-                userDataChannel.archiveMessage(message);
+                message.channelUUID = message.recipient;
+                userDataChannel.addMessage(message);
 
 
                 var parsedMsg = {

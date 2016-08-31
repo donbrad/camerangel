@@ -201,28 +201,6 @@ var userDataChannel = {
 
     },
 
-    archiveMessage : function (message) {
-        // remap channelUUID to recipient id
-        if (userDataChannel.isDuplicateMessage(message.msgID))
-            return;
-
-        message.channelUUID = message.recipient;
-        
-        if (message.Id === undefined) {
-            message.Id = uuid.v4();
-        }
-        userDataChannel.messagesDS.add(message);
-        userDataChannel.messagesDS.sync();
-
-       if (deviceModel.isOnline()) {
-           everlive.createOne(userDataChannel._cloudClass, message, function (error, data) {
-               if (error !== null) {
-                   ggError("Error archiving private message " + JSON.stringify(error));
-               }
-           });
-       }
-
-    },
 
     updateTimeStamp : function () {
         userDataChannel.lastAccess = ggTime.currentTime();
