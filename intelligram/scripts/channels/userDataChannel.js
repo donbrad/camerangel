@@ -297,7 +297,7 @@ var userDataChannel = {
 
 
     channelRead : function (m) {
-        
+
         privateChannel.receiveHandler(m);
 
     },
