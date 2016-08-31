@@ -186,16 +186,19 @@ var userDataChannel = {
         if (userDataChannel.isDuplicateMessage(message.msgID))
             return;
 
+        if (message.Id === undefined) {
+            message.Id = uuid.v4();
+        }
+        userDataChannel.messagesDS.add(message);
+        userDataChannel.messagesDS.sync();
         if (deviceModel.isOnline()) {
             everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
                 if (error !== null) {
                     ggError("Error creating private message " + JSON.stringify(error));
                 }
             });
-        } else {
-            userDataChannel.messagesDS.add(message);
         }
-        userDataChannel.messagesDS.sync();
+
     },
 
     archiveMessage : function (message) {
@@ -204,15 +207,10 @@ var userDataChannel = {
             return;
 
         message.channelUUID = message.recipient;
-
-     /*  var content = userDataChannel.encryptBlock(message.content);
-        message.content = content;*/
-
-
-       /* var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
-        message.data = data;*/
-        //message.data = JSON.stringify(message.data);
-
+        
+        if (message.Id === undefined) {
+            message.Id = uuid.v4();
+        }
         userDataChannel.messagesDS.add(message);
         userDataChannel.messagesDS.sync();
 
