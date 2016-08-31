@@ -96,9 +96,9 @@ var serverPush = {
                     }
                 }
 
-                if (e.isEvent !== undefined && e.isEvent) {
+                /*if (e.isEvent !== undefined && e.isEvent) {
                     mobileNotify(e.alert);
-                }
+                }*/
 
                 if (e.isAlert !== undefined && e.isAlert) {
                     mobileNotify(e.alert);
