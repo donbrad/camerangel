@@ -357,6 +357,23 @@ var homeView = {
             }
         });
 
+        // todo - wire account creation time
+        var emailValid = userModel._user.emailValidated;
+        // get account creation time
+        var accountCreateTime = moment().subtract(12, "d");
+        var timeLimit = moment(accountCreateTime).add(7, "d");
+        var today = moment();
+
+        var isBeforeLimit = moment(today).isBefore(timeLimit, "day");
+        if(isBeforeLimit){
+
+        } else {
+
+        }
+
+
+
+
     },
 
 
@@ -395,18 +412,8 @@ var homeView = {
             $('#home-verify-div').addClass('hidden');
         } else {
             $('#home-verify-div').removeClass('hidden');
-            if (userModel._user.emailValidated) {
-                $('#home-verify-email').addClass('hidden');
-            } else {
-                $('#home-verify-email').removeClass('hidden');
-            }
-
-            if (userModel._user.phoneValidated) {
-                $('#home-verify-phone').addClass('hidden');
-            } else {
-                $('#home-verify-phone').removeClass('hidden');
-            }
         }
+
     },
 
     onShow: function (e) {
@@ -2298,7 +2305,9 @@ var verifyEmailModal = {
     },
 
     openModal: function (e) {
-        
+        var emailAddress = userModel._user.email;
+        $("#verifyEmail-address").text(emailAddress);
+
         $("#modalview-verifyEmail").data("kendoMobileModalView").open();
     },
     
@@ -2309,7 +2318,7 @@ var verifyEmailModal = {
     confirmVerify : function (e) {
 
         if (userModel._user.isVerified) {
-            mobileNotify("Your email is verified!!!");
+            mobileNotify("Email Verified");
             memberdirectory.update();
             homeView.updateValidationUX();
         } else {
@@ -2379,17 +2388,17 @@ var verifyPhoneModal = {
         if (window.navigator.simulator !== true) {
             $("#verifyPhone-code").mask("999999", {placeholder: " "})
         }
-        $(".verify-device-img").velocity({opacity: 1, top: "3em"}, {delay: 1000, easing: [ 250, 15 ], duration: 1000});
-        $("#verifyPhone-card").velocity({top: "2em"}, {delay: 1000, duration: 1000});
+        $(".verify-device-img").velocity({opacity: 1, top: "2em"}, {delay: 1000, easing: [ 250, 15 ], duration: 1000});
+        $("#verifyPhone-card").velocity({top: "0em"}, {delay: 1000, duration: 1000});
         $("#verifyPhone-code").on('keyup', function(e){
             var val = $(this).val();
             if(val.length > 4){
-                $("#modalview-verifyPhone-btn").text("Verify").addClass('btnPrimary').removeClass('btnIncomplete');
+                $("#modalview-verifyPhone-btn").text("Verify").addClass('btnSecondary').removeClass('btnIncomplete');
             } else {
-                $("#modalview-verifyPhone-btn").addClass('btnIncomplete').removeClass('btnPrimary').text("Cancel");
+                $("#modalview-verifyPhone-btn").addClass('btnIncomplete').removeClass('btnSecondary').text("Cancel");
             }
         });
-        console.log(userModel._user);
+
         $("#verifyPhone-userName").text(userModel._user.name);
         $("#modalview-verifyPhone").data("kendoMobileModalView").open();
     },

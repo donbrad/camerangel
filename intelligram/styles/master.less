@@ -673,6 +673,8 @@ form {
   background: none;
 }
 
+
+
 #modalview-verifyPhone > div {
   padding: 0;
   background-color: @primary-100;
@@ -716,21 +718,17 @@ form {
 .verifyPhone-code-sent {
   background-color: @success-100;
   color: #fff;
-  position: absolute;
-  bottom: 2em;
+  position: relative;
   width: 100%;
   display: none;
-  margin-bottom: 0.25em;
 }
 
 .verifyPhone-code-error {
   background-color: @warning-100;
   color: #fff;
-  position: absolute;
-  bottom: 2em;
+  position: relative;
   width: 100%;
   display: none;
-  margin-bottom: 0.25em;
 }
 
 .gg-read-value {
@@ -1069,6 +1067,7 @@ form {
   padding-top: 1rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.4px;
+  font-size: 1.2em !important;
   :hover {
     background: transparent !important;
   }
@@ -1693,11 +1692,40 @@ div.footer.km-footer {
   box-shadow: none !important;
 }
 
-#home-verify-div {
+.verifyEmail-resend {
   width: 100%;
+  margin: 0.5em 0 1em;
 }
 
-#home-buttongroup > a.km-button.km-state-active
+#home-verify-div {
+  width: 100%;
+  background-color: @secondary-100;
+  margin: 0;
+  padding: 0.5em 1em;
+  font-weight: 600;
+  text-align: left;
+  span {
+    vertical-align: middle;
+  }
+  img {
+    height: 1em;
+    max-width: 1em;
+    vertical-align: text-bottom;
+  }
+  p {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+#verifyEmail-address {
+  font-weight: 600;
+}
+
+#home-verify-arrow {
+  position: relative;
+  top: 0.5em;
+}
 
 #home-buttongroup > a.km-button > span {
   display: inline-block;
@@ -4150,10 +4178,10 @@ div.loginBox > form > div > ul > li {
 
 .card {
   width: 95%;
-  margin: 0px auto 0px auto;
+  margin: 0 auto 0 auto;
   background: #fff;
   .shadowHelper(1);
-  border-radius: 2px;
+  border-radius: 4px;
   padding-top: 0.5rem;
   padding-bottom: 0.5em;
   .top {
@@ -4209,6 +4237,9 @@ div.loginBox > form > div > ul > li {
   }
   .chat p {
     .font-size(16);
+  }
+  .footer {
+    border-radius: 4px !important;
   }
 }
 
