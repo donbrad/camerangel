@@ -198,7 +198,7 @@ var serverPush = {
 
     onError : function (e) {
         // e.message
-        mobileNotify("Server push error : " + e.message);
+        ggError("Server push error : " + e.message);
     },
 
     provisionGroupChannels : function () {
@@ -381,7 +381,7 @@ var serverPush = {
     },
 
     _success : function (data) {
-       // ggError("Data channel server push enabled!");
+        ggError("Data channel server push enabled!");
     },
 
     _error : function (error) {
