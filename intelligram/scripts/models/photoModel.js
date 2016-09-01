@@ -23,6 +23,7 @@ var photoModel = {
     previewSize: "33%",
     optionsShown: false,
     _fetched : false,
+    _initialSync : false,
 
     photosDS: null,
 
@@ -45,7 +46,7 @@ var photoModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             }
         });
 
@@ -56,7 +57,14 @@ var photoModel = {
             photoModel._totalPhotos = photoModel.photosDS.total();
             galleryView.updateTotalPhotos();
 
-            if (e.action !== undefined) {
+            if (e.action === undefined) {
+                if (changedPhotos !== undefined && !photoModel._initialSync) {
+                    photoModel._initialSync = true;
+                    deviceModel.setAppState('hasPhotos', true);
+                    photoModel.syncPhotosToCloud();
+                    photoModel.syncPhotosToDevice()
+                }
+            } else  {
                 switch (e.action) {
                     case "itemchange" :
                         /*  var field  =  e.field;
@@ -132,9 +140,21 @@ var photoModel = {
             }
         });
 
+        photoModel.photosDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!photoModel._fetched){
+                    photoModel._fetched = true;
+                }
+
+            }
+
+        });
+
         photoModel.photosDS.fetch();
       //  photoModel.deletedPhotosDS.fetch();
-        deviceModel.setAppState('hasPhotos', true);
+
 
 
         /*deviceModel.isParseSyncComplete();*/
@@ -795,6 +815,10 @@ var photoModel = {
 
     cloudCreate : function (photo) {
 
+        if (photo.Id === undefined) {
+            photo.Id = uuid.v4();
+        }
+        
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
 

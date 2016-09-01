@@ -15,7 +15,7 @@ var devicePhoto = {
     _userPhoto: 'userphoto',
     _userProfile: 'userprofile',
     _cloudinaryUrl : 'https://res.cloudinary.com/ghostgrams', //Cloudinary delivery url
-    _cloudinaryThumb: 'http://res.cloudinary.com/ghostgrams/image/upload/c_scale,h_512,w_512/v1454612367/',
+    _cloudinaryThumb: 'http://res.cloudinary.com/ghostgrams/image/upload/c_fit,h_256,w_256/v1454612367/',
     _cloudinaryProfile: 'http://res.cloudinary.com/ghostgrams/image/upload/c_thumb,g_adv_faces,w_150,h_150/',
     _cloudinaryImage: 'http://res.cloudinary.com/ghostgrams/image/upload/v1454612367/',
 

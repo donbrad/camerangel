@@ -13,10 +13,10 @@ var userStatusChannel = {
     _cloudClass: "statuschannel",
     _ggClass: 'StatusChannel',
     _class : 'userstatus',
-    _status : 'status',
-    _update : 'update',
-    _alert : 'alert',
-    _event : 'event',
+    _status : 'status',   // standard status message
+    _update : 'update',  // update shared contact fields
+    _alert : 'alert',    // alert message
+    _event : 'event',    // shared event : emergency, trip, flight...
     _inited : false,
     channelUUID : null,
     myChannel : null,
@@ -43,7 +43,7 @@ var userStatusChannel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField }
+                model: { id:  Everlive.idField }
             },
             sort : {
                 field : "time",
@@ -294,6 +294,8 @@ var userStatusChannel = {
     sendUpdate : function () {
         var user = userModel._user;
         var update = {
+            msgClass : userStatusChannel._class,
+            msgType : userStatusChannel._update,
             time: ggTime.currentTimeInSeconds(),
             userUUID : user.userUUID,
             name: user.name,
@@ -357,7 +359,7 @@ var userStatusChannel = {
     channelStatusRead : function (msg) {
 
 
-        switch(msg.type) {
+        switch(msg.msgType) {
 
          case 'status' :
             // contact status message
@@ -418,16 +420,20 @@ var userStatusChannel = {
         if (userStatusChannel.isDuplicateMessage(message.msgID))
             return;
 
+        if (message.Id === undefined) {
+            message.Id = uuid.v4();
+        }
+        userStatusChannel.messagesDS.add(message);
+        userStatusChannel.messagesDS.sync();
+
         if (deviceModel.isOnline()) {
             everlive.createOne(userStatusChannel._cloudClass, message, function (error, data){
                 if (error !== null) {
                     ggError("Error creating status message " + JSON.stringify(error));
                 }
             });
-        } else {
-            userStatusChannel.messagesDS.add(message);
         }
-        userStatusChannel.messagesDS.sync();
+
     },
 
     queryMessages : function (query) {
