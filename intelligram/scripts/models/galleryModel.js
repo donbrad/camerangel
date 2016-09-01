@@ -9,12 +9,16 @@ var galleryModel = {
     _version: 1,
     _cloudClass : 'gallery',
     _ggClass : 'Gallery',
+    _galleryPhoto : 'galleryphoto',
     _addPhoto : 'addphoto',           // add photo (from owner)
     _removePhoto : 'removephoto',     // remove photo (from owner)
     _deleteGallery : 'deletegallery',     // delete gallery (from owner)
     _fetched : false,
     _initialSync : false,
     galleryDS : null,
+    photoDS : new kendo.data.DataSource(),
+    commentDS : new kendo.data.DataSource(),
+
 
     init : function() {
         galleryModel.galleryDS = new kendo.data.DataSource({
@@ -123,5 +127,67 @@ var galleryModel = {
         var galleries = galleryModel.queryGalleries({field: "uuid", operator: "eq", value: uuid});
 
         return (galleries);
+    },
+
+    queryPhotos: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = galleryModel.photoDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    findPhotos: function (uuid) {
+
+        var photos = galleryModel.queryPhotos({field: "galleryUUID", operator: "eq", value: uuid});
+
+        return (photos);
+    },
+
+    // Get gallery photos from the everlive cloud
+    fetchPhotos : function (galleryUUID, callback) {
+        var filter = new Everlive.Query();
+        filter.where().eq('galleryUUID', galleryUUID);
+
+        var data = el.data(galleryModel._galleryPhoto);
+        data.get(filter)
+            .then(function(data){
+                   callback (null, data);
+                },
+                function(error){
+                   callback(error, null)
+                });
+    },
+
+
+    queryComments: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = galleryModel.commentDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    findComments: function (uuid) {
+
+        var comments = galleryModel.queryComments({field: "galleryPhotoUUID", operator: "eq", value: uuid});
+
+        return (comments);
     }
 };
