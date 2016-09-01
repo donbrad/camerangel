@@ -10,6 +10,8 @@ var groupModel = {
     _cloudClass : 'group',
     _ggClass : 'Group',
     groupsDS : null,
+    _fetched : false,
+    _initialSync : false,
 
     init : function() {
         groupModel.groupsDS = new kendo.data.DataSource({
@@ -18,7 +20,7 @@ var groupModel = {
                 typeName: 'group'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             }
         });
 
@@ -28,7 +30,13 @@ var groupModel = {
             //placesModel.syncPlaceListDS();
             var changedGroups = e.items;
 
-            if (e.action !== undefined) {
+            if (e.action === undefined) {
+                if (changedGroups !== undefined && !groupModel._initialSync) {
+
+                    groupModel._initialSync = true;
+
+                }
+            } else  {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
@@ -69,6 +77,18 @@ var groupModel = {
                 }
             }
 
+
+        });
+
+        groupModel.groupsDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!groupModel._fetched){
+                    groupModel._fetched = true;
+                }
+
+            }
 
         });
 
