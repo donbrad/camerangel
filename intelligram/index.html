@@ -960,6 +960,61 @@
 	</div>
 </div>
 
+<script type="text/x-kendo-template" id="sharePickerHeaderTemplate">
+	<div>
+		# if (data.value === 'phone') {#
+		Device
+		#} else if (data.value === 'new'){#
+		Invited
+		#} else if (data.value === 'member') {#
+		Connections
+		#} else if (data.value === 'unknown') {#
+		Chat Contact
+		#} else if (data.value === 'zapped') {#
+		Deleted
+		#}#
+	</div>
+</script>
+
+<script type="text/x-kendo-template" id="sharePicker-Template">
+	#
+	var name = data.name;
+	var icon = 'images/icon-contact-img.svg';
+	if (data.category === 'Chat') {
+		icon = 'images/icon-Chat.svg';
+	}
+
+
+	#
+	<div style="padding: 8px;">
+		<span> <img src=#=icon# height="20"/> </span> <span>#:name#</span>
+	</div>
+</script>
+
+
+
+<!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
+<div data-role="modalview" id="sharePickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="sharePickerView.onInit">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Share Via Intelligram</span>
+			<a data-click="sharePickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey"> <img src="images/close.svg" /></a>
+		</div>
+		<div>
+			<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="text" class="doubleAppendSearch" placeholder="" id="sharePickerView-search" />
+			</div>
+		</div>
+	</div>
+
+	<div style="width: 95%;">
+		<ul id="sharePickerView-listview" class="list-inline" ></ul>
+	</div>
+
+</div>
+
+
 <div data-role="modalview" id="modalview-locate-me" style="width: 90%; display: none;" class="appearance">
 	<div data-role="content">
 		<ul id="locate-me-list" data-role="listview" data-template="nearby-results-template" data-click="homeView.checkInToPlace">

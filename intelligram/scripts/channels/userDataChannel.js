@@ -38,7 +38,7 @@ var userDataChannel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField }
+                model: { id:  Everlive.idField }
             },
             sort : {
                 field : "time",
@@ -175,6 +175,9 @@ var userDataChannel = {
         var RSAKey = userModel.RSAKey;
         var decryptContent = cryptico.decrypt(block, RSAKey);
 
+        if (decryptContent.status === 'failure' || decryptContent.plaintext === undefined) {
+            return(null);
+        }
         return (decryptContent.plaintext);
     },
 
@@ -183,45 +186,21 @@ var userDataChannel = {
         if (userDataChannel.isDuplicateMessage(message.msgID))
             return;
 
+        if (message.Id === undefined) {
+            message.Id = uuid.v4();
+        }
+        userDataChannel.messagesDS.add(message);
+        userDataChannel.messagesDS.sync();
         if (deviceModel.isOnline()) {
             everlive.createOne(userDataChannel._cloudClass, message, function (error, data){
                 if (error !== null) {
                     ggError("Error creating private message " + JSON.stringify(error));
                 }
             });
-        } else {
-            userDataChannel.messagesDS.add(message);
         }
-        userDataChannel.messagesDS.sync();
-    },
-
-    archiveMessage : function (message) {
-        // remap channelUUID to recipient id
-        if (userDataChannel.isDuplicateMessage(message.msgID))
-            return;
-
-        message.channelUUID = message.recipient;
-
-     /*  var content = userDataChannel.encryptBlock(message.content);
-        message.content = content;*/
-
-
-       /* var data = userDataChannel.encryptBlock(JSON.stringify(message.data));
-        message.data = data;*/
-        //message.data = JSON.stringify(message.data);
-
-        userDataChannel.messagesDS.add(message);
-        userDataChannel.messagesDS.sync();
-
-       if (deviceModel.isOnline()) {
-           everlive.createOne(userDataChannel._cloudClass, message, function (error, data) {
-               if (error !== null) {
-                   ggError("Error archiving private message " + JSON.stringify(error));
-               }
-           });
-       }
 
     },
+
 
     updateTimeStamp : function () {
         userDataChannel.lastAccess = ggTime.currentTime();
@@ -318,7 +297,7 @@ var userDataChannel = {
 
 
     channelRead : function (m) {
-        
+
         privateChannel.receiveHandler(m);
 
     },

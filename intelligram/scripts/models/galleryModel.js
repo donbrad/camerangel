@@ -9,6 +9,11 @@ var galleryModel = {
     _version: 1,
     _cloudClass : 'gallery',
     _ggClass : 'Gallery',
+    _addPhoto : 'addphoto',           // add photo (from owner)
+    _removePhoto : 'removephoto',     // remove photo (from owner)
+    _deleteGallery : 'deletegallery',     // delete gallery (from owner)
+    _fetched : false,
+    _initialSync : false,
     galleryDS : null,
 
     init : function() {
@@ -29,7 +34,13 @@ var galleryModel = {
 
             var changedGalleries = e.items;
 
-            if (e.action !== undefined) {
+            if (e.action === undefined) {
+                if (changedGalleries !== undefined && !galleryModel._initialSync) {
+
+                    galleryModel._initialSync = true;
+
+                }
+            } else {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
@@ -71,6 +82,18 @@ var galleryModel = {
 
         });
 
+
+        galleryModel.galleryDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!galleryModel._fetched){
+                    galleryModel._fetched = true;
+                }
+
+            }
+
+        });
         galleryModel.galleryDS.fetch();
     },
 

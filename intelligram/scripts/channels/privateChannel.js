@@ -198,7 +198,7 @@ var privateChannel = {
         
         var content = null;
         
-        if (msg.content.cipher !== undefined) {
+        if (msg.contentBlob.cipher !== undefined) {
             content = userDataChannel.decryptBlock(msg.contentBlob.cipher);
         } else {
             content = userDataChannel.decryptBlock(msg.contentBlob);
@@ -208,7 +208,7 @@ var privateChannel = {
             content = "<p>Unable to decrypt messages...</p>"
         }
 
-        if (msg.data.cipher !== undefined) {
+        if (msg.dataBlob.cipher !== undefined) {
             data = userDataChannel.decryptBlock(msg.dataBlob.cipher);
         } else {
             data = userDataChannel.decryptBlock(msg.dataBlob);
@@ -217,14 +217,14 @@ var privateChannel = {
         if (data !== undefined) {
             data = JSON.parse(data);
         } else {
-            data = {};
+            data = {canCopy: false, photos: [], objects:[]};
         }
-        if (message.msgClass === undefined) {
-            message.msgClass = privateChannel._class;
+        if (msg.msgClass === undefined) {
+            msg.msgClass = privateChannel._class;
         }
 
-        if (message.msgType === undefined) {
-            message.msgType = privateChannel._message;
+        if (msg.msgType === undefined) {
+            msg.msgType = privateChannel._message;
         }
         
         var parsedMsg = {
@@ -254,8 +254,13 @@ var privateChannel = {
             msg.fromHistory = false;
         }
 
+
+        // The user is the recipient.  Set the channelUUID to the sender id
+        msg.channelUUID = msg.sender;
+
+
         // Archive the encrypted message
-        userDataChannel.archiveMessage(msg);
+        userDataChannel.addMessage(msg);
 
         var message = privateChannel.decryptMessage(msg);
         // Add the message to the archive
@@ -269,6 +274,7 @@ var privateChannel = {
         if (message.msgType === undefined) {
             message.msgType = privateChannel._message;
         }
+
 
         // If this message is for the current channel, then display immediately
         if (channelView._active && msg.channelUUID === channelView._channelUUID) {
@@ -338,7 +344,7 @@ var privateChannel = {
         encryptMessage = userDataChannel.encryptBlockWithKey(text, privateChannel.contactKey);
         
         if (data !== undefined && data !== null)
-            encryptData =userDataChannel.encryptBlockWithKey(JSON.stringify(data), privateChannel.contactKey);
+            encryptData = userDataChannel.encryptBlockWithKey(JSON.stringify(data), privateChannel.contactKey);
         else
             encryptData = null;
 
@@ -363,7 +369,7 @@ var privateChannel = {
                     'content-available' : 1
                 },
                 target: '#channel?channelUUID=' + privateChannel.userId,
-                channelUUID : privateChannel.userId,
+                channelUUID : userModel._user.userUUID,
                 senderId: userModel._user.userUUID,
                 isMessage: true,
                 isPrivate: true
@@ -374,7 +380,7 @@ var privateChannel = {
                     message: 'You have an new private message from ' + userModel._user.name,
                     target: '#channel?channelUUID=' + privateChannel.userId,
                     image: "icon",
-                    channelUUID : privateChannel.userId,
+                    channelUUID : userModel._user.userUUID,
                     senderId: userModel._user.userUUID,
                     isMessage: true,
                     isPrivate: true
@@ -397,7 +403,8 @@ var privateChannel = {
         if (!deviceModel.isOnline()) {
 
             privateChannel.deferredDS.add(message);
-            userDataChannel.archiveMessage(message);
+            message.channelUUID = message.recipient;
+            userDataChannel.addMessage(message);
 
             // Add the clear content to the message before passing to channelview
             message.data = contentData;
@@ -429,7 +436,11 @@ var privateChannel = {
                     message.msgType = privateChannel._message;
                 }
 
-                userDataChannel.archiveMessage(message);
+                // Encrypt the send message with this users key...
+                message.dataBlob = userDataChannel.encryptBlockWithKey(JSON.stringify(data), userModel._user.publicKey);
+                message.contentBlob = userDataChannel.encryptBlockWithKey(text, userModel._user.publicKey);
+                message.channelUUID = message.recipient;
+                userDataChannel.addMessage(message);
 
 
                 var parsedMsg = {

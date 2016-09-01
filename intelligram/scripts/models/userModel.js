@@ -246,6 +246,8 @@ var userModel = {
         userModel._user.set('username', user.Username);
         userModel._user.set('Username', user.Username);
         userModel._user.set('DisplayName', user.DisplayName);
+        userModel._user.set('accountCreateDate', user.CreatedAt);
+        console.log(JSON.stringify(user.CreatedAt));
         userModel._user.set('name', user.name);
         userModel._user.set('recoveryPassword', user.recoveryPassword);
         userModel._user.set('Email', user.Email);

@@ -166,6 +166,7 @@ var channelModel = {
                     appDataChannel.history();
                     userDataChannel.history();
                     channelsView.updateChannelListDS();
+                    contactModel.updateChatShares();
                 }
             } else {
                 switch (e.action) {
@@ -1340,10 +1341,13 @@ var channelModel = {
         dataSource.filter(cacheFilter);
 
         if (channel !== undefined) {
+
+            groupChannel.removeMember(channelUUID, userModel._user.userUUID);
+
             if (channel.isOwner) {
                 // If this user is the owner -- delete the channel map
-                // deleteParseObject("channelmap", 'channelUUID', channelUUID)
-                if (silent === undefined || silent === false) {
+
+               /* if (silent === undefined || silent === false) {
                     if (channel.isPrivate === false) {
                         // Send delete channel messages to all members
                         var members = channel.members;
@@ -1352,7 +1356,7 @@ var channelModel = {
                             appDataChannel.groupChannelDelete(members[i], channelUUID, channel.name, 'Chat "' + channel.name + 'has been deleted');
                         }
                     }
-                }
+                }*/
 
                 if (channel.isPlace) {
                     var placeUUID = channel.placeUUID;
@@ -1371,6 +1375,9 @@ var channelModel = {
                 }
 
 
+                dataSource.remove(channel);
+                dataSource.sync();
+
                 var Id = channel.Id;
 
                 if (Id !== undefined){
@@ -1378,15 +1385,15 @@ var channelModel = {
                         dataSource.remove(channel);
                     });
                 }
-                dataSource.remove(channel);
-                //deleteParseObject("channels", 'channelUUID', channelUUID);
-                //mobileNotify("Removed channel : " + channel.get('name'));
+
             } else {
 
                 if (window.navigator.simulator === undefined)
                     serverPush.unprovisionGroupChannel(channelUUID);
-                //updateParseObject("channels", 'channelUUID', channelUUID, 'isDeleted', true);
-                channel.set('isDeleted', true);
+
+                dataSource.remove(channel);
+                dataSource.sync();
+
             }
         }
     },

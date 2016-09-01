@@ -1243,8 +1243,13 @@ var modalPhotoView = {
     },
 
     sendViaGhostgrams : function (e) {
-        _preventDefault(e);
-        sendViaModal.openModal();
+        $("#modalPhotoView-PhotoActions").data("kendoMobileActionSheet").close();
+        modalPhotoView.closeModal();
+        var shareObj = {type: "photo", objectId : modalPhotoView._activePhoto.photoId};
+        sharePickerView.openModal(shareObj, function () {
+            $("#modalPhotoView").data("kendoMobileModalView").open();
+        });
+
     },
 
    sharePhoto: function (e) {
