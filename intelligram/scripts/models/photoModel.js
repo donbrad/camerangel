@@ -818,7 +818,7 @@ var photoModel = {
         if (photo.Id === undefined) {
             photo.Id = uuid.v4();
         }
-        
+
         photoModel.photosDS.add(photo);
         photoModel.photosDS.sync();
 
