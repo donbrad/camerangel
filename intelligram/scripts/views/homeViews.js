@@ -17,7 +17,6 @@ var homeView = {
     _needPhoneValidation : false,
     _needEmailValidation : false,
 
-
     openNotificationAction: function(e){
         // todo - wire notification action
     },
@@ -357,25 +356,48 @@ var homeView = {
             }
         });
 
-        // todo - wire account creation time
-        var emailValid = userModel._user.emailValidated;
-        // get account creation time
-        var accountCreateTime = moment().subtract(12, "d");
-        var timeLimit = moment(accountCreateTime).add(7, "d");
-        var today = moment();
+    },
 
-        var isBeforeLimit = moment(today).isBefore(timeLimit, "day");
-        if(isBeforeLimit){
+    updateVerifiedHeader: function () {
+
+        var isVerified = userModel._user.get("isVerified");
+
+        if(!isVerified){
+            $("#home-verify-div").removeClass("hidden");
+            // get account creation time
+            //var accountTime = userModel._user.get("accountCreateDate");
+            var accountTIme = "9/2/2016";
+            if(accountTime !== undefined){
+                var accountCreateTime = moment(accountTime);
+                var timeLimit = moment(accountTime).add(7, "days");
+                var today = moment();
+
+                var isBeforeLimit = today.isBefore(timeLimit, "day");
+
+                // has the 7 day period expired
+                if(isBeforeLimit){
+                    // still have time to verify
+                    var daysLeft = moment().diff(timeLimit, "days");
+
+                    if(daysLeft > 0){
+
+                    } else {
+
+                    }
+                } else {
+                    // time has expired
+                    $("#home-verify-div").removeClass("homeVerify-needed").addClass("homeVerify-pastDue");
+                    $("#home-verify-text").text("Account unverified");
+                }
+            }
 
         } else {
-
+            // User is verified
+            $("#home-verify-div").addClass("hidden");
         }
 
 
-
-
     },
-
 
     onTabSelect: function(e){
         var tab;
@@ -437,11 +459,14 @@ var homeView = {
 
         //everlive.syncCloud();
 
-        if (homeView._needPhoneValidation) {
-            verifyPhoneModal.sendAndOpenModal();
+        /*if (homeView._needPhoneValidation) {
+            verifyPhoneModal.openModal();
             // toggle off so user only sees every launch or login
             homeView._needPhoneValidation = false;
-        }
+        }*/
+
+        homeView.updateVerifiedHeader();
+
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();
     },
@@ -2343,7 +2368,8 @@ var verifyEmailModal = {
     }
 };
 var verifyPhoneModal = {
-    _maskedCode : null,
+    _maskedCode: null,
+
 
     onOpen: function (e) {
         _preventDefault(e);
@@ -2353,19 +2379,32 @@ var verifyPhoneModal = {
         _preventDefault(e);
     },
 
+    createMaskedCode: function(fullCode){
+        // masked code string
+        var code;
+        if(fullCode !== undefined){
+            code = fullCode;
+        } else {
+            code = userModel._user.get("phoneVerificationCode");
+        }
+
+        var codeStr = new String(code);
+        var codeMask = /(\d)(\d)(\d)(\d)(\d)(\d)/;
+        var newCodeStr = codeStr.replace(codeMask, "$1••••$6");
+        $("#verifyPhone-code").attr("placeholder", newCodeStr);
+
+        verifyPhoneModal._maskedCode = newCodeStr;
+
+    },
+
     sendAndOpenModal : function (e) {
 
         var phone = userModel._user.get('phone');
+
         sendPhoneVerificationCode(phone, function (result) {
             if (result.status === 'ok') {
                 userModel._user.set('phoneVerificationCode', result.code);
-                var code = result.code;
-
-                code[1] = code[2] = code[3] = code[4] = '?';
-
-                verifyPhoneModal._maskedCode = code;
-                $('#verifyPhone-maskedcode').text( verifyPhoneModal._maskedCode);
-
+                verifyPhoneModal.createMaskedCode(result.code);
                 verifyPhoneModal.openModal();
                if (window.navigator.simulator === undefined) {
 
@@ -2382,20 +2421,20 @@ var verifyPhoneModal = {
     },
 
     openModal: function (e) {
-
-        var code = userModel._user.phoneVerificationCode;
-
-        if (window.navigator.simulator !== true) {
-            $("#verifyPhone-code").mask("999999", {placeholder: " "})
+        if(verifyPhoneModal._maskedCode === null){
+            verifyPhoneModal.createMaskedCode();
         }
+
+
         $(".verify-device-img").velocity({opacity: 1, top: "2em"}, {delay: 1000, easing: [ 250, 15 ], duration: 1000});
         $("#verifyPhone-card").velocity({top: "0em"}, {delay: 1000, duration: 1000});
+
         $("#verifyPhone-code").on('keyup', function(e){
             var val = $(this).val();
             if(val.length > 4){
                 $("#modalview-verifyPhone-btn").text("Verify").addClass('btnSecondary').removeClass('btnIncomplete');
             } else {
-                $("#modalview-verifyPhone-btn").addClass('btnIncomplete').removeClass('btnSecondary').text("Cancel");
+                $("#modalview-verifyPhone-btn").addClass('btnIncomplete').removeClass('btnSecondary');
             }
         });
 
@@ -2409,10 +2448,13 @@ var verifyPhoneModal = {
     },
 
     sendCode : function (e) {
+        $("#verifyPhone-code").val("");
         var phone = userModel._user.get('phone');
         sendPhoneVerificationCode(phone, function (result) {
             if (result.status === 'ok') {
                 userModel._user.set('phoneVerificationCode', result.code);
+                verifyPhoneModal.createMaskedCode(result.code);
+
                 // display ui
                 $(".verifyPhone-code-sent").velocity("slideDown").velocity("slideUp", {delay: 4000});
             } else {
@@ -2438,6 +2480,7 @@ var verifyPhoneModal = {
                 mobileNotify("Your phone number is verified.  Thank You!");
                 var thisUser = userModel._user;
                 thisUser.set('phoneValidated', true);
+                homeView._needPhoneValidation = false;
                 var isVerified = thisUser.get('isVerified');
 
                 if (isVerified) {

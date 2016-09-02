@@ -128,6 +128,7 @@ var userModel = {
             userModel.hasAccount = false;
             //userModel.initialView = '#newuserhome';
         }
+
         
     },
 
@@ -242,12 +243,11 @@ var userModel = {
         if (publicKey === null  || publicKey === '' || privateKey === null || privateKey === '') {
             userModel.generateNewPrivateKey();
         }
-        
-        userModel._user.set('username', user.Username);
+
+
         userModel._user.set('Username', user.Username);
         userModel._user.set('DisplayName', user.DisplayName);
         userModel._user.set('accountCreateDate', user.CreatedAt);
-        console.log(JSON.stringify(user.CreatedAt));
         userModel._user.set('name', user.name);
         userModel._user.set('recoveryPassword', user.recoveryPassword);
         userModel._user.set('Email', user.Email);
@@ -349,6 +349,8 @@ var userModel = {
         if (!user.phoneValidated) {
             homeView._needPhoneValidation = true;
         }
+
+        userModel._user.set("phoneVerificationCode", user.phoneVerificationCode);
 
         APP.kendo.navigate('#home');
 
@@ -535,8 +537,6 @@ var userModel = {
 
         appDataChannel.history();
         userDataChannel.history();
-
-
 
     },
 

@@ -1607,7 +1607,7 @@ form p {
   padding-top: 1rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.4px;
-  font-size: 1.2em !important;
+  font-size: 1em !important;
 }
 .btnFull-modal :hover {
   background: transparent !important;
@@ -2263,6 +2263,13 @@ div.footer.km-footer {
 #home-verify-div p {
   margin-left: 0 !important;
   margin-right: 0 !important;
+}
+.homeVerify-needed {
+  background-color: #FFB74D !important;
+}
+.homeVerify-pastDue {
+  background-color: #E57373 !important;
+  color: #fff !important;
 }
 #verifyEmail-address {
   font-weight: 600;
