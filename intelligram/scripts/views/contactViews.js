@@ -18,7 +18,7 @@ var contactsView = {
     _viewInitialized : false,
     updateInterval: null,
     contactCache: [],
-    _activeTab: 0,
+    _activeView: 0,
 
     onInit : function (e) {
         //_preventDefault(e);
@@ -201,7 +201,9 @@ var contactsView = {
 
         }
 
-        $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
+
+        contactsView.onTabSelect(contactsView._activeView);
+      //  $("#contacts .gg_mainSearchInput").attr("placeholder", "Search contacts...");
 
         contactModel.buildContactList();
         //contactModel.updateContactListStatus(true);
@@ -213,7 +215,7 @@ var contactsView = {
         
 
         // set action button
-        ux.setAddTarget(null, "#contactImport", null);
+    //    ux.setAddTarget(null, "#contactImport", null);
     	//ux.showActionBtn(true, "#contacts", "#contactImport");
     	//ux.showActionBtnText("#contacts", "3em", "New Contact");
     	// Bind contact search
@@ -246,6 +248,7 @@ var contactsView = {
             $("#contacts-groups").addClass("hidden");
 
             ux.setSearchPlaceholder("Search Contacts...");
+            ux.setAddTarget(null, "#contactImport", null);
         } else {
             /*$("#home-tab-alert-img").attr("src", "images/icon-notify.svg");
             $("#home-tab-today-img").attr("src", "images/icon-today-alt.svg");*/
@@ -254,6 +257,7 @@ var contactsView = {
             $("#contacts-groups").removeClass("hidden");
 
             ux.setSearchPlaceholder("Search Groups...");
+            ux.setAddTarget(null, "#groupEditor?returnview=contacts", null);
         }
         contactsView._activeView = tab;
     },
@@ -2021,6 +2025,191 @@ var contactPickerView = {
         if (contactPickerView.callback !== null) {
             contactPickerView.callback(null);
         }
+    }
+
+
+};
+
+var groupEditView = {
+    _callback : null,
+    _returnview : null,
+    _mode : 'create',
+    activeObj : new kendo.data.ObservableObject(),
+    tags : null,
+    tagString: null,
+    memberDS:  new kendo.data.DataSource(),
+    candidateDS :  new kendo.data.DataSource(),
+
+    onInit: function (e) {
+
+
+        /*$("#galleryEdit-listview").kendoMobileListView({
+            dataSource: galleryEditView.photosDS,
+            template: $("#gallery-template").html(),
+            click : function (e) {
+                // _preventDefault(e);
+
+                var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+                modalPhotoView.openModal(photo);
+            }
+            /!*dataBound: function(e){
+             ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
+             }*!/
+        });
+
+
+        // track photo count on adds and deletes
+        galleryEditView.photosDS.bind("change", function (e) {
+            var changedPhotos = e.items;
+            var photo = e.items[0];
+
+            var photoCount = galleryEditView.photosDS.total();
+
+            galleryEditView.activeObj.set('photoCount'. photoCount);
+
+            if (e.action !== undefined) {
+                switch (e.action) {
+
+                    case "remove" :
+                        // delete from contact list
+                        break;
+
+                    case "add" :
+
+                        break;
+                }
+            }
+
+
+        });
+*/
+    },
+
+
+    initGroup: function () {
+        var that = groupEditView;
+
+        that.activeObj.uuid = uuid.v4();
+        that.activeObj.photoArray = [];
+        that.activeObj.set('photoCount', 0);
+        that.activeObj.title = '';
+        that.activeObj.description = '';
+        that.activeObj.tagString = '';
+        that.activeObj.tags = [];
+        that.activeObj.isShared = false;
+        that.activeObj.isOpen = false;
+        that.activeObj.isTracked = false;
+        that.activeObj.senderUUID = userModel._user.userUUID;
+        that.activeObj.senderName = userModel._user.name;
+        that.activeObj.timestamp = new Date();
+        that.activeObj.ggType = privateNoteModel._ggClass;
+        that.activeObj.noteType = privateNoteModel._gallery;
+        $('#galleryEditor-title').val("");
+        $('#galleryEditor-tagString').val("");
+        galleryEditView._mode = 'create';
+    },
+
+    onShow : function (e) {
+        //_preventDefault(e);
+
+        groupEditView.initGroup();
+
+        if (e.view.params.groupid !== undefined) {
+            groupEditView._gropuUUID = e.view.params.groupid;
+            var group = groupModel.findGroup(galleryEditView._galleryUUID);
+            groupEditView._mode = 'edit';
+
+            galleryEditView.activeObj = group;
+
+            $('#groupEditor-title').val(group.title);
+            $('#groupEditor-description').val(group.description);
+            $('#groupEditor-tagString').val(note.tagString);
+
+        } else {
+            groupEditView._groupUUID = null;
+            groupEditView._mode = 'create';
+        }
+
+
+        if (e.view.params.callback !== undefined) {
+            groupEditView._callback = e.view.params.callback;
+        } else {
+            groupEditView._callback = null;
+        }
+
+        if (e.view.params.returnview !== undefined) {
+            groupEditView._returnview = e.view.params.returnview;
+        } else {
+            groupEditView._returnview = null;
+        }
+
+
+    },
+
+    onHide: function (e) {
+
+
+    },
+
+    onDone : function (e) {
+        // _preventDefault(e);
+
+        if (groupEditView._returnview !== null) {
+            APP.kendo.navigate('#'+groupEditView._returnview);
+        } else {
+            APP.kendo.navigate('#:back');
+        }
+
+    },
+
+    addContact : function (e) {
+
+    },
+
+
+    onSave : function (e) {
+
+        groupEditView.saveGroup();
+        groupEditView.onDone();
+    },
+
+
+    saveGroup: function () {
+
+        var title = $('#galleryEditor-title').val();
+        var tagString =  $('galleryEditor-tagString').val();
+
+        var activeGallery = galleryEditView.activeObj;
+
+
+        if (galleryEditView._mode === 'edit') {
+
+            var gallery = privateNoteModel.findGallery(activeGallery.uuid);
+
+
+            gallery.set('title', title);
+            gallery.set('tagString', tagString);
+            gallery.set('tags', []); // todo: don integrate tag processing...
+            gallery.set('photoCount', activeGallery.photoCount);
+            gallery.set('photos', galleryEditView.photosDS.data());
+
+            gallery.set('timestamp',ggTime.currentTime());
+
+            privateNoteModel.updateNote(gallery);
+
+        } else {
+
+            activeGallery.title = title;
+            activeGallery.content = text;
+            activeGallery.tagString = tagString;
+            activeGallery.timestamp = ggTime.currentTime();
+            activeGallery.photos = galleryEditView.photosDS.data();
+
+            privateNoteModel.addNote(activeGallery);
+        }
+
+
     }
 
 

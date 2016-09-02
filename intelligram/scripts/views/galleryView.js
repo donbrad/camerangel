@@ -1608,8 +1608,8 @@ var galleryEditView = {
         galleryEditView.initGallery();
 
         if (e.view.params.galleryid !== undefined) {
-            galleryEditView._noteUUID = e.view.params.noteid;
-            var gallery = privateNoteModel.findGallery(galleryEditView._galleryUUID);
+            galleryEditView._galleryUUID = e.view.params.galleryid;
+            var gallery =  galleryModel.findGallery(galleryEditView._galleryUUID);
             galleryEditView._mode = 'edit';
             if (gallery.tags === undefined) {
                 gallery.tags = [];
@@ -1623,7 +1623,7 @@ var galleryEditView = {
             $('#galleryEditor-tagString').val(note.tagString);
 
         } else {
-            galleryEditView._noteUUID = null;
+            galleryEditView._galleryUUID = null;
             galleryEditView._mode = 'create';
         }
 
