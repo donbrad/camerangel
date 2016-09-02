@@ -9,9 +9,9 @@ var groupModel = {
     _version: 1,
     _cloudClass : 'group',
     _ggClass : 'Group',
-    groupsDS : null,
     _fetched : false,
     _initialSync : false,
+    groupsDS : null,
 
     init : function() {
         groupModel.groupsDS = new kendo.data.DataSource({
@@ -94,6 +94,25 @@ var groupModel = {
 
         groupModel.groupsDS.fetch();
     },
+
+    addGroup : function (group) {
+
+        if (group.Id === undefined) {
+            group.Id = group.uuid;
+        }
+        groupModel.groupsDS.add(group);
+        groupModel.groupsDS.sync();
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(groupModel._cloudClass, group, function (error, data){
+                if (error !== null) {
+                    ggError ("Error creating group " + JSON.stringify(error));
+
+                }
+            });
+        }
+    },
+
 
     sync : function () {
         groupModel.groupsDS.sync();

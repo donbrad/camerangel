@@ -1595,8 +1595,7 @@ var galleryEditView = {
         that.activeObj.senderUUID = userModel._user.userUUID;
         that.activeObj.senderName = userModel._user.name;
         that.activeObj.timestamp = new Date();
-        that.activeObj.ggType = privateNoteModel._ggClass;
-        that.activeObj.noteType = privateNoteModel._gallery;
+        that.activeObj.ggType = galleryModel._ggClass;
         $('#galleryEditor-title').val("");
         $('#galleryEditor-tagString').val("");
         galleryEditView._mode = 'create';

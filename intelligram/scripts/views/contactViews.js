@@ -1937,15 +1937,15 @@ var contactPickerView = {
         $("#contactPickerView-listview").kendoMobileListView({
             dataSource: contactPickerView.contactsDS,
             template: $("contactPicker-Template").html(),
-
+            fixedHeaders: true,
             click: function (e) {
                 var contact = e.dataItem;
                 if (contact.state === "Select") {
-                    contact.set('state', "Is Selected");
+                    contact.set('state', "Add to Group");
                 } else {
-                    contact.set('state', "Selected");
+                    contact.set('state', "Select");
                 }
-
+                $("#contactPickerView-listview").data("kendoMobileListView").refresh()
             }
 
         });
@@ -1954,7 +1954,7 @@ var contactPickerView = {
 
             var query = this.value;
             if (query.length > 0) {
-                contactModel.shareDS.filter( {"logic":"or",
+                contactPickerView.contactsDS.filter( {"logic":"or",
                     "filters":[
                         {
                             "field":"name",
@@ -1972,7 +1972,7 @@ var contactPickerView = {
 
 
             } else {
-                contactModel.shareDS.filter([]);
+                contactPickerView.contactsDS.filter([]);
             }
         });
     },
@@ -1991,6 +1991,29 @@ var contactPickerView = {
 
         }
 
+    },
+
+    queryContacts: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = contactPickerView.contactsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    getAddedContacts : function () {
+
+        var contacts = groupModel.queryContacts({field: "state", operator: "eq", value: "Add to Group"});
+
+        return (contacts);
     },
 
     openModal : function (contactsArray, callback) {
@@ -2022,8 +2045,9 @@ var contactPickerView = {
 
     onDone: function () {
         $("#contactPickerView").data("kendoMobileModalView").close();
+        var contacts = contactPickerView.getAddedContacts();
         if (contactPickerView.callback !== null) {
-            contactPickerView.callback(null);
+            contactPickerView.callback(contacts);
         }
     }
 
@@ -2037,89 +2061,118 @@ var groupEditView = {
     activeObj : new kendo.data.ObservableObject(),
     tags : null,
     tagString: null,
-    memberDS:  new kendo.data.DataSource(),
-    candidateDS :  new kendo.data.DataSource(),
+    memberDS:  new kendo.data.DataSource(),   // members of this group
+    candidateDS :  new kendo.data.DataSource(),  // All other contacts that aren't in this group
 
     onInit: function (e) {
 
 
-        /*$("#galleryEdit-listview").kendoMobileListView({
-            dataSource: galleryEditView.photosDS,
-            template: $("#gallery-template").html(),
+        $("#groupEdit-listview").kendoMobileListView({
+            dataSource: groupEditView.memberDS,
+            template: $("#groupEditor-Template").html(),
+
             click : function (e) {
                 // _preventDefault(e);
-
-                var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
-
-                modalPhotoView.openModal(photo);
-            }
-            /!*dataBound: function(e){
-             ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
-             }*!/
-        });
-
-
-        // track photo count on adds and deletes
-        galleryEditView.photosDS.bind("change", function (e) {
-            var changedPhotos = e.items;
-            var photo = e.items[0];
-
-            var photoCount = galleryEditView.photosDS.total();
-
-            galleryEditView.activeObj.set('photoCount'. photoCount);
-
-            if (e.action !== undefined) {
-                switch (e.action) {
-
-                    case "remove" :
-                        // delete from contact list
-                        break;
-
-                    case "add" :
-
-                        break;
-                }
+                var contact = e.dataItem;
             }
 
-
         });
-*/
+
     },
 
 
-    initGroup: function () {
+    initGroup: function (group) {
         var that = groupEditView;
 
-        that.activeObj.uuid = uuid.v4();
-        that.activeObj.photoArray = [];
-        that.activeObj.set('photoCount', 0);
-        that.activeObj.title = '';
-        that.activeObj.description = '';
-        that.activeObj.tagString = '';
-        that.activeObj.tags = [];
-        that.activeObj.isShared = false;
-        that.activeObj.isOpen = false;
-        that.activeObj.isTracked = false;
-        that.activeObj.senderUUID = userModel._user.userUUID;
-        that.activeObj.senderName = userModel._user.name;
-        that.activeObj.timestamp = new Date();
-        that.activeObj.ggType = privateNoteModel._ggClass;
-        that.activeObj.noteType = privateNoteModel._gallery;
-        $('#galleryEditor-title').val("");
-        $('#galleryEditor-tagString').val("");
-        galleryEditView._mode = 'create';
+        if (group === null) {
+            groupEditView._mode = 'create';
+
+            that.activeObj.ggType = groupModel._ggClass;
+
+            that.activeObj.uuid = uuid.v4();
+            that.activeObj.title = '';
+            that.activeObj.description = '';
+            that.activeObj.tagString = '';
+            that.activeObj.members = [];
+            that.activeObj.tags = [];
+            that.activeObj.isICE = false;
+            that.activeObj.isFamily = false;
+            that.activeObj.isNeighbor = false;
+            that.activeObj.canAccount = false;
+            that.activeObj.canMedical = false;
+        } else {
+            that.activeObj.uuid = group.uuid;
+            that.activeObj.title = group.title;
+            that.activeObj.description = group.description;
+            that.activeObj.members = group.members;
+            that.activeObj.tagString = group.tagString;
+            that.activeObj.tags= group.tags;
+            that.activeObj.isICE = group.isICE;
+            that.activeObj.isFamily = group.isFamily;
+            that.activeObj.isNeighbor = group.isNeighbor;
+            that.activeObj.canAccount = group.canAccount;
+            that.activeObj.canMedical = group.canMedical;
+        }
+
+        groupEditView.initData(that.activeObj.members);
+        $('#groupEditor-title').val(that.activeObj.title);
+        $('#groupEditor-tagString').val(that.activeObj.tagString);
+        $('#groupEditor-description').val(that.activeObj.description);
+
+    },
+
+    initData : function (members) {
+
+        var contacts = contactModel.contactsDS.data();
+
+        for (var i=0; i<contacts.length; i++) {
+            var contact = contacts[i];
+            contact.state = 'Select';
+        }
+
+        // Assume the candidates are all current contacts
+        groupEditView.candidateDS.data (contacts);
+        groupEditView.memberDS.data([]);
+        if (members.length > 0) {
+
+            // There are members in the group, need to add them and then subtract from candidatesDS
+            for (var i=0; i<members.length; i++) {
+                contact = contactModel.findContactByUUID(members[i]);
+
+                if (contact !== undefined && contact !== null) {
+                    groupEditView.memberDS.add(contact);
+                    groupEditView.candidateDS.remove(contact);
+                }
+
+            }
+        }
+    },
+
+    addContacts : function (contactArray) {
+
+    },
+
+    removeContact : function (contact) {
+
+    },
+
+    deleteMember : function (e) {
+
     },
 
     onShow : function (e) {
         //_preventDefault(e);
 
-        groupEditView.initGroup();
 
+        var group = null;
         if (e.view.params.groupid !== undefined) {
             groupEditView._gropuUUID = e.view.params.groupid;
-            var group = groupModel.findGroup(galleryEditView._galleryUUID);
             groupEditView._mode = 'edit';
-
+            group = groupModel.findGroup(galleryEditView._galleryUUID);
+            if (group === null) {
+                ggError("Couldn't find group!");
+                groupEditView.onDone();
+            }
             galleryEditView.activeObj = group;
 
             $('#groupEditor-title').val(group.title);
@@ -2144,6 +2197,7 @@ var groupEditView = {
             groupEditView._returnview = null;
         }
 
+        groupEditView.initGroup(group);
 
     },
 
@@ -2165,8 +2219,32 @@ var groupEditView = {
 
     addContact : function (e) {
 
+
+        contactPickerView.openModal(groupEditView.candidateDS.data(), function (newMemberArray) {
+            if (newMemberArray !== null) {
+                for (var i=0; i<newMemberArray.length; i++) {
+                    var member = newMemberArray[i];
+                    groupEditView.memberDS.add(member);
+                }
+            }
+
+        });
+
     },
 
+    upddateMemberArray : function () {
+        var len = groupEditView.membersDS.total();
+
+        var members = [];
+
+        if (len > 0) {
+            for (var i=0; i<len; i++) {
+                var member = groupEditView.membersDS.at(i);
+                members.push(member.uuid);
+            }
+        }
+        groupEditView.activeObj.members = members;
+    },
 
     onSave : function (e) {
 
@@ -2177,36 +2255,34 @@ var groupEditView = {
 
     saveGroup: function () {
 
-        var title = $('#galleryEditor-title').val();
-        var tagString =  $('galleryEditor-tagString').val();
+        var title = $('#groupEditor-title').val();
+        var description = $('#groupEditor-description').val();
+        var tagString =  $('groupEditor-tagString').val();
 
-        var activeGallery = galleryEditView.activeObj;
+        var activeGroup= groupEditView.activeObj;
 
 
         if (galleryEditView._mode === 'edit') {
 
-            var gallery = privateNoteModel.findGallery(activeGallery.uuid);
+            var group = groupModel.findGroup(activeGroup.uuid);
 
 
-            gallery.set('title', title);
-            gallery.set('tagString', tagString);
-            gallery.set('tags', []); // todo: don integrate tag processing...
-            gallery.set('photoCount', activeGallery.photoCount);
-            gallery.set('photos', galleryEditView.photosDS.data());
+            group.set('title', title);
+            group.set('tagString', tagString);
+            group.set('tags', []); // todo: don integrate tag processing...
+            group.set('description', description);
+            group.set('members',activeGroup.members);
 
-            gallery.set('timestamp',ggTime.currentTime());
 
-            privateNoteModel.updateNote(gallery);
+            groupModel.groupsDS.sync();
 
         } else {
 
-            activeGallery.title = title;
-            activeGallery.content = text;
-            activeGallery.tagString = tagString;
-            activeGallery.timestamp = ggTime.currentTime();
-            activeGallery.photos = galleryEditView.photosDS.data();
+            activeGroup.title = title;
+            activeGroup.tagString = tagString;
+            activeGroup.description = description;
 
-            privateNoteModel.addNote(activeGallery);
+            groupModel.addGroup(activeGroup);
         }
 
 
