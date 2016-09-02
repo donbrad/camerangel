@@ -1936,8 +1936,10 @@ var contactPickerView = {
 
         $("#contactPickerView-listview").kendoMobileListView({
             dataSource: contactPickerView.contactsDS,
-            template: $("contactPickerView-template").html(),
+            template: $("#contactPickerView-template").html(),
+            headerTemplate : '<span style="font-size: 0.9em; "> <strong>#:value# </strong> </span>',
             fixedHeaders: true,
+            autoBind: false,
             click: function (e) {
                 var contact = e.dataItem;
                 if (contact.state === "Select") {
@@ -2011,9 +2013,15 @@ var contactPickerView = {
 
     getAddedContacts : function () {
 
-        var contacts = groupModel.queryContacts({field: "state", operator: "eq", value: "Add to Group"});
+        var contacts = contactPickerView.queryContacts({field: "state", operator: "eq", value: "Add to Group"});
 
-        return (contacts);
+
+        if (contacts[0].items !== undefined) {
+            return (contacts[0].items);
+        } else {
+            return([]);
+        }
+
     },
 
     openModal : function (contactsArray, callback) {
@@ -2224,6 +2232,7 @@ var groupEditView = {
             if (newMemberArray !== null) {
                 for (var i=0; i<newMemberArray.length; i++) {
                     var member = newMemberArray[i];
+                    delete member.state;
                     groupEditView.memberDS.add(member);
                 }
             }

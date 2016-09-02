@@ -5983,7 +5983,7 @@
 
 <script type="text/x-kendo-template" id="contactPickerView-template">
 	#
-	var name = name.capitalize('title');
+	var name = data.name.capitalize('title');
 	var aliasString = "";
 	if (alias !== undefined && alias !== null) {
 	aliasString = " (" + alias + ")";
@@ -5992,7 +5992,6 @@
 	<div style="padding-left: 8px; padding-right: 8px; width: 90%;">
 		<span>#:name#<em>#:aliasString#</em></span>
 	</div>
-
 </script>
 
 <!-- Share Picker : select contacts, chats and groups -->
@@ -6006,12 +6005,13 @@
 		<div>
 			<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input type="text" class="doubleAppendSearch" placeholder="Find contacts & chats..." id="contactPickerView-search" />
+				<input type="text" class="doubleAppendSearch" placeholder="Find contacts..." id="contactPickerView-search" />
 			</div>
 		</div>
 	</div>
 
 	<div style="width: 100%;">
+
 		<ul id="contactPickerView-listview"  data-style="inset" ></ul>
 	</div>
 </div>
@@ -6020,8 +6020,8 @@
 	#
 	var name = data.name.capitalize('title');
 	var aliasString = "";
-	if (alias !== undefined && alias !== null) {
-	aliasString = " (" + alias + ")";
+	if (data.alias !== undefined && data.alias !== null) {
+	aliasString = " (" + data.alias + ")";
 	}
 	#
 	<div style="padding-left: 8px; padding-right: 8px; width: 90%;" data-uuid="#:uuid#">
@@ -6051,8 +6051,8 @@
 		<div data-bind="text: tagString"></div>
 	</div>
 
-
 	<div style="width: 100vw;">
+		<div style="text-align: center; font-size: 1.3em;">Group Members</div>
 		<ul id="groupEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
 
