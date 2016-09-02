@@ -2673,22 +2673,41 @@
  * contacts
  */-->
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
-	<a class="hidden btnClear topSearchReferral" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
-		<img src="images/contacts.svg" />
-		Search device for "<span id="btnSearchDeviceName"></span>"
-	</a>
-	<div id="contactListDiv" style="padding-bottom: 24px;">
-		<ul id="contacts-listview"></ul>
-		<!-- Only display if device permission is needed -->
-		<div id="deviceContactPermission" class="pad center hidden">
+	<div data-role="tabstrip" id="contacts-buttongroup" class="tabBar" data-select="contactsView.onTabSelect">
+		<a data-tab="0">
+			<img src="images/icon-contact.svg"  id="contacts-tab-alert-img" /> Contacts
+		</a>
+		<a data-tab="1">
+			<img src="images/group-icon.svg" id="contacts-tab-today-img" /> Groups
+		</a>
+	</div>
+	<div id="contacts-contacts">
+		<a class="hidden btnClear topSearchReferral" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
+			<img src="images/contacts.svg" />
+			Search device for "<span id="btnSearchDeviceName"></span>"
+		</a>
+		<div id="contactListDiv" style="padding-bottom: 24px;">
+			<ul id="contacts-listview"></ul>
+			<!-- Only display if device permission is needed -->
+			<div id="deviceContactPermission" class="pad center hidden">
 
-			<a class="btnClear">
-				<img src="images/import.svg" height="16" />
-				Find contacts on device
-			</a>
+				<a class="btnClear">
+					<img src="images/import.svg" height="16" />
+					Find contacts on device
+				</a>
+			</div>
+			<div class="emptyState hidden">
+				<img src="images/empty-contacts.svg" />
+			</div>
 		</div>
-		<div class="emptyState hidden">
-			<img src="images/empty-contacts.svg" />
+	</div>
+	<div id="contacts-groups">
+		<div id="groupListDiv" style="padding-bottom: 24px;">
+			<ul id="groups-listview"></ul>
+
+			<div class="emptyState hidden">
+				<img src="images/empty-contacts.svg" />
+			</div>
 		</div>
 	</div>
 </div>

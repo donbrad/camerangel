@@ -18,6 +18,7 @@ var contactsView = {
     _viewInitialized : false,
     updateInterval: null,
     contactCache: [],
+    _activeTab: 0,
 
     onInit : function (e) {
         //_preventDefault(e);
@@ -227,6 +228,34 @@ var contactsView = {
 
             }
         });
+    },
+
+    onTabSelect : function (e) {
+        var tab;
+        if(_.isNumber(e)){
+            tab = e;
+        } else {
+            tab = $(e.item[0]).data("tab");
+        }
+
+        if(tab == 0){
+           /* $("#home-tab-alert-img").attr("src", "images/icon-notify-light.svg");
+            $("#home-tab-today-img").attr("src", "images/icon-today.svg");*/
+
+            $("#contacts-contacts").removeClass("hidden");
+            $("#contacts-groups").addClass("hidden");
+
+            ux.setSearchPlaceholder("Search Contacts...");
+        } else {
+            /*$("#home-tab-alert-img").attr("src", "images/icon-notify.svg");
+            $("#home-tab-today-img").attr("src", "images/icon-today-alt.svg");*/
+
+            $("#contacts-contacts").addClass("hidden");
+            $("#contacts-groups").removeClass("hidden");
+
+            ux.setSearchPlaceholder("Search Groups...");
+        }
+        contactsView._activeView = tab;
     },
 
     // All update the ContactListDS item with current changes
