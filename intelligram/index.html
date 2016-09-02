@@ -5998,7 +5998,7 @@
 <div data-role="modalview" id="contactPickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="contactPickerView.onInit">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Contact Picker</span>
+			<span>Group Editor</span>
 			<a data-click="contactPickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
 			<a data-click="contactPickerView.onDone" data-role="button" class="btnClear-grey-sm" data-align="right" >Save</a>
 		</div>
@@ -6035,15 +6035,16 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>intelliGroup</span>
-			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
-			<a data-role="button"  data-click="groupEditView.addContact" data-align="right" class="btnClear">Add</a>
+			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
 		</div>
 	</div>
 
 	<div id="groupEditor-editTitleTag">
-		<input style="font-weight: 600;"  type="search" id="groupEditor-title" placeholder="Add Title...">
-		<input type="search" id="groupEditor-description" placeholder="Add Description...">
-		<input id="groupEditor-tagString"  placeholder="Click to add tags..." readonly>
+		<div ><span style="font-size: 1.3em;">Group Info</span> </div>
+
+		<input style="font-weight: 600;" id="groupEditor-title"  type="search"  data-bind="value: title" placeholder="Add Title...">
+		<input type="search" data-bind="value: description" placeholder="Add Description...">
+		<input id="groupEditor-tagString"  data-bind="value: tagString" placeholder="Click to add tags..." readonly>
 	</div>
 	<div id="groupEditor-viewTitleTag" class="hidden">
 		<div data-bind="text: title"></div>
@@ -6052,7 +6053,8 @@
 	</div>
 
 	<div style="width: 100vw;">
-		<div style="text-align: center; font-size: 1.3em;">Group Members</div>
+		<div ><span style="font-size: 1.3em; float:left;">Group Members</span> <span style="float:right;"><a data-role="button"  data-click="groupEditView.addContact"  class="btnClear-grey-sm">Edit</a></span></div>
+		<div style="clear:both;"></div>
 		<ul id="groupEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
 
@@ -6501,6 +6503,42 @@
 </script>
 
 
+<script type="text/x-kendo-template" id="groupsTemplate">
 
+	<div>
+		<div class="group-options">
+
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditGroup" data-group="#:uuid#">
+				<img src="images/option-edit.svg" height="18" />
+				<p class="chat-option-selection">Edit</p>
+			</a>
+			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteGroup" data-goup="#:uuid#">
+				<img src="images/icon-trash.svg" height="18" />
+				<p class="chat-option-selection"> Delete</p>
+			</a>
+		</div><!-- contact-options -->
+
+
+		<a class="groupListBox" data-contact="#:uuid#">
+
+			<div class="left listName">
+				<h4 class="textClamp">
+					#= data.title #
+				</h4>
+			</div>
+
+			<div class="left contact-status textClamp">
+				<p class="contactStatusMessage-sm">
+					#:data.description#
+				</p>
+
+				<p class="contactStatus-location">
+					#:data.tagString#
+				</p>
+			</div>
+
+		</a><!-- listBox -->
+	</div>
+</script>
 </body>
 </html>

@@ -113,6 +113,16 @@ var groupModel = {
         }
     },
 
+    deleteGroup : function (group) {
+        var uuid = group.uuid;
+
+        var group = groupModel.findGroup(uuid);
+
+        if (group !== undefined) {
+            groupModel.groupsDS.remove(group);
+            groupModel.groupsDS.sync();
+        }
+    },
 
     sync : function () {
         groupModel.groupsDS.sync();

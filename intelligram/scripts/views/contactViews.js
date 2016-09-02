@@ -127,6 +127,67 @@ var contactsView = {
         });
 
 
+        $("#groups-listview").kendoMobileListView({
+            dataSource: groupModel.groupsDS,
+            template: $("#groupsTemplate").html(),
+
+            dataBound: function(e){
+                ux.checkEmptyUIState(groupModel.groupsDS, "#groupListDiv >");
+            }
+
+        }).kendoTouch({
+            filter: ".groupListBox",
+            // filter: "div",
+            enableSwipe: true,
+            tap: function(e){
+                var groupId = null;
+
+                if (e.touch.currentTarget !== undefined) {
+                    // iOS and the previous versions
+                    groupId = e.touch.currentTarget.attributes['data-group'].value
+                } else {
+                    // Latest kendo versions for android
+                    groupId = e.touch.target[0].attributes['data-group'].value;
+                }
+
+
+                var group = contactModel.findContactByUUID(groupId);
+                if (group === undefined) {
+                    ggError('Group List: no matching Group found!');
+
+                    return;
+                }
+
+                // todo: don - wire up groupActionView modal
+                // groupActionView.openModal(group.uuid);
+
+
+            },
+            swipe: function(e) {
+                // Need to set current contact before exposing editing ux!
+                var selection = e.sender.events.currentTarget;
+
+                if(e.direction === "left" && !$(selection).hasClass("noSlide")){
+                    var otherOpenedLi = $(".contact-active");
+                    $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+
+                    if($(selection).hasClass("member") && $(window).width() < 375){
+                        $(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
+                    } else if ($(selection).hasClass("member"))  {
+                        $(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
+                    } else if($(window).width() < 375) {
+                        $(selection).velocity({translateX:"-85%"},{duration: "fast"}).addClass("contact-active");
+                    } else {
+                        $(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("contact-active");
+                    }
+                }
+                if (e.direction === "right" && $(selection).hasClass("contact-active")){
+                    $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+                }
+
+            }
+        });
+
 
         // Update search UX whenever search input content changes.
        // $("#contactSearchInput" ).on('input', contactsView.updateSearchUX);
@@ -311,6 +372,14 @@ var contactsView = {
         
         APP.kendo.navigate("#contactImport?query="+query);
 
+    },
+
+    doEditGroup : function (e) {
+        var groupId = e.button[0].attributes["data-group"].value;
+    },
+
+    doDeleteGroup : function (e) {
+        var groupId = e.button[0].attributes["data-group"].value;
     },
 
 
@@ -1928,6 +1997,9 @@ var sharePickerView = {
 
 var contactPickerView = {
     callback: null,
+    _inGroup : 'In Group',
+    _notInGroup : 'Select',
+
     contactsDS : new kendo.data.DataSource({
         group: {field: 'state'}
     }),
@@ -1943,7 +2015,7 @@ var contactPickerView = {
             click: function (e) {
                 var contact = e.dataItem;
                 if (contact.state === "Select") {
-                    contact.set('state', "Add to Group");
+                    contact.set('state', "In Group");
                 } else {
                     contact.set('state', "Select");
                 }
@@ -1983,13 +2055,22 @@ var contactPickerView = {
 
     },
 
-    buildContactsDS : function (array) {
+    buildContactsDS : function (members, candidates) {
 
-        for (var i=0; i<array.length; i++) {
-            var contact = array[i];
-            contact.state = "Select";
+
+        for (var i=0; i<members.length; i++) {
+            var contact = members[i];
+            contact.state = contactPickerView._inGroup;
 
             contactPickerView.contactsDS.add(contact);
+
+        }
+
+        for (var j=0; j<candidates.length; j++) {
+            var candidate = candidates[j];
+            candidate.state = contactPickerView._notInGroup;
+
+            contactPickerView.contactsDS.add(candidate);
 
         }
 
@@ -2013,10 +2094,10 @@ var contactPickerView = {
 
     getAddedContacts : function () {
 
-        var contacts = contactPickerView.queryContacts({field: "state", operator: "eq", value: "Add to Group"});
+        var contacts = contactPickerView.queryContacts({field: "state", operator: "eq", value: contactPickerView._inGroup});
 
 
-        if (contacts[0].items !== undefined) {
+        if (contacts!== null && contacts[0].items !== undefined) {
             return (contacts[0].items);
         } else {
             return([]);
@@ -2024,11 +2105,11 @@ var contactPickerView = {
 
     },
 
-    openModal : function (contactsArray, callback) {
+    openModal : function (memberArray, candidateArray,  callback) {
 
         contactPickerView.contactsDS.data([]);
 
-        contactPickerView.buildContactsDS(contactsArray);
+        contactPickerView.buildContactsDS(memberArray, candidateArray);
 
         contactPickerView.contactsDS.filter([]);
         // Reset search...
@@ -2066,7 +2147,7 @@ var groupEditView = {
     _callback : null,
     _returnview : null,
     _mode : 'create',
-    activeObj : new kendo.data.ObservableObject(),
+    activeObj : new kendo.data.ObservableObject({title: '', members:[]}),
     tags : null,
     tagString: null,
     memberDS:  new kendo.data.DataSource(),   // members of this group
@@ -2086,6 +2167,18 @@ var groupEditView = {
 
         });
 
+        $('#groupEditor-title').blur(groupEditView.isValid);
+    },
+
+
+    isValid : function () {
+        var that = groupEditView.activeObj;
+        // If there's a name and atleast 1 member - enable save
+        if (that.title.length > 2 && that.members.length > 0) {
+            $('#groupEditor-saveBtn').removeClass('hidden');
+        } else {
+            $('#groupEditor-saveBtn').addClass('hidden');
+        }
     },
 
 
@@ -2123,9 +2216,8 @@ var groupEditView = {
         }
 
         groupEditView.initData(that.activeObj.members);
-        $('#groupEditor-title').val(that.activeObj.title);
-        $('#groupEditor-tagString').val(that.activeObj.tagString);
-        $('#groupEditor-description').val(that.activeObj.description);
+
+        groupEditView.isValid();
 
     },
 
@@ -2133,19 +2225,14 @@ var groupEditView = {
 
         var contacts = contactModel.contactsDS.data();
 
-        for (var i=0; i<contacts.length; i++) {
-            var contact = contacts[i];
-            contact.state = 'Select';
-        }
-
         // Assume the candidates are all current contacts
         groupEditView.candidateDS.data (contacts);
         groupEditView.memberDS.data([]);
         if (members.length > 0) {
 
             // There are members in the group, need to add them and then subtract from candidatesDS
-            for (var i=0; i<members.length; i++) {
-                contact = contactModel.findContactByUUID(members[i]);
+            for (var j=0; j<members.length; j++) {
+                var contact = contactModel.findContactByUUID(members[j]);
 
                 if (contact !== undefined && contact !== null) {
                     groupEditView.memberDS.add(contact);
@@ -2183,9 +2270,6 @@ var groupEditView = {
             }
             galleryEditView.activeObj = group;
 
-            $('#groupEditor-title').val(group.title);
-            $('#groupEditor-description').val(group.description);
-            $('#groupEditor-tagString').val(note.tagString);
 
         } else {
             groupEditView._groupUUID = null;
@@ -2227,28 +2311,37 @@ var groupEditView = {
 
     addContact : function (e) {
 
+        var members = groupEditView.memberDS.data(), candidates = groupEditView.candidateDS.data();
+        contactPickerView.openModal(members, candidates, function (newMemberArray) {
 
-        contactPickerView.openModal(groupEditView.candidateDS.data(), function (newMemberArray) {
             if (newMemberArray !== null) {
+                groupEditView.memberDS.data([]);
                 for (var i=0; i<newMemberArray.length; i++) {
                     var member = newMemberArray[i];
                     delete member.state;
                     groupEditView.memberDS.add(member);
                 }
+
+                groupEditView.memberDS.sync();
+
+                groupEditView.updateMemberArray();
+
+                groupEditView.isValid();
+
             }
 
         });
 
     },
 
-    upddateMemberArray : function () {
-        var len = groupEditView.membersDS.total();
+    updateMemberArray : function () {
+        var len = groupEditView.memberDS.total();
 
         var members = [];
 
         if (len > 0) {
             for (var i=0; i<len; i++) {
-                var member = groupEditView.membersDS.at(i);
+                var member = groupEditView.memberDS.at(i);
                 members.push(member.uuid);
             }
         }
@@ -2264,9 +2357,6 @@ var groupEditView = {
 
     saveGroup: function () {
 
-        var title = $('#groupEditor-title').val();
-        var description = $('#groupEditor-description').val();
-        var tagString =  $('groupEditor-tagString').val();
 
         var activeGroup= groupEditView.activeObj;
 
@@ -2276,10 +2366,10 @@ var groupEditView = {
             var group = groupModel.findGroup(activeGroup.uuid);
 
 
-            group.set('title', title);
-            group.set('tagString', tagString);
+            group.set('title', activeGroup.title);
+            group.set('tagString', activeGroup.tagString);
             group.set('tags', []); // todo: don integrate tag processing...
-            group.set('description', description);
+            group.set('description', activeGroup.description);
             group.set('members',activeGroup.members);
 
 
@@ -2287,13 +2377,8 @@ var groupEditView = {
 
         } else {
 
-            activeGroup.title = title;
-            activeGroup.tagString = tagString;
-            activeGroup.description = description;
-
             groupModel.addGroup(activeGroup);
         }
-
 
     }
 
