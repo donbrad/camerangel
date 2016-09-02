@@ -1936,7 +1936,7 @@ var contactPickerView = {
 
         $("#contactPickerView-listview").kendoMobileListView({
             dataSource: contactPickerView.contactsDS,
-            template: $("contactPicker-Template").html(),
+            template: $("contactPickerView-template").html(),
             fixedHeaders: true,
             click: function (e) {
                 var contact = e.dataItem;
