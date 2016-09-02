@@ -136,7 +136,7 @@ var contactsView = {
             }
 
         }).kendoTouch({
-            filter: ".groupListBox",
+            filter: ".contactListBox",  // todo: change to groupListBox when jordan updates .less
             // filter: "div",
             enableSwipe: true,
             tap: function(e){
