@@ -146,7 +146,7 @@ var contactsView = {
         if (!contactsView._viewInitialized) {
             contactsView._viewInitialized = true;
          
-            $("#contactImport .gg_mainSearchInput").on('input', function() {
+            $("#contacts .gg_mainSearchInput").on('input', function() {
 
                 var query = this.value;
                 if (query.length > 0) {
@@ -1808,21 +1808,63 @@ var sharePickerView = {
             fixedHeaders: true,
             click: function (e) {
                 var share = e.dataItem;
+                sharePickerView.shareObject(share);
             },
             dataBound: function(e){
                // ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
             }
 
-        })
+        });
+
+
+    /*    $("#sharePickerView-search").kendoMultiSelect({
+            dataTextField: "name",
+            dataValueField: "objectId",
+            height: 400,
+            dataSource: contactModel.shareDS,
+        });*/
+
+
+        $("#sharePickerView-search").on('input', function() {
+
+            var query = this.value;
+            if (query.length > 0) {
+                contactModel.shareDS.filter( {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"alias",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+            } else {
+                contactModel.shareDS.filter([]);
+            }
+        });
     },
 
     onOpen : function () {
 
     },
 
+    shareObject : function (target) {
+
+    },
+
     openModal : function (shareObj, callback) {
 
         contactModel.updateAllShares();
+
+        sharePickerView._shareObj = shareObj;
+
+        // Reset search...
+        $("#sharePickerView-search").val('');
+        contactModel.shareDS.filter([]);
+
 
         sharePickerView.callback = null;
 
@@ -1844,6 +1886,111 @@ var sharePickerView = {
         $("#sharePickerView").data("kendoMobileModalView").close();
         if (sharePickerView.callback !== null) {
             sharePickerView.callback(null);
+        }
+    }
+
+
+};
+
+
+var contactPickerView = {
+    callback: null,
+    contactsDS : new kendo.data.DataSource({
+        group: {field: 'state'}
+    }),
+
+    onInit: function () {
+
+        $("#contactPickerView-listview").kendoMobileListView({
+            dataSource: contactPickerView.contactsDS,
+            template: $("contactPicker-Template").html(),
+
+            click: function (e) {
+                var contact = e.dataItem;
+                if (contact.state === "Select") {
+                    contact.set('state', "Is Selected");
+                } else {
+                    contact.set('state', "Selected");
+                }
+
+            }
+
+        });
+
+        $("#contactPickerView-search").on('input', function() {
+
+            var query = this.value;
+            if (query.length > 0) {
+                contactModel.shareDS.filter( {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"alias",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"groups",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+
+            } else {
+                contactModel.shareDS.filter([]);
+            }
+        });
+    },
+
+    onOpen : function () {
+
+    },
+
+    buildContactsDS : function (array) {
+
+        for (var i=0; i<array.length; i++) {
+            var contact = array[i];
+            contact.state = "Select";
+
+            contactPickerView.contactsDS.add(contact);
+
+        }
+
+    },
+
+    openModal : function (contactsArray, callback) {
+
+        contactPickerView.contactsDS.data([]);
+
+        contactPickerView.buildContactsDS(contactsArray);
+
+        contactPickerView.contactsDS.filter([]);
+        // Reset search...
+        $("#contactPickerView-search").val('');
+
+
+        contactPickerView.callback = null;
+
+        if (callback !== undefined) {
+            contactPickerView.callback = callback;
+        }
+
+        $("#contactPickerView").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#contactPickerView").data("kendoMobileModalView").close();
+        if (contactPickerView.callback !== null) {
+            contactPickerView.callback(null);
+        }
+    },
+
+    onDone: function () {
+        $("#contactPickerView").data("kendoMobileModalView").close();
+        if (contactPickerView.callback !== null) {
+            contactPickerView.callback(null);
         }
     }
 

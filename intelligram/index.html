@@ -986,22 +986,25 @@
 
 <script type="text/x-kendo-template" id="sharePicker-Template">
 	#
-	var name = data.name;
+	var name = data.name.capitalize('title');
 	var icon = 'images/icon-contact-img.svg';
 	if (data.category === 'Chat') {
 		icon = 'images/icon-Chat.svg';
 	}
-
+	var aliasString = "";
+	if (alias !== undefined && alias !== null) {
+		aliasString = " (" + alias + ")";
+	}
 
 	#
-	<div style="padding: 8px;">
-		<span> <img src=#=icon# height="20"/> </span> <span>#:name#</span>
+	<div style="padding-left: 8px; padding-right: 8px; width: 90%">
+		<span> <img src=#=icon# height="20"/> </span> <span>#:name# <em>#:aliasString#</em></span>
 	</div>
 </script>
 
 
 
-<!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
+<!-- Share Picker : select contacts, chats and groups -->
 <div data-role="modalview" id="sharePickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="sharePickerView.onInit">
 	<div data-role="header">
 		<div data-role="navbar">
@@ -1011,15 +1014,17 @@
 		<div>
 			<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input type="text" class="doubleAppendSearch" placeholder="" id="sharePickerView-search" />
+				<input type="text" class="doubleAppendSearch" placeholder="Find contacts & chats..." id="sharePickerView-search" />
 			</div>
 		</div>
 	</div>
 
-	<div style="width: 95%;">
-		<ul id="sharePickerView-listview" class="list-inline" ></ul>
+	<div style="width: 100%;">
+		<ul id="sharePickerView-listview"  data-style="inset" ></ul>
+		<div class="emptyState hidden">
+			<img src="images/empty-contacts.svg" />
+		</div>
 	</div>
-
 </div>
 
 
@@ -4485,7 +4490,7 @@
 		<li>
 			<a data-action="modalPhotoView.sendViaGhostgrams">
 				<img src="images/action-gg.svg" class="icon-action" />
-				Send via Intelligram
+				Share via Intelligram
 			</a>
 		</li>
 		<li>
@@ -5956,6 +5961,168 @@
 			<a data-role="button" class="btnClear"  data-click="everlive.clearLocalStorage">Clear Local Storage</a>
 		</div>
 </div>
+
+<script type="text/x-kendo-template" id="contactPickerTemplate">
+	#
+	var classNames;
+	var name = data.name;
+	var alias = data.alias;
+	var group = data.group;
+
+	var primaryName = ux.returnUXPrimaryName(name, alias);
+	var secondaryName = ux.returnAliasName(name, alias);
+	if  (data.identicon === undefined || data.identicon === null) {
+	data.identicon = contactModel.createIdenticon(data.uuid);
+	}
+	var photoUrl = data.identicon;
+
+	if (data.photo !== undefined && data.photo !== null) {
+	photoUrl = data.photo;
+	}
+	#
+	<div>
+
+		# if(data.category === 'member') {#
+		# classNames = "contactListBox member" #
+		#} else if(data.category === 'new'){#
+		# classNames = "contactListBox" #
+		#} else {#
+		# classNames = "contactListBox noSlide" #
+		#}#
+		<a class="#: classNames #" data-contact="#:uuid#">
+			#if (data.category === 'member') {#
+			<div class="left listPhoto">
+				<div class="statusContactList">
+					#if (data.isAvailable !== undefined && data.isAvailable) { #
+					<img class="circle-img-md" src="#:photoUrl#" />
+					<img src="images/status-available.svg" class="statusContactList-icon" />
+					#} else {#
+					<img class="circle-img-md" src="#:photoUrl#" />
+					<img src="images/status-away.svg" class="statusContactList-icon" />
+					#}#
+
+					# if (data.isBlocked) {#
+					<div class="left">
+						<span class="helper helper-sm">Blocked</span>
+					</div>
+					#}#
+				</div>
+			</div><!-- left -->
+
+			<div class="left listName">
+				<h4 class="textClamp">
+					#= primaryName #
+					#if (data.phoneValidated){#
+					<img src="images/user-verified.svg" class="user-status-icon" />
+					#}#
+					<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
+
+					#if(data.group !== "" && data.group !== null){#
+					<span class="contact-group">#: data.group #</span>
+					#}#
+				</h4>
+			</div>
+
+
+			<div class="clearfix"></div>
+			#} else if(data.category === 'new'){#
+			<div class="left listPhoto">
+				<div class="statusContactList">
+					<img class="circle-img-md" src="#:photoUrl#" />
+				</div>
+			</div><!-- left -->
+			<div class="left listName">
+				<h4 class="textClamp">
+					#= primaryName #
+				</h4>
+			</div>
+			<div class="left contact-status">
+				<p class="left contactStatusMessage-sm">Invite Sent</p>
+			</div>
+			#} else {#
+			<div class="left listPhoto">
+				<div class="statusContactList">
+					<img class="circle-img-md" src="#:photoUrl#" />
+				</div>
+			</div><!-- left -->
+			<div class="left listName">
+				<h4 class="textClamp">
+					#: data.name #
+					#if (data.phoneValidated){#
+					<img src="images/user-verified.svg" class="user-status-icon" />
+					#}#
+				</h4>
+			</div>
+
+			<div class="left contact-status">
+				<p class="left contactStatusMessage-sm">
+					# if (data.category === 'unknown' ) { #
+					New Contact - Tap to Connect!
+					# }  else { #
+					Deleted Contact - Tap to Restore !
+					#} #
+				</p>
+			</div>
+			#}#
+		</a><!-- listBox -->
+	</div>
+</script>
+<!-- Share Picker : select contacts, chats and groups -->
+<div data-role="modalview" id="contactPickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="contactPickerView.onInit">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Contact Picker</span>
+			<a data-click="contactPickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey"> <img src="images/close.svg" /></a>
+			<a data-click="contactPickerView.onDone" data-role="button" data-align="rigth" >Save </a>
+		</div>
+		<div>
+			<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="text" class="doubleAppendSearch" placeholder="Find contacts & chats..." id="contactPickerView-search" />
+			</div>
+		</div>
+	</div>
+
+	<div style="width: 100%;">
+		<ul id="contactPickerView-listview"  data-style="inset" ></ul>
+		<div class="emptyState hidden">
+			<img src="images/empty-contacts.svg" />
+		</div>
+	</div>
+</div>
+
+
+<div data-role="view" data-title="Group Editor" id="groupEditor" data-model="groupEditView.activeObj" data-init="groupEditView.onInit" data-show="groupEditView.onShow"  data-hide="groupEditView.onHide"   style="width:100%; height: 100%; display: none;" >
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>intelliGroup</span>
+			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
+			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear">Add</a>
+		</div>
+	</div>
+
+	<div id="groupEditor-editTitleTag">
+		<input style="font-weight: 600;"  type="search" id="groupEditor-title" placeholder="Add Title...">
+		<input style="font-weight: 600;"  type="search" id="groupEditor-description" placeholder="Add Title...">
+		<input id="groupEditor-tagString"  placeholder="Click to add tags..." readonly>
+	</div>
+	<div id="groupEditor-viewTitleTag" class="hidden">
+		<div data-bind="text: title"></div>
+		<div data-bind="text: description"></div>
+		<div data-bind="text: tagString"></div>
+	</div>
+
+
+	<div style="width: 100vw;">
+		<ul id="groupEdit-listview" class="list-inline" data-role="listview"></ul>
+	</div>
+
+	<div class="footer" data-role="footer">
+		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="groupEditView.onSave" data-align="right" id="groupEditor-saveBtn">Save</a>
+	</div>
+
+</div>
+
 
 <!--/*
  * Private Notes
