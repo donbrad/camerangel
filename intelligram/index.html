@@ -986,22 +986,25 @@
 
 <script type="text/x-kendo-template" id="sharePicker-Template">
 	#
-	var name = data.name;
+	var name = data.name.capitalize('title');
 	var icon = 'images/icon-contact-img.svg';
 	if (data.category === 'Chat') {
 		icon = 'images/icon-Chat.svg';
 	}
-
+	var aliasString = "";
+	if (alias !== undefined && alias !== null) {
+		aliasString = " (" + alias + ")";
+	}
 
 	#
-	<div style="padding: 8px;">
-		<span> <img src=#=icon# height="20"/> </span> <span>#:name#</span>
+	<div style="padding-left: 8px; padding-right: 8px; width: 90%">
+		<span> <img src=#=icon# height="20"/> </span> <span>#:name# <em>#:aliasString#</em></span>
 	</div>
 </script>
 
 
 
-<!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
+<!-- Share Picker : select contacts, chats and groups -->
 <div data-role="modalview" id="sharePickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="sharePickerView.onInit">
 	<div data-role="header">
 		<div data-role="navbar">
@@ -1011,15 +1014,17 @@
 		<div>
 			<div class="appendSearch">
 				<span class="searchIcon"><img src="images/search.svg" /></span>
-				<input type="text" class="doubleAppendSearch" placeholder="" id="sharePickerView-search" />
+				<input type="text" class="doubleAppendSearch" placeholder="Find contacts & chats..." id="sharePickerView-search" />
 			</div>
 		</div>
 	</div>
 
-	<div style="width: 95%;">
-		<ul id="sharePickerView-listview" class="list-inline" ></ul>
+	<div style="width: 100%;">
+		<ul id="sharePickerView-listview"  data-style="inset" ></ul>
+		<div class="emptyState hidden">
+			<img src="images/empty-contacts.svg" />
+		</div>
 	</div>
-
 </div>
 
 
@@ -2668,22 +2673,41 @@
  * contacts
  */-->
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
-	<a class="hidden btnClear topSearchReferral" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
-		<img src="images/contacts.svg" />
-		Search device for "<span id="btnSearchDeviceName"></span>"
-	</a>
-	<div id="contactListDiv" style="padding-bottom: 24px;">
-		<ul id="contacts-listview"></ul>
-		<!-- Only display if device permission is needed -->
-		<div id="deviceContactPermission" class="pad center hidden">
+	<div data-role="tabstrip" id="contacts-buttongroup" class="tabBar" data-select="contactsView.onTabSelect">
+		<a data-tab="0">
+			<img src="images/icon-contact.svg"  id="contacts-tab-alert-img" /> Contacts
+		</a>
+		<a data-tab="1">
+			<img src="images/group-icon.svg" id="contacts-tab-today-img" /> Groups
+		</a>
+	</div>
+	<div id="contacts-contacts">
+		<a class="hidden btnClear topSearchReferral" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
+			<img src="images/contacts.svg" />
+			Search device for "<span id="btnSearchDeviceName"></span>"
+		</a>
+		<div id="contactListDiv" style="padding-bottom: 24px;">
+			<ul id="contacts-listview"></ul>
+			<!-- Only display if device permission is needed -->
+			<div id="deviceContactPermission" class="pad center hidden">
 
-			<a class="btnClear">
-				<img src="images/import.svg" height="16" />
-				Find contacts on device
-			</a>
+				<a class="btnClear">
+					<img src="images/import.svg" height="16" />
+					Find contacts on device
+				</a>
+			</div>
+			<div class="emptyState hidden">
+				<img src="images/empty-contacts.svg" />
+			</div>
 		</div>
-		<div class="emptyState hidden">
-			<img src="images/empty-contacts.svg" />
+	</div>
+	<div id="contacts-groups">
+		<div id="groupListDiv" style="padding-bottom: 24px;">
+			<ul id="groups-listview"></ul>
+
+			<div class="emptyState hidden">
+				<img src="images/empty-contacts.svg" />
+			</div>
 		</div>
 	</div>
 </div>
@@ -4485,7 +4509,7 @@
 		<li>
 			<a data-action="modalPhotoView.sendViaGhostgrams">
 				<img src="images/action-gg.svg" class="icon-action" />
-				Send via Intelligram
+				Share via Intelligram
 			</a>
 		</li>
 		<li>
@@ -5957,6 +5981,90 @@
 		</div>
 </div>
 
+<script type="text/x-kendo-template" id="contactPickerView-template">
+	#
+	var name = data.name.capitalize('title');
+	var aliasString = "";
+	if (alias !== undefined && alias !== null) {
+	aliasString = " (" + alias + ")";
+	}
+	#
+	<div style="padding-left: 8px; padding-right: 8px; width: 90%;">
+		<span>#:name#<em>#:aliasString#</em></span>
+	</div>
+</script>
+
+<!-- Share Picker : select contacts, chats and groups -->
+<div data-role="modalview" id="contactPickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="contactPickerView.onInit">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Group Editor</span>
+			<a data-click="contactPickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
+			<a data-click="contactPickerView.onDone" data-role="button" class="btnClear-grey-sm" data-align="right" >Save</a>
+		</div>
+		<div>
+			<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="text" class="doubleAppendSearch" placeholder="Find contacts..." id="contactPickerView-search" />
+			</div>
+		</div>
+	</div>
+
+	<div style="width: 100%;">
+
+		<ul id="contactPickerView-listview"  data-style="inset" ></ul>
+	</div>
+</div>
+
+<script type="text/x-kendo-template" id="groupEditor-Template">
+	#
+	var name = data.name.capitalize('title');
+	var aliasString = "";
+	if (data.alias !== undefined && data.alias !== null) {
+	aliasString = " (" + data.alias + ")";
+	}
+	#
+	<div style="padding-left: 8px; padding-right: 8px; width: 90%;" data-uuid="#:uuid#">
+		 <span>#:name#<em>#:aliasString#</em></span> <span style="float:right"><a data-role="button" class="btnClear-grey-sm" data-click="groupEditView.deleteMember">Delete</a></span>
+		<div style="clear:both;"></div>
+	</div>
+
+</script>
+
+<div data-role="view" data-title="Group Editor" id="groupEditor" data-model="groupEditView.activeObj" data-init="groupEditView.onInit" data-show="groupEditView.onShow"  data-hide="groupEditView.onHide"   style="width:100%; height: 100%; display: none;" >
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>intelliGroup</span>
+			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
+		</div>
+	</div>
+
+	<div id="groupEditor-editTitleTag">
+		<div ><span style="font-size: 1.3em;">Group Info</span> </div>
+
+		<input style="font-weight: 600;" id="groupEditor-title"  type="search"  data-bind="value: title" placeholder="Add Title...">
+		<input type="search" data-bind="value: description" placeholder="Add Description...">
+		<input id="groupEditor-tagString"  data-bind="value: tagString" placeholder="Click to add tags..." readonly>
+	</div>
+	<div id="groupEditor-viewTitleTag" class="hidden">
+		<div data-bind="text: title"></div>
+		<div data-bind="text: description"></div>
+		<div data-bind="text: tagString"></div>
+	</div>
+
+	<div style="width: 100vw;">
+		<div ><span style="font-size: 1.3em; float:left;">Group Members</span> <span style="float:right;"><a data-role="button"  data-click="groupEditView.addContact"  class="btnClear-grey-sm">Edit</a></span></div>
+		<div style="clear:both;"></div>
+		<ul id="groupEdit-listview" class="list-inline" data-role="listview"></ul>
+	</div>
+
+	<div class="footer" data-role="footer">
+		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="groupEditView.onSave" data-align="right" id="groupEditor-saveBtn">Save</a>
+	</div>
+
+</div>
+
+
 <!--/*
  * Private Notes
  */-->
@@ -6395,6 +6503,42 @@
 </script>
 
 
+<script type="text/x-kendo-template" id="groupsTemplate">
 
+	<div>
+		<div class="group-options">
+
+			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditGroup" data-group="#:uuid#">
+				<img src="images/option-edit.svg" height="18" />
+				<p class="chat-option-selection">Edit</p>
+			</a>
+			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteGroup" data-goup="#:uuid#">
+				<img src="images/icon-trash.svg" height="18" />
+				<p class="chat-option-selection"> Delete</p>
+			</a>
+		</div><!-- contact-options -->
+
+
+		<a class="groupListBox" data-contact="#:uuid#">
+
+			<div class="left listName">
+				<h4 class="textClamp">
+					#= data.title #
+				</h4>
+			</div>
+
+			<div class="left contact-status textClamp">
+				<p class="contactStatusMessage-sm">
+					#:data.description#
+				</p>
+
+				<p class="contactStatus-location">
+					#:data.tagString#
+				</p>
+			</div>
+
+		</a><!-- listBox -->
+	</div>
+</script>
 </body>
 </html>

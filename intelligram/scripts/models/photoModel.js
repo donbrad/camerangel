@@ -825,7 +825,7 @@ var photoModel = {
         if (deviceModel.isOnline()) {
             everlive.createOne(photoModel._cloudClass, photo, function (error, data){
                 if (error !== null) {
-                    mobileNotify ("Error creating photo " + JSON.stringify(error));
+                    ggError ("Error creating photo " + JSON.stringify(error));
 
                 }
             });

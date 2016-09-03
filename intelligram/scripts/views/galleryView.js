@@ -1595,8 +1595,7 @@ var galleryEditView = {
         that.activeObj.senderUUID = userModel._user.userUUID;
         that.activeObj.senderName = userModel._user.name;
         that.activeObj.timestamp = new Date();
-        that.activeObj.ggType = privateNoteModel._ggClass;
-        that.activeObj.noteType = privateNoteModel._gallery;
+        that.activeObj.ggType = galleryModel._ggClass;
         $('#galleryEditor-title').val("");
         $('#galleryEditor-tagString').val("");
         galleryEditView._mode = 'create';
@@ -1608,8 +1607,8 @@ var galleryEditView = {
         galleryEditView.initGallery();
 
         if (e.view.params.galleryid !== undefined) {
-            galleryEditView._noteUUID = e.view.params.noteid;
-            var gallery = privateNoteModel.findGallery(galleryEditView._galleryUUID);
+            galleryEditView._galleryUUID = e.view.params.galleryid;
+            var gallery =  galleryModel.findGallery(galleryEditView._galleryUUID);
             galleryEditView._mode = 'edit';
             if (gallery.tags === undefined) {
                 gallery.tags = [];
@@ -1623,7 +1622,7 @@ var galleryEditView = {
             $('#galleryEditor-tagString').val(note.tagString);
 
         } else {
-            galleryEditView._noteUUID = null;
+            galleryEditView._galleryUUID = null;
             galleryEditView._mode = 'create';
         }
 
