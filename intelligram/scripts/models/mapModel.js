@@ -12,6 +12,7 @@ var mapModel = {
 
     currentAddress : null,   // Current physical address - location
     currentAddressString : null,
+    currentStreet : null,
     currentCity: null,
     currentState : null,
     currentZipcode : null,
@@ -290,6 +291,16 @@ var mapModel = {
 
     },
 
+    getCurrentAddressString : function (address) {
+        var string = null;
+        if (address.streetNumber !== null && address.street !== null)
+            string = address.streetNumber + ' ' + address.street +  ", " + address.city + ", " + address.state;
+        else
+           string =  address.city + ", " + address.state + address.zipcode;
+
+        return (string);
+    },
+
     getCurrentAddress : function (callback) {
 
         mapModel.getCurrentPosition (true, function(lat, lng) {
@@ -302,6 +313,7 @@ var mapModel = {
                     if (results !== null) {
                         var address = mapModel._updateAddress(results[0].address_components);
                         mapModel.currentAddress = address;
+                        mapModel.currentStreet = address.streetNumber + ' ' + address.street;
                         mapModel.currentCity = address.city;
                         mapModel.currentState = address.state;
                         mapModel.currentZipcode = address.zipcode;

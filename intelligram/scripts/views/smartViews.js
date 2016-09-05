@@ -2542,7 +2542,7 @@ var smartTripView = {
             $("#smartTripView-step-2, #smartTripView-step-3").css({"opacity": 0, "z-index": 0});
             $("input[name=arrival]").prop("checked", false);
             $("#smartTripView-departure-time, #smartTripView-arrival-time").addClass('hidden');
-
+            $('.smartTrip-currentLocation').removeClass('hidden');
             $(".smartTripView-origin-box").addClass("hidden");
         });
 
@@ -3294,7 +3294,7 @@ var smartTripView = {
             place.lat = mapModel.lat;
             place.lng = mapModel.lng;
             place.name = null;
-            place.address = mapModel.currentAddressString;
+            place.address = mapModel.getCurrentAddressString(address);
             place.googleId = null;
             place.placeUUID = null;
 
