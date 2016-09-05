@@ -2721,7 +2721,7 @@ var smartTripView = {
                     smartTripView.activeObject.set("draftMode", false);
                     smartTripView.activeObject.set("tripTimeType", smartTripView._timeDeparture);
                     smartTripView.processDepartureTime();
-                    
+
                     $("#smartTripView-routeTimeBtn").removeClass('hidden');
                     $("#smartTripView-addToCalendarLi").removeClass('hidden');
                     break;
@@ -2846,8 +2846,10 @@ var smartTripView = {
 
             if(tripObj.tripTimeType !== 'flexible'){
                 $(".tripTime").removeClass("hidden");
+                $(".pending").addClass("hidden");
             } else {
                 $(".tripTime").addClass("hidden");
+                $(".pending").removeClass("hidden");
             }
         }
     },
