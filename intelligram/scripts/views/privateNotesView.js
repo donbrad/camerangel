@@ -848,7 +848,6 @@ var privateNotesView = {
 
     noteEvent : function (e) {
         _preventDefault(e);
-        channelView.messageMenuTag();
         smartEventView.openModal(null, function (event) {
 
             if (event !== null) {

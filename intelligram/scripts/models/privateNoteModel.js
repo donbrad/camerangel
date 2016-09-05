@@ -33,7 +33,7 @@ var privateNoteModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "time",
@@ -93,6 +93,10 @@ var privateNoteModel = {
     },
     
     addNote : function (note) {
+
+        if (note.Id === undefined) {
+            note.Id = uuid.v4();
+        }
 
         privateNoteModel.notesDS.add(note);
         privateNoteModel.notesDS.sync();
