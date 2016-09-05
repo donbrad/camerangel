@@ -23,6 +23,69 @@ var galleryView = {
     _viewInitialized : false,
     _activeView: 0,
     scroller: null,
+    // todo - delete, testing ui
+    notesAddOpts: new kendo.data.DataSource({
+        group: 'category',
+        data: [
+            {
+                title: "Add Note",
+                href: "noteEditor?returnview=gallery",
+                imgUrl: "images/icon-note.svg",
+                category: "notes"
+            },
+            {
+                title: "Add from Camera",
+                action: "galleryView.galleryCamera",
+                imgUrl: "images/action-camera.svg",
+                category: "photo"
+            },
+            {
+                title: "Add from Device",
+                action: "galleryView.galleryPhoto",
+                imgUrl: "images/action-device.svg",
+                category: "photo"
+            },
+            {
+                title: "Add Flight",
+                href: null,
+                action: "privateNotesView.noteFlight",
+                imgUrl: "images/intelliFlight-icon.svg",
+                category: "intelligram"
+            },
+            {
+                title: "Add Event",
+                action: "privateNotesView.noteCalendar",
+                imgUrl: "images/icon-event.svg",
+                category: "intelligram"
+            },
+            {
+                title: "Add Trip",
+                action: "privateNotesView.noteTrip",
+                imgUrl: "images/intelliTrip-icon.svg",
+                category: "intelligram"
+            },
+            {
+                title: "Add Movie",
+                action: "privateNotesView.noteMovie",
+                imgUrl: "images/intelliMovie-icon.svg",
+                category: "intelligram"
+            },
+            {
+                title: "Add Account",
+                action: "privateNotesView.noteAccount",
+                imgUrl: "images/icon-account.svg",
+                category: "intelligram"
+            },
+            {
+                title: "Add Medical",
+                action: "privateNotesView.noteMedical",
+                imgUrl: "images/icon-medical.svg",
+                category: "intelligram"
+            }
+
+        ]
+    }),
+
 
     onInit : function (e) {
         //_preventDefault(e);
@@ -45,6 +108,15 @@ var galleryView = {
         //$("#gallery-listview li").css("width",galleryView._previewSize);
         //$("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
+        /*$("#notesListView-add").kendoMobileListView({
+            dataSource: galleryView.notesAddOpts,
+            type: "group",
+            template: $("#notesListView-add-tmpl").html()
+        });*/
+    },
+
+    onAddListViewClick: function(e){
+        console.log(e.dataItem);
 
     },
 

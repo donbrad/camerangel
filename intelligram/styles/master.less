@@ -3862,6 +3862,9 @@ li > .km-group-title {
   background-color: #fff;
   margin-top: 0;
   margin-right: 1em;
+  @media @mobile {
+    margin-right: 0.5em;
+  }
 }
 .messageCompose {
   padding: 0.5rem;
@@ -5575,6 +5578,20 @@ div.contactListBox.activeContact > div > div > ul {
     a {
       float: right;
     }
+  }
+}
+
+#galleryView-noteAddView {
+  height: 350px !important;
+}
+
+#notesListView-add {
+  li > ul {
+    li {
+      border-bottom: 1px solid @shade-200;
+      //padding: 0.25em 0.5em;
+    }
+
   }
 }
 

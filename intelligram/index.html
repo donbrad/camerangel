@@ -3096,7 +3096,8 @@
 					<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
 				</span>
 				</p>
-				<div class="messageMediaBar" style="text-align: center;">
+				<a class="btnClear" data-role="button" href="#galleryView-noteAdd" data-rel="popover">Add</a>
+				<div class="messageMediaBar hidden" style="text-align: center;">
 					<ul>
 						<li>
 							<a data-role="button" href="#noteEditor?returnview=gallery">
@@ -3116,6 +3117,14 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Add note popover -->
+	<div id="galleryView-noteAdd" data-role="popover">
+		<div data-role="view" id="galleryView-noteAddView">
+			<ul id="notesListView-add" data-role="listview" data-fixed-headers="true" data-template="notesListView-add-tmpl" data-source="galleryView.notesAddOpts"></ul>
+		</div>
+	</div>
+
 	<ul data-role="actionsheet" id="galleryActionsPhoto" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="galleryView.galleryCamera">
@@ -3144,6 +3153,14 @@
 	</ul>
 </div>
 
+<script type="text/x-kendo-tmpl" id="notesListView-add-tmpl">
+		<div data-role="button" data-click="#:data.action#">
+			<h3>
+				<img src="#:data.imgUrl#" class="icon-action"/> #: data.title #
+			</h3>
+		</div>
+
+</script>
 
 <div data-role="view" data-title="Filter" id="filterGallery" data-layout="main" data-transition="overlay:up" data-init="archiveView.onFilterInit" style="display: none;">
 	<div data-role="header">

@@ -365,8 +365,7 @@ var homeView = {
         if(!isVerified){
             $("#home-verify-div").removeClass("hidden");
             // get account creation time
-            //var accountTime = userModel._user.get("accountCreateDate");
-            var accountTIme = "9/2/2016";
+            var accountTime = userModel._user.get("accountCreateDate");
             if(accountTime !== undefined){
                 var accountCreateTime = moment(accountTime);
                 var timeLimit = moment(accountTime).add(7, "days");
