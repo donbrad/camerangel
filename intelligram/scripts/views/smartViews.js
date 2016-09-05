@@ -2710,6 +2710,7 @@ var smartTripView = {
                     $("#smartTripView-timeArrival").val(currentTime);
                     smartTripView.activeObject.set("tripTimeType", smartTripView._timeArrival);
                     smartTripView.activeObject.set("draftMode", false);
+                    $("#smartTripView-addToCalendarLi").removeClass('hidden');
                     //smartTripView.processArrivalTime();
                     break;
                 case "1":
@@ -2720,8 +2721,9 @@ var smartTripView = {
                     smartTripView.activeObject.set("draftMode", false);
                     smartTripView.activeObject.set("tripTimeType", smartTripView._timeDeparture);
                     smartTripView.processDepartureTime();
-
+                    smartTripView-addToCalendarLi
                     $("#smartTripView-routeTimeBtn").removeClass('hidden');
+                    $("#smartTripView-addToCalendarLi").removeClass('hidden');
                     break;
 
                 case "2":
@@ -2735,6 +2737,7 @@ var smartTripView = {
 
                     smartTripView.processFlexibleTime();
                     $("#smartTripView-routeTimeBtn").removeClass('hidden');
+                    $("#smartTripView-addToCalendarLi").addClass('hidden');
                     break;
             }
 
@@ -2921,8 +2924,8 @@ var smartTripView = {
                 $("#smartTripView-origin-change").removeClass('hidden');
 
             } else {
-                    $destination.readonly(true);
-                    $("#smartTripView-destination-change").removeClass('hidden');
+                $destination.readonly(true);
+                $("#smartTripView-destination-change").removeClass('hidden');
             }
         } else {
 
@@ -2932,6 +2935,7 @@ var smartTripView = {
                 smartTripView.activeObject.origin = null;
                 smartTripView.validOrigin = false;
                 $("#smartTripView-origin").trigger("change").val('');
+                $(".smartTrip-currentLocation").removeClass('hidden');
 
             } else {
                 $destination.readonly(false);
@@ -3306,7 +3310,7 @@ var smartTripView = {
 
             // hide destination search
             $("#smartTripView-originSearchBtn").text("").addClass("hidden");
-
+            $('.smartTrip-currentLocation').addClass('hidden');
             smartTripView.lockLocation(true, 'origin');
 
             smartTripView.validateRoute();
