@@ -13,6 +13,7 @@
 var privateNoteModel = {
     notesDS: null,
     _fetched : false,
+    _initialSync : false,
     _cloudClass : 'privatenote',
     _ggClass : 'PrivateNote',
     _note : 'Note',
@@ -56,7 +57,14 @@ var privateNoteModel = {
             var changedNotes = e.items;
             var note = e.items[0];
 
-            if (e.action !== undefined) {
+
+            if (e.action === undefined) {
+                if (changedNotes !== undefined && !privateNoteModel._initialSync) {
+
+                    privateNoteModel._initialSync = true;
+                    privateNoteModel.decryptNotes();
+                }
+            } else {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
@@ -71,7 +79,7 @@ var privateNoteModel = {
                         note = e.items[0];
 
                         if (privateNoteModel.isDuplicateNote(note.uuid)) {
-                           // privateNoteModel.notesDS.remove(note);
+                            privateNoteModel.notesDS.remove(note);
                             //e.preventDefault();
                         }
 
@@ -91,7 +99,20 @@ var privateNoteModel = {
     sync : function () {
         privateNoteModel.notesDS.sync();
     },
-    
+
+
+    decryptNotes : function () {
+        var len = privateNoteModel.notesDS.total();
+
+        for (var i=0; i<len; i++) {
+            var note =  privateNoteModel.notesDS.at(i);
+            note.content = userDataChannel.decryptBlock(note.contentBlob);
+            note.data = userDataChannel.decryptBlock(note.dataBlob);
+        }
+
+    },
+
+
     addNote : function (note) {
 
         if (note.Id === undefined) {
@@ -101,6 +122,8 @@ var privateNoteModel = {
         privateNoteModel.notesDS.add(note);
         privateNoteModel.notesDS.sync();
 
+        var content = note.content, data = note.data;
+        delete note.content; delete note.data;
         everlive.createOne(privateNoteModel._cloudClass, note, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Private Note " + JSON.stringify(error));
@@ -109,16 +132,25 @@ var privateNoteModel = {
 
             }
         });
+
+        note.content = content;
+        note.data = data;
     },
 
 
 
     updateNote : function (note) {
 
+        var content = note.content, data = note.data;
+        delete note.content;
+        delete note.data;
+
         everlive.update(privateNoteModel._cloudClass, note, {'uuid' : note.uuid}, function (error, data) {
             //placeNoteModel.notesDS.remove(note);
         });
 
+        note.content = content;
+        note.data = data;
     },
 
     encryptNote : function (note) {
