@@ -2394,7 +2394,7 @@ var smartMovieView = {
 
             },
             error: function () {
-                mobileNotify("Can't get poster info for " + movieTitle);
+                mobileNotify("Can't get poster info for this movie...");
                 callback(null);
             }
         });
