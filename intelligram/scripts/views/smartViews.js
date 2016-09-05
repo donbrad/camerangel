@@ -2477,6 +2477,9 @@ var smartTripView = {
     leg2Complete : false,
     placesDS : new kendo.data.DataSource(),
     initialized: false,
+    _timeFlexible : 'flexible',  // time is tbd
+    _timeArrival : 'arrival',
+    _timeDeparture : 'departure',
 
     onInit : function (e) {
 
@@ -2517,6 +2520,7 @@ var smartTripView = {
                     // smartTripView.processDepartureTime();
 
                     break;
+
                 case 'travelError':
                     if(value){
                         $(".smartTripView-error").removeClass('hidden');
@@ -2701,10 +2705,11 @@ var smartTripView = {
                     $("#smartTripView-arrival-time").removeClass("hidden");
                     $("#smartTripView-departure-time").addClass("hidden");
 
+                    $("#smartTripView-departure-time-label").text("Departure");
                     $("#smartTripView-travelTime-box").addClass('hidden');
                     $("#smartTripView-timeArrival").val(currentTime);
-                    smartTripView.activeObject.set("tripTimeType", "arrival");
-
+                    smartTripView.activeObject.set("tripTimeType", smartTripView._timeArrival);
+                    smartTripView.activeObject.set("draftMode", false);
                     //smartTripView.processArrivalTime();
                     break;
                 case "1":
@@ -2712,14 +2717,21 @@ var smartTripView = {
                     $("#smartTripView-arrival-time").addClass("hidden");
 
                     $("#smartTripView-timeDeparture").val(currentTime);
-                    smartTripView.activeObject.set("tripTimeType", "departure");
+                    smartTripView.activeObject.set("draftMode", false);
+                    smartTripView.activeObject.set("tripTimeType", smartTripView._timeDeparture);
                     smartTripView.processDepartureTime();
 
                     $("#smartTripView-routeTimeBtn").removeClass('hidden');
                     break;
+
                 case "2":
-                    $("#smartTripView-arrival-time, #smartTripView-departure-time").addClass("hidden");
-                    smartTripView.activeObject.set("tripTimeType", "flexible");
+                    $("#smartTripView-departure-time").removeClass("hidden");
+                    $("#smartTripView-arrival-time").addClass("hidden");
+                    $("#smartTripView-departure-time-label").text("Approximate Departure");
+
+                   // $("#smartTripView-arrival-time, #smartTripView-departure-time").addClass("hidden");
+                    smartTripView.activeObject.set("draftMode", true);
+                    smartTripView.activeObject.set("tripTimeType", smartTripView._timeFlexible);
 
                     smartTripView.processFlexibleTime();
                     $("#smartTripView-routeTimeBtn").removeClass('hidden');
@@ -2762,6 +2774,7 @@ var smartTripView = {
             obj.set('addToCalendar',  false);
             obj.set('leg1Complete',  false);
             obj.set('leg2Complete',  false);
+            obj.set('draftMode',  false);
             obj.set('duration', null);
             obj.set('durationString', null);
             obj.set('distance', null);
@@ -2773,7 +2786,7 @@ var smartTripView = {
             obj.set('departure', null);
             obj.set('arrival', null);
             obj.set('travelError', false);
-            obj.set('tripTimeType', null);
+            obj.set('tripTimeType', smartTripView._timeDeparture);
             var d = new Date();
             var dateStr = moment(d).format('MM/DD/YYYY');
             obj.set('dateDeparture', dateStr);
@@ -2802,6 +2815,8 @@ var smartTripView = {
             obj.set('travelMode', tripObj.travelMode);
             obj.set('autoStatus', tripObj.autoStatus);
             obj.set('addToCalendar',  tripObj.addToCalendar);
+            obj.set('draftMode',  tripObj.draftMode);
+            obj.set('tripTimeType',  tripObj.tripTimeType);
             obj.set('leg1Complete',  tripObj.leg1Complete);
             obj.set('leg2Complete',  tripObj.leg2Complete);
             obj.set('origin', tripObj.origin); // need to set for data-bind
@@ -2861,41 +2876,12 @@ var smartTripView = {
 
         $("#smartTripView-originSearchBtn").addClass("hidden").text('');
 
-        /*var d = new Date();*/
-
-       /* $('#smartTripView-name').attr("placeholder", userModel._user.name + "'s Trip");
-        $('#smartTripView-owner').text(userModel._user.name);
-        $('#smartTripView-origin').val("");
-        $('#ssmartTripView-destination').val("");
-
-        // Set up default dates as today
-        var dateStr = moment(d).format('MM/DD/YYYY');
-        $('#smartTripView-dateDeparture').val(dateStr);
-        $('#smartTripView-dateArrival').val(dateStr);
-
-        //Set up default arrival and departure times as rounded up hour
-        $('#smartTripView-timeDeparture').val(smartTripView.getDefaultTime());*/
-        //$('#smartTripView-timeArrival').val(smartTripView.getDefaultTime());
 
         var placesArray = placesModel.placesDS.data();
         smartTripView.placesDS.data(placesArray);
         smartTripView.placesDS.filter([]);
 
-       /* smartTripView.tripType = 'drive';
-        smartTripView.autoStatus = false;
-        smartTripView.addToCalendar = false;
-        smartTripView.leg1Complete = false;
-        smartTripView.leg2Complete = false;
-        smartTripView.validName = false;
-        smartTripView.validTime = false;
-        smartTripView.validOrigin = false;
-        smartTripView.validDestination = false;
-        smartTripView.arrivalSet = false;
-        smartTripView.departureSet = false;
-        smartTripView.origin = null;
-        smartTripView.destination = null;
-        smartTripView.departure = null;
-        smartTripView.arrival = null;*/
+
 
         // Setup Trip Map and Directions renderer just once
        if (!smartTripView._inited) {
@@ -3147,6 +3133,8 @@ var smartTripView = {
         smartTripView.departureSet = false;
         smartTripView.arrivalSet = false;
         smartTripView.validTime = true;
+
+
         //smartTripView.activeObject.departure = null;
         //smartTripView.activeObject.arrival = null;
         smartTripView.validate();
@@ -3306,7 +3294,7 @@ var smartTripView = {
             place.lat = mapModel.lat;
             place.lng = mapModel.lng;
             place.name = null;
-            place.address = mapModel.currentAddress;
+            place.address = mapModel.currentAddressString;
             place.googleId = null;
             place.placeUUID = null;
 
@@ -3397,13 +3385,20 @@ var smartTripView = {
         smartTripView.onDone();
     },
 
+    stripUxFields : function () {
+        if(smartTripView.activeObject.get("travelError")) {
+            delete smartTripView.activeObject.travelError;
+        }
+    },
+
     onSave : function (e) {
 
-
         if(smartTripView.activeObject.get("travelError")){
-            e.preventDefault;
+            e.preventDefault();
         } else {
             if (smartTripView.callback !== null) {
+                smartTripView.stripUxFields();
+
                 smartTripView.callback(smartTripView.activeObject);
             }
 

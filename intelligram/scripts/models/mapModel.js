@@ -11,6 +11,7 @@ var mapModel = {
     latlng : null,
 
     currentAddress : null,   // Current physical address - location
+    currentAddressString : null,
     currentCity: null,
     currentState : null,
     currentZipcode : null,
@@ -304,6 +305,11 @@ var mapModel = {
                         mapModel.currentCity = address.city;
                         mapModel.currentState = address.state;
                         mapModel.currentZipcode = address.zipcode;
+                        if (address.streetNumber !== null && address.street !== null)
+                            mapModel.currentAddressString = address.streetNumber + ' ' + address.street +  ", " + address.city + ", " + address.state;
+                        else
+                            mapModel.currentAddressString =  address.city + ", " + address.state + address.zipcode;
+
                         if (callback !== undefined)
                             callback(true, address);
                     }
