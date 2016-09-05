@@ -2721,7 +2721,7 @@ var smartTripView = {
                     smartTripView.activeObject.set("draftMode", false);
                     smartTripView.activeObject.set("tripTimeType", smartTripView._timeDeparture);
                     smartTripView.processDepartureTime();
-                    smartTripView-addToCalendarLi
+                    
                     $("#smartTripView-routeTimeBtn").removeClass('hidden');
                     $("#smartTripView-addToCalendarLi").removeClass('hidden');
                     break;
