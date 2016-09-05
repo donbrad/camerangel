@@ -1127,7 +1127,7 @@ var noteEditView = {
                 note.tagString = null;
             }
             noteEditView.contentObj = note;
-            noteEditView.photos = note.dataObject.photos;
+            noteEditView.photos = note.dataObj.photos;
             $('#noteEditor-textarea').redactor('code.set', note.content);
             $('#noteEditor-title').val(note.title);
             $('#noteEditor-tagString').val(note.tagString);
@@ -1334,28 +1334,34 @@ var noteEditView = {
 
                 var note = privateNoteModel.findNote(activeNote.uuid);
 
-
+                if (note.content !== undefined) {
+                    delete note.content;
+                }
+                if (note.dataObj !== undefined) {
+                    delete note.dataObj;
+                }
                 note.set('title', title);
                 note.set('tagString', tagString);
                 note.set('tags', []); // todo: don integrate tag processing...
-                activeNote.content = content;
                 note.set('contentBlob', contentBlob);
                 note.set('dataBlob', dataBlob);
-                note.dataObject = dataObj;
                 note.set('timestamp',ggTime.currentTime());
+
                 privateNoteModel.updateNote(note);
+                note.content = text;
+                note.dataObj = dataObj;
 
             } else {
 
                 activeNote.title = title;
-                activeNote.content = content;
                 activeNote.contentBlob = contentBlob;
                 activeNote.tagString = tagString;
                 activeNote.timestamp = ggTime.currentTime();
                 activeNote.dataBlob = dataBlob;
-                activeNote.dataObject = dataObj;
 
-               privateNoteModel.addNote(activeNote);
+                privateNoteModel.addNote(activeNote);
+                activeNote.dataObj = dataObj;
+                activeNote.content = text;
             }
 
 
