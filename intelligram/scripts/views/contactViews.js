@@ -136,7 +136,7 @@ var contactsView = {
             }
 
         }).kendoTouch({
-            filter: ".contactListBox",  // todo: change to groupListBox when jordan updates .less
+            filter: ".groupListBox",  // todo: change to groupListBox when jordan updates .less
             // filter: "div",
             enableSwipe: true,
             tap: function(e){
@@ -150,16 +150,14 @@ var contactsView = {
                     groupId = e.touch.target[0].attributes['data-group'].value;
                 }
 
-
-                var group = contactModel.findContactByUUID(groupId);
+                var group = groupModel.findGroup(groupId);
                 if (group === undefined) {
                     ggError('Group List: no matching Group found!');
-
                     return;
                 }
 
                 // todo: don - wire up groupActionView modal
-                // groupActionView.openModal(group.uuid);
+                groupActionView.openModal(group.uuid);
 
 
             },
@@ -1891,6 +1889,308 @@ var contactActionView = {
         } else {
             $("#currentContactVerified").addClass("hidden");
         }
+
+    }
+
+};
+
+var groupActionView = {
+    _activeGroupId : null,
+    _returnModalId : null,
+    _activeGroup : new kendo.data.ObservableObject(),
+
+    onInit: function (e) {
+
+    },
+
+
+
+    setReturnModal : function (modalId) {
+        groupActionView._returnModalId = modalId;
+    },
+
+    updateTrackingUX : function () {
+        var tracking = groupActionView._activeGroup.activeTracking;
+        if (tracking) {
+            $("#groupActions-track").html('<img src="images/icon-tracking-active.svg" /> Stop Tracking');
+
+        } else {
+            $("#groupActions-track").html('<img src="images/icon-tracking.svg" /> Start Tracking');
+        }
+    },
+
+    groupTracking : function () {
+        var tracking =  groupActionView._activeGroup.activeTracking;
+
+        tracking = !tracking;
+
+        groupActionView._activeGroup.activeTracking.set('activeTracking', tracking);
+
+        groupActionView.updateTrackingUX();
+    },
+
+    openModal : function (groupId) {
+
+
+        var thisGroup = groupModel(contactId);
+
+        groupModel.checkIdenticon(thisGroup);
+        groupActionView.setGroup(thisGroup);
+        groupActionView.updateTrackingUX();
+
+        //Show the status update div
+      /*  if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
+
+            var user = userStatusChannel.getStatus(thisContact.contactUUID);
+            if (user !== null) {
+                var contactIsAvailable = user.isAvailable;
+                var contactPlace = user.currentPlace;
+                contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
+                contactActionView._activeContact.set('statusMessage', user.statusMessage);
+                contactActionView._activeContact.set('currentPlace', user.currentPlace);
+                contactActionView._activeContact.set('currentPlaceUUID', user.currentPlaceUUID);
+                contactActionView._activeContact.set('googlePlaceId', user.googlePlaceId);
+                contactActionView._activeContact.set('lat', user.lat);
+                contactActionView._activeContact.set('lng', user.lng);
+                contactActionView._activeContact.set('isAvailable', contactIsAvailable);
+                // set available
+                if (contactIsAvailable) {
+                    $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+                }
+
+                // Update the contactList object too
+                var contactList = contactModel.findContactList(thisContact.contactUUID);
+                if (contactList !== undefined) {
+                    contactList.set('statusMessage', user.statusMessage);
+                    contactList.set('currentPlace', contactPlace);
+                    contactList.set('currentPlaceUUID', user.currentPlaceUUID);
+                    contactList.set('googlePlaceId', user.googlePlaceId);
+                    contactList.set('lat', user.lat);
+                    contactList.set('lng', user.lng);
+                    contactList.set('isAvailable', contactIsAvailable);
+
+                    contactsView.contactCache[thisContact.contactUUID] = contactList;
+
+                    // set current place
+                    if (contactPlace !== ""  && contactPlace !== null && contactPlace !== undefined) {
+                        $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
+                    } else {
+                        $("#contactCurrentPlace").addClass('hidden').text("");
+                    }
+
+                }
+
+            }
+
+        }
+
+        if (thisContact.category !== 'unknown') {
+            // Need to connect with this user before updating contact details
+            contactModel.updateContactDetails(contactId, function (contact) {
+
+                if (contact === undefined) {
+                    // This is a new contact.
+                    contact = contactModel.findContactByUUID(contactId);
+                }
+
+
+                var contactName = contact.name;
+                var contactAlias = contact.alias;
+                var contactVerified = contact.phoneValidated;
+                var contactGroup = contact.group;
+
+                var contactIsAvailable = contact.isAvailable;
+                var contactTracking = contact.activeTracking;
+                if (contactTracking === undefined) {
+                    contactTracking = false;
+                }
+
+                // Add group name
+                if (contactGroup !== '' && contactGroup !== null) {
+                    $("#currentGroup").removeClass("hidden");
+                    $("#currentContactGroup").text(contactGroup);
+                } else {
+                    $("#currentGroup").addClass("hidden");
+                    $("#currentContactGroup").text("");
+                }
+
+                contactActionView._activeContact.set('contactUUID', contact.contactUUID);
+                contactActionView._activeContact.set('publicKey', contact.publicKey);
+                contactActionView._activeContact.set('phone', contact.phone);
+                contactActionView._activeContact.set('category', contact.category);
+                contactActionView._activeContact.set('name', contactName);
+                contactActionView._activeContact.set('alias', contactAlias);
+                contactActionView._activeContact.set('activeTracking', contactTracking);
+                if (contact.photo !== undefined && contact.photo !== null) {
+                    contactActionView._activeContact.set('photo', contact.photo);
+                } else {
+                    contactActionView._activeContact.set('photo', contact.identicon);
+                }
+
+                // Set name/alias layout
+                ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
+
+                // set verified status
+                if (contactVerified) {
+                    $("#currentContactVerified").removeClass("hidden");
+                } else {
+                    $("#currentContactVerified").addClass("hidden");
+                }
+
+                //$("#contactCurrentPlace").addClass('hidden');
+
+
+                contactActionView.refreshUX(contact);
+
+
+            });
+        }*/
+
+
+        $("#modalview-groupActions").data("kendoMobileModalView").open();
+
+        $("#groupProfileImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
+
+
+        $("#modalview-groupActions .modal-top h2").velocity({translateY: "20%", opacity: 1}, {delay: 300, duration: 500, display: "block"});
+        $("#modalview-groupActions .modal-top p").velocity({translateY: "20%", opacity: 1}, {delay: 600, duration: 500, display: "block"});
+        $("#modalview-groupActions .modal-bottom .hasMotion").velocity("fadeIn", {duration: 500, delay: 700});
+    },
+
+
+    reOpenModal : function () {
+        $("#modalview-groupActions").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function(){
+        $("#modalview-groupActions").data("kendoMobileModalView").close();
+
+        // Clear place
+        $("#contactCurrentPlace").html("");
+
+        $("#modalview-groupActions .preMotionUp, #modalview-groupActions .hasMotion").css("display", "none").velocity("fadeOut", {opacity: 0, translateY: "0%"});
+
+        if (groupActionView._returnModalId !== null) {
+            $(groupActionView._returnModalId).data("kendoMobileModalView").open();
+            groupActionView._returnModalId = null;
+        }
+
+    },
+
+    restoreModal : function () {
+        groupActionView.openModal(groupActionView._activeGroupId);
+    },
+
+    showGroupMap : function (e) {
+
+    },
+
+    groupChat : function (e) {
+        _preventDefault(e);
+
+        /*var contact = contactActionView._activeContact;
+        var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
+
+        if (contactUUID === undefined || contactUUID === null) {
+            mobileNotify(contact.name + " hasn't verified their contact info");
+            return;
+        }
+        // Is there already a private channel provisioned for this user?
+        var channel = channelModel.findPrivateChannel(contactUUID);
+
+        var navStr = '#channel?channelUUID=';
+        if (channel !== undefined) {
+            navStr = navStr + channel.channelUUID;
+            APP.kendo.navigate(navStr);
+        } else {
+            mobileNotify("Creating Private Chat with " + contactName);
+            channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, function (error, data) {
+                navStr = navStr + contactUUID;
+                APP.kendo.navigate(navStr);
+            });
+
+        }*/
+
+    },
+
+    groupGallery : function (e) {
+
+    },
+
+
+
+    groupEmail : function (e) {
+        _preventDefault(e);
+        var viewId = APP.kendo.view().id;
+
+        //Close contactAction to display ghostEdit
+        contactActionView.closeModal();
+
+        APP.kendo.navigate("#ghostEditor?returnview="+viewId+"&callback=contactaction");
+
+    },
+
+
+    newChat : function (e) {
+
+    },
+
+    newGallery : function (e) {
+
+    },
+
+    sendEmail : function (e) {
+        _preventDefault(e);
+
+        var email = contactActionView._activeContact.get('email');
+        var properties = {
+            to: email
+        };
+        cordova.plugins.email.open(properties, function () {
+            mobileNotify("Email sent...");
+        }, this);
+    },
+
+    sendSMS : function (e) {
+        _preventDefault(e);
+
+        var number = contactActionView._activeContact.get('phone');
+        var message = "";
+
+        //CONFIGURATION
+        var options = {
+            android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+                //intent: '' // send SMS without openning any other app
+            }
+        };
+
+        var success = function () { mobileNotify('Message sent successfully'); };
+        var error = function (e) { mobileNotify('Message Failed:' + e); };
+
+        if (window.navigator.simulator === true){
+            //running in the simulator
+            alert('Simulating SMS to ' + number + ' message: ' + message);
+        } else {
+            sms.send(number, message, options, success, error);
+        }
+    },
+
+
+
+
+    setGroup : function (thisGroup) {
+
+        groupActionView._activeGroupId = thisGroup.uuid;
+        groupActionView._activeGroup.set('title', thisGroup.title);
+        groupActionView._activeGroup.set('description', thisGroup.description);
+        groupActionView._activeGroup.set('photoUrl', thisGroup.photoUrl);
+        groupActionView._activeGroup.set('useIdenticon', thisGroup.useIndenticon);
+        groupActionView._activeGroup.set('activeTracking', thisGroup.activeTracking);
+        groupActionView._activeGroup.set('isICE', thisGroup.isICE);
+        groupActionView._activeGroup.set('tags', thisGroup.tags);
+        groupActionView._activeGroup.set('tagString',thisGroup.tagString);
+        groupActionView._activeGroup.set('isAvailable', thisGroup.isAvailable);
 
     }
 

@@ -1349,6 +1349,67 @@
 
 </div>
 
+
+
+
+<div data-role="modalview" id="modalview-groupActions" data-model="groupActionView._activeGroup"  style="width: 90%; min-height:65%; display: none;">
+	<div class="modal-top">
+		<a data-role="button" class="modal-close" data-click="groupActionView.closeModal"><img src="images/close-white.svg"/></a>
+
+		<img class="circle-img-lg" id="groupProfileImg" data-bind="" />
+
+		<h2 class="preMotionUp textClamp">
+			<span class="primaryName" data-bind="text: title"></span>
+		</h2>
+
+		<p class="preMotionUp">
+			<span class="contactStatusMessage" data-bind="text: description"></span>
+		</p>
+		<p class="preMotionUp">
+			<a data-role="button" data-click="groupActionView.showGroupMap"  class="btnClear-grey ">Show On Map</a>
+		</p>
+	</div>
+	<div class="modal-bottom">
+		<ul class="list-inline hasMotion" id="groupActionBtns">
+			<li>
+				<a class="btnClear" data-role="button" id="groupActions-track" data-click="groupActionView.groupTracking" >
+					<img src="images/icon-tracking.svg" /> Start Tracking
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="groupActionView.groupChat" >
+					<img src="images/contacts.svg" /> Group Chat
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="groupActionView.groupGallery" >
+					<img src="images/archive-photos.svg" /> Group Gallery
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="groupActionView.sendEmail">
+					<img src="images/icon-ghostMail.svg" /> Send Email</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="groupActionView.sendSMS">
+					<img src="images/icon-sms.svg" /> Send SMS
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="groupActionView.AddChat" >
+					<img src="images/contacts.svg" /> Create New Chat
+				</a>
+			</li>
+			<li>
+				<a class="btnClear" data-role="button" data-click="groupActionView.AddGallery" >
+					<img src="images/archive-photos.svg" /> Create New Gallery
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+
 <!-- contact action -->
 <div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; min-height:65%; display: none;">
 	<div class="modal-top">
@@ -6519,7 +6580,7 @@
 		</div><!-- contact-options -->
 
 
-		<a class="groupListBox" data-contact="#:uuid#">
+		<a class="groupListBox" data-group="#:uuid#">
 
 			<div class="left listName">
 				<h4 class="textClamp">

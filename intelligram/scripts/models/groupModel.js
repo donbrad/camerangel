@@ -155,6 +155,7 @@ var groupModel = {
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
+        
         dataSource.filter( query);
         var view = dataSource.view();
 
@@ -167,6 +168,19 @@ var groupModel = {
 
         var groups = groupModel.queryGroups({field: "uuid", operator: "eq", value: uuid});
 
-        return (groups);
+        if (groups.length === 0) {
+            return(null);
+        }
+        return (groups[0]);
+    },
+
+    checkIdenticon : function (group) {
+        if (group !== undefined && group !== null) {
+
+            if  (group.useIdenticon || group.photoUrl === null || group.photoUrl === '') {
+                group.photoUrl = contactModel.createIdenticon(group.uuid);
+            }
+        }
     }
+
 };
