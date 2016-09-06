@@ -2381,17 +2381,6 @@ var channelView = {
         var  objectId = smartPlace.uuid;
 
 
-
-       /* var objectUrl = '<div><span class="btnSmart-place" data-role="button" data-objectid="' + objectId +
-            '" id="placeobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
-            '<div class="btnSmart-content">' +
-            '<p class="btnSmart-title">' + smartPlace.name + ' </p> ' +
-            '<p class="btnSmart-date textClamp">' + smartPlace.address + '</p> ' +
-            '</div>' +
-            '</span></div>';
-*/
-
         var template = kendo.template($("#intelliPlace-chat").html());
         var dataObj = {
             ggType : "Place",
