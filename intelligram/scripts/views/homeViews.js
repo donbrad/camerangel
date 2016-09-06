@@ -1071,9 +1071,17 @@ var noteViewer = {
             noteViewer.activeNote.set('uuid', note.uuid);
             noteViewer.activeNote.set('title', note.title);
             noteViewer.activeNote.set('tagString', note.tagString);
-            noteViewer.activeNote.set('content', note.content);
-            noteViewer.activeNote.set('data', note.data);
-            noteViewer.activeNote.set('dataObject', note.dataObject);
+            noteViewer.activeNote.set('contentBlob', note.contentBlob);
+            noteViewer.activeNote.set('dataBlob', note.dataBlob);
+
+            var content = userDataChannel.decryptBlock(contentBlob);
+            var dataObj = userDataChannel.decryptBlock(dataBlob);
+            if (dataObj !== null) {
+                dataObj = JSON.parse(dataObj);
+            }
+
+            noteViewer.activeNote.content = content;
+            noteViewer.activeNote.dataObj = dataObj;
         }
         $('#noteViewer').data('kendoMobileModalView').open();
     },
@@ -1115,15 +1123,15 @@ var noteEditView = {
     initNote : function () {
         var that = noteEditView;
 
-        that.contentObj.data = {};
+        that.contentObj.dataObj = {};
         that.contentObj.uuid = uuid.v4();
-        that.contentObj.data.photos = [];
-        that.contentObj.data.objects = [];
-        that.contentObj.dataObject = {};
+        that.contentObj.dataObj.photos = [];
+        that.contentObj.dataObj.objects = [];
         that.contentObj.title = '';
         that.contentObj.tagString = '';
         that.contentObj.tags = [];
         that.contentObj.content = '';
+        that.contentObj.contentBlob = '';
         that.contentObj.timestamp = new Date();
         that.contentObj.ggType = privateNoteModel._ggClass;
         that.contentObj.noteType = privateNoteModel._note;
@@ -1245,7 +1253,7 @@ var noteEditView = {
             };
         }
 
-        noteEditView.contentObj.data.photos.push(photoObj);
+        noteEditView.contentObj.dataObj.photos.push(photoObj);
         // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
@@ -1347,30 +1355,35 @@ var noteEditView = {
         if (validNote === true ) {
 
             var activeNote = noteEditView.contentObj;
-            var contentData = JSON.stringify(activeNote.data);
+            var contentData = JSON.stringify(activeNote.dataObj);
             var dataObj = JSON.parse(contentData);
+
+            var contentBlob = userDataChannel.encryptBlock(text);
+            var dataBlob = userDataChannel.encryptBlock(contentData);
 
             if (noteEditView._mode === 'edit') {
 
                 var note = privateNoteModel.findNote(activeNote.uuid);
 
+
                 note.set('title', title);
                 note.set('tagString', tagString);
                 note.set('tags', []); // todo: don integrate tag processing...
-                note.set('content', text);
-                note.set('data', contentData);
+                activeNote.content = content;
+                note.set('contentBlob', contentBlob);
+                note.set('dataBlob', dataBlob);
                 note.dataObject = dataObj;
                 note.set('timestamp',ggTime.currentTime());
-
                 privateNoteModel.updateNote(note);
 
             } else {
 
                 activeNote.title = title;
-                activeNote.content = text;
+                activeNote.content = content;
+                activeNote.contentBlob = contentBlob;
                 activeNote.tagString = tagString;
                 activeNote.timestamp = ggTime.currentTime();
-                activeNote.data = contentData;
+                activeNote.dataBlob = dataBlob;
                 activeNote.dataObject = dataObj;
 
                privateNoteModel.addNote(activeNote);

@@ -9,6 +9,8 @@ var groupModel = {
     _version: 1,
     _cloudClass : 'group',
     _ggClass : 'Group',
+    _fetched : false,
+    _initialSync : false,
     groupsDS : null,
 
     init : function() {
@@ -18,7 +20,7 @@ var groupModel = {
                 typeName: 'group'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             }
         });
 
@@ -28,7 +30,13 @@ var groupModel = {
             //placesModel.syncPlaceListDS();
             var changedGroups = e.items;
 
-            if (e.action !== undefined) {
+            if (e.action === undefined) {
+                if (changedGroups !== undefined && !groupModel._initialSync) {
+
+                    groupModel._initialSync = true;
+
+                }
+            } else  {
                 switch (e.action) {
                     case "itemchange" :
                         var field  =  e.field;
@@ -72,7 +80,48 @@ var groupModel = {
 
         });
 
+        groupModel.groupsDS.bind("requestEnd", function (e) {
+            var response = e.response,  type = e.type;
+
+            if (type === 'read' && response) {
+                if (!groupModel._fetched){
+                    groupModel._fetched = true;
+                }
+
+            }
+
+        });
+
         groupModel.groupsDS.fetch();
+    },
+
+    addGroup : function (group) {
+
+        if (group.Id === undefined) {
+            group.Id = group.uuid;
+        }
+        groupModel.groupsDS.add(group);
+        groupModel.groupsDS.sync();
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(groupModel._cloudClass, group, function (error, data){
+                if (error !== null) {
+                    ggError ("Error creating group " + JSON.stringify(error));
+
+                }
+            });
+        }
+    },
+
+    deleteGroup : function (group) {
+        var uuid = group.uuid;
+
+        var group = groupModel.findGroup(uuid);
+
+        if (group !== undefined) {
+            groupModel.groupsDS.remove(group);
+            groupModel.groupsDS.sync();
+        }
     },
 
     sync : function () {
@@ -106,6 +155,7 @@ var groupModel = {
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
+        
         dataSource.filter( query);
         var view = dataSource.view();
 
@@ -118,6 +168,19 @@ var groupModel = {
 
         var groups = groupModel.queryGroups({field: "uuid", operator: "eq", value: uuid});
 
-        return (groups);
+        if (groups.length === 0) {
+            return(null);
+        }
+        return (groups[0]);
+    },
+
+    checkIdenticon : function (group) {
+        if (group !== undefined && group !== null) {
+
+            if  (group.useIdenticon || group.photoUrl === null || group.photoUrl === '') {
+                group.photoUrl = contactModel.createIdenticon(group.uuid);
+            }
+        }
     }
+
 };

@@ -342,8 +342,7 @@ var userModel = {
         
         userModel._user.set('isValidated', emailValidated && user.phoneValidated);
 
-
-
+        everlive.updateUser();
         memberdirectory.update();
 
         if (!user.phoneValidated) {
