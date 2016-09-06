@@ -1024,7 +1024,7 @@ var noteViewer = {
 
 
     editNote : function () {
-        APP.kendo.navigate("#noteEditor?noteid="+noteViewer.noteUUID+"&returnview=home");
+        APP.kendo.navigate("#noteEditor?noteid="+noteViewer.noteUUID+"&returnview=gallery");
         noteViewer.closeModal();
     },
 
@@ -1094,6 +1094,7 @@ var noteEditView = {
 
         that.activeNote.dataObj = {};
         that.activeNote.uuid = uuid.v4();
+        that.noteUUID = that.activeNote.uuid;
         that.activeNote.dataObj.photos = [];
         that.activeNote.dataObj.objects = [];
         that.activeNote.title = '';
@@ -1123,10 +1124,10 @@ var noteEditView = {
             if (note.tags === undefined) {
                 note.tags = [];
             }
+
             if (note.tagString === undefined) {
                 note.tagString = null;
             }
-
 
             noteEditView.activeNote = note;
             note.dataObj = userDataChannel.decryptBlock(note.dataBlob);
@@ -1370,6 +1371,7 @@ var noteEditView = {
                 activeNote.photoCount =  photoCount;
                 activeNote.content = content;
                 activeNote.tagString = tagString;
+                activeNote.tags = [];
                 activeNote.timestamp = ggTime.currentTime();
                 activeNote.dataBlob = dataBlob;
 

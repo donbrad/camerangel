@@ -2373,69 +2373,6 @@ var channelView = {
 
     },
 
-    addSmartEventToMessage: function (smartEvent, message) {
-
-      //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
-
-        /*var dateStr = moment(date).format('ddd MMM Do');
-        var localTime = moment(date).format("LT");*/
-
-        var placeName = smartEvent.placeName;
-        if(placeName === null){
-            placeName = "";
-        }
-
-
-        var template = kendo.template($("#intelliEvent-chat").html());
-        var dataObj = {
-            ggType: "Event",
-            title : smartEvent.title,
-            date : date,
-            placeName: placeName,
-            objectId : objectId
-        };
-
-
-       var objectUrl = template(dataObj);
-
-        var fullMessage = message + objectUrl;
-
-        channelView.activeMessage.objects.push(smartEvent);
-
-        return (fullMessage);
-
-    },
-
-    addSmartMovieToMessage: function (smartMovie, message) {
-
-        //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = smartMovie.showtime, objectId = smartMovie.uuid;
-
-        var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
-
-
-        var template = kendo.template($("#intelliMovie-chat").html());
-        var dataObj = {
-            ggType: "Movie",
-            imageUrl: smartMovie.imageUrl,
-            movieTitle : smartMovie.movieTitle,
-            dateStr : dateStr,
-            theatreName: smartMovie.theatreName,
-            objectId : objectId,
-            rating: smartMovie.rating,
-            runtime: smartMovie.runtime
-        };
-
-        var objectUrl = template(dataObj);
-
-        var fullMessage = message + objectUrl;
-
-        channelView.activeMessage.objects.push(smartMovie);
-
-        return (fullMessage);
-
-    },
 
 
     addSmartPlaceToMessage: function (smartPlace, message) {
@@ -2472,6 +2409,35 @@ var channelView = {
 
     },
 
+    addSmartMovieToMessage: function (smartMovie, message) {
+
+        //  var editor = $("#messageTextArea").data("kendoEditor");
+        var date = smartMovie.showtime, objectId = smartMovie.uuid;
+
+        var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
+
+
+        var template = kendo.template($("#intelliMovie-chat").html());
+        var dataObj = {
+            ggType: "Movie",
+            imageUrl: smartMovie.imageUrl,
+            movieTitle : smartMovie.movieTitle,
+            dateStr : dateStr,
+            theatreName: smartMovie.theatreName,
+            objectId : objectId,
+            rating: smartMovie.rating,
+            runtime: smartMovie.runtime
+        };
+
+        var objectUrl = template(dataObj);
+
+        var fullMessage = message + objectUrl;
+
+        channelView.activeMessage.objects.push(smartMovie);
+
+        return (fullMessage);
+
+    },
 
     addSmartTripToMessage: function (smartTrip, message) {
         var  objectId = smartTrip.uuid;
@@ -2512,6 +2478,39 @@ var channelView = {
 
     },
 
+    addSmartEventToMessage: function (smartEvent, message) {
+
+        //  var editor = $("#messageTextArea").data("kendoEditor");
+        var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
+
+        /*var dateStr = moment(date).format('ddd MMM Do');
+         var localTime = moment(date).format("LT");*/
+
+        var placeName = smartEvent.placeName;
+        if(placeName === null){
+            placeName = "";
+        }
+
+
+        var template = kendo.template($("#intelliEvent-chat").html());
+        var dataObj = {
+            ggType: "Event",
+            title : smartEvent.title,
+            date : date,
+            placeName: placeName,
+            objectId : objectId
+        };
+
+
+        var objectUrl = template(dataObj);
+
+        var fullMessage = message + objectUrl;
+
+        channelView.activeMessage.objects.push(smartEvent);
+
+        return (fullMessage);
+
+    },
 
     addSmartFlightToMessage: function (smartFlight, message) {
         var  objectId = smartFlight.uuid;

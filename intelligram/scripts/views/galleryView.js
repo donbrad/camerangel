@@ -23,6 +23,12 @@ var galleryView = {
     _viewInitialized : false,
     _activeView: 0,
     scroller: null,
+    _noteNote : 'Note',
+    _noteGallery : 'Gallery',
+    _noteEvent : 'Event',
+    _noteFlight : 'Flight',
+    _noteTrip : 'Trip',
+    _noteMovie : 'Movie',
 
     onInit : function (e) {
         //_preventDefault(e);
@@ -203,8 +209,8 @@ var galleryView = {
 
             }).kendoTouch({
                 filter: ".private-note",
-                tap: privateNotesView.tapNote,
-                hold: privateNotesView.holdNote
+                tap: galleryView.tapNote,
+                hold: galleryView.holdNote
             });
 
         }
@@ -450,35 +456,263 @@ var galleryView = {
         _preventDefault(e);
     },
 
-    selectSearchTool : function (e) {
-        _preventDefault(e);
+    tapNote : function (e) {
+        // e.preventDefault();
 
-        var index = this.current().index();
+        var $target = $(e.touch.initialTouch);
+        var dataSource = privateNoteModel.notesDS;
+        var noteId = null, note = null;
 
-        switch (index) {
 
-            case 0: // Search
-                $("#gallerySearch").attr("placeholder", "Search all");
-                break;
-
-            case 1: // Contacts
-                $("#gallerySearch").attr("placeholder", "Search contacts");
-                break;
-
-            case 2: // Chats
-                $("#gallerySearch").attr("placeholder", "Search chats");
-                break;
-
-            case 3: // Calendar
-                $("#gallerySearch").attr("placeholder", "Search dates");
-                break;
-
-            case 4: // Places
-                $("#gallerySearch").attr("placeholder", "Search places");
-                break;
+        // This only works if the user clicks / tpas on a bounding element
+        if (e.touch.currentTarget !== undefined) {
+            // Legacy IOS
+            noteId =  $(e.touch.currentTarget).data("id");
+        } else {
+            // New Android
+            noteId =   e.touch.target[0].attributes['data-id'].value;
         }
 
-    }
+
+        if (noteId !== undefined && noteId !== null) {
+            note = privateNoteModel.findNote(noteId);
+            if (note !== undefined && note !== null) {
+                privateNotesView.activeNote = note;
+                if (note.noteType === 'Note') {
+                    noteViewer.openModal(note.uuid, privateNotesView.activeNote);
+                } else if (note.noteType === 'Gallery') {
+                    APP.kendo.navigate('#galleryEditor?galleryid='+note.uuid+"&returnview=home");
+                } else if (note.noteType === 'Movie') {
+                    movieListView.openModal( note.object, function (movie) {
+                        if (movie !== null) {
+                            privateNoteModel.updateNote(note);
+
+                        }
+                    });
+                }
+            }
+        }
+
+        // User actually clicked on the photo so show the open the photo viewer
+        if ($target.hasClass('photo-chat')) {
+
+            var photoId = $target.attr('data-photoId');
+
+            if (message.data !== undefined && message.data.photos !== undefined) {
+                var photoList = message.data.photos;
+
+                for (var i=0; i< photoList.length; i++) {
+                    var photoObj = photoList[i];
+
+                    if (photoObj.photoId === photoId) {
+                        modalChatPhotoView.openModal(photoObj, false);
+                        return;
+                    }
+                }
+            }
+        }
+
+    },
+
+    holdNote : function (e) {
+        /* _preventDefault(e);
+         var dataSource = privateNoteModel.notesDS;
+         var noteUID = $(e.touch.currentTarget).data("uid");
+         var note = dataSource.getByUid(noteUID);
+         privateNotesView.activeNote = note;*/
+
+        var $target = $(e.touch.initialTouch);
+        var dataSource = privateNoteModel.notesDS;
+        var noteId = null, note = null;
+
+
+        // This only works if the user clicks / tpas on a bounding element
+        if (e.touch.currentTarget !== undefined) {
+            // Legacy IOS
+            noteId =  $(e.touch.currentTarget).data("id");
+        } else {
+            // New Android
+            noteId =   e.touch.target[0].attributes['data-id'].value;
+        }
+
+
+        if (noteId !== undefined && noteId !== null) {
+            note = privateNoteModel.findNote(noteId);
+            if (note !== undefined && note !== null) {
+                privateNotesView.activeNote = note;
+            }
+        }
+
+
+        $("#privateNoteViewActions").data("kendoMobileActionSheet").open();
+
+    },
+
+    createNote : function (type, title, tags, tagString,  content, obj) {
+        var activeNote = {};
+        activeNote.uuid = uuid.v4();
+        activeNote.timestamp = new Date();
+        activeNote.ggType = privateNoteModel._ggClass;
+        activeNote.noteType = type;
+        activeNote.title = title;
+        activeNote.tags = tags;
+        activeNote.tagString = tagString;
+        activeNote.content = content;
+        var dataBlob = userDataChannel.encryptBlock(JSON.stringify(obj));
+        activeNote.dataBlob = dataBlob;
+
+        privateNoteModel.addNote(activeNote);
+
+    },
+
+    noteEvent : function (e) {
+        _preventDefault(e);
+        smartEventView.openModal(null, function (smartEvent) {
+            if (smartEvent !== undefined && smartEvent !== null) {
+                var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
+
+                var placeName = smartEvent.placeName;
+                if(placeName === null){
+                    placeName = "";
+                }
+
+
+                var template = kendo.template($("#intelliEvent-chat").html());
+                var tempObj = {
+                    ggType: "Event",
+                    title : smartEvent.title,
+                    date : date,
+                    placeName: placeName,
+                    objectId : objectId
+                };
+
+                var content = template(tempObj);
+
+
+                galleryView.createNote(galleryView._noteEvent, tempObj.title, [], '', content, smartEvent);
+
+            }
+
+        });
+    },
+
+
+    noteMovie : function (e) {
+        _preventDefault(e);
+        movieListView.openModal( null, function (smartMovie) {
+
+            if (smartMovie !== undefined && smartMovie !== null) {
+                var date = smartMovie.showtime, objectId = smartMovie.uuid;
+
+                var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
+
+
+                var template = kendo.template($("#intelliMovie-chat").html());
+                var tempObj = {
+                    ggType: "Movie",
+                    imageUrl: smartMovie.imageUrl,
+                    movieTitle : smartMovie.movieTitle,
+                    dateStr : dateStr,
+                    theatreName: smartMovie.theatreName,
+                    objectId : objectId,
+                    rating: smartMovie.rating,
+                    runtime: smartMovie.runtime
+                };
+
+                var content = template(tempObj);
+
+                galleryView.createNote(galleryView._noteMovie, tempObj.movieTitle, [], '', content, smartMovie);
+            }
+
+        });
+    },
+
+    noteFlight : function (e) {
+        _preventDefault(e);
+        //channelView.messageMenuTag();
+
+        smartFlightView.openModal(null,function (smartFlight) {
+            if (smartFlight !== undefined && smartFlight !== null) {
+                var  objectId = smartFlight.uuid;
+
+                var template = kendo.template($("#intelliFlight-chat").html());
+                var tempObj = {
+                    ggType : "Flight",
+                    objectId : objectId,
+                    name: smartFlight.name,
+                    departureAirport : smartFlight.departureAirport,
+                    departureCity : smartFlight.departureCity,
+                    arrivalAirport : smartFlight.arrivalAirport,
+                    arrivalCity : smartFlight.arrivalCity,
+                    estimatedDeparture : smartFlight.estimatedDeparture,
+                    ui_estimatedDeparture : smartFlight.ui_estimatedDeparture,
+                    timeDeparture: smartFlight.timeDeparture,
+                    dateDeparture: smartFlight.dateDeparture,
+                    timeArrival : smartFlight.timeArrival,
+                    dateArrival: smartFlight.dateArrival,
+                    estimatedArrival : smartFlight.estimatedArrival,
+                    ui_estimatedArrival : smartFlight.ui_estimatedArrival,
+                    durationString : smartFlight.durationString
+
+                };
+
+                var content= template(tempObj);
+                galleryView.createNote(galleryView._noteFlight, tempObj.name, [], '', content, smartFlight);
+            }
+
+        });
+    },
+
+    noteTrip: function (e) {
+        _preventDefault(e);
+        smartTripView.openModal(null, function (smartTrip) {
+            if (smartTrip !== undefined && smartTrip !== null) {
+                var  objectId = smartTrip.uuid;
+
+                var template = kendo.template($("#intelliTrip-chat").html());
+
+                var dest = smartTrip.destination.address;
+                var orig = smartTrip.origin.address;
+
+
+                if (smartTrip.destination.name !== null) {
+                    dest = smartTrip.destination.name;
+                }
+
+                if (smartTrip.origin.name !== null) {
+                    orig = smartTrip.origin.name;
+                }
+
+                var tempObj = {
+                    ggType: "Trip",
+                    name: smartTrip.name,
+                    origin: orig,
+                    destination: dest,
+                    departure: moment(smartTrip.departure).format ("ddd, M/D @ h:mm a"),
+                    arrival: moment(smartTrip.arrival).format ("ddd, M/D @ h:mm a"),
+                    durationString: smartTrip.durationString,
+                    distanceString: smartTrip.distanceString,
+                    objectId : objectId,
+                    tripTimeType: smartTrip.tripTimeType
+                };
+
+                var content = template(tempObj);
+
+                galleryView.createNote(galleryView._noteTrip, tempObj.name, [], '', content, smartTrip);
+            }
+        });
+    },
+
+
+    noteAccount : function (e) {
+        _preventDefault(e);
+        smartAccountView.openModal();
+    },
+
+    noteMedical : function (e) {
+        _preventDefault(e);
+        smartMedicalView.openModal();
+    },
 };
 
 

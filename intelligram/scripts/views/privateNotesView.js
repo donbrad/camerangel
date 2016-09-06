@@ -947,8 +947,6 @@ var privateNotesView = {
     tapNote : function (e) {
        // e.preventDefault();
 
-
-
         var $target = $(e.touch.initialTouch);
         var dataSource = privateNoteModel.notesDS;
         var noteId = null, note = null;
@@ -968,8 +966,6 @@ var privateNotesView = {
             note = privateNoteModel.findNote(noteId);
             if (note !== undefined && note !== null) {
                 privateNotesView.activeNote = note;
-
-
                 if (note.noteType === 'Note') {
                     noteViewer.openModal(note.uuid, privateNotesView.activeNote);
                 } else if (note.noteType === 'Gallery') {
@@ -984,8 +980,6 @@ var privateNotesView = {
                 }
             }
         }
-
-
 
         // User actually clicked on the photo so show the open the photo viewer
         if ($target.hasClass('photo-chat')) {
