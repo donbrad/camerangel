@@ -3843,6 +3843,20 @@
 </div>
 
 
+<script id="intelliPlace-chat" type="text/x-kendo-template">
+	<div>
+		<a class="intelliPlace" data-role="button" data-objectid="#:objectId#" data-objectType="Place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick" >
+
+			<div class="header">
+				<p class="intelliTrip-title"><img src="images/nav-places.svg" /> #:name# </p>
+				<p class="helper intelliTrip-subheader">
+					<span>#:address#</span>
+				</p>
+			</div>
+		</a>
+	</div>
+</script>
+
 <script id="intelliTrip-chat" type="text/x-kendo-template">
 	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
@@ -4033,22 +4047,7 @@
 	</div>
 </script>
 
-<script id="intelliPlace-chat" type="text/x-kendo-template">
-	<div>
-	<a class="btnSmart-place" data-role="button" data-objectid="#:objectId#" data-objectType="place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick" >
 
-			<div class="btnSmart-content">
-				<p class="btnSmart-title"> #:name# </p>
-				<p class="btnSmart-date"> #:address#</p>
-
-			</div>
-
-			<span class="btnSmart-type">
-					<img src="images/smart-event-alt.svg" class="icon-smartBtn" />
-			</span>
-	</a>
-	</div>
-</script>
 
 <!-- smartMovie modal -->
 <div data-role="modalview" id="smartMovieModal" style="width: 100%;  height: 100%; display: none;"  data-model="smartMovieView.activeObject" data-init="smartMovieView.onInit" data-open="smartMovieView.onShow" class="appearance">
@@ -6333,65 +6332,31 @@
 	# } #
 	# if (noteType === 'Flight') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Flight" data-uuid="#:uuid#">
-		<h3 class="textClamp">
-			<img src="images/intelliFlight-icon.svg" class="icon-sm" />
-			<span>#:titleStr#</span>
-		</h3>
-		<p class="helper" style="font-size: 1.0em; clear:both;">
-			<span> #:tagString#</span>
-		</p>
 		<p class="helper" style="font-size: 1.0em; clear:both;">
 			<span> #=content#</span>
 		</p>
-
 	</div>
 	# } #
 	# if (noteType === 'Trip') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Trip" data-uuid="#:uuid#">
-		<h3 class="textClamp">
-			<img src="images/intelliTrip-icon.svg" class="icon-sm" />
-			<span>#:titleStr#</span>
-		</h3>
-		<p class="helper" style="font-size: 1.0em; clear:both;">
-			<span> #:tagString#</span>
-		</p>
 		<p class="helper" style="font-size: 1.0em; clear:both;">
 			<span> #=content#</span>
 		</p>
-
 
 	</div>
 	# } #
 	# if (noteType === 'Movie') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Movie" data-uuid="#:uuid#">
-		<h3 class="textClamp">
-			<img src="images/intelliMovie-icon.svg" class="icon-sm" />
-			<span>#:titleStr#</span>
-		</h3>
-		<p class="helper" style="font-size: 1.0em; clear:both;">
-			<span> #:tagString#</span>
-		</p>
 		<p class="helper" style="font-size: 1.0em; clear:both;">
 			<span> #=content#</span>
 		</p>
-
-
 	</div>
 	# } #
 	# if (noteType === 'Event') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Event" data-uuid="#:uuid#">
-		<h3 class="textClamp">
-			<img src="images/smart-event.svg" class="icon-sm" />
-			<span>#:titleStr#</span>
-		</h3>
-		<p class="helper" style="font-size: 1.0em; clear:both;">
-			<span> #:tagString#</span>
-		</p>
 		<p class="helper" style="font-size: 1.0em; clear:both;">
 			<span> #:content#</span>
 		</p>
-
-
 	</div>
 	# } #
 </script>
