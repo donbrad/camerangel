@@ -6284,16 +6284,17 @@
 	var noteDate = moment(timestamp);
 	var today = moment();
 	var photoStr = "";
-	if (dataObj !== undefined && dataObj.photos !== undefined) {
-		var photoCount = dataObj.photos.length;
+	var photos = 0;
 
-		if (photoCount === 1) {
-			photoStr = "1 photo";
-		} else if (photoCount > 1) {
-			photoStr = photoCount + " photos";
-		}
-	}
+    if (photoCount !== undefined)
+        photos = photoCount;
 
+    if (photos === 1) {
+         photoStr = "1 photo";
+    } else if (photos > 1) {
+        photoStr = photos + " photos";
+    }
+    
 	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
 	} else {
