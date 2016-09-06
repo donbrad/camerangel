@@ -3847,9 +3847,12 @@
 	<div class="intelliPlace" data-role="button" data-objectid="#:objectId#" data-objectType="Place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
 			<p class="title"><img src="images/icon-place-dark.svg" /> #:name# </p>
-			<p class="subheader">
-				#:address#
-			</p>
+            <p class="subheader">
+                #:address#
+            </p>
+            <p class="btnSmart-date textClamp">
+                #:description#
+            </p>
 		</div>
 	</div>
 </script>
@@ -4831,7 +4834,41 @@
 
 </div>
 
+<!-- IntelliPlace Modal -->
+<div data-role="modalview" data-title="intelliPlace" data-model="smartPlaceView.activeObj" id="smartPlaceView" style="height:100%; width:100%; display: none;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>intelliPlace</span>
+            <a  data-role="button" data-click="smartPlaceView.onClose" data-align="left"><img class="icon-sm" src="images/close.svg" /></a>
+        </div>
+    </div>
+    <div>
 
+        <ul  style="padding-left: 12px; width : 95%;">
+            <li>
+                <label> Name
+                    <input class="input-text-md" type="search"  data-bind="value: name" placeholder="Name..." required/>
+                </label>
+            </li>
+            <li>
+                <label> Description
+                    <input class="input-text-sm" type="search"   data-bind="value: description" placeholder="Description..."/>
+                </label>
+            </li>
+
+            <li>
+                <label>  Address
+                    <input type="text" data-bind="value: address" readonly />
+                </label>
+            </li>
+        </ul>
+
+    </div>
+    <div class="footer" data-role="footer">
+        <a class="btnFull-modal btnPrimary" data-role="button"  data-click="smartPlaceView.onSave">Save</a>
+    </div>
+
+</div>
 
 <!-- Nearby Results -->
 <div data-role="modalview" data-title="Nearby Results" id="nearby-results" style="height:90%; width:90%; display: none;">
@@ -4901,7 +4938,7 @@
 		<ul id="placeView-listview"></ul>
 
 	</div>
-	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;"  id=placeViewEditor" style="min-height: 48px; max-height: 60%;">
+	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;" id=placeViewEditor" style="min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
 			<div id="placeViewTitleTag" class="hidden">
 				<input type="search" id="placeViewTitle" placeholder="Title...">

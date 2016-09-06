@@ -2386,6 +2386,7 @@ var channelView = {
             ggType : "Place",
             name: smartPlace.name,
             address: smartPlace.address,
+            description: smartPlace.description,
             objectId : objectId
         };
 
@@ -3172,20 +3173,25 @@ var channelView = {
         _preventDefault(e);
 
         smartEventPlacesView.openModal("", "IntelliPlace", function (placeObj) {
-            if (placeObj !== undefined && placeObj !== null) {
-                var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID, senderName: userModel._user.name};
 
-                place.lat = placeObj.lat;
-                place.lng = placeObj.lng;
-                place.name  = placeObj.name;
-                place.address = placeObj.address;
-                place.googleId = placeObj.googleId;
-                place.placeUUID = null;
+            smartPlaceView.openModal(placeObj, function (placeObject) {
+                if (placeObject !== undefined && placeObject !== null) {
+                    var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID, senderName: userModel._user.name};
 
-                channelView.messageObjects.push(place);
-                mobileNotify("Sending IntelliPlace...");
-                channelView.messageSend();
-            }
+                    place.lat = placeObject.lat;
+                    place.lng = placeObject.lng;
+                    place.name  = placeObject.name;
+                    place.address = placeObject.address;
+                    place.googleId = placeObject.googleId;
+                    place.description = placeObject.description;
+                    place.placeUUID = null;
+
+                    channelView.messageObjects.push(place);
+                    mobileNotify("Sending IntelliPlace...");
+                    channelView.messageSend();
+                }
+            });
+
         });
     },
 
