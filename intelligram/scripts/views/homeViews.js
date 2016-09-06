@@ -1130,6 +1130,9 @@ var noteEditView = {
 
             noteEditView.activeNote = note;
             note.dataObj = userDataChannel.decryptBlock(note.dataBlob);
+            if (note.dataObj !== null) {
+               note.dataObj = JSON.parse(note.dataObj);
+            }
             noteEditView.photos = note.dataObj.photos;
 
             note.contentBlob = userDataChannel.decryptBlock(note.contentBlob);

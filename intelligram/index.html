@@ -6262,16 +6262,6 @@
 <script type="text/x-kendo-template" id="privateNote-template">
 
 	#
-
-    if (content === undefined) {
-        content = userDataChannel.decryptBlock(contentBlob);
-    }
-    if (dataObj === undefined) {
-        dataObj = userDataChannel.decryptBlock(dataBlob);
-        if (dataObj !== null)
-            dataObj = JSON.parse(dataObj);
-    }
-
     var titleStr = "";
 	if (title === null || title === '') {
 	titleStr = "Untitled"; }
@@ -6294,7 +6284,7 @@
     } else if (photos > 1) {
         photoStr = photos + " photos";
     }
-    
+
 	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
 	} else {
