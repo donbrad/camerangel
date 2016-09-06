@@ -3844,16 +3844,13 @@
 
 
 <script id="intelliPlace-chat" type="text/x-kendo-template">
-	<div>
-		<a class="intelliPlace" data-role="button" data-objectid="#:objectId#" data-objectType="Place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick" >
-
-			<div class="header">
-				<p class="intelliTrip-title"><img src="images/nav-places.svg" /> #:name# </p>
-				<p class="helper intelliTrip-subheader">
-					<span>#:address#</span>
-				</p>
-			</div>
-		</a>
+	<div class="intelliPlace" data-role="button" data-objectid="#:objectId#" data-objectType="Place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick">
+		<div class="header">
+			<p class="title"><img src="images/icon-place-dark.svg" /> #:name# </p>
+			<p class="subheader">
+				#:address#
+			</p>
+		</div>
 	</div>
 </script>
 
