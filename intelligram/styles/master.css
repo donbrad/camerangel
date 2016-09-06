@@ -298,9 +298,10 @@
   height: 0.875em;
 }
 #searchEventPlaces-searchDiv > span.k-widget.k-tooltip.k-tooltip-validation.k-invalid-msg {
-  width: 85% !important;
+  width: 100% !important;
   color: #fff;
   background: #E57373;
+  padding: 0 !important;
 }
 #searchEventPlaces-searchDiv > span.k-widget.k-tooltip.k-tooltip-validation.k-invalid-msg > span {
   display: none;
@@ -7103,8 +7104,8 @@ table.k-editor {
   vertical-align: text-top;
 }
 .intelliTrip .header .intelliTrip-title {
-  font-size: 1.2em;
-  font-weight: 600;
+  font-size: 1.2em !important;
+  font-weight: 600 !important;
 }
 .intelliTrip .map {
   width: 100%;
@@ -7476,6 +7477,34 @@ table.k-editor {
 }
 .chat-message-text > .intelliFlight > a > div.summary {
   border-bottom: none;
+}
+/* IntelliPlace */
+.intelliPlace {
+  background-color: #fff !important;
+  border-radius: 4px !important;
+}
+.intelliPlace .header {
+  text-align: left;
+}
+.intelliPlace .header .title {
+  font-size: 1.2em;
+  font-weight: 600;
+  width: 95%;
+  padding: 0;
+  margin: 0 !important;
+}
+.intelliPlace .header .title img {
+  height: 1em;
+  max-width: 1em;
+  vertical-align: text-top;
+}
+.intelliPlace .header .subheader {
+  font-size: 0.85em;
+  position: relative;
+  color: #979797;
+}
+.intelliPlace .header .subheader img {
+  height: 12px;
 }
 /* Notes */
 .private-note-content {

@@ -2568,13 +2568,12 @@ var smartEventPlacesView = {
 
         }
 
+     //   var form = $("#searchEventPlace-form").kendoValidator().data("kendoValidator");
         $('#smartEventPlaces-query').val(query);
-        if (query.length > 3) {
+        if (query.length > 1) {
             smartEventPlacesView.preprocessQuery(query);
+            //form.validate();
         }
-
-        var form = $("#searchEventPlace-form").kendoValidator().data("kendoValidator");
-        form.validate();
 
         $("#smartEventPlacesModal").data("kendoMobileModalView").open();
 
@@ -3230,3 +3229,5 @@ var mapViewModal = {
 
     }
 };
+
+
