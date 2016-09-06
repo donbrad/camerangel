@@ -200,7 +200,7 @@ var privateNoteModel = {
     },
 
     findNote : function (noteId) {
-        var notes = this.queryNotes({ field: "uuid", operator: "eq", value: noteId });
+        var notes = privateNoteModel.queryNotes({ field: "uuid", operator: "eq", value: noteId });
 
         if (notes === undefined ) {
             return null;
@@ -214,7 +214,7 @@ var privateNoteModel = {
 
 
     findGallery : function (galleryId) {
-        var galleries = this.queryNotes([{ field: "uuid", operator: "eq", value: galleryId },
+        var galleries = privateNoteModel.queryNotes([{ field: "uuid", operator: "eq", value: galleryId },
             {field: "noteType", operator: "eq", value: privateNoteModel._gallery }]);
 
         if (galleries === undefined ) {

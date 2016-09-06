@@ -195,7 +195,17 @@ var galleryView = {
 
                    // hide clear btn
                    $(this).addClass('hidden');
-			})
+			});
+
+            $("#notesView-listview").kendoMobileListView({
+                dataSource: privateNoteModel.notesDS,
+                template: $("#privateNote-template").html()
+
+            }).kendoTouch({
+                filter: ".private-note",
+                tap: privateNotesView.tapNote,
+                hold: privateNotesView.holdNote
+            });
 
         }
 

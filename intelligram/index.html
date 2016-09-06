@@ -6261,7 +6261,18 @@
 
 <script type="text/x-kendo-template" id="privateNote-template">
 
-	#   var titleStr = "";
+	#
+
+    if (content === undefined) {
+        content = userDataChannel.decryptBlock(contentBlob);
+    }
+    if (dataObj === undefined) {
+        dataObj = userDataChannel.decryptBlock(dataBlob);
+        if (dataObj !== null)
+            dataObj = JSON.parse(dataObj);
+    }
+
+    var titleStr = "";
 	if (title === null || title === '') {
 	titleStr = "Untitled"; }
 	else {
@@ -6273,8 +6284,8 @@
 	var noteDate = moment(timestamp);
 	var today = moment();
 	var photoStr = "";
-	if (dataObject !== undefined && dataObject.photos !== undefined) {
-		var photoCount = dataObject.photos.length;
+	if (dataObj !== undefined && dataObj.photos !== undefined) {
+		var photoCount = dataObj.photos.length;
 
 		if (photoCount === 1) {
 			photoStr = "1 photo";
@@ -6282,11 +6293,6 @@
 			photoStr = photoCount + " photos";
 		}
 	}
-
-	var desc = '';
-
-	if (description !== undefined)
-		desc = description;
 
 	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
@@ -6307,9 +6313,6 @@
 			</p>
 			<p class="helper" style="font-size: 1.0em; clear:both;">
 				<span> #:tagString#</span>
-			</p>
-			<p class="helper" style="font-size: 1.0em; clear:both;">
-				<span> #:desc#</span>
 			</p>
 			<div class="private-note-content">
 				#=content#

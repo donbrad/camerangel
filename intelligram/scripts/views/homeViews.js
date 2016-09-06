@@ -1070,7 +1070,7 @@ var noteEditView = {
     _editorActive : false,
     _mode : 'create',
     _noteUUID : null,
-    contentObj : new kendo.data.ObservableObject(),
+    activeNote : new kendo.data.ObservableObject(),
     tags : null,
     tagString: null,
     photos: [],
@@ -1092,18 +1092,18 @@ var noteEditView = {
     initNote : function () {
         var that = noteEditView;
 
-        that.contentObj.dataObj = {};
-        that.contentObj.uuid = uuid.v4();
-        that.contentObj.dataObj.photos = [];
-        that.contentObj.dataObj.objects = [];
-        that.contentObj.title = '';
-        that.contentObj.tagString = '';
-        that.contentObj.tags = [];
-        that.contentObj.content = '';
-        that.contentObj.contentBlob = '';
-        that.contentObj.timestamp = new Date();
-        that.contentObj.ggType = privateNoteModel._ggClass;
-        that.contentObj.noteType = privateNoteModel._note;
+        that.activeNote.dataObj = {};
+        that.activeNote.uuid = uuid.v4();
+        that.activeNote.dataObj.photos = [];
+        that.activeNote.dataObj.objects = [];
+        that.activeNote.title = '';
+        that.activeNote.tagString = '';
+        that.activeNote.tags = [];
+        that.activeNote.content = null;
+        that.activeNote.contentBlob = null;
+        that.activeNote.timestamp = new Date();
+        that.activeNote.ggType = privateNoteModel._ggClass;
+        that.activeNote.noteType = privateNoteModel._note;
         $('#noteEditor-textarea').redactor('code.set', "");
         $('#noteEditor-title').val("");
         $('#noteEditor-tagString').val("");
@@ -1126,9 +1126,15 @@ var noteEditView = {
             if (note.tagString === undefined) {
                 note.tagString = null;
             }
-            noteEditView.contentObj = note;
+
+
+            noteEditView.activeNote = note;
+            note.dataObj = userDataChannel.decryptBlock(note.dataBlob);
             noteEditView.photos = note.dataObj.photos;
-            $('#noteEditor-textarea').redactor('code.set', note.content);
+
+            note.contentBlob = userDataChannel.decryptBlock(note.contentBlob);
+
+            $('#noteEditor-textarea').redactor('code.set', note.contentBlob);
             $('#noteEditor-title').val(note.title);
             $('#noteEditor-tagString').val(note.tagString);
 
@@ -1178,7 +1184,7 @@ var noteEditView = {
 
     onSave : function (e) {
         if (noteEditView._saveCallback !== null) {
-            noteEditView._saveCallback (noteEditView.contentObj);
+            noteEditView._saveCallback (noteEditView.activeNote);
         }
 
         noteEditView.saveNote();
@@ -1222,7 +1228,7 @@ var noteEditView = {
             };
         }
 
-        noteEditView.contentObj.dataObj.photos.push(photoObj);
+        noteEditView.activeNote.dataObj.photos.push(photoObj);
         // photoModel.addPhotoOffer(photo.photoId, channelView._channelUUID, photo.thumbnailUrl, photo.imageUrl, canCopy);
     },
 
@@ -1321,49 +1327,50 @@ var noteEditView = {
         }
 
 
+
         if (validNote === true ) {
 
-            var activeNote = noteEditView.contentObj;
+            var activeNote = noteEditView.activeNote;
             var contentData = JSON.stringify(activeNote.dataObj);
             var dataObj = JSON.parse(contentData);
-
+            var photoCount = activeNote.dataObj.photos.length;
+            var content = text.smartTruncate(80, true);
             var contentBlob = userDataChannel.encryptBlock(text);
             var dataBlob = userDataChannel.encryptBlock(contentData);
 
-            if (note.content !== undefined) {
-                delete note.content;
-            }
-            if (note.dataObj !== undefined) {
-                delete note.dataObj;
+            if (activeNote.dataObj !== undefined) {
+                delete activeNote.dataObj;
             }
 
             if (noteEditView._mode === 'edit') {
 
                 var note = privateNoteModel.findNote(activeNote.uuid);
 
-
+                if (note.dataObj !== undefined) {
+                    delete note.dataObj;
+                }
                 note.set('title', title);
                 note.set('tagString', tagString);
                 note.set('tags', []); // todo: don integrate tag processing...
+                note.set('content', content);
+                note.set('photoCount', photoCount);
                 note.set('contentBlob', contentBlob);
                 note.set('dataBlob', dataBlob);
                 note.set('timestamp',ggTime.currentTime());
 
                 privateNoteModel.updateNote(note);
-                note.content = text;
-                note.dataObj = dataObj;
 
             } else {
 
                 activeNote.title = title;
                 activeNote.contentBlob = contentBlob;
+                activeNote.photoCount =  photoCount;
+                activeNote.content = content;
                 activeNote.tagString = tagString;
                 activeNote.timestamp = ggTime.currentTime();
                 activeNote.dataBlob = dataBlob;
 
                 privateNoteModel.addNote(activeNote);
-                activeNote.dataObj = dataObj;
-                activeNote.content = text;
             }
 
 
