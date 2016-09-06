@@ -1330,16 +1330,18 @@ var noteEditView = {
             var contentBlob = userDataChannel.encryptBlock(text);
             var dataBlob = userDataChannel.encryptBlock(contentData);
 
+            if (note.content !== undefined) {
+                delete note.content;
+            }
+            if (note.dataObj !== undefined) {
+                delete note.dataObj;
+            }
+
             if (noteEditView._mode === 'edit') {
 
                 var note = privateNoteModel.findNote(activeNote.uuid);
 
-                if (note.content !== undefined) {
-                    delete note.content;
-                }
-                if (note.dataObj !== undefined) {
-                    delete note.dataObj;
-                }
+
                 note.set('title', title);
                 note.set('tagString', tagString);
                 note.set('tags', []); // todo: don integrate tag processing...
