@@ -1040,16 +1040,16 @@ var noteViewer = {
             noteViewer.activeNote.set('uuid', note.uuid);
             noteViewer.activeNote.set('title', note.title);
             noteViewer.activeNote.set('tagString', note.tagString);
-            noteViewer.activeNote.set('contentBlob', note.contentBlob);
+            noteViewer.activeNote.set('content', note.content);
+            var contentBlob = userDataChannel.decryptBlock(note.contentBlob);
+            noteViewer.activeNote.set('contentBlob', contentBlob);
             noteViewer.activeNote.set('dataBlob', note.dataBlob);
 
-            var content = userDataChannel.decryptBlock(contentBlob);
-            var dataObj = userDataChannel.decryptBlock(dataBlob);
+            var dataObj = userDataChannel.decryptBlock(note.dataBlob);
             if (dataObj !== null) {
                 dataObj = JSON.parse(dataObj);
             }
 
-            noteViewer.activeNote.content = content;
             noteViewer.activeNote.dataObj = dataObj;
         }
         $('#noteViewer').data('kendoMobileModalView').open();

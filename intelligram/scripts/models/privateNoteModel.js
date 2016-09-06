@@ -62,7 +62,7 @@ var privateNoteModel = {
                 if (changedNotes !== undefined && !privateNoteModel._initialSync) {
 
                     privateNoteModel._initialSync = true;
-                    privateNoteModel.decryptNotes();
+
                 }
             } else {
                 switch (e.action) {
@@ -101,16 +101,6 @@ var privateNoteModel = {
     },
 
 
-    decryptNotes : function () {
-        var len = privateNoteModel.notesDS.total();
-
-        for (var i=0; i<len; i++) {
-            var note =  privateNoteModel.notesDS.at(i);
-            note.content = userDataChannel.decryptBlock(note.contentBlob);
-            note.data = userDataChannel.decryptBlock(note.dataBlob);
-        }
-
-    },
 
 
     addNote : function (note) {
@@ -122,35 +112,25 @@ var privateNoteModel = {
         privateNoteModel.notesDS.add(note);
         privateNoteModel.notesDS.sync();
 
-        var content = note.content, data = note.data;
-        delete note.content; delete note.data;
+
         everlive.createOne(privateNoteModel._cloudClass, note, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating Private Note " + JSON.stringify(error));
-            } else {
-                // Add the everlive object with everlive created Id to the datasource
-
             }
         });
 
-        note.content = content;
-        note.data = data;
     },
 
 
 
     updateNote : function (note) {
 
-        var content = note.content, data = note.data;
-        delete note.content;
-        delete note.data;
 
         everlive.update(privateNoteModel._cloudClass, note, {'uuid' : note.uuid}, function (error, data) {
             //placeNoteModel.notesDS.remove(note);
         });
 
-        note.content = content;
-        note.data = data;
+
     },
 
     encryptNote : function (note) {
