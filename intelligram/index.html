@@ -6090,6 +6090,19 @@
 	</div>
 </script>
 
+<script type="text/x-kendo-template" id="groupPickerView-template">
+    #
+    var title = data.title.capitalize('title');
+    var aliasString = "";
+    if (alias !== undefined && alias !== null) {
+    aliasString = " (" + alias + ")";
+    }
+    #
+    <div style="padding-left: 8px; padding-right: 8px; width: 90%;">
+        <span>#:title#<em>#:aliasString#</em></span>
+    </div>
+</script>
+
 <!-- Share Picker : select contacts, chats and groups -->
 <div data-role="modalview" id="contactPickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="contactPickerView.onInit">
 	<div data-role="header">
@@ -6179,7 +6192,7 @@
     <div style="width: 100vw;">
         <div ><span style="font-size: 1.3em; float:left;">Groups</span> <span style="float:right;"><a data-role="button"  data-click="groupPickerView.addGroup"  class="btnClear-grey-sm">Add Group</a></span></div>
         <div style="clear:both;"></div>
-        <ul id="groupPickerView-listview" class="list-inline" data-role="listview"></ul>
+        <ul id="groupPickerView-listview" class="list-inline" ></ul>
     </div>
 
     <div class="footer" data-role="footer">
