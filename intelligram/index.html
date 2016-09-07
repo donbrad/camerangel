@@ -2927,8 +2927,12 @@
 
 			<ul data-role="listview" data-style="inset" id="contactEditList">
 				<li class="contactEdit-group-edit">
-					<label>Groups</label>
-					<input type="search" placeholder="Add a Group" id="editContactGroup" data-bind="value: group" />
+					<div><
+						<label>Groups
+						<<a class="btnClear-sm" data-click="editContactView.editGroups" data-role="button">Edit</a>
+						<div id="contactEdit-group" data-bind="text:groupString"></div>
+						</label>
+					</div>
 				</li>
 				<li class="contactEdit-group-edit">
 					<label><img src="images/gg-ice.svg" class="icon-sm" /> ICE Contact
@@ -2936,12 +2940,7 @@
 					</label><br/>
 					<span class="caption-sm left">In Case of Emergency</span>
 				</li>
-				<li id="contactEdit-group-read" class="hidden">
-					<label>Groups
-						<a class="btnClear-sm" data-role="button">Edit</a>
-					</label>
-					<div id="contactEdit-group"></div>
-				</li>
+
 				<li id="contactEdit-phone-read">
 					<p>Phone
 						<span class="helper helper-verified" id="edit-verified-phone">
@@ -6163,24 +6162,30 @@
 </div>
 
 
-<div data-role="modalview" data-title="Contact Groups" id="contactGroupEditor" data-model="contactGroupView.activeObj" data-init="contactGroupView.onInit"   style="width:100%; height: 100%; display: none;" >
+
+<div data-role="modalview" data-title="Group Picker" id="groupPickerView" data-model="groupPickerView.activeObj" data-init="groupPickerView.onInit"   style="width:100%; height: 100%; display: none;" >
     <div data-role="header">
         <div data-role="navbar">
-            <span>Contact Groups</span>
-            <a data-role="button" data-click="groupEditView.onClose" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
+            <span>Group Picker</span>
+            <a data-role="button" data-click="groupPickerView.closeModal" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
         </div>
+		<div>
+			<div class="appendSearch">
+				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<input type="text" class="doubleAppendSearch" placeholder="Find groups..." id="groupPickerView-search" />
+			</div>
+		</div>
     </div>
 
     <div style="width: 100vw;">
-        <div ><span style="font-size: 1.3em; float:left;">Groups/span> <span style="float:right;"><a data-role="button"  data-click="contactGroupView.addContact"  class="btnClear-grey-sm">Edit</a></span></div>
+        <div ><span style="font-size: 1.3em; float:left;">Groups/span> <span style="float:right;"><a data-role="button"  data-click="groupPickerView.addGroup"  class="btnClear-grey-sm">Add Group</a></span></div>
         <div style="clear:both;"></div>
-        <ul id="contactGroup-listview" class="list-inline" data-role="listview"></ul>
+        <ul id="groupPickerView-listview" class="list-inline" data-role="listview"></ul>
     </div>
 
     <div class="footer" data-role="footer">
-        <a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="contactGroupView.onSave" data-align="right" id="contactGroup-saveBtn">Save</a>
+        <a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="groupPickerView.onSave" data-align="right" id="groupPickerView-saveBtn">Save</a>
     </div>
-
 </div>
 
 <!--/*

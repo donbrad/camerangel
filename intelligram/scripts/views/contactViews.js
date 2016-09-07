@@ -1119,6 +1119,7 @@ var addContactView = {
         var photouuid =  null;
 
 
+
         contact.set('ggType', contactModel._ggClass);
         contact.set("version", contactModel._version );
         contact.set('uuid', contactId);
@@ -1294,7 +1295,14 @@ var editContactView = {
             editContactView._activeContact.set("phoneValidated", contact.phoneValidated);
             editContactView._activeContact.set("email", contact.email);
             editContactView._activeContact.set("emailValidated", contact.emailValidated);  // emailValidated is a reserved term on Parse...
-            editContactView._activeContact.set("group", contact.group);
+            editContactView._activeContact.set("groups", contact.groups);
+            if (contact.groups === undefined) {
+                contact.groups = [];
+            }
+            editContactView._activeContact.set("groupString", contact.groupString);
+            if (contact.groupString === undefined) {
+                contact.groupString= null;
+            }
             editContactView._activeContact.set("isFavorite", contact.isFavorite);
             editContactView._activeContact.set("isBlocked", contact.isBlocked);
             editContactView._activeContact.set("photo", contact.photo);
@@ -1359,6 +1367,9 @@ var editContactView = {
         contact.set("phone", editContactView._activeContact.phone);
         contact.set("email", editContactView._activeContact.email);
         contact.set("photo", editContactView._activeContact.photo);
+        contact.set("groups", editContactView._activeContact.groups);
+        contact.set("groupString", editContactView._activeContact.groupString);
+
         contact.set("isFavorite", editContactView._activeContact.isFavorite);
         contact.set("isBlocked", editContactView._activeContact.isBlocked);
         if (editContactView._activeContact.contactUUID !== undefined && editContactView._activeContact.contactUUID !== null) {
@@ -1494,6 +1505,35 @@ var editContactView = {
     	}
 
     },
+
+
+    editGroups : function (e) {
+        var groupArray = editContactView._activeContact.groups;
+
+        var testArray = groupModel.groupsDS.data();
+
+        var candidateArray = [];
+
+        for (var i=0; i<testArray.length; i++) {
+            var found = false;
+
+            for (var j=0; j<groupArray; j++) {
+                if (groupArray[j] === testArray[i]) {
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                candidateArray.push(testArray[i])
+            }
+
+        }
+
+        groupPickerView.openModal(groupArray, candidateArray, function(groups, groupString) {
+
+        });
+    },
+
 
     updateDone: function (e) {
         _preventDefault(e);
@@ -2495,6 +2535,7 @@ var groupEditView = {
             that.activeObj.description = '';
             that.activeObj.tagString = '';
             that.activeObj.members = [];
+            that.activeObj.memberString = null;
             that.activeObj.tags = [];
             that.activeObj.isICE = false;
             that.activeObj.isFamily = false;
@@ -2506,6 +2547,7 @@ var groupEditView = {
             that.activeObj.title = group.title;
             that.activeObj.description = group.description;
             that.activeObj.members = group.members;
+            that.activeObj.memberString = groupEditView.buildMemberString(group.members);
             that.activeObj.tagString = group.tagString;
             that.activeObj.tags= group.tags;
             that.activeObj.isICE = group.isICE;
@@ -2686,7 +2728,7 @@ var groupEditView = {
 };
 
 
-
+/*
 var contactGroupView = {
     _callback : null,
     _returnview : null,
@@ -2694,7 +2736,7 @@ var contactGroupView = {
     activeObj : new kendo.data.ObservableObject({contactId: null, groups:[]}),
     tags : null,
     tagString: null,
-    memberDS:  new kendo.data.DataSource(),   // members of this group
+    groupDS:  new kendo.data.DataSource(),   // members of this group
     candidateDS :  new kendo.data.DataSource(),  // All other contacts that aren't in this group
 
     onInit: function (e) {
@@ -2904,6 +2946,168 @@ var contactGroupView = {
         contactModel.contactsDS.sync();
 
 
+    }
+
+
+};*/
+
+
+var groupPickerView = {
+    callback: null,
+    _inGroup : 'In Group',
+    _notInGroup : 'Select',
+
+    groupsDS : new kendo.data.DataSource({
+        group: {field: 'state'}
+    }),
+
+    onInit: function () {
+
+        $("#groupPickerView-listview").kendoMobileListView({
+            dataSource: groupPickerView.groupsDS,
+            template: $("#groupPickerView-template").html(),
+            headerTemplate : '<span style="font-size: 0.9em; "> <strong>#:value# </strong> </span>',
+            fixedHeaders: true,
+            autoBind: false,
+            click: function (e) {
+                var group = e.dataItem;
+                if (group.state === "Select") {
+                    group.set('state', "In Group");
+                } else {
+                    group.set('state', "Select");
+                }
+                $("#groupPickerView-listview").data("kendoMobileListView").refresh()
+            }
+
+        });
+
+        $("#groupPickerView-search").on('input', function() {
+
+            var query = this.value;
+            if (query.length > 0) {
+                groupPickerView.groupsDS.filter( {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"memberString",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+
+            } else {
+                groupPickerView.groupsDS.filter([]);
+            }
+        });
+    },
+
+    onOpen : function () {
+
+    },
+
+    buildGroupsDS : function (members, candidates) {
+
+
+        for (var i=0; i<members.length; i++) {
+            var group = members[i];
+            group.state = groupPickerView._inGroup;
+
+            groupPickerView.groupsDS.add(group);
+
+        }
+
+        for (var j=0; j<candidates.length; j++) {
+            var candidate = candidates[j];
+            candidate.state = groupPickerView._notInGroup;
+
+            groupPickerView.groupsDS.add(candidate);
+
+        }
+
+    },
+
+    buildGroupString : function (groups) {
+        var str = '';
+
+        for (var i=0; i<groups.length; i++) {
+            var group = groupModel.findGroup(groups[i]);
+            if (group !== null) {
+                str += group.title + ',';
+            }
+        }
+
+        str.splice(0,-1);
+
+        return(str);
+
+    },
+
+    queryGroups: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = groupPickerView.contactsDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    getAddedGroups : function () {
+
+        var groups = groupPickerView.queryContacts({field: "state", operator: "eq", value: groupPickerView._inGroup});
+
+
+        if (groups!== null && groups[0].items !== undefined) {
+            return (groups[0].items);
+        } else {
+            return([]);
+        }
+
+    },
+
+    openModal : function (memberArray, candidateArray,  callback) {
+
+        groupPickerView.groupsDS.data([]);
+
+        groupPickerView.buildGroupsDS(memberArray, candidateArray);
+
+        groupPickerView.groupsDS.filter([]);
+        // Reset search...
+        $("#groupPickerView-search").val('');
+
+
+        groupPickerView.callback = null;
+
+        if (callback !== undefined) {
+            groupPickerView.callback = callback;
+        }
+
+        $("#groupPickerView").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#groupPickerView").data("kendoMobileModalView").close();
+        if (groupPickerView.callback !== null) {
+            groupPickerView.callback(null);
+        }
+    },
+
+    onDone: function () {
+        $("#groupPickerView").data("kendoMobileModalView").close();
+        var groups = groupPickerView.getAddedGroups();
+        if (groupPickerView.callback !== null) {
+            var groupString = groupPickerView.buildGroupString(groups);
+            groupPickerView.callback(groups, groupString);
+        }
     }
 
 
