@@ -3088,7 +3088,7 @@ var mapViewModal = {
         var valid = false;
 
         if (locObj.title !== null) {
-            $('#mapViewModal-title').text(locObj.title);
+            $('#mapViewModal-title').html(locObj.title);
         }
         if (!mapViewModal._inited) {
             mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), mapModel.mapOptions);
@@ -3099,25 +3099,30 @@ var mapViewModal = {
             mapViewModal._returnModal = callback;
         }
 
-        mapViewModal._activePlace = null;
+
         mapViewModal._activePlaceModel = null;
         mapViewModal._activePlaceId = null;
 
 
         mapViewModal._lat = locObj.lat;
         mapViewModal._lng = locObj.lng;
-        mapViewModal._name = locObj.name;
-        mapViewModal._targetName = locObj.targetName;
+        mapViewModal._activePlace.set('name', locObj.name);
+        mapViewModal._activePlace.set('address', locObj.address);
+        mapViewModal._activePlace.set('lat', locObj.lat);
+        mapViewModal._activePlace.set('lng', locObj.lng);
+        mapViewModal._activePlace.set('placeId', null);
 
-        if (locObj.placeId !== null) {
+
+
+        if (locObj.placeId !== null ) {
             mapViewModal.setActivePlace(locObj.placeId);
         }
 
-        $("#mapViewModal-targetName").text(locObj.targetName);
-        $("#mapViewModal-locationName").text(locObj.name);
+        mapViewModal.displayActivePlace();
+
         $("#mapViewModal").data("kendoMobileModalView").open();
 
-        mapViewModal.displayActivePlace();
+
         
     },
 
@@ -3129,17 +3134,11 @@ var mapViewModal = {
         mapModel.googleMapModal.setZoom(mapViewModal._zoom);
 
         // Set a default label in case we're called with just a lat & lng.
-        var label = mapViewModal._name;
-
-        // If there's a valid currentPlace, use the name as the marker label
-        if (mapViewModal._activePlaceModel !== null) {
-            label = mapViewModal._activePlaceModel.name;
-        }
+        var label = mapViewModal._activePlace.name;
 
 
         // resize the map to fit the view
        
-        mapModel.googleMapModal.setCenter({lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng)});
 
         google.maps.event.trigger(mapModel.googleMapModal, "resize");
 
@@ -3153,6 +3152,9 @@ var mapViewModal = {
             title: label,
             map: mapModel.googleMapModal
         });
+
+        mapModel.googleMapModal.setCenter({lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng)});
+
     },
 
     setActivePlace : function (placeUUID) {
@@ -3160,7 +3162,7 @@ var mapViewModal = {
 
         var placeObj = placesModel.getPlaceModel(placeUUID);
 
-        if (placeObj !== undefined) {
+        if (placeObj !== undefined && placeObj !== null) {
             mapViewModal._activePlaceModel = placeObj;
 
             mapViewModal._lat = placeObj.lat;
@@ -3170,7 +3172,7 @@ var mapViewModal = {
             // Todo: cull this list based on what we show in ux...
             mapViewModal._activePlace.set('lat', placeObj.lat);
             mapViewModal._activePlace.set('lng', placeObj.lng);
-            mapViewModal._activePlace.set('placeUUID', placeUUID);
+            mapViewModal._activePlace.set('placeId', placeUUID);
             mapViewModal._activePlace.set('name', placeObj.name);
             mapViewModal._activePlace.set('alias', placeObj.alias);
             mapViewModal._activePlace.set('address', placeObj.address);

@@ -509,7 +509,7 @@ var galleryView = {
                          }*/
                     });
                 } else if (note.noteType === 'Place') {
-                    var locObj = {placeId: null, lat: dataObj.lat, lng: dataObj.lng, title: "IntelliPlace", name: null,  targetName: dataObj.name};
+                    var locObj = {placeId: null, lat: dataObj.lat, lng: dataObj.lng, title: "IntelliPlace" , name: dataObj.name,  targetName: dataObj.name, address: dataObj.address};
                     mapViewModal.openModal(locObj, function () {
 
                     });

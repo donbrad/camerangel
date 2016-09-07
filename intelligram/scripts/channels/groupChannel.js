@@ -125,19 +125,72 @@ var groupChannel = {
 
     doAddMember : function (msg) {
         var channelId = msg.channelUUID, memberId = msg.memberUUID;
+
+        var channel = channelModel.findChannelModel(msg.channelUUID);
+
+        if (channel !== undefined && channel !== null) {
+            var members = channel.members;
+            var found = false;
+
+            for (var i=0; i<members.length; i++) {
+                var member = members[i];
+
+                if (member === memberId) {
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                members.push(memberId);
+            }
+
+            channel.set('members', members);
+            channelModel.sync();
+
+        }
     },
 
     doRemoveMember : function (msg) {
         var channelId = msg.channelUUID, memberId = msg.memberUUID;
+        var channel = channelModel.findChannelModel(msg.channelUUID);
+
+        if (channel !== undefined && channel !== null) {
+            var members = channel.members, newMembers = [];
+
+
+            for (var i=0; i<members.length; i++) {
+                var member = members[i];
+
+                if (member !== memberId) {
+                    newMembers.push(member);
+                }
+            }
+
+
+            channel.set('members', newMembers);
+
+            channelModel.sync();
+
+        }
     },
 
     doDeleteChannel : function (msg) {
         var channelId = msg.channelUUID;
+        var channel = channelModel.findChannelModel(msg.channelUUID);
+        if (channel !== undefined && channel !== null) {
+            channelModel.deleteChannel(channelId, true);
+        }
     },
 
     doUpdateChannel : function (msg) {
-        var channelName = msg.name, channelDescription = msg.description, member = msg.members;
-
+        var channelId = msg.channelUUID;
+        var channelName = msg.name, channelDescription = msg.description, members = msg.members;
+        var channel = channelModel.findChannelModel(msg.channelUUID);
+        if (channel !== undefined && channel !== null) {
+            channel.set('name', channelName);
+            channel.set('description', channelDescription);
+            channel.set('members', members);
+        }
     },
 
     addMember : function (channelId, memberId) {

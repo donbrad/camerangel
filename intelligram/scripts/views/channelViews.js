@@ -1593,8 +1593,41 @@ var channelView = {
         // 1) we don't recalc on each display
         // 2) kendo refresh just renders the data and doesn't re-execute functions...
         for (var i=0; i<messages.length; i++) {
-            var message = messages[i];
-            channelView.preprocessMessage(message);
+            var msg = messages[i];
+
+            switch (msg.msgType) {
+
+                case groupChannel._message :
+                    channelView.preprocessMessage(msg);
+                    break;
+
+                case groupChannel._addMember :
+                    groupChannel.doAddMember(msg);
+                    break;
+
+                case groupChannel._removeMember :
+                    groupChannel.doRemoveMember(msg);
+                    break;
+
+                case groupChannel._deleteChannel :
+                    groupChannel.doDeleteChannel(msg);
+                    break;
+
+                case groupChannel._updateChannel :
+                    groupChannel.doUpdateChannel(msg);
+                    break;
+
+                case groupChannel._recallMessage :
+                    groupChannel.doRecallMessage(msg);
+                    break;
+
+                case groupChannel._recallPhoto :
+                    groupChannel.doRecallPhoto(msg);
+                    break;
+
+
+            }
+
         }
     },
 
