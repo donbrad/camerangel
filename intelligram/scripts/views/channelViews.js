@@ -1056,8 +1056,8 @@ var channelView = {
                 }
 
             }
-            channelView.preprocessMessages(filteredMessages);
-            channelView.messagesDS.data(filteredMessages);
+            var msgArray = channelView.preprocessMessages(filteredMessages);
+            channelView.messagesDS.data(msgArray);
         });
     },
 
@@ -1576,8 +1576,8 @@ var channelView = {
                     }
 
                 }
-                channelView.preprocessMessages(filteredMessages);
-                channelView.messagesDS.data(filteredMessages);
+                var msgArray = channelView.preprocessGroupMessages(filteredMessages);
+                channelView.messagesDS.data(msgArray);
 
                 channelView.loadImagesThenScroll();
 
@@ -1589,16 +1589,29 @@ var channelView = {
     },
 
     preprocessMessages : function (messages) {
+        for (var i=0; i<messages.length; i++) {
+            channelView.preprocessMessage(messages[i]);
+        }
+    },
+
+    preprocessGroupMessages : function (messages) {
+        var msgArray = [];
         // Process the derived message data on load so
         // 1) we don't recalc on each display
         // 2) kendo refresh just renders the data and doesn't re-execute functions...
         for (var i=0; i<messages.length; i++) {
             var msg = messages[i];
 
+            // Support legacy messages in channel without message type
+            if (msg.msgType === undefined) {
+                msg.msgType = groupChannel._message;
+            }
+
             switch (msg.msgType) {
 
                 case groupChannel._message :
                     channelView.preprocessMessage(msg);
+                    msgArray.push(msg);
                     break;
 
                 case groupChannel._addMember :
@@ -1624,11 +1637,11 @@ var channelView = {
                 case groupChannel._recallPhoto :
                     groupChannel.doRecallPhoto(msg);
                     break;
-
-
             }
 
         }
+
+        return(msgArray);
     },
 
     preprocessMessage : function (message) {

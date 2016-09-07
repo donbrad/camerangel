@@ -2555,9 +2555,13 @@
 		if (fromHistory !== undefined && fromHistory === true ) {
 			isPrivate = "privateMode"; }
 	}
-	if (wasSent !== undefined && wasSent === false) {
-	 formattedTime = "(Pending)";
+	if (wasSent === undefined) {
+	    wasSent = true;
+	}
+	if (!wasSent ) {
+	    formattedTime = "(Pending)";
 	} else  if (time !== undefined && time !== null) {
+
 		formattedTime = timeSince(time);
 		if(formattedTime === "0s"){
 			formattedTime = "Just now";
