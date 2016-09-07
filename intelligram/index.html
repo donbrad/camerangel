@@ -1826,13 +1826,14 @@
 	</div>
 </div>
 
-<div data-role="modalview"  id="mapViewModal" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade" data-stretch="true">
+<div data-role="modalview"  id="mapViewModal" data-model="mapViewModal._activePlace" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade" data-stretch="true">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span data-role="view-title" id="mapViewModal-title">Map</span>
+
 			<a data-role="button" data-align="left" data-click="mapViewModal.onDone">
 				<img src="images/close.svg"/>
 			</a>
+            <span id="mapViewModal-title">Map</span>
 			<a data-role="button" data-align="right" data-click="mapViewModal.onDirections">
 				<img src="images/icon-directions.svg"/>
 			</a>
@@ -1840,9 +1841,8 @@
 	</div>
 	<div>
 		<div style="text-align: center">
-			<span id="mapViewModal-targetName"></span>
-			</br>
-			<span id="mapViewModal-locationName"></span>
+			<div data-bind="text: name"></div>
+			<div data-bind="text: address"></div>
 		</div>
 		<div id="mapModalView-mapdiv"></div>
 	</div>
@@ -3849,9 +3849,6 @@
 			<p class="title"><img src="images/icon-place-dark.svg" /> #:name# </p>
             <p class="subheader">
                 #:address#
-            </p>
-            <p class="btnSmart-date textClamp">
-                #:description#
             </p>
 		</div>
 	</div>
