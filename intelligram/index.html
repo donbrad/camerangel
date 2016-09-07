@@ -6163,6 +6163,26 @@
 </div>
 
 
+<div data-role="modalview" data-title="Contact Groups" id="contactGroupEditor" data-model="contactGroupView.activeObj" data-init="contactGroupView.onInit"   style="width:100%; height: 100%; display: none;" >
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Contact Groups</span>
+            <a data-role="button" data-click="groupEditView.onClose" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
+        </div>
+    </div>
+
+    <div style="width: 100vw;">
+        <div ><span style="font-size: 1.3em; float:left;">Groups/span> <span style="float:right;"><a data-role="button"  data-click="contactGroupView.addContact"  class="btnClear-grey-sm">Edit</a></span></div>
+        <div style="clear:both;"></div>
+        <ul id="contactGroup-listview" class="list-inline" data-role="listview"></ul>
+    </div>
+
+    <div class="footer" data-role="footer">
+        <a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="contactGroupView.onSave" data-align="right" id="contactGroup-saveBtn">Save</a>
+    </div>
+
+</div>
+
 <!--/*
  * Private Notes
  */-->
