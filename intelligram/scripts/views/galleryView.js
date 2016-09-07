@@ -477,18 +477,43 @@ var galleryView = {
         if (noteId !== undefined && noteId !== null) {
             note = privateNoteModel.findNote(noteId);
             if (note !== undefined && note !== null) {
-                privateNotesView.activeNote = note;
+               var dataObj = userDataChannel.decryptBlock(note.dataBlob);
+                if(dataObj !== null) {
+                    dataObj = JSON.parse(dataObj);
+                }
+                note.dataObj = dataObj;
+
                 if (note.noteType === 'Note') {
-                    noteViewer.openModal(note.uuid, privateNotesView.activeNote);
+                    noteViewer.openModal(note.uuid, note);
                 } else if (note.noteType === 'Gallery') {
-                    APP.kendo.navigate('#galleryEditor?galleryid='+note.uuid+"&returnview=home");
+                    APP.kendo.navigate('#galleryEditor?galleryid='+note.uuid+"&returnview=gallery");
                 } else if (note.noteType === 'Movie') {
-                    movieListView.openModal( note.object, function (movie) {
-                        if (movie !== null) {
+                   smartMovieView.openModal( note.dataObj, function (movie) {
+                        /*if (movie !== null) {
                             privateNoteModel.updateNote(note);
 
-                        }
+                        }*/
                     });
+                } else if (note.noteType === 'Trip') {
+                    smartTripView.openModal( note.dataObj, function (trip) {
+                        /*if (movie !== null) {
+                         privateNoteModel.updateNote(note);
+
+                         }*/
+                    });
+                } else if (note.noteType === 'Event') {
+                    smartEventView.openModal( note.dataObj, function (trip) {
+                        /*if (movie !== null) {
+                         privateNoteModel.updateNote(note);
+
+                         }*/
+                    });
+                } else if (note.noteType === 'Place') {
+                    var locObj = {placeId: null, lat: dataObj.lat, lng: dataObj.lng, title: "IntelliPlace", name: null,  targetName: dataObj.name};
+                    mapViewModal.openModal(locObj, function () {
+
+                    });
+
                 }
             }
         }
@@ -712,7 +737,7 @@ var galleryView = {
     noteMedical : function (e) {
         _preventDefault(e);
         smartMedicalView.openModal();
-    },
+    }
 };
 
 
