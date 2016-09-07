@@ -424,7 +424,7 @@
 			<div id="home-alerts">
 				<div id="home-verify-div" data-role="button" data-click="verifyEmailModal.openModal">
                     <p>
-                        <img src="images/icon-alert.svg" />
+                        <img src="images/icon-alert.svg" id="home-verify-alert"/>
                         <span id="home-verify-text">5 days to verify account</span>
                         <img src="images/icon-arrow-right.svg" class="right" id="home-verify-arrow" />
                     </p>
@@ -2730,7 +2730,7 @@
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
 	<div data-role="tabstrip" id="contacts-buttongroup" class="tabBar" data-select="contactsView.onTabSelect">
 		<a data-tab="0">
-			<img src="images/icon-contact-alt.svg"  id="contacts-tab-0-img" /> Contacts
+			<img src="images/icon-contact.svg"  id="contacts-tab-0-img" /> Contacts
 		</a>
 		<a data-tab="1">
 			<img src="images/icon-group.svg" id="contacts-tab-1-img" /> Groups
@@ -2758,7 +2758,7 @@
 	</div>
 	<div id="contacts-groups">
 		<div id="groupListDiv" style="padding-bottom: 24px;">
-			<ul id="groups-listview"></ul>
+			<ul id="groups-listview" class="listview"></ul>
 
 			<div class="emptyState hidden">
 				<img src="images/empty-contacts.svg" />
@@ -6061,11 +6061,12 @@
 	var name = data.name.capitalize('title');
 	var aliasString = "";
 	if (alias !== undefined && alias !== null) {
-	aliasString = " (" + alias + ")";
+	aliasString = alias;
 	}
+	console.log(data);
 	#
-	<div style="padding-left: 8px; padding-right: 8px; width: 90%;">
-		<span>#:name#<em>#:aliasString#</em></span>
+	<div>
+		<h4 class="textClamp">#:name# <span class="helper-list-detail">#:aliasString#</span></h4>
 	</div>
 </script>
 
@@ -6087,9 +6088,17 @@
 
 	<div style="width: 100%;">
 
-		<ul id="contactPickerView-listview"  data-style="inset" ></ul>
+		<ul id="contactPickerView-listview" class="listview"></ul>
 	</div>
 </div>
+
+<script type="text/x-kendo-template" id="groupEditor-header-template">
+	#
+		console.log(value);
+
+	#
+	<span>#: value #</span>
+</script>
 
 <script type="text/x-kendo-template" id="groupEditor-Template">
 	#
@@ -6099,9 +6108,17 @@
 	aliasString = " (" + data.alias + ")";
 	}
 	#
-	<div style="padding-left: 8px; padding-right: 8px; width: 90%;" data-uuid="#:uuid#">
-		 <span>#:name#<em>#:aliasString#</em></span> <span style="float:right"><a data-role="button" class="btnClear-grey-sm" data-click="groupEditView.deleteMember">Delete</a></span>
-		<div style="clear:both;"></div>
+	<div data-uuid="#:uuid#">
+		 <h4 class="textClamp">
+			 #:name#
+			 <span class="helper-list-detail">#:aliasString#</span>
+		 </h4>
+		<span class="groupEditor-contact-delete">
+			<a data-role="button" class="btnClear-grey-sm" data-click="groupEditView.deleteMember">
+				<img src="images/icon-trash.svg" class="icon-sm" />
+			</a>
+		</span>
+		<div class="clearfix"></div>
 	</div>
 
 </script>
@@ -6118,7 +6135,7 @@
 		<label>Group Info</label>
 		<input id="groupEditor-title" class="input-text-lg" type="search"  data-bind="value: title" placeholder="Add Title...">
 		<input type="search" data-bind="value: description" placeholder="Add Description...">
-			<a data-role="button" class="btnClear _ux" data-click="groupEditView.toggleTags" data-bind="invisible: ux_tagsVisible" id="groupEditView-addTagBtn">
+			<a data-role="button" class="btnClear" data-click="groupEditView.toggleTags" data-bind="invisible: ux_tagsVisible" id="groupEditView-addTagBtn">
 				<img src="images/icon-tag-active.svg" class="icon-btn-sm" /> Add Group Tag
 			</a>
 		<div data-bind="visible: ux_tagsVisible">
@@ -6140,8 +6157,8 @@
 			</span>
 		</div>
 		<div style="clear:both;"></div>
-		<ul id="groupEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
+	<ul id="groupEdit-listview" class="listview" data-role="listview"></ul>
 
 	<div class="footer" data-role="footer">
 		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="groupEditView.onSave" id="groupEditor-saveBtn">
@@ -6590,14 +6607,23 @@
 
 
 <script type="text/x-kendo-template" id="groupsTemplate">
-
+	#
+		var memberCount = data.members.length
+		var memberCountTxt = "";
+		if(memberCount === 1){
+			memberCountTxt = "Member";
+		} else {
+			memberCountTxt = "Members";
+		}
+		console.log(data);
+	#
 	<div>
 		<div class="group-options list-slider-options">
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditGroup" data-group="#:uuid#">
 				<img src="images/option-edit.svg" height="18" />
 				<p class="chat-option-selection">Edit</p>
 			</a>
-			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteGroup" data-goup="#:uuid#">
+			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteGroup" data-group="#:uuid#">
 				<img src="images/icon-trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
 			</a>
@@ -6607,8 +6633,12 @@
 		<a class="groupListBox list-slider" data-group="#:uuid#">
 			<div class="left listName">
 				<h4 class="textClamp">
-					#= data.title #
+					#: data.title #
 				</h4>
+				<p class="helper textClamp">
+					<img src="images/icon-group.svg" />
+					#= memberCount # #= memberCountTxt #
+				</p>
 			</div>
 
 			<div class="left contact-status textClamp">

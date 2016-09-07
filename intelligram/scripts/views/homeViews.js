@@ -376,6 +376,10 @@ var homeView = {
                 // has the 7 day period expired
                 if(isBeforeLimit){
                     // still have time to verify
+                    $("#home-verify-div").removeClass("homeVerify-pastDue").addClass("homeVerify-needed");
+                    $("#home-verify-alert").attr("src", "images/icon-alert.svg");
+                    $("#home-verify-arrow").attr("src","images/icon-arrow-right.svg");
+
                     var daysLeft = moment().diff(timeLimit, "days");
 
                     if(daysLeft > 0){
@@ -387,6 +391,8 @@ var homeView = {
                     // time has expired
                     $("#home-verify-div").removeClass("homeVerify-needed").addClass("homeVerify-pastDue");
                     $("#home-verify-text").text("Account unverified");
+                    $("#home-verify-alert").attr("src", "images/icon-alert-light.svg");
+                    $("#home-verify-arrow").attr("src","images/icon-arrow-right-light.svg");
                 }
             }
 

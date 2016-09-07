@@ -134,21 +134,20 @@ var contactsView = {
             dataBound: function(e){
                 ux.checkEmptyUIState(groupModel.groupsDS, "#groupListDiv >");
             }
-
         }).kendoTouch({
             filter: ".groupListBox",
             enableSwipe: true,
             tap: function(e){
                 var groupId = null;
                 console.log(e.touch);
-
-               /* if (e.touch.currentTarget !== undefined) {
+                groupId = $(e.touch.target[0]).data("group");
+                /*if (e.touch.currentTarget !== undefined) {
                     // iOS and the previous versions
                     groupId = e.touch.currentTarget.attributes['data-group'].value
                 } else {
                     // Latest kendo versions for android
                     groupId = e.touch.target[0].attributes['data-group'].value;
-                }
+                }*/
 
                 var group = groupModel.findGroup(groupId);
                 if (group === undefined) {
@@ -157,30 +156,24 @@ var contactsView = {
                 }
 
                 // todo: don - wire up groupActionView modal
-                groupActionView.openModal(group.uuid);*/
-
+                groupActionView.openModal(group.uuid);
 
             },
             swipe: function(e) {
-                // Need to set current contact before exposing editing ux!
                 var selection = e.sender.events.currentTarget;
 
                 if(e.direction === "left" && !$(selection).hasClass("noSlide")){
-                    var otherOpenedLi = $(".contact-active");
-                    $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+                    var otherOpenedLi = $(".group-active");
+                    $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("group-active");
 
-                    if($(selection).hasClass("member") && $(window).width() < 375){
-                        $(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
-                    } else if ($(selection).hasClass("member"))  {
-                        $(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
-                    } else if($(window).width() < 375) {
-                        $(selection).velocity({translateX:"-85%"},{duration: "fast"}).addClass("contact-active");
+                    if($(window).width() < 375){
+                        $(selection).velocity({translateX:"-55%"},{duration: "fast"}).addClass("group-active");
                     } else {
-                        $(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("contact-active");
+                        $(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("group-active");
                     }
                 }
-                if (e.direction === "right" && $(selection).hasClass("contact-active")){
-                    $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+                if (e.direction === "right" && $(selection).hasClass("group-active")){
+                    $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("group-active");
                 }
 
             }
@@ -374,10 +367,12 @@ var contactsView = {
 
     doEditGroup : function (e) {
         var groupId = e.button[0].attributes["data-group"].value;
+        // todo - wire up
     },
 
     doDeleteGroup : function (e) {
         var groupId = e.button[0].attributes["data-group"].value;
+        // todo - wire up
     },
 
 
@@ -2312,7 +2307,7 @@ var contactPickerView = {
         $("#contactPickerView-listview").kendoMobileListView({
             dataSource: contactPickerView.contactsDS,
             template: $("#contactPickerView-template").html(),
-            headerTemplate : '<span style="font-size: 0.9em; "> <strong>#:value# </strong> </span>',
+            headerTemplate : $("#contactPickerView-header-template").html(),
             fixedHeaders: true,
             autoBind: false,
             click: function (e) {
@@ -2478,21 +2473,20 @@ var groupEditView = {
     },
 
     toggleTags: function(){
-        console.log(groupEditView.activeObj.ux_tagsVisible);
         if(groupEditView.activeObj.ux_tagsVisible){
             //$("#groupEditView-addTagBtn").addClass("hidden");
             groupEditView.activeObj.set("ux_tagsVisible", false);
         } else {
             groupEditView.activeObj.set("ux_tagsVisible", true);
-            //$("#groupEditView-addTagBtn").removeClass("hidden");
         }
     },
 
     isValid : function () {
         var that = groupEditView.activeObj;
-        // If there's a name and atleast 1 member - enable save
+        // If there's a name and at least 1 member - enable save
         if (that.title.length > 2 && that.members.length > 0) {
-            $('#groupEditor-saveBtn').removeClass('hidden');
+            //$('#groupEditor-saveBtn').removeClass('hidden');
+
         } else {
             $('#groupEditor-saveBtn').addClass('hidden');
         }
@@ -2518,6 +2512,7 @@ var groupEditView = {
             that.activeObj.isNeighbor = false;
             that.activeObj.canAccount = false;
             that.activeObj.canMedical = false;
+
         } else {
             that.activeObj.uuid = group.uuid;
             that.activeObj.title = group.title;
@@ -2532,6 +2527,7 @@ var groupEditView = {
             that.activeObj.canMedical = group.canMedical;
         }
 
+        that.activeObj.ux_tagsVisible = false;
         groupEditView.initData(that.activeObj.members);
 
         groupEditView.isValid();

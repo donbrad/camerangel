@@ -33,7 +33,8 @@
 @mobile: ~"only screen and (max-width: 320px)";
 
 /* Imports */
-@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700|PT+Sans:400,700|Open+Sans:400,600);
+//@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700|PT+Sans:400,700|Open+Sans:400,600);
+@import "fonts";
 @import "mixins.less";
 @import "mixin-shadow.less";
 @import "_sentinel.less";
@@ -1578,6 +1579,13 @@ div.footer.km-footer {
   .helper;
 }
 
+.helper-list-detail {
+  .helper;
+  font-size: 0.85em !important;
+  margin-left: 0.2em;
+  font-weight: 400;
+}
+
 .helper-header {
   &:extend(.helper);
   font-size: 0.75em;
@@ -1711,7 +1719,7 @@ div.footer.km-footer {
   img {
     height: 1em;
     max-width: 1em;
-    vertical-align: text-bottom;
+    vertical-align: middle;
   }
   p {
     margin-left: 0 !important;
@@ -1734,7 +1742,7 @@ div.footer.km-footer {
 
 #home-verify-arrow {
   position: relative;
-  top: 0.5em;
+  top: 0.25em;
 }
 
 #home-buttongroup > a.km-button > span {
@@ -2590,6 +2598,16 @@ div.footer.km-footer {
   margin-top: .2em;
   border: 1px solid @shade-200;
 }
+
+.listview {
+  background-color: #fff !important;
+  li:not(.km-group-container),
+  li > ul > li {
+    padding: 1em;
+    border-bottom: 1px solid @shade-200 !important;
+  }
+}
+
 /*
 .km-root .km-wp .km-view.appearance .km-listview select
 {
@@ -3773,7 +3791,7 @@ div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
 }
 
 ul li:last-child {
-  border-bottom: none !important;
+  //border-bottom: none !important;
 }
 
 li > .km-group-title {
@@ -4631,6 +4649,7 @@ div.loginBox > form > div > ul > li {
   margin-right: 0px;
 }
 
+
 #groupEditor-editTitleTag > a {
   margin-top: 0.25em;
 }
@@ -4755,10 +4774,7 @@ div.loginBox > form > div > ul > li {
 
 .list-slider,
 .contactListBox {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.25rem;
+  padding: 0.5em 1em;
   position: absolute;
   left: 0;
   top: 0;
@@ -4808,8 +4824,8 @@ div.loginBox > form > div > ul > li {
   display: inline-block;
   float: left;
   text-align: right;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
   a {
     vertical-align: middle;
   }
