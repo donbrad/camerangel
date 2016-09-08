@@ -578,7 +578,7 @@ var groupChannel = {
        var msgID = uuid.v4();
 
         var notificationString = "Chat : " + groupChannel.channelName;
-        var thisMessage = {
+        var message = {
             msgID: msgID,
             msgClass : groupChannel._class,
             msgType : groupChannel._message,
@@ -623,13 +623,13 @@ var groupChannel = {
         if (!deviceModel.isOnline()) {
 
             thisMessage.wasSent = false;
-            groupChannel.deferredDS.add(thisMessage);
+            groupChannel.deferredDS.add(message);
             return;
         }
 
         APP.pubnub.publish({
             channel: groupChannel.channelUUID,
-            message: thisMessage,
+            message: message,
             callback: function (m) {
                 if (m === undefined)
                     return;
@@ -639,10 +639,11 @@ var groupChannel = {
                 if (status !== 1) {
                     mobileNotify('Group Channel publish error: ' + message);
                 }
-
-
+                if (channelView._channelUUID === message.channelUUID) {
+                    channelView.messagesDS.add(message);
+                    channelView.scrollToBottom();
+                }
                 channelModel.updateLastMessageTime(groupChannel.channelUUID, null);
-                channelView.scrollToBottom();
 
 
             }
