@@ -1727,6 +1727,7 @@ var contactActionView = {
                 contactActionView._activeContact.set('contactUUID', contact.contactUUID);
                 contactActionView._activeContact.set('publicKey', contact.publicKey);
                 contactActionView._activeContact.set('phone', contact.phone);
+                contactActionView._activeContact.set('email', contact.email);
                 contactActionView._activeContact.set('category', contact.category);
                 contactActionView._activeContact.set('name', contactName);
                 contactActionView._activeContact.set('alias', contactAlias);

@@ -1374,7 +1374,7 @@ var channelView = {
             channelView.isPlaceChat = false;
             $('#channel-titleBtn .icon-header').addClass('hidden');
         }
-        channelModel.zeroUnreadCount(thisChannel.channelUUID);
+
 
         name =  thisChannel.name;
         $("#channelName").text(name);
