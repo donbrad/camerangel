@@ -25,7 +25,7 @@ var groupChannel = {
     start: null,
     end: null,
     moreMessages: false,
-    messageDS: [],
+    messageDS: new kendo.data.DataSource(),
     deferredDS : new kendo.data.DataSource(),
     recallDS : new kendo.data.DataSource(),
     nextFetchEnd : null,
@@ -57,17 +57,47 @@ var groupChannel = {
         groupChannel.users[userId] = groupChannel.thisUser;
 
         // Subscribe to our PubNub channel.
-        APP.pubnub.subscribe({
+      /*  APP.pubnub.subscribe({
             channel: groupChannel.channelUUID,
             windowing: 500,
             restore: true,
-            callback: groupChannel.receiveHandler/*,
+            callback: groupChannel.receiveHandler/!*,
             presence: groupChannel.presenceHandler,
             // Set our state to our user object, which contains our username and public key.
-            state: groupChannel.thisUser*/
+            state: groupChannel.thisUser*!/
+        });*/
+    },
+
+    subscribeChannelArray : function (channelArray) {
+        APP.pubnub.subscribe({
+            channel: channelArray,
+            windowing: 500,
+            restore: true,
+            callback: groupChannel.receiveHandler/*,
+             presence: groupChannel.presenceHandler,
+             // Set our state to our user object, which contains our username and public key.
+             state: groupChannel.thisUser*/
         });
     },
-    
+
+    subscribeChannel : function (channelId) {
+        APP.pubnub.subscribe({
+            channel:  channelId,
+            windowing: 500,
+            restore: true,
+            callback: groupChannel.receiveHandler/*,
+             presence: groupChannel.presenceHandler,
+             // Set our state to our user object, which contains our username and public key.
+             state: groupChannel.thisUser*/
+        });
+    },
+
+    unsubscribeChannel : function (channelId) {
+        APP.pubnub.unsubscribe({
+            channel: channelId
+        });
+    },
+
     receiveHandler : function (msg) {
 
         if (msg.msgType === undefined) {
@@ -125,19 +155,72 @@ var groupChannel = {
 
     doAddMember : function (msg) {
         var channelId = msg.channelUUID, memberId = msg.memberUUID;
+
+        var channel = channelModel.findChannelModel(msg.channelUUID);
+
+        if (channel !== undefined && channel !== null) {
+            var members = channel.members;
+            var found = false;
+
+            for (var i=0; i<members.length; i++) {
+                var member = members[i];
+
+                if (member === memberId) {
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                members.push(memberId);
+            }
+
+            channel.set('members', members);
+            channelModel.sync();
+
+        }
     },
 
     doRemoveMember : function (msg) {
         var channelId = msg.channelUUID, memberId = msg.memberUUID;
+        var channel = channelModel.findChannelModel(msg.channelUUID);
+
+        if (channel !== undefined && channel !== null) {
+            var members = channel.members, newMembers = [];
+
+
+            for (var i=0; i<members.length; i++) {
+                var member = members[i];
+
+                if (member !== memberId) {
+                    newMembers.push(member);
+                }
+            }
+
+
+            channel.set('members', newMembers);
+
+            channelModel.sync();
+
+        }
     },
 
     doDeleteChannel : function (msg) {
         var channelId = msg.channelUUID;
+        var channel = channelModel.findChannelModel(msg.channelUUID);
+        if (channel !== undefined && channel !== null) {
+            channelModel.deleteChannel(channelId, true);
+        }
     },
 
     doUpdateChannel : function (msg) {
-        var channelName = msg.name, channelDescription = msg.description, member = msg.members;
-
+        var channelId = msg.channelUUID;
+        var channelName = msg.name, channelDescription = msg.description, members = msg.members;
+        var channel = channelModel.findChannelModel(msg.channelUUID);
+        if (channel !== undefined && channel !== null) {
+            channel.set('name', channelName);
+            channel.set('description', channelDescription);
+            channel.set('members', members);
+        }
     },
 
     addMember : function (channelId, memberId) {
@@ -362,28 +445,27 @@ var groupChannel = {
         }
         channelView.preprocessMessage(message);
 
-        channelView.messagesDS.add(message);
         channelModel.cacheGroupMessage(message);
         channelModel.updateLastMessageTime(channelView._channelUUID, null);
-        
-        if (message.data.photos !== undefined && message.data.photos.length > 0) {
-            var selector = '#' + message.msgID + " img";
-            var $img = $(selector), n = $img.length;
-            if (n > 0) {
-                $img.on("load error", function () {
-                    if(!--n) {
-                        channelView.scrollToBottom();
-                    }
-                });
+
+        if (channelView._channelUUID === message.channelUUID) {
+            channelView.messagesDS.add(message);
+            if (message.data.photos !== undefined && message.data.photos.length > 0) {
+                var selector = '#' + message.msgID + " img";
+                var $img = $(selector), n = $img.length;
+                if (n > 0) {
+                    $img.on("load error", function () {
+                        if(!--n) {
+                            channelView.scrollToBottom();
+                        }
+                    });
+                } else {
+                    channelView.scrollToBottom();
+                }
             } else {
                 channelView.scrollToBottom();
             }
-        } else {
-            channelView.scrollToBottom();
         }
-
-
-
 
     },
 
@@ -534,6 +616,7 @@ var groupChannel = {
             data: data,
             time: currentTime,
             fromHistory: false,
+            wasSent : true,
             ttl: ttl
         };
 

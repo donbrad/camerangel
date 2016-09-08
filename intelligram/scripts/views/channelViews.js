@@ -1056,8 +1056,8 @@ var channelView = {
                 }
 
             }
-            channelView.preprocessMessages(filteredMessages);
-            channelView.messagesDS.data(filteredMessages);
+            var msgArray = channelView.preprocessMessages(filteredMessages);
+            channelView.messagesDS.data(msgArray);
         });
     },
 
@@ -1576,8 +1576,8 @@ var channelView = {
                     }
 
                 }
-                channelView.preprocessMessages(filteredMessages);
-                channelView.messagesDS.data(filteredMessages);
+                var msgArray = channelView.preprocessGroupMessages(filteredMessages);
+                channelView.messagesDS.data(msgArray);
 
                 channelView.loadImagesThenScroll();
 
@@ -1589,13 +1589,59 @@ var channelView = {
     },
 
     preprocessMessages : function (messages) {
+        for (var i=0; i<messages.length; i++) {
+            channelView.preprocessMessage(messages[i]);
+        }
+    },
+
+    preprocessGroupMessages : function (messages) {
+        var msgArray = [];
         // Process the derived message data on load so
         // 1) we don't recalc on each display
         // 2) kendo refresh just renders the data and doesn't re-execute functions...
         for (var i=0; i<messages.length; i++) {
-            var message = messages[i];
-            channelView.preprocessMessage(message);
+            var msg = messages[i];
+
+            // Support legacy messages in channel without message type
+            if (msg.msgType === undefined) {
+                msg.msgType = groupChannel._message;
+            }
+
+            switch (msg.msgType) {
+
+                case groupChannel._message :
+                    channelView.preprocessMessage(msg);
+                    msgArray.push(msg);
+                    break;
+
+                case groupChannel._addMember :
+                    groupChannel.doAddMember(msg);
+                    break;
+
+                case groupChannel._removeMember :
+                    groupChannel.doRemoveMember(msg);
+                    break;
+
+                case groupChannel._deleteChannel :
+                    groupChannel.doDeleteChannel(msg);
+                    break;
+
+                case groupChannel._updateChannel :
+                    groupChannel.doUpdateChannel(msg);
+                    break;
+
+                case groupChannel._recallMessage :
+                    groupChannel.doRecallMessage(msg);
+                    break;
+
+                case groupChannel._recallPhoto :
+                    groupChannel.doRecallPhoto(msg);
+                    break;
+            }
+
         }
+
+        return(msgArray);
     },
 
     preprocessMessage : function (message) {
@@ -2373,35 +2419,27 @@ var channelView = {
 
     },
 
-    addSmartEventToMessage: function (smartEvent, message) {
-
-      //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
-
-        /*var dateStr = moment(date).format('ddd MMM Do');
-        var localTime = moment(date).format("LT");*/
-
-        var placeName = smartEvent.placeName;
-        if(placeName === null){
-            placeName = "";
-        }
 
 
-        var template = kendo.template($("#intelliEvent-chat").html());
+    addSmartPlaceToMessage: function (smartPlace, message) {
+
+        //  var editor = $("#messageTextArea").data("kendoEditor");
+        var  objectId = smartPlace.uuid;
+
+
+        var template = kendo.template($("#intelliPlace-chat").html());
         var dataObj = {
-            ggType: "Event",
-            title : smartEvent.title,
-            date : date,
-            placeName: placeName,
+            ggType : "Place",
+            name: smartPlace.name,
+            address: smartPlace.address,
+            description: smartPlace.description,
             objectId : objectId
         };
 
-
-       var objectUrl = template(dataObj);
-
+        var objectUrl = template(dataObj);
         var fullMessage = message + objectUrl;
 
-        channelView.activeMessage.objects.push(smartEvent);
+        channelView.activeMessage.objects.push(smartPlace);
 
         return (fullMessage);
 
@@ -2436,42 +2474,6 @@ var channelView = {
         return (fullMessage);
 
     },
-
-
-    addSmartPlaceToMessage: function (smartPlace, message) {
-
-        //  var editor = $("#messageTextArea").data("kendoEditor");
-        var  objectId = smartPlace.uuid;
-
-
-
-       /* var objectUrl = '<div><span class="btnSmart-place" data-role="button" data-objectid="' + objectId +
-            '" id="placeobject_' + objectId + '"'+
-            'data-click="channelView.onObjectClick" >' +
-            '<div class="btnSmart-content">' +
-            '<p class="btnSmart-title">' + smartPlace.name + ' </p> ' +
-            '<p class="btnSmart-date textClamp">' + smartPlace.address + '</p> ' +
-            '</div>' +
-            '</span></div>';
-*/
-
-        var template = kendo.template($("#intelliPlace-chat").html());
-        var dataObj = {
-            ggType : "Place",
-            name: smartPlace.name,
-            address: smartPlace.address,
-            objectId : objectId
-        };
-
-        var objectUrl = template(dataObj);
-        var fullMessage = message + objectUrl;
-
-        channelView.activeMessage.objects.push(smartPlace);
-
-        return (fullMessage);
-
-    },
-
 
     addSmartTripToMessage: function (smartTrip, message) {
         var  objectId = smartTrip.uuid;
@@ -2512,6 +2514,39 @@ var channelView = {
 
     },
 
+    addSmartEventToMessage: function (smartEvent, message) {
+
+        //  var editor = $("#messageTextArea").data("kendoEditor");
+        var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
+
+        /*var dateStr = moment(date).format('ddd MMM Do');
+         var localTime = moment(date).format("LT");*/
+
+        var placeName = smartEvent.placeName;
+        if(placeName === null){
+            placeName = "";
+        }
+
+
+        var template = kendo.template($("#intelliEvent-chat").html());
+        var dataObj = {
+            ggType: "Event",
+            title : smartEvent.title,
+            date : date,
+            placeName: placeName,
+            objectId : objectId
+        };
+
+
+        var objectUrl = template(dataObj);
+
+        var fullMessage = message + objectUrl;
+
+        channelView.activeMessage.objects.push(smartEvent);
+
+        return (fullMessage);
+
+    },
 
     addSmartFlightToMessage: function (smartFlight, message) {
         var  objectId = smartFlight.uuid;
@@ -3184,20 +3219,25 @@ var channelView = {
         _preventDefault(e);
 
         smartEventPlacesView.openModal("", "IntelliPlace", function (placeObj) {
-            if (placeObj !== undefined && placeObj !== null) {
-                var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID, senderName: userModel._user.name};
 
-                place.lat = placeObj.lat;
-                place.lng = placeObj.lng;
-                place.name  = placeObj.name;
-                place.address = placeObj.address;
-                place.googleId = placeObj.googleId;
-                place.placeUUID = null;
+            smartPlaceView.openModal(placeObj, function (placeObject) {
+                if (placeObject !== undefined && placeObject !== null) {
+                    var place = {ggType: 'Place', uuid: uuid.v4(), senderUUID: userModel._user.userUUID, senderName: userModel._user.name};
 
-                channelView.messageObjects.push(place);
-                mobileNotify("Sending IntelliPlace...");
-                channelView.messageSend();
-            }
+                    place.lat = placeObject.lat;
+                    place.lng = placeObject.lng;
+                    place.name  = placeObject.name;
+                    place.address = placeObject.address;
+                    place.googleId = placeObject.googleId;
+                    place.description = placeObject.description;
+                    place.placeUUID = null;
+
+                    channelView.messageObjects.push(place);
+                    mobileNotify("Sending IntelliPlace...");
+                    channelView.messageSend();
+                }
+            });
+
         });
     },
 

@@ -4292,6 +4292,55 @@ var smartParkView = {
 };
 
 
+var smartPlaceView = {
+    activeObj : new kendo.data.ObservableObject({name: null, address: null, description: null}),
+    placeObject : null,
+    callback : null,
+
+    onInit: function () {
+
+    },
+    onOpen : function () {
+
+    },
+
+    openModal : function (placeObj, callback) {
+
+        var that = smartPlaceView;
+
+        that.callback = callback;
+
+        that.placeObject = placeObj;
+        that.activeObj.set('name', placeObj.name);
+        that.activeObj.set('address', placeObj.address);
+        that.activeObj.set('description', null);
+
+        $("#smartPlaceView").data("kendoMobileModalView").open();
+    },
+
+    closeModal : function () {
+        $("#smartPlaceView").data("kendoMobileModalView").close();
+    },
+
+    onDone: function () {
+        $("#smartPlaceView").data("kendoMobileModalView").close();
+    },
+
+
+    onSave : function () {
+        var that = smartPlaceView;
+        that.placeObject.name = that.activeObj.name;
+        that.placeObject.address = that.activeObj.address;
+        that.placeObject.description = that.activeObj.description;
+
+        that.callback(that.placeObject);
+
+        that.onDone();
+
+    }
+};
+
+
 var smartAlertView = {
     channelUUID : null,
     channelName : null,

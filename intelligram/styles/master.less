@@ -7216,8 +7216,8 @@ table.k-editor {
       margin: 0;
     }
     .intelliTrip-title {
-      font-size: 1.2em;
-      font-weight: 600;
+      font-size: 1.2em !important;
+      font-weight: 600 !important;
     }
   }
   .map {
@@ -7631,6 +7631,33 @@ table.k-editor {
 
 .chat-message-text > .intelliFlight > a > div.summary {
   border-bottom: none;
+}
+
+/* IntelliPlace */
+
+.intelliPlace {
+  background-color: #fff !important;
+  border-radius: 4px !important;
+  .header {
+    text-align: left;
+    .title {
+      font-size: 1.2em;
+      font-weight: 600;
+      width: 95%;
+      img {
+        height: 1em;
+        max-width: 1em;
+        vertical-align: text-top;
+      }
+      padding: 0;
+      margin: 0 !important;
+    }
+    .subheader {
+      font-size: 0.85em;
+      position: relative;
+      .helper;
+    }
+  }
 }
 
 /* Notes */

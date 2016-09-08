@@ -42,6 +42,8 @@ var channelModel = {
     _messageCountRefresh : 300000,   // Delta between message count  calls (in milliseconds)
 
     channelsDS: null,
+
+    channelsArray : [],
     
     photosDS: new kendo.data.DataSource(),
 
@@ -167,6 +169,8 @@ var channelModel = {
                     userDataChannel.history();
                     channelsView.updateChannelListDS();
                     contactModel.updateChatShares();
+                    channelModel.buildChannelsArray();
+                    groupChannel.subscribeChannelArray(channelModel.channelsArray);
                 }
             } else {
                 switch (e.action) {
@@ -182,12 +186,14 @@ var channelModel = {
                     case "remove" :
                         var channel = e.items[0];
                         channelsView._channelListDS.remove(channel);
-                        // delete from channel list
+                        // unsubscribe channel
+                        groupChannel.unsubscribeChannel(channel.channelUUID);
                         break;
 
                     case "add" :
                         var channel = e.items[0];
-                        // add to contactlist and contacttags
+                        // subscribe channel
+                        groupChannel.subscribeChannel(channel.channelUUID);
                         var channelList = channelsView.findChannelModel(channel.channelUUID);
                         if (channelList !== undefined)
                             channelsView._channelListDS.add(channel);
@@ -226,7 +232,22 @@ var channelModel = {
      /*   channelModel.photosDS.sync();
         channelModel.groupMessagesDS.sync();*/
     },
-    
+
+    buildChannelsArray : function () {
+        var len = channelModel.channelsDS.total();
+
+        if (len === 0)
+            return;
+
+        for (var i=0; i<len; i++) {
+            var channel = channelModel.channelsDS.at(i);
+
+            if (!channel.isPrivate) {
+                channelModel.channelsArray.push(channel.channelUUID);
+            }
+        }
+    },
+
     updateActiveChannel : function (channelUUID) {
         channelModel.activeChannels[channelUUID] = 1;
     },
