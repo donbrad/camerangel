@@ -2532,6 +2532,7 @@ var groupEditView = {
 
             that.activeObj.uuid = uuid.v4();
             that.activeObj.title = '';
+            that.activeObj.alias = '';
             that.activeObj.description = '';
             that.activeObj.tagString = '';
             that.activeObj.members = [];
@@ -2545,9 +2546,10 @@ var groupEditView = {
         } else {
             that.activeObj.uuid = group.uuid;
             that.activeObj.title = group.title;
+            that.activeObj.alias = group.alias;
             that.activeObj.description = group.description;
             that.activeObj.members = group.members;
-            that.activeObj.memberString = groupEditView.buildMemberString(group.members);
+            that.activeObj.memberString = group.memberString;
             that.activeObj.tagString = group.tagString;
             that.activeObj.tags= group.tags;
             that.activeObj.isICE = group.isICE;
