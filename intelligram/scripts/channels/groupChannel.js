@@ -634,7 +634,7 @@ var groupChannel = {
                 if (m === undefined)
                     return;
 
-                var status = m[0], message = m[1], time = m[2];
+                var status = m[0], pnmessage = m[1], time = m[2];
 
                 if (status !== 1) {
                     mobileNotify('Group Channel publish error: ' + message);
