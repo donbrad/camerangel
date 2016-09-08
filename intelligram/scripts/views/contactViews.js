@@ -2448,7 +2448,9 @@ var groupEditView = {
     activeObj : new kendo.data.ObservableObject({
         title: '',
         members:[],
-        ux_tagsVisible: false
+        ux_tagsVisible: false,
+        ux_totalMembers: 0,
+        ux_showTotal: null
     }),
     tags : null,
     tagString: null,
@@ -2470,6 +2472,24 @@ var groupEditView = {
 
         $('#groupEditor-title').blur(groupEditView.isValid);
 
+        groupEditView.activeObj.bind("change", function(e){
+            var field = e.field;
+            var value = groupEditView.activeObj.get(field);
+            var that = groupEditView.activeObj;
+            var total = value.length;
+            switch(field){
+                case "members":
+                    console.log(value);
+                    if(total > 0){
+                        that.set("ux_showTotal", true);
+                        that.ux_totalMembers = total;
+                    } else {
+                        that.set("ux_showTotal", false);
+                    }
+
+                    break;
+           }
+        });
     },
 
     toggleTags: function(){
@@ -2505,7 +2525,7 @@ var groupEditView = {
             that.activeObj.title = '';
             that.activeObj.description = '';
             that.activeObj.tagString = '';
-            that.activeObj.members = [];
+            that.activeObj.set("members", []);
             that.activeObj.tags = [];
             that.activeObj.isICE = false;
             that.activeObj.isFamily = false;
@@ -2517,7 +2537,7 @@ var groupEditView = {
             that.activeObj.uuid = group.uuid;
             that.activeObj.title = group.title;
             that.activeObj.description = group.description;
-            that.activeObj.members = group.members;
+            that.activeObj.set("members", group.members);
             that.activeObj.tagString = group.tagString;
             that.activeObj.tags= group.tags;
             that.activeObj.isICE = group.isICE;
@@ -2527,7 +2547,7 @@ var groupEditView = {
             that.activeObj.canMedical = group.canMedical;
         }
 
-        that.activeObj.ux_tagsVisible = false;
+        that.activeObj.set("ux_tagsVisible", false);
         groupEditView.initData(that.activeObj.members);
 
         groupEditView.isValid();

@@ -6110,7 +6110,10 @@
 	#
 	<div data-uuid="#:uuid#">
 		 <h4 class="textClamp">
-			 #:name#
+			 <span class="groupEditor-name textClamp">#:name#</span>
+			 #if(data.emailValidated){#
+			 	<img src="images/user-verified.svg" class="icon-sm groupEditor-icon" />
+			 #}#
 			 <span class="helper-list-detail">#:aliasString#</span>
 		 </h4>
 		<span class="groupEditor-contact-delete">
@@ -6151,7 +6154,10 @@
 
 	<div style="width: 100vw;" class="appBox">
 		<div>
-			<label>Group Members</label>
+			<label>
+				Group Members
+				<span data-bind="{text: ux_totalMembers, visible: ux_showTotal}"></span>
+			</label>
 			<span style="float:right;">
 				<a data-role="button"  data-click="groupEditView.addContact"  class="btnClear-grey-sm">Edit</a>
 			</span>
