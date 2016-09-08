@@ -121,9 +121,14 @@ var everlive = {
 
             everlive.isUserSignedIn();
 
-        } /*else {
-            APP.everlive.offline();
-        }*/
+        } else {
+            if (userModel._userObj !== null) {
+                userModel.update_user(userModel._userObj);
+            } else {
+
+            }
+
+        }
     },
 
     getCredentials : function () {

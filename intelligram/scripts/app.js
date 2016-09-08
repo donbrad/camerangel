@@ -83,10 +83,6 @@
 
 		deviceModel.getNetworkState();
 
-
-
-		deviceModel.getNetworkState();
-
 		deviceModel.loadGoogleMaps();
 		
 		// hide the splash screen as soon as the app is ready. otherwise
