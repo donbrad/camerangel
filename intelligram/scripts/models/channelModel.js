@@ -177,10 +177,14 @@ var channelModel = {
 
                     case "itemchange" :
                         var field  =  e.field;
-                        var channel = e.items[0], channelUUID = channel.channelUUID;
-                        var channelList = channelsView.findChannelModel(channelUUID);
-                        if (channelList !== undefined)
-                        channelList.set(field, channel [field]);
+                        var channel = e.items[0];
+                        if (channel !== undefined && channel !== null) {
+                            var channelUUID = channel.channelUUID;
+                            var channelList = channelsView.findChannelModel(channelUUID);
+                            if (channelList !== undefined)
+                                channelList.set(field, channel [field]);
+                        }
+
                         break;
 
                     case "remove" :

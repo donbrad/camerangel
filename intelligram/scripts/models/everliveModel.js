@@ -60,6 +60,7 @@ var everlive = {
 
         
         if (deviceModel.isOnline()) {
+            
             everlive._initialized = true;
 
             APP.everlive = new Everlive({
@@ -121,9 +122,15 @@ var everlive = {
 
             everlive.isUserSignedIn();
 
-        } /*else {
-            APP.everlive.offline();
-        }*/
+        } else {
+            everlive.goOffline();
+            if (userModel._userObj !== null) {
+                userModel.update_user(userModel._userObj);
+            } else {
+
+            }
+
+        }
     },
 
     getCredentials : function () {
@@ -164,11 +171,13 @@ var everlive = {
     },
 
     goOnline : function () {
-        APP.everlive.online();
+        if (APP.everlive !== null)
+            APP.everlive.online();
     },
 
     goOffline : function () {
-        APP.everlive.online();
+        if (APP.everlive !== null)
+            APP.everlive.online();
     },
 
     syncCloud : function (){
