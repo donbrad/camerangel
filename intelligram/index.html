@@ -410,7 +410,7 @@
 </div>
    
 <!-- home - for signed in users -->
-<div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
+<div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide" data-model="homeView.activeObj">
 
 	<div class="appBox noPad">
 			<div data-role="tabstrip" id="home-buttongroup" class="tabBar" data-select="homeView.onTabSelect">
@@ -421,11 +421,11 @@
 					<img src="images/icon-today.svg" id="home-tab-today-img" /> Today
 				</a>
 			</div>
-			<div id="home-alerts">
+			<div id="home-alerts" data-bind="invisible: ux_isValidated">
 				<div id="home-verify-div" data-role="button" data-click="verifyEmailModal.openModal">
                     <p>
                         <img src="images/icon-alert.svg" id="home-verify-alert"/>
-                        <span id="home-verify-text">5 days to verify account</span>
+                        <span id="home-verify-text" data-bind="text: ux_timeLeft"></span>
                         <img src="images/icon-arrow-right.svg" class="right" id="home-verify-arrow" />
                     </p>
 					<div class="clearfix"></div>
@@ -1025,18 +1025,21 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-click="galleryListView.closeModal" data-role="button" data-align="right">
+			<a data-click="galleryListView.closeModal" data-role="button" data-align="left">
 				<img src="images/close.svg" />
 			</a>
 		</div>
 	</div>
-	<h3>Please select a gallery from the list below:</h3>
-	<ul id="galleryListModal-listview"></ul>
+	<div class="km-group-title">
+		<span>Select a gallery below</span>
+	</div>
+
+	<ul id="galleryListModal-listview" class="listview"></ul>
 
 </div>
 
 <script type="text/x-kendo-template" id="galleryList-template">
-	<h3>#: data.name #</h3>
+	<h4>#: data.name #</h4>
 	<p class="helper">#: data.photoCount # photos</p>
 </script>
 
@@ -1242,7 +1245,9 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>intelliNote</span>
-			<a data-role="button" data-click="noteEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
+			<a data-role="button" data-click="noteEditView.onDone" data-align="left" class="btnClear-grey">
+				<img src="images/close.svg" />
+			</a>
 			<a data-role="button" data-click="noteEditView.onSave" data-align="right" id=noteEditor-saveBtn" class="btnClear">Save</a>
 		</div>
 	</div>
@@ -3185,7 +3190,6 @@
 					<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
 				</span>
 				</p>
-				<a class="btnClear" data-role="button" href="#galleryView-noteAdd" data-rel="popover">Add</a>
 				<div class="messageMediaBar hidden" style="text-align: center;">
 					<ul>
 						<li>
@@ -3210,7 +3214,7 @@
 	<!-- Add note popover -->
 	<div id="galleryView-noteAdd" data-role="popover">
 		<div data-role="view" id="galleryView-noteAddView">
-			<ul id="notesListView-add" data-role="listview" data-fixed-headers="true" data-template="notesListView-add-tmpl" data-source="galleryView.notesAddOpts"></ul>
+			<ul id="notesListView-add" data-role="listview" data-fixed-headers="true" data-template="notesListView-add-tmpl" data-source="galleryView.notesAddOpts" data-click="galleryView.onAddListViewClick" data-header-template="notesListView-add-header-tmpl"></ul>
 		</div>
 	</div>
 
@@ -3242,11 +3246,24 @@
 	</ul>
 </div>
 
+<script type="text/x-kendo-tmpl" id="notesListView-add-header-tmpl">
+	#
+		var title;
+		if(value !== "intelligram"){
+			title = value.capitalize();
+		} else {
+			title = value;
+		}
+
+	#
+	<span>#= title #</span>
+</script>
+
 <script type="text/x-kendo-tmpl" id="notesListView-add-tmpl">
-		<div data-role="button" data-click="#:data.action#">
-			<h3>
+		<div>
+			<h4>
 				<img src="#:data.imgUrl#" class="icon-action"/> #: data.title #
-			</h3>
+			</h4>
 		</div>
 
 </script>
@@ -6096,7 +6113,6 @@
 	if (alias !== undefined && alias !== null) {
 	aliasString = alias;
 	}
-	console.log(data);
 	#
 	<div>
 		<h4 class="textClamp">#:name# <span class="helper-list-detail">#:aliasString#</span></h4>
@@ -6120,9 +6136,10 @@
 <div data-role="modalview" id="contactPickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="contactPickerView.onInit">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Group Editor</span>
-			<a data-click="contactPickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
-			<a data-click="contactPickerView.onDone" data-role="button" class="btnClear-grey-sm" data-align="right" >Save</a>
+			<span>Edit Members</span>
+			<a data-click="contactPickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey-sm">
+				<img src="images/close.svg" />
+			</a>
 		</div>
 		<div>
 			<div class="appendSearch">
@@ -6131,19 +6148,23 @@
 			</div>
 		</div>
 	</div>
-
-	<div style="width: 100%;">
-
-		<ul id="contactPickerView-listview" class="listview"></ul>
+	<ul id="contactPickerView-listview" class="listview"></ul>
+	<div class="footer" data-role="footer">
+		<a data-click="contactPickerView.onDone" data-role="button" class="btnPrimary btnFull-modal" >Save</a>
 	</div>
+
+
 </div>
 
-<script type="text/x-kendo-template" id="groupEditor-header-template">
+<script type="text/x-kendo-template" id="contactPickerView-header-template">
 	#
-		console.log(value);
-
-	#
-	<span>#: value #</span>
+	var headerText;
+	if(value === "Select"){
+		headerText = "Contacts"
+	} else {
+		headerText = "In Group"
+	}#
+	<span>#= headerText #</span>
 </script>
 
 <script type="text/x-kendo-template" id="groupEditor-Template">
@@ -6151,15 +6172,12 @@
 	var name = data.name.capitalize('title');
 	var aliasString = "";
 	if (data.alias !== undefined && data.alias !== null) {
-	aliasString = " (" + data.alias + ")";
+		aliasString = data.alias;
 	}
 	#
 	<div data-uuid="#:uuid#">
 		 <h4 class="textClamp">
 			 <span class="groupEditor-name textClamp">#:name#</span>
-			 #if(data.emailValidated){#
-			 	<img src="images/user-verified.svg" class="icon-sm groupEditor-icon" />
-			 #}#
 			 <span class="helper-list-detail">#:aliasString#</span>
 		 </h4>
 		<span class="groupEditor-contact-delete">
@@ -6175,14 +6193,15 @@
 <div data-role="view" data-title="Group Editor" id="groupEditor" data-model="groupEditView.activeObj" data-init="groupEditView.onInit" data-show="groupEditView.onShow"  data-hide="groupEditView.onHide"   style="width:100%; height: 100%; display: none;" >
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>intelliGroup</span>
+			<span>Add Group</span>
 			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
 		</div>
 	</div>
 
 	<div id="groupEditor-editTitleTag" class="appBox">
-		<label>Group Info</label>
-		<input id="groupEditor-title" class="input-text-lg" type="search"  data-bind="value: title" placeholder="Add Title...">
+		<label>Group Name</label>
+		<input id="groupEditor-title" class="input-text-lg" type="search"  name="Group name" data-bind="value: title" placeholder="Add name..." required>
+		<span class="k-invalid-msg" data-for="groupEditor-title"></span>
 		<input type="search" data-bind="value: description" placeholder="Add Description...">
 			<a data-role="button" class="btnClear" data-click="groupEditView.toggleTags" data-bind="invisible: ux_tagsVisible" id="groupEditView-addTagBtn">
 				<img src="images/icon-tag-active.svg" class="icon-btn-sm" /> Add Group Tag
@@ -6639,7 +6658,6 @@
 		} else {
 			memberCountTxt = "Members";
 		}
-		console.log(data);
 	#
 	<div>
 		<div class="group-options list-slider-options">

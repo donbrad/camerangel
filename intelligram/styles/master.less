@@ -1479,7 +1479,7 @@ div.km-header a img{
 .km-material .km-list > li {
   padding: inherit;
   line-height: inherit;
-  padding: 0.551em 1em;
+  padding: 0.51em 1em;
 }
 
 .km-material .km-button {
@@ -1583,6 +1583,7 @@ div.footer.km-footer {
   font-size: 0.85em !important;
   margin-left: 0.2em;
   font-weight: 400;
+  font-style: italic;
 }
 
 .helper-header {
@@ -1712,9 +1713,6 @@ div.footer.km-footer {
   padding: 0.5em 1em;
   font-weight: 600;
   text-align: left;
-  span {
-    vertical-align: middle;
-  }
   img {
     height: 1em;
     max-width: 1em;
@@ -5635,11 +5633,21 @@ div.contactListBox.activeContact > div > div > ul {
   }
 }
 
+#galleryView-noteAdd {
+  position: absolute;
+  top: -5em !important;
+  min-height: 24em !important;
+}
+
+
 #galleryView-noteAddView {
-  height: 350px !important;
+  min-height: 350px !important;
 }
 
 #notesListView-add {
+  li {
+    background-color: #fff !important;
+  }
   li > ul {
     li {
       border-bottom: 1px solid @shade-200;
@@ -5651,7 +5659,8 @@ div.contactListBox.activeContact > div > div > ul {
 
 #galleryListModal-listview {
   li {
-    padding: 0 !important;
+    //padding: 0 !important;
+    padding: 0.5em 0.5em !important;
     border-bottom: 1px solid @shade-100;
   }
 }
@@ -7287,6 +7296,24 @@ table.k-editor {
 
 #smartTripModal > div > div.intelliTrip.tripView > div.header {
   border-bottom: 2px dotted @shade-200;
+}
+
+.modalFooter {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0;
+  right: 0;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  >a {
+    color:#fff !important;
+    border-radius: 3em !important;
+  }
+  >a.km-state-active {
+    color: #80CBC4 !important;
+    opacity: 0.75;
+  }
 }
 
 .modalFooter.intelliTrip-action {

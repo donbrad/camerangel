@@ -30,58 +30,57 @@ var galleryView = {
         data: [
             {
                 title: "Add Note",
-                href: "noteEditor?returnview=gallery",
                 imgUrl: "images/icon-note.svg",
-                category: "notes"
+                category: "notes",
+                type: "note"
             },
             {
                 title: "Add from Camera",
-                action: "galleryView.galleryCamera",
                 imgUrl: "images/action-camera.svg",
-                category: "photo"
+                category: "photos",
+                type: "camera"
             },
             {
                 title: "Add from Device",
-                action: "galleryView.galleryPhoto",
                 imgUrl: "images/action-device.svg",
-                category: "photo"
+                category: "photos",
+                type: "device"
             },
             {
                 title: "Add Flight",
-                href: null,
-                action: "privateNotesView.noteFlight",
                 imgUrl: "images/intelliFlight-icon.svg",
-                category: "intelligram"
+                category: "intelligram",
+                type: "flight"
             },
             {
                 title: "Add Event",
-                action: "privateNotesView.noteCalendar",
                 imgUrl: "images/icon-event.svg",
-                category: "intelligram"
+                category: "intelligram",
+                type: "event"
             },
             {
                 title: "Add Trip",
-                action: "privateNotesView.noteTrip",
                 imgUrl: "images/intelliTrip-icon.svg",
-                category: "intelligram"
+                category: "intelligram",
+                type: 'trip'
             },
             {
                 title: "Add Movie",
-                action: "privateNotesView.noteMovie",
                 imgUrl: "images/intelliMovie-icon.svg",
-                category: "intelligram"
+                category: "intelligram",
+                type: "movie"
             },
             {
                 title: "Add Account",
-                action: "privateNotesView.noteAccount",
                 imgUrl: "images/icon-account.svg",
-                category: "intelligram"
+                category: "intelligram",
+                type: "account"
             },
             {
                 title: "Add Medical",
-                action: "privateNotesView.noteMedical",
                 imgUrl: "images/icon-medical.svg",
-                category: "intelligram"
+                category: "intelligram",
+                type: "medical"
             }
 
         ]
@@ -117,16 +116,41 @@ var galleryView = {
         //$("#gallery-listview li").css("width",galleryView._previewSize);
         //$("#gallery-listview li").css("padding-bottom",galleryView._previewSize);
 
-        /*$("#notesListView-add").kendoMobileListView({
-            dataSource: galleryView.notesAddOpts,
-            type: "group",
-            template: $("#notesListView-add-tmpl").html()
-        });*/
     },
 
     onAddListViewClick: function(e){
-        console.log(e.dataItem);
+        var type = e.dataItem.type;
+        switch(type){
+            case "medical":
+                privateNotesView.noteMedical();
+                break;
+            case "account":
+                privateNotesView.noteAccount();
+                break;
+            case "movie":
+                privateNotesView.noteMovie();
+                break;
+            case "trip":
+                privateNotesView.noteTrip();
+                break;
+            case "event":
+                privateNotesView.noteCalendar();
+                break;
+            case "device":
+                galleryView.galleryPhoto();
+                break;
+            case "camera":
+                galleryView.galleryCamera();
+                break;
+            case "flight":
+                privateNotesView.noteFlight();
+                break;
+            case "note":
+                APP.kendo.navigate("#noteEditor?returnview=gallery");
+                break;
+        }
 
+        $("#galleryView-noteAdd").data("kendoMobilePopOver").close();
     },
 
     setStuffView : function () {
@@ -369,7 +393,8 @@ var galleryView = {
     },
 
     onAddGallery : function (e) {
-        $("#galleryActionsPhoto").data("kendoMobileActionSheet").open();
+        //$("#galleryActionsPhoto").data("kendoMobileActionSheet").open();
+        $("#galleryView-noteAdd").data("kendoMobilePopOver").open(".user-settings")
     },
 
     onHide: function(e){
@@ -1632,7 +1657,7 @@ var galleryListView = {
             dataSource: testDS,
             template: $("#galleryList-template").html(),
             click: function (e) {
-                console.log(e);
+                //console.log(e);
             }
         });
     },

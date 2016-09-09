@@ -687,6 +687,8 @@
 }
 .redactor-editor p {
   margin-bottom: 0.5em;
+  margin-left: 0;
+  margin-right: 0;
 }
 .redactor-toolbar {
   box-shadow: none;
@@ -2119,7 +2121,7 @@ div.km-header a img {
 .km-material .km-list > li {
   padding: inherit;
   line-height: inherit;
-  padding: 0.551em 1em;
+  padding: 0.51em 1em;
 }
 .km-material .km-button {
   box-shadow: inherit;
@@ -2233,6 +2235,7 @@ div.footer.km-footer {
   font-size: 0.85em !important;
   margin-left: 0.2em;
   font-weight: 400;
+  font-style: italic;
 }
 .helper-list-detail img {
   height: 12px;
@@ -2352,9 +2355,6 @@ div.footer.km-footer {
   padding: 0.5em 1em;
   font-weight: 600;
   text-align: left;
-}
-#home-verify-div span {
-  vertical-align: middle;
 }
 #home-verify-div img {
   height: 1em;
@@ -5791,14 +5791,22 @@ div.contactListBox.activeContact > div > div > ul {
 .resultsBar .galleries a {
   float: right;
 }
+#galleryView-noteAdd {
+  position: absolute;
+  top: -5em !important;
+  min-height: 24em !important;
+}
 #galleryView-noteAddView {
-  height: 350px !important;
+  min-height: 350px !important;
+}
+#notesListView-add li {
+  background-color: #fff !important;
 }
 #notesListView-add li > ul li {
   border-bottom: 1px solid #E0E0E0;
 }
 #galleryListModal-listview li {
-  padding: 0 !important;
+  padding: 0.5em 0.5em !important;
   border-bottom: 1px solid #979797;
 }
 #gallery-photos > div.resultsBar > div.galleries > a > span > img {
@@ -7398,6 +7406,23 @@ table.k-editor {
 }
 #smartTripModal > div > div.intelliTrip.tripView > div.header {
   border-bottom: 2px dotted #E0E0E0;
+}
+.modalFooter {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0;
+  right: 0;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.modalFooter > a {
+  color: #fff !important;
+  border-radius: 3em !important;
+}
+.modalFooter > a.km-state-active {
+  color: #80CBC4 !important;
+  opacity: 0.75;
 }
 .modalFooter.intelliTrip-action {
   position: absolute;

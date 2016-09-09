@@ -139,8 +139,9 @@ var contactsView = {
             enableSwipe: true,
             tap: function(e){
                 var groupId = null;
-                console.log(e.touch);
+
                 groupId = $(e.touch.target[0]).data("group");
+
                 /*if (e.touch.currentTarget !== undefined) {
                     // iOS and the previous versions
                     groupId = e.touch.currentTarget.attributes['data-group'].value
@@ -2510,26 +2511,9 @@ var groupEditView = {
 
         });
 
+
         $('#groupEditor-title').blur(groupEditView.isValid);
 
-        groupEditView.activeObj.bind("change", function(e){
-            var field = e.field;
-            var value = groupEditView.activeObj.get(field);
-            var that = groupEditView.activeObj;
-            var total = value.length;
-            switch(field){
-                case "members":
-                    console.log(value);
-                    if(total > 0){
-                        that.set("ux_showTotal", true);
-                        that.ux_totalMembers = total;
-                    } else {
-                        that.set("ux_showTotal", false);
-                    }
-
-                    break;
-           }
-        });
     },
 
     toggleTags: function(){
@@ -2543,9 +2527,10 @@ var groupEditView = {
 
     isValid : function () {
         var that = groupEditView.activeObj;
+
         // If there's a name and at least 1 member - enable save
-        if (that.title.length > 2 && that.members.length > 0) {
-            //$('#groupEditor-saveBtn').removeClass('hidden');
+        if (that.title !== "" && that.members.length > 0) {
+            $('#groupEditor-saveBtn').removeClass('hidden');
 
         } else {
             $('#groupEditor-saveBtn').addClass('hidden');
@@ -2679,6 +2664,7 @@ var groupEditView = {
     onDone : function (e) {
         // _preventDefault(e);
 
+
         if (groupEditView._returnview !== null) {
             APP.kendo.navigate('#'+groupEditView._returnview);
         } else {
@@ -2727,9 +2713,15 @@ var groupEditView = {
     },
 
     onSave : function (e) {
+        var validator = $("#groupEditor-editTitleTag").kendoValidator().data("kendoValidator");
 
-        groupEditView.saveGroup();
-        groupEditView.onDone();
+        if (validator.validate()) {
+            groupEditView.saveGroup();
+            groupEditView.onDone();
+        }
+
+
+
     },
 
 

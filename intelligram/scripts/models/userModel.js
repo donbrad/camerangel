@@ -339,8 +339,13 @@ var userModel = {
         if (isAvailable) {
             userModel._user.set('availImgUrl', 'images/status-available.svg');
         }
-        
-        userModel._user.set('isValidated', emailValidated && user.phoneValidated);
+
+
+        var isValidated = emailValidated && user.phoneValidated;
+        userModel._user.set('isValidated', isValidated);
+
+        // trigger for validation banner
+        homeView.activeObj.set('ux_isValidated', isValidated);
 
         everlive.updateUser();
         memberdirectory.update();

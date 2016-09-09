@@ -16,6 +16,10 @@ var homeView = {
     _activeView : 0,
     _needPhoneValidation : false,
     _needEmailValidation : false,
+    activeObj: new kendo.data.ObservableObject({
+        ux_isValidated: true,
+        ux_timeLeft: "7 days to verify account",
+    }),
 
     openNotificationAction: function(e){
         // todo - wire notification action
@@ -277,7 +281,21 @@ var homeView = {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
             $('#checked-in-place').show();
         }
-/*
+        homeView.activeObj.bind("change", function(e){
+            var field = e.field;
+            var value = homeView.activeObj.get(field);
+
+            switch(field){
+                case "ux_isValidated":
+                    if(!value){
+                        homeView.updateVerifiedHeader();
+                    }
+                    break;
+            }
+        });
+
+        /*
+    `
          $("#homeHeaderButton").kendoTouch({
 
          doubletap: function(e) {
@@ -359,47 +377,50 @@ var homeView = {
     },
 
     updateVerifiedHeader: function () {
+        // get account creation time
+        var accountTime = userModel._user.get("accountCreateDate");
+        var accountCreateTime = moment(accountTime);
+        var timeLimit = moment(accountCreateTime).add(7, "days");
+        var today = moment();
+        var isBeforeLimit = today.isBefore(timeLimit, "minute");
 
-        var isVerified = userModel._user.get("isVerified");
 
-        if(!isVerified){
-            $("#home-verify-div").removeClass("hidden");
-            // get account creation time
-            var accountTime = userModel._user.get("accountCreateDate");
-            if(accountTime !== undefined){
-                var accountCreateTime = moment(accountTime);
-                var timeLimit = moment(accountTime).add(7, "days");
-                var today = moment();
+        // has the limit period expired
+        if(isBeforeLimit){
+            // still have time to verify
+            $("#home-verify-div").removeClass("homeVerify-pastDue").addClass("homeVerify-needed");
+            $("#home-verify-alert").attr("src", "images/icon-alert.svg");
+            $("#home-verify-arrow").attr("src","images/icon-arrow-right.svg");
 
-                var isBeforeLimit = today.isBefore(timeLimit, "day");
+            var daysLeft = moment().diff(timeLimit, "days");
 
-                // has the 7 day period expired
-                if(isBeforeLimit){
-                    // still have time to verify
-                    $("#home-verify-div").removeClass("homeVerify-pastDue").addClass("homeVerify-needed");
-                    $("#home-verify-alert").attr("src", "images/icon-alert.svg");
-                    $("#home-verify-arrow").attr("src","images/icon-arrow-right.svg");
+            if(daysLeft < -1){
+                var days = Math.abs(daysLeft);
+                homeView.activeObj.set("ux_timeLeft", days + " days to verify account");
+            } else {
+                // hours left
+                var hoursLeft = moment().diff(timeLimit, "hours");
+                var hours = Math.abs(hoursLeft);
+                if(hours > 0){
+                    homeView.activeObj.set("ux_timeLeft", hours + " hrs to verify account");
+                } else if(hours == 0){
+                    // minutes left
+                    var minsLeft = moment().diff(timeLimit, "minutes");
+                    var mins = Math.abs(minsLeft);
 
-                    var daysLeft = moment().diff(timeLimit, "days");
-
-                    if(daysLeft > 0){
-
-                    } else {
-
-                    }
-                } else {
-                    // time has expired
-                    $("#home-verify-div").removeClass("homeVerify-needed").addClass("homeVerify-pastDue");
-                    $("#home-verify-text").text("Account unverified");
-                    $("#home-verify-alert").attr("src", "images/icon-alert-light.svg");
-                    $("#home-verify-arrow").attr("src","images/icon-arrow-right-light.svg");
+                    homeView.activeObj.set("ux_timeLeft", mins + " mins to verify account");
                 }
             }
-
         } else {
-            // User is verified
-            $("#home-verify-div").addClass("hidden");
+            // time has expired
+            $("#home-verify-div").removeClass("homeVerify-needed").addClass("homeVerify-pastDue");
+            $("#home-verify-text").text("Account unverified");
+            $("#home-verify-alert").attr("src", "images/icon-alert-light.svg");
+            $("#home-verify-arrow").attr("src","images/icon-arrow-right-light.svg");
         }
+
+
+
 
 
     },
@@ -469,8 +490,6 @@ var homeView = {
             // toggle off so user only sees every launch or login
             homeView._needPhoneValidation = false;
         }*/
-
-        homeView.updateVerifiedHeader();
 
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();
@@ -2267,7 +2286,7 @@ var signInView = {
         everlive.clearAuthentication();
         
 
-        var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
+        var username = $('#home-signin-username').val().toLowerCase(), password = $('#home-signin-password').val();
 
         if (!deviceModel.isOnline()) {
             mobileNotify("Phone is offline - can't Sign In");
