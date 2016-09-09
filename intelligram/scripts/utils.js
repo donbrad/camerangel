@@ -785,5 +785,17 @@ var utils = {
 		}
 
 		return returnString;
+	},
+
+	stripObj: function(object, matchStr){
+		_.each(object, function(value, key){
+
+			var keyStr = key.toString();
+			if(key.indexOf(matchStr) > -1){
+				console.log(key);
+				delete object[key];
+			}
+		});
+		return object;
 	}
 };

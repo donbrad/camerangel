@@ -26,14 +26,14 @@
 
 /* variables */
 @baseFontSize: 16;
-@defaultFont: 'PT Sans', sans-serif;
-@secondaryFont: 'Open Sans', sans-serif;
-@displayFont: 'Hind', sans-serif;
+@defaultFont: 'PT Sans', Helvetica, sans-serif;
+@secondaryFont: 'Open Sans', Helvetica, sans-serif;
+@displayFont: 'Hind', Helvetica, sans-serif;
 
 @mobile: ~"only screen and (max-width: 320px)";
 
 /* Imports */
-@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700|PT+Sans:400,700|Open+Sans:400,600);
+@import "fonts";
 @import "mixins.less";
 @import "mixin-shadow.less";
 @import "_sentinel.less";
@@ -199,9 +199,9 @@
 }
 
 html, .km-root {
-  font-size: 1.2em;
+  font-size: 18px !important;
   @media @mobile {
-    font-size: 1em;
+    font-size: 18px !important;
   }
 }
 
@@ -216,7 +216,7 @@ body {
   line-height: 1.5;
   margin: 1rem;
   background: #fff;
-  font-size: @baseFontSize;
+  //font-size: @baseFontSize;
 }
 h1 {
   .font-size(34); /* 34px */
@@ -673,24 +673,62 @@ form {
   background: none;
 }
 
+
+
+#modalview-verifyPhone > div {
+  padding: 0;
+  background-color: @primary-100;
+  background-image: none !important;
+  z-index: 100;
+}
+
+.verify-device-img {
+  top: 6em;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  opacity: 0;
+  z-index: -1;
+  img {
+    height: 12em;
+  }
+}
+
+.verifyPhone-codeBox {
+  margin: 1em 1rem 2em 1rem;
+  label {
+    font-weight: 600;
+  }
+}
+
+#modalview-verifyPhone > div > div.km-scroll-container > div.card {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 0;
+  margin-top: -5em;
+  position: relative;
+  top: 0;
+  h2 {
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+  }
+}
+
 .verifyPhone-code-sent {
   background-color: @success-100;
   color: #fff;
-  position: absolute;
-  bottom: 2em;
+  position: relative;
   width: 100%;
   display: none;
-  margin-bottom: 0.25em;
 }
 
 .verifyPhone-code-error {
   background-color: @warning-100;
   color: #fff;
-  position: absolute;
-  bottom: 2em;
+  position: relative;
   width: 100%;
   display: none;
-  margin-bottom: 0.25em;
 }
 
 .gg-read-value {
@@ -998,6 +1036,7 @@ form {
   }
 }
 
+
 .btnFull {
   &:extend(.btnStyle);
   width: 100%;
@@ -1029,6 +1068,7 @@ form {
   padding-top: 1rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.4px;
+  font-size: 1em !important;
   :hover {
     background: transparent !important;
   }
@@ -1040,6 +1080,12 @@ form {
   float: left;
   height: 2.25rem;
   padding-top: 0.5rem !important;
+}
+
+.km-tabstrip .km-button {
+  font-family: @defaultFont !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
 }
 
 .footer-twoBtn .twoBtn:nth-child(1){
@@ -1376,8 +1422,8 @@ div.km-header a img{
   background-color: #e0e0e0;
 }
 .km-view-title span {
-  font-family: @defaultFont;
-  font-weight: 400;
+  font-family: @secondaryFont;
+  font-weight: 600;
   color: @black;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
@@ -1433,7 +1479,7 @@ div.km-header a img{
 .km-material .km-list > li {
   padding: inherit;
   line-height: inherit;
-  padding: 0.551em 1em;
+  padding: 0.51em 1em;
 }
 
 .km-material .km-button {
@@ -1448,6 +1494,8 @@ div.km-header a img{
   line-height: 1.5;
   font-size: 1.5em;
   padding: 0.8rem;
+  text-align: left;
+  padding-left: 3em;
 }
 
 .km-root * {
@@ -1530,6 +1578,14 @@ div.footer.km-footer {
   .helper;
 }
 
+.helper-list-detail {
+  .helper;
+  font-size: 0.85em !important;
+  margin-left: 0.2em;
+  font-weight: 400;
+  font-style: italic;
+}
+
 .helper-header {
   &:extend(.helper);
   font-size: 0.75em;
@@ -1605,28 +1661,39 @@ div.footer.km-footer {
   box-shadow: none !important;
 }
 
+#home-tab-alert-img {
+  max-height: 1em;
+}
+
+#gallery-photos > a > span > img {
+  vertical-align: middle;
+  margin-left: 0.15em;
+}
+
 .tabBar {
   box-shadow: none !important;
   border-bottom: 1px solid @shade-200;
   a {
     background-color: @shade-300 !important;
     color: @black !important;
-    font-size: 1em !important;
+    font-size: 1.125em !important;
     padding: 0.5em !important;
     border-radius: 0 !important;
+    border-bottom: 1px solid @shade-300 !important;
     > span {
       display: inline-block !important;
     }
     img {
       margin-right: 0.25em !important;
       vertical-align: middle;
-      height: 1.25em;
+      height: 1em;
       max-width: 1.25em;
     }
   }
   a.km-button.km-state-active {
-    background-color: @primary-200 !important;
-    color: #fff !important;
+    color: @primary-200 !important;
+    //background-color: @shade-200 !important;
+    border-bottom: 2px solid @primary-200 !important;
   }
 }
 
@@ -1634,7 +1701,46 @@ div.footer.km-footer {
   box-shadow: none !important;
 }
 
-#home-buttongroup > a.km-button.km-state-active
+.verifyEmail-resend {
+  width: 100%;
+  margin: 0.5em 0 1em;
+}
+
+#home-verify-div {
+  width: 100%;
+  background-color: @secondary-100;
+  margin: 0;
+  padding: 0.5em 1em;
+  font-weight: 600;
+  text-align: left;
+  img {
+    height: 1em;
+    max-width: 1em;
+    vertical-align: middle;
+  }
+  p {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+.homeVerify-needed {
+  background-color: @secondary-100 !important;
+}
+
+.homeVerify-pastDue {
+  background-color: @warning-100 !important;
+  color: #fff !important
+}
+
+#verifyEmail-address {
+  font-weight: 600;
+}
+
+#home-verify-arrow {
+  position: relative;
+  top: 0.25em;
+}
 
 #home-buttongroup > a.km-button > span {
   display: inline-block;
@@ -1709,11 +1815,19 @@ div.footer.km-footer {
   padding: 0px;
 }
 
+#channels > div.km-header > div.km-widget.km-navbar > div.km-view-title
+#contacts > div.km-header > div.km-widget.km-navbar > div.km-view-title,
+#places > div.km-header > div.km-widget.km-navbar > div.km-view-title,
+#gallery > div.km-header > div.km-widget.km-navbar > div.km-view-title {
+  padding-left: 3em;
+}
+
 #home > div.km-header > div > div.km-view-title > span {
   font-family: 'Ubuntu', sans-serif !important;
   color: @primary-200;
   font-weight: 500;
   font-size: 1.125em;
+  padding-left: 0.75em;
 }
 
 #profilePhotoForm > div > ul > li:nth-child(4) > div > span {
@@ -1758,8 +1872,8 @@ div.footer.km-footer {
 
 .circle-img-home {
   border-radius: 50%;
-  width: 2.5em;
-  height: 2.5em !important;
+  width: 2.375em;
+  height: 2.375em !important;
   margin-right: 0.5rem;
   position: absolute;
   top: 0.5em;
@@ -1776,7 +1890,7 @@ div.footer.km-footer {
 }
 
 .nav-search {
-  height: 20px !important;
+  height: 1.5em !important;
   vertical-align: -webkit-baseline-middle;
   vertical-align: middle;
 }
@@ -1784,8 +1898,8 @@ div.footer.km-footer {
 .home-status {
   z-index: 1;
   position: absolute;
-  top: 2em;
-  left: 2em;
+  top: 1.75em;
+  left: 1.75em;
 }
 
 .profileLocation {
@@ -2364,6 +2478,12 @@ div.footer.km-footer {
   vertical-align: text-top;
 }
 
+.icon-btn-sm {
+  height: 1em;
+  vertical-align: middle;
+  margin-left: 0.15em;
+}
+
 .ggHome-close {
   padding: 1em !important;
   z-index: 99;
@@ -2475,6 +2595,16 @@ div.footer.km-footer {
   margin-top: .2em;
   border: 1px solid @shade-200;
 }
+
+.listview {
+  background-color: #fff !important;
+  li:not(.km-group-container),
+  li > ul > li {
+    padding: 1em;
+    border-bottom: 1px solid @shade-200 !important;
+  }
+}
+
 /*
 .km-root .km-wp .km-view.appearance .km-listview select
 {
@@ -3628,7 +3758,7 @@ div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
 }
 
 #placeView > div.km-header > div.km-widget.km-navbar > div.km-view-title > span {
-  width: 60%;
+  //width: 60%;
 }
 
 .placeType-list {
@@ -3658,7 +3788,7 @@ div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
 }
 
 ul li:last-child {
-  border-bottom: none !important;
+  //border-bottom: none !important;
 }
 
 li > .km-group-title {
@@ -3754,6 +3884,9 @@ li > .km-group-title {
   background-color: #fff;
   margin-top: 0;
   margin-right: 1em;
+  @media @mobile {
+    margin-right: 0.5em;
+  }
 }
 .messageCompose {
   padding: 0.5rem;
@@ -4079,10 +4212,10 @@ div.loginBox > form > div > ul > li {
 
 .card {
   width: 95%;
-  margin: 0px auto 0px auto;
+  margin: 0 auto 0 auto;
   background: #fff;
   .shadowHelper(1);
-  border-radius: 2px;
+  border-radius: 4px;
   padding-top: 0.5rem;
   padding-bottom: 0.5em;
   .top {
@@ -4138,6 +4271,9 @@ div.loginBox > form > div > ul > li {
   }
   .chat p {
     .font-size(16);
+  }
+  .footer {
+    border-radius: 4px !important;
   }
 }
 
@@ -4510,6 +4646,22 @@ div.loginBox > form > div > ul > li {
   margin-right: 0px;
 }
 
+
+#groupEditor-editTitleTag > a {
+  margin-top: 0.25em;
+}
+
+.groupEditor-name {
+  max-width: 90%;
+}
+
+.groupEditor-contact-delete {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 10%;
+}
+
 .contactListItem {
   display: block;
 }
@@ -4628,32 +4780,32 @@ div.loginBox > form > div > ul > li {
   margin-left: 0.5rem;
 }
 
+.list-slider,
 .contactListBox {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.25rem;
+  padding: 0.5em 1em;
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   background: #fff;
   display: inline-block;
-  height: 5rem;
+  height: 100%;
   box-shadow: 3px 0 3px -3px @shade-100;
   width: 100%;
 }
 
+
 .contact-options {
   width: 100%;
-  height: 70px;
+  min-height: 6em;
   background-color: @shade-300;
   z-index:-1;
   display: inline-block;
   padding-top: 1rem;
   float: left;
-  height: 5rem;
+  height: 100%;
   text-align: right;
 }
+
 
 .list-box {
   padding-top: 0.75em;
@@ -4666,23 +4818,30 @@ div.loginBox > form > div > ul > li {
   box-shadow: 3px 0 3px -3px @shade-100;
   width: 100%;
   @media @mobile {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+    //padding-top: 0.5em;
+    //padding-bottom: 0.5em;
   }
 }
 
+.list-slider-options,
 .list-options {
   width: 100%;
-  height: 6em;
+  height: 100%;
   background-color: @shade-300;
   z-index:-1;
   display: inline-block;
   float: left;
   text-align: right;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
   a {
     vertical-align: middle;
+  }
+}
+
+#groups-listview {
+  li {
+    padding: 0 !important;
   }
 }
 
@@ -4690,8 +4849,15 @@ div.loginBox > form > div > ul > li {
 
 }
 
+#places-listview > li > div > div.list-options {
+  min-height: 6em;
+  padding-top: 1.25em;
+  padding-bottom: 1.25em;
+}
+
 #places-listview li {
   padding: 0px;
+  height: 100%;
 }
 
 #places-listview {
@@ -5415,15 +5581,12 @@ div.contactListBox.activeContact > div > div > ul {
 .resultsBar {
   background: #fff;
   border-bottom: 1px solid @shade-200;
-  padding: 0.25em 0 0.25em 0;
+  padding: 0.25em 1em;
   .results {
-    width: 20%;
-    padding-top: 0.55rem;
+    width: 50%;
     float: left;
-    text-align: right;
-    font-size: 1em;
-    @media @mobile {
-      width: 25%;
+    p {
+      margin: 0.25em 0 0 0 !important;
     }
   }
   .tags {
@@ -5457,6 +5620,53 @@ div.contactListBox.activeContact > div > div > ul {
       width: 45%;
     }
   }
+  .galleryName {
+    text-align: left;
+    .helper;
+  }
+  .galleries {
+    float: left;
+    width: 50%;
+    a {
+      float: right;
+    }
+  }
+}
+
+#galleryView-noteAdd {
+  position: absolute;
+  top: -5em !important;
+  min-height: 24em !important;
+}
+
+
+#galleryView-noteAddView {
+  min-height: 350px !important;
+}
+
+#notesListView-add {
+  li {
+    background-color: #fff !important;
+  }
+  li > ul {
+    li {
+      border-bottom: 1px solid @shade-200;
+      //padding: 0.25em 0.5em;
+    }
+
+  }
+}
+
+#galleryListModal-listview {
+  li {
+    //padding: 0 !important;
+    padding: 0.5em 0.5em !important;
+    border-bottom: 1px solid @shade-100;
+  }
+}
+
+#gallery-photos > div.resultsBar > div.galleries > a > span > img {
+  vertical-align: middle;
 }
 
 #gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span > span.k-input > img {
@@ -5820,6 +6030,7 @@ div.contactListBox.activeContact > div > div > ul {
   color: @shade-100;
   padding-left: 14%;
   margin-bottom: 0.25em;
+  font-family: "Hind", Helvetica Neue, san-serif;
   @media @mobile {
     .font-size(12);
     padding-left: 17%;
@@ -6268,7 +6479,7 @@ div.contactListBox.activeContact > div > div > ul {
 
   }
   li:last-child {
-    border-bottom: 0 !important;
+    //border-bottom: 0 !important;
   }
 }
 
@@ -6660,7 +6871,7 @@ table.k-editor {
 /// Startup View
   #startUpView {
     .km-material .km-content {
-      background-color: #6CADF3 !important;
+      background-color: #fff !important;
     }
     width: 100%;
     height: 100%;
@@ -6672,8 +6883,8 @@ table.k-editor {
   }
 
   #startUpView > div.km-content.km-widget.km-scroll-wrapper {
-    background-color: #6CADF3 !important;
-    background-image: none;
+    background-color: #fff !important;
+    //background-image: none;
   }
 
   #startUpView_loading {
@@ -6695,7 +6906,7 @@ table.k-editor {
     right: 0;
     margin: auto;
     font-family: 'Ubuntu', sans-serif !important;
-    color: #fff;
+    color: @primary-200;
     font-weight: 500;
     font-size: 1.5em;
   }
@@ -6735,7 +6946,7 @@ table.k-editor {
 }
 
 .feature-body-text {
-  font-size: 14px;
+  font-size: 1em;
 }
 
 .icon-feature-img {
@@ -7085,6 +7296,24 @@ table.k-editor {
 
 #smartTripModal > div > div.intelliTrip.tripView > div.header {
   border-bottom: 2px dotted @shade-200;
+}
+
+.modalFooter {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0;
+  right: 0;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  >a {
+    color:#fff !important;
+    border-radius: 3em !important;
+  }
+  >a.km-state-active {
+    color: #80CBC4 !important;
+    opacity: 0.75;
+  }
 }
 
 .modalFooter.intelliTrip-action {

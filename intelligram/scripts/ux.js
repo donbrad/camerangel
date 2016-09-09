@@ -29,8 +29,10 @@ var ux = {
 	navigateAddTarget : function (object) {
 		if (ux.currentAddTarget !== null)
 			APP.kendo.navigate(ux.currentAddTarget);
-		else if (ux.currentAddFunction !== null)
+		else if (ux.currentAddFunction !== null){
 			ux.currentAddFunction();
+		}
+
 	},
 
 	// Display the right name combo - for template use returnUXPrimaryName

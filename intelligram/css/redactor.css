@@ -1164,6 +1164,7 @@ body .redactor-box-fullscreen {
 .redactor-editor img {
   vertical-align: middle;
   -ms-interpolation-mode: bicubic;
+  max-height: 5em;
 }
 .redactor-editor table {
   border-collapse: collapse;

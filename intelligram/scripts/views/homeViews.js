@@ -16,7 +16,10 @@ var homeView = {
     _activeView : 0,
     _needPhoneValidation : false,
     _needEmailValidation : false,
-
+    activeObj: new kendo.data.ObservableObject({
+        ux_isValidated: true,
+        ux_timeLeft: "7 days to verify account",
+    }),
 
     openNotificationAction: function(e){
         // todo - wire notification action
@@ -278,7 +281,21 @@ var homeView = {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
             $('#checked-in-place').show();
         }
-/*
+        homeView.activeObj.bind("change", function(e){
+            var field = e.field;
+            var value = homeView.activeObj.get(field);
+
+            switch(field){
+                case "ux_isValidated":
+                    if(!value){
+                        homeView.updateVerifiedHeader();
+                    }
+                    break;
+            }
+        });
+
+        /*
+    `
          $("#homeHeaderButton").kendoTouch({
 
          doubletap: function(e) {
@@ -359,6 +376,54 @@ var homeView = {
 
     },
 
+    updateVerifiedHeader: function () {
+        // get account creation time
+        var accountTime = userModel._user.get("accountCreateDate");
+        var accountCreateTime = moment(accountTime);
+        var timeLimit = moment(accountCreateTime).add(7, "days");
+        var today = moment();
+        var isBeforeLimit = today.isBefore(timeLimit, "minute");
+
+
+        // has the limit period expired
+        if(isBeforeLimit){
+            // still have time to verify
+            $("#home-verify-div").removeClass("homeVerify-pastDue").addClass("homeVerify-needed");
+            $("#home-verify-alert").attr("src", "images/icon-alert.svg");
+            $("#home-verify-arrow").attr("src","images/icon-arrow-right.svg");
+
+            var daysLeft = moment().diff(timeLimit, "days");
+
+            if(daysLeft < -1){
+                var days = Math.abs(daysLeft);
+                homeView.activeObj.set("ux_timeLeft", days + " days to verify account");
+            } else {
+                // hours left
+                var hoursLeft = moment().diff(timeLimit, "hours");
+                var hours = Math.abs(hoursLeft);
+                if(hours > 0){
+                    homeView.activeObj.set("ux_timeLeft", hours + " hrs to verify account");
+                } else if(hours == 0){
+                    // minutes left
+                    var minsLeft = moment().diff(timeLimit, "minutes");
+                    var mins = Math.abs(minsLeft);
+
+                    homeView.activeObj.set("ux_timeLeft", mins + " mins to verify account");
+                }
+            }
+        } else {
+            // time has expired
+            $("#home-verify-div").removeClass("homeVerify-needed").addClass("homeVerify-pastDue");
+            $("#home-verify-text").text("Account unverified");
+            $("#home-verify-alert").attr("src", "images/icon-alert-light.svg");
+            $("#home-verify-arrow").attr("src","images/icon-arrow-right-light.svg");
+        }
+
+
+
+
+
+    },
 
     onTabSelect: function(e){
         var tab;
@@ -369,7 +434,7 @@ var homeView = {
         }
 
         if(tab == 0){
-            $("#home-tab-alert-img").attr("src", "images/icon-notify-light.svg");
+            $("#home-tab-alert-img").attr("src", "images/icon-notify-active.svg");
             $("#home-tab-today-img").attr("src", "images/icon-today.svg");
 
             $("#home-alerts").removeClass("hidden");
@@ -395,18 +460,8 @@ var homeView = {
             $('#home-verify-div').addClass('hidden');
         } else {
             $('#home-verify-div').removeClass('hidden');
-            if (userModel._user.emailValidated) {
-                $('#home-verify-email').addClass('hidden');
-            } else {
-                $('#home-verify-email').removeClass('hidden');
-            }
-
-            if (userModel._user.phoneValidated) {
-                $('#home-verify-phone').addClass('hidden');
-            } else {
-                $('#home-verify-phone').removeClass('hidden');
-            }
         }
+
     },
 
     onShow: function (e) {
@@ -430,11 +485,12 @@ var homeView = {
 
         //everlive.syncCloud();
 
-        if (homeView._needPhoneValidation) {
-            verifyPhoneModal.sendAndOpenModal();
+        /*if (homeView._needPhoneValidation) {
+            verifyPhoneModal.openModal();
             // toggle off so user only sees every launch or login
             homeView._needPhoneValidation = false;
-        }
+        }*/
+
         // Todo:Don schedule unread channel notifications after sync complete
         //notificationModel.processUnreadChannels();
     },
@@ -2230,7 +2286,7 @@ var signInView = {
         everlive.clearAuthentication();
         
 
-        var username = $('#home-signin-username').val(), password = $('#home-signin-password').val();
+        var username = $('#home-signin-username').val().toLowerCase(), password = $('#home-signin-password').val();
 
         if (!deviceModel.isOnline()) {
             mobileNotify("Phone is offline - can't Sign In");
@@ -2331,7 +2387,9 @@ var verifyEmailModal = {
     },
 
     openModal: function (e) {
-        
+        var emailAddress = userModel._user.email;
+        $("#verifyEmail-address").text(emailAddress);
+
         $("#modalview-verifyEmail").data("kendoMobileModalView").open();
     },
     
@@ -2342,7 +2400,7 @@ var verifyEmailModal = {
     confirmVerify : function (e) {
 
         if (userModel._user.isVerified) {
-            mobileNotify("Your email is verified!!!");
+            mobileNotify("Email Verified");
             memberdirectory.update();
             homeView.updateValidationUX();
         } else {
@@ -2367,7 +2425,8 @@ var verifyEmailModal = {
     }
 };
 var verifyPhoneModal = {
-    _maskedCode : null,
+    _maskedCode: null,
+
 
     onOpen: function (e) {
         _preventDefault(e);
@@ -2377,19 +2436,32 @@ var verifyPhoneModal = {
         _preventDefault(e);
     },
 
+    createMaskedCode: function(fullCode){
+        // masked code string
+        var code;
+        if(fullCode !== undefined){
+            code = fullCode;
+        } else {
+            code = userModel._user.get("phoneVerificationCode");
+        }
+
+        var codeStr = new String(code);
+        var codeMask = /(\d)(\d)(\d)(\d)(\d)(\d)/;
+        var newCodeStr = codeStr.replace(codeMask, "$1••••$6");
+        $("#verifyPhone-code").attr("placeholder", newCodeStr);
+
+        verifyPhoneModal._maskedCode = newCodeStr;
+
+    },
+
     sendAndOpenModal : function (e) {
 
         var phone = userModel._user.get('phone');
+
         sendPhoneVerificationCode(phone, function (result) {
             if (result.status === 'ok') {
                 userModel._user.set('phoneVerificationCode', result.code);
-                var code = result.code;
-
-                code[1] = code[2] = code[3] = code[4] = '?';
-
-                verifyPhoneModal._maskedCode = code;
-                $('#verifyPhone-maskedcode').text( verifyPhoneModal._maskedCode);
-
+                verifyPhoneModal.createMaskedCode(result.code);
                 verifyPhoneModal.openModal();
                if (window.navigator.simulator === undefined) {
 
@@ -2406,21 +2478,24 @@ var verifyPhoneModal = {
     },
 
     openModal: function (e) {
-
-        var code = userModel._user.phoneVerificationCode;
-
-        if (window.navigator.simulator !== true) {
-            $("#verifyPhone-code").mask("999999", {placeholder: " "})
+        if(verifyPhoneModal._maskedCode === null){
+            verifyPhoneModal.createMaskedCode();
         }
+
+
+        $(".verify-device-img").velocity({opacity: 1, top: "2em"}, {delay: 1000, easing: [ 250, 15 ], duration: 1000});
+        $("#verifyPhone-card").velocity({top: "0em"}, {delay: 1000, duration: 1000});
 
         $("#verifyPhone-code").on('keyup', function(e){
             var val = $(this).val();
             if(val.length > 4){
-                $("#modalview-verifyPhone-btn").text("Verify").addClass('btnPrimary').removeClass('btnIncomplete');
+                $("#modalview-verifyPhone-btn").text("Verify").addClass('btnSecondary').removeClass('btnIncomplete');
             } else {
-                $("#modalview-verifyPhone-btn").addClass('btnIncomplete').removeClass('btnPrimary').text("Cancel");
+                $("#modalview-verifyPhone-btn").addClass('btnIncomplete').removeClass('btnSecondary');
             }
         });
+
+        $("#verifyPhone-userName").text(userModel._user.name);
         $("#modalview-verifyPhone").data("kendoMobileModalView").open();
     },
 
@@ -2430,10 +2505,13 @@ var verifyPhoneModal = {
     },
 
     sendCode : function (e) {
+        $("#verifyPhone-code").val("");
         var phone = userModel._user.get('phone');
         sendPhoneVerificationCode(phone, function (result) {
             if (result.status === 'ok') {
                 userModel._user.set('phoneVerificationCode', result.code);
+                verifyPhoneModal.createMaskedCode(result.code);
+
                 // display ui
                 $(".verifyPhone-code-sent").velocity("slideDown").velocity("slideUp", {delay: 4000});
             } else {
@@ -2459,6 +2537,7 @@ var verifyPhoneModal = {
                 mobileNotify("Your phone number is verified.  Thank You!");
                 var thisUser = userModel._user;
                 thisUser.set('phoneValidated', true);
+                homeView._needPhoneValidation = false;
                 var isVerified = thisUser.get('isVerified');
 
                 if (isVerified) {
