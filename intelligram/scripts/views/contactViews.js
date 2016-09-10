@@ -2681,6 +2681,7 @@ var groupEditView = {
 
             if (newMemberArray !== null) {
                 groupEditView.memberDS.data([]);
+
                 for (var i=0; i<newMemberArray.length; i++) {
                     var member = newMemberArray[i];
                     delete member.state;
@@ -2702,8 +2703,7 @@ var groupEditView = {
     updateMemberArray : function () {
         var len = groupEditView.memberDS.total();
 
-        var members = [];
-
+        var members = [], memberString = '';
         if (len > 0) {
             for (var i=0; i<len; i++) {
                 var member = groupEditView.memberDS.at(i);
@@ -2725,12 +2725,32 @@ var groupEditView = {
 
     },
 
+    buildMemberString : function () {
+        var activeGroup= groupEditView.activeObj;
+        var memberString = '';
+
+
+        for (var i=0; i< activeGroup.members; i++) {
+            var member = activeGroup.members[i];
+
+            var contact = contactModel.findContactByUUID(member);
+
+            if (contact !== undefined && contact !== null) {
+                memberString += contact.name + ',';
+            }
+
+            memberString = memberString.slice(0,-1);
+
+            return memberString;
+        }
+    },
+
 
     saveGroup: function () {
 
 
         var activeGroup= groupEditView.activeObj;
-
+        var memberString = groupEditView.buildMemberString();
 
         if (galleryEditView._mode === 'edit') {
 
@@ -2742,12 +2762,14 @@ var groupEditView = {
             group.set('tags', []); // todo: don integrate tag processing...
             group.set('description', activeGroup.description);
             group.set('members',activeGroup.members);
+            group.set ('memberString', memberString);
 
 
             groupModel.groupsDS.sync();
 
         } else {
 
+            groupEditView.activeObj ('memberString', memberString);
             groupModel.addGroup(activeGroup);
         }
 
