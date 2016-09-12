@@ -368,12 +368,22 @@ var contactsView = {
 
     doEditGroup : function (e) {
         var groupId = e.button[0].attributes["data-group"].value;
+        var group = groupModel.findGroup(groupId);
+
+        if (group !== undefined && group !== null) {
+            APP.kendo.navigate("#groupEditor?groupid="+groupId+"&returnview=contacts");
+        }
         // todo - wire up
     },
 
     doDeleteGroup : function (e) {
         var groupId = e.button[0].attributes["data-group"].value;
         // todo - wire up
+        var group = groupModel.findGroup(groupId);
+
+        if (group !== undefined && group !== null) {
+            groupModel.deleteGroup(group);
+        }
     },
 
 
@@ -2564,12 +2574,12 @@ var groupEditView = {
 
         } else {
             that.activeObj.uuid = group.uuid;
-            that.activeObj.title = group.title;
-            that.activeObj.alias = group.alias;
-            that.activeObj.description = group.description;
+            that.activeObj.set('title',group.title);
+            that.activeObj.set('alias', group.alias);
+            that.activeObj.set('description',group.description);
             that.activeObj.members = group.members;
-            that.activeObj.memberString = group.memberString;
-            that.activeObj.tagString = group.tagString;
+            that.activeObj.set('memberString',group.memberString);
+            that.activeObj.set('tagString', group.tagString);
             that.activeObj.tags= group.tags;
             that.activeObj.isICE = group.isICE;
             that.activeObj.isFamily = group.isFamily;
@@ -2589,8 +2599,15 @@ var groupEditView = {
 
         var contacts = contactModel.contactsDS.data();
 
-        // Assume the candidates are all current contacts
-        groupEditView.candidateDS.data (contacts);
+        // Assume the candidates are all current
+        groupEditView.candidateDS.data([]);
+        for (var i=0; i<contacts.length; i++) {
+            var conObj = contacts[i];
+            var memObj = {uuid : conObj.uuid, name : conObj.name, alias: conObj.alias, description: conObj.description, contactUUID:
+            conObj.contactUUID };
+            groupEditView.candidateDS.add(memObj);
+        }
+
         groupEditView.memberDS.data([]);
         if (members.length > 0) {
 
@@ -2599,8 +2616,11 @@ var groupEditView = {
                 var contact = contactModel.findContactByUUID(members[j]);
 
                 if (contact !== undefined && contact !== null) {
-                    groupEditView.memberDS.add(contact);
-                    groupEditView.candidateDS.remove(contact);
+                    var memberObj = {uuid : contact.uuid, name : contact.name, alias: contact.alias, description: contact.description,
+                        contactUUID: contact.contactUUID };
+
+                    groupEditView.memberDS.add(memberObj);
+                    groupEditView.candidateDS.remove(memberObj);
                 }
 
             }
@@ -2625,14 +2645,13 @@ var groupEditView = {
 
         var group = null;
         if (e.view.params.groupid !== undefined) {
-            groupEditView._gropuUUID = e.view.params.groupid;
+            groupEditView._groupUUID = e.view.params.groupid;
             groupEditView._mode = 'edit';
-            group = groupModel.findGroup(galleryEditView._galleryUUID);
+            group = groupModel.findGroup(groupEditView._groupUUID);
             if (group === null) {
                 ggError("Couldn't find group!");
                 groupEditView.onDone();
             }
-            galleryEditView.activeObj = group;
 
 
         } else {
@@ -2681,6 +2700,7 @@ var groupEditView = {
 
             if (newMemberArray !== null) {
                 groupEditView.memberDS.data([]);
+
                 for (var i=0; i<newMemberArray.length; i++) {
                     var member = newMemberArray[i];
                     delete member.state;
@@ -2702,8 +2722,7 @@ var groupEditView = {
     updateMemberArray : function () {
         var len = groupEditView.memberDS.total();
 
-        var members = [];
-
+        var members = [], memberString = '';
         if (len > 0) {
             for (var i=0; i<len; i++) {
                 var member = groupEditView.memberDS.at(i);
@@ -2725,12 +2744,32 @@ var groupEditView = {
 
     },
 
+    buildMemberString : function () {
+        var activeGroup= groupEditView.activeObj;
+        var memberString = '';
+
+
+        for (var i=0; i< activeGroup.members; i++) {
+            var member = activeGroup.members[i];
+
+            var contact = contactModel.findContactByUUID(member);
+
+            if (contact !== undefined && contact !== null) {
+                memberString += contact.name + ',';
+            }
+
+            memberString = memberString.slice(0,-1);
+
+            return memberString;
+        }
+    },
+
 
     saveGroup: function () {
 
 
         var activeGroup= groupEditView.activeObj;
-
+        var memberString = groupEditView.buildMemberString();
 
         if (galleryEditView._mode === 'edit') {
 
@@ -2742,12 +2781,14 @@ var groupEditView = {
             group.set('tags', []); // todo: don integrate tag processing...
             group.set('description', activeGroup.description);
             group.set('members',activeGroup.members);
+            group.set ('memberString', memberString);
 
 
             groupModel.groupsDS.sync();
 
         } else {
 
+            groupEditView.activeObj ('memberString', memberString);
             groupModel.addGroup(activeGroup);
         }
 
