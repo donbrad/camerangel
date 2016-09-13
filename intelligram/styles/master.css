@@ -1,7 +1,94 @@
 /* Colors */
 /* variables */
 /* Imports */
-@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700|PT+Sans:400,700|Open+Sans:400,600);
+/* PT Sans */
+@font-face {
+  font-family: 'PT Sans';
+  src: url('../fonts/ptsans_regular_macroman/PTS55F-webfont.eot');
+  src: url('../fonts/ptsans_regular_macroman/PTS55F-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/ptsans_regular_macroman/PTS55F-webfont.woff') format('woff'), url('../fonts/ptsans_regular_macroman/PTS55F-webfont.ttf') format('truetype'), url('../fonts/ptsans_regular_macroman/PTS55F-webfont.svg#pt_sansregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'PT Sans';
+  src: url('../fonts/ptsans_bold_macroman/PTS75F-webfont.eot');
+  src: url('../fonts/ptsans_bold_macroman/PTS75F-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/ptsans_bold_macroman/PTS75F-webfont.woff') format('woff'), url('../fonts/ptsans_bold_macroman/PTS75F-webfont.ttf') format('truetype'), url('../fonts/ptsans_bold_macroman/PTS75F-webfont.svg#pt_sansregular') format('svg');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'PT Sans';
+  src: url('../fonts/ptsans_italic_macroman/PTS56F-webfont.eot');
+  src: url('../fonts/ptsans_italic_macroman/PTS56F-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/ptsans_italic_macroman/PTS56F-webfont.woff') format('woff'), url('../fonts/ptsans_italic_macroman/PTS56F-webfont.ttf') format('truetype'), url('../fonts/ptsans_italic_macroman/PTS56F-webfont.svg#pt_sansitalic') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+/* Open Sans */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/opensans_regular_macroman/OpenSans-Regular-webfont.eot');
+  src: url('../fonts/opensans_regular_macroman/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans_regular_macroman/OpenSans-Regular-webfont.woff') format('woff'), url('../fonts/opensans_regular_macroman/OpenSans-Regular-webfont.ttf') format('truetype'), url('../fonts/opensans_regular_macroman/OpenSans-Regular-webfont.svg#open_sansextrabold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/opensans_semibold_macroman/OpenSans-Semibold-webfont.eot');
+  src: url('../fonts/opensans_semibold_macroman/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans_semibold_macroman/OpenSans-Semibold-webfont.woff') format('woff'), url('../fonts/opensans_semibold_macroman/OpenSans-Semibold-webfont.ttf') format('truetype'), url('../fonts/opensans_semibold_macroman/OpenSans-Semibold-webfont.svg#open_sanssemibold') format('svg');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/opensans_bold_macroman/OpenSans-Bold-webfont.eot');
+  src: url('../fonts/opensans_bold_macroman/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans_bold_macroman/OpenSans-Bold-webfont.woff') format('woff'), url('../fonts/opensans_bold_macroman/OpenSans-Bold-webfont.ttf') format('truetype'), url('../fonts/opensans_bold_macroman/OpenSans-Bold-webfont.svg#open_sansextrabold') format('svg');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/opensans_italic_macroman/OpenSans-Italic-webfont.eot');
+  src: url('../fonts/opensans_italic_macroman/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans_italic_macroman/OpenSans-Italic-webfont.woff') format('woff'), url('../fonts/opensans_italic_macroman/OpenSans-Italic-webfont.ttf') format('truetype'), url('../fonts/opensans_italic_macroman/OpenSans-Italic-webfont.svg#open_sansitalic') format('svg');
+  font-weight: 400;
+  font-style: italic;
+}
+/* Hind */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Hind/hind-v6-latin-regular.eot');
+  src: local('Hind'), local('Hind-Regular'), url('../fonts/Hind/hind-v6-latin-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/Hind/hind-v6-latin-regular.woff2') format('woff2'), url('../fonts/Hind/hind-v6-latin-regular.woff') format('woff'), url('../fonts/Hind/hind-v6-latin-regular.ttf') format('truetype'), url('../fonts/Hind/hind-v6-latin-regular.svg#Hind') format('svg');
+}
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/Hind/hind-v6-latin-600.eot');
+  src: local('Hind SemiBold'), local('Hind-SemiBold'), url('../fonts/Hind/hind-v6-latin-600.eot?#iefix') format('embedded-opentype'), url('../fonts/Hind/hind-v6-latin-600.woff2') format('woff2'), url('../fonts/Hind/hind-v6-latin-600.woff') format('woff'), url('../fonts/Hind/hind-v6-latin-600.ttf') format('truetype'), url('../fonts/Hind/hind-v6-latin-600.svg#Hind') format('svg');
+}
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/Hind/hind-v6-latin-700.eot');
+  src: local('Hind Bold'), local('Hind-Bold'), url('../fonts/Hind/hind-v6-latin-700.eot?#iefix') format('embedded-opentype'), url('../fonts/Hind/hind-v6-latin-700.woff2') format('woff2'), url('../fonts/Hind/hind-v6-latin-700.woff') format('woff'), url('../fonts/Hind/hind-v6-latin-700.ttf') format('truetype'), url('../fonts/Hind/hind-v6-latin-700.svg#Hind') format('svg');
+}
+/* Ubuntu */
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Ubuntu/ubuntu-v9-latin-regular.eot');
+  src: local('Ubuntu'), url('../fonts/Ubuntu/ubuntu-v9-latin-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/Ubuntu/ubuntu-v9-latin-regular.woff2') format('woff2'), url('../fonts/Ubuntu/ubuntu-v9-latin-regular.woff') format('woff'), url('../fonts/Ubuntu/ubuntu-v9-latin-regular.ttf') format('truetype'), url('../fonts/Ubuntu/ubuntu-v9-latin-regular.svg#Ubuntu') format('svg');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../fonts/Ubuntu/ubuntu-v9-latin-500.eot');
+  src: local('Ubuntu Medium'), local('Ubuntu-Medium'), url('../fonts/Ubuntu/ubuntu-v9-latin-500.eot?#iefix') format('embedded-opentype'), url('../fonts/Ubuntu/ubuntu-v9-latin-500.woff2') format('woff2'), url('../fonts/Ubuntu/ubuntu-v9-latin-500.woff') format('woff'), url('../fonts/Ubuntu/ubuntu-v9-latin-500.ttf') format('truetype'), url('../fonts/Ubuntu/ubuntu-v9-latin-500.svg#Ubuntu') format('svg');
+}
 .sentinel .tags {
   padding: 0;
   margin: 0;
@@ -593,9 +680,15 @@
 .redactor-editor {
   padding: 0.5em !important;
   border: none !important;
+  font-family: "PT Sans", "Helvetica Neue", san-serif !important;
+}
+.redactor-placeholder:after {
+  left: 0 !important;
 }
 .redactor-editor p {
   margin-bottom: 0.5em;
+  margin-left: 0;
+  margin-right: 0;
 }
 .redactor-toolbar {
   box-shadow: none;
@@ -755,12 +848,12 @@
 }
 html,
 .km-root {
-  font-size: 1.2em;
+  font-size: 18px !important;
 }
 @media only screen and (max-width: 320px) {
   html,
   .km-root {
-    font-size: 1em;
+    font-size: 18px !important;
   }
 }
 html {
@@ -769,17 +862,16 @@ html {
   padding: 0;
 }
 body {
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'PT Sans', Helvetica, sans-serif;
   line-height: 1.5;
   margin: 1rem;
   background: #fff;
-  font-size: 16;
 }
 h1 {
   font-size: 34px;
   font-size: 2.125em;
   /* 34px */
-  font-family: 'Hind', sans-serif !important;
+  font-family: 'Hind', Helvetica, sans-serif !important;
   font-weight: 500;
 }
 h2 {
@@ -787,20 +879,20 @@ h2 {
   font-size: 1.5em;
   /* 24px */
   font-weight: 500;
-  font-family: 'Hind', sans-serif !important;
+  font-family: 'Hind', Helvetica, sans-serif !important;
 }
 h3 {
   font-size: 20px;
   font-size: 1.25em;
   /* 20px */
   font-weight: 300;
-  font-family: 'Hind', sans-serif !important;
+  font-family: 'Hind', Helvetica, sans-serif !important;
 }
 h4 {
   font-size: 18px;
   font-size: 1.125em;
   font-weight: 600;
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: 'Open Sans', Helvetica, sans-serif !important;
 }
 h5 {
   font-weight: 600;
@@ -1275,23 +1367,55 @@ form p {
 .km-material .k-toolbar .km-button.km-state-active {
   background: none;
 }
+#modalview-verifyPhone > div {
+  padding: 0;
+  background-color: #4B6CB7;
+  background-image: none !important;
+  z-index: 100;
+}
+.verify-device-img {
+  top: 6em;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  opacity: 0;
+  z-index: -1;
+}
+.verify-device-img img {
+  height: 12em;
+}
+.verifyPhone-codeBox {
+  margin: 1em 1rem 2em 1rem;
+}
+.verifyPhone-codeBox label {
+  font-weight: 600;
+}
+#modalview-verifyPhone > div > div.km-scroll-container > div.card {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 0;
+  margin-top: -5em;
+  position: relative;
+  top: 0;
+}
+#modalview-verifyPhone > div > div.km-scroll-container > div.card h2 {
+  margin-bottom: 0.5em;
+  padding-top: 0.5em;
+}
 .verifyPhone-code-sent {
   background-color: #009688;
   color: #fff;
-  position: absolute;
-  bottom: 2em;
+  position: relative;
   width: 100%;
   display: none;
-  margin-bottom: 0.25em;
 }
 .verifyPhone-code-error {
   background-color: #E57373;
   color: #fff;
-  position: absolute;
-  bottom: 2em;
+  position: relative;
   width: 100%;
   display: none;
-  margin-bottom: 0.25em;
 }
 .gg-read-value {
   font-size: 1.2em;
@@ -1577,6 +1701,7 @@ form p {
   padding-top: 1rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.4px;
+  font-size: 1em !important;
 }
 .btnFull-modal :hover {
   background: transparent !important;
@@ -1586,6 +1711,11 @@ form p {
   float: left;
   height: 2.25rem;
   padding-top: 0.5rem !important;
+}
+.km-tabstrip .km-button {
+  font-family: 'PT Sans', Helvetica, sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
 }
 .footer-twoBtn .twoBtn:nth-child(1) {
   border-right: 1px solid #E0E0E0;
@@ -1687,7 +1817,7 @@ div.km-content.km-widget.km-scroll-wrapper {
 }
 /* Override Styles */
 .km-material {
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'PT Sans', Helvetica, sans-serif;
 }
 input,
 textarea,
@@ -1695,7 +1825,7 @@ keygen,
 select,
 button,
 .standard-input {
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'PT Sans', Helvetica, sans-serif;
 }
 div.km-header a img {
   height: 1.2em;
@@ -1933,8 +2063,8 @@ div.km-header a img {
   background-color: #e0e0e0;
 }
 .km-view-title span {
-  font-family: 'PT Sans', sans-serif;
-  font-weight: 400;
+  font-family: 'Open Sans', Helvetica, sans-serif;
+  font-weight: 600;
   color: #4A4A4A;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
@@ -1991,7 +2121,7 @@ div.km-header a img {
 .km-material .km-list > li {
   padding: inherit;
   line-height: inherit;
-  padding: 0.551em 1em;
+  padding: 0.51em 1em;
 }
 .km-material .km-button {
   box-shadow: inherit;
@@ -2003,6 +2133,8 @@ div.km-header a img {
   line-height: 1.5;
   font-size: 1.5em;
   padding: 0.8rem;
+  text-align: left;
+  padding-left: 3em;
 }
 .km-material input[type=password],
 .km-material input[type=search],
@@ -2098,6 +2230,16 @@ div.footer.km-footer {
 .helper-sm img {
   height: 12px;
 }
+.helper-list-detail {
+  color: #979797;
+  font-size: 0.85em !important;
+  margin-left: 0.2em;
+  font-weight: 400;
+  font-style: italic;
+}
+.helper-list-detail img {
+  height: 12px;
+}
 .helper-header {
   font-size: 0.75em;
 }
@@ -2167,6 +2309,13 @@ div.footer.km-footer {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
+#home-tab-alert-img {
+  max-height: 1em;
+}
+#gallery-photos > a > span > img {
+  vertical-align: middle;
+  margin-left: 0.15em;
+}
 .tabBar {
   box-shadow: none !important;
   border-bottom: 1px solid #E0E0E0;
@@ -2174,9 +2323,10 @@ div.footer.km-footer {
 .tabBar a {
   background-color: #f5f5f5 !important;
   color: #4A4A4A !important;
-  font-size: 1em !important;
+  font-size: 1.125em !important;
   padding: 0.5em !important;
   border-radius: 0 !important;
+  border-bottom: 1px solid #f5f5f5 !important;
 }
 .tabBar a > span {
   display: inline-block !important;
@@ -2184,17 +2334,52 @@ div.footer.km-footer {
 .tabBar a img {
   margin-right: 0.25em !important;
   vertical-align: middle;
-  height: 1.25em;
+  height: 1em;
   max-width: 1.25em;
 }
 .tabBar a.km-button.km-state-active {
-  background-color: #6CADF3 !important;
-  color: #fff !important;
+  color: #6CADF3 !important;
+  border-bottom: 2px solid #6CADF3 !important;
 }
 #home-buttongroup {
   box-shadow: none !important;
 }
-#home-buttongroup > a.km-button.km-state-active #home-buttongroup > a.km-button > span {
+.verifyEmail-resend {
+  width: 100%;
+  margin: 0.5em 0 1em;
+}
+#home-verify-div {
+  width: 100%;
+  background-color: #FFB74D;
+  margin: 0;
+  padding: 0.5em 1em;
+  font-weight: 600;
+  text-align: left;
+}
+#home-verify-div img {
+  height: 1em;
+  max-width: 1em;
+  vertical-align: middle;
+}
+#home-verify-div p {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.homeVerify-needed {
+  background-color: #FFB74D !important;
+}
+.homeVerify-pastDue {
+  background-color: #E57373 !important;
+  color: #fff !important;
+}
+#verifyEmail-address {
+  font-weight: 600;
+}
+#home-verify-arrow {
+  position: relative;
+  top: 0.25em;
+}
+#home-buttongroup > a.km-button > span {
   display: inline-block;
 }
 #home-buttongroup > li.km-button > span > img {
@@ -2255,11 +2440,17 @@ div.footer.km-footer {
   line-height: 1.5 !important;
   padding: 0px;
 }
+#channels > div.km-header > div.km-widget.km-navbar > div.km-view-title #contacts > div.km-header > div.km-widget.km-navbar > div.km-view-title,
+#places > div.km-header > div.km-widget.km-navbar > div.km-view-title,
+#gallery > div.km-header > div.km-widget.km-navbar > div.km-view-title {
+  padding-left: 3em;
+}
 #home > div.km-header > div > div.km-view-title > span {
   font-family: 'Ubuntu', sans-serif !important;
   color: #6CADF3;
   font-weight: 500;
   font-size: 1.125em;
+  padding-left: 0.75em;
 }
 #profilePhotoForm > div > ul > li:nth-child(4) > div > span {
   padding-top: 0px;
@@ -2297,8 +2488,8 @@ div.footer.km-footer {
 }
 .circle-img-home {
   border-radius: 50%;
-  width: 2.5em;
-  height: 2.5em !important;
+  width: 2.375em;
+  height: 2.375em !important;
   margin-right: 0.5rem;
   position: absolute;
   top: 0.5em;
@@ -2313,15 +2504,15 @@ div.footer.km-footer {
   vertical-align: middle;
 }
 .nav-search {
-  height: 20px !important;
+  height: 1.5em !important;
   vertical-align: -webkit-baseline-middle;
   vertical-align: middle;
 }
 .home-status {
   z-index: 1;
   position: absolute;
-  top: 2em;
-  left: 2em;
+  top: 1.75em;
+  left: 1.75em;
 }
 .profileLocation {
   color: #6CADF3 !important;
@@ -2866,6 +3057,11 @@ div.footer.km-footer {
   height: 1em;
   vertical-align: text-top;
 }
+.icon-btn-sm {
+  height: 1em;
+  vertical-align: middle;
+  margin-left: 0.15em;
+}
 .ggHome-close {
   padding: 1em !important;
   z-index: 99;
@@ -2973,6 +3169,14 @@ textarea {
   font-size: 1em;
   margin-top: .2em;
   border: 1px solid #E0E0E0;
+}
+.listview {
+  background-color: #fff !important;
+}
+.listview li:not(.km-group-container),
+.listview li > ul > li {
+  padding: 1em;
+  border-bottom: 1px solid #E0E0E0 !important;
 }
 /*
 .km-root .km-wp .km-view.appearance .km-listview select
@@ -3969,9 +4173,6 @@ div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
 .navbar-btn {
   padding: 0 !important;
 }
-#placeView > div.km-header > div.km-widget.km-navbar > div.km-view-title > span {
-  width: 60%;
-}
 .placeType-list {
   border-radius: 3px;
   padding: 3px;
@@ -3992,9 +4193,6 @@ div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
 }
 .list-type {
   text-transform: capitalize;
-}
-ul li:last-child {
-  border-bottom: none !important;
 }
 li > .km-group-title {
   background: #f5f5f5;
@@ -4078,6 +4276,11 @@ li > .km-group-title {
   background-color: #fff;
   margin-top: 0;
   margin-right: 1em;
+}
+@media only screen and (max-width: 320px) {
+  #messageSend {
+    margin-right: 0.5em;
+  }
 }
 .messageCompose {
   padding: 0.5rem;
@@ -4351,10 +4554,10 @@ div.loginBox > form > div > ul > li {
 }
 .card {
   width: 95%;
-  margin: 0px auto 0px auto;
+  margin: 0 auto 0 auto;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  border-radius: 2px;
+  border-radius: 4px;
   padding-top: 0.5rem;
   padding-bottom: 0.5em;
 }
@@ -4419,6 +4622,9 @@ div.loginBox > form > div > ul > li {
 .card .chat p {
   font-size: 16px;
   font-size: 1em;
+}
+.card .footer {
+  border-radius: 4px !important;
 }
 .photoPreview {
   width: 25%;
@@ -4752,6 +4958,18 @@ div.loginBox > form > div > ul > li {
   margin-left: 0px;
   margin-right: 0px;
 }
+#groupEditor-editTitleTag > a {
+  margin-top: 0.25em;
+}
+.groupEditor-name {
+  max-width: 90%;
+}
+.groupEditor-contact-delete {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 10%;
+}
 .contactListItem {
   display: block;
 }
@@ -4850,29 +5068,27 @@ div.loginBox > form > div > ul > li {
   vertical-align: middle;
   margin-left: 0.5rem;
 }
+.list-slider,
 .contactListBox {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.25rem;
+  padding: 0.5em 1em;
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   background: #fff;
   display: inline-block;
-  height: 5rem;
+  height: 100%;
   box-shadow: 3px 0 3px -3px #979797;
   width: 100%;
 }
 .contact-options {
   width: 100%;
-  height: 70px;
+  min-height: 6em;
   background-color: #f5f5f5;
   z-index: -1;
   display: inline-block;
   padding-top: 1rem;
   float: left;
-  height: 5rem;
+  height: 100%;
   text-align: right;
 }
 .list-box {
@@ -4887,27 +5103,34 @@ div.loginBox > form > div > ul > li {
   width: 100%;
 }
 @media only screen and (max-width: 320px) {
-  .list-box {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-  }
 }
+.list-slider-options,
 .list-options {
   width: 100%;
-  height: 6em;
+  height: 100%;
   background-color: #f5f5f5;
   z-index: -1;
   display: inline-block;
   float: left;
   text-align: right;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
 }
+.list-slider-options a,
 .list-options a {
   vertical-align: middle;
 }
+#groups-listview li {
+  padding: 0 !important;
+}
+#places-listview > li > div > div.list-options {
+  min-height: 6em;
+  padding-top: 1.25em;
+  padding-bottom: 1.25em;
+}
 #places-listview li {
   padding: 0px;
+  height: 100%;
 }
 #places-listview {
   border-bottom: 1px solid #E0E0E0 !important;
@@ -5514,19 +5737,14 @@ div.contactListBox.activeContact > div > div > ul {
 .resultsBar {
   background: #fff;
   border-bottom: 1px solid #E0E0E0;
-  padding: 0.25em 0 0.25em 0;
+  padding: 0.25em 1em;
 }
 .resultsBar .results {
-  width: 20%;
-  padding-top: 0.55rem;
+  width: 50%;
   float: left;
-  text-align: right;
-  font-size: 1em;
 }
-@media only screen and (max-width: 320px) {
-  .resultsBar .results {
-    width: 25%;
-  }
+.resultsBar .results p {
+  margin: 0.25em 0 0 0 !important;
 }
 .resultsBar .tags img {
   height: 18px;
@@ -5558,6 +5776,41 @@ div.contactListBox.activeContact > div > div > ul {
   .resultsBar .photoDisplayView {
     width: 45%;
   }
+}
+.resultsBar .galleryName {
+  text-align: left;
+  color: #979797;
+}
+.resultsBar .galleryName img {
+  height: 12px;
+}
+.resultsBar .galleries {
+  float: left;
+  width: 50%;
+}
+.resultsBar .galleries a {
+  float: right;
+}
+#galleryView-noteAdd {
+  position: absolute;
+  top: -5em !important;
+  min-height: 24em !important;
+}
+#galleryView-noteAddView {
+  min-height: 350px !important;
+}
+#notesListView-add li {
+  background-color: #fff !important;
+}
+#notesListView-add li > ul li {
+  border-bottom: 1px solid #E0E0E0;
+}
+#galleryListModal-listview li {
+  padding: 0.5em 0.5em !important;
+  border-bottom: 1px solid #979797;
+}
+#gallery-photos > div.resultsBar > div.galleries > a > span > img {
+  vertical-align: middle;
 }
 #gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span > span.k-input > img {
   vertical-align: sub;
@@ -6082,6 +6335,7 @@ html .km-pane-wrapper .k-header {
   color: #979797;
   padding-left: 14%;
   margin-bottom: 0.25em;
+  font-family: "Hind", Helvetica Neue, san-serif;
 }
 @media only screen and (max-width: 320px) {
   .chat-details {
@@ -6482,11 +6736,6 @@ html .km-pane-wrapper .k-header {
   background: #fff;
   padding: 0px;
 }
-#places-listview li:last-child,
-#smartEventPlaces-listview li:last-child,
-#findplace-listview li:last-child {
-  border-bottom: 0 !important;
-}
 #placeTypeBtns,
 #addplace-typeBtns {
   text-align: left;
@@ -6815,11 +7064,10 @@ table.k-editor {
   text-align: center;
 }
 #startUpView .km-material .km-content {
-  background-color: #6CADF3 !important;
+  background-color: #fff !important;
 }
 #startUpView > div.km-content.km-widget.km-scroll-wrapper {
-  background-color: #6CADF3 !important;
-  background-image: none;
+  background-color: #fff !important;
 }
 #startUpView_loading {
   position: absolute;
@@ -6839,7 +7087,7 @@ table.k-editor {
   right: 0;
   margin: auto;
   font-family: 'Ubuntu', sans-serif !important;
-  color: #fff;
+  color: #6CADF3;
   font-weight: 500;
   font-size: 1.5em;
 }
@@ -6870,7 +7118,7 @@ table.k-editor {
   margin-right: 0.5em;
 }
 .feature-body-text {
-  font-size: 14px;
+  font-size: 1em;
 }
 .icon-feature-img {
   float: left;
@@ -7158,6 +7406,23 @@ table.k-editor {
 }
 #smartTripModal > div > div.intelliTrip.tripView > div.header {
   border-bottom: 2px dotted #E0E0E0;
+}
+.modalFooter {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0;
+  right: 0;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.modalFooter > a {
+  color: #fff !important;
+  border-radius: 3em !important;
+}
+.modalFooter > a.km-state-active {
+  color: #80CBC4 !important;
+  opacity: 0.75;
 }
 .modalFooter.intelliTrip-action {
   position: absolute;

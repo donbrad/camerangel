@@ -76,7 +76,6 @@
 
 
 
-
 		deviceModel.init();
 
 		deviceModel.getAppState();

@@ -134,21 +134,21 @@ var contactsView = {
             dataBound: function(e){
                 ux.checkEmptyUIState(groupModel.groupsDS, "#groupListDiv >");
             }
-
         }).kendoTouch({
-            filter: ".groupListBox",  // todo: change to groupListBox when jordan updates .less
-            // filter: "div",
+            filter: ".groupListBox",
             enableSwipe: true,
             tap: function(e){
                 var groupId = null;
 
-                if (e.touch.currentTarget !== undefined) {
+                groupId = $(e.touch.target[0]).data("group");
+
+                /*if (e.touch.currentTarget !== undefined) {
                     // iOS and the previous versions
                     groupId = e.touch.currentTarget.attributes['data-group'].value
                 } else {
                     // Latest kendo versions for android
                     groupId = e.touch.target[0].attributes['data-group'].value;
-                }
+                }*/
 
                 var group = groupModel.findGroup(groupId);
                 if (group === undefined) {
@@ -159,28 +159,22 @@ var contactsView = {
                 // todo: don - wire up groupActionView modal
                 groupActionView.openModal(group.uuid);
 
-
             },
             swipe: function(e) {
-                // Need to set current contact before exposing editing ux!
                 var selection = e.sender.events.currentTarget;
 
                 if(e.direction === "left" && !$(selection).hasClass("noSlide")){
-                    var otherOpenedLi = $(".contact-active");
-                    $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+                    var otherOpenedLi = $(".group-active");
+                    $(otherOpenedLi).velocity({translateX:"0"},{duration: "fast"}).removeClass("group-active");
 
-                    if($(selection).hasClass("member") && $(window).width() < 375){
-                        $(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
-                    } else if ($(selection).hasClass("member"))  {
-                        $(selection).velocity({translateX:"-75%"},{duration: "fast"}).addClass("contact-active");
-                    } else if($(window).width() < 375) {
-                        $(selection).velocity({translateX:"-85%"},{duration: "fast"}).addClass("contact-active");
+                    if($(window).width() < 375){
+                        $(selection).velocity({translateX:"-55%"},{duration: "fast"}).addClass("group-active");
                     } else {
-                        $(selection).velocity({translateX:"-80%"},{duration: "fast"}).addClass("contact-active");
+                        $(selection).velocity({translateX:"-45%"},{duration: "fast"}).addClass("group-active");
                     }
                 }
-                if (e.direction === "right" && $(selection).hasClass("contact-active")){
-                    $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("contact-active");
+                if (e.direction === "right" && $(selection).hasClass("group-active")){
+                    $(selection).velocity({translateX:"0"},{duration: "fast"}).removeClass("group-active");
                 }
 
             }
@@ -300,8 +294,8 @@ var contactsView = {
         }
 
         if(tab == 0){
-           /* $("#home-tab-alert-img").attr("src", "images/icon-notify-light.svg");
-            $("#home-tab-today-img").attr("src", "images/icon-today.svg");*/
+            $("#contacts-tab-0-img").attr("src", "images/icon-contact-active.svg");
+            $("#contacts-tab-1-img").attr("src", "images/icon-group.svg");
 
             $("#contacts-contacts").removeClass("hidden");
             $("#contacts-groups").addClass("hidden");
@@ -309,8 +303,8 @@ var contactsView = {
             ux.setSearchPlaceholder("Search Contacts...");
             ux.setAddTarget(null, "#contactImport", null);
         } else {
-            /*$("#home-tab-alert-img").attr("src", "images/icon-notify.svg");
-            $("#home-tab-today-img").attr("src", "images/icon-today-alt.svg");*/
+            $("#contacts-tab-0-img").attr("src", "images/icon-contact-alt.svg");
+            $("#contacts-tab-1-img").attr("src", "images/icon-group-active.svg");
 
             $("#contacts-contacts").addClass("hidden");
             $("#contacts-groups").removeClass("hidden");
@@ -374,10 +368,22 @@ var contactsView = {
 
     doEditGroup : function (e) {
         var groupId = e.button[0].attributes["data-group"].value;
+        var group = groupModel.findGroup(groupId);
+
+        if (group !== undefined && group !== null) {
+            APP.kendo.navigate("#groupEditor?groupid="+groupId+"&returnview=contacts");
+        }
+        // todo - wire up
     },
 
     doDeleteGroup : function (e) {
         var groupId = e.button[0].attributes["data-group"].value;
+        // todo - wire up
+        var group = groupModel.findGroup(groupId);
+
+        if (group !== undefined && group !== null) {
+            groupModel.deleteGroup(group);
+        }
     },
 
 
@@ -1618,11 +1624,12 @@ var contactActionView = {
 
     updateTrackingUX : function () {
         var tracking = contactActionView._activeContact.activeTracking;
+
         if (tracking) {
             $("#contactActions-track").html('<img src="images/icon-tracking-active.svg" /> Stop Tracking');
 
         } else {
-            $("#contactActions-track").html('<img src="images/icon-tracking.svg" /> Start Tracking');
+            $("#contactActions-track").html('<img src="images/icon-tracking-active.svg" /> Start Tracking');
         }
     },
 
@@ -1973,7 +1980,7 @@ var groupActionView = {
     openModal : function (groupId) {
 
 
-        var thisGroup = groupModel(contactId);
+        var thisGroup = groupModel.findGroup(groupId);
 
         groupModel.checkIdenticon(thisGroup);
         groupActionView.setGroup(thisGroup);
@@ -2238,6 +2245,7 @@ var groupActionView = {
 };
 
 
+
 var sharePickerView = {
     callback: null,
     _shareObj : null,
@@ -2288,6 +2296,7 @@ var sharePickerView = {
                 contactModel.shareDS.filter([]);
             }
         });
+
     },
 
     onOpen : function () {
@@ -2297,6 +2306,7 @@ var sharePickerView = {
     shareObject : function (target) {
 
     },
+
 
     openModal : function (shareObj, callback) {
 
@@ -2332,7 +2342,6 @@ var sharePickerView = {
         }
     }
 
-
 };
 
 
@@ -2350,7 +2359,7 @@ var contactPickerView = {
         $("#contactPickerView-listview").kendoMobileListView({
             dataSource: contactPickerView.contactsDS,
             template: $("#contactPickerView-template").html(),
-            headerTemplate : '<span style="font-size: 0.9em; "> <strong>#:value# </strong> </span>',
+            headerTemplate : $("#contactPickerView-header-template").html(),
             fixedHeaders: true,
             autoBind: false,
             click: function (e) {
@@ -2488,12 +2497,17 @@ var groupEditView = {
     _callback : null,
     _returnview : null,
     _mode : 'create',
-    activeObj : new kendo.data.ObservableObject({title: '', members:[]}),
+    activeObj : new kendo.data.ObservableObject({
+        title: '',
+        members:[],
+        ux_tagsVisible: false,
+        ux_totalMembers: 0,
+        ux_showTotal: null
+    }),
     tags : null,
     tagString: null,
     memberDS:  new kendo.data.DataSource(),   // members of this group
     candidateDS :  new kendo.data.DataSource(),  // All other contacts that aren't in this group
-
     onInit: function (e) {
 
 
@@ -2508,15 +2522,27 @@ var groupEditView = {
 
         });
 
+
         $('#groupEditor-title').blur(groupEditView.isValid);
+
     },
 
+    toggleTags: function(){
+        if(groupEditView.activeObj.ux_tagsVisible){
+            //$("#groupEditView-addTagBtn").addClass("hidden");
+            groupEditView.activeObj.set("ux_tagsVisible", false);
+        } else {
+            groupEditView.activeObj.set("ux_tagsVisible", true);
+        }
+    },
 
     isValid : function () {
         var that = groupEditView.activeObj;
-        // If there's a name and atleast 1 member - enable save
-        if (that.title.length > 2 && that.members.length > 0) {
+
+        // If there's a name and at least 1 member - enable save
+        if (that.title !== "" && that.members.length > 0) {
             $('#groupEditor-saveBtn').removeClass('hidden');
+
         } else {
             $('#groupEditor-saveBtn').addClass('hidden');
         }
@@ -2538,20 +2564,22 @@ var groupEditView = {
             that.activeObj.tagString = '';
             that.activeObj.members = [];
             that.activeObj.memberString = null;
+
             that.activeObj.tags = [];
             that.activeObj.isICE = false;
             that.activeObj.isFamily = false;
             that.activeObj.isNeighbor = false;
             that.activeObj.canAccount = false;
             that.activeObj.canMedical = false;
+
         } else {
             that.activeObj.uuid = group.uuid;
-            that.activeObj.title = group.title;
-            that.activeObj.alias = group.alias;
-            that.activeObj.description = group.description;
+            that.activeObj.set('title',group.title);
+            that.activeObj.set('alias', group.alias);
+            that.activeObj.set('description',group.description);
             that.activeObj.members = group.members;
-            that.activeObj.memberString = group.memberString;
-            that.activeObj.tagString = group.tagString;
+            that.activeObj.set('memberString',group.memberString);
+            that.activeObj.set('tagString', group.tagString);
             that.activeObj.tags= group.tags;
             that.activeObj.isICE = group.isICE;
             that.activeObj.isFamily = group.isFamily;
@@ -2560,6 +2588,7 @@ var groupEditView = {
             that.activeObj.canMedical = group.canMedical;
         }
 
+        that.activeObj.set("ux_tagsVisible", false);
         groupEditView.initData(that.activeObj.members);
 
         groupEditView.isValid();
@@ -2570,8 +2599,15 @@ var groupEditView = {
 
         var contacts = contactModel.contactsDS.data();
 
-        // Assume the candidates are all current contacts
-        groupEditView.candidateDS.data (contacts);
+        // Assume the candidates are all current
+        groupEditView.candidateDS.data([]);
+        for (var i=0; i<contacts.length; i++) {
+            var conObj = contacts[i];
+            var memObj = {uuid : conObj.uuid, name : conObj.name, alias: conObj.alias, description: conObj.description, contactUUID:
+            conObj.contactUUID };
+            groupEditView.candidateDS.add(memObj);
+        }
+
         groupEditView.memberDS.data([]);
         if (members.length > 0) {
 
@@ -2580,8 +2616,11 @@ var groupEditView = {
                 var contact = contactModel.findContactByUUID(members[j]);
 
                 if (contact !== undefined && contact !== null) {
-                    groupEditView.memberDS.add(contact);
-                    groupEditView.candidateDS.remove(contact);
+                    var memberObj = {uuid : contact.uuid, name : contact.name, alias: contact.alias, description: contact.description,
+                        contactUUID: contact.contactUUID };
+
+                    groupEditView.memberDS.add(memberObj);
+                    groupEditView.candidateDS.remove(memberObj);
                 }
 
             }
@@ -2606,14 +2645,13 @@ var groupEditView = {
 
         var group = null;
         if (e.view.params.groupid !== undefined) {
-            groupEditView._gropuUUID = e.view.params.groupid;
+            groupEditView._groupUUID = e.view.params.groupid;
             groupEditView._mode = 'edit';
-            group = groupModel.findGroup(galleryEditView._galleryUUID);
+            group = groupModel.findGroup(groupEditView._groupUUID);
             if (group === null) {
                 ggError("Couldn't find group!");
                 groupEditView.onDone();
             }
-            galleryEditView.activeObj = group;
 
 
         } else {
@@ -2646,6 +2684,7 @@ var groupEditView = {
     onDone : function (e) {
         // _preventDefault(e);
 
+
         if (groupEditView._returnview !== null) {
             APP.kendo.navigate('#'+groupEditView._returnview);
         } else {
@@ -2661,6 +2700,7 @@ var groupEditView = {
 
             if (newMemberArray !== null) {
                 groupEditView.memberDS.data([]);
+
                 for (var i=0; i<newMemberArray.length; i++) {
                     var member = newMemberArray[i];
                     delete member.state;
@@ -2682,8 +2722,7 @@ var groupEditView = {
     updateMemberArray : function () {
         var len = groupEditView.memberDS.total();
 
-        var members = [];
-
+        var members = [], memberString = '';
         if (len > 0) {
             for (var i=0; i<len; i++) {
                 var member = groupEditView.memberDS.at(i);
@@ -2694,9 +2733,35 @@ var groupEditView = {
     },
 
     onSave : function (e) {
+        var validator = $("#groupEditor-editTitleTag").kendoValidator().data("kendoValidator");
 
-        groupEditView.saveGroup();
-        groupEditView.onDone();
+        if (validator.validate()) {
+            groupEditView.saveGroup();
+            groupEditView.onDone();
+        }
+
+
+
+    },
+
+    buildMemberString : function () {
+        var activeGroup= groupEditView.activeObj;
+        var memberString = '';
+
+
+        for (var i=0; i< activeGroup.members; i++) {
+            var member = activeGroup.members[i];
+
+            var contact = contactModel.findContactByUUID(member);
+
+            if (contact !== undefined && contact !== null) {
+                memberString += contact.name + ',';
+            }
+
+            memberString = memberString.slice(0,-1);
+
+            return memberString;
+        }
     },
 
 
@@ -2704,7 +2769,7 @@ var groupEditView = {
 
 
         var activeGroup= groupEditView.activeObj;
-
+        var memberString = groupEditView.buildMemberString();
 
         if (galleryEditView._mode === 'edit') {
 
@@ -2716,17 +2781,18 @@ var groupEditView = {
             group.set('tags', []); // todo: don integrate tag processing...
             group.set('description', activeGroup.description);
             group.set('members',activeGroup.members);
+            group.set ('memberString', memberString);
 
 
             groupModel.groupsDS.sync();
 
         } else {
 
+            groupEditView.activeObj ('memberString', memberString);
             groupModel.addGroup(activeGroup);
         }
 
     }
-
 
 };
 
@@ -3112,6 +3178,7 @@ var groupPickerView = {
             groupPickerView.callback(groups, groupString);
         }
     }
+
 
 
 };

@@ -410,27 +410,27 @@
 </div>
    
 <!-- home - for signed in users -->
-<div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide">
+<div data-role="view" data-title="intelligram" id="home" data-layout="main"  style="display:none;" data-show="homeView.onShow" data-init="homeView.onInit" data-hide="homeView.onHide" data-model="homeView.activeObj">
 
 	<div class="appBox noPad">
-		<div id="home-verify-div">
-			<span class="left">
-					<a class="btnClear-red" data-role="button" id="home-verify-phone" data-click="verifyPhoneModal.openModal">Verify My Phone</a>
-				</span>
-			<span class="right">
-					<a class="btnClear-red" data-role="button" id="home-verify-email" data-click="verifyEmailModal.openModal">Verify My Email</a>
-				</span>
-		</div>
 			<div data-role="tabstrip" id="home-buttongroup" class="tabBar" data-select="homeView.onTabSelect">
 				<a data-tab="0">
-					<img src="images/icon-notify-light.svg"  id="home-tab-alert-img" /> Alerts
+					<img src="images/icon-notify-active.svg"  id="home-tab-alert-img" /> Alerts
 				</a>
 				<a data-tab="1">
 					<img src="images/icon-today.svg" id="home-tab-today-img" /> Today
 				</a>
 			</div>
-			<div id="home-alerts">
-				<div class="notify-title ">
+			<div id="home-alerts" data-bind="invisible: ux_isValidated">
+				<div id="home-verify-div" data-role="button" data-click="verifyEmailModal.openModal">
+                    <p>
+                        <img src="images/icon-alert.svg" id="home-verify-alert"/>
+                        <span id="home-verify-text" data-bind="text: ux_timeLeft"></span>
+                        <img src="images/icon-arrow-right.svg" class="right" id="home-verify-arrow" />
+                    </p>
+					<div class="clearfix"></div>
+				</div>
+				<div class="notify-title">
 				<span class="right">
 					<a class="btnClear-grey-sm" data-role="button" data-click="homeView.clearNotifications">Clear</a>
 				</span>
@@ -634,21 +634,11 @@
 	 <div class="feature-card preMotion" id="featureCard1">
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <img src="images/icon-feature-savings.svg"  />
+				 <img src="images/contacts.svg"  />
 			 </div>
 			 <div class="icon-feature-body">
-				 <h3>Convenient</h3>
-				 <p class="feature-body-text">Don't waste your money receiving and storing stuff you didn't ask for. Offer photos to friends. You decide if they can keep a copy or just have quick peek.
-				 </p>
-			 </div>
-		 </div>
-		 <div class="featureList">
-			 <div class="icon-feature-img">
-				 <img src="images/icon-feature-trusted.svg" />
-			 </div>
-			 <div class="icon-feature-body">
-				 <h3>Trusted</h3>
-				 <p class="feature-body-text">Stay connected to the people, places and topics that matter to you. You know who's on the other end and no one else can snoop or ease drop.
+				 <h3>Personal</h3>
+				 <p class="feature-body-text"> Stay connected to the important people in your life -- without distractions.
 				 </p>
 			 </div>
 		 </div>
@@ -657,8 +647,18 @@
 				 <img src="images/icon-feature-smart.svg"  />
 			 </div>
 			 <div class="icon-feature-body">
-				 <h3>Automated</h3>
-				 <p class="feature-body-text">Communicate, collaborate and coordinate easily with intelligram: set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
+				 <h3>Intelligent</h3>
+				 <p class="feature-body-text">Keep track of all your important information and events
+				 </p>
+			 </div>
+		 </div>
+		 <div class="featureList">
+			 <div class="icon-feature-img">
+				 <img src="images/icon-feature-trusted.svg" />
+			 </div>
+			 <div class="icon-feature-body">
+				 <h3>Organized</h3>
+				 <p class="feature-body-text">Set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
 				 </p>
 			 </div>
 		 </div>
@@ -675,20 +675,22 @@
 			   <li>
 				   Personal - stay in touch with the people, places and passions in your life.
 			   </li>
-			   <li>
-				   Private - Keep your private life, private!. Share only what you want, when you want.  Decide who can just look and who can have a copy to share with others.
-			   </li>
+
 			   <li>
 				   Intelligent - Only receive and store what's important -- when it's convenient.  Then find it instantly.
+			   </li>
+			   <li>
+				   Organized - Keep your private life, private!. Share only what you want, when you want.  Decide who can just look and who can have a copy to share with others.
 			   </li>
 
 		   </ul>
 	   </div>
     </div>
-	 <a class="btnSpan testingHome" href="#usersignin" data-role="button">
-		 <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>
+	 <!--<a class="btnSpan testingHome" href="#usersignin" data-role="button">
+		 <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>-->
+	 <a class="btnSecondary btnSpan" href="#usersignin" data-role="button"> Already A Member? Sign In </a>
     <div class="footer" data-role="footer" id="newuserhome-footer">
-    	<a class="btnSecondary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
+    	<a class="btnPrimary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
     </div>
 </div>
 
@@ -773,64 +775,48 @@
 </div>
     
 <div data-role="modalview" id="modalview-verifyPhone" style="width: 100%; height:100%; display: none;" class="appearance">
-    <div class="appBox">
-	    <h3>
-	    	Please Verify Your Phone Number
-	    </h3>
-		<p>Intelligram requires that all users verify their phone number.
-			This not only prevents wrong numbers, it enables  users to be confident that everyone is who they say they are!</p>
-		</br>
-		<p class="zero">Check your phone's text (SMS/MMS) application for a message containing a 6 number code: <span id="verifyPhone-maskedcode">123456</span>.</p>
-		   	<p class="zero"> <strong>From: (530) 206-8126</strong>.</p>
+	<div class="verify-device-img">
+		<img src="images/verify-ios.png"/>
+	</div>
+	<div class="card" id="verifyPhone-card">
+		<h2>
+			<span id="verifyPhone-userName"></span>,
+		</h2>
+		<p>Intelligram is all about privacy and connecting with the people close to you. For your protection, we ask every user to do a one-time verification via text message. It's fast and simple!</p>
+		<div class="verifyPhone-codeBox">
+			<label>
+				6 Digit Code from <span>(530) 206-8126</span>
+				<input type="tel" id="verifyPhone-code" value="" maxlength="6" class="input-text-lg"/>
+			</label>
+			<a class="btnClear-sm" data-click="verifyPhoneModal.sendCode" data-role="button">
+				Resend Verification code
+			</a>
+		</div>
+		<div class="verifyPhone-code-sent">
+			<p>Text message sent!</p>
+		</div>
+		<div class="verifyPhone-code-error">
+			<p>Error sending text message.</p>
+		</div>
+		<div class="footer" data-role="footer">
+			<a class="btnIncomplete btnFull-modal" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" id="modalview-verifyPhone-btn">Verify</a>
+		</div>
+	</div>
 
-	        <ul data-role="listview" data-style="inset">
-	            <li>
-	                <div>Enter 6 Number code </div>
-	                <input type="tel" id="verifyPhone-code" value="" />
-	              	<a class="btnClear-sm" data-click="verifyPhoneModal.sendCode" data-role="button">
-	              		Resend Verification code
-	              	</a>
-	            </li>
-	        </ul>
-   	</div>
-	<div class="verifyPhone-code-sent">
-		<p>Text message sent!</p>
-	</div>
-	<div class="verifyPhone-code-error">
-		<p>Error sending text message.</p>
-	</div>
-	<div class="footer" data-role="footer">
-		<a class="btnIncomplete btnFull-modal" data-click="verifyPhoneModal.verifyCode" type="button" data-role="button" id="modalview-verifyPhone-btn">Verify</a>
-	</div>
 </div>
 
-<div data-role="modalview" id="modalview-verifyEmail" style="width: 90%; height: 90%; display: none;" class="appearance">
+<div data-role="modalview" id="modalview-verifyEmail" style="width: 90%; display: none;" class="appearance">
 	<div class="appBox">
-		<h3>
-			Verify Your Email Address
-			<a class="right closeBox" data-click="verifyEmailModal.closeModal" data-role="button">
-				<img src="images/close.svg" />
-			</a>
-		</h3>
-		<p class="zero"> Sent From: <strong>The intelligram Team</strong>.</p>
-		<p class="zero"> If it's not in your inbox, please check your junk mail folder for email from <em>support@ghostgrams.com</em>.  When you find the verification email, please click on the link to confirm your email address. </p>
-		<ul data-role="listview" data-style="inset">
-			<li>
-				<div>Click the button below to resend the validation </div>
-	              	<span class="helper helper-right btnClear-grey" data-click="verifyEmailModal.sendEmail" data-role="button">
-	              		Resend Verification Email
-	              	</span>
-			</li>
-			<li>
-				<div>Click the button below to confirm your email verification.  </div>
-				<span class="helper helper-right btnClear-grey" data-click="verifyEmailModal.confirmVerify" data-role="button">
-	              		Confirm Email Verified
-				</span>
-			</li>
-		</ul>
+		<h2>Verify Email Address</h2>
+		<p> We sent an email to: </p>
+		<p id="verifyEmail-address"></p>
+		<p class="verifyEmail-resend"><a class="btnClearLine btnFull" data-role="button" data-click="verifyEmailModal.sendEmail">Resend email</a></p>
+		<label class="helper">Instructions</label>
+		<p>Open the email (may need to check spam folder) and click on the link to confirm your email. That's it!</p>
+
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnIncomplete btnFull-modal" data-click="verifyEmailModal.closeModal" type="button" data-role="button" >Done</a>
+		<a class="btnPrimary btnFull-modal" data-click="verifyEmailModal.closeModal" type="button" data-role="button" >Done</a>
 	</div>
 </div>
 
@@ -991,6 +977,7 @@
 	if (data.category === 'Chat') {
 		icon = 'images/icon-Chat.svg';
 	}
+
 	var aliasString = "";
 	if (alias !== undefined && alias !== null) {
 		aliasString = " (" + alias + ")";
@@ -999,9 +986,9 @@
 	#
 	<div style="padding-left: 8px; padding-right: 8px; width: 90%">
 		<span> <img src=#=icon# height="20"/> </span> <span>#:name# <em>#:aliasString#</em></span>
+
 	</div>
 </script>
-
 
 
 <!-- Share Picker : select contacts, chats and groups -->
@@ -1036,21 +1023,31 @@
 	<a class="btnSecondary btnFull-modal" data-click="homeView.closeLocateMeModal" data-role="button">Cancel</a>
 </div>
 
-<div data-role="modalview" id="galleryListModal" data-title="Gallery Picker" style="width: 100%; height:100%; display: none;" class="appearance">
+<div data-role="modalview" id="galleryListModal" data-title="Gallery Picker" style="width: 100%; height:100%; display: none;" class="appearance" data-init="galleryListView.onInit">
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a class="right closeBox" data-click="galleryListView.closeModal" data-role="button">
-				<img src="images/close.svg" class="icon-sm"  />
+			<a data-click="galleryListView.closeModal" data-role="button" data-align="left">
+				<img src="images/close.svg" />
 			</a>
 		</div>
-
 	</div>
-	<h3>Please select a gallery from the list below:</h3>
-	<ul id="galleryListModal-listview" class="list-inline" ></ul>
+	<div class="km-group-title">
+		<span>Select a gallery below</span>
+	</div>
 
+	<ul id="galleryListModal-listview" class="listview"></ul>
 
 </div>
+
+<script type="text/x-kendo-template" id="galleryList-template">
+	<h4>#: data.name #</h4>
+	<p class="helper">#: data.photoCount # photos</p>
+</script>
+
+
+<!-- User Gallery View -->
+
 
 
 <!-- Gallery Picker -- pick an image from the ghostgrams Gallery -->
@@ -1072,7 +1069,7 @@
     <div>
         <ul id="galleryPicker-listview" class="list-inline" data-role="listview"></ul>
     </div>
-	<div class="footer" data-role="footer">
+	<div class="footer hidden" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" data-click="galleryPicker.setView">
 			<p class="actionBtn-text">Cancel</p>
 			<img src="images/gallery-list.svg"/>
@@ -1174,8 +1171,10 @@
 	</div>
 	<div class="resultsBar">
 		<div class="results">
-			<span  data-bind="text: photoCount"></span>
-			<span >Photos</span>
+
+			<p>
+				<span data-bind="text: photoCount"></span> <span>Photos</span>
+			</p>
 		</div>
 		<div class="photoDisplayView">
 			<ul data-role="buttongroup" data-index="0" data-select="galleryEditView.galleryActionView">
@@ -1194,15 +1193,15 @@
 		<div style="clear:both;"></div>
 	</div>
 
-	<div style="width: 100vw;">
+	<div style="width: 100vh;">
 		<ul id="galleryEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
 	<div class="footer" data-role="footer">
-		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" data-align="right" id="galleryEditor-saveBtn">Save</a>
+		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" id="galleryEditor-saveBtn">Save</a>
 	</div>
 
 
-	<ul data-role="actionsheet"  id="galleryEditPhotoActions" >
+	<ul data-role="actionsheet" id="galleryEditPhotoActions">
 		<li>
 			<a data-action="galleryEditView.addCamera">
 				<img src="images/action-camera.svg" class="icon-action"/> Camera
@@ -1248,7 +1247,9 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>intelliNote</span>
-			<a data-role="button" data-click="noteEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
+			<a data-role="button" data-click="noteEditView.onDone" data-align="left" class="btnClear-grey">
+				<img src="images/close.svg" />
+			</a>
 			<a data-role="button" data-click="noteEditView.onSave" data-align="right" id=noteEditor-saveBtn" class="btnClear">Save</a>
 		</div>
 	</div>
@@ -1438,7 +1439,7 @@
 		<ul class="list-inline hasMotion" id="contactActionBtns">
 			<li>
 				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking" >
-					<img src="images/icon-tracking.svg" /> Start Tracking
+					<img src="images/icon-tracking-active.svg" /> Start Tracking
 				</a>
 			</li>
 			<li>
@@ -2457,8 +2458,9 @@
 
 			<ul data-role="listview" data-style="inset" id="channel-addChannel-list">
 				<li>
-					<input type="search" id="channels-addChannel-name" placeholder="What's the topic?" value="" required />
-
+					<label>Chat Name
+						<input type="search" id="channels-addChannel-name" placeholder="" value="" required />
+					</label>
 					<input type="search" style="display: none" id="channels-addChannel-description" value="" placeholder="Description"/>
 					<a class="btnClear-grey" data-role="button" data-click="addChannelView.showChatDescription" id="addChatDescription">Add description</a>
 				</li>
@@ -2740,10 +2742,10 @@
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
 	<div data-role="tabstrip" id="contacts-buttongroup" class="tabBar" data-select="contactsView.onTabSelect">
 		<a data-tab="0">
-			<img src="images/icon-contact.svg"  id="contacts-tab-alert-img" /> Contacts
+			<img src="images/icon-contact.svg"  id="contacts-tab-0-img" /> Contacts
 		</a>
 		<a data-tab="1">
-			<img src="images/group-icon.svg" id="contacts-tab-today-img" /> Groups
+			<img src="images/icon-group.svg" id="contacts-tab-1-img" /> Groups
 		</a>
 	</div>
 	<div id="contacts-contacts">
@@ -2768,7 +2770,7 @@
 	</div>
 	<div id="contacts-groups">
 		<div id="groupListDiv" style="padding-bottom: 24px;">
-			<ul id="groups-listview"></ul>
+			<ul id="groups-listview" class="listview"></ul>
 
 			<div class="emptyState hidden">
 				<img src="images/empty-contacts.svg" />
@@ -2819,7 +2821,7 @@
 				</div>
 				<div>
 					<span class="caption">aka</span>
-					<input class="input-text-sm " id="addContactAlias" type="search" placeholder="Add a nickname"/>
+					<input class="input-text-sm " id="addContactAlias" type="search" placeholder="Add a nickname" />
 				</div>
 			</div>
 		</div>
@@ -3126,16 +3128,16 @@
 	<div  class="appBox noPad">
 		<div id="gallery-buttongroup" class="tabBar" data-role="tabstrip" data-select="galleryView.onTabSelect">
 			<a data-tab="0">
-				<img src="images/icon-myNotes-light.svg" id="galleryView-tab-notes" /> Notes
+				<img src="images/icon-myNotes-alt.svg" id="galleryView-tab-notes" /> Notes
 			</a>
 			<a data-tab="1">
-				<img src="images/chat-photo.svg" id="galleryView-tab-photos" /> Photos
+				<img src="images/icon-photo-dark.svg" id="galleryView-tab-photos" /> Photos
 			</a>
 		</div>
 
 
 		<div id="gallery-photos" class="hidden">
-			<div>
+			<!--<div>
 				<ul data-role="buttongroup" style="padding: 6px; font-size: 1.2em;">
 					<li>
 						<a class="btnClear-grey-sm" data-role="button" >Edit </a>
@@ -3144,17 +3146,25 @@
 						<a class="btnHighlight" data-role="button" data-click="galleryView.openGalleryPicker">All Photos </a>
 					</li>
 					<li>
-						<a class="btnClear-grey-sm" data-role="button" >Add </a>
+						<a class="btnClear-grey-sm" data-role="button">Add </a>
 					</li>
 				</ul>
-			</div>
+			</div>-->
 
-			<div class="resultsBar hidden">
+
+			<div class="resultsBar">
 				<div class="results">
-					<span id="resultCount" data-bind="text: _totalPhotos"></span>
-					<span id="resultsName">Photos</span>
+					<p class="galleryName">All
+						<span id="resultCount" data-bind="text: _totalPhotos"></span>
+						<span id="resultsName">Photos</span>
+					</p>
 				</div>
-				<div class="photoDisplayView">
+				<div class="galleries">
+					<a class="btnClear" data-role="button" data-click="galleryView.openGalleryPicker">
+						Galleries <img src="images/icon-arrow-right-active.svg" />
+					</a>
+				</div>
+				<!--<div class="photoDisplayView">
 					<ul data-role="buttongroup" data-index="0" data-select="galleryView.galleryActionView">
 						<li>
 							<a class="btnClear gallerySelectBtn-grid" data-role="button">
@@ -3168,15 +3178,7 @@
 						</li>
 					</ul>
 
-				</div>
-				<div class="filter">
-					<a class="btnClear" data-role="button" href="#filterGallery" id="toggleFilterBtn">
-						<img src="images/icon-filter-link.svg" />
-						<span id="filterCount"></span>
-						<span id="filterText"> Filter </span>
-					</a>
-				</div>
-
+				</div>-->
 				<div class="clearfix"></div>
 			</div>
 			<!-- Photos -->
@@ -3190,7 +3192,7 @@
 					<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
 				</span>
 				</p>
-				<div class="messageMediaBar" style="text-align: center;">
+				<div class="messageMediaBar hidden" style="text-align: center;">
 					<ul>
 						<li>
 							<a data-role="button" href="#noteEditor?returnview=gallery">
@@ -3210,6 +3212,14 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Add note popover -->
+	<div id="galleryView-noteAdd" data-role="popover">
+		<div data-role="view" id="galleryView-noteAddView">
+			<ul id="notesListView-add" data-role="listview" data-fixed-headers="true" data-template="notesListView-add-tmpl" data-source="galleryView.notesAddOpts" data-click="galleryView.onAddListViewClick" data-header-template="notesListView-add-header-tmpl"></ul>
+		</div>
+	</div>
+
 	<ul data-role="actionsheet" id="galleryActionsPhoto" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="galleryView.galleryCamera">
@@ -3238,6 +3248,27 @@
 	</ul>
 </div>
 
+<script type="text/x-kendo-tmpl" id="notesListView-add-header-tmpl">
+	#
+		var title;
+		if(value !== "intelligram"){
+			title = value.capitalize();
+		} else {
+			title = value;
+		}
+
+	#
+	<span>#= title #</span>
+</script>
+
+<script type="text/x-kendo-tmpl" id="notesListView-add-tmpl">
+		<div>
+			<h4>
+				<img src="#:data.imgUrl#" class="icon-action"/> #: data.title #
+			</h4>
+		</div>
+
+</script>
 
 <div data-role="view" data-title="Filter" id="filterGallery" data-layout="main" data-transition="overlay:up" data-init="archiveView.onFilterInit" style="display: none;">
 	<div data-role="header">
@@ -5212,7 +5243,7 @@
 		<h2>
 			Let's do this
             <span class="closeBox" style="float:right;">
-                <a data-click="closeChooseGhost;" data-role="button"><img src="images/close.svg" /></a>
+                <a data-click="closeChooseGhost" data-role="button"><img src="images/close.svg" /></a>
             </span>
 		</h2>
 		<p>
@@ -5923,7 +5954,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Personal Safety</span>
-			<a data-role="button"  data-align="left" data-click="localAlertView.onDone" ><img src="images/nav-back.svg" /></a>
+			<a data-role="button" data-align="left" data-click="localAlertView.onDone" ><img src="images/nav-back.svg" /></a>
 		</div>
 	</div>
 	<div style="text-align: center;">
@@ -6082,11 +6113,11 @@
 	var name = data.name.capitalize('title');
 	var aliasString = "";
 	if (alias !== undefined && alias !== null) {
-	aliasString = " (" + alias + ")";
+	aliasString = alias;
 	}
 	#
-	<div style="padding-left: 8px; padding-right: 8px; width: 90%;">
-		<span>#:name#<em>#:aliasString#</em></span>
+	<div>
+		<h4 class="textClamp">#:name# <span class="helper-list-detail">#:aliasString#</span></h4>
 	</div>
 </script>
 
@@ -6107,9 +6138,10 @@
 <div data-role="modalview" id="contactPickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="contactPickerView.onInit">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Group Editor</span>
-			<a data-click="contactPickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
-			<a data-click="contactPickerView.onDone" data-role="button" class="btnClear-grey-sm" data-align="right" >Save</a>
+			<span>Edit Members</span>
+			<a data-click="contactPickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey-sm">
+				<img src="images/close.svg" />
+			</a>
 		</div>
 		<div>
 			<div class="appendSearch">
@@ -6118,24 +6150,44 @@
 			</div>
 		</div>
 	</div>
-
-	<div style="width: 100%;">
-
-		<ul id="contactPickerView-listview"  data-style="inset" ></ul>
+	<ul id="contactPickerView-listview" class="listview"></ul>
+	<div class="footer" data-role="footer">
+		<a data-click="contactPickerView.onDone" data-role="button" class="btnPrimary btnFull-modal" >Save</a>
 	</div>
+
+
 </div>
+
+<script type="text/x-kendo-template" id="contactPickerView-header-template">
+	#
+	var headerText;
+	if(value === "Select"){
+		headerText = "Contacts"
+	} else {
+		headerText = "In Group"
+	}#
+	<span>#= headerText #</span>
+</script>
 
 <script type="text/x-kendo-template" id="groupEditor-Template">
 	#
 	var name = data.name.capitalize('title');
 	var aliasString = "";
 	if (data.alias !== undefined && data.alias !== null) {
-	aliasString = " (" + data.alias + ")";
+		aliasString = data.alias;
 	}
 	#
-	<div style="padding-left: 8px; padding-right: 8px; width: 90%;" data-uuid="#:uuid#">
-		 <span>#:name#<em>#:aliasString#</em></span> <span style="float:right"><a data-role="button" class="btnClear-grey-sm" data-click="groupEditView.deleteMember">Delete</a></span>
-		<div style="clear:both;"></div>
+	<div data-uuid="#:uuid#">
+		 <h4 class="textClamp">
+			 <span class="groupEditor-name textClamp">#:name#</span>
+			 <span class="helper-list-detail">#:aliasString#</span>
+		 </h4>
+		<span class="groupEditor-contact-delete">
+			<a data-role="button" class="btnClear-grey-sm" data-click="groupEditView.deleteMember">
+				<img src="images/icon-trash.svg" class="icon-sm" />
+			</a>
+		</span>
+		<div class="clearfix"></div>
 	</div>
 
 </script>
@@ -6143,17 +6195,23 @@
 <div data-role="view" data-title="Group Editor" id="groupEditor" data-model="groupEditView.activeObj" data-init="groupEditView.onInit" data-show="groupEditView.onShow"  data-hide="groupEditView.onHide"   style="width:100%; height: 100%; display: none;" >
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>intelliGroup</span>
+			<span>Edit Group</span>
 			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
 		</div>
 	</div>
 
-	<div id="groupEditor-editTitleTag">
-		<div ><span style="font-size: 1.3em;">Group Info</span> </div>
-
-		<input style="font-weight: 600;" id="groupEditor-title"  type="search"  data-bind="value: title" placeholder="Add Title...">
+	<div id="groupEditor-editTitleTag" class="appBox">
+		<label>Group Name</label>
+		<input id="groupEditor-title" class="input-text-lg" type="search"  name="Group name" data-bind="value: title" placeholder="Add name..." required>
+		<span class="k-invalid-msg" data-for="groupEditor-title"></span>
 		<input type="search" data-bind="value: description" placeholder="Add Description...">
-		<input id="groupEditor-tagString"  data-bind="value: tagString" placeholder="Click to add tags..." readonly>
+			<a data-role="button" class="btnClear" data-click="groupEditView.toggleTags" data-bind="invisible: ux_tagsVisible" id="groupEditView-addTagBtn">
+				<img src="images/icon-tag-active.svg" class="icon-btn-sm" /> Add Group Tag
+			</a>
+		<div data-bind="visible: ux_tagsVisible">
+			<input id="groupEditor-tagString" data-bind="value: tagString" placeholder="Click to add tags..." readonly>
+		</div>
+
 	</div>
 	<div id="groupEditor-viewTitleTag" class="hidden">
 		<div data-bind="text: title"></div>
@@ -6161,16 +6219,25 @@
 		<div data-bind="text: tagString"></div>
 	</div>
 
-	<div style="width: 100vw;">
-		<div ><span style="font-size: 1.3em; float:left;">Group Members</span> <span style="float:right;"><a data-role="button"  data-click="groupEditView.addContact"  class="btnClear-grey-sm">Edit</a></span></div>
+	<div style="width: 100vw;" class="appBox">
+		<div>
+			<label>
+				Group Members
+				<span data-bind="{text: ux_totalMembers, visible: ux_showTotal}"></span>
+			</label>
+			<span style="float:right;">
+				<a data-role="button"  data-click="groupEditView.addContact"  class="btnClear-grey-sm">Edit</a>
+			</span>
+		</div>
 		<div style="clear:both;"></div>
-		<ul id="groupEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
+	<ul id="groupEdit-listview" class="listview" data-role="listview"></ul>
 
 	<div class="footer" data-role="footer">
-		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="groupEditView.onSave" data-align="right" id="groupEditor-saveBtn">Save</a>
+		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="groupEditView.onSave" id="groupEditor-saveBtn">
+			Save
+		</a>
 	</div>
-
 </div>
 
 
@@ -6258,7 +6325,7 @@
 						</a>
 					</li>
 					<li class="offline-only hidden">
-						<<a data-role="button" class="btnClear-grey-sm"  >*offline#</a>
+						<a data-role="button" class="btnClear-grey-sm">*offline#</a>
 					</li>
 					<li id="privateNote-hideKeyboard" class="hidden">
 						<a data-role="button" data-align="right" data-click="privateNotesView.closeEditor">
@@ -6585,30 +6652,40 @@
 
 
 <script type="text/x-kendo-template" id="groupsTemplate">
-
+	#
+		var memberCount = data.members.length
+		var memberCountTxt = "";
+		if(memberCount === 1){
+			memberCountTxt = "Member";
+		} else {
+			memberCountTxt = "Members";
+		}
+	#
 	<div>
-		<div class="group-options">
-
+		<div class="group-options list-slider-options">
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditGroup" data-group="#:uuid#">
 				<img src="images/option-edit.svg" height="18" />
 				<p class="chat-option-selection">Edit</p>
 			</a>
-			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteGroup" data-goup="#:uuid#">
+			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteGroup" data-group="#:uuid#">
 				<img src="images/icon-trash.svg" height="18" />
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div><!-- contact-options -->
 
 
-		<a class="groupListBox" data-group="#:uuid#">
-
+		<a class="groupListBox list-slider" data-group="#:uuid#">
 			<div class="left listName">
 				<h4 class="textClamp">
-					#= data.title #
+					#: data.title #
 				</h4>
+				<p class="helper textClamp">
+					<img src="images/icon-group.svg" />
+					#= memberCount # #= memberCountTxt #
+				</p>
 			</div>
 
-			<div class="left contact-status textClamp">
+			<!--<div class="left contact-status textClamp">
 				<p class="contactStatusMessage-sm">
 					#:data.description#
 				</p>
@@ -6616,8 +6693,7 @@
 				<p class="contactStatus-location">
 					#:data.tagString#
 				</p>
-			</div>
-
+			</div>-->
 		</a><!-- listBox -->
 	</div>
 </script>
