@@ -467,19 +467,22 @@ var placesModel = {
 
         placesModel.placesDS.add(placeObj);
         placesModel.placesDS.sync();
-        
-        everlive.createOne(placesModel._cloudClass, placeObj, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating place " + JSON.stringify(error));
-            } 
-        });
 
-       // placesModel.placesDS.add(placeObj);
-        //placesModel.placesDS.sync();
 
         if (callback !== undefined) {
             callback(placeObj);
         }
+        
+        if (deviceModel.isOnline()) {
+            everlive.createOne(placesModel._cloudClass, placeObj, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating place " + JSON.stringify(error));
+                }
+            });
+        }
+
+
+
         
 
     },
