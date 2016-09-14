@@ -6,8 +6,8 @@
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks llc",
   "Description": "intelligram for iOS and Android phones",
-  "BundleVersion": "0.0.189",
-  "AndroidVersionCode": "187",
+  "BundleVersion": "0.0.190",
+  "AndroidVersionCode": "190",
   "iOSDeviceFamily": [
     "1"
   ],
