@@ -6506,7 +6506,11 @@
 	var classNames;
 	var name = data.name;
 	var alias = data.alias;
-	var group = data.group;
+	var group = '';
+
+	if (data.groupString !== undefined && data.groupString !== null) {
+		group = data.groupString;
+	}
 
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
@@ -6584,9 +6588,8 @@
 							#}#
 								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 
-							#if(data.group !== "" && data.group !== null){#
-								<span class="contact-group">#: data.group #</span>
-							#}#
+
+								<span class="contact-group">#: group #</span>
 						</h4>
 					</div>
 

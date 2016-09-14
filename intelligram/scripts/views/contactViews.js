@@ -1301,15 +1301,16 @@ var editContactView = {
             editContactView._activeContact.set("phoneValidated", contact.phoneValidated);
             editContactView._activeContact.set("email", contact.email);
             editContactView._activeContact.set("emailValidated", contact.emailValidated);  // emailValidated is a reserved term on Parse...
-            editContactView._activeContact.set("groups", contact.groups);
-            if (contact.groups === undefined) {
-                contact.groups = [];
+            var groups = groupModel.getContactGroups(contact.uuid);
+            var groupString = '';
+
+            if (groups !== []) {
+                groupString = groupModel.getContactGroupString(contact.uuid);
             }
-            editContactView._activeContact.set("groupString", contact.groupString);
-            if (contact.groupString === undefined) {
-                contact.groupString= null;
-            }
+            editContactView._activeContact.set("groups", groups);
+            editContactView._activeContact.set("groupString", groupString);
             editContactView._activeContact.set("isFavorite", contact.isFavorite);
+
             editContactView._activeContact.set("isBlocked", contact.isBlocked);
             editContactView._activeContact.set("photo", contact.photo);
             editContactView._activeContact.set("identicon", contact.identicon);
