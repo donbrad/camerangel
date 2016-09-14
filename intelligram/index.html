@@ -6113,8 +6113,8 @@
 	#
 	var name = data.name.capitalize('title');
 	var aliasString = "";
-	if (alias !== undefined && alias !== null) {
-	aliasString = alias;
+	if (data.alias !== undefined && data.alias !== null) {
+		aliasString = data.alias;
 	}
 	#
 	<div>
@@ -6126,8 +6126,8 @@
     #
     var title = data.title.capitalize('title');
     var aliasString = "";
-    if (alias !== undefined && alias !== null) {
-    aliasString = " (" + alias + ")";
+    if (data.alias !== undefined && data.alias !== null) {
+    aliasString = " (" + data.alias + ")";
     }
     #
     <div style="padding-left: 8px; padding-right: 8px; width: 90%;">
