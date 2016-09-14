@@ -25,6 +25,8 @@ var userModel = {
     kendoInit : false,
     _needSync: false,
     _needStatusSync: false,
+    _userObj : null,
+    localKey : 'bXVsdGlwYXNz',
     
     initialView : '#newuserhome',
 
@@ -97,7 +99,7 @@ var userModel = {
         userModel.hasAccount = window.localStorage.getItem('ggHasAccount');
         userModel.userUUID =  window.localStorage.getItem('ggUserUUID');
 
-        // userModel.parseUser = Parse.User.current();
+
         userModel.device.udid = device.uuid;
         userModel.device.platform = device.platform;
         userModel.device.device = device.name;
@@ -349,6 +351,7 @@ var userModel = {
 
         everlive.updateUser();
         memberdirectory.update();
+        userModel.storeUserData();
 
         if (!user.phoneValidated) {
             homeView._needPhoneValidation = true;
@@ -359,7 +362,26 @@ var userModel = {
         APP.kendo.navigate('#home');
 
     },
-    
+
+    storeUserData : function () {
+        var userBlob = JSON.stringify(userModel._user);
+
+        var userEnc = GibberishAES.enc(userBlob, userModel.localKey);
+        window.localStorage.setItem('ggUserBlob', userEnc);
+        console.log("Writing User " + userEnc);
+    },
+
+
+    fetchUserData : function () {
+        var userEnc = window.localStorage.getItem('ggUserBlob');
+        if (userEnc !== undefined && userEnc !== null) {
+            var userBlob = GibberishAES.dec(userEnc, userModel.localKey);
+            var userObj = JSON.parse(userBlob);
+            userModel._userObj = userObj;
+            console.log("Reading User " + userBlob);
+        }
+        console.log("Reading User : Null!");
+    },
 
     deleteAccount: function () {
 

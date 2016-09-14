@@ -260,7 +260,7 @@ var deviceModel = {
             // Device is online and user is authenticated -- init pubnub
 
             userModel.initPubNub();
-            userDataChannel.processDeferred();
+          //  userDataChannel.processDeferred();
             groupChannel.processDeferred();
             channelModel.processDeferred();
          /*   userDataChannel.history();

@@ -200,19 +200,20 @@ var smartMovie = {
         smartOb.set('runtime', objectIn.runtime);
         smartOb.set('genre', objectIn.genre);
 
+        smartOb.Id = uuid.v4();
         smartMovie.moviesDS.add(smartOb);
         smartMovie.moviesDS.sync();
         if (callback !== undefined && callback !== null)
             callback(smartOb);
-        
-        everlive.createOne(smartMovie._cloudClass, smartOb, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating intelliMovie " + JSON.stringify(error));
-            } else {
-                // Add the everlive object with everlive created Id to the datasource
-                
-            }
-        });
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(smartMovie._cloudClass, smartOb, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating intelliMovie " + JSON.stringify(error));
+                }
+            });
+        }
+
         
     }
 

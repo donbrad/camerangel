@@ -10,6 +10,7 @@ var galleryModel = {
     _cloudClass : 'gallery',
     _ggClass : 'Gallery',
     _galleryPhoto : 'galleryphoto',
+    _galleryComment : 'gallerycomment',
     _addPhoto : 'addphoto',           // add photo (from owner)
     _removePhoto : 'removephoto',     // remove photo (from owner)
     _deleteGallery : 'deletegallery',     // delete gallery (from owner)
@@ -105,6 +106,32 @@ var galleryModel = {
         galleryModel.galleryDS.sync();
     },
 
+    fetchGallery : function (galleryId, callback) {
+        var hasPhotos = false, hasComments = false;
+        var result = {photoError: null, photos: null, commentError: null, comments: null};
+
+        galleryModel.fetchPhotos(galleryId, function (error, photos){
+            hasPhotos = true;
+
+            result.photoError = error;
+            result.photos = photos;
+            if(hasComments) {
+                callback (result);
+            }
+        });
+
+        galleryModel.fetchComments(galleryId, function (error1, comments){
+            hasComments = true;
+            result.commentError = error1;
+            result.comments = comments;
+            if(hasPhotos) {
+                callback (result);
+            }
+        });
+
+    },
+
+
 
     queryGalleries: function (query) {
         if (query === undefined)
@@ -167,6 +194,20 @@ var galleryModel = {
                 });
     },
 
+    // Get gallery photos from the everlive cloud
+    fetchComments : function (galleryUUID, callback) {
+        var filter = new Everlive.Query();
+        filter.where().eq('galleryUUID', galleryUUID);
+
+        var data = el.data(galleryModel._galleryComment);
+        data.get(filter)
+            .then(function(data){
+                    callback (null, data);
+                },
+                function(error){
+                    callback(error, null)
+                });
+    },
 
     queryComments: function (query) {
         if (query === undefined)

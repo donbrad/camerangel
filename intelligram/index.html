@@ -634,21 +634,11 @@
 	 <div class="feature-card preMotion" id="featureCard1">
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <img src="images/icon-feature-savings.svg"  />
+				 <img src="images/contacts.svg"  />
 			 </div>
 			 <div class="icon-feature-body">
-				 <h3>Convenient</h3>
-				 <p class="feature-body-text">Don't waste your money receiving and storing stuff you didn't ask for. Offer photos to friends. You decide if they can keep a copy or just have quick peek.
-				 </p>
-			 </div>
-		 </div>
-		 <div class="featureList">
-			 <div class="icon-feature-img">
-				 <img src="images/icon-feature-trusted.svg" />
-			 </div>
-			 <div class="icon-feature-body">
-				 <h3>Trusted</h3>
-				 <p class="feature-body-text">Stay connected to the people, places and topics that matter to you. You know who's on the other end and no one else can snoop or ease drop.
+				 <h3>Personal</h3>
+				 <p class="feature-body-text"> Stay connected to the important people in your life -- without distractions.
 				 </p>
 			 </div>
 		 </div>
@@ -657,8 +647,18 @@
 				 <img src="images/icon-feature-smart.svg"  />
 			 </div>
 			 <div class="icon-feature-body">
-				 <h3>Automated</h3>
-				 <p class="feature-body-text">Communicate, collaborate and coordinate easily with intelligram: set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
+				 <h3>Intelligent</h3>
+				 <p class="feature-body-text">Keep track of all your important information and events
+				 </p>
+			 </div>
+		 </div>
+		 <div class="featureList">
+			 <div class="icon-feature-img">
+				 <img src="images/icon-feature-trusted.svg" />
+			 </div>
+			 <div class="icon-feature-body">
+				 <h3>Organized</h3>
+				 <p class="feature-body-text">Set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
 				 </p>
 			 </div>
 		 </div>
@@ -675,20 +675,22 @@
 			   <li>
 				   Personal - stay in touch with the people, places and passions in your life.
 			   </li>
-			   <li>
-				   Private - Keep your private life, private!. Share only what you want, when you want.  Decide who can just look and who can have a copy to share with others.
-			   </li>
+
 			   <li>
 				   Intelligent - Only receive and store what's important -- when it's convenient.  Then find it instantly.
+			   </li>
+			   <li>
+				   Organized - Keep your private life, private!. Share only what you want, when you want.  Decide who can just look and who can have a copy to share with others.
 			   </li>
 
 		   </ul>
 	   </div>
     </div>
-	 <a class="btnSpan testingHome" href="#usersignin" data-role="button">
-		 <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>
+	 <!--<a class="btnSpan testingHome" href="#usersignin" data-role="button">
+		 <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>-->
+	 <a class="btnSecondary btnSpan" href="#usersignin" data-role="button"> Already A Member? Sign In </a>
     <div class="footer" data-role="footer" id="newuserhome-footer">
-    	<a class="btnSecondary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
+    	<a class="btnPrimary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
     </div>
 </div>
 
@@ -1155,13 +1157,13 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>intelliGallery</span>
-			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
+			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey-sm"><img src="images/close.svg" /></a>
 			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear">Add</a>
 		</div>
 	</div>
 	<div id="galleryEditor-editTitleTag">
-		<input style="font-weight: 600;"  type="search" id="galleryEditor-title" placeholder="Add Title...">
-		<input id="galleryEditor-tagString"  placeholder="Click to add tags..." readonly>
+		<input style="font-weight: 600;"  type="search" id="galleryEditor-title"  data-bind="value: title" placeholder="Add Title...">
+		<input id="galleryEditor-tagString"  placeholder="Click to add tags..."  data-bind="value: tagString" readonly>
 	</div>
 	<div id="galleryEditor-viewTitleTag" class="hidden">
 		<div data-bind="text: title"></div>
@@ -1194,6 +1196,7 @@
 	<div style="width: 100vh;">
 		<ul id="galleryEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
+
 	<div class="footer" data-role="footer">
 		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" id="galleryEditor-saveBtn">Save</a>
 	</div>
@@ -1382,7 +1385,7 @@
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.groupGallery" >
-					<img src="images/archive-photos.svg" /> Group Gallery
+					<img src="images/icon-gallery.svg" /> Group Gallery
 				</a>
 			</li>
 			<li>
@@ -1401,7 +1404,7 @@
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.AddGallery" >
-					<img src="images/archive-photos.svg" /> Create New Gallery
+					<img src="images/icon-gallery.svg" /> Create New Gallery
 				</a>
 			</li>
 		</ul>
@@ -4867,7 +4870,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <span>intelliPlace</span>
-            <a  data-role="button" data-click="smartPlaceView.onClose" data-align="left"><img class="icon-sm" src="images/close.svg" /></a>
+            <a  data-role="button" data-click="smartPlaceView.closeModal" data-align="left"><img class="icon-sm" src="images/close.svg" /></a>
         </div>
     </div>
     <div>
@@ -6110,8 +6113,8 @@
 	#
 	var name = data.name.capitalize('title');
 	var aliasString = "";
-	if (alias !== undefined && alias !== null) {
-	aliasString = alias;
+	if (data.alias !== undefined && data.alias !== null) {
+		aliasString = data.alias;
 	}
 	#
 	<div>
@@ -6123,8 +6126,8 @@
     #
     var title = data.title.capitalize('title');
     var aliasString = "";
-    if (alias !== undefined && alias !== null) {
-    aliasString = " (" + alias + ")";
+    if (data.alias !== undefined && data.alias !== null) {
+    aliasString = " (" + data.alias + ")";
     }
     #
     <div style="padding-left: 8px; padding-right: 8px; width: 90%;">
@@ -6193,7 +6196,7 @@
 <div data-role="view" data-title="Group Editor" id="groupEditor" data-model="groupEditView.activeObj" data-init="groupEditView.onInit" data-show="groupEditView.onShow"  data-hide="groupEditView.onHide"   style="width:100%; height: 100%; display: none;" >
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Add Group</span>
+			<span>Edit Group</span>
 			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey-sm"> <img src="images/close.svg" /></a>
 		</div>
 	</div>
@@ -6503,7 +6506,11 @@
 	var classNames;
 	var name = data.name;
 	var alias = data.alias;
-	var group = data.group;
+	var group = '';
+
+	if (data.groupString !== undefined && data.groupString !== null) {
+		group = data.groupString;
+	}
 
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
@@ -6581,9 +6588,8 @@
 							#}#
 								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 
-							#if(data.group !== "" && data.group !== null){#
-								<span class="contact-group">#: data.group #</span>
-							#}#
+
+								<span class="contact-group">#: group #</span>
 						</h4>
 					</div>
 
@@ -6683,7 +6689,7 @@
 				</p>
 			</div>
 
-			<div class="left contact-status textClamp">
+			<!--<div class="left contact-status textClamp">
 				<p class="contactStatusMessage-sm">
 					#:data.description#
 				</p>
@@ -6691,7 +6697,7 @@
 				<p class="contactStatus-location">
 					#:data.tagString#
 				</p>
-			</div>
+			</div>-->
 		</a><!-- listBox -->
 	</div>
 </script>

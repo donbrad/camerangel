@@ -187,21 +187,23 @@ var smartTrip = {
         smartOb.set('timeDeparture', objectIn.timeDeparture);
         smartOb.set('timeArrival', objectIn.timeArrival);
         smartOb.set('tripTimeType', objectIn.tripTimeType);
+
+        smartOb.Id = uuid.v4();
         smartTrip.tripsDS.add(smartOb);
         smartTrip.tripsDS.sync();
-
-
-        everlive.createOne(smartTrip._cloudClass, smartOb, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating intelliTrip " + JSON.stringify(error));
-            } else {
-                // Add the everlive object with everlive created Id to the datasource
-
-            }
-        });
-
         if (callback !== undefined && callback !== null)
             callback(smartOb);
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(smartTrip._cloudClass, smartOb, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating intelliTrip " + JSON.stringify(error));
+                }
+            });
+        }
+
+
+
     }
 
 };

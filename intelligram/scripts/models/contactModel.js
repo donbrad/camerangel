@@ -12,8 +12,8 @@ var contactModel = {
     _ggClass: 'Contact',
     _cloudClass: 'contacts',
     _shareContact : 'Contact',
-    _shareChat : 'Chat',
-    _shareGroup : 'Group',
+    _shareChat    : 'Chat',
+    _shareGroup   : 'Group',
     _fetched : false,
 
    contactsDS: null,
@@ -86,7 +86,7 @@ var contactModel = {
                     contactModel._initialSync = true;
                     appDataChannel.history();
                     userDataChannel.history();
-                    contactModel.updateShareDS();
+                    contactModel.updateContactShares();
                     if ( changedContacts.length > 0) {
 
                         var len = changedContacts.length;
@@ -96,13 +96,12 @@ var contactModel = {
                             if (category === 'member' || category === 'invited') {
                                 // add to tag list
                                 tagModel.addContactTag(contact.name, contact.alias, '', contact.uuid);
-                            } else if (contact.category === 'chat') {
-
                             }
 
                         }
                     }
 
+                    contactModel.updateGroups();
                     contactModel.buildContactList();
 
                     userStatusChannel.subscribeContacts();
@@ -215,7 +214,30 @@ var contactModel = {
         }
 
     },
-    
+
+    updateGroups : function ()  {
+        var len = contactModel.contactsDS.total(), groupLen = groupModel.groupsDS.total();
+
+        if (len === 0 || groupLen === 0) {
+            return;
+        }
+
+        for (var i=0; i<len; i++) {
+            var contact = contactModel.contactsDS.at(i);
+
+            var groups = groupModel.getContactGroups(contact.uuid);
+            var groupString = '';
+            if (groups.length > 0) {
+                groupString = groupModel.getContactGroupString(contact.uuid);
+            }
+
+            contact.set('groups', groups);
+            contact.set('groupString', groupString);
+        }
+        contactModel.sync();
+    },
+
+
     // Build an identity list for contacts indexed by contactUUID
     buildContactList : function () {
         var array = contactModel.contactsDS.data();
@@ -587,6 +609,8 @@ var contactModel = {
 
         thisContact.set('emailValidated', contact.emailValidated);
         thisContact.set('contactPhoto', contact.photo);
+        thisContact.set('groups', contact.groups);
+        thisContact.set('groupString', contact.groupString);
         thisContact.set('contactAddress', contact.address);
         thisContactList.set('emailValidated', contact.emailValidated);
         thisContactList.set('contactPhoto', contact.photo);
@@ -1046,7 +1070,16 @@ var contactModel = {
     },
 
     updateGroupShares : function () {
+        var len = groupModel.groupsDS.total();
 
+        for (var i=0; i<len; i++) {
+            var group = groupModel.groupsDS.at(i);
+            var alias = '';
+            if (group.alias !== undefined && group.alias !== null) {
+                alias = group.alias;
+            }
+            contactModel.addShareTarget(group.title, alias, group.uuid, group.uuid, contactModel._shareGroup);
+        }
     },
 
     updateContactShares : function () {

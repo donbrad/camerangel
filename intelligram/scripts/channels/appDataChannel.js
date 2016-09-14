@@ -53,7 +53,7 @@ var appDataChannel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "time",
@@ -278,16 +278,21 @@ var appDataChannel = {
     },
 
     archiveMessage : function (message) {
+
+        if (message.Id === undefined) {
+            message.Id = uuid.v4();
+        }
+
+        appDataChannel.messagesDS.add(message);
+        appDataChannel.messagesDS.sync();
         if (deviceModel.isOnline()) {
             everlive.createOne(appDataChannel._cloudClass, message, function (error, data) {
                 if (error !== null) {
                     ggError("App Channel cache error " + JSON.stringify(error));
                 }
             });
-        } else {
-            appDataChannel.messagesDS.add(message);
         }
-        appDataChannel.messagesDS.sync();
+
     },
 
 

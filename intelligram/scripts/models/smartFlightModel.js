@@ -152,7 +152,7 @@ var smartFlight = {
 
     addFlight : function (objectIn, callback) {
 
-        var flight = new kendo.data.ObservableObject();
+      //  var flight = new kendo.data.ObservableObject();
         mobileNotify("Creating IntelliFlight...");
 
         if (objectIn.senderUUID === undefined || objectIn.senderUUID === null) {
@@ -169,23 +169,25 @@ var smartFlight = {
 
 
         //smartOb.setACL(userModel.parseACL);
-        flight.version =  smartFlight._version;
+        objectIn.Id = uuid.v4();
+        objectIn.version =  smartFlight._version;
         objectIn.ggType = smartFlight._ggClass;
 
 
         smartFlight.flightsDS.add(objectIn);
         smartFlight.flightsDS.sync();
+
         if (callback !== undefined && callback !== null)
             callback(objectIn);
 
-        everlive.createOne(smartFlight._cloudClass, objectIn, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating intelliFlight " + JSON.stringify(error));
-            } else {
-                // Add the everlive object with everlive created Id to the datasource
+        if (deviceModel.isOnline()) {
+            everlive.createOne(smartFlight._cloudClass, objectIn, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating intelliFlight " + JSON.stringify(error));
+                }
+            });
 
-            }
-        });
+        }
 
     }
 

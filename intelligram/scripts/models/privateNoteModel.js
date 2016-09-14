@@ -112,12 +112,14 @@ var privateNoteModel = {
         privateNoteModel.notesDS.add(note);
         privateNoteModel.notesDS.sync();
 
+        if (deviceModel.isOnline()) {
+            everlive.createOne(privateNoteModel._cloudClass, note, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Private Note " + JSON.stringify(error));
+                }
+            });
 
-        everlive.createOne(privateNoteModel._cloudClass, note, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating Private Note " + JSON.stringify(error));
-            }
-        });
+        }
 
     },
 
