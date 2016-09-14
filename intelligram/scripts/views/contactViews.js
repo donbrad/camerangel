@@ -3090,7 +3090,7 @@ var groupPickerView = {
         }
 
         for (var j=0; j<candidates.length; j++) {
-            var candidate = groupModel.findGroup(candidates[j]);
+            var candidate = groupModel.findGroup(candidates[j].uuid);
             candidate.state = groupPickerView._notInGroup;
 
             groupPickerView.groupsDS.add(candidate);
