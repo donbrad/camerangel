@@ -1301,15 +1301,16 @@ var editContactView = {
             editContactView._activeContact.set("phoneValidated", contact.phoneValidated);
             editContactView._activeContact.set("email", contact.email);
             editContactView._activeContact.set("emailValidated", contact.emailValidated);  // emailValidated is a reserved term on Parse...
-            editContactView._activeContact.set("groups", contact.groups);
-            if (contact.groups === undefined) {
-                contact.groups = [];
+            var groups = groupModel.getContactGroups(contact.uuid);
+            var groupString = '';
+
+            if (groups !== []) {
+                groupString = groupModel.getContactGroupString(contact.uuid);
             }
-            editContactView._activeContact.set("groupString", contact.groupString);
-            if (contact.groupString === undefined) {
-                contact.groupString= null;
-            }
+            editContactView._activeContact.set("groups", groups);
+            editContactView._activeContact.set("groupString", groupString);
             editContactView._activeContact.set("isFavorite", contact.isFavorite);
+
             editContactView._activeContact.set("isBlocked", contact.isBlocked);
             editContactView._activeContact.set("photo", contact.photo);
             editContactView._activeContact.set("identicon", contact.identicon);
@@ -1523,8 +1524,8 @@ var editContactView = {
         for (var i=0; i<testArray.length; i++) {
             var found = false;
 
-            for (var j=0; j<groupArray; j++) {
-                if (groupArray[j] === testArray[i]) {
+            for (var j=0; j<groupArray.length; j++) {
+                if (groupArray[j] === testArray[i].uuid) {
                     found = true;
                 }
             }
@@ -3081,7 +3082,7 @@ var groupPickerView = {
 
 
         for (var i=0; i<members.length; i++) {
-            var group = members[i];
+            var group = groupModel.findGroup(members[i]);
             group.state = groupPickerView._inGroup;
 
             groupPickerView.groupsDS.add(group);
@@ -3089,7 +3090,7 @@ var groupPickerView = {
         }
 
         for (var j=0; j<candidates.length; j++) {
-            var candidate = candidates[j];
+            var candidate = groupModel.findGroup(candidates[j]);
             candidate.state = groupPickerView._notInGroup;
 
             groupPickerView.groupsDS.add(candidate);

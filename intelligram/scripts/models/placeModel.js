@@ -472,7 +472,7 @@ var placesModel = {
         if (callback !== undefined) {
             callback(placeObj);
         }
-        
+
         if (deviceModel.isOnline()) {
             everlive.createOne(placesModel._cloudClass, placeObj, function (error, data){
                 if (error !== null) {

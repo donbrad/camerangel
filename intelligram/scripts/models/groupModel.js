@@ -73,6 +73,7 @@ var groupModel = {
                         var group = e.items[0];
                         // add to group tags
                         tagModel.addGroupTag(group.name, group.alias, '', group.uuid);
+                        groupModel.updateGroupContacts(group);
                         break;
                 }
             }
@@ -181,6 +182,77 @@ var groupModel = {
                 group.photoUrl = contactModel.createIdenticon(group.uuid);
             }
         }
+    },
+
+    _findContactGroups : function (contactUUID) {
+        var groupArray = [];
+        for (var i=0; i<groupModel.groupsDS.total(); i++) {
+            var group = groupModel.groupsDS.at(i);
+            var members = group.members;
+
+            for (var j=0; j<members.length; j++) {
+                var member = members[j];
+
+                if (member === contactUUID) {
+                    groupArray.push(group);
+                }
+            }
+        }
+
+        return (groupArray);
+    },
+
+    getContactGroups : function (contactUUID) {
+        var groups = groupModel._findContactGroups(contactUUID);
+        var groupArray = [];
+        if (groups.length === 0) {
+            return(groupArray);
+        }
+
+        for (var i=0; i< groups.length; i++) {
+            groupArray.push(groups[i].uuid);
+        }
+        return (groupArray);
+    },
+
+    getContactGroupString : function (contactUUID) {
+        var groups = groupModel._findContactGroups(contactUUID);
+        var groupString = '';
+
+        if (groups.length === 0) {
+            return(groupString);
+        }
+        for (var i=0; i<groups.length; i++) {
+            groupString += groups[i].title + ',';
+        }
+
+        groupString = groupString.slice(0,-1);
+
+        return(groupString);
+    },
+
+    updateGroupContacts : function (group) {
+        if (group === null || group.members.length === 0) {
+           return;
+        }
+
+        var members = group.members;
+
+        for (var i=0; i<members.length; i++) {
+            var contactUUID = members[i];
+            var contact = contactModel.findContactByUUID(contactUUID);
+
+            if (contact !== undefined && contact !== null) {
+                var groups = groupModel.getContactGroups(contactUUID);
+                var groupString = groupModel.getContactGroupString(contactUUID);
+
+                contact.set('groups', groups);
+                contact.set('groupString', groupString);
+
+                contactModel.sync();
+            }
+        }
+
     }
 
 };

@@ -1157,13 +1157,13 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>intelliGallery</span>
-			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
+			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey-sm"><img src="images/close.svg" /></a>
 			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear">Add</a>
 		</div>
 	</div>
 	<div id="galleryEditor-editTitleTag">
-		<input style="font-weight: 600;"  type="search" id="galleryEditor-title" placeholder="Add Title...">
-		<input id="galleryEditor-tagString"  placeholder="Click to add tags..." readonly>
+		<input style="font-weight: 600;"  type="search" id="galleryEditor-title"  data-bind="value: title" placeholder="Add Title...">
+		<input id="galleryEditor-tagString"  placeholder="Click to add tags..."  data-bind="value: tagString" readonly>
 	</div>
 	<div id="galleryEditor-viewTitleTag" class="hidden">
 		<div data-bind="text: title"></div>
@@ -1196,6 +1196,7 @@
 	<div style="width: 100vh;">
 		<ul id="galleryEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
+
 	<div class="footer" data-role="footer">
 		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" id="galleryEditor-saveBtn">Save</a>
 	</div>
@@ -6112,8 +6113,8 @@
 	#
 	var name = data.name.capitalize('title');
 	var aliasString = "";
-	if (alias !== undefined && alias !== null) {
-	aliasString = alias;
+	if (data.alias !== undefined && data.alias !== null) {
+		aliasString = data.alias;
 	}
 	#
 	<div>
@@ -6125,8 +6126,8 @@
     #
     var title = data.title.capitalize('title');
     var aliasString = "";
-    if (alias !== undefined && alias !== null) {
-    aliasString = " (" + alias + ")";
+    if (data.alias !== undefined && data.alias !== null) {
+    aliasString = " (" + data.alias + ")";
     }
     #
     <div style="padding-left: 8px; padding-right: 8px; width: 90%;">
@@ -6505,7 +6506,11 @@
 	var classNames;
 	var name = data.name;
 	var alias = data.alias;
-	var group = data.group;
+	var group = '';
+
+	if (data.groupString !== undefined && data.groupString !== null) {
+		group = data.groupString;
+	}
 
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
@@ -6583,9 +6588,8 @@
 							#}#
 								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 
-							#if(data.group !== "" && data.group !== null){#
-								<span class="contact-group">#: data.group #</span>
-							#}#
+
+								<span class="contact-group">#: group #</span>
 						</h4>
 					</div>
 
