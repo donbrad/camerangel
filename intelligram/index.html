@@ -1157,13 +1157,13 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>intelliGallery</span>
-			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey">Cancel</a>
+			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey-sm"><img src="images/close.svg" /></a>
 			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear">Add</a>
 		</div>
 	</div>
 	<div id="galleryEditor-editTitleTag">
-		<input style="font-weight: 600;"  type="search" id="galleryEditor-title" placeholder="Add Title...">
-		<input id="galleryEditor-tagString"  placeholder="Click to add tags..." readonly>
+		<input style="font-weight: 600;"  type="search" id="galleryEditor-title"  data-bind="value: title" placeholder="Add Title...">
+		<input id="galleryEditor-tagString"  placeholder="Click to add tags..."  data-bind="value: tagString" readonly>
 	</div>
 	<div id="galleryEditor-viewTitleTag" class="hidden">
 		<div data-bind="text: title"></div>
@@ -1196,6 +1196,7 @@
 	<div style="width: 100vh;">
 		<ul id="galleryEdit-listview" class="list-inline" data-role="listview"></ul>
 	</div>
+
 	<div class="footer" data-role="footer">
 		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" id="galleryEditor-saveBtn">Save</a>
 	</div>

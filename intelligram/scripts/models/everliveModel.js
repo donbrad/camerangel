@@ -60,7 +60,7 @@ var everlive = {
 
         
         if (deviceModel.isOnline()) {
-            
+
             everlive._initialized = true;
 
             APP.everlive = new Everlive({
