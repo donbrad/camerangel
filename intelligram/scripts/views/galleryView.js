@@ -31,7 +31,7 @@ var galleryView = {
             {
                 title: "Add Note",
                 imgUrl: "images/icon-note.svg",
-                category: "notes",
+                category: "intelligram",
                 type: "note"
             },
             {
@@ -45,6 +45,12 @@ var galleryView = {
                 imgUrl: "images/action-device.svg",
                 category: "photos",
                 type: "device"
+            },
+            {
+                title: "Add Gallery",
+                imgUrl: "images/nav-gallery.svg",
+                category: "photos",
+                type: "gallery"
             },
             {
                 title: "Add Flight",
@@ -69,7 +75,7 @@ var galleryView = {
                 imgUrl: "images/intelliMovie-icon.svg",
                 category: "intelligram",
                 type: "movie"
-            },
+            }/*,
             {
                 title: "Add Account",
                 imgUrl: "images/icon-account.svg",
@@ -81,7 +87,7 @@ var galleryView = {
                 imgUrl: "images/icon-medical.svg",
                 category: "intelligram",
                 type: "medical"
-            }
+            }*/
 
         ]
     }),
@@ -134,7 +140,7 @@ var galleryView = {
                 privateNotesView.noteTrip();
                 break;
             case "event":
-                privateNotesView.noteCalendar();
+                privateNotesView.noteEvent();
                 break;
             case "device":
                 galleryView.galleryPhoto();
@@ -147,6 +153,9 @@ var galleryView = {
                 break;
             case "note":
                 APP.kendo.navigate("#noteEditor?returnview=gallery");
+                break;
+            case "gallery":
+                APP.kendo.navigate("#galleryEditor?returnview=gallery");
                 break;
         }
 
@@ -1899,7 +1908,7 @@ var galleryEditView = {
     _returnview : null,
     _mode : 'create',
     _galleryUUID : null,
-    activeObj : new kendo.data.ObservableObject(),
+    activeObj : new kendo.data.ObservableObject({title: null, tagString: null}),
     tags : null,
     tagString: null,
     photosDS:  new kendo.data.DataSource(),
@@ -1945,7 +1954,7 @@ var galleryEditView = {
                 switch (e.action) {
 
                     case "remove" :
-                        // delete from contact list
+                        //
                         break;
 
                     case "add" :
@@ -1957,6 +1966,30 @@ var galleryEditView = {
 
         });
 
+        galleryEditView.activeObj.bind("change", function (e) {
+
+            if (e.field === 'title') {
+                var title = galleryEditView.activeObj.get('title');
+
+                if (galleryEditView._mode === 'create') {
+                    if (title.length > 2) {
+                        galleryEditView.showSaveButton(true);
+                    } else {
+                        galleryEditView.showSaveButton(false);
+                    }
+                }
+            }
+
+        });
+
+    },
+
+    showSaveButton : function (show) {
+        if (show) {
+           $('#galleryEditor-saveBtn').removeClass('hidden');
+        } else {
+            $('#galleryEditor-saveBtn').addClass('hidden');
+        }
     },
 
     galleryActionView: function(e){
@@ -1974,32 +2007,50 @@ var galleryEditView = {
         }
     },
 
-    initGallery : function () {
+    initGallery : function (gallery) {
         var that = galleryEditView;
 
-        that.activeObj.uuid = uuid.v4();
-        that.activeObj.photoArray = [];
-        that.activeObj.set('photoCount', 0);
-        that.activeObj.title = '';
-        that.activeObj.description = '';
-        that.activeObj.tagString = '';
-        that.activeObj.tags = [];
-        that.activeObj.isShared = false;
-        that.activeObj.isOpen = false;
-        that.activeObj.isTracked = false;
-        that.activeObj.senderUUID = userModel._user.userUUID;
-        that.activeObj.senderName = userModel._user.name;
-        that.activeObj.timestamp = new Date();
-        that.activeObj.ggType = galleryModel._ggClass;
-        $('#galleryEditor-title').val("");
-        $('#galleryEditor-tagString').val("");
-        galleryEditView._mode = 'create';
+        if (gallery === null) {
+            that.activeObj.uuid = uuid.v4();
+            that.activeObj.photos= [];
+            that.activeObj.set('photoCount', 0);
+            that.activeObj.title = '';
+            that.activeObj.description = '';
+            that.activeObj.tagString = '';
+            that.activeObj.tags = [];
+            that.activeObj.isShared = false;
+            that.activeObj.isOpen = false;
+            that.activeObj.isTracked = false;
+            that.activeObj.senderUUID = userModel._user.userUUID;
+            that.activeObj.senderName = userModel._user.name;
+            that.activeObj.timestamp = new Date();
+            that.activeObj.ggType = galleryModel._ggClass;
+           // $('#galleryEditor-title').val("");
+           // $('#galleryEditor-tagString').val("");
+            galleryEditView._mode = 'create';
+        } else {
+            that.activeObj.uuid = gallery.uuid;
+            that.activeObj.photos =  gallery.photos;
+            that.activeObj.set('photoCount',  gallery.photoCount);
+            that.activeObj.set('title',  gallery.title);
+            that.activeObj.set('description',  gallery.description);
+            that.activeObj.set('tagString',  gallery.tagString);
+            that.activeObj.tags = gallery.tags;
+            that.activeObj.isShared = gallery.isShared;
+            that.activeObj.isOpen = gallery.isOpen;
+            that.activeObj.isTracked = gallery.isTracked;
+            that.activeObj.senderUUID = gallery.senderUUID;
+            that.activeObj.senderName = gallery.senderName;
+            that.activeObj.timestamp = gallery.timestamp;
+            that.activeObj.ggType = gallery.ggType
+            ;
+            galleryEditView._mode = 'edit';
+        }
+
     },
 
     onShow : function (e) {
         //_preventDefault(e);
-
-        galleryEditView.initGallery();
 
         if (e.view.params.galleryid !== undefined) {
             galleryEditView._galleryUUID = e.view.params.galleryid;
@@ -2011,14 +2062,15 @@ var galleryEditView = {
             if (gallery.tagString === undefined) {
                 gallery.tagString = null;
             }
-            galleryEditView.contentObj = gallery;
+            galleryEditView.initGallery(gallery);
             galleryEditView.photos = gallery.photos;
-            $('#galleryEditor-title').val(note.title);
-            $('#galleryEditor-tagString').val(note.tagString);
+           /* $('#galleryEditor-title').val(note.title);
+            $('#galleryEditor-tagString').val(note.tagString);*/
 
         } else {
             galleryEditView._galleryUUID = null;
             galleryEditView._mode = 'create';
+            galleryEditView.initGallery(null);
         }
 
 
