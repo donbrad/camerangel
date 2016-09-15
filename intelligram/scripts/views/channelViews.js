@@ -104,7 +104,7 @@ var channelsView = {
             ggError("Chat's aren't available yet...");
             return;
         }
-        
+
         if (channelsView._showDeletedChannels) {
             channelsView._channelListDS.data(channelModel.channelsDS.data());
         } else {
