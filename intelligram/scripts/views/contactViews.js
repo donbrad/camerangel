@@ -294,8 +294,8 @@ var contactsView = {
         }
 
         if(tab == 0){
-            $("#contacts-tab-0-img").attr("src", "images/icon-contact-active.svg");
-            $("#contacts-tab-1-img").attr("src", "images/icon-group.svg");
+            //$("#contacts-tab-0-img").attr("src", "images/icon-contact-active.svg");
+           // $("#contacts-tab-1-img").attr("src", "images/icon-group.svg");
 
             $("#contacts-contacts").removeClass("hidden");
             $("#contacts-groups").addClass("hidden");
@@ -303,8 +303,8 @@ var contactsView = {
             ux.setSearchPlaceholder("Search Contacts...");
             ux.setAddTarget(null, "#contactImport", null);
         } else {
-            $("#contacts-tab-0-img").attr("src", "images/icon-contact-alt.svg");
-            $("#contacts-tab-1-img").attr("src", "images/icon-group-active.svg");
+            //$("#contacts-tab-0-img").attr("src", "images/icon-contact-alt.svg");
+            //$("#contacts-tab-1-img").attr("src", "images/icon-group-active.svg");
 
             $("#contacts-contacts").addClass("hidden");
             $("#contacts-groups").removeClass("hidden");
@@ -2748,21 +2748,17 @@ var groupEditView = {
     buildMemberString : function () {
         var activeGroup= groupEditView.activeObj;
         var memberString = '';
-
-
-        for (var i=0; i< activeGroup.members; i++) {
-            var member = activeGroup.members[i];
-
+        _.each(activeGroup.members, function(value, key){
+            var member = value;
             var contact = contactModel.findContactByUUID(member);
 
             if (contact !== undefined && contact !== null) {
-                memberString += contact.name + ',';
+                memberString += contact.name + ', ';
             }
+        });
 
-            memberString = memberString.slice(0,-1);
-
-            return memberString;
-        }
+        memberString = memberString.replace(/,\s*$/, "");
+        return memberString;
     },
 
 
@@ -2788,8 +2784,7 @@ var groupEditView = {
             groupModel.groupsDS.sync();
 
         } else {
-
-            groupEditView.activeObj ('memberString', memberString);
+            groupEditView.activeObj.set('memberString', memberString);
             groupModel.addGroup(activeGroup);
         }
 

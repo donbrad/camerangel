@@ -2337,25 +2337,25 @@
 						<div data-role="footer" class="footer">
 							<div data-role="tabstrip">
 								<a href="#emoji-people">
-									<object data=“images/emoji-people.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<object data=“images/emoji-people.svg" type="image/svg+xml"  class="icon-lg"> </object>
 								</a>
 								<a href="#emoji-nature">
-									<object data=“images/emoji-nature.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<object data=“images/emoji-nature.svg" type="image/svg+xml"  class="icon-lg"> </object>
 								</a>
 								<a href="#emoji-food">
-									<object data=“images/emoji-food.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<object data=“images/emoji-food.svg" type="image/svg+xml"  class="icon-lg"> </object>
 								</a>
 								<a href="#emoji-activity">
-									<object data=“images/emoji-activity.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<object data=“images/emoji-activity.svg" type="image/svg+xml"  class="icon-lg"> </object>
 								</a>
 								<a href="#emoji-travel">
-									<object data=“images/emoji-travel.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<object data=“images/emoji-travel.svg" type="image/svg+xml"  class="icon-lg"> </object>
 								</a>
 								<a href="#emoji-objects">
-									<object data=“images/emoji-objects.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<object data=“images/emoji-objects.svg" type="image/svg+xml"  class="icon-lg"> </object>
 								</a>
 								<a href="#emoji-flags">
-									<object data=“images/emoji-flags.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<object data=“images/emoji-flags.svg" type="image/svg+xml"  class="icon-lg"> </object>
 								</a>
 							</div>
 						</div>
@@ -5073,7 +5073,7 @@
 		<ul id="placeView-listview"></ul>
 
 	</div>
-	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;" id=placeViewEditor" style="min-height: 48px; max-height: 60%;">
+	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;" id="placeViewEditor" style="min-height: 48px; max-height: 60%;">
 		<div class="messageCompose">
 			<div id="placeViewTitleTag" class="hidden">
 				<input type="search" id="placeViewTitle" placeholder="Title...">
@@ -6398,7 +6398,7 @@
 		<ul id="privateNotesView-listview"></ul>
 
 	</div>-->
-	<div data-role="footer" id=privateNoteEditor" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 70vh;">
+	<div data-role="footer" id="privateNoteEditor" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 70vh;">
 		<div class="messageCompose">
 			<div id="privateNoteTitleTag" class="hidden">
 				<input style="font-weight: 600;"  type="search" id="privateNoteTitle" placeholder="Add Title...">
@@ -6411,7 +6411,6 @@
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#privateNotePhotoActions">
 							<object data=“images/chat-camera.svg" type="image/svg+xml" height="24"> </object>
-
 						</a>
 					</li>
 					<li>
@@ -6797,20 +6796,10 @@
 					#: data.title #
 				</h4>
 				<p class="helper textClamp">
-					<object data="images/icon-group.svg" type="image/svg+xml" > </object>
-					#= memberCount # #= memberCountTxt #
+					<img src="images/icon-group.svg" />
+					#: memberString #
 				</p>
 			</div>
-
-			<!--<div class="left contact-status textClamp">
-				<p class="contactStatusMessage-sm">
-					#:data.description#
-				</p>
-
-				<p class="contactStatus-location">
-					#:data.tagString#
-				</p>
-			</div>-->
 		</a><!-- listBox -->
 	</div>
 </script>

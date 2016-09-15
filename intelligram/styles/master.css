@@ -4178,7 +4178,7 @@ div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
   padding: 3px;
   color: #979797;
 }
-.placeType-list img {
+.placeType-list object {
   height: 0.75em;
   vertical-align: baseline;
 }
