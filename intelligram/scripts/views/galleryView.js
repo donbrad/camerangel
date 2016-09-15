@@ -104,12 +104,12 @@ var galleryView = {
     onInit : function (e) {
         //_preventDefault(e);
 
-        archiveView.init();
+        /*archiveView.init();
 
         var setSentinelHeight = function () {
             $('#search-archives').height(getSentinelHeight());
         };
-
+*/
         // ToDo: Initialize list view
         var itemWidth = $(window).width()/4;
         photoModel.rotationAngle = 0;
