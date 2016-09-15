@@ -622,7 +622,9 @@
  <div data-role="view" data-title="intelligram" id="newuserhome" data-layout="newuser" class="appearance" style="display:none;" data-init="newUserView.onInit" data-show="newUserView.onShow" data-transition="fade" data-swipe-to-open="false">
  	<div class="newuserBox">
 		<p id="newWelcome">Welcome to</p>
-		<p id="newLogo"><img src="images/logo-mark-light.svg" class="icon-logo"/></p>
+		<p id="newLogo">
+			<object data="images/logo-mark-light.svg" type="image/svg+xml" class="icon-logo"></object>
+		</p>
 		<h3>
 			<span class="feature" id="feature1">Personal</span> 
 			<span class="feature" id="feature2">Private</span>
@@ -634,7 +636,7 @@
 	 <div class="feature-card preMotion" id="featureCard1">
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <img src="images/contacts.svg"  />
+				 <object data="images/contacts.svg" type="image/svg+xml"></object>
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Personal</h3>
@@ -644,7 +646,7 @@
 		 </div>
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <img src="images/icon-feature-smart.svg"  />
+				 <object data="images/icon-feature-smart.svg" type="image/svg+xml"></object>
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Intelligent</h3>
@@ -654,7 +656,7 @@
 		 </div>
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <img src="images/icon-feature-trusted.svg" />
+				 <object data="images/icon-feature-trusted.svg" type="image/svg+xml"></object>
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Organized</h3>
@@ -686,9 +688,9 @@
 		   </ul>
 	   </div>
     </div>
-	 <!--<a class="btnSpan testingHome" href="#usersignin" data-role="button">
-		 <img src="images/icon-dev-light.svg" class="icon-sm" /> Dev - Sign In</a>-->
-	 <a class="btnSecondary btnSpan" href="#usersignin" data-role="button"> Already A Member? Sign In </a>
+	 <a class="btnSpan testingHome" href="#usersignin" data-role="button">
+		 <object data="images/icon-dev-light.svg" class="icon-sm" type="image/svg+xml"></object> Dev - Sign In</a>
+
     <div class="footer" data-role="footer" id="newuserhome-footer">
     	<a class="btnPrimary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
     </div>

@@ -7125,7 +7125,7 @@ table.k-editor {
   width: 20%;
   text-align: center;
 }
-.icon-feature-img > img {
+.icon-feature-img > object {
   width: 3.5em;
   height: 3.5em;
 }
