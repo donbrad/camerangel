@@ -294,8 +294,8 @@ var contactsView = {
         }
 
         if(tab == 0){
-            $("#contacts-tab-0-img").attr("src", "images/icon-contact-active.svg");
-            $("#contacts-tab-1-img").attr("src", "images/icon-group.svg");
+            //$("#contacts-tab-0-img").attr("src", "images/icon-contact-active.svg");
+           // $("#contacts-tab-1-img").attr("src", "images/icon-group.svg");
 
             $("#contacts-contacts").removeClass("hidden");
             $("#contacts-groups").addClass("hidden");
@@ -303,8 +303,8 @@ var contactsView = {
             ux.setSearchPlaceholder("Search Contacts...");
             ux.setAddTarget(null, "#contactImport", null);
         } else {
-            $("#contacts-tab-0-img").attr("src", "images/icon-contact-alt.svg");
-            $("#contacts-tab-1-img").attr("src", "images/icon-group-active.svg");
+            //$("#contacts-tab-0-img").attr("src", "images/icon-contact-alt.svg");
+            //$("#contacts-tab-1-img").attr("src", "images/icon-group-active.svg");
 
             $("#contacts-contacts").addClass("hidden");
             $("#contacts-groups").removeClass("hidden");

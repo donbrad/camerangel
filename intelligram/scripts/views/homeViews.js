@@ -434,16 +434,16 @@ var homeView = {
         }
 
         if(tab == 0){
-            $("#home-tab-alert-img").attr("src", "images/icon-notify-active.svg");
-            $("#home-tab-today-img").attr("src", "images/icon-today.svg");
+            //$("#home-tab-alert-img").attr("src", "images/icon-notify-active.svg");
+            //$("#home-tab-today-img").attr("src", "images/icon-today.svg");
 
             $("#home-alerts").removeClass("hidden");
             $("#home-today").addClass("hidden");
 
             ux.setSearchPlaceholder("Search Alerts...");
         } else {
-            $("#home-tab-alert-img").attr("src", "images/icon-notify.svg");
-            $("#home-tab-today-img").attr("src", "images/icon-today-alt.svg");
+            //$("#home-tab-alert-img").attr("src", "images/icon-notify.svg");
+            //$("#home-tab-today-img").attr("src", "images/icon-today-alt.svg");
 
             $("#home-alerts").addClass("hidden");
             $("#home-today").removeClass("hidden");

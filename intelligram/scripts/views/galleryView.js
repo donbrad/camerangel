@@ -382,8 +382,8 @@ var galleryView = {
             $("#gallery-photos").addClass("hidden");
             $("#gallery-notes").removeClass("hidden");
 
-            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes-alt.svg");
-            $("#galleryView-tab-photos").attr("src", "images/icon-photo-dark.svg");
+            //$("#galleryView-tab-notes").attr("src", "images/icon-myNotes-alt.svg");
+            //$("#galleryView-tab-photos").attr("src", "images/icon-photo-dark.svg");
 
             ux.setSearchPlaceholder("Search Notes...");
 
@@ -392,8 +392,8 @@ var galleryView = {
             $("#gallery-photos").removeClass("hidden");
             $("#gallery-notes").addClass("hidden");
 
-            $("#galleryView-tab-notes").attr("src", "images/icon-myNotes-dark.svg");
-            $("#galleryView-tab-photos").attr("src", "images/icon-photo-active.svg");
+            //$("#galleryView-tab-notes").attr("src", "images/icon-myNotes-dark.svg");
+            //$("#galleryView-tab-photos").attr("src", "images/icon-photo-active.svg");
 
             ux.setSearchPlaceholder("Search Photos...");
 
