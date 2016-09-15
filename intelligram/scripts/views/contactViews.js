@@ -2747,21 +2747,17 @@ var groupEditView = {
     buildMemberString : function () {
         var activeGroup= groupEditView.activeObj;
         var memberString = '';
-
-
-        for (var i=0; i< activeGroup.members; i++) {
-            var member = activeGroup.members[i];
-
+        _.each(activeGroup.members, function(value, key){
+            var member = value;
             var contact = contactModel.findContactByUUID(member);
 
             if (contact !== undefined && contact !== null) {
-                memberString += contact.name + ',';
+                memberString += contact.name + ', ';
             }
+        });
 
-            memberString = memberString.slice(0,-1);
-
-            return memberString;
-        }
+        memberString = memberString.replace(/,\s*$/, "");
+        return memberString;
     },
 
 
@@ -2787,8 +2783,7 @@ var groupEditView = {
             groupModel.groupsDS.sync();
 
         } else {
-
-            groupEditView.activeObj ('memberString', memberString);
+            groupEditView.activeObj.set('memberString', memberString);
             groupModel.addGroup(activeGroup);
         }
 
