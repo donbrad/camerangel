@@ -1,6 +1,3126 @@
 /* Colors */
 /* variables */
 /* Imports */
+.svg-action-camera {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.542940320232898% 91.81069364161849%;
+}
+.svg-action-camera-dims {
+  width: 24px;
+  height: 19px;
+}
+.svg-action-chat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.94256259204712% 47.44525547445255%;
+}
+.svg-action-chat-dims {
+  width: 32px;
+  height: 26px;
+}
+.svg-action-contact {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.21929824561404% 88.45598845598846%;
+}
+.svg-action-contact-dims {
+  width: 27px;
+  height: 18px;
+}
+.svg-action-delete {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 38.54014598540146% 71.84133915574964%;
+}
+.svg-action-delete-dims {
+  width: 26px;
+  height: 24px;
+}
+.svg-action-device {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 87.34957020057305% 34.880466472303205%;
+}
+.svg-action-device-dims {
+  width: 13px;
+  height: 25px;
+}
+.svg-action-edit {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 48.180494905385736% 99.75691411935954%;
+}
+.svg-action-edit-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-action-gg {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 61.794500723589% 99.75691411935954%;
+}
+.svg-action-gg-dims {
+  width: 20px;
+  height: 24px;
+}
+.svg-action-map {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 10.319767441860465% 96.117903930131%;
+}
+.svg-action-map-dims {
+  width: 23px;
+  height: 24px;
+}
+.svg-action-memories {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.55604075691412% 91.81069364161849%;
+}
+.svg-action-memories-dims {
+  width: 24px;
+  height: 19px;
+}
+.svg-action-password {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 13.583815028901734% 96.117903930131%;
+}
+.svg-action-password-dims {
+  width: 19px;
+  height: 24px;
+}
+.svg-action-recall {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 16.3768115942029% 96.117903930131%;
+}
+.svg-action-recall-dims {
+  width: 21px;
+  height: 24px;
+}
+.svg-action-recall-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 19.420289855072465% 96.117903930131%;
+}
+.svg-action-recall-light-dims {
+  width: 21px;
+  height: 24px;
+}
+.svg-action-scanner {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 7.239819004524887%;
+}
+.svg-action-scanner-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-action-share {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 39.15574963609898% 95.8388969521045%;
+}
+.svg-action-share-dims {
+  width: 24px;
+  height: 22px;
+}
+.svg-action-signout {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 6.705539358600583% 96.117903930131%;
+}
+.svg-action-signout-dims {
+  width: 25px;
+  height: 24px;
+}
+.svg-archive-Chat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 51.67394468704512% 99.75691411935954%;
+}
+.svg-archive-Chat-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-archive-Events {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 55.167394468704515% 99.75691411935954%;
+}
+.svg-archive-Events-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-archive-Links {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 58.6608442503639% 99.75691411935954%;
+}
+.svg-archive-Links-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-archive-Photos {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 3.2023289665211063% 99.90233236151603%;
+}
+.svg-archive-Photos-dims {
+  width: 24px;
+  height: 25px;
+}
+.svg-ballons {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 6.848142441362781%;
+}
+.svg-ballons-dims {
+  width: 48px;
+  height: 10.08px;
+}
+.svg-chat-camera {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.479638009049774% 0;
+}
+.svg-chat-camera-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-chat-content-corner {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 58.5948275862069% 47.97720797720797%;
+}
+.svg-chat-content-corner-dims {
+  width: 15px;
+  height: 9px;
+}
+.svg-chat-photo {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 14.479638009049774%;
+}
+.svg-chat-photo-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-chat-places {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 14.479638009049774%;
+}
+.svg-chat-places-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-chat-smart {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.479638009049774% 14.479638009049774%;
+}
+.svg-chat-smart-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-chat-sound {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.71945701357466% 0;
+}
+.svg-chat-sound-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-check-in {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 45.24495677233429% 99.75691411935954%;
+}
+.svg-check-in-dims {
+  width: 17px;
+  height: 24px;
+}
+.svg-checkin-invisible {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.71945701357466% 6.8178912830419165%;
+}
+.svg-checkin-invisible-dims {
+  width: 48px;
+  height: 6.97px;
+}
+.svg-close {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 82.42074927953891% 95.14841498559078%;
+}
+.svg-close-dims {
+  width: 17px;
+  height: 17px;
+}
+.svg-close-white {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 30.84795321637427% 72.05109489051095%;
+}
+.svg-close-white-dims {
+  width: 27px;
+  height: 26px;
+}
+.svg-contact-call {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 55.25525525525526% 81.12162162162163%;
+}
+.svg-contact-call-dims {
+  width: 45px;
+  height: 45px;
+}
+.svg-contact-ghostMail {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 48.4984984984985% 81.12162162162163%;
+}
+.svg-contact-ghostMail-dims {
+  width: 45px;
+  height: 45px;
+}
+.svg-contact-invite {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.65198237885463% 79.08309455587393%;
+}
+.svg-contact-invite-dims {
+  width: 30px;
+  height: 13px;
+}
+.svg-contact-privateChat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.22822822822823% 81.12162162162163%;
+}
+.svg-contact-privateChat-dims {
+  width: 45px;
+  height: 45px;
+}
+.svg-contact-sms {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 34.98498498498498% 81.12162162162163%;
+}
+.svg-contact-sms-dims {
+  width: 45px;
+  height: 45px;
+}
+.svg-contacts {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 92.74310595065312% 99.46734397677794%;
+}
+.svg-contacts-dims {
+  width: 22px;
+  height: 22px;
+}
+.svg-decline-icon {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.94083694083694% 91.67821067821066%;
+}
+.svg-decline-icon-dims {
+  width: 18px;
+  height: 18px;
+}
+.svg-default-private {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.959276018099548% 0;
+}
+.svg-default-private-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-edit-chat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 80.15789473684211% 17.748917748917748%;
+}
+.svg-edit-chat-dims {
+  width: 27px;
+  height: 18px;
+}
+.svg-emoji-activity {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 20.232896652110625% 99.75691411935954%;
+}
+.svg-emoji-activity-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-emoji-flags {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 23.726346433770015% 99.75691411935954%;
+}
+.svg-emoji-flags-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-emoji-food {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 27.219796215429405% 99.75691411935954%;
+}
+.svg-emoji-food-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-emoji-nature {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 39.5924308588064% 99.75691411935954%;
+}
+.svg-emoji-nature-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-emoji-objects {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 42.712842712842715% 99.75691411935954%;
+}
+.svg-emoji-objects-dims {
+  width: 18px;
+  height: 24px;
+}
+.svg-emoji-people {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 46.06413994169096% 71.84133915574964%;
+}
+.svg-emoji-people-dims {
+  width: 25px;
+  height: 24px;
+}
+.svg-emoji-symbols {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.288629737609329% 92.47889374090246%;
+}
+.svg-emoji-symbols-dims {
+  width: 25px;
+  height: 24px;
+}
+.svg-emoji-travel {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 42.64919941775837% 95.7%;
+}
+.svg-emoji-travel-dims {
+  width: 24px;
+  height: 21px;
+}
+.svg-empty-archive {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.959276018099548% 15.364050481666789%;
+}
+.svg-empty-archive-dims {
+  width: 48px;
+  height: 41.45px;
+}
+.svg-empty-chat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 28.959276018099548%;
+}
+.svg-empty-chat-dims {
+  width: 45.45px;
+  height: 48px;
+}
+.svg-empty-contacts {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 6.846219892448823% 28.959276018099548%;
+}
+.svg-empty-contacts-dims {
+  width: 47.13px;
+  height: 48px;
+}
+.svg-empty-gallery {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 13.781502597615258% 28.959276018099548%;
+}
+.svg-empty-gallery-dims {
+  width: 39.23px;
+  height: 48px;
+}
+.svg-empty-home {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 19.835071403849337% 28.959276018099548%;
+}
+.svg-empty-home-dims {
+  width: 46.47px;
+  height: 48px;
+}
+.svg-empty-places {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 26.872060774146867% 28.959276018099548%;
+}
+.svg-empty-places-dims {
+  width: 47.56px;
+  height: 48px;
+}
+.svg-empty-places-nearby {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.959276018099548% 21.739850869925434%;
+}
+.svg-empty-places-nearby-dims {
+  width: 48px;
+  height: 47.15px;
+}
+.svg-event {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 26.900584795321638% 72.05109489051095%;
+}
+.svg-event-dims {
+  width: 27px;
+  height: 26px;
+}
+.svg-fandango-logo {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.18926988148014% 0;
+}
+.svg-fandango-logo-dims {
+  width: 47.82px;
+  height: 48px;
+}
+.svg-flag {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 32.45997088791849% 96.117903930131%;
+}
+.svg-flag-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-gallery-all {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 10.932944606413994% 91.94356005788711%;
+}
+.svg-gallery-all-dims {
+  width: 25px;
+  height: 20px;
+}
+.svg-gallery-grid {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 43.411764705882355% 7.239819004524887%;
+}
+.svg-gallery-grid-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-gallery-grid-1 {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 13.24599708879185% 99.75691411935954%;
+}
+.svg-gallery-grid-1-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-gallery-grid-2 {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 16.739446870451236% 99.75691411935954%;
+}
+.svg-gallery-grid-2-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-gallery-grid-3 {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.67655786350149% 11.208151382823871%;
+}
+.svg-gallery-grid-3-dims {
+  width: 37px;
+  height: 24px;
+}
+.svg-gallery-list {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 43.411764705882355% 19.626793546948182%;
+}
+.svg-gallery-list-dims {
+  width: 48px;
+  height: 38.45px;
+}
+.svg-gallery-photos {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.99270072992701% 64.47901591895803%;
+}
+.svg-gallery-photos-dims {
+  width: 26px;
+  height: 20px;
+}
+.svg-gg-family {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 32.95487627365357% 50.29496402877698%;
+}
+.svg-gg-family-dims {
+  width: 24px;
+  height: 16px;
+}
+.svg-gg-fire {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 35.227289406860514% 7.239819004524887%;
+}
+.svg-gg-fire-dims {
+  width: 29.71px;
+  height: 48px;
+}
+.svg-gg-ice {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97439544807966% 58.45272206303725%;
+}
+.svg-gg-ice-dims {
+  width: 8px;
+  height: 13px;
+}
+.svg-gg-local {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 65.17341040462428% 95.56150506512301%;
+}
+.svg-gg-local-dims {
+  width: 19px;
+  height: 20px;
+}
+.svg-gg-medical {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 89.49640287769785% 95.0115107913669%;
+}
+.svg-gg-medical-dims {
+  width: 16px;
+  height: 16px;
+}
+.svg-gg-missing-file {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.479638009049774% 36.199095022624434%;
+}
+.svg-gg-missing-file-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-gg-police {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 76.70043415340086% 71.11671469740634%;
+}
+.svg-gg-police-dims {
+  width: 20px;
+  height: 17px;
+}
+.svg-gg-rated-g {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 43.411764705882355% 29.079010279703564%;
+}
+.svg-gg-rated-g-dims {
+  width: 48px;
+  height: 41.72px;
+}
+.svg-gg-rated-g-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 17.476621417797887% 21.50120197691607%;
+}
+.svg-gg-rated-g-dark-dims {
+  width: 48px;
+  height: 41.27px;
+}
+.svg-gg-rated-nc17 {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.959276018099548% 34.439214785902884%;
+}
+.svg-gg-rated-nc17-dims {
+  width: 48px;
+  height: 14.12px;
+}
+.svg-gg-rated-nc17-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.199095022624434% 34.349014612643295%;
+}
+.svg-gg-rated-nc17-dark-dims {
+  width: 48px;
+  height: 12.29px;
+}
+.svg-gg-rated-pg {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.959276018099548% 37.06318184469984%;
+}
+.svg-gg-rated-pg-dims {
+  width: 48px;
+  height: 25.36px;
+}
+.svg-gg-rated-pg-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.199095022624434% 37.06318184469984%;
+}
+.svg-gg-rated-pg-dark-dims {
+  width: 48px;
+  height: 25.36px;
+}
+.svg-gg-rated-pg13 {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 41.293282672593016%;
+}
+.svg-gg-rated-pg13-dims {
+  width: 48px;
+  height: 13.55px;
+}
+.svg-gg-rated-pg13-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 41.28499548445362%;
+}
+.svg-gg-rated-pg13-dark-dims {
+  width: 48px;
+  height: 13.41px;
+}
+.svg-gg-rated-r {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 50.65158371040724% 0;
+}
+.svg-gg-rated-r-dims {
+  width: 48px;
+  height: 41.72px;
+}
+.svg-gg-rated-r-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 50.65158371040724% 6.229376017200962%;
+}
+.svg-gg-rated-r-dark-dims {
+  width: 48px;
+  height: 41.27px;
+}
+.svg-gg-roadside {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 55.86899563318777% 48.0456490727532%;
+}
+.svg-gg-roadside-dims {
+  width: 24px;
+  height: 10px;
+}
+.svg-gg-verified {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.32285714285715% 10.451566951566951%;
+}
+.svg-gg-verified-dims {
+  width: 11px;
+  height: 9px;
+}
+.svg-ghost {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 49.94868591316764% 19.75716440422323%;
+}
+.svg-ghost-dims {
+  width: 38.67px;
+  height: 48px;
+}
+.svg-ghost-black {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 50.65158371040724% 26.996983408748115%;
+}
+.svg-ghost-black-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-ghost-blue {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 50.65158371040724% 34.236802413273004%;
+}
+.svg-ghost-blue-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-ghost-brown {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.18054089908644% 21.71945701357466%;
+}
+.svg-ghost-brown-dims {
+  width: 47.66px;
+  height: 48px;
+}
+.svg-ghost-default {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 45.48265460030166%;
+}
+.svg-ghost-default-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-ghost-green {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.18054089908644% 28.959276018099548%;
+}
+.svg-ghost-green-dims {
+  width: 47.66px;
+  height: 48px;
+}
+.svg-ghost-grey {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 45.48265460030166%;
+}
+.svg-ghost-grey-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-ghost-info {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 32.04022988505747% 91.81069364161849%;
+}
+.svg-ghost-info-dims {
+  width: 15px;
+  height: 19px;
+}
+.svg-ghost-orange {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.71945701357466% 45.48265460030166%;
+}
+.svg-ghost-orange-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-ghost-pink {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.94443271926915% 45.48265460030166%;
+}
+.svg-ghost-pink-dims {
+  width: 47.66px;
+  height: 48px;
+}
+.svg-ghost-private {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 35.64618565287879% 45.48265460030166%;
+}
+.svg-ghost-private-dims {
+  width: 38.67px;
+  height: 48px;
+}
+.svg-ghost-purple {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 41.98039215686274% 45.48265460030166%;
+}
+.svg-ghost-purple-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-ghost-red {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 49.22021116138763% 45.48265460030166%;
+}
+.svg-ghost-red-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-ghost-sm {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 87.34957020057305% 38.08069164265129%;
+}
+.svg-ghost-sm-dims {
+  width: 13px;
+  height: 17px;
+}
+.svg-ghost-teal {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 57.86173003286399% 5.9502262443438925%;
+}
+.svg-ghost-teal-dims {
+  width: 47.66px;
+  height: 48px;
+}
+.svg-ghost-yellow {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 57.89140271493213% 13.190045248868778%;
+}
+.svg-ghost-yellow-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-gradient-1 {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 57.89140271493213% 19.90448199853049%;
+}
+.svg-gradient-1-dims {
+  width: 48px;
+  height: 30.5px;
+}
+.svg-grid-1 {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.353383458646615% 81.24360902255638%;
+}
+.svg-grid-1-dims {
+  width: 46px;
+  height: 46px;
+}
+.svg-grid-2 {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.436090225563909% 81.36596385542168%;
+}
+.svg-grid-2-dims {
+  width: 46px;
+  height: 47px;
+}
+.svg-grid-3 {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 57.89140271493213% 37.84137920880997%;
+}
+.svg-grid-3-dims {
+  width: 48px;
+  height: 31.77px;
+}
+.svg-group-icon {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 44.172661870503596% 34.33476394849785%;
+}
+.svg-group-icon-dims {
+  width: 16px;
+  height: 12px;
+}
+.svg-help {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 87.19424460431655% 95.14841498559078%;
+}
+.svg-help-dims {
+  width: 16px;
+  height: 17px;
+}
+.svg-icon-Chat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 58.34285714285714% 49.93571428571428%;
+}
+.svg-icon-Chat-dims {
+  width: 11px;
+  height: 11px;
+}
+.svg-icon-Events {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 47.11815561959654% 91.28304597701148%;
+}
+.svg-icon-Events-dims {
+  width: 17px;
+  height: 15px;
+}
+.svg-icon-Links {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 19.742489270386265% 41.142857142857146%;
+}
+.svg-icon-Links-dims {
+  width: 12px;
+  height: 11px;
+}
+.svg-icon-Photo {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 24.892703862660944% 41.08416547788873%;
+}
+.svg-icon-Photo-dims {
+  width: 12px;
+  height: 10px;
+}
+.svg-icon-Photos {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 56.70958512160229% 49.93571428571428%;
+}
+.svg-icon-Photos-dims {
+  width: 12px;
+  height: 11px;
+}
+.svg-icon-access {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 64.59439649369493% 28.959276018099548%;
+}
+.svg-icon-access-dims {
+  width: 42.49px;
+  height: 48px;
+}
+.svg-icon-account {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 52.685050798258345% 95.7%;
+}
+.svg-icon-account-dims {
+  width: 22px;
+  height: 21px;
+}
+.svg-icon-alert {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 42.13564213564214% 91.54610951008644%;
+}
+.svg-icon-alert-dims {
+  width: 18px;
+  height: 17px;
+}
+.svg-icon-alert-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 84.87031700288185% 95.14841498559078%;
+}
+.svg-icon-alert-light-dims {
+  width: 17px;
+  height: 17px;
+}
+.svg-icon-arrow-right {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97432239657633% 31.654676258992804%;
+}
+.svg-icon-arrow-right-dims {
+  width: 10px;
+  height: 16px;
+}
+.svg-icon-arrow-right-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97439544807966% 54.01146131805157%;
+}
+.svg-icon-arrow-right-active-dims {
+  width: 8px;
+  height: 13px;
+}
+.svg-icon-arrow-right-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97439544807966% 55.873925501432666%;
+}
+.svg-icon-arrow-right-light-dims {
+  width: 8px;
+  height: 13px;
+}
+.svg-icon-at {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 96.40287769784173% 95.0115107913669%;
+}
+.svg-icon-at-dims {
+  width: 16px;
+  height: 16px;
+}
+.svg-icon-autoCheckin {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 64.38152011922504% 65.90976331360947%;
+}
+.svg-icon-autoCheckin-dims {
+  width: 40px;
+  height: 35px;
+}
+.svg-icon-bk {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 12.277526395173455% 51.46268568820576%;
+}
+.svg-icon-bk-dims {
+  width: 48px;
+  height: 31.77px;
+}
+.svg-icon-block {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 34.981262399882425% 59.96229260935143%;
+}
+.svg-icon-block-dims {
+  width: 30.55px;
+  height: 48px;
+}
+.svg-icon-bold {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 39.93932814846759% 59.96229260935143%;
+}
+.svg-icon-bold-dims {
+  width: 38.53px;
+  height: 48px;
+}
+.svg-icon-camera {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 63.75545851528384% 71.21933621933621%;
+}
+.svg-icon-camera-dims {
+  width: 24px;
+  height: 18px;
+}
+.svg-icon-camera-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 67.24890829694323% 71.21933621933621%;
+}
+.svg-icon-camera-active-dims {
+  width: 24px;
+  height: 18px;
+}
+.svg-icon-camera-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 53.275109170305676% 71.21933621933621%;
+}
+.svg-icon-camera-dark-dims {
+  width: 24px;
+  height: 18px;
+}
+.svg-icon-chat-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 39.53823953823954% 91.67821067821066%;
+}
+.svg-icon-chat-active-dims {
+  width: 18px;
+  height: 18px;
+}
+.svg-icon-chat-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 46.20886981402003% 34.33476394849785%;
+}
+.svg-icon-chat-light-dims {
+  width: 12px;
+  height: 12px;
+}
+.svg-icon-checked-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.32285714285715% 11.733618233618234%;
+}
+.svg-icon-checked-active-dims {
+  width: 11px;
+  height: 9px;
+}
+.svg-icon-checkin {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 7.144983626079191%;
+}
+.svg-icon-checkin-dims {
+  width: 48px;
+  height: 39.2px;
+}
+.svg-icon-checkin-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 12.980053587377196%;
+}
+.svg-icon-checkin-active-dims {
+  width: 48px;
+  height: 39.2px;
+}
+.svg-icon-checkout {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 18.815123548675203%;
+}
+.svg-icon-checkout-dims {
+  width: 48px;
+  height: 39.2px;
+}
+.svg-icon-checkout-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 24.650193509973214%;
+}
+.svg-icon-checkout-active-dims {
+  width: 48px;
+  height: 39.2px;
+}
+.svg-icon-checkout-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 30.67705212702217%;
+}
+.svg-icon-checkout-light-dims {
+  width: 48px;
+  height: 43.4px;
+}
+.svg-icon-contact {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 35.84905660377358% 96.117903930131%;
+}
+.svg-icon-contact-dims {
+  width: 22px;
+  height: 24px;
+}
+.svg-icon-contact-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 55.87808417997097% 95.7%;
+}
+.svg-icon-contact-active-dims {
+  width: 22px;
+  height: 21px;
+}
+.svg-icon-contact-alt {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 62.264150943396224% 95.7%;
+}
+.svg-icon-contact-alt-dims {
+  width: 22px;
+  height: 21px;
+}
+.svg-icon-contact-img {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 45.09502262443439%;
+}
+.svg-icon-contact-img-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-contact-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 52.263107951378956%;
+}
+.svg-icon-contact-light-dims {
+  width: 48px;
+  height: 47.09px;
+}
+.svg-icon-date {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 59.43740573152339%;
+}
+.svg-icon-date-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-date-highlight {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 67.20211161387633%;
+}
+.svg-icon-date-highlight-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-date-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 67.20211161387633%;
+}
+.svg-icon-date-light-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-date-primary {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.479638009049774% 67.20211161387633%;
+}
+.svg-icon-date-primary-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-dev {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.71945701357466% 67.20211161387633%;
+}
+.svg-icon-dev-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-dev-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.959276018099548% 66.95972347460174%;
+}
+.svg-icon-dev-light-dims {
+  width: 48px;
+  height: 45.6px;
+}
+.svg-icon-directions {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.199095022624434% 66.4325758931234%;
+}
+.svg-icon-directions-dims {
+  width: 48px;
+  height: 40.32px;
+}
+.svg-icon-directions-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 43.43891402714932% 66.4325758931234%;
+}
+.svg-icon-directions-active-dims {
+  width: 48px;
+  height: 40.32px;
+}
+.svg-icon-download {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.61085972850678% 0;
+}
+.svg-icon-download-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-download-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.61085972850678% 7.239819004524887%;
+}
+.svg-icon-download-light-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-duration {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 76.43583282648362% 14.479638009049774%;
+}
+.svg-icon-duration-dims {
+  width: 20.46px;
+  height: 48px;
+}
+.svg-icon-edit-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.51850791689891% 21.71945701357466%;
+}
+.svg-icon-edit-active-dims {
+  width: 47.23px;
+  height: 48px;
+}
+.svg-icon-editor {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.61085972850678% 28.731332116242182%;
+}
+.svg-icon-editor-dims {
+  width: 48px;
+  height: 42.74px;
+}
+.svg-icon-editor-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.61085972850678% 35.15808707894619%;
+}
+.svg-icon-editor-active-dims {
+  width: 48px;
+  height: 43.33px;
+}
+.svg-icon-emoji {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 0;
+}
+.svg-icon-emoji-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-emoji-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.61085972850678% 48.49170437405731%;
+}
+.svg-icon-emoji-active-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-error {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.27367757051454% 55.7315233785822%;
+}
+.svg-icon-error-dims {
+  width: 45.18px;
+  height: 48px;
+}
+.svg-icon-event {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 49.124820659971306% 50.1506456241033%;
+}
+.svg-icon-event-dims {
+  width: 14px;
+  height: 14px;
+}
+.svg-icon-event-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 44.668587896253605% 91.28304597701148%;
+}
+.svg-icon-event-light-dims {
+  width: 17px;
+  height: 15px;
+}
+.svg-icon-expired {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 0;
+}
+.svg-icon-expired-dims {
+  width: 48px;
+  height: 47.28px;
+}
+.svg-icon-external {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 95.10791366906474% 98.60863309352519%;
+}
+.svg-icon-external-dims {
+  width: 16px;
+  height: 16px;
+}
+.svg-icon-feature-savings {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 7.131221719457014%;
+}
+.svg-icon-feature-savings-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-feature-secure {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 14.371040723981901%;
+}
+.svg-icon-feature-secure-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-feature-smart {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 21.61085972850679%;
+}
+.svg-icon-feature-smart-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-feature-trusted {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 28.850678733031675%;
+}
+.svg-icon-feature-trusted-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-filter {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 70.53701015965167% 71.21933621933621%;
+}
+.svg-icon-filter-dims {
+  width: 22px;
+  height: 18px;
+}
+.svg-icon-filter-link {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 73.7300435413643% 71.21933621933621%;
+}
+.svg-icon-filter-link-dims {
+  width: 22px;
+  height: 18px;
+}
+.svg-icon-font-lg {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.3928035982009% 73.11851851851851%;
+}
+.svg-icon-font-lg-dims {
+  width: 44px;
+  height: 36px;
+}
+.svg-icon-font-sm {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 20.98950524737631% 73.11851851851851%;
+}
+.svg-icon-font-sm-dims {
+  width: 44px;
+  height: 36px;
+}
+.svg-icon-gallery {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.65198237885463% 82.24163027656478%;
+}
+.svg-icon-gallery-dims {
+  width: 30px;
+  height: 24px;
+}
+.svg-icon-gallery-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.65198237885463% 68.12227074235808%;
+}
+.svg-icon-gallery-light-dims {
+  width: 30px;
+  height: 24px;
+}
+.svg-icon-ghostMail {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 41.61849710982659% 34.33476394849785%;
+}
+.svg-icon-ghostMail-dims {
+  width: 19px;
+  height: 12px;
+}
+.svg-icon-ghostgram {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 29.68299711815562% 91.81069364161849%;
+}
+.svg-icon-ghostgram-dims {
+  width: 17px;
+  height: 19px;
+}
+.svg-icon-gps {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.09049773755655% 0;
+}
+.svg-icon-gps-dims {
+  width: 48px;
+  height: 47.37px;
+}
+.svg-icon-gps-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 92.478059772296% 7.144796380090498%;
+}
+.svg-icon-gps-light-dims {
+  width: 36.44px;
+  height: 48px;
+}
+.svg-icon-gps-selected {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.09049773755655% 14.370959721531577%;
+}
+.svg-icon-gps-selected-dims {
+  width: 48px;
+  height: 47.37px;
+}
+.svg-icon-grid {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 93.859741510314% 21.529411764705884%;
+}
+.svg-icon-grid-dims {
+  width: 46.37px;
+  height: 48px;
+}
+.svg-icon-grid-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 93.859741510314% 28.76923076923077%;
+}
+.svg-icon-grid-active-dims {
+  width: 46.37px;
+  height: 48px;
+}
+.svg-icon-group {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.94256259204712% 44.138929088277855%;
+}
+.svg-icon-group-dims {
+  width: 32px;
+  height: 20px;
+}
+.svg-icon-group-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.94256259204712% 41.24457308248915%;
+}
+.svg-icon-group-active-dims {
+  width: 32px;
+  height: 20px;
+}
+.svg-icon-happy {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.09049773755655% 48.171945701357465%;
+}
+.svg-icon-happy-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-hasChat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 73.87518142235123% 99.46734397677794%;
+}
+.svg-icon-hasChat-dims {
+  width: 22px;
+  height: 22px;
+}
+.svg-icon-horizontal {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 97.79039301310044% 88.99858956276445%;
+}
+.svg-icon-horizontal-dims {
+  width: 24px;
+  height: 2px;
+}
+.svg-icon-indent {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.09049773755655% 61.232973642313816%;
+}
+.svg-icon-indent-dims {
+  width: 48px;
+  height: 32.64px;
+}
+.svg-icon-info {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.09049773755655% 67.57466063348416%;
+}
+.svg-icon-info-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-italic {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.54829545454545% 26.92867540029112%;
+}
+.svg-icon-italic-dims {
+  width: 7px;
+  height: 24px;
+}
+.svg-icon-keyboard {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.09049773755655% 74.21782652282555%;
+}
+.svg-icon-keyboard-dims {
+  width: 48px;
+  height: 42.67px;
+}
+.svg-icon-keyboard-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.09049773755655% 80.6023970194365%;
+}
+.svg-icon-keyboard-active-dims {
+  width: 48px;
+  height: 42.67px;
+}
+.svg-icon-link-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.459227467811157% 41.142857142857146%;
+}
+.svg-icon-link-light-dims {
+  width: 12px;
+  height: 11px;
+}
+.svg-icon-list {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 3.061224489795918% 96.117903930131%;
+}
+.svg-icon-list-dims {
+  width: 25px;
+  height: 24px;
+}
+.svg-icon-list-alt {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 11.069381598793363% 88.5867269984917%;
+}
+.svg-icon-list-alt-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-list-alt-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 18.30920060331825% 88.5867269984917%;
+}
+.svg-icon-list-alt-active-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-location {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97424892703863% 88.20143884892086%;
+}
+.svg-icon-location-dims {
+  width: 12px;
+  height: 16px;
+}
+.svg-icon-location-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.10071942446044% 95.0115107913669%;
+}
+.svg-icon-location-active-dims {
+  width: 16px;
+  height: 16px;
+}
+.svg-icon-location-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.32285714285715% 6.796269727403156%;
+}
+.svg-icon-location-dark-dims {
+  width: 11px;
+  height: 14px;
+}
+.svg-icon-location-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.188302425107% 8.779685264663806%;
+}
+.svg-icon-location-light-dims {
+  width: 10px;
+  height: 12px;
+}
+.svg-icon-locationPin {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.8328611898017% 14.407988587731811%;
+}
+.svg-icon-locationPin-dims {
+  width: 5px;
+  height: 10px;
+}
+.svg-icon-lock {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 66.70258620689656% 13.892908827785817%;
+}
+.svg-icon-lock-dims {
+  width: 15px;
+  height: 20px;
+}
+.svg-icon-lock-photo {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.68990042674253% 29.857142857142858%;
+}
+.svg-icon-lock-photo-dims {
+  width: 8px;
+  height: 11px;
+}
+.svg-icon-mail {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 50.678733031674206% 65.98981012470749%;
+}
+.svg-icon-mail-dims {
+  width: 48px;
+  height: 35.82px;
+}
+.svg-icon-manage {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 73.17055091027694%;
+}
+.svg-icon-manage-dims {
+  width: 48px;
+  height: 36.48px;
+}
+.svg-icon-medical {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 51.13342898134864% 50.1506456241033%;
+}
+.svg-icon-medical-dims {
+  width: 14px;
+  height: 14px;
+}
+.svg-icon-memories {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 65.85547445255474% 57.61594202898551%;
+}
+.svg-icon-memories-dims {
+  width: 26px;
+  height: 21px;
+}
+.svg-icon-movie-circle {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 9.75254730713246% 99.90233236151603%;
+}
+.svg-icon-movie-circle-dims {
+  width: 24px;
+  height: 25px;
+}
+.svg-icon-mute {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 49.49640287769784% 91.28304597701148%;
+}
+.svg-icon-mute-dims {
+  width: 16px;
+  height: 15px;
+}
+.svg-icon-myNotes {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 52.959276018099544% 88.5867269984917%;
+}
+.svg-icon-myNotes-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-myNotes-alt {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 47.116212338593975% 50.1506456241033%;
+}
+.svg-icon-myNotes-alt-dims {
+  width: 14px;
+  height: 14px;
+}
+.svg-icon-myNotes-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 45.10760401721664% 50.1506456241033%;
+}
+.svg-icon-myNotes-dark-dims {
+  width: 14px;
+  height: 14px;
+}
+.svg-icon-myNotes-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 38.59577677224736% 88.5867269984917%;
+}
+.svg-icon-myNotes-light-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-note {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 32.24807586381432% 88.5867269984917%;
+}
+.svg-icon-note-dims {
+  width: 39.27px;
+  height: 48px;
+}
+.svg-icon-notify {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 43.180515759312314% 50.1506456241033%;
+}
+.svg-icon-notify-dims {
+  width: 13px;
+  height: 14px;
+}
+.svg-icon-notify-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 32.355300859598856% 31.850789096126256%;
+}
+.svg-icon-notify-active-dims {
+  width: 13px;
+  height: 14px;
+}
+.svg-icon-notify-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 32.355300859598856% 29.842180774748925%;
+}
+.svg-icon-notify-light-dims {
+  width: 13px;
+  height: 14px;
+}
+.svg-icon-notify-recommend {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 64.31654676258992% 99.75691411935954%;
+}
+.svg-icon-notify-recommend-dims {
+  width: 16px;
+  height: 24px;
+}
+.svg-icon-notify-recommend-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 88.5867269984917%;
+}
+.svg-icon-notify-recommend-light-dims {
+  width: 32.64px;
+  height: 48px;
+}
+.svg-icon-notify-request {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 13.793103448275861% 41.260744985673355%;
+}
+.svg-icon-notify-request-dims {
+  width: 15px;
+  height: 13px;
+}
+.svg-icon-notify-unread {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.70503597122303% 95.0115107913669%;
+}
+.svg-icon-notify-unread-dims {
+  width: 16px;
+  height: 16px;
+}
+.svg-icon-notify-unread-highlight {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97439544807966% 59.88620199146515%;
+}
+.svg-icon-notify-unread-highlight-dims {
+  width: 8px;
+  height: 8px;
+}
+.svg-icon-outdent {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.09049773755655% 42.26959136741553%;
+}
+.svg-icon-outdent-dims {
+  width: 48px;
+  height: 32.64px;
+}
+.svg-icon-phone {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 24.85549132947977% 91.81069364161849%;
+}
+.svg-icon-phone-dims {
+  width: 19px;
+  height: 19px;
+}
+.svg-icon-photo-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 38.73015873015873% 50.1506456241033%;
+}
+.svg-icon-photo-active-dims {
+  width: 18px;
+  height: 14px;
+}
+.svg-icon-photo-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.132756132756136% 50.1506456241033%;
+}
+.svg-icon-photo-dark-dims {
+  width: 18px;
+  height: 14px;
+}
+.svg-icon-photo-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 23.175965665236053% 41.08416547788873%;
+}
+.svg-icon-photo-light-dims {
+  width: 12px;
+  height: 10px;
+}
+.svg-icon-place {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 32.30901287553648% 27.62589928057554%;
+}
+.svg-icon-place-dims {
+  width: 12px;
+  height: 16px;
+}
+.svg-icon-place-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97432239657633% 84.50502152080344%;
+}
+.svg-icon-place-dark-dims {
+  width: 10px;
+  height: 14px;
+}
+.svg-icon-place-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97432239657633% 33.85939741750359%;
+}
+.svg-icon-place-light-dims {
+  width: 10px;
+  height: 14px;
+}
+.svg-icon-private {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 59.0711175616836% 95.7%;
+}
+.svg-icon-private-dims {
+  width: 22px;
+  height: 21px;
+}
+.svg-icon-private-alt {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 70.63953488372093% 99.46734397677794%;
+}
+.svg-icon-private-alt-dims {
+  width: 23px;
+  height: 22px;
+}
+.svg-icon-puff {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 67.76611694152923% 81%;
+}
+.svg-icon-puff-dims {
+  width: 44px;
+  height: 44px;
+}
+.svg-icon-question {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 71.80693815987934%;
+}
+.svg-icon-question-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-save {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.50733137829911% 27.366863905325445%;
+}
+.svg-icon-save-dims {
+  width: 29px;
+  height: 35px;
+}
+.svg-icon-save-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.50733137829911% 32.544378698224854%;
+}
+.svg-icon-save-active-dims {
+  width: 29px;
+  height: 35px;
+}
+.svg-icon-save-memories {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 64.56711915535445%;
+}
+.svg-icon-save-memories-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-search {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 57.327300150829565%;
+}
+.svg-icon-search-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-send {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 50.087481146304675%;
+}
+.svg-icon-send-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-sent {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.61085972850678% 62.971342383107086%;
+}
+.svg-icon-sent-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-share {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.61085972850678% 41.65405875039321%;
+}
+.svg-icon-share-dims {
+  width: 48px;
+  height: 43.43px;
+}
+.svg-icon-share-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 38.28062974669323%;
+}
+.svg-icon-share-light-dims {
+  width: 48px;
+  height: 43.43px;
+}
+.svg-icon-shortcut {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 35.273218219285155%;
+}
+.svg-icon-shortcut-dims {
+  width: 48px;
+  height: 7.35px;
+}
+.svg-icon-showtime {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 53.56108597285068% 58.71536598334022%;
+}
+.svg-icon-showtime-dims {
+  width: 48px;
+  height: 33.92px;
+}
+.svg-icon-smart {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.66214177978884% 59.96229260935143%;
+}
+.svg-icon-smart-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-smart-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 89.5500725689405% 99.46734397677794%;
+}
+.svg-icon-smart-active-dims {
+  width: 22px;
+  height: 22px;
+}
+.svg-icon-smart-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 24.7% 11.879710144927536%;
+}
+.svg-icon-smart-light-dims {
+  width: 21px;
+  height: 21px;
+}
+.svg-icon-smartMenu {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.21837075356783% 59.96229260935143%;
+}
+.svg-icon-smartMenu-dims {
+  width: 46.03px;
+  height: 48px;
+}
+.svg-icon-sms {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.47976878612717% 71.11671469740634%;
+}
+.svg-icon-sms-dims {
+  width: 19px;
+  height: 17px;
+}
+.svg-icon-success {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 65.13122171945702% 50.024565634910005%;
+}
+.svg-icon-success-dims {
+  width: 48px;
+  height: 39.33px;
+}
+.svg-icon-sync {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 64.85049634313005% 43.43891402714932%;
+}
+.svg-icon-sync-dims {
+  width: 45.13px;
+  height: 48px;
+}
+.svg-icon-tag {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 65.13122171945702% 36.199095022624434%;
+}
+.svg-icon-tag-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-tag-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 65.13122171945702% 21.71945701357466%;
+}
+.svg-icon-tag-active-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-tag-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 65.13122171945702% 7.239819004524887%;
+}
+.svg-icon-tag-light-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-time {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 65.13122171945702% 0;
+}
+.svg-icon-time-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-time-primary {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 54.9928469241774% 50.0071530758226%;
+}
+.svg-icon-time-primary-dims {
+  width: 12px;
+  height: 12px;
+}
+.svg-icon-today {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 67.82106782106783% 95.28571428571429%;
+}
+.svg-icon-today-dims {
+  width: 18px;
+  height: 18px;
+}
+.svg-icon-today-alt {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 34.343434343434346% 91.67821067821066%;
+}
+.svg-icon-today-alt-dims {
+  width: 18px;
+  height: 18px;
+}
+.svg-icon-tracking {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 83.81659388646287% 75.40719424460431%;
+}
+.svg-icon-tracking-dims {
+  width: 24px;
+  height: 16px;
+}
+.svg-icon-tracking-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 29.461426491994178% 50.36743515850144%;
+}
+.svg-icon-tracking-active-dims {
+  width: 24px;
+  height: 17px;
+}
+.svg-icon-tracking-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 87.31004366812226% 75.40719424460431%;
+}
+.svg-icon-tracking-light-dims {
+  width: 24px;
+  height: 16px;
+}
+.svg-icon-trash {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 77.77777777777777% 95.28571428571429%;
+}
+.svg-icon-trash-dims {
+  width: 18px;
+  height: 18px;
+}
+.svg-icon-trash-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 75.18037518037518% 95.28571428571429%;
+}
+.svg-icon-trash-light-dims {
+  width: 18px;
+  height: 18px;
+}
+.svg-icon-unblock {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 57.89140271493213% 31.527903469079934%;
+}
+.svg-icon-unblock-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-underline {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 38.863112391930834% 7.007299270072993%;
+}
+.svg-icon-underline-dims {
+  width: 17px;
+  height: 26px;
+}
+.svg-icon-unlock {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 57.89140271493213% 24.845789914959877%;
+}
+.svg-icon-unlock-dims {
+  width: 48px;
+  height: 43.08px;
+}
+.svg-icon-unmute {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 57.89140271493213% 0;
+}
+.svg-icon-unmute-dims {
+  width: 48px;
+  height: 39.45px;
+}
+.svg-icon-verified-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.70114942528735% 95.28571428571429%;
+}
+.svg-icon-verified-dark-dims {
+  width: 15px;
+  height: 18px;
+}
+.svg-icon-warning {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 50.65158371040724% 12.51734539969834%;
+}
+.svg-icon-warning-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-icon-web {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.71945701357466% 36.09673926122007%;
+}
+.svg-icon-web-dims {
+  width: 48px;
+  height: 46.12px;
+}
+.svg-imdb-logo {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 43.411764705882355% 24.81691248198244%;
+}
+.svg-imdb-logo-dims {
+  width: 48px;
+  height: 24.17px;
+}
+.svg-import {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.35703918722787% 99.46734397677794%;
+}
+.svg-import-dims {
+  width: 22px;
+  height: 22px;
+}
+.svg-intelliFlight-icon {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 91.79856115107914% 95.0115107913669%;
+}
+.svg-intelliFlight-icon-dims {
+  width: 16px;
+  height: 16px;
+}
+.svg-intelliFlight-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 12.248933143669985%;
+}
+.svg-intelliFlight-light-dims {
+  width: 48px;
+  height: 8px;
+}
+.svg-intelliMovie-icon {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 41.149425287356316% 50.1506456241033%;
+}
+.svg-intelliMovie-icon-dims {
+  width: 15px;
+  height: 14px;
+}
+.svg-intelliTrip-arrow {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97435897435898% 62.12765957446808%;
+}
+.svg-intelliTrip-arrow-dims {
+  width: 9px;
+  height: 6px;
+}
+.svg-intelliTrip-bike {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.52888888888889% 23.435225618631733%;
+}
+.svg-intelliTrip-bike-dims {
+  width: 36px;
+  height: 24px;
+}
+.svg-intelliTrip-bike-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.52888888888889% 19.941775836972344%;
+}
+.svg-intelliTrip-bike-active-dims {
+  width: 36px;
+  height: 24px;
+}
+.svg-intelliTrip-drive {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 42.22873900293255% 36.98981077147016%;
+}
+.svg-intelliTrip-drive-dims {
+  width: 29px;
+  height: 24px;
+}
+.svg-intelliTrip-drive-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.50733137829911% 85.73508005822416%;
+}
+.svg-intelliTrip-drive-active-dims {
+  width: 29px;
+  height: 24px;
+}
+.svg-intelliTrip-icon {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 53.14203730272597% 50.078796561604584%;
+}
+.svg-intelliTrip-icon-dims {
+  width: 14px;
+  height: 13px;
+}
+.svg-intelliTrip-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.959276018099548% 6.840237698260014%;
+}
+.svg-intelliTrip-light-dims {
+  width: 48px;
+  height: 9.27px;
+}
+.svg-intelliTrip-transit {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 30.624092888243833% 99.75691411935954%;
+}
+.svg-intelliTrip-transit-dims {
+  width: 22px;
+  height: 24px;
+}
+.svg-intelliTrip-transit-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 33.81712626995646% 99.75691411935954%;
+}
+.svg-intelliTrip-transit-active-dims {
+  width: 22px;
+  height: 24px;
+}
+.svg-intelliTrip-walk {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 45.67723342939481% 36.98981077147016%;
+}
+.svg-intelliTrip-walk-dims {
+  width: 17px;
+  height: 24px;
+}
+.svg-intelliTrip-walk-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.74351585014409% 99.75691411935954%;
+}
+.svg-intelliTrip-walk-active-dims {
+  width: 17px;
+  height: 24px;
+}
+.svg-introImg {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.71945701357466% 18.295947435475327%;
+}
+.svg-introImg-dims {
+  width: 48px;
+  height: 12.43px;
+}
+.svg-invite {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.71945701357466% 16.88543047301438%;
+}
+.svg-invite-dims {
+  width: 48px;
+  height: 9.33px;
+}
+.svg-layer-map {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 8.504033852145774%;
+}
+.svg-layer-map-dims {
+  width: 48px;
+  height: 28.03px;
+}
+.svg-loading {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 85.50074738415546% 80.75784753363229%;
+}
+.svg-loading-dims {
+  width: 42px;
+  height: 42px;
+}
+.svg-location-search {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 5.036619219183746% 21.71945701357466%;
+}
+.svg-location-search-dims {
+  width: 33.76px;
+  height: 48px;
+}
+.svg-lock {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 21.71945701357466%;
+}
+.svg-lock-dims {
+  width: 34.11px;
+  height: 48px;
+}
+.svg-logo {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.71945701357466% 15.765829802962669%;
+}
+.svg-logo-dims {
+  width: 48px;
+  height: 7.58px;
+}
+.svg-logo-blue {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.71945701357466% 14.645767846729344%;
+}
+.svg-logo-blue-dims {
+  width: 48px;
+  height: 7.93px;
+}
+.svg-logo-full-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 5.172216990554461%;
+}
+.svg-logo-full-dark-dims {
+  width: 48px;
+  height: 10.14px;
+}
+.svg-logo-full-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 3.7254230516793654%;
+}
+.svg-logo-full-light-dims {
+  width: 48px;
+  height: 10.14px;
+}
+.svg-logo-full-light-only {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 2.505373741974975%;
+}
+.svg-logo-full-light-only-dims {
+  width: 48px;
+  height: 8.51px;
+}
+.svg-logo-grey {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 1.3655761024182076%;
+}
+.svg-logo-grey-dims {
+  width: 48px;
+  height: 8px;
+}
+.svg-logo-mark-dark {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 0;
+}
+.svg-logo-mark-dark-dims {
+  width: 48px;
+  height: 9.6px;
+}
+.svg-logo-mark-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.959276018099548% 8.165098374679213%;
+}
+.svg-logo-mark-light-dims {
+  width: 48px;
+  height: 9.6px;
+}
+.svg-menu-add {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 83.16400580551525% 99.46734397677794%;
+}
+.svg-menu-add-dims {
+  width: 22px;
+  height: 22px;
+}
+.svg-menu-archive {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.37685459940653% 80.75784753363229%;
+}
+.svg-menu-archive-dims {
+  width: 37px;
+  height: 42px;
+}
+.svg-menu-chat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 28.959276018099548% 9.906666666666665%;
+}
+.svg-menu-chat-dims {
+  width: 48px;
+  height: 36px;
+}
+.svg-menu-contact {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 43.411764705882355% 0;
+}
+.svg-menu-contact-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-menu-gallery {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 43.411764705882355% 14.222222222222221%;
+}
+.svg-menu-gallery-dims {
+  width: 48px;
+  height: 36px;
+}
+.svg-menu-home {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.479638009049774% 45.48265460030166%;
+}
+.svg-menu-home-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-menu-icon {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 60.262008733624455% 71.21933621933621%;
+}
+.svg-menu-icon-dims {
+  width: 24px;
+  height: 18px;
+}
+.svg-menu-icon-grey {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 56.76855895196506% 71.21933621933621%;
+}
+.svg-menu-icon-grey-dims {
+  width: 24px;
+  height: 18px;
+}
+.svg-menu-places {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 52.72247360482655%;
+}
+.svg-menu-places-dims {
+  width: 33.4px;
+  height: 48px;
+}
+.svg-menu-support {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 5.037707390648567% 51.785185185185185%;
+}
+.svg-menu-support-dims {
+  width: 48px;
+  height: 36px;
+}
+.svg-nav-add-white {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 77.06821480406386% 99.46734397677794%;
+}
+.svg-nav-add-white-dims {
+  width: 22px;
+  height: 22px;
+}
+.svg-nav-archive {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 96.25801749271137%;
+}
+.svg-nav-archive-dims {
+  width: 21px;
+  height: 25px;
+}
+.svg-nav-archive-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 6.666666666666667% 99.90233236151603%;
+}
+.svg-nav-archive-active-dims {
+  width: 21px;
+  height: 25px;
+}
+.svg-nav-back {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 46.075581395348834% 95.7%;
+}
+.svg-nav-back-dims {
+  width: 23px;
+  height: 21px;
+}
+.svg-nav-back-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 49.41860465116279% 95.7%;
+}
+.svg-nav-back-light-dims {
+  width: 23px;
+  height: 21px;
+}
+.svg-nav-chat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 23.99267935578331% 20.930232558139537%;
+}
+.svg-nav-chat-dims {
+  width: 28px;
+  height: 23px;
+}
+.svg-nav-chat-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 69.10688140556368% 64.76017441860465%;
+}
+.svg-nav-chat-active-dims {
+  width: 28px;
+  height: 23px;
+}
+.svg-nav-check-in {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 93.83856313366827% 36.009049773755656%;
+}
+.svg-nav-check-in-dims {
+  width: 46.22px;
+  height: 48px;
+}
+.svg-nav-contact {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 29.172714078374455% 96.117903930131%;
+}
+.svg-nav-contact-dims {
+  width: 22px;
+  height: 24px;
+}
+.svg-nav-contact-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 99.90233236151603%;
+}
+.svg-nav-contact-active-dims {
+  width: 22px;
+  height: 25px;
+}
+.svg-nav-contacts {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 22.496371552975326% 96.117903930131%;
+}
+.svg-nav-contacts-dims {
+  width: 22px;
+  height: 24px;
+}
+.svg-nav-gallery {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 18.049490538573508% 91.81069364161849%;
+}
+.svg-nav-gallery-dims {
+  width: 24px;
+  height: 19px;
+}
+.svg-nav-gear {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 92.61370262390669%;
+}
+.svg-nav-gear-dims {
+  width: 26px;
+  height: 25px;
+}
+.svg-nav-gear-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 92.86423357664233% 85.61661807580174%;
+}
+.svg-nav-gear-light-dims {
+  width: 26px;
+  height: 25px;
+}
+.svg-nav-home {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 42.33576642335766% 71.84133915574964%;
+}
+.svg-nav-home-dims {
+  width: 26px;
+  height: 24px;
+}
+.svg-nav-home-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 34.74452554744526% 71.84133915574964%;
+}
+.svg-nav-home-active-dims {
+  width: 26px;
+  height: 24px;
+}
+.svg-nav-places {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.23121387283237% 14.035087719298245%;
+}
+.svg-nav-places-dims {
+  width: 19px;
+  height: 27px;
+}
+.svg-nav-places-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 24.628612716763005% 8.036549707602338%;
+}
+.svg-nav-places-active-dims {
+  width: 19px;
+  height: 27px;
+}
+.svg-nav-places-white {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.11461318051576% 14.831130690161528%;
+}
+.svg-nav-places-white-dims {
+  width: 13px;
+  height: 30px;
+}
+.svg-option-archive {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 4.869824692279001% 88.5867269984917%;
+}
+.svg-option-archive-dims {
+  width: 40.75px;
+  height: 48px;
+}
+.svg-option-clear {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 79.61085972850678% 67.79290759484454%;
+}
+.svg-option-clear-dims {
+  width: 48px;
+  height: 24.35px;
+}
+.svg-option-edit {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 25.519381713545354% 88.5867269984917%;
+}
+.svg-option-edit-dims {
+  width: 47.23px;
+  height: 48px;
+}
+.svg-option-edit-white {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 45.78242463503925% 88.5867269984917%;
+}
+.svg-option-edit-white-dims {
+  width: 47.23px;
+  height: 48px;
+}
+.svg-oval {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.82466567607726% 5.794947994056463%;
+}
+.svg-oval-dims {
+  width: 38px;
+  height: 38px;
+}
+.svg-photo-crop {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 60.800904977375566% 57.65688677466607%;
+}
+.svg-photo-crop-dims {
+  width: 48px;
+  height: 21.49px;
+}
+.svg-photo-default {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 57.918552036199095% 65.92926901450133%;
+}
+.svg-photo-default-dims {
+  width: 48px;
+  height: 35.2px;
+}
+.svg-photo-left {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 19.517345399698343% 50.57586017304743%;
+}
+.svg-photo-left-dims {
+  width: 48px;
+  height: 19.86px;
+}
+.svg-photo-right {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 50.65158371040724% 39.649628721793675%;
+}
+.svg-photo-right-dims {
+  width: 48px;
+  height: 17.45px;
+}
+.svg-photo-tag {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 65.13122171945702% 54.454052171894496%;
+}
+.svg-photo-tag-dims {
+  width: 48px;
+  height: 21.74px;
+}
+.svg-place-icon {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 66.70258620689656% 16.78726483357453%;
+}
+.svg-place-icon-dims {
+  width: 15px;
+  height: 20px;
+}
+.svg-place-private {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97446808510638% 17.261055634807416%;
+}
+.svg-place-private-dims {
+  width: 6px;
+  height: 10px;
+}
+.svg-place-private-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.40028694404592% 76.42752562225476%;
+}
+.svg-place-private-active-dims {
+  width: 14px;
+  height: 28px;
+}
+.svg-place-private-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97446808510638% 15.834522111269616%;
+}
+.svg-place-private-light-dims {
+  width: 6px;
+  height: 10px;
+}
+.svg-place-public {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 15.925394548063128% 41.201716738197426%;
+}
+.svg-place-public-dims {
+  width: 14px;
+  height: 12px;
+}
+.svg-place-public-active {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.38165680473372% 37.44493392070485%;
+}
+.svg-place-public-active-dims {
+  width: 35px;
+  height: 30px;
+}
+.svg-privacy-off {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 25.8600583090379% 50.36743515850144%;
+}
+.svg-privacy-off-dims {
+  width: 25px;
+  height: 17px;
+}
+.svg-privacy-on {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 49.708454810495624% 71.21933621933621%;
+}
+.svg-privacy-on-dims {
+  width: 25px;
+  height: 18px;
+}
+.svg-private-icon {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 66.60688665710187% 19.34566145092461%;
+}
+.svg-private-icon-dims {
+  width: 14px;
+  height: 8px;
+}
+.svg-search {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 94.09049773755655% 55.411764705882355%;
+}
+.svg-search-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-search-white {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 67.29651162790698% 99.46734397677794%;
+}
+.svg-search-white-dims {
+  width: 23px;
+  height: 22px;
+}
+.svg-select-dropdown {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.11461318051576% 18.581560283687942%;
+}
+.svg-select-dropdown-dims {
+  width: 13px;
+  height: 6px;
+}
+.svg-sentinel-chats {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 81.3708657148021%;
+}
+.svg-sentinel-chats-dims {
+  width: 48px;
+  height: 47.04px;
+}
+.svg-sentinel-contacts {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 81.37331686598186%;
+}
+.svg-sentinel-contacts-dims {
+  width: 48px;
+  height: 47.06px;
+}
+.svg-sentinel-date {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 86.85067873303166% 43.122185529870904%;
+}
+.svg-sentinel-date-dims {
+  width: 48px;
+  height: 44.8px;
+}
+.svg-sentinel-places {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 85.03957939508506% 36.09049773755656%;
+}
+.svg-sentinel-places-dims {
+  width: 33.88px;
+  height: 48px;
+}
+.svg-sentinel-search {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 25.76419213973799% 96.117903930131%;
+}
+.svg-sentinel-search-dims {
+  width: 24px;
+  height: 24px;
+}
+.svg-sign-up-icon {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 74.29848858914916%;
+}
+.svg-sign-up-icon-dims {
+  width: 48px;
+  height: 46.72px;
+}
+.svg-smart-accept {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 23.92262773722628% 24.0981240981241%;
+}
+.svg-smart-accept-dims {
+  width: 26px;
+  height: 18px;
+}
+.svg-smart-camera {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97321428571429% 0;
+}
+.svg-smart-camera-dims {
+  width: 39px;
+  height: 39px;
+}
+.svg-smart-coffee {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 71.40387481371089% 87.5305514157973%;
+}
+.svg-smart-coffee-dims {
+  width: 40px;
+  height: 40px;
+}
+.svg-smart-contacts {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 38.91919191919192% 10.709117221418234%;
+}
+.svg-smart-contacts-dims {
+  width: 18px;
+  height: 20px;
+}
+.svg-smart-event {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 72.3710407239819% 0;
+}
+.svg-smart-event-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-smart-event-alt {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 80.02894356005788% 99.46734397677794%;
+}
+.svg-smart-event-alt-dims {
+  width: 20px;
+  height: 22px;
+}
+.svg-smart-event-home {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 65.44262295081967% 87.5305514157973%;
+}
+.svg-smart-event-home-dims {
+  width: 40px;
+  height: 40px;
+}
+.svg-smart-event-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 46.321266968325794% 59.96229260935143%;
+}
+.svg-smart-event-light-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-smart-event-test {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.42232277526395% 59.96229260935143%;
+}
+.svg-smart-event-test-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-smart-flight {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.182503770739064% 59.96229260935143%;
+}
+.svg-smart-flight-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-smart-flight-home {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 59.481371087928466% 87.5305514157973%;
+}
+.svg-smart-flight-home-dims {
+  width: 40px;
+  height: 40px;
+}
+.svg-smart-flight-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 59.96229260935143%;
+}
+.svg-smart-flight-light-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-smart-memories {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 77.25% 87.4002976190476%;
+}
+.svg-smart-memories-dims {
+  width: 39px;
+  height: 39px;
+}
+.svg-smart-movie {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 73.80952380952381% 81%;
+}
+.svg-smart-movie-dims {
+  width: 39px;
+  height: 44px;
+}
+.svg-smart-movie-alt {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 88.85714285714286% 87.4002976190476%;
+}
+.svg-smart-movie-alt-dims {
+  width: 39px;
+  height: 39px;
+}
+.svg-smart-movie-circle {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 3.784570596797671% 92.61370262390669%;
+}
+.svg-smart-movie-circle-dims {
+  width: 24px;
+  height: 25px;
+}
+.svg-smart-movie-default {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 63.63676555108537% 14.479638009049774%;
+}
+.svg-smart-movie-default-dims {
+  width: 32.43px;
+  height: 48px;
+}
+.svg-smart-movie-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 61.458333333333336% 81%;
+}
+.svg-smart-movie-light-dims {
+  width: 39px;
+  height: 44px;
+}
+.svg-smart-note {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 27.442528735632184% 91.81069364161849%;
+}
+.svg-smart-note-dims {
+  width: 15px;
+  height: 19px;
+}
+.svg-smart-note-inline {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.65198237885463% 64.31718061674009%;
+}
+.svg-smart-note-inline-dims {
+  width: 30px;
+  height: 30px;
+}
+.svg-smart-photo {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 83.05357142857143% 87.4002976190476%;
+}
+.svg-smart-photo-dims {
+  width: 39px;
+  height: 39px;
+}
+.svg-smart-photo-inline {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.65198237885463% 72.2466960352423%;
+}
+.svg-smart-photo-inline-dims {
+  width: 30px;
+  height: 30px;
+}
+.svg-smart-time {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 57.89140271493213% 43.55957767722473%;
+}
+.svg-smart-time-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-smart-time-light {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 70.41847041847042% 95.28571428571429%;
+}
+.svg-smart-time-light-dims {
+  width: 18px;
+  height: 18px;
+}
+.svg-sms {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 41.74174174174174% 81.12162162162163%;
+}
+.svg-sms-dims {
+  width: 45px;
+  height: 45px;
+}
+.svg-start-chat {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.94256259204712% 51.24087591240876%;
+}
+.svg-start-chat-dims {
+  width: 32px;
+  height: 26px;
+}
+.svg-start-invite {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.79705882352941% 59.91189427312775%;
+}
+.svg-start-invite-dims {
+  width: 31px;
+  height: 30px;
+}
+.svg-start-place {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 97.36521739130434% 76.65198237885463%;
+}
+.svg-start-place-dims {
+  width: 21px;
+  height: 30px;
+}
+.svg-status-available {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 7.239819004524887% 36.199095022624434%;
+}
+.svg-status-available-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-status-away {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 0 36.199095022624434%;
+}
+.svg-status-away-dims {
+  width: 48px;
+  height: 48px;
+}
+.svg-status-guest {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 36.165275308158286% 14.479638009049774%;
+}
+.svg-status-guest-dims {
+  width: 47.38px;
+  height: 48px;
+}
+.svg-status-new {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 99.97432239657633% 86.01997146932953%;
+}
+.svg-status-new-dims {
+  width: 10px;
+  height: 10px;
+}
+.svg-status-unverified {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 10.236802413273% 21.537219006595773%;
+}
+.svg-status-unverified-dims {
+  width: 48px;
+  height: 42.39px;
+}
+.svg-status-waiting {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 98.79705882352941% 55.44117647058823%;
+}
+.svg-status-waiting-dims {
+  width: 31px;
+  height: 31px;
+}
+.svg-testing {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 21.035102327008193% 8.291101055806939%;
+}
+.svg-testing-dims {
+  width: 26.43px;
+  height: 48px;
+}
+.svg-time {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 14.479638009049774% 7.232401157184186%;
+}
+.svg-time-dims {
+  width: 48px;
+  height: 47.32px;
+}
+.svg-user-verified {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 80.02873563218391% 95.28571428571429%;
+}
+.svg-user-verified-dims {
+  width: 15px;
+  height: 18px;
+}
+.svg-verified {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 17.908309455587393% 41.142857142857146%;
+}
+.svg-verified-dims {
+  width: 13px;
+  height: 11px;
+}
+.svg-verified-phone {
+  background: url("svg/sprite.css-dfc256d2.svg") no-repeat;
+  background-position: 97.22431259044862% 14.962962962962964%;
+}
+.svg-verified-phone-dims {
+  width: 20px;
+  height: 36px;
+}
 /* PT Sans */
 @font-face {
   font-family: 'PT Sans';
@@ -716,6 +3836,9 @@
     font-size: 1.4em !important;
   }
 }
+.symbol {
+  background: url("svg/symbol.svg");
+}
 .shadow {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
 }
@@ -1076,7 +4199,7 @@ form p {
   display: inline-block;
   vertical-align: middle;
 }
-.emptyState img {
+.emptyState svg {
   width: 6rem;
   display: inline-block;
   position: absolute;
@@ -1095,7 +4218,7 @@ form p {
   text-align: center;
   opacity: 0.6;
 }
-.noResults img {
+.noResults svg {
   width: 6rem;
   margin-left: auto;
   margin-right: auto;
@@ -1827,7 +4950,7 @@ button,
 .standard-input {
   font-family: 'PT Sans', Helvetica, sans-serif;
 }
-div.km-header a img {
+div.km-header a svg {
   height: 1.2em;
   vertical-align: middle;
 }
@@ -1972,7 +5095,7 @@ div.km-header a img {
   font-size: 16px;
   font-size: 1em;
 }
-.filterList > li > label img {
+.filterList > li > label svg {
   height: 1em;
   vertical-align: middle;
 }
@@ -2002,7 +5125,7 @@ div.km-header a img {
   float: left;
   text-align: center;
 }
-.tag .tag-category img {
+.tag .tag-category svg {
   margin-top: 0.25rem;
   height: 1em;
   vertical-align: middle;
@@ -2017,7 +5140,7 @@ div.km-header a img {
 .tag .deleteTag {
   float: left;
 }
-.tag .deleteTag img {
+.tag .deleteTag svg {
   margin-top: 0.25rem;
   height: 1em;
   vertical-align: middle;
@@ -2218,8 +5341,9 @@ div.footer.km-footer {
 .helper-header {
   color: #979797;
 }
-.helper img {
-  height: 12px;
+.helper svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 .helper-required {
   font-size: 0.85em;
@@ -2227,8 +5351,9 @@ div.footer.km-footer {
 .helper-sm {
   color: #979797;
 }
-.helper-sm img {
-  height: 12px;
+.helper-sm svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 .helper-list-detail {
   color: #979797;
@@ -2237,8 +5362,9 @@ div.footer.km-footer {
   font-weight: 400;
   font-style: italic;
 }
-.helper-list-detail img {
-  height: 12px;
+.helper-list-detail svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 .helper-header {
   font-size: 0.75em;
@@ -2247,8 +5373,9 @@ div.footer.km-footer {
   color: #979797;
   float: right;
 }
-.helper-right img {
-  height: 12px;
+.helper-right svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 #helper-profilePhone {
   border: none;
@@ -2259,8 +5386,9 @@ div.footer.km-footer {
   color: #979797;
   float: left;
 }
-.helper-left img {
-  height: 12px;
+.helper-left svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 .helper-form {
   position: absolute;
@@ -2312,7 +5440,7 @@ div.footer.km-footer {
 #home-tab-alert-img {
   max-height: 1em;
 }
-#gallery-photos > a > span > img {
+#gallery-photos > a > span > svg {
   vertical-align: middle;
   margin-left: 0.15em;
 }
@@ -2356,7 +5484,7 @@ div.footer.km-footer {
   font-weight: 600;
   text-align: left;
 }
-#home-verify-div img {
+#home-verify-div svg {
   height: 1em;
   max-width: 1em;
   vertical-align: middle;
@@ -2382,7 +5510,7 @@ div.footer.km-footer {
 #home-buttongroup > a.km-button > span {
   display: inline-block;
 }
-#home-buttongroup > li.km-button > span > img {
+#home-buttongroup > li.km-button > span > svg {
   vertical-align: text-top;
   margin-right: 0.15em;
   height: 1em;
@@ -2463,18 +5591,18 @@ div.footer.km-footer {
   margin-left: 5%;
   margin-right: auto;
 }
-.userStatusView-img {
+.userStatusView-svg {
   width: 1.5em;
   height: 1.5em;
   position: relative;
   top: -1em;
   left: 1em;
 }
-.home-status-img {
+.home-status-svg {
   width: 1.25em !important;
   height: 1.25em !important;
 }
-.home-status-card-img {
+.home-status-card-svg {
   position: absolute;
   top: 4.6525em;
   left: 54%;
@@ -2486,7 +5614,7 @@ div.footer.km-footer {
   font-size: 1em;
   resize: none;
 }
-.circle-img-home {
+.circle-svg-home {
   border-radius: 50%;
   width: 2.375em;
   height: 2.375em !important;
@@ -2529,7 +5657,7 @@ div.footer.km-footer {
 #profilePhotoForm > div > ul > li:nth-child(2) {
   padding: 0px;
 }
-#gpsLocateUpdateBtn > span > img {
+#gpsLocateUpdateBtn > span > svg {
   vertical-align: middle;
 }
 .ghostModal {
@@ -2771,7 +5899,7 @@ div.footer.km-footer {
   top: 0.5rem;
   right: 0.5rem;
 }
-.modal-close span > img {
+.modal-close span > svg {
   height: 1.25rem;
 }
 /* ghost selection modal */
@@ -2788,7 +5916,7 @@ div.footer.km-footer {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
-.ghostPhotoBox img {
+.ghostPhotoBox svg {
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);
@@ -2965,7 +6093,7 @@ div.footer.km-footer {
   font-size: 0.875em;
   font-weight: 600;
 }
-.notification-message img {
+.notification-message svg {
   border-radius: 50%;
   float: left;
 }
@@ -3357,7 +6485,7 @@ textarea {
   overflow: hidden;
   padding: 5px 4px;
 }
-.round img {
+.round svg {
   width: 45px;
 }
 @keyframes pulse {
@@ -3429,7 +6557,7 @@ textarea {
   width: 100%;
   background: #f5f5f5;
 }
-div.message-slideOptions > span.archive > a > span > img {
+div.message-slideOptions > span.archive > a > span > svg {
   vertical-align: middle;
   height: 18px;
 }
@@ -3509,7 +6637,7 @@ a:hover {
 .profileImg {
   float: left;
 }
-.profileTop img {
+.profileTop svg {
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -3549,10 +6677,10 @@ a:hover {
 .menu li * {
   vertical-align: top;
 }
-.menu li img {
+.menu li svg {
   margin-right: 18px;
 }
-#appDrawer > div > div.km-scroll-container > div > div.menuLinks > div > ul > li:nth-child(2) > a > img {
+#appDrawer > div > div.km-scroll-container > div > div.menuLinks > div > ul > li:nth-child(2) > a > svg {
   margin-right: 10px;
 }
 .menuLinks {
@@ -3607,7 +6735,7 @@ a:hover {
   padding-left: 1.5em;
   padding-right: 1.5em;
 }
-#contactCurrentPlace > img {
+#contactCurrentPlace > svg {
   margin-right: 0.5em;
 }
 .contactStatusMessage-sm {
@@ -3763,10 +6891,10 @@ a:hover {
     width: 20%;
   }
 }
-.chatDetails img {
+.chatDetails svg {
   vertical-align: text-top;
 }
-.chat-typeBox img {
+.chat-typeBox svg {
   height: 10px;
 }
 .chat-mainBox {
@@ -3801,8 +6929,9 @@ a:hover {
   list-style: none;
   float: right;
 }
-.chat-option-ul li a img {
-  height: 16px;
+.chat-option-ul li a svg {
+  height: 1em;
+  width: 1em;
 }
 .chat-option-selection {
   font-size: 0.875em;
@@ -3852,7 +6981,7 @@ a:hover {
 #channelPresence-listview li .gone {
   opacity: 1;
 }
-#channels-listview > li > div > a > div > img {
+#channels-listview > li > div > a > div > svg {
   margin-left: 1.25rem;
 }
 .emoji-list li {
@@ -3898,7 +7027,7 @@ a:hover {
   font-size: 14px;
   font-size: 0.875em;
 }
-.helperBox p img {
+.helperBox p svg {
   vertical-align: bottom;
 }
 #chat-title-setup {
@@ -3929,7 +7058,7 @@ a:hover {
   padding: 0.5rem 1rem;
   width: 100%;
 }
-#addChat-step2 > img {
+#addChat-step2 > svg {
   float: left;
   vertical-align: middle;
   padding-top: 10px;
@@ -3985,7 +7114,7 @@ div.footerMenu.km-footer > ul > li > a {
   white-space: nowrap;
   text-shadow: 1px 1px 1px #C7C7C7;
 }
-.actionBtn img {
+.actionBtn svg {
   height: 1.25rem;
 }
 .actionBtn a {
@@ -4090,7 +7219,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 .topHeaderProfile {
   padding: 1rem;
 }
-#modalview-profilePhotoEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.topHeaderProfile > h3:nth-child(1) > img {
+#modalview-profilePhotoEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.topHeaderProfile > h3:nth-child(1) > svg {
   vertical-align: middle;
 }
 .statusSelect {
@@ -4132,7 +7261,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   font-size: 0.75em;
   vertical-align: middle;
 }
-.place-tag > img {
+.place-tag > svg {
   vertical-align: text-top;
 }
 .place-type {
@@ -4144,14 +7273,14 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   vertical-align: middle;
   margin-left: 0.5em;
 }
-.place-type-add > img {
+.place-type-add > svg {
   vertical-align: baseline !important;
 }
 .placeChat-chatIcon {
   background-color: #f5f5f5;
   margin-left: 0.5em;
 }
-.placeChat-chatIcon img {
+.placeChat-chatIcon svg {
   height: 0.875em;
   vertical-align: middle;
 }
@@ -4159,7 +7288,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   position: relative;
   top: -0.5em;
 }
-div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
+div.chat-message-sender.chat-message-content > div > div > svg.photo-chat-lock {
   display: inline-block;
 }
 .placeChat-headerTop {
@@ -4178,9 +7307,10 @@ div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
   padding: 3px;
   color: #979797;
 }
-.placeType-list img {
+.placeType-list svg {
   height: 0.75em;
   vertical-align: baseline;
+  width: 1em;
 }
 #checkin-listview li:not(.km-group-container) {
   border-bottom: 1px solid #E0E0E0;
@@ -4468,7 +7598,7 @@ div.loginBox > form > div > ul > li {
   text-align: center;
   background-color: #f5f5f5;
 }
-.profileTopBox img {
+.profileTopBox svg {
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -4603,7 +7733,7 @@ div.loginBox > form > div > ul > li {
 .card .photoTopDiv {
   padding: 0px;
 }
-.card .photoTopDiv > img {
+.card .photoTopDiv > svg {
   width: 100%;
   border-radius: 3px 3px 0px 0px;
 }
@@ -4631,7 +7761,7 @@ div.loginBox > form > div > ul > li {
   height: auto;
   float: left;
 }
-.photoPreview > img {
+.photoPreview > svg {
   width: 100%;
 }
 #modalPhotoView-footer {
@@ -4642,7 +7772,7 @@ div.loginBox > form > div > ul > li {
 #modalPhotoView-footer p {
   font-size: 0.75em;
 }
-#modalPhotoView-footer img {
+#modalPhotoView-footer svg {
   height: 0.875em;
 }
 #modalPhotoView > div.km-header > div.km-widget.km-navbar,
@@ -4771,11 +7901,11 @@ div.loginBox > form > div > ul > li {
 .startBox .imgLine {
   width: 100%;
 }
-.startBox .imgLine img {
+.startBox .imgLine svg {
   margin-left: auto;
   margin-right: auto;
 }
-.startBox img {
+.startBox svg {
   margin-left: auto;
   margin-right: auto;
 }
@@ -4814,7 +7944,7 @@ div.loginBox > form > div > ul > li {
   padding: 0.5rem 1rem;
   width: 100%;
 }
-.placesSearchBox > img {
+.placesSearchBox > svg {
   float: left;
   vertical-align: middle;
   padding-top: 10px;
@@ -4845,7 +7975,7 @@ div.loginBox > form > div > ul > li {
   right: 4.5rem;
   top: 1.25rem;
 }
-#place-checkIn-circle img {
+#place-checkIn-circle svg {
   right: 30px;
   position: initial;
 }
@@ -4859,7 +7989,7 @@ div.loginBox > form > div > ul > li {
 .locatingBox h4 {
   margin-bottom: 1rem;
 }
-.locatingBox img {
+.locatingBox svg {
   vertical-align: middle;
 }
 .places-map {
@@ -4897,7 +8027,7 @@ div.loginBox > form > div > ul > li {
 .km-material .km-switch-background {
   color: #6CADF3;
 }
-#places-checkIn > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.confirmPlaceAddress > p:nth-child(1) > span > span > img {
+#places-checkIn > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.confirmPlaceAddress > p:nth-child(1) > span > span > svg {
   vertical-align: sub;
 }
 #close-nearby-results {
@@ -4920,7 +8050,7 @@ div.loginBox > form > div > ul > li {
   padding: 0.5rem 1rem;
   width: 100%;
 }
-.contactSearchBox > img {
+.contactSearchBox > svg {
   float: left;
   vertical-align: middle;
   padding-top: 10px;
@@ -4933,7 +8063,7 @@ div.loginBox > form > div > ul > li {
 .topSearchReferral {
   margin: 0.5rem 1rem !important;
 }
-.topSearchReferral img {
+.topSearchReferral svg {
   vertical-align: sub;
 }
 #contacts-listview,
@@ -4976,7 +8106,7 @@ div.loginBox > form > div > ul > li {
 #contactActionBtns {
   width: 100%;
 }
-#contactActionBtns > li > a > span > img {
+#contactActionBtns > li > a > span > svg {
   vertical-align: middle;
   margin-right: 0.5em;
 }
@@ -5046,7 +8176,7 @@ div.loginBox > form > div > ul > li {
   right: 4rem;
   bottom: 4rem;
 }
-#contacts > div.footerMenu.km-footer > div > ul > li > img {
+#contacts > div.footerMenu.km-footer > div > ul > li > svg {
   vertical-align: middle;
 }
 .circleOptions li:nth-child(1) {
@@ -5064,7 +8194,7 @@ div.loginBox > form > div > ul > li {
 #contactListDiv > div.contact-connections > ul > li > p {
   margin: 0px;
 }
-#contactListDiv > div.contact-connections > ul > li > img {
+#contactListDiv > div.contact-connections > ul > li > svg {
   vertical-align: middle;
   margin-left: 0.5rem;
 }
@@ -5190,7 +8320,7 @@ div.contactListBox.activeContact > div > div > ul {
   padding-left: 1rem;
   padding-right: 1rem;
 }
-#searchContactsDiv img {
+#searchContactsDiv svg {
   vertical-align: middle;
 }
 #searchContactsDiv input {
@@ -5207,7 +8337,7 @@ div.contactListBox.activeContact > div > div > ul {
   margin-left: 0px;
   margin-right: 0px;
 }
-.inviteContactImg img {
+.inviteContactImg svg {
   margin-left: auto;
   margin-right: auto;
 }
@@ -5217,7 +8347,7 @@ div.contactListBox.activeContact > div > div > ul {
 .inviteTop {
   width: 100%;
 }
-.inviteTop img {
+.inviteTop svg {
   margin-left: 35%;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
@@ -5288,7 +8418,7 @@ div.contactListBox.activeContact > div > div > ul {
   font-size: 11px;
   font-size: 0.6875em;
 }
-#editContact-resyncBtn img {
+#editContact-resyncBtn svg {
   vertical-align: bottom;
 }
 .edit-contacts-options {
@@ -5329,7 +8459,7 @@ div.contactListBox.activeContact > div > div > ul {
 .btnNotify {
   font-size: 1.2em !important;
 }
-.notify-title img {
+.notify-title svg {
   vertical-align: middle;
 }
 .notify-info {
@@ -5449,7 +8579,7 @@ div.contactListBox.activeContact > div > div > ul {
 .banner-welcome p {
   color: #fff;
 }
-.banner-welcome img {
+.banner-welcome svg {
   vertical-align: text-top;
 }
 /* photo editor */
@@ -5469,7 +8599,7 @@ div.contactListBox.activeContact > div > div > ul {
 #contactEditList li:first-child {
   border: none !important;
 }
-#editContact-deleteBtn img {
+#editContact-deleteBtn svg {
   vertical-align: text-top;
 }
 .phoneContact {
@@ -5728,7 +8858,7 @@ div.contactListBox.activeContact > div > div > ul {
 #galleryZoomSelect > li.km-button.km-state-active > span > svg #gallery-grid-3 {
   fill: #FFB74D;
 }
-#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.gallerySearchOptions > div > button > span > img {
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.gallerySearchOptions > div > button > span > svg {
   height: 1.25rem;
 }
 #photoTitle-date {
@@ -5746,13 +8876,13 @@ div.contactListBox.activeContact > div > div > ul {
 .resultsBar .results p {
   margin: 0.25em 0 0 0 !important;
 }
-.resultsBar .tags img {
+.resultsBar .tags svg {
   height: 18px;
 }
 .resultsBar #filterResultsDropdown {
   width: 150px;
 }
-.resultsBar #toggleFilterBtn img {
+.resultsBar #toggleFilterBtn svg {
   height: 0.875em;
 }
 .resultsBar .filter {
@@ -5781,8 +8911,9 @@ div.contactListBox.activeContact > div > div > ul {
   text-align: left;
   color: #979797;
 }
-.resultsBar .galleryName img {
-  height: 12px;
+.resultsBar .galleryName svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 .resultsBar .galleries {
   float: left;
@@ -5809,7 +8940,7 @@ div.contactListBox.activeContact > div > div > ul {
   padding: 0.5em 0.5em !important;
   border-bottom: 1px solid #979797;
 }
-#gallery-photos > div.resultsBar > div.galleries > a > span > img {
+#gallery-photos > div.resultsBar > div.galleries > a > span > svg {
   vertical-align: middle;
 }
 #gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span > span.k-input > img {
@@ -5955,7 +9086,7 @@ html .km-pane-wrapper .k-header {
   width: 15% !important;
   text-align: center !important;
 }
-.smallSearch .searchIcon img {
+.smallSearch .searchIcon svg {
   height: 1rem;
 }
 .smallSearch .viewSearchBox {
@@ -6021,7 +9152,7 @@ html .km-pane-wrapper .k-header {
   width: 15% !important;
   text-align: center !important;
 }
-.smallSearch-sm .searchIcon img {
+.smallSearch-sm .searchIcon svg {
   height: 1rem;
 }
 .smallSearch-sm .viewSearchBox {
@@ -6087,7 +9218,7 @@ html .km-pane-wrapper .k-header {
   width: 15% !important;
   text-align: center !important;
 }
-.fullSearch .searchIcon img {
+.fullSearch .searchIcon svg {
   height: 1rem;
 }
 .fullSearch .viewSearchBox {
@@ -6150,7 +9281,7 @@ html .km-pane-wrapper .k-header {
   width: 15% !important;
   text-align: center !important;
 }
-.appendSearch .searchIcon img {
+.appendSearch .searchIcon svg {
   height: 1rem;
 }
 .appendSearch .viewSearchBox {
@@ -6392,7 +9523,7 @@ html .km-pane-wrapper .k-header {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
 }
-.cropper-container img {
+.cropper-container svg {
   display: block;
   width: 100%;
   min-width: 0 !important;
@@ -7077,7 +10208,7 @@ table.k-editor {
   right: 0;
   bottom: 0;
 }
-#startUpView_loading img {
+#startUpView_loading svg {
   height: 30px;
 }
 #startUpView_logo {
@@ -7112,9 +10243,9 @@ table.k-editor {
 #ggDrawer > div > div.km-listview-wrapper > ul > li > a {
   color: #fff !important;
 }
-#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(2) > a > img,
-#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(3) > a > img,
-#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(4) > a > img {
+#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(2) > a > svg,
+#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(3) > a > svg,
+#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(4) > a > svg {
   margin-right: 0.5em;
 }
 .feature-body-text {
@@ -7125,7 +10256,7 @@ table.k-editor {
   width: 20%;
   text-align: center;
 }
-.icon-feature-img > object {
+.icon-feature-img > svg {
   width: 3.5em;
   height: 3.5em;
 }
@@ -7179,7 +10310,7 @@ table.k-editor {
   margin-left: auto;
   margin-right: auto;
 }
-.hotButton-icon > img {
+.hotButton-icon > svg {
   display: block;
   min-width: 100%;
   min-height: 100%;
@@ -7245,7 +10376,7 @@ table.k-editor {
 #smartTrip-transit {
   font-weight: 600;
 }
-.smartTrip-currentLocation img {
+.smartTrip-currentLocation svg {
   height: 1em;
   max-width: 1em;
   vertical-align: middle;
@@ -7346,7 +10477,7 @@ table.k-editor {
   padding: 0;
   margin: 0;
 }
-.intelliTrip .header p > img {
+.intelliTrip .header p > svg {
   height: 1em;
   max-width: 1em;
   vertical-align: text-top;
@@ -7370,7 +10501,7 @@ table.k-editor {
   font-size: 1em;
   padding: 0.25em 0.5em;
 }
-.intelliTrip .footer .intelliTrip-details img {
+.intelliTrip .footer .intelliTrip-details svg {
   height: 0.875em;
   max-width: 0.875em;
   vertical-align: baseline;
@@ -7392,8 +10523,9 @@ table.k-editor {
 .intelliTrip .origin-summary label {
   color: #979797;
 }
-.intelliTrip .origin-summary label img {
-  height: 12px;
+.intelliTrip .origin-summary label svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 .intelliTrip .destination-summary {
   margin: 1em 0 1em;
@@ -7401,8 +10533,9 @@ table.k-editor {
 .intelliTrip .destination-summary label {
   color: #979797;
 }
-.intelliTrip .destination-summary label img {
-  height: 12px;
+.intelliTrip .destination-summary label svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 #smartTripModal > div > div.intelliTrip.tripView > div.header {
   border-bottom: 2px dotted #E0E0E0;
@@ -7468,7 +10601,7 @@ table.k-editor {
   margin-left: 0.25em;
   margin-right: 0.25em;
 }
-.intelliTrip-arrow > img {
+.intelliTrip-arrow > svg {
   max-height: 1em !important;
   width: 1em !important;
   vertical-align: middle;
@@ -7495,7 +10628,7 @@ table.k-editor {
   padding: 0;
   margin: 0 !important;
 }
-.intelliFlight .header .title img {
+.intelliFlight .header .title svg {
   height: 1.2em;
   max-width: 1.2em;
   vertical-align: sub;
@@ -7514,8 +10647,9 @@ table.k-editor {
   margin: 0 0 0 2em;
   color: #979797;
 }
-.intelliFlight .header .subheader img {
-  height: 12px;
+.intelliFlight .header .subheader svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 .intelliFlight .summary {
   padding: 0.5em;
@@ -7539,8 +10673,9 @@ table.k-editor {
   font-size: 0.85em;
   color: #979797;
 }
-.intelliFlight .summary .city img {
-  height: 12px;
+.intelliFlight .summary .city svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 .intelliFlight .summary .date {
   font-size: 0.85em;
@@ -7555,7 +10690,7 @@ table.k-editor {
   background-color: #4A4A4A;
   margin-top: 1em;
 }
-.intelliFlight .summary .liner img {
+.intelliFlight .summary .liner svg {
   width: 100%;
 }
 .intelliFlight .detail-btn {
@@ -7583,7 +10718,7 @@ table.k-editor {
   color: #6CADF3;
   font-size: 0.85em;
 }
-.intelli-update .update-header img {
+.intelli-update .update-header svg {
   height: 0.85em;
   max-width: 0.85em;
 }
@@ -7594,8 +10729,9 @@ table.k-editor {
   color: #979797;
   font-size: 0.75em;
 }
-.intelli-update .update-time img {
-  height: 12px;
+.intelli-update .update-time svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 .arrival-summary {
   margin-top: 1em;
@@ -7613,8 +10749,9 @@ table.k-editor {
   color: #979797;
   font-size: 0.85em;
 }
-#smartFlightView-flightStatus > div.intelliFlight > div > ul > li > label img {
-  height: 12px;
+#smartFlightView-flightStatus > div.intelliFlight > div > ul > li > label svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 #smartFlightView-flightStatus > div.intelliFlight > div > ul > li > p {
   font-size: 1em;
@@ -7686,7 +10823,7 @@ table.k-editor {
   padding: 0;
   margin: 0 !important;
 }
-.intelliMovie .header .title img {
+.intelliMovie .header .title svg {
   height: 1em;
   max-width: 1em;
   vertical-align: text-top;
@@ -7724,7 +10861,7 @@ table.k-editor {
   font-size: 0.85em;
   margin-top: 0.5em;
 }
-.intelliMovie .footer ul li img {
+.intelliMovie .footer ul li svg {
   height: 1em;
   max-width: 1em;
   margin-right: 0.5em;
@@ -7736,7 +10873,7 @@ table.k-editor {
 .smartTripView-error .error-msg {
   font-size: 0.85em;
 }
-.chat-message-text > .intelliFlight > a > div.header > p > img {
+.chat-message-text > .intelliFlight > a > div.header > p > svg {
   height: 1em;
   max-width: 1em;
 }
@@ -7758,7 +10895,7 @@ table.k-editor {
   padding: 0;
   margin: 0 !important;
 }
-.intelliPlace .header .title img {
+.intelliPlace .header .title svg {
   height: 1em;
   max-width: 1em;
   vertical-align: text-top;
@@ -7768,8 +10905,9 @@ table.k-editor {
   position: relative;
   color: #979797;
 }
-.intelliPlace .header .subheader img {
-  height: 12px;
+.intelliPlace .header .subheader svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
 /* Notes */
 .private-note-content {
@@ -7789,6 +10927,7 @@ table.k-editor {
   content: "...";
   color: #979797;
 }
-.private-note-content > p:after img {
-  height: 12px;
+.private-note-content > p:after svg {
+  height: 0.875em;
+  max-width: 0.875em;
 }
