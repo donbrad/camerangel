@@ -7434,7 +7434,8 @@ li > .km-group-title {
   list-style: none;
 }
 .messageMediaBar ul li svg {
-  max-width: 2em;
+  height: 1.2em;
+  max-width: 1.2em;
 }
 #messageEditor {
   border: none;
@@ -8093,6 +8094,10 @@ div.loginBox > form > div > ul > li {
 #contacts-listview > li > div > div:nth-child(1) > div:nth-child(3) > h4 {
   margin-left: 0px;
   margin-right: 0px;
+}
+#contacts-listview > li > ul > li > div > div > a > span > svg {
+  height: 1.5em;
+  max-width: 1.5em;
 }
 #groupEditor-editTitleTag > a {
   margin-top: 0.25em;

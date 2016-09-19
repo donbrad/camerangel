@@ -1393,7 +1393,7 @@ var channelView = {
         $('#privacyMode').html('<img src="images/privacy-off.svg" />');
         $("#privacyStatus").addClass("hidden");
 
-        $("#messageSend").html('<img src="images/icon-send.svg" class="icon-send" />');
+        //$("#messageSend").html('<img src="images/icon-send.svg" class="icon-send" />');
 
         if (thisChannel.isEmergency === undefined) {
             thisChannel.isEmergency = false;
