@@ -1606,36 +1606,58 @@
 		<ul class="list-inline hasMotion" id="groupActionBtns">
 			<li>
 				<a class="btnClear" data-role="button" id="groupActions-track" data-click="groupActionView.groupTracking" >
-					<img src="images/icon-tracking.svg" /> Start Tracking
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-tracking"></use>
+					</svg>
+					Start Tracking
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.groupChat" >
-					<img src="images/contacts.svg" /> Group Chat
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#contacts"></use>
+					</svg>
+					Group Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.groupGallery" >
-					<img src="images/icon-gallery.svg" /> Group Gallery
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-gallery"></use>
+					</svg>
+					Group Gallery
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.sendEmail">
-					<img src="images/icon-ghostMail.svg" /> Send Email</a>
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-ghostMail"></use>
+					</svg>
+					Send Email
+				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.sendSMS">
-					<img src="images/icon-sms.svg" /> Send SMS
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-sms"></use>
+					</svg>
+					Send SMS
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.AddChat" >
-					<img src="images/contacts.svg" /> Create New Chat
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#contacts"></use>
+					</svg>
+					Create New Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.AddGallery" >
-					<img src="images/icon-gallery.svg" /> Create New Gallery
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-gallery"></use>
+					</svg>
+					Create New Gallery
 				</a>
 			</li>
 		</ul>
@@ -1653,7 +1675,9 @@
 		<h2 class="preMotionUp textClamp">
 			<span class="primaryName" id="contactPrimaryName"></span>
 			<span class="hidden" id="currentContactVerified">
-				<img src="images/icon-verified-dark.svg" class="user-status-icon" />
+				<svg class="user-status-icon">
+					<use xlink:href="styles/svg/symbol.svg#icon-verified-dark"></use>
+				</svg>
 			</span>
 		</h2>
 		
@@ -1670,36 +1694,55 @@
 	<div class="modal-bottom">
 		<ul class="list-inline hasMotion" id="contactActionBtns">
 			<li>
-				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking" >
-					<img src="images/icon-tracking-active.svg" /> Start Tracking
+				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking">
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-tracking-active"></use>
+					</svg>
+					Start Tracking
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.privateChat" >
-					<img src="images/icon-private-alt.svg" /> Private Chat
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-private-alt"></use>
+					</svg>
+					Private Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.sendEmail">
-					<img src="images/icon-ghostMail.svg" /> Send Email</a>
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-ghostMail"></use>
+					</svg>
+					Send Email
+				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.callPhone">
-					<img src="images/icon-phone.svg" /> Phone Call
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-phone"></use>
+					</svg>
+					Phone Call
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.sendSMS">
-					<img src="images/icon-sms.svg" /> Send SMS
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-sms"></use>
+					</svg>
+					Send SMS
 				</a>
 			</li>
 		</ul>
 		<div id="contactActionConnect">
 			<p> <strong><span data-bind="text: name "></span> </strong> is a potential new contact.  Someone you know has invited both of you to a intelligram chat, so you may have already chatted. Once you connect, you'll see each others status and be able to have private chats.</p>
 			<ul class="list-inline hasMotion"  >
-				<li >
+				<li>
 					<a class="btnClear" data-role="button" data-click="contactRequestConnect" >
-						<img src="images/contact-invite.svg" /> Ask to Connect
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg#contact-invite"></use>
+						</svg>
+						Ask to Connect
 					</a>
 				</li>
 			</ul>
@@ -1710,14 +1753,20 @@
 			</p>
 
 			<ul class="list-inline hasMotion"  >
-				<li >
+				<li>
 					<a class="btnClear" data-role="button" data-click="contactRequestAccept" >
-						<img src="images/icon-contact.svg" /> Accept Connection
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg#icon-contact"></use>
+						</svg>
+						Accept Connection
 					</a>
 				</li>
-				<li >
+				<li>
 					<a class="btnClear" data-role="button" data-click="contactRequestDecline" >
-						<img src="images/decline-icon.svg" /> Decline Connection
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg#decline-icon"></use>
+						</svg>
+						Decline Connection
 					</a>
 				</li>
 			</ul>
@@ -1734,14 +1783,18 @@
 		</a>
 		<div class="left" style="width: 20%; text-align: center;">
 			<img class="circle-img-md home-profile-img" src=""/>
-			<img src="images/status-away.svg" class="userStatusView-img userAvailable" />
+			<svg class="userStatusView-img userAvailable">
+				<use xlink:href="styles/svg/symbol.svg#status-away"></use>
+			</svg>
 		</div>
 
 		<div class="left" style="width: 80%;">
 			<h3>
 				<span class="primaryName"></span>
 				<span class="hidden" id="profileStatusVerified">
-					<img src="images/icon-verified-dark.svg" class="user-status-icon" />
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-verified-dark"></use>
+					</svg>
 				</span>
 			</h3>
 			<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
@@ -1794,7 +1847,10 @@
 			<li>
 				<div>
 					<a data-role="button" data-click="userStatusView.onAutoStatusChange" data-autocheckin="false" id="userStatusView-autoCheckin">
-						<img src="images/icon-autoCheckin.svg" class="icon-sm" /> Enable Auto Checkin </a>
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#icon-autoCheckin"></use>
+						</svg>
+						Enable Auto Checkin </a>
 				</div>
 
 			</li>
@@ -1813,7 +1869,9 @@
 				<div>
 					<div id="checked-in-place">
 						<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut">
-							<img src="images/icon-checkout.svg" class="icon-sm" />
+							<svg class="icon-sm">
+								<use xlink:href="styles/svg/symbol.svg#icon-checkout"></use>
+							</svg>
 							Leave <span id="checkOut-text" data-bind="text: currentPlace"></span>
 						</a>
 					</div>
@@ -1822,7 +1880,9 @@
 			<li>
 				<div>
 					<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
-						<img src="images/icon-checkin-active.svg" class="icon-sm" />
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#icon-checkin-active"></use>
+						</svg>
 						Check In
 					</a>
 				</div>
@@ -1849,7 +1909,9 @@
 			</svg>
 	    </a>
 	    <p>This feature is in the works!</p>
-	        <img id="testingImg" src="images/testing.svg" />
+			<svg id="testingImg">
+				<use xlink:href="styles/svg/symbol.svg#testing"></use>
+			</svg>
 	</div>
 </div>
 
@@ -1975,7 +2037,9 @@
 		</ul>
 		<p> Place Type
 			<span class="place-tag place-type-add">
-				<img src="images/place-private-light.svg" />
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#place-private-light"></use>
+				</svg>
 				Private
 			</span>
 		</p>
@@ -2057,11 +2121,21 @@
 			<li>
 				<label>Place Type</label>
 				<div id="publicPlaceHelper" class="hidden">
-					<p><img src="images/place-public.svg" class="icon-btn" /> Public Place</p>
+					<p>
+						<svg class="icon-btn">
+							<use xlink:href="styles/svg/symbol.svg#place-public"></use>
+						</svg>
+						Public Place
+					</p>
 					<p class="helper-sm">Public places are visible to all users. Great for restaurants and events!</p>
 				</div>
 				<div id="privatePlaceHelper" class="hidden">
-					<p><img src="images/place-private.svg" class="icon-btn" /> Private Place</p>
+					<p>
+						<svg class="icon-btn">
+							<use xlink:href="styles/svg/symbol.svg#place-private"></use>
+						</svg>
+						Private Place
+					</p>
 					<p class="helper-sm">Private places are shared only with your contacts. Recommended for private residences and other important places.</p>
 				</div>
 			</li>
@@ -2084,7 +2158,9 @@
 			</a>
             <span id="mapViewModal-title">Map</span>
 			<a data-role="button" data-align="right" data-click="mapViewModal.onDirections">
-				<img src="images/icon-directions.svg"/>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-directions"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -2120,12 +2196,16 @@
 		<div class="list-options">
 			# if (data.isShared === undefined || data.isShared === false) {#
 			<a class="btnClear-grey" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.editPlaceBtn">
-				<img src="images/option-edit.svg" height="18" />
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
+				</svg>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			# } #
 			<a class="btnClear-red" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.deletePlaceBtn">
-				<img src="images/icon-trash.svg" height="18" />
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div>
@@ -2287,7 +2367,9 @@
 	<div id="sendViaListDiv">
 		<ul id="sendVia-listview"></ul>
 		<div class="emptyState hidden">
-			<img src="images/empty-chat.svg" />
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#empty-chat"></use>
+			</svg>
 		</div>
 	</div>
 </div>
@@ -2527,7 +2609,9 @@
 				<span id="channelName"></span>
 			</span>
 			<a data-align="right" data-role="button" id="messagePresenceButton" data-click="channelPresence.openModal">
-				<img src="images/icon-group.svg" />
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-group"></use>
+				</svg>
 			</a>
 		</div>
 
@@ -2571,13 +2655,41 @@
 					<div data-role="layout" data-id="emojiMenu-popover">
 						<div data-role="footer" class="footer">
 							<div data-role="tabstrip">
-								<a href="#emoji-people"><img class="icon-lg" src="images/emoji-people.svg"/></a>
-								<a href="#emoji-nature"><img class="icon-lg" src="images/emoji-nature.svg"/></a>
-								<a href="#emoji-food"><img class="icon-lg" src="images/emoji-food.svg"/></a>
-								<a href="#emoji-activity"><img class="icon-lg" src="images/emoji-activity.svg"/></a>
-								<a href="#emoji-travel"><img class="icon-lg" src="images/emoji-travel.svg"/></a>
-								<a href="#emoji-objects"><img class="icon-lg" src="images/emoji-objects.svg"/></a>
-								<a href="#emoji-flags"><img class="icon-lg" src="images/emoji-flags.svg"/></a>
+								<a href="#emoji-people">
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-people"></use>
+									</svg>
+								</a>
+								<a href="#emoji-nature">
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-nature"></use>
+									</svg>
+								</a>
+								<a href="#emoji-food">
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-food"></use>
+									</svg>
+								</a>
+								<a href="#emoji-activity">
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-activity"></use>
+									</svg>
+								</a>
+								<a href="#emoji-travel">
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-travel"></use>
+									</svg>
+								</a>
+								<a href="#emoji-objects">
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-objects"></use>
+									</svg>
+								</a>
+								<a href="#emoji-flags">
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-flags"></use>
+									</svg>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -2600,38 +2712,54 @@
 					</li>
 					<li>
 						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
-							<img src="images/icon-editor.svg" height="22" id="chat-editorBtnImg"/>
+							<svg height="22" id="chat-editorBtnImg">
+								<use xlink:href="styles/svg/symbol.svg#icon-editor"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-click="channelView.messageSearch">
-							<img src="images/icon-web.svg" height="22" id="messageSearchImg">
+							<svg height="22" id="messageSearchImg">
+								<use xlink:href="styles/svg/symbol.svg#icon-web"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageInsertTag">
-							<img id="chatSmartTagBtn" src="images/icon-smart.svg" height="22">
+							<svg height="22" id="chatSmartTagBtn">
+								<use xlink:href="styles/svg/symbol.svg#icon-smart"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-rel="actionsheet" href="#newMessageActions">
-							<img src="images/icon-smartMenu.svg" height="22">
+							<svg height="22" id="chatSmartTagBtn">
+								<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageLockButton">
-							<img id="messageLockButtonIcon" src="images/icon-lock.svg" height="20">
+							<svg height="20" id="messageLockButtonIcon">
+								<use xlink:href="styles/svg/symbol.svg#icon-lock"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.togglePrivacyMode" id="privacyMode">
-							<img src="images/privacy-off.svg" height="22"/>
+							<svg height="22" id="messageLockButtonIcon">
+								<use xlink:href="styles/svg/symbol.svg#privacy-off"></use>
+							</svg>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" class="btnClear" href="#emoji-menu" data-rel="popover">
-							<img id="emoji-icon" src="images/icon-emoji.svg" height="22"/>
-							<img class="hidden" id="emoji-active" src="images/icon-emoji-active.svg" height="22"/>
+							<svg height="22" id="emoji-icon">
+								<use xlink:href="styles/svg/symbol.svg#icon-emoji"></use>
+							</svg>
+							<svg height="22" id="emoji-active" class="hidden">
+								<use xlink:href="styles/svg/symbol.svg#icon-emoji-active"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="right">
@@ -2654,12 +2782,54 @@
 	</script>
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
-		<li><a id="messageAlertLi" data-action="channelView.messageAlert"><img src="images/icon-unmute.svg" class="icon-smart"/> Add Alert</a></li>
-		<li><a data-action="channelView.messageCalendar"><img src="images/icon-event.svg" class="icon-smart"/> Add Event</a></li>
-		<li><a data-action="channelView.messageFlight"><img src="images/intelliFlight-icon.svg" class="icon-smart"/> Add Flight</a></li>
-		<li><a data-action="channelView.messageMovie"><img src="images/intelliMovie-icon.svg" class="icon-smart"/> Add Movie</a></li>
-		<li><a data-action="channelView.messagePlace"><img src="images/icon-place-dark.svg" class="icon-smart"/> Add Place</a></li>
-		<li><a data-action="channelView.messageTrip"><img src="images/intelliTrip-icon.svg" class="icon-smart"/> Add Trip</a></li>
+		<li>
+			<a id="messageAlertLi" data-action="channelView.messageAlert">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#icon-unmute"></use>
+				</svg>
+				Add Alert
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messageCalendar">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#icon-event"></use>
+				</svg>
+				Add Event
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messageFlight">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#intelliFlight-icon"></use>
+				</svg>
+				Add Flight
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messageMovie">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#intelliMovie-icon"></use>
+				</svg>
+				Add Movie
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messagePlace">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#icon-place-dark"></use>
+				</svg>
+				Add Place
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messageTrip">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#intelliTrip-icon"></use>
+				</svg>
+				Add Trip
+			</a>
+		</li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
@@ -2674,13 +2844,17 @@
 		</li>
 		<li>
 			<a data-action="channelView.messagePhoto">
-				<img src="images/action-device.svg" class="icon-action" />
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-device"></use>
+				</svg>
 				Device Gallery
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageGallery">
-				<img src="images/action-memories.svg" class="icon-action" />
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-memories"></use>
+				</svg>
 				Memories Gallery
 			</a>
 		</li>
@@ -2689,7 +2863,9 @@
 	<ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="channelView.archiveMessage">
-				<img src="images/icon-memories.svg" class="icon-sm" />
+				<svg  class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#icon-memories"></use>
+				</svg>
 				Remember Message
 			</a>
 		</li>
@@ -2700,7 +2876,10 @@
 	<ul data-role="actionsheet" id="messageActionsSender" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="channelView.archiveMessage">
-				<img src="images/action-memories.svg" class="icon-action" /> Remember Message
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-memories"></use>
+				</svg>
+				Remember Message
 			</a>
 		</li>
 		<!--<li><a data-action="channelView.addToSmartList"><img src="images/gallery-list.svg" class="icon-sm" /> Add To Smart List</a></li>-->
@@ -2772,7 +2951,9 @@
 					<div class="line"></div>
 					<label>Optional
 						<div class="chatOption-event">
-							<img class="chatOptionImg" src="images/event.svg" />
+							<svg class="chatOptionImg">
+								<use xlink:href="styles/svg/symbol.svg#event"></use>
+							</svg>
 							<a class="btnClear-grey" data-role="button" data-click="addChannelView.doShowEventInputs" id="addChatEvent">Add Event info</a>
 						</div>
 
@@ -2796,7 +2977,12 @@
 
 		<div class="footerBk" data-role="footer" id="addChat-helper-1">
 			<div class="helperBox" id="addChat-helper1" >
-				<p class="helper"><img src="images/help.svg" /> Looking for 1-on-1 private chat?</p>
+				<p class="helper">
+					<svg class="chatOptionImg">
+						<use xlink:href="styles/svg/symbol.svg#help"></use>
+					</svg>
+					Looking for 1-on-1 private chat?
+				</p>
 				<a class="btnClear" data-role="button" href="#contacts">Go to intelligram contacts</a>
 			</div>
 		</div>
@@ -2824,7 +3010,10 @@
 		</form>
 		<div>
 			<div class="pad">
-				<img src="images/edit-chat.svg" /> Chat Members
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#edit-chat"></use>
+				</svg>
+				Chat Members
 			</div>
 			<div>
 				<ul class="list-inline" id="editmembers-listview"></ul>
@@ -2834,7 +3023,9 @@
 	<div class="footerBk" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" href="#channelMembers">
 			<p class="actionBtn-text">Add members</p>
-			<img src="images/nav-add-white.svg"/>
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#nav-add-white"></use>
+			</svg>
 		</a>
 		<a class="btnSpan-btm btnPrimary" data-click="editChannelView.validate" type="button" data-role="button">	Save
 		</a>
@@ -2965,7 +3156,9 @@
 			<h4 class="textClamp">
 			#= primaryName #
 			#if(data.phoneValidated){#
-				<img class="user-status-icon" src="images/user-verified.svg" />
+				<svg class="user-status-icon">
+					<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
+				</svg>
 			#}#
 			</h4>
 		</div>
@@ -3015,16 +3208,19 @@
 			<h4 class="textClamp">
 				#= primaryName #
 				#if(data.phoneValidated){#
-					<img class="user-status-icon" src="images/user-verified.svg" />
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
+					</svg>
 				#}#
-				
 			</h4>
 			
 		</div>
 
 		<div class="deleteMemberText">
 			<a class="btnClear-red deleteChannelMember" data-role="button" data-id="#:data.uuid#" data-click="editChannelView.deleteMemberBtn">
-				<img src="images/icon-trash.svg" class="icon" />
+				<svg class="icon">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -3053,12 +3249,16 @@
 			<div id="deviceContactPermission" class="pad center hidden">
 
 				<a class="btnClear">
-					<img src="images/import.svg" height="16" />
+					<svg height="16">
+						<use xlink:href="styles/svg/symbol.svg#import"></use>
+					</svg>
 					Find contacts on device
 				</a>
 			</div>
 			<div class="emptyState hidden">
-				<img src="images/empty-contacts.svg" />
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#empty-contacts"></use>
+				</svg>
 			</div>
 		</div>
 	</div>
@@ -3067,7 +3267,9 @@
 			<ul id="groups-listview" class="listview"></ul>
 
 			<div class="emptyState hidden">
-				<img src="images/empty-contacts.svg" />
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#empty-contacts"></use>
+				</svg>
 			</div>
 		</div>
 	</div>
@@ -3110,13 +3312,19 @@
 		<div data-role="header">
 			<div data-role="navbar">
 				<a data-align="left" class="btnClear-grey" data-click="addContactView.closeModal" data-role="button">Cancel</a>
-				<span data-role="view-title"><img src="images/invite.svg" height="16" /></span>
+				<span data-role="view-title">
+					<svg height="16">
+						<use xlink:href="styles/svg/symbol.svg#invite"></use>
+					</svg>
+				</span>
 			</div>
 		</div>
     	<form id="addContactForm">
 		<div class="topHalf">
 			<div class="topHalfLeft">
-				<a data-role="button" data-click="addContactView.cycleProfilePhoto"> <img class="circle-img-lg shadow" id="addContactPhoto" src="images/default-img.png" /> </a>
+				<a data-role="button" data-click="addContactView.cycleProfilePhoto">
+					<img class="circle-img-lg shadow" id="addContactPhoto" src="images/default-img.png" />
+				</a>
 			</div>
 			<div class="topHalfRight" style="margin-top: -2em;">
 				<div>
@@ -3209,8 +3417,11 @@
 					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
 				</svg>
 			</a>
-			<a  data-role="button"  data-rel="actionsheet" href="#editContact-contactActions" class="btnClear-grey" data-align="right"><img src='images/nav-gear.svg' /></a>
-
+			<a  data-role="button" data-rel="actionsheet" href="#editContact-contactActions" class="btnClear-grey" data-align="right">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-gear"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 	<div>
@@ -3242,7 +3453,11 @@
 					</div>
 				</li>
 				<li class="contactEdit-group-edit">
-					<label><img src="images/gg-ice.svg" class="icon-sm" /> ICE Contact
+					<label>
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#gg-ice"></use>
+						</svg>
+						ICE Contact
 						<input type="checkbox" data-role="switch" data-bind="checked: isICE"/>
 					</label><br/>
 					<span class="caption-sm left">In Case of Emergency</span>
@@ -3251,8 +3466,10 @@
 				<li id="contactEdit-phone-read">
 					<p>Phone
 						<span class="helper helper-verified" id="edit-verified-phone">
-	                         <img class="helper-verified-img" src="images/gg-verified.svg" height="16">
-	                             Verified
+	                        <svg class="helper-verified-img" height="16">
+								<use xlink:href="styles/svg/symbol.svg#gg-verified"></use>
+							</svg>
+							Verified
                         </span>
 					</p>
 					<p class="gg-read-value" id="editContact-phone-input"></p>
@@ -3415,7 +3632,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left"><img class="menuIcon" src="images/menu-icon.svg"/></a>
+			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
+				<svg class="menuIcon">
+					<use xlink:href="styles/svg/symbol.svg#menu-icon"></use>
+				</svg>
+			</a>
 			<a data-role="button" href="#contactImport" data-align="right" ><i class="ghostIconNavbar fa fa-plus"></i> </a>
 		</div>
 	</div>
@@ -3495,19 +3716,26 @@
 			<div class="privateNoteContent">
 				<p class="helper" style="padding-top: 0.5em;">
 				<span class="hidden">
-					<img src="images/icon-memories.svg" class="icon" /> No Notes here yet
+					<svg class="icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-memories"></use>
+					</svg>
+					No Notes here yet
 				</span>
 				</p>
 				<div class="messageMediaBar hidden" style="text-align: center;">
 					<ul>
 						<li>
 							<a data-role="button" href="#noteEditor?returnview=gallery">
-								<img src="images/icon-myNotes.svg" height="20" />
+								<svg height="20">
+									<use xlink:href="styles/svg/symbol.svg#icon-myNotes"></use>
+								</svg>
 							</a>
 						</li>
 						<li>
 							<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
-								<img src="images/icon-smartMenu.svg" height="24">
+								<svg height="24">
+									<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
+								</svg>
 							</a>
 						</li>
 					</ul>
@@ -3600,7 +3828,10 @@
 			<li>
 				<label for="filter-contact">
 					<input type="checkbox" id="filter-contact" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<img src="images/nav-contacts.svg" /> Contacts
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#nav-contacts"></use>
+					</svg>
+					Contacts
 				</label>
 			</li>
 			<li>
@@ -3613,7 +3844,10 @@
 			<li>
 				<label for="filter-link">
 					<input type="checkbox" id="filter-link" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<img src="images/icon-Links.svg" /> Links
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-Links"></use>
+					</svg>
+					Links
 				</label>
 			</li>
 			<li>
@@ -3626,7 +3860,10 @@
 			<li>
 				<label for="filter-chat">
 					<input type="checkbox" id="filter-chat" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<img src="images/icon-Chat.svg" /> Chats
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-Chat"></use>
+					</svg>
+					Chats
 				</label>
 			</li>
 			<li>
@@ -3639,7 +3876,10 @@
 			<li>
 				<label for="filter-place">
 					<input type="checkbox" id="filter-place" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<img src="images/icon-Events.svg" /> Events
+					<svg height="18">
+						<use xlink:href="styles/svg/symbol.svg#icon-Events"></use>
+					</svg>
+					Events
 				</label>
 			</li>
 			<li>
@@ -3651,7 +3891,10 @@
 			</li>
 			<li data-role="button" data-click="archiveView.openFilterDate">
 				<div>
-					<img src="images/icon-date.svg" height="18"/> Select Date
+					<svg height="18">
+						<use xlink:href="styles/svg/symbol.svg#icon-date"></use>
+					</svg>
+					Select Date
 				</div>
 			</li>
 		</ul>
@@ -3665,10 +3908,6 @@
 		</p>
 		<ul class="tagList list-inline" data-role="listview" data-template="tag-template"></ul>
 	</div>
-
-
-
-
 
 	<div data-role="footer">
 		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="archiveView.saveFilters"> Save </a>
@@ -3709,7 +3948,10 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-align="left" class="helper smartNote-title">
-				<img src="images/smart-note.svg" class="icon-sm" /> IntelliNote
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#smart-note"></use>
+				</svg>
+				IntelliNote
 			</span>
 			<a data-click="smartNoteView.onCancel" data-role="button" class="btnClear-red" data-align="right">Cancel</a>
 		</div>
@@ -3774,7 +4016,9 @@
 			#if(data.imgUrl !== ""){#
 				<img src="#:data.imageUrl#" />
 			#} else {#
-				<img src="images/smart-movie-default.svg" />
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg\\#smart-movie-default"></use>
+				</svg>
 			#}#
 
 		</div>
@@ -4634,7 +4878,10 @@
 				<span class="event-date"></span>
 			</p>
 			<span class="hidden">
-				<img src="images/icon-time.svg" class="icon-sm" /> <span data-bind="text: durationString"></span>
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-time"></use>
+					</svg>
+				<span data-bind="text: durationString"></span>
 			</span>
 
 			<span id="smartEventView-view-calendar-add" class="event-valid">
@@ -4644,13 +4891,17 @@
 
 			<span id="smartEventView-view-calendar" class="event-valid hidden">
 				<a class="btnHighlight" data-role="button" data-click="smartEventView.showCalendar">
-					<img src="images/icon-date-light.svg" class="icon-sm" />
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-date-light"></use>
+					</svg>
 					View on Calendar
 				</a>
 			</span>
 			<p class="event-place hidden" style="margin-top: 1em; margin-bottom: 1em;">
 				<a class="btnClear" data-role="button" data-click="smartEventView.eventMapLocation">
-					<img src="images/icon-location.svg" class="icon-sm" />
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
+					</svg>
 					<span class="event-location-title" data-bind="text: placeName"></span>
 				</a>
 			</p>
@@ -4694,15 +4945,18 @@
 				<label> When </label>
 				<div class="clearfix"></div>
 				<div class="smallSearch">
-
 							<span class="searchIcon">
-								<img src='images/smart-event.svg' />
+								<svg>
+									<use xlink:href="styles/svg/symbol.svg#smart-event"></use>
+								</svg>
 							</span>
 						<input type="text" class="viewSearchBox" id="smartEventView-date"/>
 					</div>
 					<div class="smallSearch-sm">
 						<span class="searchIcon">
-							<img src='images/smart-time.svg' />
+							<svg>
+								<use xlink:href="styles/svg/symbol.svg#smart-time"></use>
+							</svg>
 						</span>
 						<input type="time" id="smartEventView-time"/>
 					</div>
@@ -4716,7 +4970,9 @@
 				<label> How Long (Duration) </label>
 				<div class="fullSearch">
 						<span class="searchIcon">
-							<img src="images/icon-duration.svg"/>
+							<svg>
+								<use xlink:href="styles/svg/symbol.svg#icon-duration"></use>
+							</svg>
 						</span>
 					<input type="search" class="viewSearchBox" id="smartEventView-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
 				</div>
@@ -4728,7 +4984,9 @@
 			</li>
 			<li id="smartEventView-placesearchdiv" class="hidden">
 				<div>
-					<img src='images/icon-gps-selected.svg' class='icon-sm'/>
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-gps-selected"></use>
+					</svg>
 					<a data-click="smartEventView.onPlaceSearch" data-role="button" class="btnClear" id="smartEventView-placesearchBtn"> Find... </a>
 				</div>
 			</li>
@@ -4736,7 +4994,9 @@
 				<label>Where (Location or Place)</label>
 				<div>
 					<p id="smartEventView-placeAddBtn">
-						<img src='images/icon-location.svg' class='icon-sm'/>
+						<svg  class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
+						</svg>
 						<span id="smartEventView-placeAddBtn-title" data-bind="text: placeName"></span>
 					</p>
 					<div id="searchEventPlace-actionBtns">
@@ -4816,7 +5076,9 @@
 		<div id="placeListDiv">
 			<ul id="places-listview"></ul>
 			<div class="emptyState hidden">
-				<img src="images/empty-places.svg" />
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#empty-places"></use>
+				</svg>
 			</div>
 		</div>
 
@@ -4885,7 +5147,9 @@
 				<p id="modalChatPhotoView-inGallery" style="font-size: 0.75em; margin-left: 0;">
 					<span id="modalChatPhotoView-userhascopy">In Gallery</span>
 					<a class="hidden" data-role="button" id="modalChatPhotoViewUnlocked" data-align="right" data-click="modalChatPhotoView.savePhoto">
-						<img src="images/icon-save.svg" class="icon-md"/>
+						<svg class="icon-md">
+							<use xlink:href="styles/svg/symbol.svg#icon-save"></use>
+						</svg>
 					</a>
 					<span class="hidden">2d ago</span>
 				</p>
@@ -4893,7 +5157,9 @@
 			<div class="right" id="modalChatPhotoView-recipientlist">
 
 				<a id="modalChatPhotoView-confirmRecallBtn" class="hidden" data-role="button" data-align="right" data-click="modalChatPhotoView.confirmRecall">
-					<img src="images/action-recall-light.svg" class="icon-md"/>
+					<svg class="icon-md">
+						<use xlink:href="styles/svg/symbol.svg#action-recall-light"></use>
+					</svg>
 				</a>
 			</div>
 			<div class="clearfix"></div>
@@ -5008,7 +5274,12 @@
 			</ul>
 			<ul class="list-unstyled" style="margin-top: 1em; margin-bottom: 6em;">
 				<li>
-					<p><img src="images/icon-manage.svg" class="icon-sm"/> Manage Photo</p>
+					<p>
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#icon-manage"></use>
+						</svg>
+						Manage Photo
+					</p>
 				</li>
 				<li>
 
@@ -5115,7 +5386,9 @@
 				photo tags
 			</p>
 			<a class="actionBtn primary-100" data-role="button" data-click="photoView.sharePhoto">
-				<img src="images/icon-share-light.svg"/>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-share-light"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -5127,10 +5400,26 @@
 
 <div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="photoEditor.onShow"  data-hide="photoEditor.onHide" data-init="photoEditor.onInit" data-transition="slide:left">
 	<div class="photoViewNavTop" data-role="header">
-		<a data-role="button"  data-click="photoEditor.rotateLeft"><img src="images/photo-left.svg" /> </a>
-		<a data-role="button"  data-click="photoEditor.rotateRight"> <img src="images/photo-right.svg" /></a>
-		<a data-role="button" data-click="photoEditor.crop"> <img class="photo-options" src="images/photo-crop.svg" /> </a>
-		<a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><img src="images/photo-tag.svg" /></a>
+		<a data-role="button"  data-click="photoEditor.rotateLeft">
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#photo-left"></use>
+			</svg>
+		</a>
+		<a data-role="button"  data-click="photoEditor.rotateRight">
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#photo-right"></use>
+			</svg>
+		</a>
+		<a data-role="button" data-click="photoEditor.crop">
+			<svg class="photo-options">
+				<use xlink:href="styles/svg/symbol.svg#photo-crop"></use>
+			</svg>
+		</a>
+		<a data-role="button" data-rel="modalview"  href="#modalview-photoTag">
+			<svg class="photo-options">
+				<use xlink:href="styles/svg/symbol.svg#photo-tag"></use>
+			</svg>
+		</a>
 	</div>
 
 
@@ -5175,8 +5464,9 @@
 		<span class="left">#: data.name # </span>
 		<span class="right">
 			<a class="btnClear-red">
-
-				<img src="images/icon-trash.svg">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-trash"></use>
+				</svg>
 			</a>
 		</span>
 	</div>
@@ -5280,7 +5570,11 @@
 
 	<div class="tempSearchBox">
 		<div class="appendSearch">
-			<span class="searchIcon"><img src="images/search.svg" /></span>
+			<span class="searchIcon">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#search"></use>
+				</svg>
+			</span>
 			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="findPlaceSearchQuery" />
 			<span class="enterSearch hidden">
 				<a class="btnClear-grey">
@@ -5315,7 +5609,11 @@
 	<div class="tempSearchBox" id="smartLocation-form">
 		<p id="smartLocation-selectLocation" >Please select Address or City, State</p>
 		<div class="appendSearch">
-			<span class="searchIcon"><img src="images/place-icon.svg" /></span>
+			<span class="searchIcon">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#place-icon"></use>
+				</svg>
+			</span>
 			<input type="search" name="Area" placeholder="Area or city to search..." id="smartLocation-place" data-required-msg="Enter address or city, state" required />
 		</div>
 		<span class="k-invalid-msg" data-for="Area"></span>
@@ -5352,7 +5650,11 @@
 		<span class="k-invalid-msg" data-for="place"></span>
 		<p id="searchEventPlaces-selectPlace" class="hidden">Please select the area to search</p>
 		<div class="appendSearch">
-			<span class="searchIcon"><img src="images/place-icon.svg" /></span>
+			<span class="searchIcon">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#place-icon"></use>
+				</svg>
+			</span>
 			<input type="search" name="Area" placeholder="Area or city to search..." id="smartEventPlaces-place" data-required-msg="Enter area to search" required />
 		</div>
 		<span class="k-invalid-msg" data-for="Area"></span>
@@ -5625,7 +5927,9 @@
 		# if (data.ggType === "Note"){#
 		<div class="note">
 			<h3 class="textClamp">
-				<img src="images/smart-note-inline.svg" class="icon-md" />
+				<svg class="icon-md">
+					<use xlink:href="styles/svg/symbol.svg#smart-note-inline"></use>
+				</svg>
 				<span>#: titleStr #</span>
 				<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 			</h3>
@@ -5636,7 +5940,9 @@
 		# if(data.ggType === "Photo") {#
 		<div class="photo">
 			<h3>
-				<img src="images/smart-photo-inline.svg" class="icon-md" />
+				<svg class="icon-md">
+					<use xlink:href="styles/svg/symbol.svg#smart-photo-inline"></use>
+				</svg>
 				<span>#: titleStr # </span>
 				<span class="helper right" style="font-size: 12px">#:dateString#</span>
 			</h3>
@@ -5708,7 +6014,9 @@
 				<li>
 					<label>Mobile Phone
 						<span class="helper helper-verified hidden" id="profile-verified-phone">
-	                         <img class="helper-verified-img" src="images/verified.svg" height="14">
+								<svg class="helper-verified-img" height="14">
+									<use xlink:href="styles/svg/symbol.svg#verified"></use>
+								</svg>
 	                             Verified
                         </span>
 						<span class="helper helper-right helper-form">
@@ -5753,25 +6061,33 @@
 	<ul id="profileEditOptions" data-role="actionsheet" data-cancel="Cancel">
 		<li>
 			<a data-role="button" data-action="profileEditView.doChangePhone">
-				<img src="images/contact-call.svg" class="icon-action" />
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#contact-call"></use>
+				</svg>
 				Change Phone Number
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="profileEditView.doChangePassword">
-				<img src="images/action-password.svg" class="icon-action" />
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-password"></use>
+				</svg>
 				Change Password
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="profileEditView.gotoSettings">
-				<img src="images/action-edit.svg" class="icon-action"/>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-edit"></use>
+				</svg>
 				Edit Settings
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="userStatusView.doSignOut">
-				<img src="images/action-signout.svg" class="icon-action" />
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-signout"></use>
+				</svg>
 				Sign Out
 			</a>
 		</li>
@@ -5812,75 +6128,6 @@
     <div class="footer" data-role="footer">
         <a class="btnFull-modal btnPrimary" data-role="button" id="profilePhotoEdit-save" data-click="editProfilePhotoView.onDone">Save</a>
     </div>
-</div>
-
-<!-- Ghost selection modal -->
-<div data-role="modalview" id="modalview-chooseGhost" style="width: 90%; display:none;" class="appearance">
-	<div class="modalTop">
-		<h2>
-			Let's do this
-            <span class="closeBox" style="float:right;">
-                <a data-click="closeChooseGhost" data-role="button">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#close"></use>
-					</svg>
-				</a>
-            </span>
-		</h2>
-		<p>
-			Select a public ghost.
-		</p>
-	</div>
-	<div class="line"></div>
-
-	<div class="ghostSelectionBox">
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-red" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-red.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-purple" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-purple.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" class="currentGhost" id="ghost-blue" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-blue.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost"  id="ghost-teal" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-teal.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-green" data-role="button">
-				<img class="circle-img-lg"  src="images/ghost-green.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-yellow" data-role="button">
-				<img class="circle-img-lg"  src="images/ghost-yellow.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-orange" data-role="button">
-				<img class="circle-img-lg"  src="images/ghost-orange.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-grey" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-grey.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-black" data-role="button">
-				<img class="circle-img-lg"  src="images/ghost-black.svg"/>
-			</a>
-		</div>
-	</div>
-	<div class="clearfix"></div>
 </div>
 
 <!-- change password modal -->
@@ -6178,7 +6425,6 @@
 
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary" data-click="smartFlightSearchView.onSearch" data-role="button">Search</a>
-
 	</div>
 </div>
 
@@ -6534,7 +6780,9 @@
 		</div>
 	</div>
 	<div style="text-align: center;">
-		<img src="images/gg-family.svg" class="icon-gg-drawer" />
+		<svg class="icon-gg-drawer">
+			<use xlink:href="styles/svg/symbol.svg#gg-family"></use>
+		</svg>
 		<span style="font-size: 1.3em;">Family Alert</span>
 	</div>
 	<form>
@@ -6581,9 +6829,10 @@
 		</div>
 	</div>
 	<div style="text-align: center;">
-		<img src="images/gg-local.svg" class="icon-gg-drawer" />
+		<svg class="icon-gg-drawer">
+			<use xlink:href="styles/svg/symbol.svg#gg-local"></use>
+		</svg>
 		<span style="font-size: 1.3em;">Local Alert</span>
-
 	</div>
 	<form>
 		<ul data-role="listview" data-style="inset">
@@ -6654,10 +6903,14 @@
 			<li>
 				<label>Increase Chat Font Size</label>
 				<a class="btnClear right" data-role="button" data-click="homeView.settingRegFont">
-					<img src="images/icon-font-sm.svg" class="icon" />
+					<svg class="icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-font-sm"></use>
+					</svg>
 				</a>
 				<a class="btnClear right" data-role="button" data-click="homeView.settingBigFont">
-					<img src="images/icon-font-lg.svg" class="icon" />
+					<svg class="icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-font-lg"></use>
+					</svg>
 				</a>
 			</li>
 			<li>
@@ -6809,7 +7062,9 @@
 		 </h4>
 		<span class="groupEditor-contact-delete">
 			<a data-role="button" class="btnClear-grey-sm" data-click="groupEditView.deleteMember">
-				<img src="images/icon-trash.svg" class="icon-sm" />
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
 			</a>
 		</span>
 		<div class="clearfix"></div>
@@ -6943,22 +7198,30 @@
 					</li>
 					<li>
 					<a data-role="button" data-click="privateNotesView.noteTitleTag">
-						<img  src="images/icon-tag.svg" height="24">
+						<svg height="24" id="privateNote-editorBtnImg">
+							<use xlink:href="styles/svg/symbol.svg#icon-tag"></use>
+						</svg>
 					</a>
 					</li>
 					<li>
 						<a data-role="button" data-click="privateNotesView.noteEditor" id="privateNote-editorBtn">
-							<img src="images/icon-editor.svg" height="24" id="privateNote-editorBtnImg"/>
+							<svg height="24" id="privateNote-editorBtnImg">
+								<use xlink:href="styles/svg/symbol.svg#icon-editor"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-click="privateNotesView.noteSearch">
-							<img src="images/icon-web.svg" height="24">
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#icon-web"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
-							<img src="images/icon-smartMenu.svg" height="24">
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="offline-only hidden">
@@ -6966,7 +7229,9 @@
 					</li>
 					<li id="privateNote-hideKeyboard" class="hidden">
 						<a data-role="button" data-align="right" data-click="privateNotesView.closeEditor">
-							<img src="images/icon-keyboard-active.svg" height="20">
+							<svg height="20">
+								<use xlink:href="styles/svg/symbol.svg#icon-keyboard-active"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="right">
@@ -7072,7 +7337,9 @@
     #
 		<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
 			<h3 class="textClamp">
-				<img src="images/smart-note-inline.svg" class="icon-sm" />
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#smart-note-inline"></use>
+				</svg>
 				<span>#:titleStr#</span>
 			</h3>
 			<p class="helper" style="font-size: 0.85em;">
@@ -7091,7 +7358,9 @@
 	# if (noteType === 'Gallery') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Gallery" data-uuid="#:uuid#">
 		<h3 class="textClamp">
-			<img src="images/smart-photo-inline.svg" class="icon-sm" />
+			<svg class="icon-sm">
+				<use xlink:href="styles/svg/symbol.svg\\#smart-photo-inline"></use>
+			</svg>
 			<span>#:titleStr#</span>
 		</h3>
 		<p class="helper" style="font-size: 0.85em;">
@@ -7163,28 +7432,38 @@
 		<div class="contact-options">
 			# if (data.contactUUID === undefined || data.contactUUID === null){#
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
-				<img src="images/contact-invite.svg" height="12" />
+				<svg height="12">
+					<use xlink:href="styles/svg/symbol.svg\\#contact-invite"></use>
+				</svg>
 				<p class="chat-option-selection"> Resend Invite</p>
 			</a>
 			#} else {#
 				#if(data.isBlocked) {#
 				<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
-					<img src="images/icon-unblock.svg" height="24" />
+					<svg height="24">
+						<use xlink:href="styles/svg/symbol.svg\\#icon-unblock"></use>
+					</svg>
 					<p class="chat-option-selection"> Unblock </p>
 				</a>
 				#} else {#
 				<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
-					<img src="images/icon-block.svg" height="24" />
+					<svg height="24">
+						<use xlink:href="styles/svg/symbol.svg\\#icon-block"></use>
+					</svg>
 					<p class="chat-option-selection"> Block </p>
 				</a>
 				#}#
 			#}#
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
-				<img src="images/option-edit.svg" height="18" />
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
+				</svg>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
-				<img src="images/icon-trash.svg" height="18" />
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div><!-- contact-options -->
@@ -7202,10 +7481,14 @@
 						<div class="statusContactList">
 							#if (data.isAvailable !== undefined && data.isAvailable) { #
 								<img class="circle-img-md" src="#:photoUrl#" />
-								<img src="images/status-available.svg" class="statusContactList-icon" />
+								<svg class="statusContactList-icon">
+									<use xlink:href="styles/svg/symbol.svg\\#statusContactList-icon"></use>
+								</svg>
 							#} else {#
 								<img class="circle-img-md" src="#:photoUrl#" />
-								<img src="images/status-away.svg" class="statusContactList-icon" />
+								<svg class="statusContactList-icon">
+									<use xlink:href="styles/svg/symbol.svg\\#status-away"></use>
+								</svg>
 							#}#
 
 							# if (data.isBlocked) {#
@@ -7220,11 +7503,11 @@
 						<h4 class="textClamp">
 							#= primaryName #
 							#if (data.phoneValidated){#
-								<img src="images/user-verified.svg" class="user-status-icon" />
+								<svg class="user-status-icon">
+									<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
+								</svg>
 							#}#
 								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
-
-
 								<span class="contact-group">#: group #</span>
 						</h4>
 					</div>
@@ -7271,7 +7554,9 @@
 						<h4 class="textClamp">
 							#: data.name #
 							#if (data.phoneValidated){#
-								<img src="images/user-verified.svg" class="user-status-icon" />
+								<svg class="user-status-icon">
+									<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
+								</svg>
 							#}#
 						</h4>
 					</div>

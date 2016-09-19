@@ -4334,7 +4334,8 @@ form p {
   line-height: 2;
 }
 .user-status-icon {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 .icon {
   height: 1.3rem;
@@ -4952,6 +4953,7 @@ button,
 }
 div.km-header a svg {
   height: 1.2em;
+  width: 1.5em;
   vertical-align: middle;
 }
 .km-drawer-button:before,
@@ -5591,18 +5593,18 @@ div.footer.km-footer {
   margin-left: 5%;
   margin-right: auto;
 }
-.userStatusView-svg {
+.userStatusView-img {
   width: 1.5em;
   height: 1.5em;
   position: relative;
   top: -1em;
   left: 1em;
 }
-.home-status-svg {
+.home-status-img {
   width: 1.25em !important;
   height: 1.25em !important;
 }
-.home-status-card-svg {
+.home-status-card-img {
   position: absolute;
   top: 4.6525em;
   left: 54%;
@@ -5614,7 +5616,7 @@ div.footer.km-footer {
   font-size: 1em;
   resize: none;
 }
-.circle-svg-home {
+.circle-img-home {
   border-radius: 50%;
   width: 2.375em;
   height: 2.375em !important;
@@ -6559,7 +6561,8 @@ textarea {
 }
 div.message-slideOptions > span.archive > a > span > svg {
   vertical-align: middle;
-  height: 18px;
+  height: 1.2em;
+  width: 1.2em;
 }
 #channel-addChannel-list li:first-child,
 #channels-editChannel-list li:first-child {
@@ -7429,6 +7432,9 @@ li > .km-group-title {
   padding: 0;
   margin: 0;
   list-style: none;
+}
+.messageMediaBar ul li svg {
+  max-width: 2em;
 }
 #messageEditor {
   border: none;
