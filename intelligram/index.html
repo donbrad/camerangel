@@ -136,7 +136,9 @@
 <div data-role="view" data-title="intelligram starting..." id="startUpView">
 	<p id="startUpView_logo">intelligram</p>
 	<div id="startUpView_loading">
-		<object data="images/oval.svg" type="image/svg+xml" > </object>
+		<svg>
+			<use xlink:href="styles/svg/symbol.svg#oval"></use>
+		</svg>
 	</div>
 </div>
 
@@ -147,7 +149,7 @@
 				<div class="user-status">
 					<div class="left">
 						<span class="home-status">
-							<object data="images/status-away.svg" type="image/svg+xml" class="home-status-img userAvailable"> </object>
+							<img src="images/status-away.svg" class="home-status-img userAvailable" />
 						</span>
 						<img class="circle-img-home home-profile-img" />
 						<svg width="40" height="40" class="circle-img-home hidden homeProfileIdenticon"/> </svg>
@@ -157,18 +159,24 @@
 			</a>
 			<span data-role="view-title"></span>
 			<a data-role="button" data-align="right" class="user-settings homeToggleSearch" data-click="ux.navigateAddTarget">
-				<object data="images/nav-gear.svg" type="image/svg+xml" class="nav-search header-add-icon"> </object>
+				<img src="images/nav-gear.svg" class="nav-search header-add-icon" />
 			</a>
         </div>
         <div class="gg_mainSearchBox" data-visible="false">
 	 		<div class="appendSearch">
 				<span class="searchIcon">
-					<object data="images/search.svg" type="image/svg+xml" > </object>
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#search"></use>
+					</svg>
 				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
-				<span class="enterSearch hidden"><a class="btnClear-grey">
-					<object data="images/close.svg" type="image/svg+xml" class="icon-sm"> </object>
-				</a></span>
+				<span class="enterSearch hidden">
+					<a class="btnClear-grey">
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#close"></use>
+						</svg>
+					</a>
+				</span>
 			</div>
 		</div>
     </div>
@@ -263,25 +271,33 @@
 	<ul data-role="actionsheet" id="settingsAction" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-role="button" data-click="userStatusView.camera">
-				<object data="images/action-camera.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-camera"></use>
+				</svg>
 				Camera
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-click="userStatusView.scanner">
-				<object data="images/action-scanner.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-scanner"></use>
+				</svg>
 				Scanner
 			</a>
 		</li>
 	    <li>
 	    	<a data-role="button"  data-click="homeView.goSettings">
-				<object data="images/nav-gear.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#nav-gear"></use>
+				</svg>
 				Settings
 			</a>
 	    </li>
 		<li>
 			<a data-role="button"  data-click="userStatusView.doSignOut">
-				<object data="images/action-signout.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-signout"></use>
+				</svg>
 				Sign out
 			</a>
 		</li>
@@ -300,7 +316,9 @@
 			<div>
 				<a data-role="button" class="btnClear" data-click="emergencyView.openModalPolice">
 					<div class="hotButton-icon">
-						<object data="images/gg-police.svg"  type="image/svg+xml" class="icon-gg-drawer"> </object>
+						<svg class="icon-gg-drawer">
+							<use xlink:href="styles/svg/symbol.svg#gg-police"></use>
+						</svg>
 					</div>
 					Police (911)
 				</a>
@@ -310,7 +328,9 @@
 			<div>
 				<a data-role="button" class="btnClear" data-click="emergencyView.openModalFire">
 					<div class="hotButton-icon">
-						<object data="images/gg-fire.svg"  type="image/svg+xml" class="icon-gg-drawer"> </object>
+						<svg class="icon-gg-drawer">
+							<use xlink:href="styles/svg/symbol.svg#gg-fire"></use>
+						</svg>
 					</div>
 					Fire (911)
 				</a>
@@ -320,7 +340,9 @@
 			<div>
 				<a data-role="button" class="btnClear" data-click="emergencyView.openModalMedical">
 					<div class="hotButton-icon">
-						<object data="images/gg-medical.svg"  type="image/svg+xml" class="icon-gg-drawer"> </object>
+						<svg class="icon-gg-drawer">
+							<use xlink:href="styles/svg/symbol.svg#gg-medical"></use>
+						</svg>
 					</div>
 					Medical (911)
 				</a>
@@ -330,7 +352,9 @@
 			<div>
 				<a data-role="button" class="btnClear" data-click="roadsideView.openModal">
 					<div class="hotButton-icon">
-						<object data="images/gg-roadside.svg"  type="image/svg+xml" class="icon-gg-drawer-lg"> </object>
+						<svg class="icon-gg-drawer-lg">
+							<use xlink:href="styles/svg/symbol.svg#gg-roadside"></use>
+						</svg>
 					</div>
 					Roadside
 				</a>
@@ -340,7 +364,9 @@
 			<div>
 				<a data-role="button" class="btnClear" data-click="familyAlertView.openModal">
 					<div class="hotButton-icon">
-						<object data="images/gg-family.svg"  type="image/svg+xml" class="icon-gg-drawer-lg"> </object>
+						<svg class="icon-gg-drawer-lg">
+							<use xlink:href="styles/svg/symbol.svg#gg-family"></use>
+						</svg>
 					</div>
 					Family Alert
 				</a>
@@ -350,7 +376,9 @@
 			<div>
 				<a data-role="button" class="btnClear" data-click="localAlertView.openModal">
 					<div class="hotButton-icon">
-						<object data="images/gg-local.svg"  type="image/svg+xml" class="icon-gg-drawer"> </object>
+						<svg class="icon-gg-drawer">
+							<use xlink:href="styles/svg/symbol.svg#gg-local"></use>
+						</svg>
 					</div>
 					Local Alert
 				</a>
@@ -419,18 +447,18 @@
 	<div class="appBox noPad">
 			<div data-role="tabstrip" id="home-buttongroup" class="tabBar" data-select="homeView.onTabSelect">
 				<a data-tab="0">
-					<object data="images/icon-notify-active.svg" type="image/svg+xml" class="home-tab-alert-img"> </object>
+					<img src="images/icon-notify-active.svg" class="home-tab-alert-img" /> Alerts
 				</a>
 				<a data-tab="1">
-					<object data="images/icon-today.svg" type="image/svg+xml" id="home-tab-today-img"> </object>
+					<img src="images/icon-today.svg" id="home-tab-today-img" /> Today
 				</a>
 			</div>
 			<div id="home-alerts" data-bind="invisible: ux_isValidated">
 				<div id="home-verify-div" data-role="button" data-click="verifyEmailModal.openModal">
                     <p>
-						<object data="images/icon-alert.svg" type="image/svg+xml"  id="home-verify-alert"> </object>
+						<img src="images/icon-alert.svg" id="home-verify-alert" />
                         <span id="home-verify-text" data-bind="text: ux_timeLeft"></span>
-						<object data="images/icon-arrow-right.svg" type="image/svg+xml"  id="home-verify-arrow"> </object>
+						<img src="images/icon-arrow-right.svg"  id="home-verify-arrow" />
                     </p>
 					<div class="clearfix"></div>
 				</div>
@@ -442,7 +470,9 @@
 				<div class="clearfix"></div>
 				<ul class="home-notification" id="notification-listview"></ul>
 				<div class="emptyState hidden">
-					<object data="images/empty-home.svg" type="image/svg+xml" > </object>
+					<svg class="icon-gg-drawer">
+						<use xlink:href="styles/svg/symbol.svg#empty-home"></use>
+					</svg>
 				</div>
 			</div>
 
@@ -455,30 +485,80 @@
 	<div class="hidden"> <canvas id="identiconCanvas" width="256" height="256"></canvas></div>
 
 	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
-		<li><a data-action="galleryView.noteEvent"><object data="images/icon-event.svg" type="image/svg+xml" class="icon-smart"></object> Add Event</a></li>
-		<li><a data-action="galleryView.noteFlight"><object data="images/intelliFlight-icon.svg" type="image/svg+xml" class="icon-smart"></object> Add Flight</a></li>
-		<li><a data-action="galleryView.noteTrip"><object data="images/intelliTrip-icon.svg" type="image/svg+xml" class="icon-smart"></object> Add Trip</a></li>
-		<li><a data-action="galleryView.noteMovie"><object data="images/intelliMovie-icon.svg" type="image/svg+xml" class="icon-smart"></object> Add Movie</a></li>
-		<li><a data-action="galleryView.noteAccount"><object data="images/icon-account.svg" type="image/svg+xml" class="icon-smart"></object> Add IntelliAccount</a></li>
-		<li><a data-action="galleryView.noteMedical"><object data="images/icon-medical.svg" type="image/svg+xml" class="icon-smart"></object> Add IntelliMedical</a></li>
+		<li>
+			<a data-action="galleryView.noteEvent">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#icon-event"></use>
+				</svg>
+				Add Event
+			</a>
+		</li>
+		<li>
+			<a data-action="galleryView.noteFlight">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#intelliFlight-icon"></use>
+				</svg>
+				Add Flight
+			</a>
+		</li>
+		<li>
+			<a data-action="galleryView.noteTrip">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#intelliTrip-icon"></use>
+				</svg>
+				Add Trip
+			</a>
+		</li>
+		<li>
+			<a data-action="galleryView.noteMovie">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#intelliMovie-icon"></use>
+				</svg>
+				Add Movie
+			</a>
+		</li>
+		<li>
+			<a data-action="galleryView.noteAccount">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#icon-account"></use>
+				</svg>
+				Add IntelliAccount
+			</a>
+		</li>
+		<li>
+			<a data-action="galleryView.noteMedical">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#icon-medical"></use>
+				</svg>
+				Add IntelliMedical
+			</a>
+		</li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
 	<ul data-role="actionsheet"  id="privateNotePhotoActions" >
 		<li>
 			<a data-action="privateNotesView.addCamera">
-				<object data="images/action-camera.svg" type="image/svg+xml" class="icon-action"></object> Camera
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-camera"></use>
+				</svg>
+				Camera
 			</a>
 		</li>
 		<li>
 			<a data-action="privateNotesView.addPhoto">
-				<object data="images/action-device.svg" type="image/svg+xml" class="icon-action"></object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-device"></use>
+				</svg>
 				Device Gallery
 			</a>
 		</li>
 		<li>
 			<a data-action="privateNotesView.addGallery">
-				<object data="images/action-memories.svg" type="image/svg+xml" class="icon-action"></object> Memories Gallery
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-memories"></use>
+				</svg>
+				Memories Gallery
 			</a>
 		</li>
 	</ul>
@@ -486,27 +566,42 @@
 	<ul id="privateNoteViewActions" data-role="actionsheet" data-cancel="Cancel">
 		<li>
 			<a data-role="button" data-click="privateNotesView.editNote">
-				<object data="images/action-edit.svg" type="image/svg+xml" class="icon-action"></object> Edit Note
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-edit"></use>
+				</svg>
+				Edit Note
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="privateNotesView.deleteNote">
-				<object data="images/action-delete.svg" type="image/svg+xml" class="icon-action"></object> Delete Note
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-delete"></use>
+				</svg>
+				Delete Note
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="privateNotesView.sendNote">
-				<object data="images/action-contact.svg"  type="image/svg+xml" class="icon-action"> </object> Send to Contact
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-contact"></use>
+				</svg>
+				Send to Contact
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="privateNotesView.sendChatNote">
-				<object data="images/action-chat.svg"  type="image/svg+xml" class="icon-action"> </object> Share in Chat
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-chat"></use>
+				</svg>
+				Share in Chat
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="privateNotesView.shareNote">
-				<object data="images/action-share.svg"  type="image/svg+xml" class="icon-action"> </object> Share Note
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-share"></use>
+				</svg>
+				Share Note
 			</a>
 		</li>
 	</ul>
@@ -515,35 +610,46 @@
 <script type="text/x-kendo-template" id="notificationTemplate1">
 	<li class="home-section-header ggHome-today">
 		<div>
-			<object data="images/icon-today.svg"  type="image/svg+xml" class="icon-home"> </object> Today
+			<svg class="icon-home">
+				<use xlink:href="styles/svg/symbol.svg\\#icon-today"></use>
+			</svg>
+			Today
 			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
 		</div>
 	</li>
 	<li data-role="button">
 		<div class="home-section home-section-smart">
-			<object data="images/smart-coffee.svg" type="image/svg+xml" class="icon-smart-home left" > </object>
-
+			<svg class="icon-smart-home left">
+				<use xlink:href="styles/svg/symbol.svg\\#smart-coffee"></use>
+			</svg>
 			<h3>Coffee w/ Jon</h3>
 			<p>Today at 7:30am</p>
 		</div>
 	</li>
 	<li data-role="button">
 		<div class="home-section home-section-smart">
-			<object data="images/smart-flight-home.svg" type="image/svg+xml" class="icon-smart-home left" > </object>
+			<svg class="icon-smart-home left">
+				<use xlink:href="styles/svg/symbol.svg\\#smart-flight-home"></use>
+			</svg>
 			<h3>Delta 871 <span class="smart-flight-status">On Time</span></h3>
 			<p>Landing at 7:31am</p>
 		</div>
 	</li>
 	<li data-role="button">
 		<div class="home-section home-section-smart">
-			<object data="images/smart-event-home.svg" type="image/svg+xml" class="icon-smart-home left" > </object>
+			<svg class="icon-smart-home left">
+				<use xlink:href="styles/svg/symbol.svg\\#smart-event-home"></use>
+			</svg>
 			<h3>Dinner w/ Jane</h3>
 			<p>Today at 8pm</p>
 		</div>
 	</li>
 	<li class="home-section-header ggHome-chat">
 		<div>
-			<object data="images/icon-chat-light.svg"  type="image/svg+xml" class="icon-home-sm"> </object> Chats
+			<svg class="icon-home-sm">
+				<use xlink:href="styles/svg/symbol.svg\\#icon-chat-light"></use>
+			</svg>
+			Chats
 			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
 		</div>
 	</li>
@@ -554,13 +660,18 @@
 				<p>John Smith wants to connect</p>
 			</div>
 			<a class="btnClear right ggHome-close" data-role="button" data-click="homeView.dismissNotification">
-				<object data="images/close.svg"  type="image/svg+xml" class="icon-sm"> </object>
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#close"></use>
+				</svg>
 			</a>
 		</div>
 	</li>
 	<li class="home-section-header ggHome-contact">
 		<div>
-			<object data="images/smart-contacts.svg"  type="image/svg+xml" class="icon-home-sm"> </object> Contacts
+			<svg class="icon-home-sm">
+				<use xlink:href="styles/svg/symbol.svg\\#smart-contacts"></use>
+			</svg>
+			Contacts
 			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
 		</div>
 	</li>
@@ -571,19 +682,26 @@
 				<p>Family Chat</p>
 			</div>
 			<a class="btnClear right ggHome-close" data-role="button" data-click="homeView.dismissNotification">
-				<object data="images/close.svg"  type="image/svg+xml" class="icon-sm"> </object>
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#close"></use>
+				</svg>
 			</a>
 		</div>
 	</li>
 	<li class="home-section-header ggHome-smart">
 		<div>
-			<object data="images/icon-smart-light.svg"  type="image/svg+xml" class="icon-home-sm"> </object> IntelliEvents
+			<svg class="icon-home-sm">
+				<use xlink:href="styles/svg/symbol.svg\\#icon-smart-light"></use>
+			</svg>
+			IntelliEvents
 			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
 		</div>
 	</li>
 	<li data-role="button" data-click="homeView.openNotificationAction">
 		<div class="home-section home-section-smart">
-			<object data="images/smart-event-home.svg"  type="image/svg+xml"class="icon-smart-home left"> </object>
+			<svg class="icon-smart-home left">
+				<use xlink:href="styles/svg/symbol.svg\\#smart-event-home"></use>
+			</svg>
 			<h3>IntelliEvent Title</h3>
 			<p>Event action or update</p>
 		</div>
@@ -597,14 +715,26 @@
 	<div class="notify-box">
 		<div class="notify-info">
 			#if(data.type === 'Unread Messages'){#
-				<span><object data="images/icon-notify-unread.svg"  type="image/svg+xml" class="icon-notify"> </object> #= description #</span>
+				<span>
+					<svg class="icon-notify">
+						<use xlink:href="styles/svg/symbol.svg\\#icon-notify-unread"></use>
+					</svg>
+					#= description #
+				</span>
 			#} else if(data.type === 'intelligram recommends'){#
-				<span><object data="images/icon-notify-recommend.svg"  type="image/svg+xml" class="icon-notify"> </object> Recommended</span>
+				<span>
+					<svg class="icon-notify">
+						<use xlink:href="styles/svg/symbol.svg\\#icon-notify-recommend"></use>
+					</svg>
+					Recommended
+				</span>
 			#} else if(data.type === 'New Member'){#
 				<span>New Member</span>
 			#}#
 			<a class="closeBox" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification">
-				<object data="images/close.svg"  type="image/svg+xml" class="img-sm"> </object>
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#close"></use>
+				</svg>
 			</a>
 		</div>
 		<div class="notify-content">
@@ -628,7 +758,9 @@
  	<div class="newuserBox">
 		<p id="newWelcome">Welcome to</p>
 		<p id="newLogo">
-			<object data="images/logo-mark-light.svg" type="image/svg+xml" class="icon-logo"></object>
+			<svg class="icon-logo">
+				<use xlink:href="styles/svg/symbol.svg#logo-mark-light"></use>
+			</svg>
 		</p>
 		<h3>
 			<span class="feature" id="feature1">Personal</span> 
@@ -641,7 +773,9 @@
 	 <div class="feature-card preMotion" id="featureCard1">
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <object data="images/contacts.svg" type="image/svg+xml"></object>
+				 <svg>
+					 <use xlink:href="styles/svg/symbol.svg#contacts"></use>
+				 </svg>
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Personal</h3>
@@ -651,7 +785,9 @@
 		 </div>
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <object data="images/icon-feature-smart.svg" type="image/svg+xml"></object>
+				 <svg>
+					 <use xlink:href="styles/svg/symbol.svg#icon-feature-smart"></use>
+				 </svg>
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Intelligent</h3>
@@ -661,7 +797,9 @@
 		 </div>
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <object data="images/icon-feature-trusted.svg" type="image/svg+xml"></object>
+				 <svg>
+					 <use xlink:href="styles/svg/symbol.svg#icon-feature-trusted"></use>
+				 </svg>
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Organized</h3>
@@ -694,8 +832,10 @@
 	   </div>
     </div>
 	 <a class="btnSpan testingHome" href="#usersignin" data-role="button">
-		 <object data="images/icon-dev-light.svg" class="icon-sm" type="image/svg+xml"></object> Dev - Sign In</a>
-
+		 <svg class="icon-sm">
+			 <use xlink:href="styles/svg/symbol.svg#icon-dev-light"></use>
+		 </svg>
+		 Dev - Sign In</a>
     <div class="footer" data-role="footer" id="newuserhome-footer">
     	<a class="btnPrimary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
     </div>
@@ -705,7 +845,11 @@
 <div data-role="view" data-title="intelligram" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
 	<div class="newuserBox">
 		<p>Welcome back to</p>
-		<p><object data="images/logo-mark-light.svg" type="image/svg+xml" class="icon-logo"></object></p>
+		<p>
+			<svg class="icon-logo">
+				<use xlink:href="styles/svg/symbol.svg#logo-mark-light"></use>
+			</svg>
+		</p>
 	</div>
 	<div class="clearfix"></div>
 	<div class="loginBox card" id="signInBox">
@@ -738,7 +882,12 @@
 		</form>
 		<a class="btnSecondary btnSpan-btm" data-role="button" data-click="signInView.validate">Sign in</a>
 	</div>
-	<a class="btnSpan-btm btnClear-light" data-role="button" href="#newuserhome"><object data="images/icon-dev-light.svg"  type="image/svg+xml" class="icon-sm"> </object> Dev - Go to New User</a>
+	<a class="btnSpan-btm btnClear-light" data-role="button" href="#newuserhome">
+		<svg class="icon-gg-drawer" class="icon-sm">
+			<use xlink:href="styles/svg/symbol.svg#icon-dev-light"></use>
+		</svg>
+		Dev - Go to New User
+	</a>
 </div>
 
 
@@ -832,7 +981,9 @@
    	<div data-role="header">
       <div data-role="navbar">
         <a data-role="backbutton"  data-align="left">
-			<object data="images/nav-back.svg"  type="image/svg+xml" > </object>
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+			</svg>
 		</a>
         <span data-role="view-title"></span>
       </div>
@@ -840,7 +991,10 @@
 
 	<div class="banner-welcome" id="home-signup-welcomebanner">
 		<h2>
-			<object data="images/sign-up-icon.svg"  type="image/svg+xml" class="icon-md"> </object> Welcome
+			<svg class="icon-md">
+				<use xlink:href="styles/svg/symbol.svg#sign-up-icon"></use>
+			</svg>
+			Welcome
 		</h2>
 		<p>Let's get some basic info.</p>
 	</div>
@@ -856,13 +1010,19 @@
                 	<div class="mobile-countryCode">
 						<span id="signup-countryCode">+1</span>
 						<span id="signup-confirmed">
-							<object data="images/icon-success.svg"  type="image/svg+xml" class="icon-sm"> </object>
+							<svg class="icon-sm">
+								<use xlink:href="styles/svg/symbol.svg#icon-success"></use>
+							</svg>
 						</span>
 						<span id="signup-error">
-							<object data="images/icon-error.svg"  type="image/svg+xml" class="icon-sm"> </object>
+							<svg class="icon-sm">
+								<use xlink:href="styles/svg/symbol.svg#icon-error"></use>
+							</svg>
 						</span>
 						<span id="signup-loading">
-							<object data="images/loading.svg"  type="image/svg+xml" class="icon-md"> </object>
+							<svg class="icon-md">
+								<use xlink:href="styles/svg/symbol.svg#loading"></use>
+							</svg>
 						</span>
 					</div>
                 	<input class="mobile-phone mobile-input" type="tel" id="home-signup-phone" value="" name="Mobile Phone" maxlength="14" placholder="(•••) •••-••••" required />
@@ -935,7 +1095,9 @@
 	<div class="modalview-content">
 	    <h2>Password Recovery
 	        <a class="closeBox" data-click="recoverPasswordView.closeModal" data-role="button" style="float: right;">
-				<object data="images/close.svg"  type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 	        </a>
 	    </h2>
 	    <label>Email password recovery instructions to 
@@ -950,7 +1112,9 @@
 <div data-role="modalview" id="modalview-checkin" style="width: 100%; height:100%; display: none; z-index: 100;" class="appearance" data-init="checkInView.onInit" data-title="Checkin">
 	<div data-role="header">
 		<div data-role="navbar">
-			<object data="images/icon-checkin.svg"  type="image/svg+xml" class="icon-sm"  style="vertical-align: text-top;"> </object>
+			<svg class="icon-sm" style="vertical-align: text-top;">
+				<use xlink:href="styles/svg/symbol.svg#icon-checkin"></use>
+			</svg>
 			<span data-role="view-title"></span>
 			<a data-role="button" data-align="left" data-click="checkInView.closeModal" class="btnClear-grey"> Cancel </a>
 		</div>
@@ -959,7 +1123,9 @@
 		<ul id="checkin-listview"></ul>
 	</div>
 	<div class="emptyState">
-		<object data="images/empty-places-nearby.svg"  type="image/svg+xml"> </object>
+		<svg>
+			<use xlink:href="styles/svg/symbol.svg#empty-places-nearby"></use>
+		</svg>
 	</div>
 </div>
 
@@ -994,7 +1160,7 @@
 
 	#
 	<div style="padding-left: 8px; padding-right: 8px; width: 90%">
-		<span> <object data=#=icon#  type="image/svg+xml" height="20"> </object> </span> <span>#:name# <em>#:aliasString#</em></span>
+		<span> <img src=#=icon#  height="20"></span> <span>#:name# <em>#:aliasString#</em></span>
 
 	</div>
 </script>
@@ -1005,11 +1171,19 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Share Via Intelligram</span>
-			<a data-click="sharePickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey"> <object data="images/close.svg" type="image/svg+xml" > </object></a>
+			<a data-click="sharePickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
+			</a>
 		</div>
 		<div>
 			<div class="appendSearch">
-				<span class="searchIcon"><img src="images/search.svg" /></span>
+				<span class="searchIcon">
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#search"></use>
+					</svg>
+				</span>
 				<input type="text" class="doubleAppendSearch" placeholder="Find contacts & chats..." id="sharePickerView-search" />
 			</div>
 		</div>
@@ -1018,8 +1192,9 @@
 	<div style="width: 100%;">
 		<ul id="sharePickerView-listview"  data-style="inset" ></ul>
 		<div class="emptyState hidden">
-			<object data="images/empty-contacts.svg" type="image/svg+xml" > </object>
-
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#empty-contacts"></use>
+			</svg>
 		</div>
 	</div>
 </div>
@@ -1038,7 +1213,9 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-click="galleryListView.closeModal" data-role="button" data-align="left">
-				<object data="images/close.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -1069,12 +1246,19 @@
         </div>
 		<div>
 			<div class="appendSearch">
-				<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml" > </object></span>
+				<span class="searchIcon">
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#search"></use>
+					</svg>
+				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" id="galleryPickerSearch" />
-				<span class="enterSearch hidden"><a class="btnClear-grey">
-					<object data="images/close.svg" type="image/svg+xml" class="icon-sm" > </object>
-
-				</a></span>
+				<span class="enterSearch hidden">
+					<a class="btnClear-grey">
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#close"></use>
+						</svg>
+					</a>
+				</span>
 			</div>
 		</div>
 	</div>
@@ -1085,7 +1269,9 @@
 	<div class="footer hidden" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" data-click="galleryPicker.setView">
 			<p class="actionBtn-text">Cancel</p>
-			<object data="images/gallery-list.svg" type="image/svg+xml"  > </object>
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#gallery-list"></use>
+			</svg>
 		</a>
 	</div>
 
@@ -1118,20 +1304,23 @@
 	<div class="startBox">
 			<h2>Let's Get Started
 				<a class="right closeBox" data-role="button" data-click="ux.closeStartModal">
-					<object data="images/close.svg" type="image/svg+xml"  > </object>
-
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#close"></use>
+					</svg>
 				</a>
 			</h2>
 			<div class="clearfix"></div>
 			<div class="imgLine">
-				<object data="images/ballons.svg" type="image/svg+xml" width="100"> </object>
-
+				<svg width="100">
+					<use xlink:href="styles/svg/symbol.svg#ballons"></use>
+				</svg>
 			</div>
 			<div class="startOptions">
 				<div class="startTask" id="startPhoneVerified">
 					<div class="startLine-photo">
-						<object data="images/verified-phone.svg" type="image/svg+xml" height="36"> </object>
-
+						<svg width="36">
+							<use xlink:href="styles/svg/symbol.svg#verified-phone"></use>
+						</svg>
 					</div>
 					<div class="startLine-text"> 
 						<a class="btnClear" data-role="button" data-rel="modalview" href="#modalview-verifyPhone">Verified your number</a>
@@ -1175,7 +1364,9 @@
 		<div data-role="navbar">
 			<span>intelliGallery</span>
 			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey-sm">
-				<object data="images/close.svg" type="image/svg+xml"> </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 			</a>
 			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear">Add</a>
 		</div>
@@ -1199,12 +1390,16 @@
 			<ul data-role="buttongroup" data-index="0" data-select="galleryEditView.galleryActionView">
 				<li>
 					<a class="btnClear gallerySelectBtn-grid" data-role="button">
-						<object data="images/icon-grid-active.svg" type="image/svg+xml" class="icon-md"></object>
+						<svg class="icon-md">
+							<use xlink:href="styles/svg/symbol.svg#icon-grid-active"></use>
+						</svg>
 					</a>
 				</li>
 				<li>
 					<a class="btnClear gallerySelectBtn-list" data-role="button">
-						<object data="images/icon-list-alt.svg" type="image/svg+xml" class="icon-md"></object>
+						<svg class="icon-md">
+							<use xlink:href="styles/svg/symbol.svg#icon-list-alt"></use>
+						</svg>
 					</a>
 				</li>
 			</ul>
@@ -1224,18 +1419,26 @@
 	<ul data-role="actionsheet" id="galleryEditPhotoActions">
 		<li>
 			<a data-action="galleryEditView.addCamera">
-				<object data="images/action-camera.svg" type="image/svg+xml" class="icon-action"></object> Camera
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-camera"></use>
+				</svg>
+				Camera
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryEditView.addPhoto">
-				<object data="images/action-device.svg" type="image/svg+xml" class="icon-action"></object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-device"></use>
+				</svg>
 				Device Gallery
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryEditView.addGallery">
-				<object data="images/action-memories.svg" type="image/svg+xml" class="icon-action"></object> Memories Gallery
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-memories"></use>
+				</svg>
+				Memories Gallery
 			</a>
 		</li>
 	</ul>
@@ -1248,7 +1451,9 @@
 		<div data-role="navbar">
 			<span>intelliNote Viewer</span>
 			<a data-click="noteViewer.closeModal" data-role="button" data-align="left" class="btnClear-grey">
-				<object data="images/close.svg" type="image/svg+xml"> </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 			</a>
 			<a data-click="noteViewer.editNote" data-role="button" data-align="right" class="btnClear-grey">Edit</a>
 		</div>
@@ -1270,7 +1475,9 @@
 		<div data-role="navbar">
 			<span>intelliNote</span>
 			<a data-role="button" data-click="noteEditView.onDone" data-align="left" class="btnClear-grey">
-				<object data="images/close.svg" type="image/svg+xml"> </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 			</a>
 			<a data-role="button" data-click="noteEditView.onSave" data-align="right" id="noteEditor-saveBtn" class="btnClear">Save</a>
 		</div>
@@ -1287,18 +1494,26 @@
 	<ul data-role="actionsheet"  id="notePhotoActions" >
 		<li>
 			<a data-action="noteEditView.addCamera">
-				<object data="images/action-camera.svg" type="image/svg+xml" class="icon-action"></object> Camera
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-camera"></use>
+				</svg>
+				Camera
 			</a>
 		</li>
 		<li>
 			<a data-action="noteEditView.addPhoto">
-				<object data="images/action-device.svg" type="image/svg+xml" class="icon-action"></object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-device"></use>
+				</svg>
 				Device Gallery
 			</a>
 		</li>
 		<li>
 			<a data-action="noteEditView.addGallery">
-				<object data="images/action-memories.svg" type="image/svg+xml" class="icon-action"></object> Memories Gallery
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-memories"></use>
+				</svg>
+				Memories Gallery
 			</a>
 		</li>
 	</ul>
@@ -1398,36 +1613,58 @@
 		<ul class="list-inline hasMotion" id="groupActionBtns">
 			<li>
 				<a class="btnClear" data-role="button" id="groupActions-track" data-click="groupActionView.groupTracking" >
-					<object data="images/icon-tracking.svg" type="image/svg+xml" ></object> Start Tracking
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-tracking"></use>
+					</svg>
+					Start Tracking
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.groupChat" >
-					<object data="images/contacts.svg" type="image/svg+xml" ></object> Group Chat
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#contacts"></use>
+					</svg>
+					Group Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.groupGallery" >
-					<object data="images/icon-gallery.svg" type="image/svg+xml" ></object> Group Gallery
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-gallery"></use>
+					</svg>
+					Group Gallery
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.sendEmail">
-					<object data="images/icon-ghostMail.svg" type="image/svg+xml" ></object> Send Email</a>
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-ghostMail"></use>
+					</svg>
+					Send Email
+				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.sendSMS">
-					<object data="images/icon-sms.svg" type="image/svg+xml" ></object>< Send SMS
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-sms"></use>
+					</svg>
+					Send SMS
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.AddChat" >
-					<object data="images/contacts.svg" type="image/svg+xml" ></object> Create New Chat
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#contacts"></use>
+					</svg>
+					Create New Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.AddGallery" >
-					<object data="images/icon-gallery.svg" type="image/svg+xml" ></object> Create New Gallery
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-gallery"></use>
+					</svg>
+					Create New Gallery
 				</a>
 			</li>
 		</ul>
@@ -1439,14 +1676,16 @@
 <div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; min-height:65%; display: none;">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal">
-			<object data="images/close-white.svg" type="image/svg+xml" ></object></a>
-
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#close-white"></use>
+			</svg>
 		<img class="circle-img-lg" id="contactProfileImg" data-bind="" />
-		<object data="images/status-away.svg" type="image/svg+xml" class="statusContactCard-icon" id="contactStatusImg"></object>
-		<h2 class="preMotionUp textClamp">
+		<img src="images/status-away.svg"  class="statusContactCard-icon" id="contactStatusImg" />
 			<span class="primaryName" id="contactPrimaryName"></span>
 			<span class="hidden" id="currentContactVerified">
-				<object data="images/icon-verified-dark.svg"  type="image/svg+xml" class="user-status-icon"> </object>
+				<svg class="user-status-icon">
+					<use xlink:href="styles/svg/symbol.svg#icon-verified-dark"></use>
+				</svg>
 			</span>
 		</h2>
 		
@@ -1463,36 +1702,55 @@
 	<div class="modal-bottom">
 		<ul class="list-inline hasMotion" id="contactActionBtns">
 			<li>
-				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking" >
-					<object data="images/icon-tracking-active.svg"  type="image/svg+xml" > </object> Start Tracking
+				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking">
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-tracking-active"></use>
+					</svg>
+					Start Tracking
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.privateChat" >
-					<object data="images/icon-private-alt.svg"  type="image/svg+xml" > </object> Private Chat
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-private-alt"></use>
+					</svg>
+					Private Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.sendEmail">
-					<object data="images/icon-ghostMail.svg"  type="image/svg+xml" > </object>  Send Email</a>
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-ghostMail"></use>
+					</svg>
+					Send Email
+				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.callPhone">
-					<object data="images/icon-phone.svg"  type="image/svg+xml" > </object>  Phone Call
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-phone"></use>
+					</svg>
+					Phone Call
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.sendSMS">
-					<object data="images/icon-sms.svg"  type="image/svg+xml" > </object>  Send SMS
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-sms"></use>
+					</svg>
+					Send SMS
 				</a>
 			</li>
 		</ul>
 		<div id="contactActionConnect">
 			<p> <strong><span data-bind="text: name "></span> </strong> is a potential new contact.  Someone you know has invited both of you to a intelligram chat, so you may have already chatted. Once you connect, you'll see each others status and be able to have private chats.</p>
 			<ul class="list-inline hasMotion"  >
-				<li >
-					<a class="btnClear" data-role="button" data-click="contactRequestConnect" >
-						<object data="images/contact-invite.svg"  type="image/svg+xml" > </object>  Ask to Connect
+				<li>
+					<a class="btnClear" data-role="button" data-click="contactRequestConnect">
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg#contact-invite"></use>
+						</svg>
+						Ask to Connect
 					</a>
 				</li>
 			</ul>
@@ -1503,14 +1761,20 @@
 			</p>
 
 			<ul class="list-inline hasMotion"  >
-				<li >
+				<li>
 					<a class="btnClear" data-role="button" data-click="contactRequestAccept" >
-						<object data="images/icon-contact.svg"  type="image/svg+xml" > </object>  Accept Connection
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg#icon-contact"></use>
+						</svg>
+						Accept Connection
 					</a>
 				</li>
-				<li >
-					<a class="btnClear" data-role="button" data-click="contactRequestDecline" >
-						<object data="images/decline-icon.svg"  type="image/svg+xml" > </object> Decline Connection
+				<li>
+					<a class="btnClear" data-role="button" data-click="contactRequestDecline">
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg#decline-icon"></use>
+						</svg>
+						Decline Connection
 					</a>
 				</li>
 			</ul>
@@ -1521,19 +1785,24 @@
 <div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatusView._activeStatus"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
 	<div class="profileStatus-top">
 		<a data-role="button" class="modal-close hidden" data-click="homeView.closeStatusModal">
-			<object data="images/close.svg"  type="image/svg+xml" > </object>
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#close"></use>
+			</svg>
 		</a>
 		<div class="left" style="width: 20%; text-align: center;">
 			<img class="circle-img-md home-profile-img" src=""/>
-			<object data="images/status-away.svg" type="image/svg+xml" class="userStatusView-img userAvailable"> </object>
-
+			<svg class="userStatusView-img userAvailable">
+				<use xlink:href="styles/svg/symbol.svg#status-away"></use>
+			</svg>
 		</div>
 
 		<div class="left" style="width: 80%;">
 			<h3>
 				<span class="primaryName"></span>
 				<span class="hidden" id="profileStatusVerified">
-					<object data="images/icon-verified-dark.svg" type="image/svg+xml" class="user-status-icon"> </object>
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-verified-dark"></use>
+					</svg>
 				</span>
 			</h3>
 			<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
@@ -1586,7 +1855,10 @@
 			<li>
 				<div>
 					<a data-role="button" data-click="userStatusView.onAutoStatusChange" data-autocheckin="false" id="userStatusView-autoCheckin">
-						<object data="images/icon-autoCheckin.svg"  type="image/svg+xml" class="icon-sm"> </object> Enable Auto Checkin </a>
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#icon-autoCheckin"></use>
+						</svg>
+						Enable Auto Checkin </a>
 				</div>
 
 			</li>
@@ -1605,7 +1877,9 @@
 				<div>
 					<div id="checked-in-place">
 						<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut">
-							<object data="images/icon-checkout.svg"  type="image/svg+xml" class="icon-sm"> </object>
+							<svg class="icon-sm">
+								<use xlink:href="styles/svg/symbol.svg#icon-checkout"></use>
+							</svg>
 							Leave <span id="checkOut-text" data-bind="text: currentPlace"></span>
 						</a>
 					</div>
@@ -1614,7 +1888,9 @@
 			<li>
 				<div>
 					<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
-						<object data="images/icon-checkin-active.svg"  type="image/svg+xml" class="icon-sm"> </object>
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#icon-checkin-active"></use>
+						</svg>
 						Check In
 					</a>
 				</div>
@@ -1636,11 +1912,14 @@
 <div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">
 	    <a class="closeBox right" data-click="ux.closeTestingBox" data-role="button">
-			<object data="images/close.svg" type="image/svg+xml" > </object>
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#close"></use>
+			</svg>
 	    </a>
 	    <p>This feature is in the works!</p>
-		<object data="images/testing.svg" type="image/svg+xml"  id="testingImg"> </object>
-
+			<svg id="testingImg">
+				<use xlink:href="styles/svg/symbol.svg#testing"></use>
+			</svg>
 	</div>
 </div>
 
@@ -1700,10 +1979,15 @@
 		<p class="helper">
            <span class="left">
          # if (data.isPrivate === true) { #
-			   <object data="images/place-private.svg" type="image/svg+xml" > </object>
-             Private
+			   	<svg>
+					<use xlink:href="styles/svg/symbol.svg\\#place-private"></use>
+				</svg>
+            Private
          # } else { #
-            <object data="images/place-public.svg" type="image/svg+xml" > </object> Public
+			   <svg>
+					<use xlink:href="styles/svg/symbol.svg\\#place-public"></use>
+				</svg>
+            	Public
          # }#
            </span>
 				</p>
@@ -1727,8 +2011,9 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" data-click="addPlaceView.onDone" data-align="left">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -1760,8 +2045,9 @@
 		</ul>
 		<p> Place Type
 			<span class="place-tag place-type-add">
-				<object data="images/place-private-light.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#place-private-light"></use>
+				</svg>
 				Private
 			</span>
 		</p>
@@ -1798,7 +2084,9 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="backbutton" data-align="left">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 			<span data-role="view-title"></span>
 		</div>
@@ -1841,11 +2129,21 @@
 			<li>
 				<label>Place Type</label>
 				<div id="publicPlaceHelper" class="hidden">
-					<p><object data="images/place-public.svg"  type="image/svg+xml" class="icon-btn"> </object> Public Place</p>
+					<p>
+						<svg class="icon-btn">
+							<use xlink:href="styles/svg/symbol.svg#place-public"></use>
+						</svg>
+						Public Place
+					</p>
 					<p class="helper-sm">Public places are visible to all users. Great for restaurants and events!</p>
 				</div>
 				<div id="privatePlaceHelper" class="hidden">
-					<p><object data="images/place-private.svg"  type="image/svg+xml" class="icon-btn"> </object> Private Place</p>
+					<p>
+						<svg class="icon-btn">
+							<use xlink:href="styles/svg/symbol.svg#place-private"></use>
+						</svg>
+						Private Place
+					</p>
 					<p class="helper-sm">Private places are shared only with your contacts. Recommended for private residences and other important places.</p>
 				</div>
 			</li>
@@ -1862,13 +2160,15 @@
 		<div data-role="navbar">
 
 			<a data-role="button" data-align="left" data-click="mapViewModal.onDone">
-				<object data="images/close.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 			</a>
             <span id="mapViewModal-title">Map</span>
 			<a data-role="button" data-align="right" data-click="mapViewModal.onDirections">
-				<object data="images/icon-directions.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-directions"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -1887,8 +2187,9 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="backbutton" data-align="left" >
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -1903,12 +2204,16 @@
 		<div class="list-options">
 			# if (data.isShared === undefined || data.isShared === false) {#
 			<a class="btnClear-grey" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.editPlaceBtn">
-				<object data="images/option-edit.svg" type="image/svg+xml"  height="18"> </object>
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
+				</svg>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			# } #
 			<a class="btnClear-red" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.deletePlaceBtn">
-				<object data="images/icon-trash.svg" type="image/svg+xml"  height="18"> </object>
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div>
@@ -1941,17 +2246,25 @@
 				   <span class="left">
 				 		# if (data.isPrivate === true) { #
 					   		<span class="place-tag place-type">
-								<object data="images/place-private.svg" type="image/svg+xml" > </object>
+								<svg>
+									<use xlink:href="styles/svg/symbol.svg\\#place-private"></use>
+								</svg>
 								 Private
 							</span>
 				 		#} else {#
 					   		<span class="place-tag place-type">
-								<object data="images/place-public.svg" type="image/svg+xml" > </object> Public
+								<svg>
+									<use xlink:href="styles/svg/symbol.svg\\#place-public"></use>
+								</svg>
+								Public
 							</span>
 				 		#}#
 				   	#if (data.hasPlaceChat) {#
 					   <span class="place-tag placeChat-chatIcon">
-						   <object data="images/icon-Chat.svg"  type="image/svg+xml" class="icon-md"> </object> Chat
+						   <svg class="icon-md">
+							   <use xlink:href="styles/svg/symbol.svg\\#icon-Chat"></use>
+						   </svg>
+						   Chat
 					   </span>
 					#}#
 				   </span>
@@ -2061,8 +2374,9 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button" data-click="sendViaModal.closeModal">
-				<object data="images/close.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 			</a>
 			<span>Send Via Intelligram</span>
 		</div>
@@ -2070,8 +2384,9 @@
 	<div id="sendViaListDiv">
 		<ul id="sendVia-listview"></ul>
 		<div class="emptyState hidden">
-			<object data="images/empty-chat.svg" type="image/svg+xml" > </object>
-
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#empty-chat"></use>
+			</svg>
 		</div>
 	</div>
 </div>
@@ -2087,8 +2402,9 @@
 	<div id="channelListDiv">
 		<ul id="channels-listview"></ul>
 		<div class="emptyState hidden">
-			<object data="images/empty-chat.svg" type="image/svg+xml" > </object>
-
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#empty-chat"></use>
+			</svg>
 		</div>
 	</div>
 </div>
@@ -2152,17 +2468,23 @@
     				# if (isPrivate){#
     					<li>
 		    				<a class="btnClear-red" data-channel="#:channelUUID #" data-role="button"  data-click="channelsView.deleteChannel">
-		    					<object data="images/icon-trash.svg" type="image/svg+xml" > </object>
+		    					<svg>
+		    						<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+		    					</svg>
 		    					<p class="chat-option-selection"> Delete </p>
 		    				</a>
 	    				</li>
 	    				<li>
 		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelUUID #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 			    				# if(data.isMuted) {#
-		    						<object data="images/icon-unmute.svg" type="image/svg+xml" class="channelMuteImg"></object>
+									<svg class="channelMuteImg">
+										<use xlink:href="styles/svg/symbol.svg\\#icon-unmute"></use>
+									</svg>
 			    					<p class="channelMute">Unmute</p>
 		    					#} else {#
-		    						<object data="images/icon-mute.svg" type="image/svg+xml" class="channelMuteImg"></object>
+		    						<svg class="channelMuteImg">
+										<use xlink:href="styles/svg/symbol.svg\\#icon-mute"></use>
+									</svg>
 			    					<p class="channelMute">Mute</p>
 		    					#}#
 			    			</a>
@@ -2170,8 +2492,9 @@
     				#} else {#
     					<li>
 		    				<a class="btnClear-red" data-role="button" data-channel="#:channelUUID #" data-click="channelsView.deleteChannel" data-channel="#:channelUUID #">
-		    					<object data="images/icon-trash.svg" type="image/svg+xml" > </object>
-
+		    					<svg>
+									<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+								</svg>
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
@@ -2179,10 +2502,14 @@
 	    				<li>
 		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelUUID #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 		    					# if(data.isMuted) {#
-		    						<object data="images/icon-unmute.svg" type="image/svg+xml" class="channelMuteImg"></object>
+		    						<svg class="channelMuteImg">
+										<use xlink:href="styles/svg/symbol.svg\\#icon-unmute"></use>
+									</svg>
 			    					<p class="channelMute">Unmute</p>
 		    					#} else {#
-		    						<object data="images/icon-mute.svg" type="image/svg+xml" class="channelMuteImg"></object>
+		    						<svg class="channelMuteImg">
+										<use xlink:href="styles/svg/symbol.svg\\#icon-mute"></use>
+									</svg>
 			    					<p class="channelMute">Mute</p>
 		    					#}#
 			    			</a>
@@ -2192,8 +2519,9 @@
     				# if(isPrivate !== true && isOwner){#
     						<li>
 			    				<a class="btnClear-grey" data-role="button" data-click="channelsView.editChannel" data-channel="#:channelUUID #">
-				    				<object data="images/option-edit.svg" type="image/svg+xml" > </object>
-
+			    					<svg>
+										<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
+									</svg>
 				    				<p class="chat-option-selection">Edit</p>
 				    			</a>
 	    					</li>
@@ -2224,11 +2552,16 @@
 	    		<h4 class="textClamp">
 					<span class="chatStatusIcon">
 							# if(data.isMuted){#
-								<object data="images/icon-mute.svg"  type="image/svg+xml" class="channelMuteImg"> </object>
+								<svg class="channelMuteImg">
+										<use xlink:href="styles/svg/symbol.svg\\#icon-mute"></use>
+									</svg>
 							#}else {#
 								#if(data.unreadCount > 0){#
 									<div class="unreadBanner"></div>
-									<object data="images/icon-notify-unread-highlight.svg"  type="image/svg+xml" class="list-status"> </object>
+
+									<svg class="list-status">
+										<use xlink:href="styles/svg/symbol.svg\\#icon-notify-unread-highlight"></use>
+									</svg>
 								#}#
 							#}#
 	    				</span>
@@ -2241,25 +2574,30 @@
 	    		<div class="chatType">
 		    		# if(isPrivate && members.length <= 2){#
 		    			<span class="placeType-list">
-		    			<object data="images/icon-private.svg" type="image/svg+xml" > </object>
-		    				 Private Chat
+		    				<svg>
+								<use xlink:href="styles/svg/symbol.svg\\#icon-private"></use>
+							</svg>
+		    				Private Chat
 		    			</span>
 		    		#} else if (isPlace) {#
 		    			<span class="placeType-list">
-		    			<object data="images/icon-place.svg" type="image/svg+xml" id="chatList-place-icon"> </object>
-
+		    				<svg id="chatList-place-icon">
+								<use xlink:href="styles/svg/symbol.svg\\#icon-place"></use>
+							</svg>
 		    				Place Chat - #:ownerString#
 		    			</span>
 		    		#} else if(membersCount <= 2) {#
 		    			<span class="placeType-list">
-		    			<object data="images/icon-group.svg" type="image/svg+xml" > </object>
-
-		    					#:ownerString#
+		    			<svg>
+								<use xlink:href="styles/svg/symbol.svg\\#icon-group"></use>
+							</svg>
+		    				#:ownerString#
 		    			</span>
 		    		#} else {#
 		    			<span class="placeType-list">
-		    			<object data="images/icon-group.svg" type="image/svg+xml" > </object>
-
+		    				<svg>
+								<use xlink:href="styles/svg/symbol.svg\\#icon-group"></use>
+							</svg>
 		    					#:ownerString# and #:membersCount# others
 		    			</span>
 		    		#}#
@@ -2281,8 +2619,9 @@
 	<div data-role="header">
 		<div data-role="navbar" id="channelNavBar">
 			<a data-align="left" data-role="button" data-click="channelView.onDone" id="channel-back-button">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 			<span id="channel-titleBtn" data-role="button" data-click="channelView.doTitleClick">
 				<img src="" id="channelImage" height="32" class="circle-img"/>
@@ -2291,8 +2630,9 @@
 				<span id="channelName"></span>
 			</span>
 			<a data-align="right" data-role="button" id="messagePresenceButton" data-click="channelPresence.openModal">
-				<object data="images/icon-group.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-group"></use>
+				</svg>
 			</a>
 		</div>
 
@@ -2337,25 +2677,39 @@
 						<div data-role="footer" class="footer">
 							<div data-role="tabstrip">
 								<a href="#emoji-people">
-									<object data="images/emoji-people.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-people"></use>
+									</svg>
 								</a>
 								<a href="#emoji-nature">
-									<object data="images/emoji-nature.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-nature"></use>
+									</svg>
 								</a>
 								<a href="#emoji-food">
-									<object data="images/emoji-food.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-food"></use>
+									</svg>
 								</a>
 								<a href="#emoji-activity">
-									<object data="images/emoji-activity.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-activity"></use>
+									</svg>
 								</a>
 								<a href="#emoji-travel">
-									<object data="images/emoji-travel.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-travel"></use>
+									</svg>
 								</a>
 								<a href="#emoji-objects">
-									<object data="images/emoji-objects.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-objects"></use>
+									</svg>
 								</a>
 								<a href="#emoji-flags">
-									<object data="images/emoji-flags.svg" type="image/svg+xml"  class="icon-lg"\> </object>
+									<svg class="icon-lg">
+										<use xlink:href="styles/svg/symbol.svg#emoji-flags"></use>
+									</svg>
 								</a>
 							</div>
 						</div>
@@ -2365,56 +2719,75 @@
 				<ul>
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#galleryActions">
-							<object data="images/chat-camera.svg" type="image/svg+xml" height="22"> </object>
+							<svg height="22">
+								<use xlink:href="styles/svg/symbol.svg#chat-camera"></use>
+							</svg>
 						</a>
 					</li>
 					<li id="messageTitleTagLi">
 						<a data-role="button" data-click="channelView.messageTitleTag">
-							<object data="images/icon-tag.svg" type="image/svg+xml" height="22"> </object>
-
+							<svg height="22">
+								<use xlink:href="styles/svg/symbol.svg#icon-tag"></use>
+							</svg>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
-							<object data="images/icon-editor.svg" type="image/svg+xml" height="22" id="chat-editorBtnImg"> </object>
-
+							<svg height="22" id="chat-editorBtnImg">
+								<use xlink:href="styles/svg/symbol.svg#icon-editor"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-click="channelView.messageSearch">
-							<object data="images/icon-web.svg" type="image/svg+xml" height="22" id="messageSearchImg"> </object>
+							<svg height="22" id="messageSearchImg">
+								<use xlink:href="styles/svg/symbol.svg#icon-web"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageInsertTag">
-							<object data="images/icon-smart.svg" type="image/svg+xml" height="22" id="chatSmartTagBtn"> </object>
+							<svg height="22" id="chatSmartTagBtn">
+								<use xlink:href="styles/svg/symbol.svg#icon-smart"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-rel="actionsheet" href="#newMessageActions">
-							<object data="images/icon-smartMenu.svg" type="image/svg+xml" height="22" > </object>
+							<svg height="22" id="chatSmartTagBtn">
+								<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageLockButton">
-							<object data="images/icon-lock.svg" type="image/svg+xml" height="20"  id="messageLockButtonIcon" > </object>
+							<svg height="20" id="messageLockButtonIcon">
+								<use xlink:href="styles/svg/symbol.svg#icon-lock"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.togglePrivacyMode" id="privacyMode">
-							<object data="images/privacy-off.svg" type="image/svg+xml"  height="22"> </object>
-							<img src="images/privacy-off.svg" />
+							<svg height="22" id="messageLockButtonIcon">
+								<use xlink:href="styles/svg/symbol.svg#privacy-off"></use>
+							</svg>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" class="btnClear" href="#emoji-menu" data-rel="popover">
-							<object data="images/icon-emoji.svg" type="image/svg+xml" height="22"  id="emoji-icon" > </object>
-							<object data="images/emoji-active.svg" type="image/svg+xml" height="22"  id="emoji-active" class="hidden" > </object>
-
+							<svg height="22" id="emoji-icon">
+								<use xlink:href="styles/svg/symbol.svg#icon-emoji"></use>
+							</svg>
+							<svg height="22" id="emoji-active" class="hidden">
+								<use xlink:href="styles/svg/symbol.svg#icon-emoji-active"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="right">
 						<a data-role="button" class="btnClear" id="messageSend" data-click="channelView.messageSend">
+							<svg>
+								<use xlink:href="styles/svg/symbol.svg#icon-send"></use>
+							</svg>
 						</a>
 					</li>
 				</ul>
@@ -2433,31 +2806,79 @@
 	</script>
 
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
-		<li><a id="messageAlertLi" data-action="channelView.messageAlert"><object data="images/icon-unmute.svg" type="image/svg+xml" class="icon-smart"></object> Add Alert</a></li>
-		<li><a data-action="channelView.messageCalendar"><object data="images/icon-event.svg" type="image/svg+xml" class="icon-smart"></object> Add Event</a></li>
-		<li><a data-action="channelView.messageFlight"><object data="images/intelliFlight-icon.svg" type="image/svg+xml" class="icon-smart"></object> Add Flight</a></li>
-		<li><a data-action="channelView.messageMovie"><object data="images/intelliMovie-icon.svg" type="image/svg+xml" class="icon-smart"></object> Add Movie</a></li>
-		<li><a data-action="channelView.messagePlace"><object data="images/icon-place-dark.svg" type="image/svg+xml" class="icon-smart"></object> Add Place</a></li>
-		<li><a data-action="channelView.messageTrip"><object data="images/intelliTrip-icon.svg" type="image/svg+xml" class="icon-smart"></object> Add Trip</a></li>
+		<li>
+			<a id="messageAlertLi" data-action="channelView.messageAlert">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#icon-unmute"></use>
+				</svg>
+				Add Alert
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messageCalendar">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#icon-event"></use>
+				</svg>
+				Add Event
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messageFlight">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#intelliFlight-icon"></use>
+				</svg>
+				Add Flight
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messageMovie">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#intelliMovie-icon"></use>
+				</svg>
+				Add Movie
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messagePlace">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#icon-place-dark"></use>
+				</svg>
+				Add Place
+			</a>
+		</li>
+		<li>
+			<a data-action="channelView.messageTrip">
+				<svg class="icon-smart">
+					<use xlink:href="styles/svg/symbol.svg#intelliTrip-icon"></use>
+				</svg>
+				Add Trip
+			</a>
+		</li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
 	<ul data-role="actionsheet" id="galleryActions" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="channelView.messageCamera">
-				<object data="images/action-camera.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-camera"></use>
+				</svg>
 				Camera
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messagePhoto">
-				<object data="images/action-device.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-device"></use>
+				</svg>
 				Device Gallery
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageGallery">
-				<object data="images/action-memories.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-memories"></use>
+				</svg>
 				Memories Gallery
 			</a>
 		</li>
@@ -2466,7 +2887,9 @@
 	<ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="channelView.archiveMessage">
-				<object data="images/icon-memories.svg"  type="image/svg+xml" class="icon-sm"> </object>
+				<svg  class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#icon-memories"></use>
+				</svg>
 				Remember Message
 			</a>
 		</li>
@@ -2477,14 +2900,20 @@
 	<ul data-role="actionsheet" id="messageActionsSender" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="channelView.archiveMessage">
-				<object data="images/action-memories.svg"  type="image/svg+xml" class="icon-action"> </object> Remember Message
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-memories"></use>
+				</svg>
+				Remember Message
 			</a>
 		</li>
 		<!--<li><a data-action="channelView.addToSmartList"><object data="images/gallery-list.svg"  type="image/svg+xml" class="icon-sm"> </object> Add To Smart List</a></li>-->
 		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
 		<li>
 			<a data-action="channelView.messageRecall">
-				<object data="images/action-recall.svg"  type="image/svg+xml" class="icon-action"> </object> Recall Message
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-recall"></use>
+				</svg>
+				Recall Message
 			</a>
 		</li>
 	</ul>
@@ -2497,12 +2926,18 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="backbutton"  data-align="right">
-				<object data="images/close.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
 	<div class="hidden card" id="addChatNoContacts" style="margin-top: 50%">
-		<p><object data="images/action-contact.svg"  type="image/svg+xml" class="card-img-lg"> </object> </p>
+		<p>
+			<svg class="card-img-lg">
+				<use xlink:href="styles/svg/symbol.svg#action-contact"></use>
+			</svg>
+		</p>
 		<p class="helper">
 			Chats are better with friends, add a contact to start a chat.
 		</p>
@@ -2517,7 +2952,10 @@
 		</div>
 		<form id="addChat-step1">
 			<h3>
-				<object data="images/flag.svg" type="image/svg+xml" class="icon-sm"></object> Create a New Chat
+				<svg  class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#flag"></use>
+				</svg>
+				Create a New Chat
 			</h3>
 			<p>Chat with friends and family around shared interests.</p>
 
@@ -2547,7 +2985,9 @@
 					<div class="line"></div>
 					<label>Optional
 						<div class="chatOption-event">
-							<object data="images/event.svg" type="image/svg+xml" class="chatOptionImg"> </object>
+							<svg class="chatOptionImg">
+								<use xlink:href="styles/svg/symbol.svg#event"></use>
+							</svg>
 							<a class="btnClear-grey" data-role="button" data-click="addChannelView.doShowEventInputs" id="addChatEvent">Add Event info</a>
 						</div>
 
@@ -2571,7 +3011,12 @@
 
 		<div class="footerBk" data-role="footer" id="addChat-helper-1">
 			<div class="helperBox" id="addChat-helper1" >
-				<p class="helper"><object data="images/help.svg" type="image/svg+xml" > </object> Looking for 1-on-1 private chat?</p>
+				<p class="helper">
+					<svg class="chatOptionImg">
+						<use xlink:href="styles/svg/symbol.svg#help"></use>
+					</svg>
+					Looking for 1-on-1 private chat?
+				</p>
 				<a class="btnClear" data-role="button" href="#contacts">Go to intelligram contacts</a>
 			</div>
 		</div>
@@ -2584,7 +3029,9 @@
 		<div data-role="navbar">
 			<span> Edit Chat </span>
 			<a data-role="button" href="#channels" data-align="left">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -2597,8 +3044,10 @@
 		</form>
 		<div>
 			<div class="pad">
-				<object data="images/edit-chat.svg" type="image/svg+xml" > </object>
-				 Chat Members
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#edit-chat"></use>
+				</svg>
+				Chat Members
 			</div>
 			<div>
 				<ul class="list-inline" id="editmembers-listview"></ul>
@@ -2608,7 +3057,9 @@
 	<div class="footerBk" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" href="#channelMembers">
 			<p class="actionBtn-text">Add members</p>
-			<object data="images/nav-add-white.svg" type="image/svg+xml" > </object>
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#nav-add-white"></use>
+			</svg>
 		</a>
 		<a class="btnSpan-btm btnPrimary" data-click="editChannelView.validate" type="button" data-role="button">	Save
 		</a>
@@ -2694,8 +3145,9 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button" data-click="channelPresence.closeModal">
-				<object data="images/close.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 			</a>
 			<span>Members</span>
 		</div>
@@ -2738,7 +3190,9 @@
 			<h4 class="textClamp">
 			#= primaryName #
 			#if(data.phoneValidated){#
-				<object data="images/user-verified.svg" type="image/svg+xml" class="user-status-icon"> </object>
+				<svg class="user-status-icon">
+					<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
+				</svg>
 			#}#
 			</h4>
 		</div>
@@ -2788,17 +3242,19 @@
 			<h4 class="textClamp">
 				#= primaryName #
 				#if(data.phoneValidated){#
-					<object data="images/user-verified.svg" type="image/svg+xml" class="user-status-icon"> </object>
-
+					<svg class="user-status-icon">
+						<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
+					</svg>
 				#}#
-				
 			</h4>
 			
 		</div>
 
 		<div class="deleteMemberText">
 			<a class="btnClear-red deleteChannelMember" data-role="button" data-id="#:data.uuid#" data-click="editChannelView.deleteMemberBtn">
-				<object data="images/icon-trash.svg"  type="image/svg+xml" class="icon"> </object>
+				<svg class="icon">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -2810,17 +3266,19 @@
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
 	<div data-role="tabstrip" id="contacts-buttongroup" class="tabBar" data-select="contactsView.onTabSelect">
 		<a data-tab="0">
-			<object data="images/icon-contact.svg" type="image/svg+xml" id="contacts-tab-0-img"> </object>
+			<img src="images/icon-contact.svg" type="image/svg+xml" id="contacts-tab-0-img" />
 			 Contacts
 		</a>
 		<a data-tab="1">
-			<object data="images/icon-group.svg" type="image/svg+xml" id="contacts-tab-1-img"> </object>
+			<img src="images/icon-group.svg" type="image/svg+xml" id="contacts-tab-1-img" />
 			 Groups
 		</a>
 	</div>
 	<div id="contacts-contacts">
 		<a class="hidden btnClear topSearchReferral" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
-			<object data="images/contacts.svg" type="image/svg+xml" > </object>
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#contacts"></use>
+			</svg>
 			Search device for "<span id="btnSearchDeviceName"></span>"
 		</a>
 		<div id="contactListDiv" style="padding-bottom: 24px;">
@@ -2829,13 +3287,16 @@
 			<div id="deviceContactPermission" class="pad center hidden">
 
 				<a class="btnClear">
-					<object data="images/import.svg" type="image/svg+xml"  height="16"> </object>
+					<svg height="16">
+						<use xlink:href="styles/svg/symbol.svg#import"></use>
+					</svg>
 					Find contacts on device
 				</a>
 			</div>
 			<div class="emptyState hidden">
-				<object data="images/empty-contacts.svg" type="image/svg+xml"></object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#empty-contacts"></use>
+				</svg>
 			</div>
 		</div>
 	</div>
@@ -2844,8 +3305,9 @@
 			<ul id="groups-listview" class="listview"></ul>
 
 			<div class="emptyState hidden">
-				<object data="images/empty-contacts.svg" type="image/svg+xml"></object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#empty-contacts"></use>
+				</svg>
 			</div>
 		</div>
 	</div>
@@ -2856,7 +3318,10 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="backbutton"  data-align="left">
-				<object data="images/nav-back.svg" type="image/svg+xml"></object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 			<span data-role="view-title"></span>
 		</div>
 	</div>
@@ -2864,9 +3329,19 @@
 	<div style="padding-bottom: 24px;">
 		<div class="tempSearchBox">
 			<div class="appendSearch">
-				<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml"></object></span>
+				<span class="searchIcon">
+					<svg>
+					<use xlink:href="styles/svg/symbol.svg#search"></use>
+				</svg>
+				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
-				<span class="enterSearch hidden"><a class="btnClear-grey"><object data="images/close.svg" type="image/svg+xml" class="icon-sm"></object></a></span>
+				<span class="enterSearch hidden">
+					<a class="btnClear-grey">
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg#close"></use>
+						</svg>
+					</a>
+				</span>
 			</div>
 		</div>
 		<div id="contactImport-noResults" class="hidden">No results found</div>
@@ -2879,13 +3354,19 @@
 		<div data-role="header">
 			<div data-role="navbar">
 				<a data-align="left" class="btnClear-grey" data-click="addContactView.closeModal" data-role="button">Cancel</a>
-				<span data-role="view-title"><object data="images/invite.svg" type="image/svg+xml"  height="16"> </object></span>
+				<span data-role="view-title">
+					<svg height="16">
+						<use xlink:href="styles/svg/symbol.svg#invite"></use>
+					</svg>
+				</span>
 			</div>
 		</div>
     	<form id="addContactForm">
 		<div class="topHalf">
 			<div class="topHalfLeft">
-				<a data-role="button" data-click="addContactView.cycleProfilePhoto"> <img class="circle-img-lg shadow" id="addContactPhoto" src="images/default-img.png" /> </a>
+				<a data-role="button" data-click="addContactView.cycleProfilePhoto">
+					<img class="circle-img-lg shadow" id="addContactPhoto" src="images/default-img.png" />
+				</a>
 			</div>
 			<div class="topHalfRight" style="margin-top: -2em;">
 				<div>
@@ -2906,7 +3387,11 @@
 			</li>
 			<li id="vaildMobileNumberError">
 				<div class="panel">
-					<h3><object data="images/icon-warning.svg"  type="image/svg+xml" class="icon-sm"> </object> Invalid Mobile Number</h3>
+					<h3>
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#icon-warning"></use>
+						</svg>
+						Invalid Mobile Number</h3>
 					<p>Try another number or go to your device's Contact app and add a mobile number.</p>
 				</div>
 			</li>
@@ -2974,12 +3459,15 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" data-click="editContactView.onDone" data-align="left" >
-				<object data="images/nav-back.svg" type="image/svg+xml"></object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
-			<a  data-role="button"  data-rel="actionsheet" href="#editContact-contactActions" class="btnClear-grey" data-align="right">
-				<object data="images/nav-gear.svg" type="image/svg+xml"></object></a>
-
+			<a  data-role="button" data-rel="actionsheet" href="#editContact-contactActions" class="btnClear-grey" data-align="right">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-gear"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 	<div>
@@ -3011,7 +3499,11 @@
 					</div>
 				</li>
 				<li class="contactEdit-group-edit">
-					<label><object data="images/gg-ice.svg"  type="image/svg+xml" class="icon-sm"> </object> ICE Contact
+					<label>
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#gg-ice"></use>
+						</svg>
+						ICE Contact
 						<input type="checkbox" data-role="switch" data-bind="checked: isICE"/>
 					</label><br/>
 					<span class="caption-sm left">In Case of Emergency</span>
@@ -3020,8 +3512,10 @@
 				<li id="contactEdit-phone-read">
 					<p>Phone
 						<span class="helper helper-verified" id="edit-verified-phone">
-							<object data="images/gg-verified.svg" type="image/svg+xml" class="helper-verified-img"></object>
-	                             Verified
+	                        <svg class="helper-verified-img" height="16">
+								<use xlink:href="styles/svg/symbol.svg#gg-verified"></use>
+							</svg>
+							Verified
                         </span>
 					</p>
 					<p class="gg-read-value" id="editContact-phone-input"></p>
@@ -3034,9 +3528,10 @@
 				<li id="editContact-email-read">
 					<p>Email
 						<span class="helper helper-verified" id="edit-verified-email">
-							<object data="images/gg-verified.svg" type="image/svg+xml" class="helper-verified-img" height="16"></object>
-
-	                             Verified
+							<svg class="helper-verified-img" height="16">
+								<use xlink:href="styles/svg/symbol.svg#gg-verified"></use>
+							</svg>
+							Verified
                         </span>
 					</p>
 					<p class="gg-read-value" data-bind="text: email"></p>
@@ -3186,8 +3681,9 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left">
-				<object data="images/menu-icon.svg" type="image/svg+xml" class="menuIcon" ></object>
-
+				<svg class="menuIcon">
+					<use xlink:href="styles/svg/symbol.svg#menu-icon"></use>
+				</svg>
 			</a>
 			<a data-role="button" href="#contactImport" data-align="right" ><i class="ghostIconNavbar fa fa-plus"></i> </a>
 		</div>
@@ -3207,11 +3703,11 @@
 	<div  class="appBox noPad">
 		<div id="gallery-buttongroup" class="tabBar" data-role="tabstrip" data-select="galleryView.onTabSelect">
 			<a data-tab="0">
-				<object data="images/icon-myNotes-alt.svg" type="image/svg+xml"  id="galleryView-tab-notes" ></object>
+				<img src="images/icon-myNotes-alt.svg" id="galleryView-tab-notes" />
 				 Notes
 			</a>
 			<a data-tab="1">
-				<object data="images/icon-photo-dark.svg" type="image/svg+xml"  id="galleryView-tab-photos" ></object>
+				<img src="images/icon-photo-dark.svg" id="galleryView-tab-photos" />
 				Photos
 			</a>
 		</div>
@@ -3242,8 +3738,10 @@
 				</div>
 				<div class="galleries">
 					<a class="btnClear" data-role="button" data-click="galleryView.openGalleryPicker">
-						Galleries 	<object data="images/icon-arrow-right-active.svg" type="image/svg+xml"></object>
-
+						Galleries
+						<svg class="icon">
+							<use xlink:href="styles/svg/symbol.svg#icon-arrow-right-active"></use>
+						</svg>
 					</a>
 				</div>
 				<!--<div class="photoDisplayView">
@@ -3271,19 +3769,26 @@
 			<div class="privateNoteContent">
 				<p class="helper" style="padding-top: 0.5em;">
 				<span class="hidden">
-					<object data="images/icon-memories.svg"  type="image/svg+xml" class="icon"> </object> No Notes here yet
+					<svg class="icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-memories"></use>
+					</svg>
+					No Notes here yet
 				</span>
 				</p>
 				<div class="messageMediaBar hidden" style="text-align: center;">
 					<ul>
 						<li>
 							<a data-role="button" href="#noteEditor?returnview=gallery">
-								<object data="images/icon-myNotes.svg" type="image/svg+xml"  height="20"> </object>
+								<svg height="20">
+									<use xlink:href="styles/svg/symbol.svg#icon-myNotes"></use>
+								</svg>
 							</a>
 						</li>
 						<li>
 							<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
-								<object data="images/icon-smartMenu.svg" type="image/svg+xml"  height="24"></object>
+								<svg height="24">
+									<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
+								</svg>
 							</a>
 						</li>
 					</ul>
@@ -3305,13 +3810,17 @@
 	<ul data-role="actionsheet" id="galleryActionsPhoto" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="galleryView.galleryCamera">
-				<object data="images/action-camera.svg" type="image/svg+xml" class="icon-action"></object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-camera"></use>
+				</svg>
 				Camera
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryView.galleryPhoto">
-				<object data="images/action-device.svg" type="image/svg+xml" class="icon-action"></object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-device"></use>
+				</svg>
 				Device Gallery
 			</a>
 		</li>
@@ -3319,12 +3828,16 @@
 	<ul data-role="actionsheet" id="galleryActionsNote" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-role="button" href="#noteEditor?returnview=home">
-				<object data="images/icon-myNotes.svg" type="image/svg+xml"  height="20"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#icon-myNotes"></use>
+				</svg>
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
-				<object data="images/icon-smartMenu.svg" type="image/svg+xml" height="24"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
+				</svg>
 			</a>
 		</li>
 	</ul>
@@ -3368,7 +3881,10 @@
 			<li>
 				<label for="filter-contact">
 					<input type="checkbox" id="filter-contact" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<object data="images/nav-contacts.svg" type="image/svg+xml" > </object> Contacts
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#nav-contacts"></use>
+					</svg>
+					Contacts
 				</label>
 			</li>
 			<li>
@@ -3381,7 +3897,10 @@
 			<li>
 				<label for="filter-link">
 					<input type="checkbox" id="filter-link" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<object data="images/icon-Links.svg" type="image/svg+xml" > </object> Links
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-Links"></use>
+					</svg>
+					Links
 				</label>
 			</li>
 			<li>
@@ -3394,7 +3913,10 @@
 			<li>
 				<label for="filter-chat">
 					<input type="checkbox" id="filter-chat" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<object data="images/icon-Chat.svg" type="image/svg+xml" > </object>  Chats
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-Chat"></use>
+					</svg>
+					Chats
 				</label>
 			</li>
 			<li>
@@ -3407,7 +3929,10 @@
 			<li>
 				<label for="filter-place">
 					<input type="checkbox" id="filter-place" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<object data="images/icon-Events.svg" type="image/svg+xml" > </object>Events
+					<svg height="18">
+						<use xlink:href="styles/svg/symbol.svg#icon-Events"></use>
+					</svg>
+					Events
 				</label>
 			</li>
 			<li>
@@ -3419,7 +3944,10 @@
 			</li>
 			<li data-role="button" data-click="archiveView.openFilterDate">
 				<div>
-					<object data="images/icon-date.svg" type="image/svg+xml" height="18"> </object>Select Date
+					<svg height="18">
+						<use xlink:href="styles/svg/symbol.svg#icon-date"></use>
+					</svg>
+					Select Date
 				</div>
 			</li>
 		</ul>
@@ -3434,10 +3962,6 @@
 		<ul class="tagList list-inline" data-role="listview" data-template="tag-template"></ul>
 	</div>
 
-
-
-
-
 	<div data-role="footer">
 		<a class="btnSpan-btm btnPrimary" data-role="button" data-click="archiveView.saveFilters"> Save </a>
 	</div>
@@ -3447,8 +3971,9 @@
 <div id="modalview-dateFilter" data-role="modalview" style="width: 90%; display: none;" class="appearance" data-init="archiveView.onInitDateSelect">
 	<h3>Select date
 		<a class="right closeBox" data-role="button" data-click="archiveView.closeModalDateSelect">
-			<object data="images/close.svg" type="image/svg+xml" > </object>
-
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#close"></use>
+			</svg>
 		</a>
 	</h3>
 	<div class="helper">
@@ -3476,7 +4001,10 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-align="left" class="helper smartNote-title">
-				<object data="images/smart-note.svg"  type="image/svg+xml" class="icon-sm"> </object> IntelliNote
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#smart-note"></use>
+				</svg>
+				IntelliNote
 			</span>
 			<a data-click="smartNoteView.onCancel" data-role="button" class="btnClear-red" data-align="right">Cancel</a>
 		</div>
@@ -3539,11 +4067,11 @@
 <script type="text/x-kendo-template" id="movieListTemplate">
 	<div class="smartMovie-poster">
 			#if(data.imgUrl !== ""){#
-
 				<img src="#:data.imageUrl#" />
 			#} else {#
-				<object data="images/smart-movie-default.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg\\#smart-movie-default"></use>
+				</svg>
 			#}#
 
 		</div>
@@ -3587,19 +4115,29 @@
 		<div data-role="navbar">
 			<span>Movie List</span>
 			<a data-click="movieListView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 			<a data-align="right" data-role="button" data-click="ux.toggleSearch">
-				<object data="images/icon-search.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-search"></use>
+				</svg>
 			</a>
 		</div>
 		<div class="gg_mainSearchBox" data-visible="false">
 			<div class="appendSearch">
-				<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml" > </object></span>
+				<span class="searchIcon">
+					<object data="images/search.svg" type="image/svg+xml" > </object>
+				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="Movie title..." id="movieListView-query" />
-				<span class="enterSearch hidden"><a class="btnClear-grey"><object data="images/close.svg" type="image/svg+xml" class="icon-sm"> </object><</a></span>
+				<span class="enterSearch hidden">
+					<a class="btnClear-grey">
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#close"></use>
+						</svg>
+					</a>
+				</span>
 			</div>
 		</div>
 	</div>
@@ -3654,7 +4192,9 @@
 		<div data-role="navbar">
 			<span>Find Movies</span>
 			<a data-click="smartMovieEdit.onCancel" data-role="button" class="btnClear-grey" data-align="left">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -3690,8 +4230,9 @@
 			</li>
 			<li id="smartMovieEdit-placesearchdiv" class="hidden">
 				<div>
-					<object data="images/icon-gps-selected.svg" type="image/svg+xml" class='icon-sm'> </object>
-
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-gps-selected"></use>
+					</svg>
 					<a data-click="smartMovieEdit.onPlaceSearch" data-role="button" class="btnClear" id="smartMovieEdit-placesearchBtn"> Find... </a>
 				</div>
 			</li>
@@ -3699,7 +4240,9 @@
 				<label>Where (Location or Place)</label>
 				<div>
 					<p id="smartMovieEditplaceAddBtn">
-						<object data="images/icon-location.svg" type="image/svg+xml" class='icon-sm'> </object>
+						<svg class='icon-sm'>
+							<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
+						</svg>
 						<span id="smartMovieEdit-placeAddBtn-title" data-bind="text: placeName"></span>
 					</p>
 					<div id="smartMovieEdit-actionBtns">
@@ -3735,8 +4278,9 @@
 
 <div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance" data-model="smartTripView.activeObject">
 	<div class="intelli-header">
-		<object data="images/intelliTrip-light.svg" type="image/svg+xml" > </object>
-
+		<svg>
+			<use xlink:href="styles/svg/symbol.svg#intelliTrip-light"></use>
+		</svg>
 		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
 		<div class="smartTripView-error hidden">
 			<p class="error-msg">
@@ -3814,7 +4358,9 @@
 						<a data-click="smartTripView.onOriginSearch" data-role="button" class="btnClearLine btnFull hidden" id="smartTripView-originSearchBtn"></a>
 						<p class="helper smartTrip-currentLocation">OR</p>
 						<a class="btnClearLine btnFull smartTrip-currentLocation" data-role="button" data-click="smartTripView.getCurrentLocation">
-							<object data="images/icon-location-active.svg" type="image/svg+xml" > </object>
+							<svg>
+								<use xlink:href="styles/svg/symbol.svg#icon-location-active"></use>
+							</svg>
 							Current location
 						</a>
 					</li>
@@ -3856,13 +4402,17 @@
 						<label id="smartTripView-departure-time-label"> Departure </label> <br />
 						<div class="smallSearch">
 								<span class="searchIcon">
-									<object data="images/smart-event.svg" type="image/svg+xml"  > </object>
+									<svg>
+										<use xlink:href="styles/svg/symbol.svg#smart-event"></use>
+									</svg>
 								</span>
 							<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture" data-bind="value: dateDeparture" />
 						</div>
 						<div class="smallSearch-sm">
 							<span class="searchIcon">
-								<object data="images/smart-time.svg" type="image/svg+xml"  > </object>
+								<svg>
+									<use xlink:href="styles/svg/symbol.svg#smart-time"></use>
+								</svg>
 							</span>
 							<input type="time" id="smartTripView-timeDeparture" data-bind="value: timeDeparture"/>
 						</div>
@@ -3873,13 +4423,17 @@
 						<div class="clearfix"></div>
 						<div class="smallSearch">
 								<span class="searchIcon">
-									<object data="images/smart-event.svg" type="image/svg+xml"  > </object>
+									<svg>
+										<use xlink:href="styles/svg/symbol.svg#smart-event"></use>
+									</svg>
 								</span>
 							<input type="text" class="viewSearchBox" id="smartTripView-dateArrival" data-bind="value: dateArrival"/>
 						</div>
 						<div class="smallSearch-sm">
 							<span class="searchIcon">
-								<object data="images/smart-time.svg" type="image/svg+xml"  > </object>
+								<svg>
+									<use xlink:href="styles/svg/symbol.svg#smart-time"></use>
+								</svg>
 							</span>
 							<input type="time" id="smartTripView-timeArrival" data-bind="value: timeArrival"/>
 						</div>
@@ -3936,7 +4490,12 @@
         </div>
 		<div class="summary">
 			<div class="intelli-update hidden" id="intelliTrip-update">
-				<p class="update-header"><object data="images/icon-time-primary.svg" type="image/svg+xml" > </object> Recent Update</p>
+				<p class="update-header">
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#icon-time-primary"></use>
+					</svg>
+					Recent Update
+				</p>
 				<p class="update-content">Stopping for gas</p>
 				<p class="update-time">10 mins ago</p>
 			</div>
@@ -3951,7 +4510,9 @@
 				<p class="tripTime" data-bind="text: arrival"></p>
 			</div>
 			<p>
-				<object data="images/icon-time.svg"  type="image/svg+xml" class="icon-sm"> </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-time"></use>
+				</svg>
 				<span data-bind="text: durationString"></span>
 				(<span data-bind="text: distanceString"></span>)
 			</p>
@@ -3970,7 +4531,12 @@
 <script id="intelliPlace-chat" type="text/x-kendo-template">
 	<div class="intelliPlace" data-role="button" data-objectid="#:objectId#" data-objectType="Place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
-			<p class="title"><object data="images/icon-place-dark.svg" type="image/svg+xml" > </object>  #:name# </p>
+			<p class="title">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg\\#icon-place-dark"></use>
+				</svg>
+				#:name#
+			</p>
             <p class="subheader">
                 #:address#
             </p>
@@ -3981,10 +4547,15 @@
 <script id="intelliTrip-chat" type="text/x-kendo-template">
 	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
-				<p class="intelliTrip-title"><object data="images/intelliTrip-icon.svg" type="image/svg+xml" > </object> #:name# </p>
+				<p class="intelliTrip-title">
+					<img src="images/intelliTrip-icon.svg" /> #:name# </p>
 				<p class="helper intelliTrip-subheader">
 					<span>#:origin#</span>
-					<span class="intelliTrip-arrow"> <object data="images/intelliTrip-arrow.svg" type="image/svg+xml" > </object></span>
+					<span class="intelliTrip-arrow">
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg\\#intelliTrip-arrow"></use>
+						</svg>
+					</span>
 					<span>#:destination#</span>
 				</p>
 			</div>
@@ -3995,15 +4566,24 @@
 			<div class="footer cardFooter">
 				# if(data.tripTimeType === 'arrival') {#
 					<p class="intelliTrip-details">
-						<object data="images/icon-date.svg"  type="image/svg+xml" class="icon-sm"> </object> #:arrival#
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg\\#icon-date"></use>
+						</svg>
+						#:arrival#
 					</p>
 				#} else if(data.tripTimeType === 'departure'){#
 					<p class="intelliTrip-details">
-						<object data="images/icon-date.svg"  type="image/svg+xml" class="icon-sm"> </object> #:departure#
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg\\#icon-date"></use>
+						</svg>
+						#:departure#
 					</p>
 				#}#
 				<p class="intelliTrip-details">
-					<object data="images/icon-time.svg"  type="image/svg+xml" class="icon-sm"> </object> #:durationString# (#:distanceString#)
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg\\#icon-time"></use>
+					</svg>
+					#:durationString# (#:distanceString#)
 				</p>
 			</div>
 	</div>
@@ -4012,10 +4592,19 @@
 <script id="intelliTrip-home" type="text/x-kendo-template">
 	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
-			<p class="intelliTrip-title"><object data="images/intelliTrip-icon.svg" type="image/svg+xml" > </object>#:name# </p>
+			<p class="intelliTrip-title">
+				<svg class="myClass">
+					<use xlink:href="styles/svg/symbol.svg\\#intelliTrip-icon"></use>
+				</svg>
+				#:name#
+			</p>
 			<p class="helper intelliTrip-subheader">
 				<span>#:origin#</span>
-				<span class="intelliTrip-arrow"> <object data="images/intelliTrip-arrow.svg" type="image/svg+xml" > </object> </span>
+				<span class="intelliTrip-arrow">
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg\\#intelliTrip-arrow"></use>
+					</svg>
+					<img src="images/intelliTrip-arrow.svg" /> </span>
 				<span>#:destination#</span>
 			</p>
 		</div>
@@ -4026,15 +4615,24 @@
 		<div class="footer cardFooter">
 
 			<p class="intelliTrip-details">
-				<object data="images/icon-date.svg"  type="image/svg+xml" class="icon-sm"> </object> Depart : #:departure#
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-date"></use>
+				</svg>
+				Depart : #:departure#
 			</p>
 
 			<p class="intelliTrip-details">
-				<object data="images/icon-date.svg"  type="image/svg+xml" class="icon-sm"> </object> Arrive : #:arrival#
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-date"></use>
+				</svg>
+				Arrive : #:arrival#
 			</p>
 
 			<p class="intelliTrip-details">
-				<object data="images/icon-time.svg"  type="image/svg+xml" class="icon-sm"> </object> #:durationString# (#:distanceString#)
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-time"></use>
+				</svg>
+				#:durationString# (#:distanceString#)
 			</p>
 		</div>
 	</div>
@@ -4043,7 +4641,12 @@
 <script id="intelliFlight-chat" type="text/x-kendo-template">
 	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
-				<p class="title"><object data="images/intelliFlight-icon.svg" type="image/svg+xml" > </object> #:name# </p>
+				<p class="title">
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg\\#intelliFlight-icon"></use>
+					</svg>
+					#:name#
+				</p>
 				<p class="subheader">#:durationString#</p>
 			</div>
 			<div class="summary">
@@ -4067,7 +4670,10 @@
 	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" >
 		<div class="header">
 			<p class="title">
-				<object data="images/intelliFlight-icon.svg" type="image/svg+xml" > </object><span> #:name#</span>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg\\#intelliFlight-icon"></use>
+				</svg>
+				<span> #:name#</span>
 			</p>
 			<p class="helper subheader">
 				<span>#:airline#</span>
@@ -4110,7 +4716,9 @@
 			</div>
 
 			<span class="btnSmart-type">
-					<object data="images/smart-event-alt.svg"  type="image/svg+xml" class="icon-smartBtn"> </object>
+				<svg class="icon-smartBtn">
+					<use xlink:href="styles/svg/symbol.svg\\#smart-event-alt"></use>
+				</svg>
 			</span>
 	</span>
 </div>
@@ -4128,8 +4736,9 @@
 				<p class="btnSmart-date textClamp">#:theatreName#</p>
 			</div>
 			<span class="btnSmart-type">
-				<object data="images/smart-movie-circle.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg\\#smart-movie-circle"></use>
+				</svg>
 			</span>
 		</span>
 	</div>
@@ -4140,8 +4749,9 @@
 	<div class="intelliMovie" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick">
 		<div class="header">
 			<p class="title textClamp">
-				<object data="images/intelliMovie-icon.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg\\#intelliMovie-icon"></use>
+				</svg>
 				#:movieTitle#
 			</p>
 			<p class="subheader helper textClamp">
@@ -4157,13 +4767,18 @@
 			<ul class="list-unstyled">
 				<li>
 					<p class="textClamp date">
-						<object data="images/icon-time.svg" type="image/svg+xml" > </object>
-						 #:dateStr#
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg\\#icon-time"></use>
+						</svg>
+						#:dateStr#
 					</p>
 				</li>
 				<li>
 					<p class="textClamp location">
-						<object data="images/icon-location-dark.svg" type="image/svg+xml" > </object>  #:theatreName#
+						<svg>
+							<use xlink:href="styles/svg/symbol.svg\\#icon-location-dark"></use>
+						</svg>
+						#:theatreName#
 					</p>
 				</li>
 			</ul>
@@ -4179,7 +4794,9 @@
 		<div data-role="navbar">
 			<span>IntelliMovie</span>
 			<a data-click="smartMovieView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 
 			</a>
 		</div>
@@ -4200,7 +4817,9 @@
 		<h3 data-role="button" id="smartMovie-title" data-click="smartMovieView.showLinkWebSite">
 			<span data-bind="text: movieTitle"></span>
 			<span style="margin-left: 0.5em;">
-				<object data="images/icon-external.svg"  type="image/svg+xml" class="smartMovie-link"> </object>
+				<svg class="smartMovie-link">
+					<use xlink:href="styles/svg/symbol.svg#icon-external"></use>
+				</svg>
 			</span>
 		</h3>
 		<p class="helper movie-preselected" data-bind="text: description"></p>
@@ -4208,8 +4827,9 @@
 			<img src="" id="smartMovie-ratingImg" class="gg-rating" />
 			<span data-bind="text: runtime"></span>
 			<a class="movie-links hidden btnClear right" id="smartMovieView-imdbLink" data-role="button" data-click="smartMovieView.showLinkImdb">
-				<object data="images/imdb-logo.svg" type="image/svg+xml" > </object>
-
+				<svg height="18px">
+					<use xlink:href="styles/svg/symbol.svg#imdb-logo"></use>
+				</svg>
 			</a>
 		</p>
 	</div>
@@ -4229,19 +4849,25 @@
 		<ul class="list-inline" id="smartMovie-opts">
 			<li id="smartMovieView-fandangoLink">
 				<a data-role="button"  data-click="smartMovieView.showLinkFandango" class="btnClear">
-					<object data="images/fandango-logo.svg"  type="image/svg+xml" class="icon-sm"> </object>
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#fandango-logo"></use>
+					</svg>
 					Buy Tickets on Fandango
 				</a>
 			</li>
 			<li>
 				<a data-role="button" data-click="smartMovieView.onTheatreDirections" class="btnClear">
-					<object data="images/icon-directions-active.svg"  type="image/svg+xml" class="icon-sm"> </object>
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-directions-active"></use>
+					</svg>
 					Directions
 				</a>
 			</li>
 			<li>
 				<a data-role="button" data-click="smartMovieView.onCallTheatre" class="btnClear">
-					<object data="images/icon-phone.svg"  type="image/svg+xml" class="icon-sm"> </object>
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-phone"></use>
+					</svg>
 					Call
 				</a>
 			</li>
@@ -4285,7 +4911,9 @@
 		<div data-role="navbar">
 			<span>IntelliEvent</span>
 			<a data-click="smartEventView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -4308,7 +4936,10 @@
 				<span class="event-date"></span>
 			</p>
 			<span class="hidden">
-				<object data="images/icon-time.svg"  type="image/svg+xml" class="icon-sm"> </object> <span data-bind="text: durationString"></span>
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-time"></use>
+					</svg>
+				<span data-bind="text: durationString"></span>
 			</span>
 
 			<span id="smartEventView-view-calendar-add" class="event-valid">
@@ -4318,13 +4949,17 @@
 
 			<span id="smartEventView-view-calendar" class="event-valid hidden">
 				<a class="btnHighlight" data-role="button" data-click="smartEventView.showCalendar">
-					<object data="images/icon-date-light.svg"  type="image/svg+xml" class="icon-sm"> </object>
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-date-light"></use>
+					</svg>
 					View on Calendar
 				</a>
 			</span>
 			<p class="event-place hidden" style="margin-top: 1em; margin-bottom: 1em;">
 				<a class="btnClear" data-role="button" data-click="smartEventView.eventMapLocation">
-					<object data="images/icon-location.svg"  type="image/svg+xml" class="icon-sm"> </object>
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
+					</svg>
 					<span class="event-location-title" data-bind="text: placeName"></span>
 				</a>
 			</p>
@@ -4368,15 +5003,18 @@
 				<label> When </label>
 				<div class="clearfix"></div>
 				<div class="smallSearch">
-
 							<span class="searchIcon">
-								<object data="images/smart-event.svg" type="image/svg+xml"  > </object>
+								<svg>
+									<use xlink:href="styles/svg/symbol.svg#smart-event"></use>
+								</svg>
 							</span>
 						<input type="text" class="viewSearchBox" id="smartEventView-date"/>
 					</div>
 					<div class="smallSearch-sm">
 						<span class="searchIcon">
-							<object data="images/smart-time.svg" type="image/svg+xml"  > </object>
+							<svg>
+								<use xlink:href="styles/svg/symbol.svg#smart-time"></use>
+							</svg>
 						</span>
 						<input type="time" id="smartEventView-time"/>
 					</div>
@@ -4390,8 +5028,9 @@
 				<label> How Long (Duration) </label>
 				<div class="fullSearch">
 						<span class="searchIcon">
-							<object data="images/icon-duration.svg" type="image/svg+xml" > </object>
-
+							<svg>
+								<use xlink:href="styles/svg/symbol.svg#icon-duration"></use>
+							</svg>
 						</span>
 					<input type="search" class="viewSearchBox" id="smartEventView-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
 				</div>
@@ -4403,8 +5042,9 @@
 			</li>
 			<li id="smartEventView-placesearchdiv" class="hidden">
 				<div>
-					<object data="images/icon-gps-selected.svg" type="image/svg+xml"  class='icon-sm'> </object>
-
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#icon-gps-selected"></use>
+					</svg>
 					<a data-click="smartEventView.onPlaceSearch" data-role="button" class="btnClear" id="smartEventView-placesearchBtn"> Find... </a>
 				</div>
 			</li>
@@ -4412,7 +5052,9 @@
 				<label>Where (Location or Place)</label>
 				<div>
 					<p id="smartEventView-placeAddBtn">
-						<object data="images/icon-location.svg" type="image/svg+xml" class='icon-sm'> </object>
+						<svg  class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
+						</svg>
 						<span id="smartEventView-placeAddBtn-title" data-bind="text: placeName"></span>
 					</p>
 					<div id="searchEventPlace-actionBtns">
@@ -4462,7 +5104,9 @@
 	<div>
 		<div class="left listPhoto">
 			<div class="statusContactList">
-				<object data="images/default-private.svg" type="image/svg+xml"  class="circle-img-md"> </object>
+				<svg class="circle-img-md">
+					<use xlink:href="styles/svg/symbol.svg\\#default-private"></use>
+				</svg>
 			</div>
 		</div><!-- left -->
 		<div class="left listName" style="margin-top: 0.5em;">
@@ -4484,16 +5128,19 @@
 			<object data="images/icon-puff.svg" type="image/svg+xml" width="30" class="left"> </object>
 			<p class="left" id="current-place-name"></p>
 			<a class="btnClear whiteBtn right" data-role="button" id="checkoutBtn">
-				<object data="images/icon-checkout-light.svg" type="image/svg+xml"  class="icon-btn">
-				 Checkout
+				<svg class="icon-btn">
+					<use xlink:href="styles/svg/symbol.svg#icon-checkout-light"></use>
+				</svg>
+				Checkout
             </a>
 			<div class="clearfix"></div>
 		</div>
 		<div id="placeListDiv">
 			<ul id="places-listview"></ul>
 			<div class="emptyState hidden">
-				<object data="images/empty-places.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#empty-places"></use>
+				</svg>
 			</div>
 		</div>
 
@@ -4512,7 +5159,9 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" data-click="searchPlacesView.onDone" data-align="left" >
-				<object data="images/nav-back.svg" type="image/svg+xml"  > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -4520,7 +5169,13 @@
 		<div class="appendSearch">
 			<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml" > </object></span>
 			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="searchPlaceSearchQuery" />
-			<span class="enterSearch hidden"><a class="btnClear-grey"><object data="images/close.svg" type="image/svg+xml" class="icon-sm" > </object></a></span>
+			<span class="enterSearch hidden">
+				<a class="btnClear-grey">
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg#close"></use>
+					</svg>
+				</a>
+			</span>
 		</div>
 	</div>
 	<div>
@@ -4554,7 +5209,9 @@
 				<p id="modalChatPhotoView-inGallery" style="font-size: 0.75em; margin-left: 0;">
 					<span id="modalChatPhotoView-userhascopy">In Gallery</span>
 					<a class="hidden" data-role="button" id="modalChatPhotoViewUnlocked" data-align="right" data-click="modalChatPhotoView.savePhoto">
-						<object data="images/icon-save.svg" type="image/svg+xml" class="icon-md"></object>
+						<svg class="icon-md">
+							<use xlink:href="styles/svg/symbol.svg#icon-save"></use>
+						</svg>
 					</a>
 					<span class="hidden">2d ago</span>
 				</p>
@@ -4562,7 +5219,9 @@
 			<div class="right" id="modalChatPhotoView-recipientlist">
 
 				<a id="modalChatPhotoView-confirmRecallBtn" class="hidden" data-role="button" data-align="right" data-click="modalChatPhotoView.confirmRecall">
-					<object data="images/action-recall-light.svg" type="image/svg+xml" class="icon-md"></object>
+					<svg class="icon-md">
+						<use xlink:href="styles/svg/symbol.svg#action-recall-light"></use>
+					</svg>
 				</a>
 			</div>
 			<div class="clearfix"></div>
@@ -4642,11 +5301,15 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-click="modalPhotoView.closeModal" data-role="button" class="btnClear-grey" data-align="left">
-				<object data="images/nav-back-light.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 			<span id="modalPhotoView-title" data-bind="text: title"></span>
 			<a data-rel="actionsheet" data-role="button" href="#modalPhotoView-PhotoActions" class="btnClear-grey" data-align="right">
-				<object data="images/nav-gear-light.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-gear-light"></use>
+				</svg>
 			</a>
 		</div>
 		<div id="modalPhotoView-editPhoto" style="display: none;">
@@ -4673,7 +5336,12 @@
 			</ul>
 			<ul class="list-unstyled" style="margin-top: 1em; margin-bottom: 6em;">
 				<li>
-					<p><object data="images/icon-manage.svg" type="image/svg+xml" class="icon-sm"></object> Manage Photo</p>
+					<p>
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#icon-manage"></use>
+						</svg>
+						Manage Photo
+					</p>
 				</li>
 				<li>
 
@@ -4690,40 +5358,79 @@
 	<ul data-role="actionsheet" id="modalPhotoView-PhotoActions" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="modalPhotoView.openTagEditor">
-				<object data="images/action-edit.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-edit"></use>
+				</svg>
 				Edit/Manage photo
 			</a>
 		</li>
 		<li>
 			<a data-action="modalPhotoView.viewOnMap">
-				<object data="images/action-map.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-map"></use>
+				</svg>
 				View Photo On Map
 			</a>
 		</li>
 		<li>
 			<a data-action="modalPhotoView.sendViaGhostgrams">
-				<object data="images/action-gg.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-gg"></use>
+				</svg>
 				Share via Intelligram
 			</a>
 		</li>
 		<li>
 			<a data-action="modalPhotoView.sharePhoto">
-				<object data="images/action-share.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-share"></use>
+				</svg>
 				Share Photo
 			</a>
 		</li>
 		<li>
 			<a data-action="modalPhotoView.deletePhoto">
-				<object data="images/action-delete.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-delete"></use>
+				</svg>
 				Delete Photo
 			</a>
 		</li>
 	</ul>
 	<div id="modalPhotoView-footer" data-role="footer">
-		<p><span style="width: 28px;"><object data="images/icon-tag.svg" type="image/svg+xml" height="28"> </object> </span><span data-bind="text: tagString"> </span></p>
-		<p><span style="width: 28px;"><object data="images/icon-place.svg" type="image/svg+xml" height="28"> </object>  </span><span data-bind="text: placeName"> </span></p>
-		<p><span style="width: 28px;"><object data="images/icon-location.svg" type="image/svg+xml" height="28"> </object>  </span><span data-bind="text: addressString"> </span></p>
-		<p><span style="width: 28px;"><object data="images/icon-date.svg" type="image/svg+xml" height="28"> </object>  </span><span data-bind="text: dateString"> </span></p>
+		<p>
+			<span style="width: 28px;">
+				<svg height="28">
+					<use xlink:href="styles/svg/symbol.svg#icon-tag"></use>
+				</svg>
+			</span>
+			<span data-bind="text: tagString">
+			</span>
+		</p>
+		<p>
+			<span style="width: 28px;">
+				<svg height="28">
+					<use xlink:href="styles/svg/symbol.svg#icon-place"></use>
+				</svg>
+			</span>
+			<span data-bind="text: placeName"></span>
+		</p>
+		<p>
+			<span style="width: 28px;">
+				<svg height="28">
+					<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
+				</svg>
+			</span>
+			<span data-bind="text: addressString"></span>
+		</p>
+		<p>
+			<span style="width: 28px;">
+				<svg height="28">
+					<use xlink:href="styles/svg/symbol.svg#icon-date"></use>
+				</svg>
+			</span>
+			<span data-bind="text: dateString"></span>
+		</p>
 	</div>
 </div>
 
@@ -4734,10 +5441,16 @@
 			<h3><span>Photo Title</span>
 				<a class="btnClear-sm" data-role="button" data-rel="modalview" href="#modalview-photoTag">Edit</a>
 			</h3>
-			<p><object data="images/icon-tag-light.svg"  type="image/svg+xml" class="icon-sm"> </object> photo tags</p>
+			<p>
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#icon-tag-light"></use>
+				</svg>
+				photo tags
+			</p>
 			<a class="actionBtn primary-100" data-role="button" data-click="photoView.sharePhoto">
-				<object data="images/icon-share-light.svg" type="image/svg+xml" > </object>
-
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-share-light"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -4749,10 +5462,26 @@
 
 <div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="photoEditor.onShow"  data-hide="photoEditor.onHide" data-init="photoEditor.onInit" data-transition="slide:left">
 	<div class="photoViewNavTop" data-role="header">
-		<a data-role="button"  data-click="photoEditor.rotateLeft"><object data="images/photo-left.svg" type="image/svg+xml" > </object> </a>
-		<a data-role="button"  data-click="photoEditor.rotateRight"> <object data="images/photo-right.svg" type="image/svg+xml" > </object></a>
-		<a data-role="button" data-click="photoEditor.crop"> <object data="images/photo-crop.svg" type="image/svg+xml" class="photo-options"> </object> </a>
-		<a data-role="button" data-rel="modalview"  href="#modalview-photoTag"><object data="images/photo-tag.svg" type="image/svg+xml" > </object></a>
+		<a data-role="button"  data-click="photoEditor.rotateLeft">
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#photo-left"></use>
+			</svg>
+		</a>
+		<a data-role="button"  data-click="photoEditor.rotateRight">
+			<svg>
+				<use xlink:href="styles/svg/symbol.svg#photo-right"></use>
+			</svg>
+		</a>
+		<a data-role="button" data-click="photoEditor.crop">
+			<svg class="photo-options">
+				<use xlink:href="styles/svg/symbol.svg#photo-crop"></use>
+			</svg>
+		</a>
+		<a data-role="button" data-rel="modalview"  href="#modalview-photoTag">
+			<svg class="photo-options">
+				<use xlink:href="styles/svg/symbol.svg#photo-tag"></use>
+			</svg>
+		</a>
 	</div>
 
 
@@ -4768,10 +5497,7 @@
 
 <script id="tag-template" type="text/x-kendo-template">
 	<div class="tag">
-		<div class="tag-category">
-			<object data="images/icon-#=type#-light.svg" type="image/svg+xml" > </object>
-
-		</div>
+		<div class="tag-category"></div>
 		<div class="tag-text">
 			#: tag #
 		</div>
@@ -4779,7 +5505,10 @@
 </script>
 
 <script id="archive-dateOption-template" type="text/x-kendo-template">
-	<object data="images/icon-filter.svg" type="image/svg+xml" > </object> Filter
+	<svg>
+		<use xlink:href="styles/svg/symbol.svg\\#icon-filter"></use>
+	</svg>
+	Filter
 </script>
 
 <script id="calendar-footer-template" type="text/x-kendo-template">
@@ -4793,7 +5522,13 @@
 <script type="text/x-kendo-template" id="tags-template">
 	<div class="">
 		<span class="left">#: data.name # </span>
-		<span class="right"><a class="btnClear-red"><object data="images/icon-trash.svg" type="image/svg+xml" > </object></a></span>
+		<span class="right">
+			<a class="btnClear-red">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
+			</a>
+		</span>
 	</div>
 </script>
 
@@ -4817,7 +5552,7 @@
 
 <script type="text/x-kendo-template" id="archive-header-template">
 	<div>
-		<object class="archive-header-img" data="images/archive-#= value #.svg"  type="image/svg+xml">  </object> #: value #
+		<img class="archive-header-img" src="images/archive-#= value #.svg"/> #: value #
 	</div>
 </script>
 
@@ -4829,7 +5564,7 @@
 		var multiEndTime = moment(data.object.end).format("Do, YYYY");
 		var multiDayTime = multiStartTime + multiEndTime;
 		#
-		<p class="helper cardInfoBar"><object data="images/icon-#=data.type#.svg" type="image/svg+xml"> </object>
+		<p class="helper cardInfoBar"><img src="images/icon-#=data.type#.svg" type="image/svg+xml"/>
 			#= data.message.sender.name # posted in #= data.message.channelName #
 		</p>
 
@@ -4885,7 +5620,9 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" data-click="findPlacesView.onDone" data-align="left" >
-				<object data="images/nav-back.svg"  type="image/svg+xml"> </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -4893,9 +5630,19 @@
 
 	<div class="tempSearchBox">
 		<div class="appendSearch">
-			<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml" > </object></span>
+			<span class="searchIcon">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#search"></use>
+				</svg>
+			</span>
 			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="findPlaceSearchQuery" />
-			<span class="enterSearch hidden"><a class="btnClear-grey"><object data="images/close.svg" type="image/svg+xml" class="icon-sm"> </object></a></span>
+			<span class="enterSearch hidden">
+				<a class="btnClear-grey">
+					<svg class="icon-sm">
+						<use xlink:href="styles/svg/symbol.svg#close"></use>
+					</svg>
+				</a>
+			</span>
 		</div>
 	</div>
 	<div>
@@ -4912,14 +5659,21 @@
 		<div data-role="navbar">
 			<span>IntelliLocation</span>
 			<a data-role="button" data-align="left" data-click="smartLocationView.closeModal">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 
 	<div class="tempSearchBox" id="smartLocation-form">
 		<p id="smartLocation-selectLocation" >Please select Address or City, State</p>
 		<div class="appendSearch">
-			<span class="searchIcon"><object data="images/place-icon.svg" type="image/svg+xml" > </object></span>
+			<span class="searchIcon">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#place-icon"></use>
+				</svg>
+			</span>
 			<input type="search" name="Area" placeholder="Area or city to search..." id="smartLocation-place" data-required-msg="Enter address or city, state" required />
 		</div>
 		<span class="k-invalid-msg" data-for="Area"></span>
@@ -4941,7 +5695,10 @@
 		<div data-role="navbar">
 			<span id="smartEventPlacesModal-title">IntelliEvent Places</span>
 			<a data-role="button" data-align="left" data-click="smartEventPlacesView.closeModal">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 
@@ -4953,7 +5710,11 @@
 		<span class="k-invalid-msg" data-for="place"></span>
 		<p id="searchEventPlaces-selectPlace" class="hidden">Please select the area to search</p>
 		<div class="appendSearch">
-			<span class="searchIcon"><object data="images/place-icon.svg" type="image/svg+xml" > </object></span>
+			<span class="searchIcon">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#place-icon"></use>
+				</svg>
+			</span>
 			<input type="search" name="Area" placeholder="Area or city to search..." id="smartEventPlaces-place" data-required-msg="Enter area to search" required />
 		</div>
 		<span class="k-invalid-msg" data-for="Area"></span>
@@ -4974,7 +5735,11 @@
     <div data-role="header">
         <div data-role="navbar">
             <span>intelliPlace</span>
-            <a  data-role="button" data-click="smartPlaceView.closeModal" data-align="left"><object data="images/close.svg" type="image/svg+xml" class="icon-sm"> </object></a>
+            <a  data-role="button" data-click="smartPlaceView.closeModal" data-align="left">
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
+			</a>
         </div>
     </div>
     <div>
@@ -5010,7 +5775,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Nearby Results</span>
-			<a id="close-nearby-results" data-role="button" data-click="closeNearbyResults"><object data="images/close.svg" type="image/svg+xml" class="icon-sm"> </object></a>
+			<a id="close-nearby-results" data-role="button" data-click="closeNearbyResults">
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 
@@ -5021,7 +5790,9 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="button" data-align="left" data-click="placeView.onDone">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 			<span class="textClamp navbar-btn" data-role="button" data-click="placeView.openChat">
 				<!--<img src="images/icon-chat-active.svg" class="icon-btn" id="placeView-gotochat" />-->
@@ -5029,14 +5800,22 @@
 				<span class="place-tag placeChat-headerTop helper">Tap to view chat</span>
 			</span>
 			<a data-role="button" data-align="right" data-click="ux.toggleSearch">
-				<object data="images/icon-search.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#icon-search"></use>
+				</svg>
 			</a>
 		</div>
 		<div class="gg_mainSearchBox" data-visible="false">
 			<div class="appendSearch">
 				<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml" > </object></span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" id="placeViewSearch" placeholder="" />
-				<span class="enterSearch hidden"><a class="btnClear-grey"><object data="images/close.svg" type="image/svg+xml" class="icon-sm"> </object></a></span>
+				<span class="enterSearch hidden">
+					<a class="btnClear-grey">
+						<svg class="icon-sm">
+							<use xlink:href="styles/svg/symbol.svg#close"></use>
+						</svg>
+					</a>
+				</span>
 			</div>
 		</div>
 	</div>
@@ -5086,30 +5865,37 @@
 				<ul>
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
-							<object data="images/chat-camera.svg" type="image/svg+xml" height="24"> </object>
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#chat-camera"></use>
+							</svg>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" data-click="placeView.messageTitleTag">
-							<object data="images/icon-tag.svg" type="image/svg+xml" height="24"> </object>
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#icon-tag"></use>
+							</svg>
 						</a>
 					</li>
 					<li >
 						<a data-role="button" data-click="placeView.ghostgram" id="placeView-editorBtn">
-							<object data="images/icon-editor.svg" type="image/svg+xml" height="24"> </object>
-
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#icon-editor"></use>
+							</svg>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" data-click="placeView.noteSearch">
-							<object data="images/icon-web.svg" type="image/svg+xml" height="24"> </object>
-
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#icon-web"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-rel="actionsheet" href="#placeViewSmartObjects">
-							<object data="images/icon-smartMenu.svg" type="image/svg+xml" height="24"> </object>
-
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
+							</svg>
 						</a>
 					</li>
 
@@ -5122,9 +5908,23 @@
 	</div>
 
 	<ul data-role="actionsheet" id="placeViewSmartObjects" >
-		<li><a data-action="channelView.messageCalendar"><object data="images/smart-event.svg" type="image/svg+xml" class="icon-sm"></object> Add Event</a></li>
-		<!--<li><a data-action="channelView.messageFlight"><object data="images/smart-flight.svg" type="image/svg+xml" class="icon-sm"></object> Add Flight</a></li>-->
-		<li><a data-action="channelView.messageMovie"><object data="images/smart-movie.svg" type="image/svg+xml" class="icon-sm"></object> Add Movie</a></li>
+		<li>
+			<a data-action="channelView.messageCalendar">
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#smart-event"></use>
+				</svg>
+				Add Event
+			</a>
+		</li>
+		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
+		<li>
+			<a data-action="channelView.messageMovie">
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#smart-movie"></use>
+				</svg>
+				Add Movie
+			</a>
+		</li>
 		<!--<li><a data-action="channelView.messageMusic"> Add Music</a></li>-->
 	</ul>
 
@@ -5143,10 +5943,31 @@
 	</ul>
 
 	<ul id="placeViewOptions" data-role="actionsheet" data-cancel="Cancel">
-		<li><a data-role="button" data-click="placeView.addNote"><object data="images/smart-note.svg" type="image/svg+xml" class="icon-sm"></object> Add A Note </a></li>
+		<li>
+			<a data-role="button" data-click="placeView.addNote">
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#smart-note"></use>
+				</svg>
+				Add A Note
+			</a>
+		</li>
 		<!--<li><a data-role="button">Add Place Chat</a></li>-->
-		<li><a data-role="button" data-action="placeView.camera" ><object data="images/icon-camera-dark.svg"  type="image/svg+xml" class="icon-sm"> </object> Take A Photo</a></li>
-		<li><a data-role="button" data-action="placeView.gallery"><object data="images/icon-Photos.svg"  type="image/svg+xml" class="icon-sm"> </object> Add A Photo</a></li>
+		<li>
+			<a data-role="button" data-action="placeView.camera">
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#icon-camera-dark"></use>
+				</svg>
+				Take A Photo
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-action="placeView.gallery">
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg#icon-Photos"></use>
+				</svg>
+				Add A Photo
+			</a>
+		</li>
 	</ul>
 </div>
 
@@ -5167,7 +5988,9 @@
 		# if (data.ggType === "Note"){#
 		<div class="note">
 			<h3 class="textClamp">
-				<object data="images/smart-note-inline.svg"  type="image/svg+xml" class="icon-md"> </object>
+				<svg class="icon-md">
+					<use xlink:href="styles/svg/symbol.svg\\#smart-note-inline"></use>
+				</svg>
 				<span>#: titleStr #</span>
 				<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 			</h3>
@@ -5178,7 +6001,9 @@
 		# if(data.ggType === "Photo") {#
 		<div class="photo">
 			<h3>
-				<object data="images/smart-photo-inline.svg"  type="image/svg+xml" class="icon-md"> </object>
+				<svg class="icon-md">
+					<use xlink:href="styles/svg/symbol.svg\\#smart-photo-inline"></use>
+				</svg>
 				<span>#: titleStr # </span>
 				<span class="helper right" style="font-size: 12px">#:dateString#</span>
 			</h3>
@@ -5204,7 +6029,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
-			<a data-role="backbutton" data-align="left"><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-role="backbutton" data-align="left">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 			<a data-role="button" data-align="right"  data-rel="actionsheet" href="#profileEditOptions">Options</a>
 		</div>
 	</div>
@@ -5233,8 +6062,9 @@
 				<li>
 					<label>Username (Email Address)
 						<span class="helper helper-verified hidden" id="profile-verified-email">
-							<object data="images/verified.svg" type="image/svg+xml" class="helper-verified-img"> </object>
-
+							<svg class="helper-verified-img" height="14">
+								<use xlink:href="styles/svg/symbol.svg#verified"></use>
+							</svg>
 	                             Verified
                         </span>
 						<span class="helper helper-right helper-form">
@@ -5245,7 +6075,9 @@
 				<li>
 					<label>Mobile Phone
 						<span class="helper helper-verified hidden" id="profile-verified-phone">
-							<object data="images/verified.svg" type="image/svg+xml" class="helper-verified-img" height="14"> </object>
+								<svg class="helper-verified-img" height="14">
+									<use xlink:href="styles/svg/symbol.svg#verified"></use>
+								</svg>
 	                             Verified
                         </span>
 						<span class="helper helper-right helper-form">
@@ -5290,25 +6122,33 @@
 	<ul id="profileEditOptions" data-role="actionsheet" data-cancel="Cancel">
 		<li>
 			<a data-role="button" data-action="profileEditView.doChangePhone">
-				<object data="images/contact-call.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#contact-call"></use>
+				</svg>
 				Change Phone Number
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="profileEditView.doChangePassword">
-				<object data="images/action-password.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-password"></use>
+				</svg>
 				Change Password
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="profileEditView.gotoSettings">
-				<object data="images/action-edit.svg" type="image/svg+xml" class="icon-action"></object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-edit"></use>
+				</svg>
 				Edit Settings
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="userStatusView.doSignOut">
-				<object data="images/action-signout.svg"  type="image/svg+xml" class="icon-action"> </object>
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg#action-signout"></use>
+				</svg>
 				Sign Out
 			</a>
 		</li>
@@ -5319,7 +6159,11 @@
 <div data-role="view" id="profilePhotoEdit" data-show="editProfilePhotoView.onShow" data-init="editProfilePhotoView.onInit" data-model="editProfilePhotoView.photo" style="display: none;"  class="appearance">
     <div data-role="header">
         <div data-role="navbar">
-            <a data-role="backbutton"  data-align="left"  ><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+            <a data-role="backbutton"  data-align="left"  >
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
             <span>Profile Photo</span>
         </div>
     </div>
@@ -5347,71 +6191,6 @@
     </div>
 </div>
 
-<!-- Ghost selection modal -->
-<div data-role="modalview" id="modalview-chooseGhost" style="width: 90%; display:none;" class="appearance">
-	<div class="modalTop">
-		<h2>
-			Let's do this
-            <span class="closeBox" style="float:right;">
-                <a data-click="closeChooseGhost" data-role="button"><object data="images/close.svg" type="image/svg+xml" > </object></a>
-            </span>
-		</h2>
-		<p>
-			Select a public ghost.
-		</p>
-	</div>
-	<div class="line"></div>
-
-	<div class="ghostSelectionBox">
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-red" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-red.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-purple" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-purple.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" class="currentGhost" id="ghost-blue" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-blue.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost"  id="ghost-teal" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-teal.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-green" data-role="button">
-				<img class="circle-img-lg"  src="images/ghost-green.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-yellow" data-role="button">
-				<img class="circle-img-lg"  src="images/ghost-yellow.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-orange" data-role="button">
-				<img class="circle-img-lg"  src="images/ghost-orange.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-grey" data-role="button">
-				<img class="circle-img-lg" src="images/ghost-grey.svg"/>
-			</a>
-		</div>
-		<div class="ghostPhotoBox">
-			<a data-click="whichGhost" id="ghost-black" data-role="button">
-				<img class="circle-img-lg"  src="images/ghost-black.svg"/>
-			</a>
-		</div>
-	</div>
-	<div class="clearfix"></div>
-</div>
-
 <!-- change password modal -->
 <div data-role="modalview" id="modalview-syncEverlive" style="width: 100%; height: 100%; display:none;">
 	<div style="text-align: center; vertical-align: middle;">Syncing the intelligram cloud</div>
@@ -5425,7 +6204,9 @@
 		<h3>Change Password
 	    	<span class="right">
 	        	<a data-click="changePasswordView.closeModal" data-role="button">
-	        		<object data="images/close.svg" type="image/svg+xml" > </object>
+	        		<svg>
+						<use xlink:href="styles/svg/symbol.svg#close"></use>
+					</svg>
 	        	</a>
 	        </span>
 		</h3>
@@ -5447,7 +6228,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>IntelliTag</span>
-			<a data-click="smartTagView.onDone" data-role="button" data-align="left"><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-click="smartTagView.onDone" data-role="button" data-align="left">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 
 		</div>
 	</div>
@@ -5477,8 +6262,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>IntelliAlert</span>
-			<a data-click="smartAlertView.onDone" data-role="button" data-align="left"><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
-
+			<a data-click="smartAlertView.onDone" data-role="button" data-align="left">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 
@@ -5503,7 +6291,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>IntelliMedical</span>
-			<a data-role="button"  data-align="left" data-click="smartMedicalView.onDone" ><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-role="button"  data-align="left" data-click="smartMedicalView.onDone" >
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 
@@ -5610,7 +6402,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>IntelliPark</span>
-			<a data-role="button"  data-align="left" data-click="smartParkView.onDone" ><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-role="button"  data-align="left" data-click="smartParkView.onDone" >
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 
@@ -5648,7 +6444,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Flight Search</span>
-			<a data-role="button"  data-align="left" data-click="smartFlightSearchView.onDone" ><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-role="button"  data-align="left" data-click="smartFlightSearchView.onDone" >
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 
@@ -5685,7 +6485,6 @@
 
 	<div class="footer" data-role="footer">
 		<a class="btnFull-modal btnPrimary" data-click="smartFlightSearchView.onSearch" data-role="button">Search</a>
-
 	</div>
 </div>
 
@@ -5866,7 +6665,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>IntelliAccount</span>
-			<a data-role="button"  data-align="left" data-click="smartAccountView.onDone" ><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-role="button"  data-align="left" data-click="smartAccountView.onDone" >
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 
@@ -5912,7 +6715,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Emergency</span>
-			<a data-role="button"  data-align="left" data-click="emergencyView.onDone" ><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-role="button"  data-align="left" data-click="emergencyView.onDone" >
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 	<div style="text-align: center;">
@@ -5967,7 +6774,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Roadside</span>
-			<a data-role="button"  data-align="left" data-click="roadsideView.onDone" ><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-role="button"  data-align="left" data-click="roadsideView.onDone" >
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 	<div style="text-align: center;">
@@ -6021,11 +6832,17 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Personal Safety</span>
-			<a data-role="button"  data-align="left" data-click="familyAlertView.onDone" ><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-role="button"  data-align="left" data-click="familyAlertView.onDone" >
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 	<div style="text-align: center;">
-		<object data="images/gg-family.svg"  type="image/svg+xml" class="icon-gg-drawer"> </object>
+		<svg class="icon-gg-drawer">
+			<use xlink:href="styles/svg/symbol.svg#gg-family"></use>
+		</svg>
 		<span style="font-size: 1.3em;">Family Alert</span>
 	</div>
 	<form>
@@ -6064,13 +6881,18 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Personal Safety</span>
-			<a data-role="button" data-align="left" data-click="localAlertView.onDone" ><object data="images/nav-back.svg" type="image/svg+xml" > </object></a>
+			<a data-role="button" data-align="left" data-click="localAlertView.onDone" >
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 	<div style="text-align: center;">
-		<object data="images/gg-local.svg"  type="image/svg+xml" class="icon-gg-drawer"> </object>
+		<svg class="icon-gg-drawer">
+			<use xlink:href="styles/svg/symbol.svg#gg-local"></use>
+		</svg>
 		<span style="font-size: 1.3em;">Local Alert</span>
-
 	</div>
 	<form>
 		<ul data-role="listview" data-style="inset">
@@ -6141,10 +6963,14 @@
 			<li>
 				<label>Increase Chat Font Size</label>
 				<a class="btnClear right" data-role="button" data-click="homeView.settingRegFont">
-					<object data="images/icon-font-sm.svg"  type="image/svg+xml" class="icon"> </object>
+					<svg class="icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-font-sm"></use>
+					</svg>
 				</a>
 				<a class="btnClear right" data-role="button" data-click="homeView.settingBigFont">
-					<object data="images/icon-font-lg.svg"  type="image/svg+xml" class="icon"> </object>
+					<svg class="icon">
+						<use xlink:href="styles/svg/symbol.svg#icon-font-lg"></use>
+					</svg>
 				</a>
 			</li>
 			<li>
@@ -6250,7 +7076,9 @@
 		<div data-role="navbar">
 			<span>Edit Members</span>
 			<a data-click="contactPickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey-sm">
-				<object data="images/close.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
 			</a>
 		</div>
 		<div>
@@ -6294,7 +7122,9 @@
 		 </h4>
 		<span class="groupEditor-contact-delete">
 			<a data-role="button" class="btnClear-grey-sm" data-click="groupEditView.deleteMember">
-				<object data="images/icon-trash.svg"  type="image/svg+xml" class="icon-sm"> </object>
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
 			</a>
 		</span>
 		<div class="clearfix"></div>
@@ -6306,7 +7136,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span>Edit Group</span>
-			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey-sm"> <object data="images/close.svg" type="image/svg+xml" > </object></a>
+			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey-sm">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
+			</a>
 		</div>
 	</div>
 
@@ -6356,7 +7190,11 @@
     <div data-role="header">
         <div data-role="navbar">
             <span>Group Picker</span>
-            <a data-role="button" data-click="groupPickerView.closeModal" data-align="left" class="btnClear-grey-sm"> <object data="images/close.svg" type="image/svg+xml" > </object></a>
+            <a data-role="button" data-click="groupPickerView.closeModal" data-align="left" class="btnClear-grey-sm">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#close"></use>
+				</svg>
+			</a>
         </div>
 		<div>
 			<div class="appendSearch">
@@ -6385,7 +7223,9 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="backbutton" data-align="left">
-				<object data="images/nav-back.svg" type="image/svg+xml" > </object>
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
 			</a>
 		</div>
 	</div>
@@ -6411,32 +7251,37 @@
 				<ul>
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#privateNotePhotoActions">
-							<object data="images/chat-camera.svg" type="image/svg+xml" height="24"> </object>
-
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#chat-camera"></use>
+							</svg>
 						</a>
 					</li>
 					<li>
 					<a data-role="button" data-click="privateNotesView.noteTitleTag">
-						<object data="images/icon-tag.svg" type="image/svg+xml" height="24"> </object>
-
+						<svg height="24" id="privateNote-editorBtnImg">
+							<use xlink:href="styles/svg/symbol.svg#icon-tag"></use>
+						</svg>
 					</a>
 					</li>
 					<li>
 						<a data-role="button" data-click="privateNotesView.noteEditor" id="privateNote-editorBtn">
-							<object data="images/icon-editor.svg" type="image/svg+xml" height="24" id="privateNote-editorBtnImg"> </object>
-
+							<svg height="24" id="privateNote-editorBtnImg">
+								<use xlink:href="styles/svg/symbol.svg#icon-editor"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-click="privateNotesView.noteSearch">
-							<object data="images/icon-web.svg" type="image/svg+xml" height="24"> </object>
-
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#icon-web"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
-							<object data="images/icon-smartMenu.svg" type="image/svg+xml" height="24"> </object>
-
+							<svg height="24">
+								<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="offline-only hidden">
@@ -6444,7 +7289,9 @@
 					</li>
 					<li id="privateNote-hideKeyboard" class="hidden">
 						<a data-role="button" data-align="right" data-click="privateNotesView.closeEditor">
-							<object data="images/icon-keyboard-active.svg" type="image/svg+xml" height="20"> </object>
+							<svg height="20">
+								<use xlink:href="styles/svg/symbol.svg#icon-keyboard-active"></use>
+							</svg>
 						</a>
 					</li>
 					<li class="right">
@@ -6550,7 +7397,9 @@
     #
 		<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
 			<h3 class="textClamp">
-				<object data="images/smart-note-inline.svg"  type="image/svg+xml" class="icon-sm"> </object>
+				<svg class="icon-sm">
+					<use xlink:href="styles/svg/symbol.svg\\#smart-note-inline"></use>
+				</svg>
 				<span>#:titleStr#</span>
 			</h3>
 			<p class="helper" style="font-size: 0.85em;">
@@ -6569,7 +7418,9 @@
 	# if (noteType === 'Gallery') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Gallery" data-uuid="#:uuid#">
 		<h3 class="textClamp">
-			<object data="images/smart-photo-inline.svg"  type="image/svg+xml" class="icon-sm"> </object>
+			<svg class="icon-sm">
+				<use xlink:href="styles/svg/symbol.svg\\#smart-photo-inline"></use>
+			</svg>
 			<span>#:titleStr#</span>
 		</h3>
 		<p class="helper" style="font-size: 0.85em;">
@@ -6641,28 +7492,38 @@
 		<div class="contact-options">
 			# if (data.contactUUID === undefined || data.contactUUID === null){#
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
-				<object data="images/contact-invite.svg" type="image/svg+xml"  height="12"> </object>
+				<svg height="12">
+					<use xlink:href="styles/svg/symbol.svg\\#contact-invite"></use>
+				</svg>
 				<p class="chat-option-selection"> Resend Invite</p>
 			</a>
 			#} else {#
 				#if(data.isBlocked) {#
 				<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
-					<object data="images/icon-unblock.svg" type="image/svg+xml"  height="24"> </object>
+					<svg height="24">
+						<use xlink:href="styles/svg/symbol.svg\\#icon-unblock"></use>
+					</svg>
 					<p class="chat-option-selection"> Unblock </p>
 				</a>
 				#} else {#
 				<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
-					<object data="images/icon-block.svg" type="image/svg+xml"  height="24"> </object>
+					<svg height="24">
+						<use xlink:href="styles/svg/symbol.svg\\#icon-block"></use>
+					</svg>
 					<p class="chat-option-selection"> Block </p>
 				</a>
 				#}#
 			#}#
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
-				<object data="images/option-edit.svg" type="image/svg+xml"  height="18"> </object>
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
+				</svg>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
-				<object data="images/icon-trash.svg" type="image/svg+xml"  height="18"> </object>
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div><!-- contact-options -->
@@ -6680,10 +7541,14 @@
 						<div class="statusContactList">
 							#if (data.isAvailable !== undefined && data.isAvailable) { #
 								<img class="circle-img-md" src="#:photoUrl#" />
-								<object data="images/status-available.svg"  type="image/svg+xml" class="statusContactList-icon"> </object>
+								<svg class="statusContactList-icon">
+									<use xlink:href="styles/svg/symbol.svg\\#statusContactList-icon"></use>
+								</svg>
 							#} else {#
 								<img class="circle-img-md" src="#:photoUrl#" />
-								<object data="images/status-away.svg"  type="image/svg+xml" class="statusContactList-icon"> </object>
+								<svg class="statusContactList-icon">
+									<use xlink:href="styles/svg/symbol.svg\\#status-away"></use>
+								</svg>
 							#}#
 
 							# if (data.isBlocked) {#
@@ -6698,11 +7563,11 @@
 						<h4 class="textClamp">
 							#= primaryName #
 							#if (data.phoneValidated){#
-								<object data="images/user-verified.svg"  type="image/svg+xml" class="user-status-icon"> </object>
+								<svg class="user-status-icon">
+									<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
+								</svg>
 							#}#
 								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
-
-
 								<span class="contact-group">#: group #</span>
 						</h4>
 					</div>
@@ -6749,7 +7614,9 @@
 						<h4 class="textClamp">
 							#: data.name #
 							#if (data.phoneValidated){#
-								<object data="images/user-verified.svg"  type="image/svg+xml" class="user-status-icon"> </object>
+								<svg class="user-status-icon">
+									<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
+								</svg>
 							#}#
 						</h4>
 					</div>
@@ -6782,11 +7649,15 @@
 	<div>
 		<div class="group-options list-slider-options">
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditGroup" data-group="#:uuid#">
-				<object data="images/option-edit.svg" type="image/svg+xml"  height="18"> </object>
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
+				</svg>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteGroup" data-group="#:uuid#">
-				<object data="images/icon-trash.svg" type="image/svg+xml"  height="18"> </object>
+				<svg height="18">
+					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
+				</svg>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div><!-- contact-options -->
@@ -6798,7 +7669,9 @@
 					#: data.title #
 				</h4>
 				<p class="helper textClamp">
-					<object data="images/icon-group.svg" type="image/svg+xml" > </object>
+					<svg>
+						<use xlink:href="styles/svg/symbol.svg\\#icon-group"></use>
+					</svg>
 					#= memberCount # #= memberCountTxt #
 				</p>
 			</div>

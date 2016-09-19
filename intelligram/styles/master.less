@@ -33,6 +33,7 @@
 @mobile: ~"only screen and (max-width: 320px)";
 
 /* Imports */
+@import "sprite";
 @import "fonts";
 @import "mixins.less";
 @import "mixin-shadow.less";
@@ -48,6 +49,10 @@
   @media @mobile {
     font-size: 1.4em !important;
   }
+}
+
+.symbol {
+  background: url("svg/symbol.svg");
 }
 
 .shadow {
@@ -369,7 +374,7 @@ form {
   left: 0;
   display: inline-block;
   vertical-align: middle;
-  img {
+  svg {
     width: 6rem;
     //margin-left: auto;
     //margin-right: auto;
@@ -393,7 +398,7 @@ form {
   text-align: center;
   opacity: 0.6;
   //display: none;
-  img {
+  svg {
     width: 6rem;
     margin-left: auto;
     margin-right: auto;
@@ -537,7 +542,8 @@ form {
 }
 
 .user-status-icon {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 
 .icon {
@@ -1208,8 +1214,9 @@ select,
 button {
   font-family: @defaultFont;
 }
-div.km-header a img{
+div.km-header a svg{
   height: 1.2em;
+  width: 1.5em;
   vertical-align: middle;
 }
 .km-drawer-button:before,
@@ -1308,7 +1315,7 @@ div.km-header a img{
   padding: 0.5rem 1rem;
   > li > label {
     .font-size(16);
-    img {
+    svg {
       height: 1em;
       vertical-align: middle;
     }
@@ -1342,7 +1349,7 @@ div.km-header a img{
     width: 2em;
     float: left;
     text-align: center;
-    img {
+    svg {
       margin-top: 0.25rem;
       height: 1em;
       vertical-align: middle;
@@ -1356,7 +1363,7 @@ div.km-header a img{
   }
   .deleteTag {
     float: left;
-    img {
+    svg {
       margin-top: 0.25rem;
       height: 1em;
       vertical-align: middle;
@@ -1565,8 +1572,9 @@ div.footer.km-footer {
 
 .helper {
   color: #979797;
-  img {
-    height: 12px;
+  svg {
+    height: 0.875em;
+    max-width: 0.875em;
   }
 }
 
@@ -1665,7 +1673,7 @@ div.footer.km-footer {
   max-height: 1em;
 }
 
-#gallery-photos > a > span > img {
+#gallery-photos > a > span > svg {
   vertical-align: middle;
   margin-left: 0.15em;
 }
@@ -1713,7 +1721,7 @@ div.footer.km-footer {
   padding: 0.5em 1em;
   font-weight: 600;
   text-align: left;
-  img {
+  svg {
     height: 1em;
     max-width: 1em;
     vertical-align: middle;
@@ -1750,7 +1758,7 @@ div.footer.km-footer {
 
 }
 
-#home-buttongroup > li.km-button > span > img {
+#home-buttongroup > li.km-button > span > svg {
   vertical-align: text-top;
   margin-right: 0.15em;
   height: 1em;
@@ -1924,7 +1932,7 @@ div.footer.km-footer {
   padding: 0px;
 }
 
-#gpsLocateUpdateBtn > span > img {
+#gpsLocateUpdateBtn > span > svg {
   vertical-align: middle;
 }
 
@@ -2188,7 +2196,7 @@ div.footer.km-footer {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  span > img {
+  span > svg {
     height: 1.25rem;
   }
 }
@@ -2208,7 +2216,7 @@ div.footer.km-footer {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
-.ghostPhotoBox img {
+.ghostPhotoBox svg {
   margin-left: auto;
   margin-right: auto;
   .shadow;
@@ -2372,7 +2380,7 @@ div.footer.km-footer {
   .font-size(14);
   font-weight: 600;
 }
-.notification-message img {
+.notification-message svg {
   border-radius: 50%;
   float: left;
 }
@@ -2798,7 +2806,7 @@ div.footer.km-footer {
   overflow: hidden;
   padding: 5px 4px;
 }
-.round img {
+.round svg {
   width: 45px;
 }
 @keyframes pulse {
@@ -2881,9 +2889,10 @@ div.footer.km-footer {
   background: @shade-300;
 }
 
-div.message-slideOptions > span.archive > a > span > img {
+div.message-slideOptions > span.archive > a > span > svg {
   vertical-align: middle;
-  height: 18px;
+  height: 1.2em;
+  width: 1.2em;
 }
 
 #channel-addChannel-list li:first-child,
@@ -2972,7 +2981,7 @@ a:hover {
 .profileImg {
   float: left;
 }
-.profileTop img {
+.profileTop svg {
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -3010,10 +3019,10 @@ a:hover {
 .menu li * {
   vertical-align: top;
 }
-.menu li img {
+.menu li svg {
   margin-right: 18px;
 }
-#appDrawer > div > div.km-scroll-container > div > div.menuLinks > div > ul > li:nth-child(2) > a > img {
+#appDrawer > div > div.km-scroll-container > div > div.menuLinks > div > ul > li:nth-child(2) > a > svg {
   margin-right: 10px;
 }
 .menuLinks {
@@ -3069,7 +3078,7 @@ a:hover {
   margin-top: 0.5em;
   padding-left: 1.5em;
   padding-right: 1.5em;
-  > img {
+  > svg {
     margin-right: 0.5em;
   }
 }
@@ -3256,11 +3265,11 @@ a:hover {
 
   }
 }
-.chatDetails img {
+.chatDetails svg {
   vertical-align: text-top;
 }
 
-.chat-typeBox img {
+.chat-typeBox svg {
   height: 10px;
 }
 
@@ -3299,8 +3308,9 @@ a:hover {
   float: right;
 }
 
-.chat-option-ul li a img {
-  height: 16px;
+.chat-option-ul li a svg {
+  height: 1em;
+  width: 1em;
 }
 
 .chat-option-selection {
@@ -3364,7 +3374,7 @@ a:hover {
 }
 
 
-#channels-listview > li > div > a > div > img {
+#channels-listview > li > div > a > div > svg {
   margin-left: 1.25rem;
 }
 
@@ -3430,7 +3440,7 @@ a:hover {
     margin-left:0px;
     .font-size(14);
   }
-  p img {
+  p svg {
     vertical-align: bottom;
   }
 }
@@ -3462,7 +3472,7 @@ a:hover {
 #addChat-step2 {
   padding: 0.5rem 1rem;
   width: 100%;
-  > img {
+  > svg {
     float: left;
     vertical-align: middle;
     padding-top: 10px;
@@ -3526,7 +3536,7 @@ div.footerMenu.km-footer > ul > li > a {
     white-space: nowrap;
     text-shadow: 1px 1px 1px #C7C7C7;
   }
-  img {
+  svg {
     height:1.25rem;
   }
   a {
@@ -3657,7 +3667,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   .pad;
 }
 
-#modalview-profilePhotoEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.topHeaderProfile > h3:nth-child(1) > img {
+#modalview-profilePhotoEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.topHeaderProfile > h3:nth-child(1) > svg {
   vertical-align: middle;
 }
 
@@ -3706,7 +3716,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   border-radius: 0.25em;
   font-size: 0.75em;
   vertical-align: middle;
-  > img {
+  > svg {
     vertical-align: text-top;
   }
 }
@@ -3720,7 +3730,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   color: #fff;
   vertical-align: middle;
   margin-left: 0.5em;
-  > img {
+  > svg {
     vertical-align: baseline !important;
   }
 }
@@ -3729,7 +3739,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   background-color: @shade-300;
   margin-left: 0.5em;
   //color: #fff;
-  img {
+  svg {
     height: 0.875em;
     vertical-align: middle;
   }
@@ -3740,7 +3750,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   top: -0.5em;
 }
 
-div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
+div.chat-message-sender.chat-message-content > div > div > svg.photo-chat-lock {
   display: inline-block;
 }
 
@@ -3765,9 +3775,11 @@ div.chat-message-sender.chat-message-content > div > div > img.photo-chat-lock {
   border-radius: 3px;
   padding: 3px;
   color: @shade-100;
-  object {
+  svg {
     height: 0.75em;
     vertical-align: baseline;
+    width: 1em;
+
   }
 }
 
@@ -3905,6 +3917,10 @@ li > .km-group-title {
   padding: 0;
   margin: 0;
   list-style: none;
+  svg {
+    height: 1.2em;
+    max-width: 1.2em;
+  }
 }
 #messageEditor {
   border: none;
@@ -4093,7 +4109,7 @@ div.loginBox > form > div > ul > li {
   text-align: center;
   background-color: #f5f5f5;
 }
-.profileTopBox img {
+.profileTopBox svg {
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -4253,7 +4269,7 @@ div.loginBox > form > div > ul > li {
   }
   .photoTopDiv {
     padding: 0px;
-    > img {
+    > svg {
       width: 100%;
       border-radius: 3px 3px 0px 0px;
     }
@@ -4281,7 +4297,7 @@ div.loginBox > form > div > ul > li {
   width: 25%;
   height: auto;
   float: left;
-  > img {
+  > svg {
     width: 100%;
   }
 }
@@ -4293,7 +4309,7 @@ div.loginBox > form > div > ul > li {
   p {
     font-size: 0.75em;
   }
-  img {
+  svg {
     height: 0.875em;
   }
 }
@@ -4435,12 +4451,12 @@ div.loginBox > form > div > ul > li {
   text-align: center;
   .imgLine {
     width: 100%;
-    img {
+    svg {
       margin-left: auto;
       margin-right: auto;
     }
   }
-  img {
+  svg {
     margin-left: auto;
     margin-right: auto;
   }
@@ -4482,7 +4498,7 @@ div.loginBox > form > div > ul > li {
 .placesSearchBox {
   padding: 0.5rem 1rem;
   width: 100%;
-  > img {
+  > svg {
     float: left;
     vertical-align: middle;
     padding-top: 10px;
@@ -4516,7 +4532,7 @@ div.loginBox > form > div > ul > li {
     right: 4.5rem;
     top: 1.25rem;
   }
-  img {
+  svg {
     right: 30px;
     position: initial;
   }
@@ -4531,7 +4547,7 @@ div.loginBox > form > div > ul > li {
   h4 {
     margin-bottom: 1rem;
   }
-  img {
+  svg {
     vertical-align: middle;
   }
 }
@@ -4574,7 +4590,7 @@ div.loginBox > form > div > ul > li {
   color: @primary-200;
 }
 
-#places-checkIn > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.confirmPlaceAddress > p:nth-child(1) > span > span > img {
+#places-checkIn > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.confirmPlaceAddress > p:nth-child(1) > span > span > svg {
   vertical-align: sub;
 }
 
@@ -4602,7 +4618,7 @@ div.loginBox > form > div > ul > li {
 .contactSearchBox {
   padding: 0.5rem 1rem;
   width: 100%;
-  > img {
+  > svg {
     float: left;
     vertical-align: middle;
     padding-top: 10px;
@@ -4616,7 +4632,7 @@ div.loginBox > form > div > ul > li {
 
 .topSearchReferral {
   margin: 0.5rem 1rem !important;
-  img {
+  svg {
     vertical-align: sub;
   }
 }
@@ -4646,6 +4662,10 @@ div.loginBox > form > div > ul > li {
   margin-right: 0px;
 }
 
+#contacts-listview > li > ul > li > div > div > a > span > svg {
+  height: 1.5em;
+  max-width: 1.5em;
+}
 
 #groupEditor-editTitleTag > a {
   margin-top: 0.25em;
@@ -4670,7 +4690,7 @@ div.loginBox > form > div > ul > li {
   width: 100%;
 }
 
-#contactActionBtns > li > a > span > img {
+#contactActionBtns > li > a > span > svg {
   vertical-align: middle;
   margin-right: 0.5em;
 }
@@ -4750,7 +4770,7 @@ div.loginBox > form > div > ul > li {
   }
 }
 
-#contacts > div.footerMenu.km-footer > div > ul > li > img {
+#contacts > div.footerMenu.km-footer > div > ul > li > svg {
   vertical-align: middle;
 }
 .circleOptions li:nth-child(1){
@@ -4775,7 +4795,7 @@ div.loginBox > form > div > ul > li {
   //.shadowHelper(1);
 }
 
-#contactListDiv > div.contact-connections > ul > li > img {
+#contactListDiv > div.contact-connections > ul > li > svg {
   vertical-align: middle;
   margin-left: 0.5rem;
 }
@@ -4930,7 +4950,7 @@ div.contactListBox.activeContact > div > div > ul {
 #searchContactsDiv {
   padding-left: 1rem;
   padding-right: 1rem;
-  img {
+  svg {
     vertical-align: middle;
   }
   input {
@@ -4949,7 +4969,7 @@ div.contactListBox.activeContact > div > div > ul {
     margin-left: 0px;
     margin-right: 0px;
   }
-  img {
+  svg {
     margin-left: auto;
     margin-right: auto;
   }
@@ -4961,7 +4981,7 @@ div.contactListBox.activeContact > div > div > ul {
 
 .inviteTop {
   width: 100%;
-  img {
+  svg {
     margin-left: 35%;
     margin-bottom: 1rem;
     margin-top: 0.5rem;
@@ -5041,7 +5061,7 @@ div.contactListBox.activeContact > div > div > ul {
   .font-size(11);
 }
 
-#editContact-resyncBtn img {
+#editContact-resyncBtn svg {
   vertical-align: bottom;
 }
 
@@ -5095,7 +5115,7 @@ div.contactListBox.activeContact > div > div > ul {
   font-size: 1.2em !important;
 }
 
-.notify-title img {
+.notify-title svg {
   vertical-align: middle;
 }
 
@@ -5237,7 +5257,7 @@ div.contactListBox.activeContact > div > div > ul {
   h2, p {
     color: #fff;
   }
-  img {
+  svg {
     vertical-align: text-top;
   }
 }
@@ -5264,7 +5284,7 @@ div.contactListBox.activeContact > div > div > ul {
   //margin-top: 1rem;
 }
 
-#editContact-deleteBtn img {
+#editContact-deleteBtn svg {
   vertical-align: text-top;
 }
 
@@ -5570,7 +5590,7 @@ div.contactListBox.activeContact > div > div > ul {
   fill: @secondary-100;
 }
 
-#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.gallerySearchOptions > div > button > span > img {
+#gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.gallerySearchOptions > div > button > span > svg {
   height: 1.25rem;
 }
 
@@ -5590,7 +5610,7 @@ div.contactListBox.activeContact > div > div > ul {
     }
   }
   .tags {
-    img {
+    svg {
       height: 18px;
     }
   }
@@ -5598,7 +5618,7 @@ div.contactListBox.activeContact > div > div > ul {
     width: 150px;
   }
   #toggleFilterBtn {
-    img {
+    svg {
       height: 0.875em;
     }
   }
@@ -5665,7 +5685,7 @@ div.contactListBox.activeContact > div > div > ul {
   }
 }
 
-#gallery-photos > div.resultsBar > div.galleries > a > span > img {
+#gallery-photos > div.resultsBar > div.galleries > a > span > svg {
   vertical-align: middle;
 }
 
@@ -5823,7 +5843,7 @@ div.contactListBox.activeContact > div > div > ul {
     color: @shade-100;
     width: 15% !important;
     text-align: center !important;
-    img {
+    svg {
       height: 1rem;
     }
   }
@@ -6094,7 +6114,7 @@ div.contactListBox.activeContact > div > div > ul {
   -webkit-touch-callout: none;
 }
 
-.cropper-container img {
+.cropper-container svg {
   display: block;
   width: 100%;
   min-width: 0 !important;
@@ -6894,7 +6914,7 @@ table.k-editor {
     left: 0;
     right: 0;
     bottom: 0;
-    img {
+    svg {
       height: 30px;
     }
 }
@@ -6939,9 +6959,9 @@ table.k-editor {
   color: #fff !important;
 }
 
-#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(2) > a > img,
-#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(3) > a > img,
-#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(4) > a > img {
+#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(2) > a > svg,
+#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(3) > a > svg,
+#ggDrawer > div > div.km-listview-wrapper > ul > li:nth-child(4) > a > svg {
   margin-right: 0.5em;
 }
 
@@ -6953,7 +6973,7 @@ table.k-editor {
   float: left;
   width: 20%;
   text-align: center;
-  > object {
+  > svg{
     width: 3.5em;
     height: 3.5em;
   }
@@ -7019,7 +7039,7 @@ table.k-editor {
   margin-right: auto;
 }
 
-.hotButton-icon > img {
+.hotButton-icon > svg {
   display: block;
   min-width: 100%;
   min-height: 100%;
@@ -7102,7 +7122,7 @@ table.k-editor {
   font-weight: 600;
 }
 
-.smartTrip-currentLocation  img {
+.smartTrip-currentLocation  svg {
   height: 1em;
   max-width: 1em;
   vertical-align: middle;
@@ -7223,7 +7243,7 @@ table.k-editor {
   .header {
     padding: 0.5em;
     p {
-      >img {
+      >svg {
         height: 1em;
         max-width: 1em;
         vertical-align: text-top;
@@ -7249,7 +7269,7 @@ table.k-editor {
     .intelliTrip-details {
       font-size: 1em;
       padding: 0.25em 0.5em;
-      img {
+      svg {
         height: 0.875em;
         max-width: 0.875em;
         vertical-align: baseline;
@@ -7365,7 +7385,7 @@ table.k-editor {
   line-height: 1em;
   margin-left: 0.25em;
   margin-right: 0.25em;
-  >img {
+  >svg {
     max-height: 1em !important;
     width: 1em !important;
     vertical-align: middle;
@@ -7391,7 +7411,7 @@ table.k-editor {
     .title {
       font-size: 1.2em;
       font-weight: 600;
-      img {
+      svg {
         height: 1.2em;
         max-width: 1.2em;
         vertical-align: sub;
@@ -7447,7 +7467,7 @@ table.k-editor {
       border: 2px dotted;
       background-color: @black;
       margin-top: 1em;
-      img {
+      svg {
         width: 100%;
       }
 
@@ -7482,7 +7502,7 @@ table.k-editor {
     margin-bottom: 0.25em;
     color: @primary-200;
     font-size: 0.85em;
-    img {
+    svg {
       height: 0.85em;
       max-width: 0.85em;
     }
@@ -7595,7 +7615,7 @@ table.k-editor {
       font-size: 1em;
       font-weight: 600;
       width: 95%;
-      img {
+      svg {
         height: 1em;
         max-width: 1em;
         vertical-align: text-top;
@@ -7634,7 +7654,7 @@ table.k-editor {
         padding-right: 1em !important;
         font-size: 0.85em;
         margin-top: 0.5em;
-        img {
+        svg {
           height: 1em;
           max-width: 1em;
           margin-right: 0.5em;
@@ -7657,7 +7677,7 @@ table.k-editor {
   }
 }
 
-.chat-message-text > .intelliFlight > a > div.header > p > img {
+.chat-message-text > .intelliFlight > a > div.header > p > svg {
   height: 1em;
   max-width: 1em;
 
@@ -7678,7 +7698,7 @@ table.k-editor {
       font-size: 1.2em;
       font-weight: 600;
       width: 95%;
-      img {
+      svg {
         height: 1em;
         max-width: 1em;
         vertical-align: text-top;
