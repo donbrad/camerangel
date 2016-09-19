@@ -100,6 +100,11 @@ var channelsView = {
     // Update channel display list from channel master list
     updateChannelListDS : function () {
 
+        if (channelModel.channelsDS === null) {
+            ggError("Chat's aren't available yet...");
+            return;
+        }
+
         if (channelsView._showDeletedChannels) {
             channelsView._channelListDS.data(channelModel.channelsDS.data());
         } else {
