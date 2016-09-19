@@ -447,10 +447,10 @@
 	<div class="appBox noPad">
 			<div data-role="tabstrip" id="home-buttongroup" class="tabBar" data-select="homeView.onTabSelect">
 				<a data-tab="0">
-					<img src="images/icon-notify-active.svg" class="home-tab-alert-img" />
+					<img src="images/icon-notify-active.svg" class="home-tab-alert-img" /> Alerts
 				</a>
 				<a data-tab="1">
-					<img src="images/icon-today.svg" id="home-tab-today-img" />
+					<img src="images/icon-today.svg" id="home-tab-today-img" /> Today
 				</a>
 			</div>
 			<div id="home-alerts" data-bind="invisible: ux_isValidated">
@@ -5128,8 +5128,10 @@
 			<object data="images/icon-puff.svg" type="image/svg+xml" width="30" class="left"> </object>
 			<p class="left" id="current-place-name"></p>
 			<a class="btnClear whiteBtn right" data-role="button" id="checkoutBtn">
-				<object data="images/icon-checkout-light.svg" type="image/svg+xml"  class="icon-btn">
-				 Checkout
+				<svg class="icon-btn">
+					<use xlink:href="styles/svg/symbol.svg#icon-checkout-light"></use>
+				</svg>
+				Checkout
             </a>
 			<div class="clearfix"></div>
 		</div>
