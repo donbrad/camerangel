@@ -9,15 +9,11 @@ var ux = {
 
 	// Set the add target (url or function) and option icon for right tool button on all main template views
 	setAddTarget : function (iconUrl, target, func) {
-		var elements = document.getElementsByClassName('header-add-icon');
-		var el = elements[0];
-		/*if (iconUrl !== null) {
-			//$('.header-add-icon').attr('src', iconUrl);
-			el.setAttribute("data", iconUrl);
+		if (iconUrl !== null) {
+			$('.header-add-icon').attr('src', iconUrl);
 		} else {
-			//$('.header-add-icon').attr('src', ux.defaultAddIcon);
-			el.setAttribute("data", ux.defaultAddIcon);
-		}*/
+			$('.header-add-icon').attr('src', ux.defaultAddIcon);
+		}
 
 		if (target !== undefined) {
 			ux.currentAddTarget = target;
