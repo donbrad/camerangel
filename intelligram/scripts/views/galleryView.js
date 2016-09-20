@@ -1646,21 +1646,27 @@ var modalPhotoView = {
 var galleryListView = {
 
     _callback: null,
+    _initialized : false,
 
     onInit: function(){
-        $("#galleryListModal-listview").kendoMobileListView({
-            dataSource: galleryModel.galleryDS,
-            template: $("#galleryList-template").html(),
-            click: function (e) {
-                galleryListView.galleryClick(e);
-            }
-        });
+
     },
 
     openModal: function (callback) {
 
         if (callback !== undefined) {
             galleryListView._callback = callback;
+        }
+
+        if (!galleryListView._initialized) {
+            galleryListView._initialized = true;
+            $("#galleryListModal-listview").kendoMobileListView({
+                dataSource: galleryModel.galleryDS,
+                template: $("#galleryList-template").html(),
+                click: function (e) {
+                    galleryListView.galleryClick(e);
+                }
+            });
         }
 
        /* $("#modalgallery-listview li").css("width","100%");
