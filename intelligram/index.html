@@ -3839,7 +3839,10 @@
 <script type="text/x-kendo-tmpl" id="notesListView-add-tmpl">
 		<div>
 			<h4>
-				<img src="#:data.imgUrl#" class="icon-action"/> #: data.title #
+				<svg class="icon-action">
+					<use xlink:href="styles/svg/symbol.svg\\##:data.imgUrl#"></use>
+				</svg>
+				#: data.title #
 			</h4>
 		</div>
 

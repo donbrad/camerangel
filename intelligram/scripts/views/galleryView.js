@@ -30,64 +30,52 @@ var galleryView = {
         data: [
             {
                 title: "Add Note",
-                imgUrl: "images/icon-note.svg",
+                imgUrl: "icon-note",
                 category: "intelligram",
                 type: "note"
             },
             {
                 title: "Add from Camera",
-                imgUrl: "images/action-camera.svg",
+                imgUrl: "action-camera",
                 category: "photos",
                 type: "camera"
             },
             {
                 title: "Add from Device",
-                imgUrl: "images/action-device.svg",
+                imgUrl: "action-device",
                 category: "photos",
                 type: "device"
             },
             {
                 title: "Add Gallery",
-                imgUrl: "images/nav-gallery.svg",
+                imgUrl: "nav-gallery",
                 category: "photos",
                 type: "gallery"
             },
             {
                 title: "Add Flight",
-                imgUrl: "images/intelliFlight-icon.svg",
+                imgUrl: "intelliFlight-icon",
                 category: "intelligram",
                 type: "flight"
             },
             {
                 title: "Add Event",
-                imgUrl: "images/icon-event.svg",
+                imgUrl: "icon-event",
                 category: "intelligram",
                 type: "event"
             },
             {
                 title: "Add Trip",
-                imgUrl: "images/intelliTrip-icon.svg",
+                imgUrl: "intelliTrip-icon",
                 category: "intelligram",
                 type: 'trip'
             },
             {
                 title: "Add Movie",
-                imgUrl: "images/intelliMovie-icon.svg",
+                imgUrl: "intelliMovie-icon",
                 category: "intelligram",
                 type: "movie"
-            }/*,
-            {
-                title: "Add Account",
-                imgUrl: "images/icon-account.svg",
-                category: "intelligram",
-                type: "account"
-            },
-            {
-                title: "Add Medical",
-                imgUrl: "images/icon-medical.svg",
-                category: "intelligram",
-                type: "medical"
-            }*/
+            }
 
         ]
     }),
