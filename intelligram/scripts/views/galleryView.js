@@ -1663,10 +1663,10 @@ var galleryListView = {
         });
 
         $("#galleryListModal-listview").kendoMobileListView({
-            dataSource: testDS,
+            dataSource: galleryModel.galleryDS,
             template: $("#galleryList-template").html(),
             click: function (e) {
-                //console.log(e);
+                gallerListView.galleryClick(e);
             }
         });
     },
