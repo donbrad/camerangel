@@ -255,14 +255,47 @@ var galleryModel = {
     },
 
 
-
     updateGallery : function (gallery) {
 
-
-        everlive.update(galleryModel._cloudClass, gallery, {'uuid' : gallery.uuid}, function (error, data) {
-            //placeNoteModel.notesDS.remove(note);
-        });
-
+        if (deviceModel.isOnline()) {
+            everlive.update(galleryModel._cloudClass, gallery, {'uuid': gallery.uuid}, function (error, data) {
+                //placeNoteModel.notesDS.remove(note);
+            });
+        }
 
     },
+
+    addGalleryPhoto : function (photo) {
+        galleryModel.photoDS.add(photo);
+        galleryModel.photoDS.sync();
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(galleryModel._galleryPhoto, photo, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Gallery Photo " + JSON.stringify(error));
+                }
+            });
+
+        }
+
+    },
+
+    updateGalleryPhoto : function (photo) {
+
+    },
+
+
+    addGalleryComment: function ( comment) {
+        galleryModel.commentDS.add(photo);
+        galleryModel.commentDS.sync();
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(galleryModel._galleryComment, comment, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Gallery Comment " + JSON.stringify(error));
+                }
+            });
+
+        }
+    }
 };

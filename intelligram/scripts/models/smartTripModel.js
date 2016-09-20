@@ -109,7 +109,8 @@ var smartTrip = {
         var today = moment();
         for (var i=0; i<len; i++) {
             var trip = smartTrip.tripsDS.at(i);
-            if (moment(today).isBetween(trip.departure, trip.arrival, 'day') ) {
+            var departure = moment(trip.departure), arrival = moment(trip.arrival);
+            if (moment(today).isBetween(departure, arrival, 'day') ) {
                 todayArray.push(trip);
             }
 

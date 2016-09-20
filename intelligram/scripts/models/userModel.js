@@ -368,7 +368,7 @@ var userModel = {
 
         var userEnc = GibberishAES.enc(userBlob, userModel.localKey);
         window.localStorage.setItem('ggUserBlob', userEnc);
-        console.log("Writing User " + userEnc);
+        //console.log("Writing User " + userEnc);
     },
 
 
