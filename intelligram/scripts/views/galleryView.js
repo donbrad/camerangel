@@ -2226,7 +2226,11 @@ var galleryEditView = {
             activeGallery.timestamp = ggTime.currentTime();
             activeGallery.lastUpdate = ggTime.currentTime();
             activeGallery.photoCount = galleryEditView.photosDS.total();
-            activeGallery.photos = galleryEditView.photosDS.data();
+            if (activeGallery.isShared) {
+                galleryEditView.processSharedPhotos();
+            } else {
+                galleryEditView.processPrivatePhotos();
+            }
 
             galleryModel.addGallery(activeGallery);
         }
