@@ -759,15 +759,9 @@
 		<p id="newWelcome">Welcome to</p>
 		<p id="newLogo">
 			<svg class="icon-logo">
-				<use xlink:href="styles/svg/symbol.svg#logo-mark-light"></use>
+				<use xlink:href="styles/svg/symbol.svg#logo-mark-dark"></use>
 			</svg>
 		</p>
-		<h3>
-			<span class="feature" id="feature1">Personal</span> 
-			<span class="feature" id="feature2">Private</span>
-			<span class="feature" id="feature3">Intelligent</span>
-			<span id="messageIntro">Messaging</span>
-		</h3>
 	</div>
     <div class="clearfix"></div>
 	 <div class="feature-card preMotion" id="featureCard1">
@@ -807,42 +801,27 @@
 				 </p>
 			 </div>
 		 </div>
+		 <a class="btnFull-modal btnSecondary" data-role="button" href="#signup" id="newUserHomeBtn">
+			 Sign up
+		 </a>
 	 </div>
-
-
-
-    <div class="loginBox card preMotion hidden">
-        <h3>
-            Join intelligram!
-        </h3>
-       <div>
-		   <ul>
-			   <li>
-				   Personal - stay in touch with the people, places and passions in your life.
-			   </li>
-
-			   <li>
-				   Intelligent - Only receive and store what's important -- when it's convenient.  Then find it instantly.
-			   </li>
-			   <li>
-				   Organized - Keep your private life, private!. Share only what you want, when you want.  Decide who can just look and who can have a copy to share with others.
-			   </li>
-
-		   </ul>
-	   </div>
-    </div>
-	 <a class="btnSpan testingHome" href="#usersignin" data-role="button">
-		 <svg class="icon-sm">
-			 <use xlink:href="styles/svg/symbol.svg#icon-dev-light"></use>
-		 </svg>
-		 Dev - Sign In</a>
-    <div class="footer" data-role="footer" id="newuserhome-footer">
-    	<a class="btnPrimary btnSpan-btm preMotion" data-role="button" href="#signup" id="newUserHomeBtn">Join intelligram</a>
-    </div>
+	 <a class="btnClear btnFull-modal" href="#usersignin" data-role="button" id="newUserHome-signIn">
+		 Already have an account? Sign in
+	 </a>
 </div>
 
 <!-- home - for new users -->
 <div data-role="view" data-title="intelligram" id="usersignin" data-layout="newuser" data-model="userModel" class="appearance" style="display:none;" data-init="signInView.onInit" data-show="signInView.onShow" data-transition="fade">
+	<!--<div data-role="header">
+		<div data-role="navbar">
+			<a data-role="button" data-align="left" class="btnClear-grey" href="#newuserhome">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
+				</svg>
+				Sign Up
+			</a>
+		</div>
+	</div>-->
 	<div class="newuserBox">
 		<p>Welcome back to</p>
 		<p>
@@ -4548,7 +4527,11 @@
 	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
 			<div class="header">
 				<p class="intelliTrip-title">
-					<img src="images/intelliTrip-icon.svg" /> #:name# </p>
+					<svg>
+							<use xlink:href="styles/svg/symbol.svg\\#intelliTrip-icon"></use>
+					</svg>
+					 #:name#
+				</p>
 				<p class="helper intelliTrip-subheader">
 					<span>#:origin#</span>
 					<span class="intelliTrip-arrow">
@@ -5704,7 +5687,11 @@
 
 	<div class="tempSearchBox" id="searchEventPlace-form">
 		<div class="appendSearch" id="searchEventPlaces-searchDiv">
-			<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml" > </object></span>
+			<span class="searchIcon">
+				<svg>
+					<use xlink:href="styles/svg/symbol.svg#search"></use>
+				</svg>
+			</span>
 			<input type="search"  id="smartEventPlaces-query" placeholder="Find place or address..." data-required-msg="Enter a place name" required />
 		</div>
 		<span class="k-invalid-msg" data-for="place"></span>
