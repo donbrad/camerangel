@@ -9118,7 +9118,8 @@ html .km-pane-wrapper .k-header {
   text-align: center !important;
 }
 .smallSearch .searchIcon svg {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 .smallSearch .viewSearchBox {
   width: 85% !important;
@@ -9184,7 +9185,8 @@ html .km-pane-wrapper .k-header {
   text-align: center !important;
 }
 .smallSearch-sm .searchIcon svg {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 .smallSearch-sm .viewSearchBox {
   width: 85% !important;
@@ -9250,7 +9252,8 @@ html .km-pane-wrapper .k-header {
   text-align: center !important;
 }
 .fullSearch .searchIcon svg {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 .fullSearch .viewSearchBox {
   width: 85% !important;
@@ -9313,7 +9316,8 @@ html .km-pane-wrapper .k-header {
   text-align: center !important;
 }
 .appendSearch .searchIcon svg {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 .appendSearch .viewSearchBox {
   width: 85% !important;
