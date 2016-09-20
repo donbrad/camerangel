@@ -2145,19 +2145,6 @@ var galleryEditView = {
             galleryEditView.addPhotoToGallery,  // Optional preview callback
             galleryEditView.updateImageUrl
         );
-
-       /* window.imagePicker.getPictures(
-         function(results) {
-         for (var i = 0; i < results.length; i++) {
-         console.log('Image URI: ' + results[i]);
-         }
-         }, function (error) {
-         console.log('Error: ' + error);
-         }, {
-         maximumImagesCount: 10,
-         width: devicePhoto._resolution
-         }
-         );*/
     },
 
     addGallery : function (e) {
@@ -2191,7 +2178,7 @@ var galleryEditView = {
             gallery.set('tags', []);
             gallery.set('photoCount', galleryEditView.photosDS.total());
             gallery.set('photos', galleryEditView.photosDS.data());
-
+            gallery.set('lastUpdate',ggTime.currentTime());
             gallery.set('timestamp',ggTime.currentTime());
 
             galleryModel.updateGallery(gallery);
@@ -2202,6 +2189,7 @@ var galleryEditView = {
             activeGallery.tags = [];
             activeGallery.tagString = tagString;
             activeGallery.timestamp = ggTime.currentTime();
+            activeGallery.lastUpdate = ggTime.currentTime();
             activeGallery.photoCount = galleryEditView.photosDS.total();
             activeGallery.photos = galleryEditView.photosDS.data();
 
