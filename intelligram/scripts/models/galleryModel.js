@@ -230,5 +230,37 @@ var galleryModel = {
         var comments = galleryModel.queryComments({field: "galleryPhotoUUID", operator: "eq", value: uuid});
 
         return (comments);
-    }
+    },
+
+    addGallery : function (gallery) {
+
+        if (gallery.Id === undefined) {
+            gallery.Id = uuid.v4();
+        }
+
+        galleryModel.galleryDS.add(gallery);
+        galleryModel.galleryDS.sync();
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(galleryModel._cloudClass, gallery, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Gallery " + JSON.stringify(error));
+                }
+            });
+
+        }
+
+    },
+
+
+
+    updateGallery : function (gallery) {
+
+
+        everlive.update(galleryModel._cloudClass, gallery, {'uuid' : gallery.uuid}, function (error, data) {
+            //placeNoteModel.notesDS.remove(note);
+        });
+
+
+    },
 };

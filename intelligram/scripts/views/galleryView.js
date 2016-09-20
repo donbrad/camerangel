@@ -1648,25 +1648,11 @@ var galleryListView = {
     _callback: null,
 
     onInit: function(){
-        // todo - delete, used only for ui testing
-        var testDS = new kendo.data.DataSource({
-            data: [
-                {
-                    name: "My 1st Gallery",
-                    photoCount: 32
-                },
-                {
-                    name: "Road Trip",
-                    photoCount: 17
-                }
-            ]
-        });
-
         $("#galleryListModal-listview").kendoMobileListView({
             dataSource: galleryModel.galleryDS,
             template: $("#galleryList-template").html(),
             click: function (e) {
-                gallerListView.galleryClick(e);
+                galleryListView.galleryClick(e);
             }
         });
     },
@@ -2011,6 +1997,7 @@ var galleryEditView = {
         var that = galleryEditView;
 
         if (gallery === null) {
+            that.activeObj.noteType = privateNoteModel._gallery;
             that.activeObj.uuid = uuid.v4();
             that.activeObj.photos= [];
             that.activeObj.set('photoCount', 0);
@@ -2190,7 +2177,7 @@ var galleryEditView = {
     saveGallery: function () {
 
         var title = $('#galleryEditor-title').val();
-        var tagString =  $('galleryEditor-tagString').val();
+        var tagString =  $('#galleryEditor-tagString').val();
 
         var activeGallery = galleryEditView.activeObj;
 
@@ -2199,16 +2186,15 @@ var galleryEditView = {
 
             var gallery = privateNoteModel.findGallery(activeGallery.uuid);
 
-
             gallery.set('title', title);
             gallery.set('tagString', tagString);
-            gallery.set('tags', []); // todo: don integrate tag processing...
+            gallery.set('tags', []);
             gallery.set('photoCount', galleryEditView.photosDS.total());
             gallery.set('photos', galleryEditView.photosDS.data());
 
             gallery.set('timestamp',ggTime.currentTime());
 
-            privateNoteModel.updateNote(gallery);
+            galleryModel.updateGallery(gallery);
 
         } else {
 
@@ -2219,7 +2205,7 @@ var galleryEditView = {
             activeGallery.photoCount = galleryEditView.photosDS.total();
             activeGallery.photos = galleryEditView.photosDS.data();
 
-            privateNoteModel.addNote(activeGallery);
+            galleryModel.addGallery(activeGallery);
         }
 
 
