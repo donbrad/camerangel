@@ -1207,7 +1207,7 @@
 </div>
 
 <script type="text/x-kendo-template" id="galleryList-template">
-	<h4>#: data.name #</h4>
+	<h4>#: data.title #</h4>
 	<p class="helper">#: data.photoCount # photos</p>
 </script>
 
@@ -1243,7 +1243,7 @@
 	</div>
 
     <div>
-        <ul id="galleryPicker-listview" class="list-inline" data-role="listview"></ul>
+        <ul id="galleryPicker-listview" ></ul>
     </div>
 	<div class="footer hidden" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" data-click="galleryPicker.setView">
@@ -1658,8 +1658,10 @@
 			<svg>
 				<use xlink:href="styles/svg/symbol.svg#close-white"></use>
 			</svg>
+		</a>
 		<img class="circle-img-lg" id="contactProfileImg" data-bind="" />
 		<img src="images/status-away.svg"  class="statusContactCard-icon" id="contactStatusImg" />
+		<h2>
 			<span class="primaryName" id="contactPrimaryName"></span>
 			<span class="hidden" id="currentContactVerified">
 				<svg class="user-status-icon">
@@ -1770,9 +1772,7 @@
 		</a>
 		<div class="left" style="width: 20%; text-align: center;">
 			<img class="circle-img-md home-profile-img" src=""/>
-			<svg class="userStatusView-img userAvailable">
-				<use xlink:href="styles/svg/symbol.svg#status-away"></use>
-			</svg>
+			<img class="userStatusView-img userAvailable" src="images/status-away.svg"/>
 		</div>
 
 		<div class="left" style="width: 80%;">
@@ -2604,8 +2604,9 @@
 			</a>
 			<span id="channel-titleBtn" data-role="button" data-click="channelView.doTitleClick">
 				<img src="" id="channelImage" height="32" class="circle-img"/>
-				<object data="images/icon-location.svg" type="image/svg+xml"  class="icon-header hidden"> </object>
-
+				<svg class="icon-header hidden">
+					<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
+				</svg>
 				<span id="channelName"></span>
 			</span>
 			<a data-align="right" data-role="button" id="messagePresenceButton" data-click="channelPresence.openModal">

@@ -4995,6 +4995,10 @@ div.km-header a svg {
 #profileStatus-top {
   margin: 0.5em;
 }
+#profileEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.profileEdit > div.profileTopBox > div > div.profilePrivateImg > a > span > img {
+  height: 1em;
+  max-width: 1em;
+}
 .listStyle {
   padding: 0 !important;
   margin: 0;
@@ -5849,14 +5853,14 @@ div.footer.km-footer {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   border-radius: 4px 4px 0 0 !important;
+  /*svg {
+    width: 18px;
+  }*/
 }
 .modal-top div > img {
   height: 4rem;
   vertical-align: middle;
   margin-bottom: 0.25rem;
-}
-.modal-top svg {
-  width: 18px;
 }
 .modal-top h2 {
   line-height: 1;
@@ -5905,7 +5909,8 @@ div.footer.km-footer {
   right: 0.5rem;
 }
 .modal-close span > svg {
-  height: 1.25rem;
+  height: 1.25em;
+  width: 1.25em;
 }
 /* ghost selection modal */
 .ghostSelectionBox {
@@ -6184,14 +6189,17 @@ div.footer.km-footer {
 }
 .icon-home {
   height: 1.25em;
+  max-width: 1.25em;
   vertical-align: text-bottom;
 }
 .icon-home-sm {
   height: 1em;
+  max-width: 1em;
   vertical-align: text-top;
 }
 .icon-btn-sm {
   height: 1em;
+  max-width: 1em;
   vertical-align: middle;
   margin-left: 0.15em;
 }
@@ -6823,6 +6831,10 @@ a:hover {
   position: absolute;
   z-index: 2;
 }
+#editChannel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div > div.pad > svg {
+  max-width: 1em;
+  height: 1em;
+}
 #chatImage {
   max-width: 100%;
   max-height: 100px;
@@ -6936,8 +6948,8 @@ a:hover {
   float: right;
 }
 .chat-option-ul li a svg {
-  height: 1em;
-  width: 1em;
+  height: 1.2em;
+  width: 1.2em;
 }
 .chat-option-selection {
   font-size: 0.875em;
@@ -7122,6 +7134,7 @@ div.footerMenu.km-footer > ul > li > a {
 }
 .actionBtn svg {
   height: 1.25rem;
+  max-width: 1.25em;
 }
 .actionBtn a {
   padding-top: 0.75rem;
@@ -8126,6 +8139,8 @@ div.loginBox > form > div > ul > li {
 #contactActionBtns > li > a > span > svg {
   vertical-align: middle;
   margin-right: 0.5em;
+  height: 1.2em;
+  width: 1.2em;
 }
 .contactListItem:hover {
   color: #4A4A4A;
@@ -8266,6 +8281,11 @@ div.loginBox > form > div > ul > li {
 .list-slider-options a,
 .list-options a {
   vertical-align: middle;
+}
+.list-slider-options svg,
+.list-options svg {
+  width: 1.2em;
+  height: 1.2em;
 }
 #groups-listview li {
   padding: 0 !important;
@@ -9427,7 +9447,7 @@ html .km-pane-wrapper .k-header {
   border-top: 0.4rem solid transparent;
   border-bottom: 0.4rem solid transparent;
   border-right: 0.4rem solid #cae2fb;
-  top: 1.5rem;
+  top: .5rem;
   left: 10.5%;
 }
 @media only screen and (max-width: 320px) {

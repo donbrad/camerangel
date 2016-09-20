@@ -191,7 +191,9 @@ var galleryView = {
     openGalleryPicker : function () {
         galleryListView.openModal(function (galleryId) {
             if (galleryId !== null) {
-                // switch to the new gallery.
+
+                APP.kendo.navigate("#galleryEditor?galleryid="+galleryid+"&returnview=gallery");
+
             }
         })
     },
@@ -1646,35 +1648,27 @@ var modalPhotoView = {
 var galleryListView = {
 
     _callback: null,
+    _initialized : false,
 
     onInit: function(){
-        // todo - delete, used only for ui testing
-        var testDS = new kendo.data.DataSource({
-            data: [
-                {
-                    name: "My 1st Gallery",
-                    photoCount: 32
-                },
-                {
-                    name: "Road Trip",
-                    photoCount: 17
-                }
-            ]
-        });
 
-        $("#galleryListModal-listview").kendoMobileListView({
-            dataSource: testDS,
-            template: $("#galleryList-template").html(),
-            click: function (e) {
-                //console.log(e);
-            }
-        });
     },
 
     openModal: function (callback) {
 
         if (callback !== undefined) {
             galleryListView._callback = callback;
+        }
+
+        if (!galleryListView._initialized) {
+            galleryListView._initialized = true;
+            $("#galleryListModal-listview").kendoMobileListView({
+                dataSource: galleryModel.galleryDS,
+                template: $("#galleryList-template").html(),
+                click: function (e) {
+                    galleryListView.galleryClick(e);
+                }
+            });
         }
 
        /* $("#modalgallery-listview li").css("width","100%");
@@ -2011,12 +2005,14 @@ var galleryEditView = {
         var that = galleryEditView;
 
         if (gallery === null) {
+            that.activeObj.noteType = privateNoteModel._gallery;
             that.activeObj.uuid = uuid.v4();
+            that.activeObj.Id = that.activeObj.uuid;
             that.activeObj.photos= [];
             that.activeObj.set('photoCount', 0);
-            that.activeObj.title = '';
+            that.activeObj.set('title','');
             that.activeObj.description = '';
-            that.activeObj.tagString = '';
+            that.activeObj.set('tagString','');
             that.activeObj.tags = [];
             that.activeObj.isShared = false;
             that.activeObj.isOpen = false;
@@ -2029,6 +2025,7 @@ var galleryEditView = {
            // $('#galleryEditor-tagString').val("");
             galleryEditView._mode = 'create';
         } else {
+            that.activeObj.Id = gallery.Id
             that.activeObj.uuid = gallery.uuid;
             that.activeObj.photos =  gallery.photos;
             that.activeObj.set('photoCount',  gallery.photoCount);
@@ -2042,6 +2039,7 @@ var galleryEditView = {
             that.activeObj.senderUUID = gallery.senderUUID;
             that.activeObj.senderName = gallery.senderName;
             that.activeObj.timestamp = gallery.timestamp;
+            that.activeObj.lastUpdate = gallery.lastUpdate;
             that.activeObj.ggType = gallery.ggType
             ;
             galleryEditView._mode = 'edit';
@@ -2158,19 +2156,6 @@ var galleryEditView = {
             galleryEditView.addPhotoToGallery,  // Optional preview callback
             galleryEditView.updateImageUrl
         );
-
-       /* window.imagePicker.getPictures(
-         function(results) {
-         for (var i = 0; i < results.length; i++) {
-         console.log('Image URI: ' + results[i]);
-         }
-         }, function (error) {
-         console.log('Error: ' + error);
-         }, {
-         maximumImagesCount: 10,
-         width: devicePhoto._resolution
-         }
-         );*/
     },
 
     addGallery : function (e) {
@@ -2190,7 +2175,7 @@ var galleryEditView = {
     saveGallery: function () {
 
         var title = $('#galleryEditor-title').val();
-        var tagString =  $('galleryEditor-tagString').val();
+        var tagString =  $('#galleryEditor-tagString').val();
 
         var activeGallery = galleryEditView.activeObj;
 
@@ -2199,26 +2184,27 @@ var galleryEditView = {
 
             var gallery = privateNoteModel.findGallery(activeGallery.uuid);
 
-
             gallery.set('title', title);
             gallery.set('tagString', tagString);
-            gallery.set('tags', []); // todo: don integrate tag processing...
-            gallery.set('photoCount', activeGallery.photoCount);
+            gallery.set('tags', []);
+            gallery.set('photoCount', galleryEditView.photosDS.total());
             gallery.set('photos', galleryEditView.photosDS.data());
-
+            gallery.set('lastUpdate',ggTime.currentTime());
             gallery.set('timestamp',ggTime.currentTime());
 
-            privateNoteModel.updateNote(gallery);
+            galleryModel.updateGallery(gallery);
 
         } else {
 
             activeGallery.title = title;
-            activeGallery.content = text;
+            activeGallery.tags = [];
             activeGallery.tagString = tagString;
             activeGallery.timestamp = ggTime.currentTime();
+            activeGallery.lastUpdate = ggTime.currentTime();
+            activeGallery.photoCount = galleryEditView.photosDS.total();
             activeGallery.photos = galleryEditView.photosDS.data();
 
-            privateNoteModel.addNote(activeGallery);
+            galleryModel.addGallery(activeGallery);
         }
 
 

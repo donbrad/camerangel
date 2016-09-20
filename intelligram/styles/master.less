@@ -1258,6 +1258,11 @@ div.km-header a svg{
   margin: 0.5em;
 }
 
+#profileEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.profileEdit > div.profileTopBox > div > div.profilePrivateImg > a > span > img {
+  height: 1em;
+  max-width: 1em;
+}
+
 .listStyle {
   padding: 0 !important;
   margin: 0;
@@ -2145,9 +2150,9 @@ div.footer.km-footer {
     vertical-align: middle;
     margin-bottom:0.25rem;
   }
-  svg {
+  /*svg {
     width: 18px;
-  }
+  }*/
   p {
     //.font-size(12);
   }
@@ -2196,7 +2201,8 @@ div.footer.km-footer {
   top: 0.5rem;
   right: 0.5rem;
   span > svg {
-    height: 1.25rem;
+    height: 1.25em;
+    width: 1.25em;
   }
 }
 
@@ -2477,16 +2483,19 @@ div.footer.km-footer {
 
 .icon-home {
   height: 1.25em;
+  max-width: 1.25em;
   vertical-align: text-bottom;
 }
 
 .icon-home-sm {
   height: 1em;
+  max-width: 1em;
   vertical-align: text-top;
 }
 
 .icon-btn-sm {
   height: 1em;
+  max-width: 1em;
   vertical-align: middle;
   margin-left: 0.15em;
 }
@@ -3180,6 +3189,11 @@ a:hover {
   z-index: 2;
 }
 
+#editChannel > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div > div.pad > svg {
+  max-width: 1em;
+  height: 1em;
+}
+
 #chatImage {
   max-width: 100%;
   max-height: 100px;
@@ -3308,8 +3322,8 @@ a:hover {
 }
 
 .chat-option-ul li a svg {
-  height: 1em;
-  width: 1em;
+  height: 1.2em;
+  width: 1.2em;
 }
 
 .chat-option-selection {
@@ -3539,6 +3553,7 @@ div.footerMenu.km-footer > ul > li > a {
   }
   svg {
     height:1.25rem;
+    max-width: 1.25em;
   }
   a {
     padding-top: 0.75rem;
@@ -4699,6 +4714,8 @@ div.loginBox > form > div > ul > li {
 #contactActionBtns > li > a > span > svg {
   vertical-align: middle;
   margin-right: 0.5em;
+  height: 1.2em;
+  width: 1.2em;
 }
 
 .contactListItem:hover {
@@ -4862,6 +4879,10 @@ div.loginBox > form > div > ul > li {
   padding-bottom: 0.75em;
   a {
     vertical-align: middle;
+  }
+  svg {
+    width: 1.2em;
+    height: 1.2em;
   }
 }
 
@@ -5992,7 +6013,7 @@ div.contactListBox.activeContact > div > div > ul {
   border-top: 0.4rem solid transparent;
   border-bottom: 0.4rem solid transparent;
   border-right: 0.4rem solid lighten(@primary-200, 20%);
-  top: 1.5rem;
+  top: .5rem;
   left: 10.5%;
   @media @mobile {
     left: 13.5%;
