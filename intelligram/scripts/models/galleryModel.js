@@ -22,6 +22,7 @@ var galleryModel = {
 
 
     init : function() {
+
         galleryModel.galleryDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
@@ -99,6 +100,7 @@ var galleryModel = {
             }
 
         });
+
         galleryModel.galleryDS.fetch();
     },
 

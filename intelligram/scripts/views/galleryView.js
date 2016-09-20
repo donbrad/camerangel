@@ -1999,11 +1999,12 @@ var galleryEditView = {
         if (gallery === null) {
             that.activeObj.noteType = privateNoteModel._gallery;
             that.activeObj.uuid = uuid.v4();
+            that.activeObj.Id = that.activeObj.uuid;
             that.activeObj.photos= [];
             that.activeObj.set('photoCount', 0);
-            that.activeObj.title = '';
+            that.activeObj.set('title','');
             that.activeObj.description = '';
-            that.activeObj.tagString = '';
+            that.activeObj.set('tagString','');
             that.activeObj.tags = [];
             that.activeObj.isShared = false;
             that.activeObj.isOpen = false;
@@ -2016,6 +2017,7 @@ var galleryEditView = {
            // $('#galleryEditor-tagString').val("");
             galleryEditView._mode = 'create';
         } else {
+            that.activeObj.Id = gallery.Id
             that.activeObj.uuid = gallery.uuid;
             that.activeObj.photos =  gallery.photos;
             that.activeObj.set('photoCount',  gallery.photoCount);
@@ -2029,6 +2031,7 @@ var galleryEditView = {
             that.activeObj.senderUUID = gallery.senderUUID;
             that.activeObj.senderName = gallery.senderName;
             that.activeObj.timestamp = gallery.timestamp;
+            that.activeObj.lastUpdate = gallery.lastUpdate;
             that.activeObj.ggType = gallery.ggType
             ;
             galleryEditView._mode = 'edit';
