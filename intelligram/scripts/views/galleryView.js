@@ -2203,7 +2203,7 @@ var galleryEditView = {
             gallery.set('title', title);
             gallery.set('tagString', tagString);
             gallery.set('tags', []); // todo: don integrate tag processing...
-            gallery.set('photoCount', activeGallery.photoCount);
+            gallery.set('photoCount', galleryEditView.photosDS.total());
             gallery.set('photos', galleryEditView.photosDS.data());
 
             gallery.set('timestamp',ggTime.currentTime());
@@ -2213,9 +2213,10 @@ var galleryEditView = {
         } else {
 
             activeGallery.title = title;
-            activeGallery.content = text;
+            activeGallery.tags = [];
             activeGallery.tagString = tagString;
             activeGallery.timestamp = ggTime.currentTime();
+            activeGallery.photoCount = galleryEditView.photosDS.total();
             activeGallery.photos = galleryEditView.photosDS.data();
 
             privateNoteModel.addNote(activeGallery);
