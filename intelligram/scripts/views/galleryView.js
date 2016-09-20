@@ -191,7 +191,9 @@ var galleryView = {
     openGalleryPicker : function () {
         galleryListView.openModal(function (galleryId) {
             if (galleryId !== null) {
-                // switch to the new gallery.
+
+                APP.kendo.navigate("#galleryEditor?galleryid="+galleryid+"&returnview=gallery");
+
             }
         })
     },
