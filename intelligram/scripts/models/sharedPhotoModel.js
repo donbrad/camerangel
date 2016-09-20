@@ -15,7 +15,7 @@ var sharedPhotoModel = {
                 typeName: 'sharedphoto'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             }
         });
         sharedPhotoModel.photosDS.fetch();
