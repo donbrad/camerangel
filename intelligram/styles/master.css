@@ -3482,6 +3482,7 @@
 }
 .smartMovie-link {
   height: 0.75em;
+  max-width: 0.75em;
 }
 /*
 #smartMovie-title > span:first-child {
@@ -3663,6 +3664,9 @@
 }
 #smartMovieView-listview li {
   margin: 0.25em 1em;
+}
+#smartMovieView-imdbLink svg {
+  max-width: 1em;
 }
 .movieShowtime-theatre {
   width: 70%;
@@ -4320,7 +4324,6 @@ form p {
 .badge {
   border-radius: 4px;
   background: #E0E0E0;
-  border-radius: 5px;
   color: #4A4A4A;
   padding: 0.1em 0.25em;
   font-size: 13px;
@@ -4372,7 +4375,7 @@ form p {
 }
 .icon-logo {
   height: 1.5em;
-  max-width: 50%;
+  max-width: 8em;
 }
 .icon-action {
   height: 1.2em;
@@ -5249,7 +5252,7 @@ div.km-header a svg {
   padding: 0.51em 1em;
 }
 .km-material .km-button {
-  box-shadow: inherit;
+  box-shadow: none;
 }
 .km-material .km-button {
   text-transform: none;
@@ -7527,11 +7530,9 @@ div.chat-message-user-content.clearfix > p {
   margin-top: 16.667%;
 }
 .newuserBox h3 {
-  text-align: center;
   color: #fff;
 }
 .newuserBox p {
-  text-align: center;
   color: #fff;
 }
 #newuser-ghost {
@@ -7781,6 +7782,7 @@ div.loginBox > form > div > ul > li {
 }
 #modalPhotoView-footer svg {
   height: 0.875em;
+  max-width: 0.875em;
 }
 #modalPhotoView > div.km-header > div.km-widget.km-navbar,
 #modalChatPhotoView > div.km-header {
@@ -7960,6 +7962,10 @@ div.loginBox > form > div > ul > li {
 .placesSearchBox input {
   width: 91%;
   float: left;
+}
+#places-listview > li > div > div svg {
+  height: 1.25em;
+  max-width: 1.25em;
 }
 #place-checkInImg {
   vertical-align: bottom;
@@ -9098,7 +9104,8 @@ html .km-pane-wrapper .k-header {
   text-align: center !important;
 }
 .smallSearch .searchIcon svg {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 .smallSearch .viewSearchBox {
   width: 85% !important;
@@ -9164,7 +9171,8 @@ html .km-pane-wrapper .k-header {
   text-align: center !important;
 }
 .smallSearch-sm .searchIcon svg {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 .smallSearch-sm .viewSearchBox {
   width: 85% !important;
@@ -9230,7 +9238,8 @@ html .km-pane-wrapper .k-header {
   text-align: center !important;
 }
 .fullSearch .searchIcon svg {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 .fullSearch .viewSearchBox {
   width: 85% !important;
@@ -9293,7 +9302,8 @@ html .km-pane-wrapper .k-header {
   text-align: center !important;
 }
 .appendSearch .searchIcon svg {
-  height: 1rem;
+  height: 1em;
+  max-width: 1em;
 }
 .appendSearch .viewSearchBox {
   width: 85% !important;
@@ -9992,11 +10002,18 @@ table.k-editor {
   border-color: #fff;
 }
 /* User sign in */
-#newuserhome > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container,
 #usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container,
 #signup > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent {
   background: url('../images/icon-bk.svg') no-repeat center bottom fixed, radial-gradient(100% 100%, #A5D6FA 0%, #6CADF3 50%);
   background-size: contain;
+}
+#newuserhome > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
+  background: url('../images/pattern@2x-light.png') repeat;
+  background-size: contain;
+  background-color: white;
+}
+#newUserHome-signIn {
+  opacity: 0;
 }
 .km-state-disabled {
   background-color: #808080 !important;
@@ -10004,12 +10021,29 @@ table.k-editor {
 #newLogo,
 #newWelcome {
   opacity: 0;
+  color: #6CADF3;
+  position: absolute;
+  left: 1em;
+}
+#newWelcome {
+  top: 3em;
+}
+#newLogo {
+  top: 4.5em;
 }
 .feature {
   position: absolute;
   left: 30%;
   display: inline-block;
   text-align: right;
+}
+#featureCard1 {
+  margin-top: 4em;
+  margin-left: 2em;
+  margin-right: 2em;
+  margin-bottom: 0;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 #feature1,
 #feature2,
@@ -10286,13 +10320,12 @@ table.k-editor {
 .feature-card {
   padding: 1em 0.5em;
   background-color: #EFF1F2;
-  width: 95%;
   height: 100%;
   margin-bottom: 3em;
   margin-left: 2.5%;
   margin-right: 2.5%;
   border-radius: 3px;
-  margin-top: 1em;
+  margin-top: 3em;
 }
 #hotButtonModal > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container {
   background-color: #323642 !important;
