@@ -3109,10 +3109,7 @@ var mapViewModal = {
             var title = locObj.title.smartTruncate(16, true);
             $('#mapViewModal-title').html(title);
         }
-        if (!mapViewModal._inited) {
-            mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), mapModel.mapOptions);
-            mapViewModal._inited = true;
-        }
+
 
         if (callback !== undefined) {
             mapViewModal._returnModal = callback;
@@ -3130,10 +3127,19 @@ var mapViewModal = {
         mapViewModal._activePlace.set('lng', locObj.lng);
         mapViewModal._activePlace.set('placeId', locObj.placeId);
 
+        var options = {
+            zoom: mapViewModal._zoom,
+            center: new google.maps.LatLng(mapViewModal._lat, mapViewModal._lng)
+        };
+
         if (locObj.placeId !== null ) {
             mapViewModal.setActivePlace(locObj.placeId);
         }
 
+        if (!mapViewModal._inited) {
+            mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), options);
+            mapViewModal._inited = true;
+        }
         mapViewModal.displayActivePlace();
 
         $("#mapViewModal").data("kendoMobileModalView").open();
@@ -3145,6 +3151,8 @@ var mapViewModal = {
             return;
         }
 
+        google.maps.event.trigger(mapModel.googleMapModal, "resize");
+
         var lat = parseFloat(mapViewModal._lat);
         var lng =  parseFloat(mapViewModal._lng);
         var bounds = new google.maps.LatLngBounds();
@@ -3153,11 +3161,13 @@ var mapViewModal = {
         bounds.extend(latlng);
 
         mapModel.googleMapModal.setZoom(mapViewModal._zoom);
-        // resize the map to fit the view
-        google.maps.event.trigger(mapModel.googleMapModal, "resize");
 
         // Set a default label in case we're called with just a lat & lng.
         var label = mapViewModal._activePlace.name;
+
+        if (label === null || label === '') {
+            label = "No label";
+        }
 
         if ( mapViewModal._marker !== null) {
             mapViewModal._marker.setMap(null);
