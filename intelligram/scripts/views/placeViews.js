@@ -3090,7 +3090,6 @@ var mapViewModal = {
     _inited: false,
     _activePlace :  new kendo.data.ObservableObject(),
     _activePlaceId : null,
-    _activePlaceModel : null,
     _lat: null,
     _lng: null,
     _name: null,
@@ -3120,14 +3119,13 @@ var mapViewModal = {
         }
 
 
-        mapViewModal._activePlaceModel = null;
         mapViewModal._activePlaceId = null;
 
 
         mapViewModal._lat = locObj.lat;
         mapViewModal._lng = locObj.lng;
         mapViewModal._activePlace.set('name', locObj.name);
-        mapViewModal._activePlace.set('address', locObj.address);
+        mapViewModal._activePlace.set('address', locObj.targetName);
         mapViewModal._activePlace.set('lat', locObj.lat);
         mapViewModal._activePlace.set('lng', locObj.lng);
         mapViewModal._activePlace.set('placeId', locObj.placeId);
@@ -3184,12 +3182,9 @@ var mapViewModal = {
         var placeObj = placesModel.getPlaceModel(placeUUID);
 
         if (placeObj !== undefined && placeObj !== null) {
-            mapViewModal._activePlaceModel = placeObj;
 
             mapViewModal._lat = placeObj.lat;
             mapViewModal._lng = placeObj.lng;
-            mapViewModal._name= placeObj.name;
-
 
             mapViewModal._activePlace.set('lat', placeObj.lat);
             mapViewModal._activePlace.set('lng', placeObj.lng);

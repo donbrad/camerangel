@@ -1597,7 +1597,7 @@ var modalPhotoView = {
 
     viewOnMap : function (e) {
         _preventDefault(e);
-        var locObj = {placeId: null, lat: modalPhotoView._activePhoto.lat, lng: modalPhotoView._activePhoto.lng, title: "Photo", name: null, targetName: modalPhotoView._address};
+        var locObj = {placeId: null, lat: modalPhotoView._activePhoto.lat, lng: modalPhotoView._activePhoto.lng, title: "Photo", name: modalPhotoView._activePhoto.title, targetName: modalPhotoView._activePhoto.addressString};
 
         if (locObj.lat === undefined || locObj.lat === null) {
             mobileNotify("No location information for this photo!");
