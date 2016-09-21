@@ -1317,6 +1317,7 @@ var placeView = {
     activeNote: {objects: []},
 
     onInit : function (e) {
+
         $("#placeView-listview").kendoMobileListView({
             dataSource: placeView._memoriesDS,
             template: $("#placeViewMemories-template").html(),
@@ -1458,7 +1459,7 @@ var placeView = {
         var place = placeView._activePlace.isPrivate;
         var address = placeView._activePlace.address;
 
-        $("#placeViewName").text(name);
+      //  $("#placeViewName").text(name.smartTruncate(16, true));
         ux.formatNameAlias(name, alias, "#placeView");
 
         // Toggle display of private/public icons 
@@ -1606,7 +1607,7 @@ var placeView = {
             mobileNotify("Oops, Couldn't find this place");
             return;
         }
-        var locObj = {placeId: place.uuid, lat: place.lat, lng: place.lng, title: place.name, name: place.name, targetName: modalPhotoView._address};
+        var locObj = {placeId: place.uuid, lat: place.lat, lng: place.lng, title: place.name, name: place.name, targetName: null};
 
         if (locObj.lat === undefined || locObj.lat === null) {
             ggError("No location information for this Place!");
@@ -3093,9 +3094,8 @@ var mapViewModal = {
     _lng: null,
     _name: null,
     _marker: null,
-    _zoom: 15,  // Default zoom for the map.
-    _returnView : '#:back',   // Default return is just calling view
     _returnModal : null,
+    _zoom: 15,  // Default zoom for the map.
 
     onInit: function (e) {
         //_preventDefault(e);
@@ -3106,7 +3106,8 @@ var mapViewModal = {
         var valid = false;
 
         if (locObj.title !== null) {
-            $('#mapViewModal-title').html(locObj.title);
+            var title = locObj.title.smartTruncate(16, true);
+            $('#mapViewModal-title').html(title);
         }
         if (!mapViewModal._inited) {
             mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), mapModel.mapOptions);
@@ -3128,9 +3129,7 @@ var mapViewModal = {
         mapViewModal._activePlace.set('address', locObj.address);
         mapViewModal._activePlace.set('lat', locObj.lat);
         mapViewModal._activePlace.set('lng', locObj.lng);
-        mapViewModal._activePlace.set('placeId', null);
-
-
+        mapViewModal._activePlace.set('placeId', locObj.placeId);
 
         if (locObj.placeId !== null ) {
             mapViewModal.setActivePlace(locObj.placeId);
@@ -3140,8 +3139,6 @@ var mapViewModal = {
 
         $("#mapViewModal").data("kendoMobileModalView").open();
 
-
-        
     },
 
     displayActivePlace : function () {
@@ -3149,16 +3146,13 @@ var mapViewModal = {
             return;
         }
 
+        // resize the map to fit the view
+        google.maps.event.trigger(mapModel.googleMapModal, "resize");
+
         mapModel.googleMapModal.setZoom(mapViewModal._zoom);
 
         // Set a default label in case we're called with just a lat & lng.
         var label = mapViewModal._activePlace.name;
-
-
-        // resize the map to fit the view
-       
-
-        google.maps.event.trigger(mapModel.googleMapModal, "resize");
 
         if ( mapViewModal._marker !== null) {
             mapViewModal._marker.setMap(null);
@@ -3187,7 +3181,7 @@ var mapViewModal = {
             mapViewModal._lng = placeObj.lng;
             mapViewModal._name= placeObj.name;
 
-            // Todo: cull this list based on what we show in ux...
+
             mapViewModal._activePlace.set('lat', placeObj.lat);
             mapViewModal._activePlace.set('lng', placeObj.lng);
             mapViewModal._activePlace.set('placeId', placeUUID);
@@ -3230,21 +3224,16 @@ var mapViewModal = {
     onDone: function (e) {
         _preventDefault(e);
 
-        $("#mapViewModal").data("kendoMobileModalView").close();
-
 
         if ( mapViewModal._marker !== null) {
             mapViewModal._marker.setMap(null);
             mapViewModal._marker = null;
         }
-        
+
+        $("#mapViewModal").data("kendoMobileModalView").close();
+
         if (mapViewModal._returnModal !== null) {
             mapViewModal._returnModal();
-            
-        } else {
-            var returnUrl = '#' + mapViewModal._returnView;
-
-            APP.kendo.navigate(returnUrl);
         }
 
     }
