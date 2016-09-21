@@ -359,7 +359,7 @@ var userStatusChannel = {
 
     channelStatusRead : function (msg) {
 
-
+        console.log("Status : " + JSON.stringify(msg));
         switch(msg.msgType) {
 
          case 'status' :
