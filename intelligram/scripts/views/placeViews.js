@@ -1607,15 +1607,16 @@ var placeView = {
             mobileNotify("Oops, Couldn't find this place");
             return;
         }
-        var locObj = {placeId: place.uuid, lat: place.lat, lng: place.lng, title: place.name, name: place.name, targetName: null};
+        var locObj = {placeId: place.uuid, lat: place.lat, lng: place.lng, title: place.name, name: place.name, targetName: place.address};
 
         if (locObj.lat === undefined || locObj.lat === null) {
             ggError("No location information for this Place!");
             return;
         }
 
+        placeView.closeEditor();
         mapViewModal.openModal(locObj, function () {
-
+            placeView.openEditor();
         });
     },
 
@@ -3095,7 +3096,7 @@ var mapViewModal = {
     _name: null,
     _marker: null,
     _returnModal : null,
-    _zoom: 15,  // Default zoom for the map.
+    _zoom: 14,  // Default zoom for the map.
 
     onInit: function (e) {
         //_preventDefault(e);
@@ -3146,10 +3147,16 @@ var mapViewModal = {
             return;
         }
 
-        // resize the map to fit the view
-        google.maps.event.trigger(mapModel.googleMapModal, "resize");
+        var lat = parseFloat(mapViewModal._lat);
+        var lng =  parseFloat(mapViewModal._lng);
+        var bounds = new google.maps.LatLngBounds();
+        var latlng = new google.maps.LatLng(lat, lng);
+
+        bounds.extend(latlng);
 
         mapModel.googleMapModal.setZoom(mapViewModal._zoom);
+        // resize the map to fit the view
+        google.maps.event.trigger(mapModel.googleMapModal, "resize");
 
         // Set a default label in case we're called with just a lat & lng.
         var label = mapViewModal._activePlace.name;
@@ -3160,12 +3167,14 @@ var mapViewModal = {
         }
 
         mapViewModal._marker = new google.maps.Marker({
-            position: {lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng)},
+            position: latlng,
             title: label,
             map: mapModel.googleMapModal
         });
 
-        mapModel.googleMapModal.setCenter({lat: parseFloat(mapViewModal._lat), lng: parseFloat(mapViewModal._lng)});
+        //mapViewModal.center_map();
+        //mapModel.googleMapModal.fitBounds(bounds);
+       mapModel.googleMapModal.setCenter({lat: lat, lng: lng});
 
     },
 

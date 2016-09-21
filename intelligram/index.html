@@ -2133,7 +2133,7 @@
 	</div>
 </div>
 
-<div data-role="modalview"  id="mapViewModal" data-model="mapViewModal._activePlace" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade" data-stretch="true">
+<div data-role="modalview"  id="mapViewModal" data-model="mapViewModal._activePlace" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade"  data-zoom="true"  data-use-native-scrolling="true" data-stretch="true">
 	<div data-role="header">
 		<div data-role="navbar">
 
@@ -2151,11 +2151,13 @@
 		</div>
 	</div>
 	<div>
-		<div style="text-align: center;">
-			<div data-bind="text: name"></div>
-			<div data-bind="text: address"></div>
+		<div style="height: 10vh; z-order: 1000; padding: 6px;">
+			<div> Name:    <span data-bind="text: name"></span></div>
+			<div> Address: <span data-bind="text: address"></span></div>
 		</div>
+
 		<div id="mapModalView-mapdiv"></div>
+
 	</div>
 </div>
 
