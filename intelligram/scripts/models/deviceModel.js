@@ -139,7 +139,7 @@ var deviceModel = {
         if (typeof google === 'object' && typeof google.maps === 'object') {
             return;
         }
-        $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyDMqebRgrnjtlQwcRTEvYf1McbcGLSevBk&libraries=places&sensor=true&callback=deviceModel.onGoogleMapsLoaded');
+        $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyDMqebRgrnjtlQwcRTEvYf1McbcGLSevBk&libraries=places&sensor=true&callback=deviceModel.onGoogleMapsLoaded&signed_in=false');
     },
 
     onGoogleMapsLoaded : function () {
