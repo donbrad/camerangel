@@ -5493,7 +5493,7 @@ div.footer.km-footer {
   font-weight: 600;
   text-align: left;
 }
-#home-verify-div svg {
+#home-verify-div img {
   height: 1em;
   max-width: 1em;
   vertical-align: middle;
@@ -5515,6 +5515,7 @@ div.footer.km-footer {
 #home-verify-arrow {
   position: relative;
   top: 0.25em;
+  vertical-align: text-top !important;
 }
 #home-buttongroup > a.km-button > span {
   display: inline-block;
@@ -5656,6 +5657,9 @@ div.footer.km-footer {
 }
 #contacts-listview > li > ul > li > div > a > p {
   margin-right: 0px !important;
+}
+#contacts-tab-1-img {
+  max-width: 2em !important;
 }
 #profileStatusMessage {
   font-style: italic;

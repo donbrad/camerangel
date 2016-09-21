@@ -149,7 +149,7 @@
 				<div class="user-status">
 					<div class="left">
 						<span class="home-status">
-							<img src="images/status-away.svg" class="home-status-img userAvailable" />
+							<img src="images/status-away.png" class="home-status-img userAvailable" />
 						</span>
 						<img class="circle-img-home home-profile-img" />
 						<svg width="40" height="40" class="circle-img-home hidden homeProfileIdenticon"/> </svg>
@@ -447,18 +447,18 @@
 	<div class="appBox noPad">
 			<div data-role="tabstrip" id="home-buttongroup" class="tabBar" data-select="homeView.onTabSelect">
 				<a data-tab="0">
-					<img src="images/icon-notify-active.svg" class="home-tab-alert-img" /> Alerts
+					<img src="images/icon-notify-active.png" id="home-tab-alert-img" /> Alerts
 				</a>
 				<a data-tab="1">
-					<img src="images/icon-today.svg" id="home-tab-today-img" /> Today
+					<img src="images/icon-today.png" id="home-tab-today-img" /> Today
 				</a>
 			</div>
 			<div id="home-alerts" data-bind="invisible: ux_isValidated">
 				<div id="home-verify-div" data-role="button" data-click="verifyEmailModal.openModal">
                     <p>
-						<img src="images/icon-alert.svg" id="home-verify-alert" />
+						<img src="images/icon-alert.png" id="home-verify-alert" />
                         <span id="home-verify-text" data-bind="text: ux_timeLeft"></span>
-						<img src="images/icon-arrow-right.svg"  id="home-verify-arrow" />
+						<img src="images/icon-arrow-right.png"  id="home-verify-arrow" />
                     </p>
 					<div class="clearfix"></div>
 				</div>
@@ -3245,11 +3245,11 @@
 <div data-role="view" data-title="Contacts" id="contacts" data-layout="main" data-model="contactModel" data-init="contactsView.onInit" data-show="contactsView.onShow" data-hide="contactsView.onHide" style="display: none;">
 	<div data-role="tabstrip" id="contacts-buttongroup" class="tabBar" data-select="contactsView.onTabSelect">
 		<a data-tab="0">
-			<img src="images/icon-contact.svg" type="image/svg+xml" id="contacts-tab-0-img" />
+			<img src="images/icon-contact-active.png" id="contacts-tab-0-img" />
 			 Contacts
 		</a>
 		<a data-tab="1">
-			<img src="images/icon-group.svg" type="image/svg+xml" id="contacts-tab-1-img" />
+			<img src="images/icon-group.png" id="contacts-tab-1-img" />
 			 Groups
 		</a>
 	</div>
@@ -3682,11 +3682,11 @@
 	<div  class="appBox noPad">
 		<div id="gallery-buttongroup" class="tabBar" data-role="tabstrip" data-select="galleryView.onTabSelect">
 			<a data-tab="0">
-				<img src="images/icon-myNotes-alt.svg" id="galleryView-tab-notes" />
+				<img src="images/icon-myNotes-alt.png" id="galleryView-tab-notes" />
 				 Notes
 			</a>
 			<a data-tab="1">
-				<img src="images/icon-photo-dark.svg" id="galleryView-tab-photos" />
+				<img src="images/icon-Photo.png" id="galleryView-tab-photos" />
 				Photos
 			</a>
 		</div>

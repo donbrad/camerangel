@@ -188,13 +188,13 @@ var homeView = {
         }
         // Set available
         if(available){
-            $(".userAvailable").attr("src", "images/status-available.svg");
-            $(".userAvailableRev").attr("src", "images/status-away.svg");
+            $(".userAvailable").attr("src", "images/status-available.png");
+            $(".userAvailableRev").attr("src", "images/status-away.png");
             $("#currentAvailableTxt").text("busy");
 
         } else {
-            $(".userAvailable").attr("src", "images/status-away.svg");
-            $(".userAvailableRev").attr("src", "images/status-available.svg");
+            $(".userAvailable").attr("src", "images/status-away.png");
+            $(".userAvailableRev").attr("src", "images/status-available.png");
             $("#currentAvailableTxt").text("available");
         }
 
@@ -389,8 +389,8 @@ var homeView = {
         if(isBeforeLimit){
             // still have time to verify
             $("#home-verify-div").removeClass("homeVerify-pastDue").addClass("homeVerify-needed");
-            $("#home-verify-alert").attr("src", "images/icon-alert.svg");
-            $("#home-verify-arrow").attr("src","images/icon-arrow-right.svg");
+            $("#home-verify-alert").attr("src", "images/icon-alert.png");
+            $("#home-verify-arrow").attr("src","images/icon-arrow-right.png");
 
             var daysLeft = moment().diff(timeLimit, "days");
 
@@ -415,8 +415,8 @@ var homeView = {
             // time has expired
             $("#home-verify-div").removeClass("homeVerify-needed").addClass("homeVerify-pastDue");
             $("#home-verify-text").text("Account unverified");
-            $("#home-verify-alert").attr("src", "images/icon-alert-light.svg");
-            $("#home-verify-arrow").attr("src","images/icon-arrow-right-light.svg");
+            $("#home-verify-alert").attr("src", "images/icon-alert-light.png");
+            $("#home-verify-arrow").attr("src","images/icon-arrow-right-light.png");
         }
 
 
@@ -434,16 +434,16 @@ var homeView = {
         }
 
         if(tab == 0){
-            //$("#home-tab-alert-img").attr("src", "images/icon-notify-active.svg");
-            //$("#home-tab-today-img").attr("src", "images/icon-today.svg");
+            $("#home-tab-alert-img").attr("src", "images/icon-notify-active.png");
+            $("#home-tab-today-img").attr("src", "images/icon-today.png");
 
-            $("#home-alerts").removeClass("hidden");
-            $("#home-today").addClass("hidden");
+            $(".home-alerts").removeClass("hidden");
+            $(".home-today").addClass("hidden");
 
             ux.setSearchPlaceholder("Search Alerts...");
         } else {
-            //$("#home-tab-alert-img").attr("src", "images/icon-notify.svg");
-            //$("#home-tab-today-img").attr("src", "images/icon-today-alt.svg");
+            $("#home-tab-alert-img").attr("src", "images/icon-notify.png");
+            $("#home-tab-today-img").attr("src", "images/icon-today-alt.png");
 
             $("#home-alerts").addClass("hidden");
             $("#home-today").removeClass("hidden");
@@ -471,7 +471,7 @@ var homeView = {
         ux.updateHeaderStatusImages();
 
         // Hide action button on home
-        ux.setAddTarget("images/nav-gear.svg", null, homeView.openSettingsAction);
+        ux.setAddTarget("images/nav-gear.png", null, homeView.openSettingsAction);
 
         // Set the active view and the search text
         homeView.onTabSelect(homeView._activeView);
@@ -515,10 +515,10 @@ var homeView = {
         var currentAvailable = userModel._user.get('isAvailable');
 
         if(currentAvailable){
-            $(".userAvailableRev").attr("src", "images/status-available.svg");
+            $(".userAvailableRev").attr("src", "images/status-available.png");
             $("#currentAvailableTxt").text("available");
         } else {
-            $(".userAvailableRev").attr("src", "images/status-away.svg");
+            $(".userAvailableRev").attr("src", "images/status-away.png");
             $("#currentAvailableTxt").text("busy");
         }
         ux.toggleIsAvailable();
@@ -677,13 +677,13 @@ var userStatusView = {
 
         // Set available
 		if(user.isAvailable){
-			$(".userAvailable").attr("src", "images/status-available.svg");
-			$(".userAvailableRev").attr("src", "images/status-away.svg");
+			$(".userAvailable").attr("src", "images/status-available.png");
+			$(".userAvailableRev").attr("src", "images/status-away.png");
 			$("#currentAvailableTxt").text("busy");
 
 		} else {
-			$(".userAvailable").attr("src", "images/status-away.svg");
-			$(".userAvailableRev").attr("src", "images/status-available.svg");
+			$(".userAvailable").attr("src", "images/status-away.png");
+			$(".userAvailableRev").attr("src", "images/status-available.png");
 			$("#currentAvailableTxt").text("available");
 		}
 
@@ -902,12 +902,12 @@ var userStatusView = {
             $('#profileStatusList').addClass('hidden');
             //$('#profileAutoStatusPanel').removeClass('hidden');
             userModel._user.set('autoStatusEnabled', true);
-            $autoCheckinBtn.data('autocheckin', true).html('<img src="images/icon-autoCheckin.svg" class="icon-sm" /> Disable Auto Checkin');
+            $autoCheckinBtn.data('autocheckin', true).html('<img src="images/icon-autoCheckin.png" class="icon-sm" /> Disable Auto Checkin');
         } else {
             $('#profileStatusList').removeClass('hidden');
           //  $('#profileAutoStatusPanel').addClass('hidden');
             userModel._user.set('autoStatusEnabled', false);
-            $autoCheckinBtn.data('autocheckin', false).html('<img src="images/icon-autoCheckin.svg" class="icon-sm" /> Enable Auto Checkin');
+            $autoCheckinBtn.data('autocheckin', false).html('<img src="images/icon-autoCheckin.png" class="icon-sm" /> Enable Auto Checkin');
         }
 
     },
@@ -2039,7 +2039,7 @@ var signUpView = {
         user.set("isVisible", true);
         user.set("isCheckedIn", false);
         user.set("isValidated", false);
-        user.set("availImgUrl", "images/status-available.svg");
+        user.set("availImgUrl", "images/status-available.png");
         user.set("phoneValidated", false);
         user.set("useIdenticon", true);
         user.set("useLargeView", false);
