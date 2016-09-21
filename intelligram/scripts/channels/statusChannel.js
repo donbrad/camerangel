@@ -108,9 +108,10 @@ var userStatusChannel = {
 
         });
 
-        userStatusChannel.trackContacts();
+        //todo: don re-enable status channels
+       // userStatusChannel.trackContacts();
 
-        userStatusChannel.contactHistory();
+      //  userStatusChannel.contactHistory();
     },
 
     unsubscribeContacts : function () {
