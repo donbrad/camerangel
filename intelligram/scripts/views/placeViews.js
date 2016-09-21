@@ -3140,9 +3140,11 @@ var mapViewModal = {
             mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), options);
             mapViewModal._inited = true;
         }
-        mapViewModal.displayActivePlace();
+
 
         $("#mapViewModal").data("kendoMobileModalView").open();
+
+        mapViewModal.displayActivePlace();
 
     },
 
@@ -3193,11 +3195,11 @@ var mapViewModal = {
 
         if (placeObj !== undefined && placeObj !== null) {
 
-            mapViewModal._lat = placeObj.lat;
-            mapViewModal._lng = placeObj.lng;
+            mapViewModal._lat = parseFloat(placeObj.lat);
+            mapViewModal._lng = parseFloat(placeObj.lng);
 
-            mapViewModal._activePlace.set('lat', placeObj.lat);
-            mapViewModal._activePlace.set('lng', placeObj.lng);
+            mapViewModal._activePlace.set('lat', mapViewModal._lat);
+            mapViewModal._activePlace.set('lng',  mapViewModal._lng);
             mapViewModal._activePlace.set('placeId', placeUUID);
             mapViewModal._activePlace.set('name', placeObj.name);
             mapViewModal._activePlace.set('alias', placeObj.alias);
