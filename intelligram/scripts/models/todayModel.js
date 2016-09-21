@@ -55,7 +55,7 @@ var todayModel = {
     queryToday : function (query) {
         if (query === undefined)
             return(undefined);
-        var dataSource = todayModel.todayDS;
+        var dataSource = todayModel.objectsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
