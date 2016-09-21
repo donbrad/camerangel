@@ -3119,12 +3119,12 @@ var mapViewModal = {
         mapViewModal._activePlaceId = null;
 
 
-        mapViewModal._lat = locObj.lat;
-        mapViewModal._lng = locObj.lng;
+        mapViewModal._lat = parseFloat(locObj.lat);
+        mapViewModal._lng = parseFloat(locObj.lng);
         mapViewModal._activePlace.set('name', locObj.name);
         mapViewModal._activePlace.set('address', locObj.targetName);
-        mapViewModal._activePlace.set('lat', locObj.lat);
-        mapViewModal._activePlace.set('lng', locObj.lng);
+        mapViewModal._activePlace.set('lat', mapViewModal._lat);
+        mapViewModal._activePlace.set('lng',  mapViewModal._lng);
         mapViewModal._activePlace.set('placeId', locObj.placeId);
 
         var options = {
@@ -3153,8 +3153,8 @@ var mapViewModal = {
 
         google.maps.event.trigger(mapModel.googleMapModal, "resize");
 
-        var lat = parseFloat(mapViewModal._lat);
-        var lng =  parseFloat(mapViewModal._lng);
+        var lat = mapViewModal._lat;
+        var lng =  mapViewModal._lng;
         var bounds = new google.maps.LatLngBounds();
         var latlng = new google.maps.LatLng(lat, lng);
 
