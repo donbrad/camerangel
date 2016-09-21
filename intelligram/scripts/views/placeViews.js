@@ -1600,6 +1600,24 @@ var placeView = {
 
     },
 
+    doMap : function (e) {
+        var place = placesModel.getPlaceModel(placeView._activePlace.placeUUID);
+        if (place === undefined) {
+            mobileNotify("Oops, Couldn't find this place");
+            return;
+        }
+        var locObj = {placeId: place.uuid, lat: place.lat, lng: place.lng, title: place.name, name: place.name, targetName: modalPhotoView._address};
+
+        if (locObj.lat === undefined || locObj.lat === null) {
+            ggError("No location information for this Place!");
+            return;
+        }
+
+        mapViewModal.openModal(locObj, function () {
+
+        });
+    },
+
     doDirections : function (e) {
         _preventDefault(e);
 
