@@ -31,7 +31,8 @@ var smartEventView = {
         var thisObj = smartEventView._activeObject;
         var newDate = ux.setDefaultTime(true, 1);
 
-        thisObj.set("uuid", uuid.v4());
+        var eventId = uuid.v4();
+        thisObj.set("uuid", eventId);
         thisObj.set("ggType", smartEvent._ggClass);
         thisObj.set('senderUUID', userModel._user.userUUID);
         thisObj.set('senderName', userModel._user.name);
@@ -996,6 +997,8 @@ var smartNoteView = {
 
 
         if (actionObj === null) {
+            var noteId = uuid.v4();
+            smartNoteView._activeObject.set('uuid', noteId);
             smartNoteView._activeObject.set('title', '');
             smartNoteView._activeObject.set('tagString', '');
             smartNoteView._activeObject.set('tags', []);
@@ -2092,8 +2095,8 @@ var smartMovieView = {
         this.setMovieSelected(false);
 
         // Build the smartMovie / movieGram object
-
-        thisObj.set("uuid", uuid.v4());
+        var movieId =  uuid.v4();
+        thisObj.set("uuid",movieId);
         thisObj.set("ggType", smartMovie._ggClass);
         thisObj.set('senderUUID', userModel._user.userUUID);
         thisObj.set('senderName', userModel._user.name);
@@ -2766,8 +2769,9 @@ var smartTripView = {
             smartTripView.validDestination = false;
             smartTripView.isPlace = false;
 
+            var tripId = uuid.v4();
             obj.set('ggType', smartTrip._ggClass);
-            obj.set('uuid', uuid.v4());
+            obj.set('uuid', tripId);
             obj.set('senderUUID', userModel._user.userUUID);
             obj.set('senderName', userModel._user.name);
             obj.set('name', null);
@@ -3496,8 +3500,9 @@ var smartFlightView = {
     setFlightStatus : function (statusObj) {
         if (statusObj === null) {
 
+            var flightId = uuid.v4();
             smartFlightView.status.set('ggType', 'Flight');
-            smartFlightView.status.set('uuid', uuid.v4());
+            smartFlightView.status.set('uuid', flightId);
             smartFlightView.status.set('name', null);
             smartFlightView.status.set('carrierCode', null);
             smartFlightView.status.set('flightNumber',null);

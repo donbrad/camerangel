@@ -3137,7 +3137,11 @@ var mapViewModal = {
         }
 
         if (!mapViewModal._inited) {
-            mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), options);
+
+            var mapElement = $("#mapModalView-mapdiv");
+         //   mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), options);
+            mapModel.googleMapModal = new google.maps.Map(mapElement[0], options);
+
             mapViewModal._inited = true;
         }
 
@@ -3247,6 +3251,7 @@ var mapViewModal = {
         }
 
         $("#mapViewModal").data("kendoMobileModalView").close();
+
 
         if (mapViewModal._returnModal !== null) {
             mapViewModal._returnModal();

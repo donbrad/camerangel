@@ -2133,7 +2133,7 @@
 	</div>
 </div>
 
-<div data-role="modalview"  id="mapViewModal" data-model="mapViewModal._activePlace" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade"  data-zoom="true"  data-use-native-scrolling="true" data-stretch="true">
+<div data-role="modalview"  id="mapViewModal" data-model="mapViewModal._activePlace" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade"  data-stretch="true">
 	<div data-role="header">
 		<div data-role="navbar">
 
@@ -4513,7 +4513,7 @@
 
 
 <script id="intelliPlace-chat" type="text/x-kendo-template">
-	<div class="intelliPlace" data-role="button" data-objectid="#:objectId#" data-objectType="Place" id="placeobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliPlace" data-role="button" data-objectid="#:objectId#" data-objectType="Place" id="placeobject_#:objectId#" >
 		<div class="header">
 			<p class="title">
 				<svg>
@@ -4529,7 +4529,7 @@
 </script>
 
 <script id="intelliTrip-chat" type="text/x-kendo-template">
-	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" >
 			<div class="header">
 				<p class="intelliTrip-title">
 					<svg>
@@ -4578,7 +4578,7 @@
 </script>
 
 <script id="intelliTrip-home" type="text/x-kendo-template">
-	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" >
 		<div class="header">
 			<p class="intelliTrip-title">
 				<svg class="myClass">
@@ -4627,7 +4627,7 @@
 </script>
 
 <script id="intelliFlight-chat" type="text/x-kendo-template">
-	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" >
 			<div class="header">
 				<p class="title">
 					<svg class="icon-sm">
@@ -4695,7 +4695,7 @@
 
 <script id="intelliEvent-chat" type="text/x-kendo-template">
 <div>
-	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" data-click="channelView.onObjectClick" >
+	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" >
 			# var dateStr = date; if (ux.isToday(date)) { dateStr = "Today" + " at " + moment(date).format("hh:mm a"); }  if (ux.isTomorrow(date)) { dateStr = "Tomorrow" + " at " + moment(date).format("hh:mm a"); } #
 			<div class="btnSmart-content">
 				<span class="btnSmart-title"> #:title# </span><br />
@@ -4714,7 +4714,7 @@
 
 <script id="intelliMovie-chat-1" type="text/x-kendo-template">
 	<div class="intelliMovie">
-		<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick" >
+		<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" >
 			<div class="btnSmart-poster">
 				<img src="#:imageUrl#" class="btnSmart-img" />
 			</div>
@@ -4734,7 +4734,7 @@
 
 
 <script id="intelliMovie-chat" type="text/x-kendo-template">
-	<div class="intelliMovie" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" data-click="channelView.onObjectClick">
+	<div class="intelliMovie" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" >
 		<div class="header">
 			<p class="title textClamp">
 				<svg>
@@ -7429,14 +7429,14 @@
 	# if (noteType === 'Flight') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Flight" data-uuid="#:uuid#">
 		<p class="helper" style="font-size: 1.0em; clear:both;">
-			<span> #=content#</span>
+			<div> #=content#</div>
 		</p>
 	</div>
 	# } #
 	# if (noteType === 'Trip') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Trip" data-uuid="#:uuid#">
 		<p class="helper" style="font-size: 1.0em; clear:both;">
-			<span> #=content#</span>
+			<div> #=content#</div>
 		</p>
 
 	</div>
@@ -7444,14 +7444,14 @@
 	# if (noteType === 'Movie') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Movie" data-uuid="#:uuid#">
 		<p class="helper" style="font-size: 1.0em; clear:both;">
-			<span> #=content#</span>
+			<div> #=content#</div>
 		</p>
 	</div>
 	# } #
 	# if (noteType === 'Event') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Event" data-uuid="#:uuid#">
 		<p class="helper" style="font-size: 1.0em; clear:both;">
-			<span> #:content#</span>
+			<div> #=content#</div>
 		</p>
 	</div>
 	# } #
