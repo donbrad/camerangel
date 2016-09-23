@@ -287,7 +287,7 @@ var channelModel = {
         ];
         var dataSource = channelModel.channelsDS;
         if (dataSource === null) {
-            console.log("Channels not initialized!");
+            ggError("Channels not initialized!");
             return ([]);
         }
         var cacheFilter = dataSource.filter();
@@ -306,7 +306,7 @@ var channelModel = {
             return([]);
         var dataSource = channelModel.channelsDS;
         if (dataSource === null) {
-            console.log("Channels not initialized!");
+            ggError("Channels not initialized!");
             return ([]);
         }
         var cacheFilter = dataSource.filter();

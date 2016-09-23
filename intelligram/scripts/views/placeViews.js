@@ -1162,7 +1162,7 @@ var editPlaceView = {
         if (editPlaceView._activePlace.get('hasPlaceChat')) {
             var placeChatId =  editPlaceView._activePlace.get('placeChatId');
             // Already had a place chat -- jump to editChat
-            console.log(placeChatId);
+            //console.log(placeChatId);
             APP.kendo.navigate('#editChannel?channel=' + placeChatId);
         } else {
             // No placechat yet, create and then jump to edit

@@ -524,7 +524,8 @@ var everlive = {
                             if (error.code === 107) {
                                 mobileNotify("Deferring User Update...");
                             } else {
-                                console.log("User Update Error : " + JSON.stringify(error));
+                                debugger;
+                                //console.log("User Update Error : " + JSON.stringify(error));
                             }
                         }
                     }
@@ -562,7 +563,8 @@ var everlive = {
                             if (error.code === 107) {
                                 mobileNotify("Deferring User Status Update...");
                             } else {
-                                console.log("User Update Status Error : " + JSON.stringify(error));
+                                debugger;
+                                //console.log("User Update Status Error : " + JSON.stringify(error));
                             }
                         }
                     }

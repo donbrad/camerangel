@@ -1986,7 +1986,7 @@ var signUpView = {
         $("#signup-success").css("display", "none");
         $(".mobile-countryCode").addClass("gg-error");
         $("#signup-error-txt").velocity("fadeIn");
-        console.log("error");
+        //console.log("error");
         // disable submit btn
         $("#createAccountBtn").kendoButton({
             enable: false

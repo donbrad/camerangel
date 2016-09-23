@@ -81,7 +81,7 @@ function _socialShare (message, subject, url, file) {
 				file,
 				bitUrl,
 				function(result) {
-					console.log('result: ' + result)
+					//console.log('result: ' + result)
 				},
 				function(error) {
 					mobileNotify('Social Sharing Error : ' + error);
@@ -96,7 +96,7 @@ function _socialShare (message, subject, url, file) {
 			file,
 			url,
 			function(result) {
-				console.log('result: ' + result)
+				//console.log('result: ' + result)
 			},
 			function(error) {
 				mobileNotify('Social Sharing Error : ' + error);
@@ -748,7 +748,7 @@ var utils = {
 
 		var magnitudes = {
 			thousand: 1000
-		}
+		};
 		var returnString = string;
 		var words = string.split(/[\s-]+/i);
 		var smallTotal = 0;
@@ -792,7 +792,7 @@ var utils = {
 
 			var keyStr = key.toString();
 			if(key.indexOf(matchStr) > -1){
-				console.log(key);
+				//console.log(key);
 				delete object[key];
 			}
 		});

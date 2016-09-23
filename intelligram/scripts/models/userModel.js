@@ -378,9 +378,9 @@ var userModel = {
             var userBlob = GibberishAES.dec(userEnc, userModel.localKey);
             var userObj = JSON.parse(userBlob);
             userModel._userObj = userObj;
-            console.log("Reading User " + userBlob);
+            //console.log("Reading User " + userBlob);
         }
-        console.log("Reading User : Null!");
+        //console.log("Reading User : Null!");
     },
 
     deleteAccount: function () {
