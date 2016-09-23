@@ -273,13 +273,16 @@ var userDataChannel = {
 
         var lastAccess = userDataChannel.lastAccess;
 
+        if (lastAccess === undefined || lastAccess === null) {
+            lastAccess = ggTime.lastWeek();
+        }
 
         var count = userDataChannel.messagesDS.total();
         if (userDataChannel.messagesDS.total() === 0) {
            lastAccess  = ggTime.lastWeek();
         }
         if ( lastAccess < ggTime.lastWeek()) {
-            lastAccess = ggTime.lastWeek()
+            lastAccess = ggTime.lastWeek();
         }
 
         userDataChannel.lastAccess = lastAccess;
