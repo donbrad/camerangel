@@ -213,8 +213,8 @@ var deviceModel = {
 
             deviceModel.onOnline();
             notificationModel.processUnreadChannels();
-            appDataChannel.history();
-            userDataChannel.history();
+            appDataChannel.resumeHistory();
+            userDataChannel.resumeHistory();
         } else {
             if (APP.everlive !== null)
              APP.everlive.offline();

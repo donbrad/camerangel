@@ -144,6 +144,13 @@ var appDataChannel = {
         return(channelUUID.replace(/-/g,'_'));
     },
 
+    resumeHistory : function () {
+        appDataChannel.needHistory = true;
+
+        appDataChannel.history();
+    },
+
+
     history : function () {
         if (!appDataChannel.needHistory) {
             return;

@@ -258,6 +258,11 @@ var userDataChannel = {
         });
     },
 
+    resumeHistory : function () {
+        userDataChannel.needHistory = true;
+        userDataChannel.history();
+    },
+
     history : function () {
 
         if (!userDataChannel.needHistory) {
