@@ -59,13 +59,13 @@
 
 	};
 
-	/*document.addEventListener("DOMContentLoaded", function(event) {
+	document.addEventListener("DOMContentLoaded", function(event) {
 		grunticon(["../../grunticon/icons.data.svg.css", "../../grunticon/icons.data.png.css", "../../grunticon/icons.fallback.css"], function () {
 			mobileNotify("Icons optimized!!");
 			grunticon.svgLoadedCallback();
 		} );
 
-	});*/
+	});
 
 	// this function is called by Cordova when the application is loaded by the device
 	document.addEventListener('deviceready', function() {
@@ -83,11 +83,11 @@
 		document.addEventListener("resign", deviceModel.onResign, false);
 		document.addEventListener("active", deviceModel.onActive, false);
 
-		grunticon(["../../grunticon/icons.data.svg.css", "../../grunticon/icons.data.png.css", "../../grunticon/icons.fallback.css"], function () {
+		/*grunticon(["../../grunticon/icons.data.svg.css", "../../grunticon/icons.data.png.css", "../../grunticon/icons.fallback.css"], function () {
 			mobileNotify("Icons optimized!!");
 			grunticon.svgLoadedCallback();
-		} );
-
+		});
+*/
 
 		deviceModel.init();
 
