@@ -160,7 +160,6 @@
 			<span data-role="view-title"></span>
 			<a data-role="button" data-align="right" class="user-settings homeToggleSearch" data-click="ux.navigateAddTarget">
 				<div class="nav-gear nav-search header-add-icon" data-grunticon-embed></div>
-
 			</a>
         </div>
         <div class="gg_mainSearchBox" data-visible="false">
@@ -2983,9 +2982,7 @@
 			<div data-role="navbar">
 				<a data-align="left" class="btnClear-grey" data-click="addContactView.closeModal" data-role="button">Cancel</a>
 				<span data-role="view-title">
-					<svg height="16">
-						<use xlink:href="styles/svg/symbol.svg#invite"></use>
-					</svg>
+					<div class=“invite” data-grunticon-embed></div>
 				</span>
 			</div>
 		</div>
@@ -3132,9 +3129,7 @@
 				<li id="contactEdit-phone-read">
 					<p>Phone
 						<span class="helper helper-verified" id="edit-verified-phone">
-	                        <svg class="helper-verified-img" height="16">
-								<use xlink:href="styles/svg/symbol.svg#gg-verified"></use>
-							</svg>
+							<div class=“gg-verified helper-verified-img”  data-grunticon-embed></div>
 							Verified
                         </span>
 					</p>
@@ -3148,9 +3143,7 @@
 				<li id="editContact-email-read">
 					<p>Email
 						<span class="helper helper-verified" id="edit-verified-email">
-							<svg class="helper-verified-img" height="16">
-								<use xlink:href="styles/svg/symbol.svg#gg-verified"></use>
-							</svg>
+							<div class="gg-verified helper-verified-img" data-grunticon-embed></div>
 							Verified
                         </span>
 					</p>
@@ -3393,16 +3386,12 @@
 					<ul>
 						<li>
 							<a data-role="button" href="#noteEditor?returnview=gallery">
-								<svg height="20">
-									<use xlink:href="styles/svg/symbol.svg#icon-myNotes"></use>
-								</svg>
+								<div class=“icon-myNotes” data-grunticon-embed></div>
 							</a>
 						</li>
 						<li>
 							<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
-								<svg height="24">
-									<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
-								</svg>
+								<div class=“icon-smartMenu” data-grunticon-embed></div>
 							</a>
 						</li>
 					</ul>
@@ -3471,7 +3460,6 @@
 				#: data.title #
 			</h4>
 		</div>
-
 </script>
 
 <div data-role="view" data-title="Filter" id="filterGallery" data-layout="main" data-transition="overlay:up" data-init="archiveView.onFilterInit" style="display: none;">
@@ -3532,9 +3520,7 @@
 			<li>
 				<label for="filter-place">
 					<input type="checkbox" id="filter-place" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<svg height="18">
-						<use xlink:href="styles/svg/symbol.svg#icon-Events"></use>
-					</svg>
+					<div class=“icon-Events” data-grunticon-embed></div>
 					Events
 				</label>
 			</li>
@@ -3547,9 +3533,7 @@
 			</li>
 			<li data-role="button" data-click="archiveView.openFilterDate">
 				<div>
-					<svg height="18">
-						<use xlink:href="styles/svg/symbol.svg#icon-date"></use>
-					</svg>
+					<div class=“icon-date” data-grunticon-embed></div>
 					Select Date
 				</div>
 			</li>
@@ -3827,9 +3811,7 @@
 				<label>Where (Location or Place)</label>
 				<div>
 					<p id="smartMovieEditplaceAddBtn">
-						<svg class='icon-sm'>
-							<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
-						</svg>
+					<div  class=“icon-location icon-sm” data-grunticon-embed></div>
 						<span id="smartMovieEdit-placeAddBtn-title" data-bind="text: placeName"></span>
 					</p>
 					<div id="smartMovieEdit-actionBtns">
@@ -4362,9 +4344,7 @@
 			<img src="" id="smartMovie-ratingImg" class="gg-rating" />
 			<span data-bind="text: runtime"></span>
 			<a class="movie-links hidden btnClear right" id="smartMovieView-imdbLink" data-role="button" data-click="smartMovieView.showLinkImdb">
-				<svg height="18px">
-					<use xlink:href="styles/svg/symbol.svg#imdb-logo"></use>
-				</svg>
+				<div class=“imdb-logo” data-grunticon-embed></div>
 			</a>
 		</p>
 	</div>
@@ -4565,9 +4545,7 @@
 				<label>Where (Location or Place)</label>
 				<div>
 					<p id="smartEventView-placeAddBtn">
-						<svg  class="icon-sm">
-							<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
-						</svg>
+					<div class=“$icon-location icon-sm” data-grunticon-embed></div>
 						<span id="smartEventView-placeAddBtn-title" data-bind="text: placeName"></span>
 					</p>
 					<div id="searchEventPlace-actionBtns">
@@ -4883,34 +4861,26 @@
 	<div id="modalPhotoView-footer" data-role="footer">
 		<p>
 			<span style="width: 28px;">
-				<svg height="28">
-					<use xlink:href="styles/svg/symbol.svg#icon-tag"></use>
-				</svg>
+				<div class=“icon-tag” data-grunticon-embed></div>
 			</span>
 			<span data-bind="text: tagString">
 			</span>
 		</p>
 		<p>
 			<span style="width: 28px;">
-				<svg height="28">
-					<use xlink:href="styles/svg/symbol.svg#icon-place"></use>
-				</svg>
+				<div class=“icon-place” data-grunticon-embed></div>
 			</span>
 			<span data-bind="text: placeName"></span>
 		</p>
 		<p>
 			<span style="width: 28px;">
-				<svg height="28">
-					<use xlink:href="styles/svg/symbol.svg#icon-location"></use>
-				</svg>
+				<div class=“icon-location” data-grunticon-embed></div>
 			</span>
 			<span data-bind="text: addressString"></span>
 		</p>
 		<p>
 			<span style="width: 28px;">
-				<svg height="28">
-					<use xlink:href="styles/svg/symbol.svg#icon-date"></use>
-				</svg>
+				<div class=“icon-date” data-grunticon-embed></div>
 			</span>
 			<span data-bind="text: dateString"></span>
 		</p>
@@ -5309,37 +5279,28 @@
 				<ul>
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
-							<svg height="24">
-								<use xlink:href="styles/svg/symbol.svg#chat-camera"></use>
-							</svg>
+							<div class=“chat-camera” data-grunticon-embed></div>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" data-click="placeView.messageTitleTag">
-							<svg height="24">
-								<use xlink:href="styles/svg/symbol.svg#icon-tag"></use>
-							</svg>
+							<div class=“icon-tag” data-grunticon-embed></div>
+
 						</a>
 					</li>
 					<li >
 						<a data-role="button" data-click="placeView.ghostgram" id="placeView-editorBtn">
-							<svg height="24">
-								<use xlink:href="styles/svg/symbol.svg#icon-editor"></use>
-							</svg>
+							<div class=“icon-editor” data-grunticon-embed></div>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" data-click="placeView.noteSearch">
-							<svg height="24">
-								<use xlink:href="styles/svg/symbol.svg#icon-web"></use>
-							</svg>
+							<div class=“icon-web” data-grunticon-embed></div>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-rel="actionsheet" href="#placeViewSmartObjects">
-							<svg height="24">
-								<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
-							</svg>
+							<div class=“icon-smartMenu” data-grunticon-embed></div>
 						</a>
 					</li>
 
@@ -5490,9 +5451,7 @@
 				<li>
 					<label>Username (Email Address)
 						<span class="helper helper-verified hidden" id="profile-verified-email">
-							<svg class="helper-verified-img" height="14">
-								<use xlink:href="styles/svg/symbol.svg#verified"></use>
-							</svg>
+							<div class=“verified” data-grunticon-embed></div>
 	                             Verified
                         </span>
 						<span class="helper helper-right helper-form">
@@ -5503,9 +5462,7 @@
 				<li>
 					<label>Mobile Phone
 						<span class="helper helper-verified hidden" id="profile-verified-phone">
-								<svg class="helper-verified-img" height="14">
-									<use xlink:href="styles/svg/symbol.svg#verified"></use>
-								</svg>
+							<div class=“verified” data-grunticon-embed></div>
 	                             Verified
                         </span>
 						<span class="helper helper-right helper-form">
@@ -6629,37 +6586,28 @@
 				<ul>
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#privateNotePhotoActions">
-							<svg height="24">
-								<use xlink:href="styles/svg/symbol.svg#chat-camera"></use>
-							</svg>
+							<div class=“chat-camera” data-grunticon-embed></div>
 						</a>
 					</li>
 					<li>
 					<a data-role="button" data-click="privateNotesView.noteTitleTag">
-						<svg height="24" id="privateNote-editorBtnImg">
-							<use xlink:href="styles/svg/symbol.svg#icon-tag"></use>
-						</svg>
+						<div class=“icon-tag” data-grunticon-embed></div>
 					</a>
 					</li>
 					<li>
 						<a data-role="button" data-click="privateNotesView.noteEditor" id="privateNote-editorBtn">
-							<svg height="24" id="privateNote-editorBtnImg">
-								<use xlink:href="styles/svg/symbol.svg#icon-editor"></use>
-							</svg>
+							<div class=“icon-editor” data-grunticon-embed></div>
+
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-click="privateNotesView.noteSearch">
-							<svg height="24">
-								<use xlink:href="styles/svg/symbol.svg#icon-web"></use>
-							</svg>
+							<div class=“icon-web” data-grunticon-embed></div>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-rel="actionsheet" href="#privateNoteSmartObjects">
-							<svg height="24">
-								<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
-							</svg>
+							<div class=“icon-smartMenu” data-grunticon-embed></div>
 						</a>
 					</li>
 					<li class="offline-only hidden">
@@ -6667,9 +6615,7 @@
 					</li>
 					<li id="privateNote-hideKeyboard" class="hidden">
 						<a data-role="button" data-align="right" data-click="privateNotesView.closeEditor">
-							<svg height="20">
-								<use xlink:href="styles/svg/symbol.svg#icon-keyboard-active"></use>
-							</svg>
+							<div class=“icon-keyboard-active” data-grunticon-embed></div>
 						</a>
 					</li>
 					<li class="right">
@@ -6866,38 +6812,28 @@
 		<div class="contact-options">
 			# if (data.contactUUID === undefined || data.contactUUID === null){#
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doInviteContact" data-contact="#:uuid#">
-				<svg height="12">
-					<use xlink:href="styles/svg/symbol.svg\\#contact-invite"></use>
-				</svg>
+				<div class=“contact-invite” data-grunticon-embed></div>
 				<p class="chat-option-selection"> Resend Invite</p>
 			</a>
 			#} else {#
 				#if(data.isBlocked) {#
 				<a class="btnClear-grey" data-role="button" data-click="contactsView.doUnBlockContact" data-contact="#:uuid#">
-					<svg height="24">
-						<use xlink:href="styles/svg/symbol.svg\\#icon-unblock"></use>
-					</svg>
+					<div class=“icon-unblock” data-grunticon-embed></div>
 					<p class="chat-option-selection"> Unblock </p>
 				</a>
 				#} else {#
 				<a class="btnClear-grey" data-role="button" data-click="contactsView.doBlockContact" data-contact="#:uuid#">
-					<svg height="24">
-						<use xlink:href="styles/svg/symbol.svg\\#icon-block"></use>
-					</svg>
+					<div class=“icon-block" data-grunticon-embed></div>
 					<p class="chat-option-selection"> Block </p>
 				</a>
 				#}#
 			#}#
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
-				<svg height="18">
-					<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
-				</svg>
+				<div class=“option-edit" data-grunticon-embed></div>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
-				<svg height="18">
-					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
-				</svg>
+				<div class=“icon-trash" data-grunticon-embed></div>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div><!-- contact-options -->
