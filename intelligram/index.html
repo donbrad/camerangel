@@ -161,7 +161,8 @@
 			</a>
 			<span data-role="view-title"></span>
 			<a data-role="button" data-align="right" class="user-settings homeToggleSearch" data-click="ux.navigateAddTarget">
-				<img src="images/nav-gear.svg" class="nav-search header-add-icon" />
+				<div class=“nav-gear nav-search header-add-icon”  style=“$2” data-grunticon-embed></div>
+
 			</a>
         </div>
         <div class="gg_mainSearchBox" data-visible="false">
@@ -2460,15 +2461,14 @@
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageLockButton">
-							<div class=“icon-lock” id="messageLockButtonIcon" data-grunticon-embed></div>
+							<div class=“icon-lock”  data-grunticon-embed></div>
 
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.togglePrivacyMode" id="privacyMode">
-							<svg height="22" id="messageLockButtonIcon">
-								<use xlink:href="styles/svg/symbol.svg#privacy-off"></use>
-							</svg>
+							<div class=“privacy-off” id="messageLockButtonIcon" data-grunticon-embed></div>
+
 						</a>
 					</li>
 					<li>
@@ -2561,9 +2561,7 @@
 	<ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="channelView.archiveMessage">
-				<svg  class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg#icon-memories"></use>
-				</svg>
+				<div class=“icon-sm action-memories” data-grunticon-embed></div>
 				Remember Message
 			</a>
 		</li>
@@ -2618,9 +2616,8 @@
 		</div>
 		<form id="addChat-step1">
 			<h3>
-				<svg  class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg#flag"></use>
-				</svg>
+				<div class=“"icon-sm flag” data-grunticon-embed></div>
+
 				Create a New Chat
 			</h3>
 			<p>Chat with friends and family around shared interests.</p>
@@ -2933,9 +2930,7 @@
 			<div id="deviceContactPermission" class="pad center hidden">
 
 				<a class="btnClear">
-					<svg height="16">
-						<use xlink:href="styles/svg/symbol.svg#import"></use>
-					</svg>
+					<div class=“import” data-grunticon-embed></div>
 					Find contacts on device
 				</a>
 			</div>
