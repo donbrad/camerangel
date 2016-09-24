@@ -633,3 +633,43 @@
 	background-image: url('png/icon-contact-active.png');
 	background-repeat: no-repeat;
 }
+
+.emoji-activity {
+	background-image: url('png/emoji-activity.png');
+	background-repeat: no-repeat;
+}
+
+.emoji-flags {
+	background-image: url('png/emoji-flags.png');
+	background-repeat: no-repeat;
+}
+
+.emoji-food {
+	background-image: url('png/emoji-food.png');
+	background-repeat: no-repeat;
+}
+
+.emoji-nature {
+	background-image: url('png/emoji-nature.png');
+	background-repeat: no-repeat;
+}
+
+.emoji-objects {
+	background-image: url('png/emoji-objects.png');
+	background-repeat: no-repeat;
+}
+
+.emoji-people {
+	background-image: url('png/emoji-people.png');
+	background-repeat: no-repeat;
+}
+
+.emoji-symbols {
+	background-image: url('png/emoji-symbols.png');
+	background-repeat: no-repeat;
+}
+
+.emoji-travel {
+	background-image: url('png/emoji-travel.png');
+	background-repeat: no-repeat;
+}
