@@ -20,6 +20,10 @@
 
 
     <link href="styles/master.css" rel="stylesheet" />
+	<script src="grunticon/grunticon.loader.js"></script>
+
+	<noscript><link href="grunticon/icons.fallback.css" rel="stylesheet"></noscript>
+
 
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
@@ -62,7 +66,7 @@
 	<script src="scripts/libs/redactor.js"></script>
 	<script src="scripts/libs/table.js"></script>
 	<script src="scripts/libs/strength.js"></script>
-	<script src="scripts/libs/grunticon.loader.js"></script>
+	<script src="grunticon/grunticon.loader.js"></script>
 	<script src="scripts/libs/jdenticon-1.3.0.js"></script>
 
     <!--<script src="scripts/parseKendoDataSourceFactory.js"></script>-->
@@ -137,9 +141,7 @@
 <div data-role="view" data-title="intelligram starting..." id="startUpView">
 	<p id="startUpView_logo">intelligram</p>
 	<div id="startUpView_loading">
-		<svg>
-			<use xlink:href="styles/svg/symbol.svg#oval"></use>
-		</svg>
+		<div class=“oval” data-grunticon-embed></div>
 	</div>
 </div>
 
@@ -166,9 +168,7 @@
         <div class="gg_mainSearchBox" data-visible="false">
 	 		<div class="appendSearch">
 				<span class="searchIcon">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#search"></use>
-					</svg>
+					<div class=“search” data-grunticon-embed></div>
 				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
 				<span class="enterSearch hidden">
@@ -559,45 +559,35 @@
 <script type="text/x-kendo-template" id="notificationTemplate1">
 	<li class="home-section-header ggHome-today">
 		<div>
-			<svg class="icon-home">
-				<use xlink:href="styles/svg/symbol.svg\\#icon-today"></use>
-			</svg>
+			<div class=“icon-home icon-today” data-grunticon-embed></div>
 			Today
 			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
 		</div>
 	</li>
 	<li data-role="button">
 		<div class="home-section home-section-smart">
-			<svg class="icon-smart-home left">
-				<use xlink:href="styles/svg/symbol.svg\\#smart-coffee"></use>
-			</svg>
+			<div class=“icon-smart-home left smart-coffee” data-grunticon-embed></div>
 			<h3>Coffee w/ Jon</h3>
 			<p>Today at 7:30am</p>
 		</div>
 	</li>
 	<li data-role="button">
 		<div class="home-section home-section-smart">
-			<svg class="icon-smart-home left">
-				<use xlink:href="styles/svg/symbol.svg\\#smart-flight-home"></use>
-			</svg>
+			<div class=“icon-smart-home left smart-flight-home” data-grunticon-embed></div>
 			<h3>Delta 871 <span class="smart-flight-status">On Time</span></h3>
 			<p>Landing at 7:31am</p>
 		</div>
 	</li>
 	<li data-role="button">
 		<div class="home-section home-section-smart">
-			<svg class="icon-smart-home left">
-				<use xlink:href="styles/svg/symbol.svg\\#smart-event-home"></use>
-			</svg>
+			<div class=“icon-smart-home left smart-event-home” data-grunticon-embed></div>
 			<h3>Dinner w/ Jane</h3>
 			<p>Today at 8pm</p>
 		</div>
 	</li>
 	<li class="home-section-header ggHome-chat">
 		<div>
-			<svg class="icon-home-sm">
-				<use xlink:href="styles/svg/symbol.svg\\#icon-chat-light"></use>
-			</svg>
+			<div class=“icon-home-sm icon-chat-light” data-grunticon-embed></div>
 			Chats
 			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
 		</div>
@@ -609,17 +599,13 @@
 				<p>John Smith wants to connect</p>
 			</div>
 			<a class="btnClear right ggHome-close" data-role="button" data-click="homeView.dismissNotification">
-				<svg class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg\\#close"></use>
-				</svg>
+				<div class=“icon-sm close” data-grunticon-embed></div>
 			</a>
 		</div>
 	</li>
 	<li class="home-section-header ggHome-contact">
 		<div>
-			<svg class="icon-home-sm">
-				<use xlink:href="styles/svg/symbol.svg\\#smart-contacts"></use>
-			</svg>
+			<div class=“icon-home-sm smart-contacts” data-grunticon-embed></div>
 			Contacts
 			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
 		</div>
@@ -631,26 +617,20 @@
 				<p>Family Chat</p>
 			</div>
 			<a class="btnClear right ggHome-close" data-role="button" data-click="homeView.dismissNotification">
-				<svg class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg\\#close"></use>
-				</svg>
+				<div class=“icon-sm close” data-grunticon-embed></div>
 			</a>
 		</div>
 	</li>
 	<li class="home-section-header ggHome-smart">
 		<div>
-			<svg class="icon-home-sm">
-				<use xlink:href="styles/svg/symbol.svg\\#icon-smart-light"></use>
-			</svg>
+			<div class=“icon-home-sm icon-smart-light” data-grunticon-embed></div>
 			IntelliEvents
 			<span class="right"><a class="btnClear-light-sm right" data-role="button">hide</a></span>
 		</div>
 	</li>
 	<li data-role="button" data-click="homeView.openNotificationAction">
 		<div class="home-section home-section-smart">
-			<svg class="icon-smart-home left">
-				<use xlink:href="styles/svg/symbol.svg\\#smart-event-home"></use>
-			</svg>
+			<div class=“icon-smart-home left smart-event-home” data-grunticon-embed></div>
 			<h3>IntelliEvent Title</h3>
 			<p>Event action or update</p>
 		</div>
@@ -665,25 +645,19 @@
 		<div class="notify-info">
 			#if(data.type === 'Unread Messages'){#
 				<span>
-					<svg class="icon-notify">
-						<use xlink:href="styles/svg/symbol.svg\\#icon-notify-unread"></use>
-					</svg>
+					<div class=“icon-notify icon-notify-unread” data-grunticon-embed></div>
 					#= description #
 				</span>
 			#} else if(data.type === 'intelligram recommends'){#
 				<span>
-					<svg class="icon-notify">
-						<use xlink:href="styles/svg/symbol.svg\\#icon-notify-recommend"></use>
-					</svg>
+					<div class=“icon-notify icon-notify-recommend” data-grunticon-embed></div>
 					Recommended
 				</span>
 			#} else if(data.type === 'New Member'){#
 				<span>New Member</span>
 			#}#
 			<a class="closeBox" data-role="button" data-uuid="#:uuid#" data-click="homeView.dismissNotification">
-				<svg class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg\\#close"></use>
-				</svg>
+				<div class=“icon-sm close” data-grunticon-embed></div>
 			</a>
 		</div>
 		<div class="notify-content">
@@ -714,9 +688,7 @@
 	 <div class="feature-card preMotion" id="featureCard1">
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <svg>
-					 <use xlink:href="styles/svg/symbol.svg#contacts"></use>
-				 </svg>
+				 <div class=“contacts” data-grunticon-embed></div>
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Personal</h3>
@@ -726,9 +698,7 @@
 		 </div>
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <svg>
-					 <use xlink:href="styles/svg/symbol.svg#icon-feature-smart"></use>
-				 </svg>
+				 <div class=“icon-feature-smart” data-grunticon-embed></div>
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Intelligent</h3>
@@ -738,9 +708,7 @@
 		 </div>
 		 <div class="featureList">
 			 <div class="icon-feature-img">
-				 <svg>
-					 <use xlink:href="styles/svg/symbol.svg#icon-feature-trusted"></use>
-				 </svg>
+				 <div class=“icon-feature-trusted” data-grunticon-embed></div>
 			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Organized</h3>
@@ -762,9 +730,7 @@
 	<!--<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="button" data-align="left" class="btnClear-grey" href="#newuserhome">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div class=“nav-back” data-grunticon-embed></div>
 				Sign Up
 			</a>
 		</div>
@@ -807,9 +773,7 @@
 		<a class="btnSecondary btnSpan-btm" data-role="button" data-click="signInView.validate">Sign in</a>
 	</div>
 	<a class="btnSpan-btm btnClear-light" data-role="button" href="#newuserhome">
-		<svg class="icon-gg-drawer" class="icon-sm">
-			<use xlink:href="styles/svg/symbol.svg#icon-dev-light"></use>
-		</svg>
+		<div class=“icon-gg-drawer icon-sm icon-dev-light” data-grunticon-embed></div>
 		Dev - Go to New User
 	</a>
 </div>
@@ -905,9 +869,7 @@
    	<div data-role="header">
       <div data-role="navbar">
         <a data-role="backbutton"  data-align="left">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-			</svg>
+			<div class=“nav-back” data-grunticon-embed></div>
 		</a>
         <span data-role="view-title"></span>
       </div>
@@ -1011,9 +973,7 @@
 	<div class="modalview-content">
 	    <h2>Password Recovery
 	        <a class="closeBox" data-click="recoverPasswordView.closeModal" data-role="button" style="float: right;">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div class=“close” data-grunticon-embed></div>
 	        </a>
 	    </h2>
 	    <label>Email password recovery instructions to 
@@ -1039,9 +999,7 @@
 		<ul id="checkin-listview"></ul>
 	</div>
 	<div class="emptyState">
-		<svg>
-			<use xlink:href="styles/svg/symbol.svg#empty-places-nearby"></use>
-		</svg>
+		<div class=“empty-places-nearby” data-grunticon-embed></div>
 	</div>
 </div>
 
@@ -1088,17 +1046,13 @@
 		<div data-role="navbar">
 			<span>Share Via Intelligram</span>
 			<a data-click="sharePickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div class=“close” data-grunticon-embed></div>
 			</a>
 		</div>
 		<div>
 			<div class="appendSearch">
 				<span class="searchIcon">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#search"></use>
-					</svg>
+					<div class=“search” data-grunticon-embed></div>
 				</span>
 				<input type="text" class="doubleAppendSearch" placeholder="Find contacts & chats..." id="sharePickerView-search" />
 			</div>
@@ -1108,9 +1062,7 @@
 	<div style="width: 100%;">
 		<ul id="sharePickerView-listview"  data-style="inset" ></ul>
 		<div class="emptyState hidden">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#empty-contacts"></use>
-			</svg>
+			<div class=“empty-contacts” data-grunticon-embed></div>
 		</div>
 	</div>
 </div>
@@ -1129,9 +1081,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-click="galleryListView.closeModal" data-role="button" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div class=“close” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -1163,9 +1113,7 @@
 		<div>
 			<div class="appendSearch">
 				<span class="searchIcon">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#search"></use>
-					</svg>
+					<div class=“search” data-grunticon-embed></div>
 				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" id="galleryPickerSearch" />
 				<span class="enterSearch hidden">
@@ -1183,9 +1131,7 @@
 	<div class="footer hidden" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" data-click="galleryPicker.setView">
 			<p class="actionBtn-text">Cancel</p>
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#gallery-list"></use>
-			</svg>
+			<div class=“gallery-list” data-grunticon-embed></div>
 		</a>
 	</div>
 
@@ -1218,9 +1164,7 @@
 	<div class="startBox">
 			<h2>Let's Get Started
 				<a class="right closeBox" data-role="button" data-click="ux.closeStartModal">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#close"></use>
-					</svg>
+					<div class=“close” data-grunticon-embed></div>
 				</a>
 			</h2>
 			<div class="clearfix"></div>
@@ -1278,9 +1222,7 @@
 		<div data-role="navbar">
 			<span id="galleryEditor-viewTitle">Gallery</span>
 			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey-sm">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div class=“close” data-grunticon-embed></div>
 			</a>
 			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear">Add</a>
 		</div>
@@ -1354,9 +1296,7 @@
 		<div data-role="navbar">
 			<span>intelliNote Viewer</span>
 			<a data-click="noteViewer.closeModal" data-role="button" data-align="left" class="btnClear-grey">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div class=“close” data-grunticon-embed></div>
 			</a>
 			<a data-click="noteViewer.editNote" data-role="button" data-align="right" class="btnClear-grey">Edit</a>
 		</div>
@@ -1378,9 +1318,7 @@
 		<div data-role="navbar">
 			<span>intelliNote</span>
 			<a data-role="button" data-click="noteEditView.onDone" data-align="left" class="btnClear-grey">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div class=“close” data-grunticon-embed></div>
 			</a>
 			<a data-role="button" data-click="noteEditView.onSave" data-align="right" id="noteEditor-saveBtn" class="btnClear">Save</a>
 		</div>
@@ -1559,9 +1497,7 @@
 <div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; min-height:65%; display: none;">
 	<div class="modal-top">
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#close-white"></use>
-			</svg>
+			<div class=“close-white” data-grunticon-embed></div>
 		</a>
 		<img class="circle-img-lg" id="contactProfileImg" data-bind="" />
 		<img src="images/status-away.svg"  class="statusContactCard-icon" id="contactStatusImg" />
@@ -1586,41 +1522,31 @@
 		<ul class="list-inline hasMotion" id="contactActionBtns">
 			<li>
 				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#icon-tracking-active"></use>
-					</svg>
+					<div class=“icon-tracking-active” data-grunticon-embed></div>
 					Start Tracking
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.privateChat" >
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#icon-private-alt"></use>
-					</svg>
+					<div class=“icon-private-alt” data-grunticon-embed></div>
 					Private Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.sendEmail">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#icon-ghostMail"></use>
-					</svg>
+					<div class=“icon-ghostMail” data-grunticon-embed></div>
 					Send Email
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.callPhone">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#icon-phone"></use>
-					</svg>
+					<div class=“icon-phone” data-grunticon-embed></div>
 					Phone Call
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.sendSMS">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#icon-sms"></use>
-					</svg>
+					<div class=“icon-sms” data-grunticon-embed></div>
 					Send SMS
 				</a>
 			</li>
@@ -1630,9 +1556,7 @@
 			<ul class="list-inline hasMotion"  >
 				<li>
 					<a class="btnClear" data-role="button" data-click="contactRequestConnect">
-						<svg>
-							<use xlink:href="styles/svg/symbol.svg#contact-invite"></use>
-						</svg>
+						<div class=“contact-invite” data-grunticon-embed></div>
 						Ask to Connect
 					</a>
 				</li>
@@ -1646,17 +1570,13 @@
 			<ul class="list-inline hasMotion"  >
 				<li>
 					<a class="btnClear" data-role="button" data-click="contactRequestAccept" >
-						<svg>
-							<use xlink:href="styles/svg/symbol.svg#icon-contact"></use>
-						</svg>
+						<div class=“icon-contact” data-grunticon-embed></div>
 						Accept Connection
 					</a>
 				</li>
 				<li>
 					<a class="btnClear" data-role="button" data-click="contactRequestDecline">
-						<svg>
-							<use xlink:href="styles/svg/symbol.svg#decline-icon"></use>
-						</svg>
+						<div class=“decline-icon” data-grunticon-embed></div>
 						Decline Connection
 					</a>
 				</li>
@@ -1668,9 +1588,7 @@
 <div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatusView._activeStatus"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
 	<div class="profileStatus-top">
 		<a data-role="button" class="modal-close hidden" data-click="homeView.closeStatusModal">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#close"></use>
-			</svg>
+			<div class=“close” data-grunticon-embed></div>
 		</a>
 		<div class="left" style="width: 20%; text-align: center;">
 			<img class="circle-img-md home-profile-img" src=""/>
@@ -1785,9 +1703,7 @@
 <div data-role="modalview" id="testing" style="width: 90%; display:none;" class="appearance">
 	<div class="modalview-content">
 	    <a class="closeBox right" data-click="ux.closeTestingBox" data-role="button">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#close"></use>
-			</svg>
+			<div class=“close” data-grunticon-embed></div>
 	    </a>
 	    <p>This feature is in the works!</p>
 			<svg id="testingImg">
@@ -1852,14 +1768,10 @@
 		<p class="helper">
            <span class="left">
          # if (data.isPrivate === true) { #
-			   	<svg>
-					<use xlink:href="styles/svg/symbol.svg\\#place-private"></use>
-				</svg>
+			   	<div class=“place-private” data-grunticon-embed></div>
             Private
          # } else { #
-			   <svg>
-					<use xlink:href="styles/svg/symbol.svg\\#place-public"></use>
-				</svg>
+			   <div class=“place-public” data-grunticon-embed></div>
             	Public
          # }#
            </span>
@@ -1884,9 +1796,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" data-click="addPlaceView.onDone" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -1918,9 +1828,7 @@
 		</ul>
 		<p> Place Type
 			<span class="place-tag place-type-add">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#place-private-light"></use>
-				</svg>
+				<div class=“place-private-light” data-grunticon-embed></div>
 				Private
 			</span>
 		</p>
@@ -1957,9 +1865,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="backbutton" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div class=“nav-back” data-grunticon-embed></div>
 			</a>
 			<span data-role="view-title"></span>
 		</div>
@@ -2029,15 +1935,11 @@
 		<div data-role="navbar">
 
 			<a data-role="button" data-align="left" data-click="mapViewModal.onDone">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div class=“close” data-grunticon-embed></div>
 			</a>
             <span id="mapViewModal-title">Map</span>
 			<a data-role="button" data-align="right" data-click="mapViewModal.onDirections">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#icon-directions"></use>
-				</svg>
+				<div class=“icon-directions” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -2058,9 +1960,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="backbutton" data-align="left" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -2117,24 +2017,18 @@
 				   <span class="left">
 				 		# if (data.isPrivate === true) { #
 					   		<span class="place-tag place-type">
-								<svg>
-									<use xlink:href="styles/svg/symbol.svg\\#place-private"></use>
-								</svg>
+								<div class=“place-private” data-grunticon-embed></div>
 								 Private
 							</span>
 				 		#} else {#
 					   		<span class="place-tag place-type">
-								<svg>
-									<use xlink:href="styles/svg/symbol.svg\\#place-public"></use>
-								</svg>
+								<div class=“place-public” data-grunticon-embed></div>
 								Public
 							</span>
 				 		#}#
 				   	#if (data.hasPlaceChat) {#
 					   <span class="place-tag placeChat-chatIcon">
-						   <svg class="icon-md">
-							   <use xlink:href="styles/svg/symbol.svg\\#icon-Chat"></use>
-						   </svg>
+						   <div class=“icon-md icon-Chat” data-grunticon-embed></div>
 						   Chat
 					   </span>
 					#}#
@@ -2245,9 +2139,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button" data-click="sendViaModal.closeModal">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div class=“close” data-grunticon-embed></div>
 			</a>
 			<span>Send Via Intelligram</span>
 		</div>
@@ -2255,9 +2147,7 @@
 	<div id="sendViaListDiv">
 		<ul id="sendVia-listview"></ul>
 		<div class="emptyState hidden">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#empty-chat"></use>
-			</svg>
+			<div class=“empty-chat” data-grunticon-embed></div>
 		</div>
 	</div>
 </div>
@@ -2273,9 +2163,7 @@
 	<div id="channelListDiv">
 		<ul id="channels-listview"></ul>
 		<div class="emptyState hidden">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#empty-chat"></use>
-			</svg>
+			<div class=“empty-chat” data-grunticon-embed></div>
 		</div>
 	</div>
 </div>
@@ -2339,23 +2227,17 @@
     				# if (isPrivate){#
     					<li>
 		    				<a class="btnClear-red" data-channel="#:channelUUID #" data-role="button"  data-click="channelsView.deleteChannel">
-		    					<svg>
-		    						<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
-		    					</svg>
+		    					<div class=“icon-trash” data-grunticon-embed></div>
 		    					<p class="chat-option-selection"> Delete </p>
 		    				</a>
 	    				</li>
 	    				<li>
 		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelUUID #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 			    				# if(data.isMuted) {#
-									<svg class="channelMuteImg">
-										<use xlink:href="styles/svg/symbol.svg\\#icon-unmute"></use>
-									</svg>
+									<div class=“channelMuteImg icon-unmute” data-grunticon-embed></div>
 			    					<p class="channelMute">Unmute</p>
 		    					#} else {#
-		    						<svg class="channelMuteImg">
-										<use xlink:href="styles/svg/symbol.svg\\#icon-mute"></use>
-									</svg>
+		    						<div class=“channelMuteImg icon-mute” data-grunticon-embed></div>
 			    					<p class="channelMute">Mute</p>
 		    					#}#
 			    			</a>
@@ -2363,9 +2245,7 @@
     				#} else {#
     					<li>
 		    				<a class="btnClear-red" data-role="button" data-channel="#:channelUUID #" data-click="channelsView.deleteChannel" data-channel="#:channelUUID #">
-		    					<svg>
-									<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
-								</svg>
+		    					<div class=“icon-trash” data-grunticon-embed></div>
 		    					<p class="chat-option-selection"> Delete</p>
 		    				</a>
 	    				</li>
@@ -2373,14 +2253,10 @@
 	    				<li>
 		    				<a class="btnClear-grey" data-role="button" data-channel="#:channelUUID #" data-click="channelsView.muteChannel" data-mute="#: isMuted #">
 		    					# if(data.isMuted) {#
-		    						<svg class="channelMuteImg">
-										<use xlink:href="styles/svg/symbol.svg\\#icon-unmute"></use>
-									</svg>
+		    						<div class=“channelMuteImg icon-unmute” data-grunticon-embed></div>
 			    					<p class="channelMute">Unmute</p>
 		    					#} else {#
-		    						<svg class="channelMuteImg">
-										<use xlink:href="styles/svg/symbol.svg\\#icon-mute"></use>
-									</svg>
+		    						<div class=“channelMuteImg icon-mute” data-grunticon-embed></div>
 			    					<p class="channelMute">Mute</p>
 		    					#}#
 			    			</a>
@@ -2390,9 +2266,7 @@
     				# if(isPrivate !== true && isOwner){#
     						<li>
 			    				<a class="btnClear-grey" data-role="button" data-click="channelsView.editChannel" data-channel="#:channelUUID #">
-			    					<svg>
-										<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
-									</svg>
+			    					<div class=“option-edit” data-grunticon-embed></div>
 				    				<p class="chat-option-selection">Edit</p>
 				    			</a>
 	    					</li>
@@ -2423,16 +2297,12 @@
 	    		<h4 class="textClamp">
 					<span class="chatStatusIcon">
 							# if(data.isMuted){#
-								<svg class="channelMuteImg">
-										<use xlink:href="styles/svg/symbol.svg\\#icon-mute"></use>
-									</svg>
+								<div class=“channelMuteImg icon-mute” data-grunticon-embed></div>
 							#}else {#
 								#if(data.unreadCount > 0){#
 									<div class="unreadBanner"></div>
 
-									<svg class="list-status">
-										<use xlink:href="styles/svg/symbol.svg\\#icon-notify-unread-highlight"></use>
-									</svg>
+									<div class=“list-status icon-notify-unread-highlight” data-grunticon-embed></div>
 								#}#
 							#}#
 	    				</span>
@@ -2445,9 +2315,7 @@
 	    		<div class="chatType">
 		    		# if(isPrivate && members.length <= 2){#
 		    			<span class="placeType-list">
-		    				<svg>
-								<use xlink:href="styles/svg/symbol.svg\\#icon-private"></use>
-							</svg>
+		    				<div class=“icon-private” data-grunticon-embed></div>
 		    				Private Chat
 		    			</span>
 		    		#} else if (isPlace) {#
@@ -2459,16 +2327,12 @@
 		    			</span>
 		    		#} else if(membersCount <= 2) {#
 		    			<span class="placeType-list">
-		    			<svg>
-								<use xlink:href="styles/svg/symbol.svg\\#icon-group"></use>
-							</svg>
+		    			<div class=“icon-group” data-grunticon-embed></div>
 		    				#:ownerString#
 		    			</span>
 		    		#} else {#
 		    			<span class="placeType-list">
-		    				<svg>
-								<use xlink:href="styles/svg/symbol.svg\\#icon-group"></use>
-							</svg>
+		    				<div class=“icon-group” data-grunticon-embed></div>
 		    					#:ownerString# and #:membersCount# others
 		    			</span>
 		    		#}#
@@ -2490,9 +2354,7 @@
 	<div data-role="header">
 		<div data-role="navbar" id="channelNavBar">
 			<a data-align="left" data-role="button" data-click="channelView.onDone" id="channel-back-button">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div class=“nav-back” data-grunticon-embed></div>
 			</a>
 			<span id="channel-titleBtn" data-role="button" data-click="channelView.doTitleClick">
 				<img src="" id="channelImage" height="32" class="circle-img"/>
@@ -2500,9 +2362,7 @@
 				<span id="channelName"></span>
 			</span>
 			<a data-align="right" data-role="button" id="messagePresenceButton" data-click="channelPresence.openModal">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#icon-group"></use>
-				</svg>
+				<div class=“icon-group” data-grunticon-embed></div>
 			</a>
 		</div>
 
@@ -2641,9 +2501,7 @@
 					</li>
 					<li class="right">
 						<a data-role="button" class="btnClear" id="messageSend" data-click="channelView.messageSend">
-							<svg>
-								<use xlink:href="styles/svg/symbol.svg#icon-send"></use>
-							</svg>
+							<div  class=“icon-send” data-grunticon-embed></div>
 						</a>
 					</li>
 				</ul>
@@ -2760,9 +2618,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="backbutton"  data-align="right">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div  class=“close” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -2857,9 +2713,7 @@
 		<div data-role="navbar">
 			<span> Edit Chat </span>
 			<a data-role="button" href="#channels" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -2872,9 +2726,7 @@
 		</form>
 		<div>
 			<div class="pad">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#edit-chat"></use>
-				</svg>
+				<div  class=“edit-chat” data-grunticon-embed></div>
 				Chat Members
 			</div>
 			<div>
@@ -2885,9 +2737,7 @@
 	<div class="footerBk" data-role="footer">
 		<a class="actionBtn secondary-100" data-role="button" href="#channelMembers">
 			<p class="actionBtn-text">Add members</p>
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#nav-add-white"></use>
-			</svg>
+			<div  class=“nav-add-white” data-grunticon-embed></div>
 		</a>
 		<a class="btnSpan-btm btnPrimary" data-click="editChannelView.validate" type="button" data-role="button">	Save
 		</a>
@@ -2973,9 +2823,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-align="left" data-role="button" data-click="channelPresence.closeModal">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div  class=“close” data-grunticon-embed></div>
 			</a>
 			<span>Members</span>
 		</div>
@@ -3018,9 +2866,7 @@
 			<h4 class="textClamp">
 			#= primaryName #
 			#if(data.phoneValidated){#
-				<svg class="user-status-icon">
-					<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
-				</svg>
+				<div class=“user-status-icon user-verified” data-grunticon-embed></div>
 			#}#
 			</h4>
 		</div>
@@ -3070,9 +2916,7 @@
 			<h4 class="textClamp">
 				#= primaryName #
 				#if(data.phoneValidated){#
-					<svg class="user-status-icon">
-						<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
-					</svg>
+					<div class=“user-status-icon user-verified” data-grunticon-embed></div>
 				#}#
 			</h4>
 			
@@ -3080,9 +2924,7 @@
 
 		<div class="deleteMemberText">
 			<a class="btnClear-red deleteChannelMember" data-role="button" data-id="#:data.uuid#" data-click="editChannelView.deleteMemberBtn">
-				<svg class="icon">
-					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
-				</svg>
+				<div class=“icon icon-trash” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -3104,9 +2946,7 @@
 	</div>
 	<div id="contacts-contacts">
 		<a class="hidden btnClear topSearchReferral" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#contacts"></use>
-			</svg>
+			<div  class=“contacts” data-grunticon-embed></div>
 			Search device for "<span id="btnSearchDeviceName"></span>"
 		</a>
 		<div id="contactListDiv" style="padding-bottom: 24px;">
@@ -3122,9 +2962,7 @@
 				</a>
 			</div>
 			<div class="emptyState hidden">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#empty-contacts"></use>
-				</svg>
+				<div  class=“empty-contacts” data-grunticon-embed></div>
 			</div>
 		</div>
 	</div>
@@ -3133,9 +2971,7 @@
 			<ul id="groups-listview" class="listview"></ul>
 
 			<div class="emptyState hidden">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#empty-contacts"></use>
-				</svg>
+				<div  class=“empty-contacts” data-grunticon-embed></div>
 			</div>
 		</div>
 	</div>
@@ -3146,9 +2982,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="backbutton"  data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 			<span data-role="view-title"></span>
 		</div>
@@ -3158,16 +2992,12 @@
 		<div class="tempSearchBox">
 			<div class="appendSearch">
 				<span class="searchIcon">
-					<svg>
-					<use xlink:href="styles/svg/symbol.svg#search"></use>
-				</svg>
+					<div  class=“search” data-grunticon-embed></div>
 				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" />
 				<span class="enterSearch hidden">
 					<a class="btnClear-grey">
-						<svg>
-							<use xlink:href="styles/svg/symbol.svg#close"></use>
-						</svg>
+						<div  class=“close” data-grunticon-embed></div>
 					</a>
 				</span>
 			</div>
@@ -3285,14 +3115,10 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" data-click="editContactView.onDone" data-align="left" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 			<a  data-role="button" data-rel="actionsheet" href="#editContact-contactActions" class="btnClear-grey" data-align="right">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-gear"></use>
-				</svg>
+				<div  class=“nav-gear” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -3694,9 +3520,7 @@
 			<li>
 				<label for="filter-contact">
 					<input type="checkbox" id="filter-contact" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#nav-contacts"></use>
-					</svg>
+					<div  class=“nav-contacts” data-grunticon-embed></div>
 					Contacts
 				</label>
 			</li>
@@ -3710,9 +3534,7 @@
 			<li>
 				<label for="filter-link">
 					<input type="checkbox" id="filter-link" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#icon-Links"></use>
-					</svg>
+					<div  class=“icon-Links” data-grunticon-embed></div>
 					Links
 				</label>
 			</li>
@@ -3726,9 +3548,7 @@
 			<li>
 				<label for="filter-chat">
 					<input type="checkbox" id="filter-chat" data-off-label="No" data-on-label="Yes" data-role="switch" data-change="archiveView.filterChange"/>
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#icon-Chat"></use>
-					</svg>
+					<div  class=“icon-Chat” data-grunticon-embed></div>
 					Chats
 				</label>
 			</li>
@@ -3784,9 +3604,7 @@
 <div id="modalview-dateFilter" data-role="modalview" style="width: 90%; display: none;" class="appearance" data-init="archiveView.onInitDateSelect">
 	<h3>Select date
 		<a class="right closeBox" data-role="button" data-click="archiveView.closeModalDateSelect">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#close"></use>
-			</svg>
+			<div  class=“close” data-grunticon-embed></div>
 		</a>
 	</h3>
 	<div class="helper">
@@ -3880,9 +3698,7 @@
 			#if(data.imgUrl !== ""){#
 				<img src="#:data.imageUrl#" />
 			#} else {#
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg\\#smart-movie-default"></use>
-				</svg>
+				<div class=“smart-movie-default” data-grunticon-embed></div>
 			#}#
 
 		</div>
@@ -3926,14 +3742,10 @@
 		<div data-role="navbar">
 			<span>Movie List</span>
 			<a data-click="movieListView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 			<a data-align="right" data-role="button" data-click="ux.toggleSearch">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#icon-search"></use>
-				</svg>
+				<div  class=“icon-search” data-grunticon-embed></div>
 			</a>
 		</div>
 		<div class="gg_mainSearchBox" data-visible="false">
@@ -4001,9 +3813,7 @@
 		<div data-role="navbar">
 			<span>Find Movies</span>
 			<a data-click="smartMovieEdit.onCancel" data-role="button" class="btnClear-grey" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -4085,9 +3895,7 @@
 
 <div data-role="modalview" id="smartTripModal" style="width: 100%;  height: 100%; display: none;"  data-init="smartTripView.onInit" data-open="smartTripView.onOpen" data-use-native-scrolling="true" class="appearance" data-model="smartTripView.activeObject">
 	<div class="intelli-header">
-		<svg>
-			<use xlink:href="styles/svg/symbol.svg#intelliTrip-light"></use>
-		</svg>
+		<div  class=“intelliTrip-light” data-grunticon-embed></div>
 		<p class="intelli-subheader">Quickly share your trip with friends and family.</p>
 		<div class="smartTripView-error hidden">
 			<p class="error-msg">
@@ -4165,9 +3973,7 @@
 						<a data-click="smartTripView.onOriginSearch" data-role="button" class="btnClearLine btnFull hidden" id="smartTripView-originSearchBtn"></a>
 						<p class="helper smartTrip-currentLocation">OR</p>
 						<a class="btnClearLine btnFull smartTrip-currentLocation" data-role="button" data-click="smartTripView.getCurrentLocation">
-							<svg>
-								<use xlink:href="styles/svg/symbol.svg#icon-location-active"></use>
-							</svg>
+							<div  class=“icon-location-active” data-grunticon-embed></div>
 							Current location
 						</a>
 					</li>
@@ -4209,17 +4015,13 @@
 						<label id="smartTripView-departure-time-label"> Departure </label> <br />
 						<div class="smallSearch">
 								<span class="searchIcon">
-									<svg>
-										<use xlink:href="styles/svg/symbol.svg#smart-event"></use>
-									</svg>
+									<div  class=“smart-event” data-grunticon-embed></div>
 								</span>
 							<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture" data-bind="value: dateDeparture" />
 						</div>
 						<div class="smallSearch-sm">
 							<span class="searchIcon">
-								<svg>
-									<use xlink:href="styles/svg/symbol.svg#smart-time"></use>
-								</svg>
+								<div  class=“smart-time” data-grunticon-embed></div>
 							</span>
 							<input type="time" id="smartTripView-timeDeparture" data-bind="value: timeDeparture"/>
 						</div>
@@ -4230,17 +4032,13 @@
 						<div class="clearfix"></div>
 						<div class="smallSearch">
 								<span class="searchIcon">
-									<svg>
-										<use xlink:href="styles/svg/symbol.svg#smart-event"></use>
-									</svg>
+									<div  class=“smart-event” data-grunticon-embed></div>
 								</span>
 							<input type="text" class="viewSearchBox" id="smartTripView-dateArrival" data-bind="value: dateArrival"/>
 						</div>
 						<div class="smallSearch-sm">
 							<span class="searchIcon">
-								<svg>
-									<use xlink:href="styles/svg/symbol.svg#smart-time"></use>
-								</svg>
+								<div  class=“smart-time” data-grunticon-embed></div>
 							</span>
 							<input type="time" id="smartTripView-timeArrival" data-bind="value: timeArrival"/>
 						</div>
@@ -4298,9 +4096,7 @@
 		<div class="summary">
 			<div class="intelli-update hidden" id="intelliTrip-update">
 				<p class="update-header">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#icon-time-primary"></use>
-					</svg>
+					<div  class=“icon-time-primary” data-grunticon-embed></div>
 					Recent Update
 				</p>
 				<p class="update-content">Stopping for gas</p>
@@ -4317,9 +4113,7 @@
 				<p class="tripTime" data-bind="text: arrival"></p>
 			</div>
 			<p>
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#icon-time"></use>
-				</svg>
+				<div  class=“icon-time” data-grunticon-embed></div>
 				<span data-bind="text: durationString"></span>
 				(<span data-bind="text: distanceString"></span>)
 			</p>
@@ -4339,9 +4133,7 @@
 	<div class="intelliPlace" data-role="button" data-objectid="#:objectId#" data-objectType="Place" id="placeobject_#:objectId#" >
 		<div class="header">
 			<p class="title">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg\\#icon-place-dark"></use>
-				</svg>
+				<div class=“icon-place-dark” data-grunticon-embed></div>
 				#:name#
 			</p>
             <p class="subheader">
@@ -4355,17 +4147,13 @@
 	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" >
 			<div class="header">
 				<p class="intelliTrip-title">
-					<svg>
-							<use xlink:href="styles/svg/symbol.svg\\#intelliTrip-icon"></use>
-					</svg>
+					<div class=“intelliTrip-icon” data-grunticon-embed></div>
 					 #:name#
 				</p>
 				<p class="helper intelliTrip-subheader">
 					<span>#:origin#</span>
 					<span class="intelliTrip-arrow">
-						<svg>
-							<use xlink:href="styles/svg/symbol.svg\\#intelliTrip-arrow"></use>
-						</svg>
+						<div class=“intelliTrip-arrow” data-grunticon-embed></div>
 					</span>
 					<span>#:destination#</span>
 				</p>
@@ -4377,23 +4165,17 @@
 			<div class="footer cardFooter">
 				# if(data.tripTimeType === 'arrival') {#
 					<p class="intelliTrip-details">
-						<svg class="icon-sm">
-							<use xlink:href="styles/svg/symbol.svg\\#icon-date"></use>
-						</svg>
+						<div class=“icon-sm icon-date” data-grunticon-embed></div>
 						#:arrival#
 					</p>
 				#} else if(data.tripTimeType === 'departure'){#
 					<p class="intelliTrip-details">
-						<svg>
-							<use xlink:href="styles/svg/symbol.svg\\#icon-date"></use>
-						</svg>
+						<div class=“icon-date” data-grunticon-embed></div>
 						#:departure#
 					</p>
 				#}#
 				<p class="intelliTrip-details">
-					<svg class="icon-sm">
-						<use xlink:href="styles/svg/symbol.svg\\#icon-time"></use>
-					</svg>
+					<div class=“icon-sm icon-time” data-grunticon-embed></div>
 					#:durationString# (#:distanceString#)
 				</p>
 			</div>
@@ -4404,17 +4186,13 @@
 	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" >
 		<div class="header">
 			<p class="intelliTrip-title">
-				<svg class="myClass">
-					<use xlink:href="styles/svg/symbol.svg\\#intelliTrip-icon"></use>
-				</svg>
+				<div class=“myClass intelliTrip-icon” data-grunticon-embed></div>
 				#:name#
 			</p>
 			<p class="helper intelliTrip-subheader">
 				<span>#:origin#</span>
 				<span class="intelliTrip-arrow">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg\\#intelliTrip-arrow"></use>
-					</svg>
+					<div class=“intelliTrip-arrow” data-grunticon-embed></div>
 					<img src="images/intelliTrip-arrow.svg" /> </span>
 				<span>#:destination#</span>
 			</p>
@@ -4426,23 +4204,17 @@
 		<div class="footer cardFooter">
 
 			<p class="intelliTrip-details">
-				<svg class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg\\#icon-date"></use>
-				</svg>
+				<div class=“icon-sm icon-date” data-grunticon-embed></div>
 				Depart : #:departure#
 			</p>
 
 			<p class="intelliTrip-details">
-				<svg class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg\\#icon-date"></use>
-				</svg>
+				<div class=“icon-sm icon-date” data-grunticon-embed></div>
 				Arrive : #:arrival#
 			</p>
 
 			<p class="intelliTrip-details">
-				<svg class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg\\#icon-time"></use>
-				</svg>
+				<div class=“icon-sm icon-time” data-grunticon-embed></div>
 				#:durationString# (#:distanceString#)
 			</p>
 		</div>
@@ -4453,9 +4225,7 @@
 	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" >
 			<div class="header">
 				<p class="title">
-					<svg class="icon-sm">
-						<use xlink:href="styles/svg/symbol.svg\\#intelliFlight-icon"></use>
-					</svg>
+					<div class=“icon-sm intelliFlight-icon” data-grunticon-embed></div>
 					#:name#
 				</p>
 				<p class="subheader">#:durationString#</p>
@@ -4481,9 +4251,7 @@
 	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" >
 		<div class="header">
 			<p class="title">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg\\#intelliFlight-icon"></use>
-				</svg>
+				<div class=“intelliFlight-icon” data-grunticon-embed></div>
 				<span> #:name#</span>
 			</p>
 			<p class="helper subheader">
@@ -4527,9 +4295,7 @@
 			</div>
 
 			<span class="btnSmart-type">
-				<svg class="icon-smartBtn">
-					<use xlink:href="styles/svg/symbol.svg\\#smart-event-alt"></use>
-				</svg>
+				<div class=“icon-smartBtn smart-event-alt” data-grunticon-embed></div>
 			</span>
 	</span>
 </div>
@@ -4547,9 +4313,7 @@
 				<p class="btnSmart-date textClamp">#:theatreName#</p>
 			</div>
 			<span class="btnSmart-type">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg\\#smart-movie-circle"></use>
-				</svg>
+				<div class=“smart-movie-circle” data-grunticon-embed></div>
 			</span>
 		</span>
 	</div>
@@ -4560,9 +4324,7 @@
 	<div class="intelliMovie" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" >
 		<div class="header">
 			<p class="title textClamp">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg\\#intelliMovie-icon"></use>
-				</svg>
+				<div class=“intelliMovie-icon” data-grunticon-embed></div>
 				#:movieTitle#
 			</p>
 			<p class="subheader helper textClamp">
@@ -4578,17 +4340,13 @@
 			<ul class="list-unstyled">
 				<li>
 					<p class="textClamp date">
-						<svg>
-							<use xlink:href="styles/svg/symbol.svg\\#icon-time"></use>
-						</svg>
+						<div class=“icon-time” data-grunticon-embed></div>
 						#:dateStr#
 					</p>
 				</li>
 				<li>
 					<p class="textClamp location">
-						<svg>
-							<use xlink:href="styles/svg/symbol.svg\\#icon-location-dark"></use>
-						</svg>
+						<div class=“icon-location-dark” data-grunticon-embed></div>
 						#:theatreName#
 					</p>
 				</li>
@@ -4605,9 +4363,7 @@
 		<div data-role="navbar">
 			<span>IntelliMovie</span>
 			<a data-click="smartMovieView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 
 			</a>
 		</div>
@@ -4714,9 +4470,7 @@
 		<div data-role="navbar">
 			<span>IntelliEvent</span>
 			<a data-click="smartEventView.onCancel" data-role="button" class="btnClear-grey" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -4801,17 +4555,13 @@
 				<div class="clearfix"></div>
 				<div class="smallSearch">
 							<span class="searchIcon">
-								<svg>
-									<use xlink:href="styles/svg/symbol.svg#smart-event"></use>
-								</svg>
+								<div  class=“smart-event” data-grunticon-embed></div>
 							</span>
 						<input type="text" class="viewSearchBox" id="smartEventView-date"/>
 					</div>
 					<div class="smallSearch-sm">
 						<span class="searchIcon">
-							<svg>
-								<use xlink:href="styles/svg/symbol.svg#smart-time"></use>
-							</svg>
+							<div  class=“smart-time” data-grunticon-embed></div>
 						</span>
 						<input type="time" id="smartEventView-time"/>
 					</div>
@@ -4825,9 +4575,7 @@
 				<label> How Long (Duration) </label>
 				<div class="fullSearch">
 						<span class="searchIcon">
-							<svg>
-								<use xlink:href="styles/svg/symbol.svg#icon-duration"></use>
-							</svg>
+							<div  class=“icon-duration” data-grunticon-embed></div>
 						</span>
 					<input type="search" class="viewSearchBox" id="smartEventView-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
 				</div>
@@ -4899,9 +4647,7 @@
 	<div>
 		<div class="left listPhoto">
 			<div class="statusContactList">
-				<svg class="circle-img-md">
-					<use xlink:href="styles/svg/symbol.svg\\#default-private"></use>
-				</svg>
+				<div class=“circle-img-md default-private” data-grunticon-embed></div>
 			</div>
 		</div><!-- left -->
 		<div class="left listName" style="margin-top: 0.5em;">
@@ -4931,9 +4677,7 @@
 		<div id="placeListDiv">
 			<ul id="places-listview"></ul>
 			<div class="emptyState hidden">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#empty-places"></use>
-				</svg>
+				<div  class=“empty-places” data-grunticon-embed></div>
 			</div>
 		</div>
 
@@ -4952,9 +4696,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" data-click="searchPlacesView.onDone" data-align="left" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -4964,9 +4706,7 @@
 			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="searchPlaceSearchQuery" />
 			<span class="enterSearch hidden">
 				<a class="btnClear-grey">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg#close"></use>
-					</svg>
+					<div  class=“close” data-grunticon-embed></div>
 				</a>
 			</span>
 		</div>
@@ -5090,15 +4830,11 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-click="modalPhotoView.closeModal" data-role="button" class="btnClear-grey" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 			<span id="modalPhotoView-title" data-bind="text: title"></span>
 			<a data-rel="actionsheet" data-role="button" href="#modalPhotoView-PhotoActions" class="btnClear-grey" data-align="right">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-gear-light"></use>
-				</svg>
+				<div  class=“nav-gear-light” data-grunticon-embed></div>
 			</a>
 		</div>
 		<div id="modalPhotoView-editPhoto" style="display: none;">
@@ -5223,9 +4959,7 @@
 				photo tags
 			</p>
 			<a class="actionBtn primary-100" data-role="button" data-click="photoView.sharePhoto">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#icon-share-light"></use>
-				</svg>
+				<div  class=“icon-share-light” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -5238,14 +4972,10 @@
 <div data-role="view" id="photoEditor" style="width: 100%; height:100%; display: none;"  data-show="photoEditor.onShow"  data-hide="photoEditor.onHide" data-init="photoEditor.onInit" data-transition="slide:left">
 	<div class="photoViewNavTop" data-role="header">
 		<a data-role="button"  data-click="photoEditor.rotateLeft">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#photo-left"></use>
-			</svg>
+			<div  class=“photo-left” data-grunticon-embed></div>
 		</a>
 		<a data-role="button"  data-click="photoEditor.rotateRight">
-			<svg>
-				<use xlink:href="styles/svg/symbol.svg#photo-right"></use>
-			</svg>
+			<div  class=“photo-right” data-grunticon-embed></div>
 		</a>
 		<a data-role="button" data-click="photoEditor.crop">
 			<div class=“photo-options photo-crop” data-grunticon-embed></div>
@@ -5276,9 +5006,7 @@
 </script>
 
 <script id="archive-dateOption-template" type="text/x-kendo-template">
-	<svg>
-		<use xlink:href="styles/svg/symbol.svg\\#icon-filter"></use>
-	</svg>
+	<div class=“icon-filter” data-grunticon-embed></div>
 	Filter
 </script>
 
@@ -5295,9 +5023,7 @@
 		<span class="left">#: data.name # </span>
 		<span class="right">
 			<a class="btnClear-red">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
-				</svg>
+				<div class=“icon-trash” data-grunticon-embed></div>
 			</a>
 		</span>
 	</div>
@@ -5391,9 +5117,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="button" data-click="findPlacesView.onDone" data-align="left" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -5402,9 +5126,7 @@
 	<div class="tempSearchBox">
 		<div class="appendSearch">
 			<span class="searchIcon">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#search"></use>
-				</svg>
+				<div  class=“search” data-grunticon-embed></div>
 			</span>
 			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="findPlaceSearchQuery" />
 			<span class="enterSearch hidden">
@@ -5428,9 +5150,7 @@
 		<div data-role="navbar">
 			<span>IntelliLocation</span>
 			<a data-role="button" data-align="left" data-click="smartLocationView.closeModal">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -5439,9 +5159,7 @@
 		<p id="smartLocation-selectLocation" >Please select Address or City, State</p>
 		<div class="appendSearch">
 			<span class="searchIcon">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#place-icon"></use>
-				</svg>
+				<div  class=“place-icon” data-grunticon-embed></div>
 			</span>
 			<input type="search" name="Area" placeholder="Area or city to search..." id="smartLocation-place" data-required-msg="Enter address or city, state" required />
 		</div>
@@ -5464,9 +5182,7 @@
 		<div data-role="navbar">
 			<span id="smartEventPlacesModal-title">IntelliEvent Places</span>
 			<a data-role="button" data-align="left" data-click="smartEventPlacesView.closeModal">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -5474,9 +5190,7 @@
 	<div class="tempSearchBox" id="searchEventPlace-form">
 		<div class="appendSearch" id="searchEventPlaces-searchDiv">
 			<span class="searchIcon">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#search"></use>
-				</svg>
+				<div  class=“search” data-grunticon-embed></div>
 			</span>
 			<input type="search"  id="smartEventPlaces-query" placeholder="Find place or address..." data-required-msg="Enter a place name" required />
 		</div>
@@ -5484,9 +5198,7 @@
 		<p id="searchEventPlaces-selectPlace" class="hidden">Please select the area to search</p>
 		<div class="appendSearch">
 			<span class="searchIcon">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#place-icon"></use>
-				</svg>
+				<div  class=“place-icon” data-grunticon-embed></div>
 			</span>
 			<input type="search" name="Area" placeholder="Area or city to search..." id="smartEventPlaces-place" data-required-msg="Enter area to search" required />
 		</div>
@@ -5559,9 +5271,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="button" data-align="left" data-click="placeView.onDone">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 			<span class="textClamp navbar-btn" data-role="button" data-click="placeView.openChat">
 				<!--<img src="images/icon-chat-active.svg" class="icon-btn" id="placeView-gotochat" />-->
@@ -5569,9 +5279,7 @@
 				<span class="place-tag placeChat-headerTop helper">Tap to view chat</span>
 			</span>
 			<a data-role="button" data-align="right" data-click="ux.toggleSearch">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#icon-search"></use>
-				</svg>
+				<div  class=“icon-search” data-grunticon-embed></div>
 			</a>
 		</div>
 		<div class="gg_mainSearchBox" data-visible="false">
@@ -5744,9 +5452,7 @@
 		# if (data.ggType === "Note"){#
 		<div class="note">
 			<h3 class="textClamp">
-				<svg class="icon-md">
-					<use xlink:href="styles/svg/symbol.svg\\#smart-note-inline"></use>
-				</svg>
+				<div class=“icon-md smart-note-inline” data-grunticon-embed></div>
 				<span>#: titleStr #</span>
 				<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
 			</h3>
@@ -5757,9 +5463,7 @@
 		# if(data.ggType === "Photo") {#
 		<div class="photo">
 			<h3>
-				<svg class="icon-md">
-					<use xlink:href="styles/svg/symbol.svg\\#smart-photo-inline"></use>
-				</svg>
+				<div class=“icon-md smart-photo-inline” data-grunticon-embed></div>
 				<span>#: titleStr # </span>
 				<span class="helper right" style="font-size: 12px">#:dateString#</span>
 			</h3>
@@ -5786,9 +5490,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="backbutton" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 			<a data-role="button" data-align="right"  data-rel="actionsheet" href="#profileEditOptions">Options</a>
 		</div>
@@ -5908,9 +5610,7 @@
     <div data-role="header">
         <div data-role="navbar">
             <a data-role="backbutton"  data-align="left"  >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
             <span>Profile Photo</span>
         </div>
@@ -5952,9 +5652,7 @@
 		<h3>Change Password
 	    	<span class="right">
 	        	<a data-click="changePasswordView.closeModal" data-role="button">
-	        		<svg>
-						<use xlink:href="styles/svg/symbol.svg#close"></use>
-					</svg>
+	        		<div  class=“close” data-grunticon-embed></div>
 	        	</a>
 	        </span>
 		</h3>
@@ -5977,9 +5675,7 @@
 		<div data-role="navbar">
 			<span>IntelliTag</span>
 			<a data-click="smartTagView.onDone" data-role="button" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 
 		</div>
@@ -6011,9 +5707,7 @@
 		<div data-role="navbar">
 			<span>IntelliAlert</span>
 			<a data-click="smartAlertView.onDone" data-role="button" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6040,9 +5734,7 @@
 		<div data-role="navbar">
 			<span>IntelliMedical</span>
 			<a data-role="button"  data-align="left" data-click="smartMedicalView.onDone" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6151,9 +5843,7 @@
 		<div data-role="navbar">
 			<span>IntelliPark</span>
 			<a data-role="button"  data-align="left" data-click="smartParkView.onDone" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6193,9 +5883,7 @@
 		<div data-role="navbar">
 			<span>Flight Search</span>
 			<a data-role="button"  data-align="left" data-click="smartFlightSearchView.onDone" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6414,9 +6102,7 @@
 		<div data-role="navbar">
 			<span>IntelliAccount</span>
 			<a data-role="button"  data-align="left" data-click="smartAccountView.onDone" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6464,9 +6150,7 @@
 		<div data-role="navbar">
 			<span>Emergency</span>
 			<a data-role="button"  data-align="left" data-click="emergencyView.onDone" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6523,9 +6207,7 @@
 		<div data-role="navbar">
 			<span>Roadside</span>
 			<a data-role="button"  data-align="left" data-click="roadsideView.onDone" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6581,9 +6263,7 @@
 		<div data-role="navbar">
 			<span>Personal Safety</span>
 			<a data-role="button"  data-align="left" data-click="familyAlertView.onDone" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6628,9 +6308,7 @@
 		<div data-role="navbar">
 			<span>Personal Safety</span>
 			<a data-role="button" data-align="left" data-click="localAlertView.onDone" >
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6816,9 +6494,7 @@
 		<div data-role="navbar">
 			<span>Edit Members</span>
 			<a data-click="contactPickerView.closeModal" data-role="button" data-align="left" class="btnClear-grey-sm">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div  class=“close” data-grunticon-embed></div>
 			</a>
 		</div>
 		<div>
@@ -6862,9 +6538,7 @@
 		 </h4>
 		<span class="groupEditor-contact-delete">
 			<a data-role="button" class="btnClear-grey-sm" data-click="groupEditView.deleteMember">
-				<svg class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
-				</svg>
+				<div class=“icon-sm icon-trash” data-grunticon-embed></div>
 			</a>
 		</span>
 		<div class="clearfix"></div>
@@ -6877,9 +6551,7 @@
 		<div data-role="navbar">
 			<span>Edit Group</span>
 			<a data-role="button" data-click="groupEditView.onDone" data-align="left" class="btnClear-grey-sm">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div  class=“close” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -6931,9 +6603,7 @@
         <div data-role="navbar">
             <span>Group Picker</span>
             <a data-role="button" data-click="groupPickerView.closeModal" data-align="left" class="btnClear-grey-sm">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#close"></use>
-				</svg>
+				<div  class=“close” data-grunticon-embed></div>
 			</a>
         </div>
 		<div>
@@ -6963,9 +6633,7 @@
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 			<a data-role="backbutton" data-align="left">
-				<svg>
-					<use xlink:href="styles/svg/symbol.svg#nav-back"></use>
-				</svg>
+				<div  class=“nav-back” data-grunticon-embed></div>
 			</a>
 		</div>
 	</div>
@@ -7137,9 +6805,7 @@
     #
 		<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
 			<h3 class="textClamp">
-				<svg class="icon-sm">
-					<use xlink:href="styles/svg/symbol.svg\\#smart-note-inline"></use>
-				</svg>
+				<div class=“icon-sm smart-note-inline” data-grunticon-embed></div>
 				<span>#:titleStr#</span>
 			</h3>
 			<p class="helper" style="font-size: 0.85em;">
@@ -7158,9 +6824,7 @@
 	# if (noteType === 'Gallery') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Gallery" data-uuid="#:uuid#">
 		<h3 class="textClamp">
-			<svg class="icon-sm">
-				<use xlink:href="styles/svg/symbol.svg\\#smart-photo-inline"></use>
-			</svg>
+			<div class=“icon-sm smart-photo-inline” data-grunticon-embed></div>
 			<span>#:titleStr#</span>
 		</h3>
 		<p class="helper" style="font-size: 0.85em;">
@@ -7281,14 +6945,10 @@
 						<div class="statusContactList">
 							#if (data.isAvailable !== undefined && data.isAvailable) { #
 								<img class="circle-img-md" src="#:photoUrl#" />
-								<svg class="statusContactList-icon">
-									<use xlink:href="styles/svg/symbol.svg\\#statusContactList-icon"></use>
-								</svg>
+								<div class=“statusContactList-icon statusContactList-icon” data-grunticon-embed></div>
 							#} else {#
 								<img class="circle-img-md" src="#:photoUrl#" />
-								<svg class="statusContactList-icon">
-									<use xlink:href="styles/svg/symbol.svg\\#status-away"></use>
-								</svg>
+								<div class=“statusContactList-icon status-away” data-grunticon-embed></div>
 							#}#
 
 							# if (data.isBlocked) {#
@@ -7303,9 +6963,7 @@
 						<h4 class="textClamp">
 							#= primaryName #
 							#if (data.phoneValidated){#
-								<svg class="user-status-icon">
-									<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
-								</svg>
+								<div class=“user-status-icon user-verified” data-grunticon-embed></div>
 							#}#
 								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 								<span class="contact-group">#: group #</span>
@@ -7354,9 +7012,7 @@
 						<h4 class="textClamp">
 							#: data.name #
 							#if (data.phoneValidated){#
-								<svg class="user-status-icon">
-									<use xlink:href="styles/svg/symbol.svg\\#user-verified"></use>
-								</svg>
+								<div class=“user-status-icon user-verified” data-grunticon-embed></div>
 							#}#
 						</h4>
 					</div>
@@ -7389,15 +7045,11 @@
 	<div>
 		<div class="group-options list-slider-options">
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditGroup" data-group="#:uuid#">
-				<svg height="18">
-					<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
-				</svg>
+				<div class=“option-edit” height="18" data-grunticon-embed></div>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteGroup" data-group="#:uuid#">
-				<svg height="18">
-					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
-				</svg>
+				<div class=“icon-trash” height="18" data-grunticon-embed></div>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div><!-- contact-options -->
@@ -7409,9 +7061,7 @@
 					#: data.title #
 				</h4>
 				<p class="helper textClamp">
-					<svg>
-						<use xlink:href="styles/svg/symbol.svg\\#icon-group"></use>
-					</svg>
+					<div class=“icon-group” data-grunticon-embed></div>
 					#= memberCount # #= memberCountTxt #
 				</p>
 			</div>

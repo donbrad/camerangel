@@ -75,7 +75,11 @@
 		document.addEventListener("resign", deviceModel.onResign, false);
 		document.addEventListener("active", deviceModel.onActive, false);
 
-		grunticon(["styles/icons.data.svg.css", "styles/icons.data.png.css", "styles/icons.fallback.css"]);
+
+		var cb = function(){
+			grunticon.svgLoadedCallback();
+		};
+		grunticon(["grunticon/icons.data.svg.css", "grunticon/icons.data.png.css", "grunticon/icons.fallback.css"], cb );
 
 		deviceModel.init();
 
