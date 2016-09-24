@@ -10,6 +10,8 @@ lesswatch - Shortcut.lnk
 
 .idea
 config.codekit
+node_modules
+.gitignore
 
 
 intelligram/bower_components/emojione/assets/png
