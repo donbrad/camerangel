@@ -21,7 +21,6 @@
 
     <link href="styles/master.css" rel="stylesheet" />
 	<script src="grunticon/grunticon.loader.js"></script>
-
 	<noscript><link href="grunticon/icons.fallback.css" rel="stylesheet"></noscript>
 
 
@@ -988,9 +987,7 @@
 <div data-role="modalview" id="modalview-checkin" style="width: 100%; height:100%; display: none; z-index: 100;" class="appearance" data-init="checkInView.onInit" data-title="Checkin">
 	<div data-role="header">
 		<div data-role="navbar">
-			<svg class="icon-sm" style="vertical-align: text-top;">
-				<use xlink:href="styles/svg/symbol.svg#icon-checkin"></use>
-			</svg>
+			<div class=“icon-sm icon-checkin”  style=“vertical-align: text-top;” data-grunticon-embed></div>
 			<span data-role="view-title"></span>
 			<a data-role="button" data-align="left" data-click="checkInView.closeModal" class="btnClear-grey"> Cancel </a>
 		</div>
@@ -1169,16 +1166,14 @@
 			</h2>
 			<div class="clearfix"></div>
 			<div class="imgLine">
-				<svg width="100">
-					<use xlink:href="styles/svg/symbol.svg#ballons"></use>
-				</svg>
+				<div class=“ballons”  width="100" data-grunticon-embed></div>
+
 			</div>
 			<div class="startOptions">
 				<div class="startTask" id="startPhoneVerified">
 					<div class="startLine-photo">
-						<svg width="36">
-							<use xlink:href="styles/svg/symbol.svg#verified-phone"></use>
-						</svg>
+						<div class=“verified-phone” width="36" data-grunticon-embed></div>
+
 					</div>
 					<div class="startLine-text"> 
 						<a class="btnClear" data-role="button" data-rel="modalview" href="#modalview-verifyPhone">Verified your number</a>
@@ -1975,16 +1970,13 @@
 		<div class="list-options">
 			# if (data.isShared === undefined || data.isShared === false) {#
 			<a class="btnClear-grey" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.editPlaceBtn">
-				<svg height="18">
-					<use xlink:href="styles/svg/symbol.svg\\#option-edit"></use>
-				</svg>
+				<div class=“option-edit” style="height: 18px;" data-grunticon-embed></div>
+
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			# } #
 			<a class="btnClear-red" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.deletePlaceBtn">
-				<svg height="18">
-					<use xlink:href="styles/svg/symbol.svg\\#icon-trash"></use>
-				</svg>
+				<div class=“icon-trash” style="height: 18px;" data-grunticon-embed></div>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div>
@@ -2320,9 +2312,7 @@
 		    			</span>
 		    		#} else if (isPlace) {#
 		    			<span class="placeType-list">
-		    				<svg id="chatList-place-icon">
-								<use xlink:href="styles/svg/symbol.svg\\#icon-place"></use>
-							</svg>
+		    				<div class=“icon-place”  id=“chatList-place-icon” data-grunticon-embed></div>
 		    				Place Chat - #:ownerString#
 		    			</span>
 		    		#} else if(membersCount <= 2) {#
@@ -2435,51 +2425,43 @@
 				<ul>
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#galleryActions">
-							<svg height="22">
-								<use xlink:href="styles/svg/symbol.svg#chat-camera"></use>
-							</svg>
+							<div class=“chat-camera” data-grunticon-embed></div>
+
 						</a>
 					</li>
 					<li id="messageTitleTagLi">
 						<a data-role="button" data-click="channelView.messageTitleTag">
-							<svg height="22">
-								<use xlink:href="styles/svg/symbol.svg#icon-tag"></use>
-							</svg>
+							<div class=“icon-tag” data-grunticon-embed></div>
+
 						</a>
 					</li>
 					<li>
 						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
-							<svg height="22" id="chat-editorBtnImg">
-								<use xlink:href="styles/svg/symbol.svg#icon-editor"></use>
-							</svg>
+							<div class=“icon-editor” id="chat-editorBtnImg" data-grunticon-embed></div>
+
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-click="channelView.messageSearch">
-							<svg height="22" id="messageSearchImg">
-								<use xlink:href="styles/svg/symbol.svg#icon-web"></use>
-							</svg>
+							<div class=“icon-web” id="messageSearchImg" data-grunticon-embed></div>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageInsertTag">
-							<svg height="22" id="chatSmartTagBtn">
-								<use xlink:href="styles/svg/symbol.svg#icon-smart"></use>
-							</svg>
+							<div class=“icon-smart”  data-grunticon-embed></div>
+
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-rel="actionsheet" href="#newMessageActions">
-							<svg height="22" id="chatSmartTagBtn">
-								<use xlink:href="styles/svg/symbol.svg#icon-smartMenu"></use>
-							</svg>
+							<div class=“icon-smartMenu” id="chatSmartTagBtn" data-grunticon-embed></div>
+
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageLockButton">
-							<svg height="20" id="messageLockButtonIcon">
-								<use xlink:href="styles/svg/symbol.svg#icon-lock"></use>
-							</svg>
+							<div class=“icon-lock” id="messageLockButtonIcon" data-grunticon-embed></div>
+
 						</a>
 					</li>
 					<li class="hidden">
@@ -2491,12 +2473,8 @@
 					</li>
 					<li>
 						<a data-role="button" class="btnClear" href="#emoji-menu" data-rel="popover">
-							<svg height="22" id="emoji-icon">
-								<use xlink:href="styles/svg/symbol.svg#icon-emoji"></use>
-							</svg>
-							<svg height="22" id="emoji-active" class="hidden">
-								<use xlink:href="styles/svg/symbol.svg#icon-emoji-active"></use>
-							</svg>
+							<div class=“emoji-icon”  data-grunticon-embed></div>
+							<div class=“icon-emoji-active hidden”  data-grunticon-embed></div>
 						</a>
 					</li>
 					<li class="right">

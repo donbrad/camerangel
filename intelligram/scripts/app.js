@@ -78,6 +78,7 @@
 
 		var cb = function(){
 			grunticon.svgLoadedCallback();
+			mobileNotify ("Icons loaded!");
 		};
 		grunticon(["grunticon/icons.data.svg.css", "grunticon/icons.data.png.css", "grunticon/icons.fallback.css"], cb );
 
