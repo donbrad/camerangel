@@ -60,7 +60,7 @@
 	};
 
 	document.addEventListener("DOMContentLoaded", function(event) {
-		grunticon(["../../grunticon/icons.data.svg.css", "../../grunticon/icons.data.png.css", "../../grunticon/icons.fallback.css"], function () {
+		grunticon(["grunticon/icons.data.svg.css", "grunticon/icons.data.png.css", "grunticon/icons.fallback.css"], function () {
 			mobileNotify("Icons optimized!!");
 			grunticon.svgLoadedCallback();
 		} );
