@@ -12,6 +12,8 @@ module.exports = function(grunt) {
                 options: {
                     cssprefix: '.',
                     compressPNG: true,
+                    defaultWidth: 144,
+                    defaultHeight: 144,
                     enhanceSVG: true,
                     loadersnippet: "grunticon.loader.js"
                 }
