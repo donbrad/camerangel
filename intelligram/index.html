@@ -1441,43 +1441,43 @@
 		<ul class="list-inline hasMotion" id="groupActionBtns">
 			<li>
 				<a class="btnClear" data-role="button" id="groupActions-track" data-click="groupActionView.groupTracking" >
-					<div class="user-status-icon icon-tracking" data-grunticon-embed></div>
+					<div class="user-status-icon icon-tracking listIcon" data-grunticon-embed></div>
 					Start Tracking
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.groupChat" >
-					<div class="user-status-icon contacts" data-grunticon-embed></div>
+					<div class="user-status-icon contacts listIcon" data-grunticon-embed></div>
 					Group Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.groupGallery" >
-					<div class="user-status-icon icon-gallery" data-grunticon-embed></div>
+					<div class="user-status-icon icon-gallery listIcon" data-grunticon-embed></div>
 					Group Gallery
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.sendEmail">
-					<div class="user-status-icon icon-ghostMail" data-grunticon-embed></div>
+					<div class="user-status-icon icon-ghostMail listIcon" data-grunticon-embed></div>
 					Send Email
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.sendSMS">
-					<div class="user-status-icon icon-sms" data-grunticon-embed></div>
+					<div class="user-status-icon icon-sms listIcon" data-grunticon-embed></div>
 					Send SMS
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.AddChat" >
-					<div class="user-status-icon contacts" data-grunticon-embed></div>
+					<div class="user-status-icon contacts listIcon" data-grunticon-embed></div>
 					Create New Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="groupActionView.AddGallery" >
-					<div class="user-status-icon icon-gallery" data-grunticon-embed></div>
+					<div class="user-status-icon icon-gallery listIcon" data-grunticon-embed></div>
 					Create New Gallery
 				</a>
 			</li>
@@ -1497,7 +1497,7 @@
 		<h2>
 			<span class="primaryName" id="contactPrimaryName"></span>
 			<span class="hidden" id="currentContactVerified">
-				<div class="user-status-icon icon-verified-dark" data-grunticon-embed></div>
+				<span class="user-status-icon icon-verified-dark"></span>
 			</span>
 		</h2>
 		
@@ -1592,7 +1592,7 @@
 			<h3>
 				<span class="primaryName"></span>
 				<span class="hidden" id="profileStatusVerified">
-					<div class="user-status-icon icon-verified-dark" data-grunticon-embed></div>
+					<span class="user-status-icon icon-verified-dark" data-grunticon-embed></span>
 				</span>
 			</h3>
 			<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
@@ -1645,7 +1645,7 @@
 			<li>
 				<div>
 					<a data-role="button" data-click="userStatusView.onAutoStatusChange" data-autocheckin="false" id="userStatusView-autoCheckin">
-						<div class="icon-sm icon-autoCheckin" data-grunticon-embed></div>
+						<span class="icon-sm icon-autoCheckin listIcon" data-grunticon-embed></span>
 						Enable Auto Checkin </a>
 				</div>
 
@@ -1665,7 +1665,7 @@
 				<div>
 					<div id="checked-in-place">
 						<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut">
-							<div class="icon-sm icon-checkout" data-grunticon-embed></div>
+							<span class="icon-sm icon-checkout listIcon" data-grunticon-embed></span>
 							Leave <span id="checkOut-text" data-bind="text: currentPlace"></span>
 						</a>
 					</div>
@@ -1674,7 +1674,7 @@
 			<li>
 				<div>
 					<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
-						<div class="icon-sm icon-checkin-active" data-grunticon-embed></div>
+						<span class="icon-sm icon-checkin-active listIcon" data-grunticon-embed></span>
 						Check In
 					</a>
 				</div>
@@ -1699,9 +1699,6 @@
 			<div class="close" data-grunticon-embed></div>
 	    </a>
 	    <p>This feature is in the works!</p>
-			<svg id="testingImg">
-				<use xlink:href="styles/svg/symbol.svg#testing"></use>
-			</svg>
 	</div>
 </div>
 
@@ -1761,10 +1758,10 @@
 		<p class="helper">
            <span class="left">
          # if (data.isPrivate === true) { #
-			   	<div class="place-private" data-grunticon-embed></div>
+			   	<span class="place-private icon-xs" data-grunticon-embed></span>
             Private
          # } else { #
-			   <div class="place-public" data-grunticon-embed></div>
+			   <span class="place-public icon-xs" data-grunticon-embed></span>
             	Public
          # }#
            </span>
@@ -1968,13 +1965,12 @@
 		<div class="list-options">
 			# if (data.isShared === undefined || data.isShared === false) {#
 			<a class="btnClear-grey" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.editPlaceBtn">
-				<div class="option-edit" style="height: 18px;" data-grunticon-embed></div>
-
+				<div class="action-edit" data-grunticon-embed></div>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			# } #
 			<a class="btnClear-red" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.deletePlaceBtn">
-				<div class="icon-trash" style="height: 18px;" data-grunticon-embed></div>
+				<div class="icon-trash" data-grunticon-embed></div>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div>
@@ -2256,7 +2252,7 @@
     				# if(isPrivate !== true && isOwner){#
     						<li>
 			    				<a class="btnClear-grey" data-role="button" data-click="channelsView.editChannel" data-channel="#:channelUUID #">
-			    					<div class="option-edit" data-grunticon-embed></div>
+			    					<div class="action-edit" data-grunticon-embed></div>
 				    				<p class="chat-option-selection">Edit</p>
 				    			</a>
 	    					</li>
@@ -2305,23 +2301,23 @@
 	    		<div class="chatType">
 		    		# if(isPrivate && members.length <= 2){#
 		    			<span class="placeType-list">
-		    				<div class="icon-private" data-grunticon-embed></div>
-		    				Private Chat
+		    				<span class="icon-private" data-grunticon-embed></span>
+		    				<span>Private Chat</span>
 		    			</span>
 		    		#} else if (isPlace) {#
 		    			<span class="placeType-list">
-		    				<div class="icon-place"  id="chatList-place-icon" data-grunticon-embed></div>
-		    				Place Chat - #:ownerString#
+		    				<span class="icon-place"  id="chatList-place-icon" data-grunticon-embed></span>
+		    				<span>Place Chat - #:ownerString#</span>
 		    			</span>
 		    		#} else if(membersCount <= 2) {#
 		    			<span class="placeType-list">
-		    			<div class="icon-group" data-grunticon-embed></div>
-		    				#:ownerString#
+		    			<span class="icon-group" data-grunticon-embed></span>
+		    				<span>#:ownerString#</span>
 		    			</span>
 		    		#} else {#
 		    			<span class="placeType-list">
-		    				<div class="icon-group" data-grunticon-embed></div>
-		    					#:ownerString# and #:membersCount# others
+		    				<span class="icon-group" data-grunticon-embed></span>
+		    					<span>#:ownerString# and #:membersCount# others</span>
 		    			</span>
 		    		#}#
 
@@ -4042,7 +4038,10 @@
 			</div>
 		</div>
         <div class="intelli-update pending hidden">
-            <p class="update-header"><object data="images/icon-time-primary.svg" type="image/svg+xml" > </object>icon-time-primary Pending date update... </p>
+            <p class="update-header">
+				<span class="icon-time-primary" data-grunticon-embed></span>
+				Pending date update...
+			</p>
         </div>
 		<div class="summary">
 			<div class="intelli-update hidden" id="intelliTrip-update">
@@ -4543,7 +4542,7 @@
 				<label>Where (Location or Place)</label>
 				<div>
 					<p id="smartEventView-placeAddBtn">
-					<div class="$icon-location icon-sm" data-grunticon-embed></div>
+					<div class="icon-location icon-sm" data-grunticon-embed></div>
 						<span id="smartEventView-placeAddBtn-title" data-bind="text: placeName"></span>
 					</p>
 					<div id="searchEventPlace-actionBtns">
@@ -5505,25 +5504,25 @@
 	<ul id="profileEditOptions" data-role="actionsheet" data-cancel="Cancel">
 		<li>
 			<a data-role="button" data-action="profileEditView.doChangePhone">
-				<div class="icon-action contact-call" data-grunticon-embed></div>
+				<span class="icon-action contact-call listIcon" data-grunticon-embed></span>
 				Change Phone Number
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="profileEditView.doChangePassword">
-				<div class="icon-action action-password" data-grunticon-embed></div>
+				<span class="icon-action action-password listIcon" data-grunticon-embed></span>
 				Change Password
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="profileEditView.gotoSettings">
-				<div class="icon-action action-edit" data-grunticon-embed></div>
+				<span class="icon-action action-edit listIcon" data-grunticon-embed></span>
 				Edit Settings
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="userStatusView.doSignOut">
-				<div class="icon-action action-signout" data-grunticon-embed></div>
+				<span class="icon-action action-signout listIcon" data-grunticon-embed></span>
 				Sign Out
 			</a>
 		</li>
@@ -6827,7 +6826,7 @@
 				#}#
 			#}#
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditContact" data-contact="#:uuid#">
-				<div class="option-edit" data-grunticon-embed></div>
+				<div class="action-edit" data-grunticon-embed></div>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteContact" data-contact="#:uuid#">
@@ -6867,7 +6866,7 @@
 						<h4 class="textClamp">
 							#= primaryName #
 							#if (data.phoneValidated){#
-								<div class="user-status-icon user-verified" data-grunticon-embed></div>
+								<span class="user-status-icon user-verified" data-grunticon-embed></span>
 							#}#
 								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
 								<span class="contact-group">#: group #</span>
@@ -6916,7 +6915,7 @@
 						<h4 class="textClamp">
 							#: data.name #
 							#if (data.phoneValidated){#
-								<div class="user-status-icon user-verified" data-grunticon-embed></div>
+								<span class="user-status-icon user-verified" data-grunticon-embed></span>
 							#}#
 						</h4>
 					</div>
@@ -6949,11 +6948,11 @@
 	<div>
 		<div class="group-options list-slider-options">
 			<a class="btnClear-grey" data-role="button" data-click="contactsView.doEditGroup" data-group="#:uuid#">
-				<div class="option-edit"  data-grunticon-embed></div>
+				<div class="action-edit listIcon"  data-grunticon-embed></div>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			<a class="btnClear-red" data-role="button" data-click="contactsView.doDeleteGroup" data-group="#:uuid#">
-				<div class="icon-trash"  data-grunticon-embed></div>
+				<div class="icon-trash listIcon"  data-grunticon-embed></div>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div><!-- contact-options -->
@@ -6965,7 +6964,7 @@
 					#: data.title #
 				</h4>
 				<p class="helper textClamp">
-					<div class="icon-group" data-grunticon-embed></div>
+					<span class="icon-group" data-grunticon-embed></span>
 					#= memberCount # #= memberCountTxt #
 				</p>
 			</div>

@@ -33,7 +33,7 @@
 @mobile: ~"only screen and (max-width: 320px)";
 
 /* Imports */
-@import "sprite";
+@import "grunticons-custom";
 @import "fonts";
 @import "mixins.less";
 @import "mixin-shadow.less";
@@ -49,10 +49,6 @@
   @media @mobile {
     font-size: 1.4em !important;
   }
-}
-
-.symbol {
-  background: url("svg/symbol.svg");
 }
 
 .shadow {
@@ -545,6 +541,11 @@ form {
   max-width: 1em;
 }
 
+.icon-xs {
+  height: 0.875em;
+  width: 0.875em;
+}
+
 .icon {
   height: 1.3rem;
   max-width: 1.3em;
@@ -663,11 +664,18 @@ form {
   padding: 0.25em 0.5em;
   margin: 0;
   font-weight: 400;
+  div {
+    display: inline-block;
+  }
 }
 
 .km-root .km-button,
 .km-material .km-button {
   .btnStyle;
+}
+
+.km-button {
+  span > div {}
 }
 
 .km-root .km-material .km-button.km-state-disabled {
@@ -3326,9 +3334,13 @@ a:hover {
   float: right;
 }
 
-.chat-option-ul li a svg {
-  height: 1.2em;
-  width: 1.2em;
+.chat-option-ul li a {
+  svg, div {
+    height: 1.2em;
+    width: 1.2em;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .chat-option-selection {
@@ -3796,11 +3808,19 @@ div.chat-message-sender.chat-message-content > div > div > svg.photo-chat-lock {
   border-radius: 3px;
   padding: 3px;
   color: @shade-100;
-  svg {
-    height: 0.75em;
-    vertical-align: baseline;
-    width: 1em;
-
+  display: inline-block;
+  width: 100%;
+  >span:first-child {
+    min-height: 1.2em;
+    vertical-align: middle;
+    width: 1.2em;
+    background-size: 100%;
+    margin-right: 0.25em;
+    float: left;
+  }
+  >span.icon-group {
+    height: 1.5em;
+    width: 1.5em;
   }
 }
 
@@ -4046,14 +4066,23 @@ div.chat-message-user-content.clearfix > p {
 .newuserBox {
   margin-top: 16.667%;
   h3 {
-    //text-align: center;
     color: #fff;
   }
   p {
-    //text-align: center;
     color: #fff;
   }
+  .icon-logo {
+    margin-left: 2em;
+    margin-top: 0.75em;
+    position: absolute;
+  }
 }
+
+#usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.newuserBox > p:nth-child(1) {
+  margin-left: 2em;
+  margin-right: 1em;
+}
+
 #newuser-ghost {
   position: absolute;
   left: 1rem;
@@ -4852,6 +4881,13 @@ div.loginBox > form > div > ul > li {
   float: left;
   height: 100%;
   text-align: right;
+  a div {
+    height: 1.2em;
+    width: 1.2em;
+    background-size: contain;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 
@@ -4884,10 +4920,13 @@ div.loginBox > form > div > ul > li {
   padding-bottom: 0.75em;
   a {
     vertical-align: middle;
-  }
-  svg {
-    width: 1.2em;
-    height: 1.2em;
+    span {
+      width: 1.2em;
+      height: 1.2em;
+      background-size: cover;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 }
 
@@ -4947,6 +4986,12 @@ div.contactListBox.activeContact > div > div > ul {
   margin-right: 0px;
 }
 
+#currentContactVerified {
+  span {
+    background-size: contain;
+  }
+}
+
 #contacts-listview {
   z-index: 0;
   position: absolute;
@@ -4968,6 +5013,12 @@ div.contactListBox.activeContact > div > div > ul {
 
 .listName {
   width: 80%;
+}
+
+.listIcon {
+  height: 1em;
+  width: 1em;
+  background-size: contain;
 }
 
 .contact-status {
