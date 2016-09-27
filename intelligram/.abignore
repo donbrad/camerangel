@@ -41,6 +41,7 @@ obj/**/*
 # TypeScript files
 **/*.ts
 **/*.map
+Gruntfile.js
 
 # Other
 **/*.bak
