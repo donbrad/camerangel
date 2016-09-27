@@ -1234,17 +1234,20 @@ form p {
   height: 1.2em;
   max-width: 1.2em;
   vertical-align: sub;
+  background-size: contain;
 }
-.icon-smart {
+.smart-icon {
   height: 1.5em;
   width: 1.5em;
   margin-right: 0.3em;
   vertical-align: middle;
+  background-size: contain;
 }
 .icon-md {
   height: 1.5em;
-  max-width: 1.5em;
+  width: 1.5em;
   vertical-align: middle;
+  background-size: contain;
 }
 .icon-notify {
   height: 1em;
@@ -5281,6 +5284,10 @@ div.contactListBox.activeContact > div > div > ul {
   width: 1em;
   background-size: contain;
 }
+.listIcon > svg {
+  height: 1.25em;
+  width: 1.25em;
+}
 .contact-status {
   width: 80%;
 }
@@ -6058,9 +6065,10 @@ html .km-pane-wrapper .k-header {
   width: 15% !important;
   text-align: center !important;
 }
+.smallSearch .searchIcon .search,
 .smallSearch .searchIcon svg {
   height: 1em;
-  max-width: 1em;
+  width: 1em;
 }
 .smallSearch .viewSearchBox {
   width: 85% !important;
@@ -6125,9 +6133,10 @@ html .km-pane-wrapper .k-header {
   width: 15% !important;
   text-align: center !important;
 }
+.smallSearch-sm .searchIcon .search,
 .smallSearch-sm .searchIcon svg {
   height: 1em;
-  max-width: 1em;
+  width: 1em;
 }
 .smallSearch-sm .viewSearchBox {
   width: 85% !important;
@@ -6192,9 +6201,10 @@ html .km-pane-wrapper .k-header {
   width: 15% !important;
   text-align: center !important;
 }
+.fullSearch .searchIcon .search,
 .fullSearch .searchIcon svg {
   height: 1em;
-  max-width: 1em;
+  width: 1em;
 }
 .fullSearch .viewSearchBox {
   width: 85% !important;
@@ -6256,9 +6266,10 @@ html .km-pane-wrapper .k-header {
   width: 15% !important;
   text-align: center !important;
 }
+.appendSearch .searchIcon .search,
 .appendSearch .searchIcon svg {
   height: 1em;
-  max-width: 1em;
+  width: 1em;
 }
 .appendSearch .viewSearchBox {
   width: 85% !important;
@@ -6382,7 +6393,7 @@ html .km-pane-wrapper .k-header {
   border-top: 0.4rem solid transparent;
   border-bottom: 0.4rem solid transparent;
   border-right: 0.4rem solid #cae2fb;
-  top: .5rem;
+  top: 2em;
   left: 10.5%;
 }
 @media only screen and (max-width: 320px) {
@@ -6414,6 +6425,11 @@ html .km-pane-wrapper .k-header {
   .chat-message-receiver:after {
     left: 13.5%;
   }
+}
+#newMessageActions li a div {
+  height: 1.5em;
+  width: 1.5em;
+  background-size: contain;
 }
 .movingChat > .chat-message-user-content:after {
   display: none;
@@ -7336,6 +7352,9 @@ table.k-editor {
 .intelli-header {
   margin-top: 1em;
   text-align: center;
+}
+.intelli-header div {
+  height: 2em;
 }
 .intelli-header .intelli-subheader {
   font-size: 0.875em;

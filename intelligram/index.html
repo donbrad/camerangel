@@ -461,37 +461,37 @@
 	<ul data-role="actionsheet" id="privateNoteSmartObjects" >
 		<li>
 			<a data-action="galleryView.noteEvent">
-				<div class="icon-event icon-smart" data-grunticon-embed></div>
+				<div class="icon-event smart-icon" data-grunticon-embed></div>
 				Add Event
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryView.noteFlight">
-				<div class="intelliFlight-icon icon-smart" data-grunticon-embed></div>
+				<div class="intelliFlight-icon smart-icon" data-grunticon-embed></div>
 				Add Flight
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryView.noteTrip">
-				<div class="intelliTrip-icon icon-smart" data-grunticon-embed></div>
+				<div class="intelliTrip-icon smart-icon" data-grunticon-embed></div>
 				Add Trip
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryView.noteMovie">
-				<div class="icon-smart intelliMovie-icon" data-grunticon-embed></div>
+				<div class="smart-icon intelliMovie-icon" data-grunticon-embed></div>
 				Add Movie
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryView.noteAccount">
-				<div class="icon-smart icon-account" data-grunticon-embed></div>
+				<div class="smart-icon icon-account" data-grunticon-embed></div>
 				Add IntelliAccount
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryView.noteMedical">
-				<div class="icon-smart icon-medical" data-grunticon-embed></div>
+				<div class="smart-icon icon-medical" data-grunticon-embed></div>
 				Add IntelliMedical
 			</a>
 		</li>
@@ -1645,7 +1645,7 @@
 			<li>
 				<div>
 					<a data-role="button" data-click="userStatusView.onAutoStatusChange" data-autocheckin="false" id="userStatusView-autoCheckin">
-						<span class="icon-sm icon-autoCheckin listIcon" data-grunticon-embed></span>
+						<span class="icon-autoCheckin icon-sm listIcon"></span>
 						Enable Auto Checkin </a>
 				</div>
 
@@ -1665,7 +1665,7 @@
 				<div>
 					<div id="checked-in-place">
 						<a class="btnClear-grey" data-role="button" data-click="userStatusView.checkOut">
-							<span class="icon-sm icon-checkout listIcon" data-grunticon-embed></span>
+							<span class="icon-checkout icon-sm listIcon"></span>
 							Leave <span id="checkOut-text" data-bind="text: currentPlace"></span>
 						</a>
 					</div>
@@ -1674,7 +1674,7 @@
 			<li>
 				<div>
 					<a class="btnClear" data-role="button" data-click="userStatusView.openCheckIn">
-						<span class="icon-sm icon-checkin-active listIcon" data-grunticon-embed></span>
+						<span class="icon-checkin-active icon-sm listIcon"></span>
 						Check In
 					</a>
 				</div>
@@ -1965,12 +1965,12 @@
 		<div class="list-options">
 			# if (data.isShared === undefined || data.isShared === false) {#
 			<a class="btnClear-grey" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.editPlaceBtn">
-				<div class="action-edit" data-grunticon-embed></div>
+				<div class="action-edit listIcon" data-grunticon-embed></div>
 				<p class="chat-option-selection">Edit</p>
 			</a>
 			# } #
 			<a class="btnClear-red" data-role="button" data-uuid="#: data.uuid #" data-click="placesView.deletePlaceBtn">
-				<div class="icon-trash" data-grunticon-embed></div>
+				<div class="icon-trash listIcon" data-grunticon-embed></div>
 				<p class="chat-option-selection"> Delete</p>
 			</a>
 		</div>
@@ -2442,7 +2442,7 @@
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageInsertTag">
-							<div class="icon-smart"  data-grunticon-embed></div>
+							<div class="smart-icon"  data-grunticon-embed></div>
 
 						</a>
 					</li>
@@ -2493,37 +2493,37 @@
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
 		<li>
 			<a id="messageAlertLi" data-action="channelView.messageAlert">
-				<div class="icon-smart icon-unmute" data-grunticon-embed></div>
+				<div class="smart-icon icon-unmute"></div>
 				Add Alert
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageCalendar">
-				<div class="icon-smart icon-event" data-grunticon-embed></div>
+				<div class="smart-icon icon-event"></div>
 				Add Event
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageFlight">
-				<div class="icon-smart intelliFlight-icon" data-grunticon-embed></div>
+				<div class="smart-icon intelliFlight-icon"></div>
 				Add Flight
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageMovie">
-				<div class="icon-smart intelliMovie-icon" data-grunticon-embed></div>
+				<div class="smart-icon intelliMovie-icon"></div>
 				Add Movie
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messagePlace">
-				<div class="icon-smart icon-place-dark" data-grunticon-embed></div>
+				<div class="smart-icon icon-place-dark"></div>
 				Add Place
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageTrip">
-				<div class="icon-smart intelliTrip-icon" data-grunticon-embed></div>
+				<div class="smart-icon intelliTrip-icon"></div>
 				Add Trip
 			</a>
 		</li>
@@ -2533,19 +2533,19 @@
 	<ul data-role="actionsheet" id="galleryActions" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="channelView.messageCamera">
-				<div class="icon-action action-camera" data-grunticon-embed></div>
+				<div class="icon-action action-camera"></div>
 				Camera
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messagePhoto">
-				<div class="icon-action action-device" data-grunticon-embed></div>
+				<div class="icon-action action-device"></div>
 				Device Gallery
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageGallery">
-				<div class="icon-action action-memories" data-grunticon-embed></div>
+				<div class="icon-action action-memories"></div>
 				Memories Gallery
 			</a>
 		</li>
@@ -2554,7 +2554,7 @@
 	<ul data-role="actionsheet" id="messageActions" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="channelView.archiveMessage">
-				<div class="icon-sm action-memories" data-grunticon-embed></div>
+				<div class="icon-sm action-memories"></div>
 				Remember Message
 			</a>
 		</li>
@@ -2565,7 +2565,7 @@
 	<ul data-role="actionsheet" id="messageActionsSender" data-popup='{"direction": "left"}'>
 		<li>
 			<a data-action="channelView.archiveMessage">
-				<div class="icon-action action-memories" data-grunticon-embed></div>
+				<div class="icon-action action-memories"></div>
 				Remember Message
 			</a>
 		</li>
@@ -2573,7 +2573,7 @@
 		<!--<li><a data-action="channelView.smartScanMessage"> Smart Scan Message</a></li>-->
 		<li>
 			<a data-action="channelView.messageRecall">
-				<div class="icon-action action-recall" data-grunticon-embed></div>
+				<div class="icon-action action-recall"></div>
 				Recall Message
 			</a>
 		</li>
@@ -5852,7 +5852,7 @@
 <!-- smartFlight modal -->
 <div data-role="modalview" id="modalview-smartFlight" data-model="smartFlightView.status" data-init="smartFlightView.onInit"   data-open="smartFlightView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
 	<div class="intelli-header">
-		<object data="images/intelliFlight-light.svg" type="image/svg+xml" > </object>
+		<div class="intelliFlight-light"></div>
 		<p class="intelli-subheader">Track and share flights</p>
 	</div>
 	<div class="intelliCard flightCreator">
@@ -6423,7 +6423,10 @@
 		</div>
 		<div>
 			<div class="appendSearch">
-				<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml" > </object></span>
+				<span class="searchIcon">
+					<div class="search"></div>
+					<object data="images/search.svg" type="image/svg+xml" > </object>
+				</span>
 				<input type="text" class="doubleAppendSearch" placeholder="Find contacts..." id="contactPickerView-search" />
 			</div>
 		</div>
