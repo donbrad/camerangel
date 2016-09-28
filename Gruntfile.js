@@ -1,3 +1,4 @@
+
 module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
@@ -5,9 +6,9 @@ module.exports = function(grunt) {
             myIcons: {
                 files: [{
                     expand: true,
-                    cwd: 'images',
+                    cwd: 'intelligram/images',
                     src: ['*.svg'],
-                    dest: "grunticon"
+                    dest: "intelligram/grunticon"
                 }],
                 options: {
                     cssprefix: '.',

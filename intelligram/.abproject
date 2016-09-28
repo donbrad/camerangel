@@ -6,8 +6,8 @@
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks llc",
   "Description": "intelligram for iOS and Android phones",
-  "BundleVersion": "0.0.198",
-  "AndroidVersionCode": "198",
+  "BundleVersion": "0.0.199",
+  "AndroidVersionCode": "199",
   "iOSDeviceFamily": [
     "1"
   ],
@@ -86,7 +86,7 @@
   "iOSDeploymentTarget": "8.0",
   "CordovaPluginVariables": {
     "nl.x-services.plugins.launchmyapp": {
-      "URL_SCHEME": "ghostgrams"
+      "URL_SCHEME": "intelligram"
     },
     "cc.fovea.cordova.purchase": {
       "BILLING_KEY": "needtoget"

@@ -2104,9 +2104,6 @@ var groupActionView = {
     closeModal : function(){
         $("#modalview-groupActions").data("kendoMobileModalView").close();
 
-        // Clear place
-        $("#contactCurrentPlace").html("");
-
         $("#modalview-groupActions .preMotionUp, #modalview-groupActions .hasMotion").css("display", "none").velocity("fadeOut", {opacity: 0, translateY: "0%"});
 
         if (groupActionView._returnModalId !== null) {
