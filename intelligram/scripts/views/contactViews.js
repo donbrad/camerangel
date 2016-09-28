@@ -1656,7 +1656,6 @@ var contactActionView = {
         contactActionView.setContact(thisContact);
 
         contactActionView.refreshUX(thisContact);
-        $(".statusContactCard-icon").attr("src", "images/status-away.svg");
 
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
@@ -1673,9 +1672,9 @@ var contactActionView = {
                 contactActionView._activeContact.set('lat', user.lat);
                 contactActionView._activeContact.set('lng', user.lng);
                 contactActionView._activeContact.set('isAvailable', contactIsAvailable);
-                // set available
+
                 if (contactIsAvailable) {
-                    $(".statusContactCard-icon").attr("src", "images/status-available.svg");
+                    $(".statusContactCard-icon").removeClass("status-away").addClass("status-available");
                 }
 
                 // Update the contactList object too
@@ -1713,10 +1712,8 @@ var contactActionView = {
                     contact = contactModel.findContactByUUID(contactId);
                 }
 
-
                 var contactName = contact.name;
                 var contactAlias = contact.alias;
-                var contactVerified = contact.phoneValidated;
                 var contactGroup = contact.group;
 
                 var contactIsAvailable = contact.isAvailable;
@@ -1724,6 +1721,7 @@ var contactActionView = {
                 if (contactTracking === undefined) {
                     contactTracking = false;
                 }
+
                 contactActionView.updateTrackingUX();
                 // Add group name
                 if (contactGroup !== '' && contactGroup !== null) {
@@ -1751,16 +1749,6 @@ var contactActionView = {
                 // Set name/alias layout
                 ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
 
-                // set verified status
-                if (contactVerified) {
-                    $("#currentContactVerified").removeClass("hidden");
-                } else {
-                    $("#currentContactVerified").addClass("hidden");
-                }
-
-                //$("#contactCurrentPlace").addClass('hidden');
-
-
                 contactActionView.refreshUX(contact);
 
 
@@ -1771,7 +1759,7 @@ var contactActionView = {
         $("#modalview-contactActions").data("kendoMobileModalView").open();
 
         $("#contactProfileImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
-        $("#contactStatusImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
+        $(".contactStatusImg").velocity("fadeIn", {delay: 150, duration: 300, display: "inline-block"});
         
         $("#modalview-contactActions .modal-top h2").velocity({translateY: "20%", opacity: 1}, {delay: 300, duration: 500, display: "block"});
         $("#modalview-contactActions .modal-top p").velocity({translateY: "20%", opacity: 1}, {delay: 600, duration: 500, display: "block"});
@@ -1790,7 +1778,7 @@ var contactActionView = {
         $("#contactCurrentPlace").html("");
 
         $("#modalview-contactActions .preMotionUp, #modalview-contactActions .hasMotion").css("display", "none").velocity("fadeOut", {opacity: 0, translateY: "0%"});
-    	$("#contactProfileImg, #contactStatusImg").css("opacity", 0);
+    	$("#contactProfileImg, .contactStatusImg").css("opacity", 0);
 
         if (contactActionView._returnModalId !== null) {
             $(contactActionView._returnModalId).data("kendoMobileModalView").open();
@@ -1931,9 +1919,9 @@ var contactActionView = {
         contactActionView._activeContact.set('isAvailable', thisContact.isAvailable);
 
         // set available
-        if(thisContact.isAvailable){
+       /* if(thisContact.isAvailable){
             $(".statusContactCard-icon").attr("src", "images/status-available.svg");
-        }
+        }*/
 
         if (thisContact.phoneValidated) {
             $("#currentContactVerified").removeClass("hidden");

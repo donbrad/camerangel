@@ -1463,13 +1463,13 @@ var placeView = {
         ux.formatNameAlias(name, alias, "#placeView");
 
         // Toggle display of private/public icons 
-        if (placeView._activePlace.isPrivate) {
+       /* if (placeView._activePlace.isPrivate) {
             $('#publicPlaceView').addClass('hidden');
             $('#privatePlaceView').removeClass('hidden');
         } else {
             $('#privatePlaceView').addClass('hidden');
             $('#publicPlaceView').removeClass('hidden');
-        }
+        }*/
 
         if (placeView._activePlace.hasPlaceChat === true && placeView._activePlace.placeChatId !== null) {
             $('#placeView-gotochat').removeClass('hidden');

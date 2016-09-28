@@ -1108,7 +1108,7 @@
 		<div>
 			<div class="appendSearch">
 				<span class="searchIcon">
-					<div class="search" data-grunticon-embed></div>
+					<span class="search" data-grunticon-embed></span>
 				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" id="galleryPickerSearch" />
 				<span class="enterSearch hidden">
@@ -1493,10 +1493,10 @@
 			<div class="close-white" data-grunticon-embed></div>
 		</a>
 		<img class="circle-img-lg" id="contactProfileImg" data-bind="" />
-		<img src="images/status-away.svg"  class="statusContactCard-icon" id="contactStatusImg" />
+		<div class="status-away statusContactCard-icon contactStatusImg"></div>
 		<h2>
 			<span class="primaryName" id="contactPrimaryName"></span>
-			<span class="hidden" id="currentContactVerified">
+			<span class="hidden" id="currentContactVerified" data-bind="visible: phoneValidated">
 				<span class="user-status-icon icon-verified-dark"></span>
 			</span>
 		</h2>
@@ -1515,31 +1515,31 @@
 		<ul class="list-inline hasMotion" id="contactActionBtns">
 			<li>
 				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking">
-					<div class="icon-tracking-active" data-grunticon-embed></div>
+					<div class="icon-tracking-active icon-action" data-grunticon-embed></div>
 					Start Tracking
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.privateChat" >
-					<div class="icon-private-alt" data-grunticon-embed></div>
+					<div class="icon-private-alt icon-action" data-grunticon-embed></div>
 					Private Chat
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.sendEmail">
-					<div class="icon-ghostMail" data-grunticon-embed></div>
+					<div class="icon-ghostMail icon-action" data-grunticon-embed></div>
 					Send Email
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.callPhone">
-					<div class="icon-phone" data-grunticon-embed></div>
+					<div class="icon-phone icon-action" data-grunticon-embed></div>
 					Phone Call
 				</a>
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.sendSMS">
-					<div class="icon-sms" data-grunticon-embed></div>
+					<div class="icon-sms icon-action" data-grunticon-embed></div>
 					Send SMS
 				</a>
 			</li>
@@ -1765,8 +1765,8 @@
             	Public
          # }#
            </span>
-				</p>
-				<div class="clearfix"> </div>
+		</p>
+		<div class="clearfix"> </div>
 		 # } #
 	</div>
 </script>
@@ -1818,7 +1818,7 @@
 		</ul>
 		<p> Place Type
 			<span class="place-tag place-type-add">
-				<div class="place-private-light" data-grunticon-embed></div>
+				<span class="place-private-light" data-grunticon-embed></span>
 				Private
 			</span>
 		</p>
@@ -2003,18 +2003,18 @@
 				   <span class="left">
 				 		# if (data.isPrivate === true) { #
 					   		<span class="place-tag place-type">
-								<div class="place-private" data-grunticon-embed></div>
+								<span class="place-private" data-grunticon-embed></span>
 								 Private
 							</span>
 				 		#} else {#
 					   		<span class="place-tag place-type">
-								<div class="place-public" data-grunticon-embed></div>
+								<span class="place-public" data-grunticon-embed></span>
 								Public
 							</span>
 				 		#}#
 				   	#if (data.hasPlaceChat) {#
 					   <span class="place-tag placeChat-chatIcon">
-						   <div class="icon-md icon-Chat" data-grunticon-embed></div>
+						   <span class="icon-md icon-Chat" data-grunticon-embed></span>
 						   Chat
 					   </span>
 					#}#
@@ -2593,7 +2593,7 @@
 	</div>
 	<div class="hidden card" id="addChatNoContacts" style="margin-top: 50%">
 		<p>
-			<div class="card-img-lg action-contact" data-grunticon-embed></div>
+			<span class="card-img-lg action-contact" data-grunticon-embed></span>
 		</p>
 		<p class="helper">
 			Chats are better with friends, add a contact to start a chat.
@@ -2609,7 +2609,7 @@
 		</div>
 		<form id="addChat-step1">
 			<h3>
-				<div class="icon-sm flag" data-grunticon-embed></div>
+				<span class="icon-sm flag" data-grunticon-embed></span>
 				Create a New Chat
 			</h3>
 			<p>Chat with friends and family around shared interests.</p>
@@ -3124,7 +3124,7 @@
 				<li id="contactEdit-phone-read">
 					<p>Phone
 						<span class="helper helper-verified" id="edit-verified-phone">
-							<div class="gg-verified helper-verified-img"  data-grunticon-embed></div>
+							<span class="gg-verified helper-verified-img"  data-grunticon-embed></span>
 							Verified
                         </span>
 					</p>
@@ -3138,7 +3138,7 @@
 				<li id="editContact-email-read">
 					<p>Email
 						<span class="helper helper-verified" id="edit-verified-email">
-							<div class="gg-verified helper-verified-img" data-grunticon-embed></div>
+							<span class="gg-verified helper-verified-img" data-grunticon-embed></span>
 							Verified
                         </span>
 					</p>
@@ -3372,10 +3372,10 @@
 		<div id="gallery-notes" >
 			<div class="privateNoteContent">
 				<p class="helper" style="padding-top: 0.5em;">
-				<span class="hidden">
-					<div class="icon icon-memories" data-grunticon-embed></div>
-					No Notes here yet
-				</span>
+					<span class="hidden">
+						<span class="icon icon-memories" data-grunticon-embed></span>
+						No Notes here yet
+					</span>
 				</p>
 				<div class="messageMediaBar hidden" style="text-align: center;">
 					<ul>
@@ -3581,7 +3581,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<span data-align="left" class="helper smartNote-title">
-				<div class="icon-sm smart-note" data-grunticon-embed></div>
+				<span class="icon-sm smart-note" data-grunticon-embed></span>
 				IntelliNote
 			</span>
 			<a data-click="smartNoteView.onCancel" data-role="button" class="btnClear-red" data-align="right">Cancel</a>
@@ -3597,7 +3597,9 @@
 				<select id="smartNoteView-tags" multiple="multiple" data-bind="value: tags" data-placeholder="@Tags..."></select>
 			</li>
 			<li class="">
-				<label> <object data="images/icon-expired.svg"  type="image/svg+xml" class="icon-sm"> </object> Expires
+				<label>
+					<span class="icon-expired icon-sm"></span>
+					Expires
 					<select id="smartNoteView-expires" data-bind="value: expiration">
 						<option value="0">Never</option>
 						<option value="1">Tomorrow</option>
@@ -3700,7 +3702,7 @@
 		<div class="gg_mainSearchBox" data-visible="false">
 			<div class="appendSearch">
 				<span class="searchIcon">
-					<object data="images/search.svg" type="image/svg+xml" > </object>
+					<span class="search"></span>
 				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="Movie title..." id="movieListView-query" />
 				<span class="enterSearch hidden">
@@ -3773,15 +3775,13 @@
 				<div class="clearfix"></div>
 				<div class="smallSearch">
 							<span class="searchIcon">
-								<object data="images/smart-event.svg" type="image/svg+xml" > </object>
-
+								<span class="smart-event icon-sm"></span>
 							</span>
 					<input type="text" class="viewSearchBox" id="smartMovieEdit-date"/>
 				</div>
 				<div class="smallSearch-sm">
 						<span class="searchIcon">
-							<object data="images/smart-time.svg" type="image/svg+xml" > </object>
-
+							<span class="smart-time icon-sm"></span>
 						</span>
 					<input type="time" id="smartMovieEdit-time"/>
 				</div>
@@ -3962,13 +3962,13 @@
 						<label id="smartTripView-departure-time-label"> Departure </label> <br />
 						<div class="smallSearch">
 								<span class="searchIcon">
-									<div  class="smart-event" data-grunticon-embed></div>
+									<span class="smart-event icon-sm" data-grunticon-embed></span>
 								</span>
 							<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture" data-bind="value: dateDeparture" />
 						</div>
 						<div class="smallSearch-sm">
 							<span class="searchIcon">
-								<div  class="smart-time" data-grunticon-embed></div>
+								<span class="smart-time icon-sm" data-grunticon-embed></span>
 							</span>
 							<input type="time" id="smartTripView-timeDeparture" data-bind="value: timeDeparture"/>
 						</div>
@@ -3979,13 +3979,13 @@
 						<div class="clearfix"></div>
 						<div class="smallSearch">
 								<span class="searchIcon">
-									<div  class="smart-event" data-grunticon-embed></div>
+									<span  class="smart-event" data-grunticon-embed></span>
 								</span>
 							<input type="text" class="viewSearchBox" id="smartTripView-dateArrival" data-bind="value: dateArrival"/>
 						</div>
 						<div class="smallSearch-sm">
 							<span class="searchIcon">
-								<div  class="smart-time" data-grunticon-embed></div>
+								<span  class="smart-time" data-grunticon-embed></span>
 							</span>
 							<input type="time" id="smartTripView-timeArrival" data-bind="value: timeArrival"/>
 						</div>
@@ -4046,7 +4046,7 @@
 		<div class="summary">
 			<div class="intelli-update hidden" id="intelliTrip-update">
 				<p class="update-header">
-					<div  class="icon-time-primary" data-grunticon-embed></div>
+					<span class="icon-time-primary" data-grunticon-embed></span>
 					Recent Update
 				</p>
 				<p class="update-content">Stopping for gas</p>
@@ -4063,7 +4063,7 @@
 				<p class="tripTime" data-bind="text: arrival"></p>
 			</div>
 			<p>
-				<div  class="icon-time" data-grunticon-embed></div>
+				<span class="icon-time" data-grunticon-embed></span>
 				<span data-bind="text: durationString"></span>
 				(<span data-bind="text: distanceString"></span>)
 			</p>
@@ -4083,7 +4083,7 @@
 	<div class="intelliPlace" data-role="button" data-objectid="#:objectId#" data-objectType="Place" id="placeobject_#:objectId#" >
 		<div class="header">
 			<p class="title">
-				<div class="icon-place-dark" data-grunticon-embed></div>
+				<span class="icon-place-dark" data-grunticon-embed></span>
 				#:name#
 			</p>
             <p class="subheader">
@@ -4097,13 +4097,13 @@
 	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" >
 			<div class="header">
 				<p class="intelliTrip-title">
-					<div class="intelliTrip-icon" data-grunticon-embed></div>
+					<span class="intelliTrip-icon" data-grunticon-embed></span>
 					 #:name#
 				</p>
 				<p class="helper intelliTrip-subheader">
 					<span>#:origin#</span>
 					<span class="intelliTrip-arrow">
-						<div class="intelliTrip-arrow" data-grunticon-embed></div>
+						<span class="intelliTrip-arrow" data-grunticon-embed></span>
 					</span>
 					<span>#:destination#</span>
 				</p>
@@ -4115,17 +4115,17 @@
 			<div class="footer cardFooter">
 				# if(data.tripTimeType === 'arrival') {#
 					<p class="intelliTrip-details">
-						<div class="icon-sm icon-date" data-grunticon-embed></div>
+						<span class="icon-sm icon-date" data-grunticon-embed></span>
 						#:arrival#
 					</p>
 				#} else if(data.tripTimeType === 'departure'){#
 					<p class="intelliTrip-details">
-						<div class="icon-date" data-grunticon-embed></div>
+						<span class="icon-date" data-grunticon-embed></span>
 						#:departure#
 					</p>
 				#}#
 				<p class="intelliTrip-details">
-					<div class="icon-sm icon-time" data-grunticon-embed></div>
+					<span class="icon-sm icon-time" data-grunticon-embed></span>
 					#:durationString# (#:distanceString#)
 				</p>
 			</div>
@@ -4136,13 +4136,14 @@
 	<div class="intelliTrip" data-objectid="#:objectId#" data-objectType="Trip" id="tripobject_#:objectId#" >
 		<div class="header">
 			<p class="intelliTrip-title">
-				<div class="myClass intelliTrip-icon" data-grunticon-embed></div>
+				<span class="intelliTrip-icon" data-grunticon-embed></span>
 				#:name#
 			</p>
 			<p class="helper intelliTrip-subheader">
 				<span>#:origin#</span>
 				<span class="intelliTrip-arrow">
-					<div class="intelliTrip-arrow" data-grunticon-embed></div>
+					<span class="intelliTrip-arrow" data-grunticon-embed></span>
+				</span>
 				<span>#:destination#</span>
 			</p>
 		</div>
@@ -4153,17 +4154,17 @@
 		<div class="footer cardFooter">
 
 			<p class="intelliTrip-details">
-				<div class="icon-sm icon-date" data-grunticon-embed></div>
+				<span class="icon-sm icon-date" data-grunticon-embed></span>
 				Depart : #:departure#
 			</p>
 
 			<p class="intelliTrip-details">
-				<div class="icon-sm icon-date" data-grunticon-embed></div>
+				<span class="icon-sm icon-date" data-grunticon-embed></span>
 				Arrive : #:arrival#
 			</p>
 
 			<p class="intelliTrip-details">
-				<div class="icon-sm icon-time" data-grunticon-embed></div>
+				<span class="icon-sm icon-time" data-grunticon-embed></span>
 				#:durationString# (#:distanceString#)
 			</p>
 		</div>
@@ -4174,7 +4175,7 @@
 	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" >
 			<div class="header">
 				<p class="title">
-					<div class="icon-sm intelliFlight-icon" data-grunticon-embed></div>
+					<span class="icon-sm intelliFlight-icon" data-grunticon-embed></span>
 					#:name#
 				</p>
 				<p class="subheader">#:durationString#</p>
@@ -4200,7 +4201,7 @@
 	<div class="intelliFlight" data-objectid="#:objectId#" data-objectType="Flight" id="flightobject_#:objectId#" >
 		<div class="header">
 			<p class="title">
-				<div class="intelliFlight-icon" data-grunticon-embed></div>
+				<span class="intelliFlight-icon" data-grunticon-embed></span>
 				<span> #:name#</span>
 			</p>
 			<p class="helper subheader">
@@ -4235,7 +4236,7 @@
 
 <script id="intelliEvent-chat" type="text/x-kendo-template">
 <div>
-	<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" >
+	<div class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" >
 			# var dateStr = date; if (ux.isToday(date)) { dateStr = "Today" + " at " + moment(date).format("hh:mm a"); }  if (ux.isTomorrow(date)) { dateStr = "Tomorrow" + " at " + moment(date).format("hh:mm a"); } #
 			<div class="btnSmart-content">
 				<span class="btnSmart-title"> #:title# </span><br />
@@ -4244,15 +4245,15 @@
 			</div>
 
 			<span class="btnSmart-type">
-				<div class="icon-smartBtn smart-event-alt" data-grunticon-embed></div>
+				<span class="icon-smartBtn smart-event-alt" data-grunticon-embed></span>
 			</span>
-	</span>
+	</div>
 </div>
 </script>
 
 <script id="intelliMovie-chat-1" type="text/x-kendo-template">
 	<div class="intelliMovie">
-		<span class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" >
+		<div class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" >
 			<div class="btnSmart-poster">
 				<img src="#:imageUrl#" class="btnSmart-img" />
 			</div>
@@ -4262,9 +4263,9 @@
 				<p class="btnSmart-date textClamp">#:theatreName#</p>
 			</div>
 			<span class="btnSmart-type">
-				<div class="smart-movie-circle" data-grunticon-embed></div>
+				<span class="smart-movie-circle" data-grunticon-embed></span>
 			</span>
-		</span>
+		</div>
 	</div>
 </script>
 
@@ -4273,7 +4274,7 @@
 	<div class="intelliMovie" data-role="button" data-objectid="#:objectId#" data-objectType="Movie" id="movieobject_#:objectId#" >
 		<div class="header">
 			<p class="title textClamp">
-				<div class="intelliMovie-icon" data-grunticon-embed></div>
+				<span class="intelliMovie-icon" data-grunticon-embed></span>
 				#:movieTitle#
 			</p>
 			<p class="subheader helper textClamp">
@@ -4289,13 +4290,13 @@
 			<ul class="list-unstyled">
 				<li>
 					<p class="textClamp date">
-						<div class="icon-time" data-grunticon-embed></div>
+						<span class="icon-time" data-grunticon-embed></span>
 						#:dateStr#
 					</p>
 				</li>
 				<li>
 					<p class="textClamp location">
-						<div class="icon-location-dark" data-grunticon-embed></div>
+						<span class="icon-location-dark" data-grunticon-embed></span>
 						#:theatreName#
 					</p>
 				</li>
@@ -4333,7 +4334,7 @@
 		<h3 data-role="button" id="smartMovie-title" data-click="smartMovieView.showLinkWebSite">
 			<span data-bind="text: movieTitle"></span>
 			<span style="margin-left: 0.5em;">
-				<div class="smartMovie-link icon-external" data-grunticon-embed></div>
+				<span class="smartMovie-link icon-external" data-grunticon-embed></span>
 			</span>
 		</h3>
 		<p class="helper movie-preselected" data-bind="text: description"></p>
@@ -4440,7 +4441,7 @@
 				<span class="event-date"></span>
 			</p>
 			<span class="hidden">
-					<div class="icon-sm icon-time" data-grunticon-embed></div>
+					<span class="icon-sm icon-time" data-grunticon-embed></span>
 				<span data-bind="text: durationString"></span>
 			</span>
 
@@ -4457,7 +4458,7 @@
 			</span>
 			<p class="event-place hidden" style="margin-top: 1em; margin-bottom: 1em;">
 				<a class="btnClear" data-role="button" data-click="smartEventView.eventMapLocation">
-					<div class="icon-sm icon-location" data-grunticon-embed></div>
+					<span class="icon-sm icon-location" data-grunticon-embed></span>
 					<span class="event-location-title" data-bind="text: placeName"></span>
 				</a>
 			</p>
@@ -4502,13 +4503,13 @@
 				<div class="clearfix"></div>
 				<div class="smallSearch">
 							<span class="searchIcon">
-								<div  class="smart-event" data-grunticon-embed></div>
+								<span class="smart-event" data-grunticon-embed></span>
 							</span>
 						<input type="text" class="viewSearchBox" id="smartEventView-date"/>
 					</div>
 					<div class="smallSearch-sm">
 						<span class="searchIcon">
-							<div  class="smart-time" data-grunticon-embed></div>
+							<span  class="smart-time" data-grunticon-embed></span>
 						</span>
 						<input type="time" id="smartEventView-time"/>
 					</div>
@@ -4522,7 +4523,7 @@
 				<label> How Long (Duration) </label>
 				<div class="fullSearch">
 						<span class="searchIcon">
-							<div  class="icon-duration" data-grunticon-embed></div>
+							<span class="icon-duration" data-grunticon-embed></span>
 						</span>
 					<input type="search" class="viewSearchBox" id="smartEventView-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
 				</div>
@@ -4611,10 +4612,9 @@
 <div data-role="view" data-title="Places" id="places" data-layout="main"  data-show="placesView.onShow" data-init="placesView.onInit" data-before-hide="placesView.onHide" style="display: none;">
 	<div>
 		<div id="current-place" class="hidden">
-			<object data="images/icon-puff.svg" type="image/svg+xml" width="30" class="left"> </object>
 			<p class="left" id="current-place-name"></p>
 			<a class="btnClear whiteBtn right" data-role="button" id="checkoutBtn">
-				<div class="icon-btn icon-checkout-light" data-grunticon-embed></div>
+				<span class="icon-btn icon-checkout-light" data-grunticon-embed></span>
 				Checkout
             </a>
 			<div class="clearfix"></div>
@@ -4622,7 +4622,7 @@
 		<div id="placeListDiv">
 			<ul id="places-listview"></ul>
 			<div class="emptyState hidden">
-				<div  class="empty-places" data-grunticon-embed></div>
+				<div class="empty-places" data-grunticon-embed></div>
 			</div>
 		</div>
 
@@ -4647,7 +4647,9 @@
 	</div>
 	<div class="tempSearchBox">
 		<div class="appendSearch">
-			<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml" > </object></span>
+			<span class="searchIcon">
+				<span class="search"></span>
+			</span>
 			<input class="doubleAppendSearch"  placeholder="Search nearby ..." id="searchPlaceSearchQuery" />
 			<span class="enterSearch hidden">
 				<a class="btnClear-grey">
@@ -4785,7 +4787,10 @@
 		<div id="modalPhotoView-editPhoto" style="display: none;">
 			<ul class="list-unstyled">
 				<li style="margin-bottom: 0.5em;">
-					<p><object data="images/action-edit.svg" type="image/svg+xml" class="icon-sm"></object> Edit Photo</p>
+					<p>
+						<span class="action-edit icon-sm"></span>
+						Edit Photo
+					</p>
 				</li>
 				<li>
 					<label>Title</label>
@@ -4998,7 +5003,7 @@
 		var multiEndTime = moment(data.object.end).format("Do, YYYY");
 		var multiDayTime = multiStartTime + multiEndTime;
 		#
-		<p class="helper cardInfoBar"><img src="images/icon-#=data.type#.svg" type="image/svg+xml"/>
+		<p class="helper cardInfoBar"><img src="images/icon-#=data.type#.svg"/>
 			#= data.message.sender.name # posted in #= data.message.channelName #
 		</p>
 
@@ -5221,11 +5226,13 @@
 		</div>
 		<div class="gg_mainSearchBox" data-visible="false">
 			<div class="appendSearch">
-				<span class="searchIcon"><object data="images/search.svg" type="image/svg+xml" > </object></span>
+				<span class="searchIcon">
+					<span class="search"></span>
+				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" id="placeViewSearch" placeholder="" />
 				<span class="enterSearch hidden">
 					<a class="btnClear-grey">
-						<div class="icon-sm close" data-grunticon-embed></div>
+						<span class="icon-sm close" data-grunticon-embed></span>
 					</a>
 				</span>
 			</div>
@@ -5234,12 +5241,7 @@
 	<div class="placeCard">
 		<div class="placeCardTop">
 			<h4 class="textClamp">
-				<span id="publicPlaceView">
-					<object data="images/place-public.svg" type="image/svg+xml" > </object>
-				</span>
-				<span id="privatePlaceView">
-					<object data="images/place-private.svg" type="image/svg+xml" > </object>
-				</span>
+				<span class="place-public placeCardImg"></span>
 				<span class="primaryName"></span>
 				<span class="secondName"></span>
 			</h4>
@@ -5251,10 +5253,12 @@
 	<div class="placeContent">
 		<p class="helper" style="padding-top: 0.5em;">
 			<span class="hidden">
-				<object data="images/icon-memories.svg"  type="image/svg+xml" class="icon"> </object> No Memories here yet
+				<span class="icon-memories icon"></span>
+				No Memories here yet
 			</span>
 			<span style="vertical-align: sub;">
-				<object data="images/icon-memories.svg"  type="image/svg+xml" class="icon"> </object> Memories
+				<span class="icon-memories icon"></span>
+				Memories
 			</span>
 			<a class="right btnClear-grey" data-role="button" data-click="placeView.togglePlaceDetails" id="placeView-showDetails">
 				View Address
@@ -5327,9 +5331,24 @@
 	</ul>
 
 	<ul data-role="actionsheet"  id="placeViewPhotoActions" >
-		<li><a data-action="placeView.addCamera"> Phone Camera</a></li>
-		<li><a data-action="placeView.addPhoto"> Phone Gallery</a></li>
-		<li><a data-action="placeView.addGallery"> Memories Gallery</a></li>
+		<li>
+			<a data-action="placeView.addCamera">
+				<span class="action-camera icon-action"></span>
+				Phone Camera
+			</a>
+		</li>
+		<li>
+			<a data-action="placeView.addPhoto">
+				<span class="icon-gallery icon-action"></span>
+				Phone Gallery
+			</a>
+		</li>
+		<li>
+			<a data-action="placeView.addGallery">
+				<span class="icon-memories icon-action"></span>
+				Memories Gallery
+			</a>
+		</li>
 	</ul>
 
 
@@ -5391,7 +5410,7 @@
 		# if(data.ggType === "Photo") {#
 		<div class="photo">
 			<h3>
-				<div class="icon-md smart-photo-inline" data-grunticon-embed></div>
+				<span class="icon-md smart-photo-inline" data-grunticon-embed></span>
 				<span>#: titleStr # </span>
 				<span class="helper right" style="font-size: 12px">#:dateString#</span>
 			</h3>
@@ -5448,7 +5467,7 @@
 				<li>
 					<label>Username (Email Address)
 						<span class="helper helper-verified hidden" id="profile-verified-email">
-							<div class="verified" data-grunticon-embed></div>
+							<span class="verified" data-grunticon-embed></span>
 	                             Verified
                         </span>
 						<span class="helper helper-right helper-form">
@@ -5459,7 +5478,7 @@
 				<li>
 					<label>Mobile Phone
 						<span class="helper helper-verified hidden" id="profile-verified-phone">
-							<div class="verified" data-grunticon-embed></div>
+							<span class="verified" data-grunticon-embed></span>
 	                             Verified
                         </span>
 						<span class="helper helper-right helper-form">
@@ -5931,7 +5950,8 @@
 	<div class="intelliCard flightViewer hidden" id="smartFlightView-flightStatus">
 		<div class="intelliFlight">
 			<div class="header">
-				<p class="title"><object data="images/intelliFlight-icon.svg" type="image/svg+xml" > </object>
+				<p class="title">
+					<object data="images/intelliFlight-icon.svg" type="image/svg+xml"></object>
 					<span class="info" data-bind="text: name"></span>
 				</p>
 				<p class="subheader">
@@ -6424,8 +6444,7 @@
 		<div>
 			<div class="appendSearch">
 				<span class="searchIcon">
-					<div class="search"></div>
-					<object data="images/search.svg" type="image/svg+xml" > </object>
+					<span class="search"></span>
 				</span>
 				<input type="text" class="doubleAppendSearch" placeholder="Find contacts..." id="contactPickerView-search" />
 			</div>
@@ -6489,7 +6508,7 @@
 		<span class="k-invalid-msg" data-for="groupEditor-title"></span>
 		<input type="search" data-bind="value: description" placeholder="Add Description...">
 			<a data-role="button" class="btnClear" data-click="groupEditView.toggleTags" data-bind="invisible: ux_tagsVisible" id="groupEditView-addTagBtn">
-				<object data="images/icon-tag-active.svg"  type="image/svg+xml" class="icon-btn-sm"> </object> Add Group Tag
+				<span class="icon-tag-active icon-btn-sm"> </span> Add Group Tag
 			</a>
 		<div data-bind="visible: ux_tagsVisible">
 			<input id="groupEditor-tagString" data-bind="value: tagString" placeholder="Click to add tags..." readonly>

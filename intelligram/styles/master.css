@@ -1219,22 +1219,41 @@ form p {
 }
 .user-status-icon {
   height: 1em;
-  max-width: 1em;
+  width: 1em;
+}
+.user-status-icon > svg {
+  height: 100%;
+  width: 100%;
 }
 .icon-xs {
   height: 0.875em;
   width: 0.875em;
 }
+.icon-xs > svg {
+  height: 100%;
+  width: 100%;
+}
 .icon {
   height: 1.3rem;
-  max-width: 1.3em;
+  width: 1.3em;
   vertical-align: middle;
 }
-.icon-sm {
+.icon > svg {
+  height: 100%;
+  width: 100%;
+}
+.icon-sm,
+.placeCardTop .placeCardImg,
+.icon-time {
   height: 1.2em;
-  max-width: 1.2em;
+  width: 1.2em;
   vertical-align: sub;
   background-size: contain;
+  display: inline-block;
+}
+.icon-sm > svg {
+  height: 100%;
+  width: 100%;
 }
 .smart-icon {
   height: 1.5em;
@@ -1243,11 +1262,19 @@ form p {
   vertical-align: middle;
   background-size: contain;
 }
+.smart-icon > svg {
+  height: 100%;
+  width: 100%;
+}
 .icon-md {
   height: 1.5em;
   width: 1.5em;
   vertical-align: middle;
   background-size: contain;
+}
+.icon-md > svg {
+  height: 100%;
+  width: 100%;
 }
 .icon-notify {
   height: 1em;
@@ -1270,6 +1297,8 @@ form p {
   width: 1.2em;
   vertical-align: sub;
   margin-right: 0.5em;
+  background-size: contain;
+  display: inline-block;
 }
 .loading-icon {
   height: 1rem;
@@ -2314,7 +2343,13 @@ div.footer.km-footer {
 }
 .helper-verified-img {
   padding-top: 3px;
-  height: 14px;
+  height: 0.875em;
+  width: 0.875em;
+  display: inline-block;
+}
+.helper-verified-img > svg {
+  height: 100%;
+  width: 100%;
 }
 /* Settings */
 #body > div.appearance.km-widget.km-view > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > form:nth-child(1) > div.settingDisplay > ul {
@@ -2584,6 +2619,9 @@ div.footer.km-footer {
 }
 .fullPhotoModal {
   background: rgba(0, 0, 0, 0.85);
+}
+.photo .icon-md {
+  display: inline-block;
 }
 .photoMax,
 .photoView-landscape,
@@ -3628,12 +3666,20 @@ a:hover {
   top: 1.75em;
   left: 1.75em;
   width: 1.25em;
+  height: 1.25em;
+  background-size: contain;
+}
+.statusContactList-icon > svg {
+  height: 100%;
+  width: 100%;
 }
 .statusContactCard-icon {
   position: absolute;
   top: 4.5em;
   left: 54%;
   width: 2em;
+  height: 2em;
+  background-size: contain;
 }
 @media only screen and (max-width: 320px) {
   .statusContactCard-icon {
@@ -3658,7 +3704,7 @@ a:hover {
   color: #979797;
 }
 #contactProfileImg,
-#contactStatusImg {
+.contactStatusImg {
   opacity: 0;
 }
 #menuSetting {
@@ -4184,6 +4230,13 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 .place-tag > svg {
   vertical-align: text-top;
+}
+.place-tag div {
+  display: inline-block;
+  background-position: center;
+  background-size: contain;
+  height: 1em;
+  width: 1em;
 }
 .place-type {
   background-color: #f5f5f5;
@@ -6064,11 +6117,21 @@ html .km-pane-wrapper .k-header {
   color: #979797;
   width: 15% !important;
   text-align: center !important;
+  height: 100%;
 }
-.smallSearch .searchIcon .search,
-.smallSearch .searchIcon svg {
-  height: 1em;
-  width: 1em;
+.smallSearch .searchIcon .search {
+  height: 1.25em;
+  width: 1.25em;
+  background-size: contain;
+  background-position: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+.smallSearch .searchIcon .search > svg {
+  height: 100%;
+  width: 100%;
 }
 .smallSearch .viewSearchBox {
   width: 85% !important;
@@ -6132,11 +6195,21 @@ html .km-pane-wrapper .k-header {
   color: #979797;
   width: 15% !important;
   text-align: center !important;
+  height: 100%;
 }
-.smallSearch-sm .searchIcon .search,
-.smallSearch-sm .searchIcon svg {
-  height: 1em;
-  width: 1em;
+.smallSearch-sm .searchIcon .search {
+  height: 1.25em;
+  width: 1.25em;
+  background-size: contain;
+  background-position: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+.smallSearch-sm .searchIcon .search > svg {
+  height: 100%;
+  width: 100%;
 }
 .smallSearch-sm .viewSearchBox {
   width: 85% !important;
@@ -6200,11 +6273,21 @@ html .km-pane-wrapper .k-header {
   color: #979797;
   width: 15% !important;
   text-align: center !important;
+  height: 100%;
 }
-.fullSearch .searchIcon .search,
-.fullSearch .searchIcon svg {
-  height: 1em;
-  width: 1em;
+.fullSearch .searchIcon .search {
+  height: 1.25em;
+  width: 1.25em;
+  background-size: contain;
+  background-position: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+.fullSearch .searchIcon .search > svg {
+  height: 100%;
+  width: 100%;
 }
 .fullSearch .viewSearchBox {
   width: 85% !important;
@@ -6265,11 +6348,21 @@ html .km-pane-wrapper .k-header {
   color: #979797;
   width: 15% !important;
   text-align: center !important;
+  height: 100%;
 }
-.appendSearch .searchIcon .search,
-.appendSearch .searchIcon svg {
-  height: 1em;
-  width: 1em;
+.appendSearch .searchIcon .search {
+  height: 1.25em;
+  width: 1.25em;
+  background-size: contain;
+  background-position: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+.appendSearch .searchIcon .search > svg {
+  height: 100%;
+  width: 100%;
 }
 .appendSearch .viewSearchBox {
   width: 85% !important;
@@ -6430,6 +6523,7 @@ html .km-pane-wrapper .k-header {
   height: 1.5em;
   width: 1.5em;
   background-size: contain;
+  display: inline-block;
 }
 .movingChat > .chat-message-user-content:after {
   display: none;
@@ -6826,6 +6920,10 @@ html .km-pane-wrapper .k-header {
 .placeCardTop h4,
 .placeCardTop p {
   margin: 0;
+}
+.placeCardTop .placeCardImg {
+  background-position: center;
+  display: inline-block;
 }
 .placeContentBox {
   padding: 0.5rem 1rem;
@@ -7406,6 +7504,13 @@ table.k-editor {
   font-size: 0.75em;
   margin: 0.25em 0;
 }
+.icon-time > svg {
+  width: 100%;
+  height: 100%;
+}
+.icon-time g#icon-time {
+  fill: #979797;
+}
 #smartTripView-arrival-text {
   font-size: 0.75em;
 }
@@ -7506,6 +7611,14 @@ table.k-editor {
   font-size: 1.2em !important;
   font-weight: 600 !important;
 }
+.intelliTrip .header .intelliTrip-title .intelliTrip-icon {
+  height: 1em;
+  width: 1em;
+}
+.intelliTrip .header .intelliTrip-title .intelliTrip-icon > svg {
+  height: 100%;
+  width: 100%;
+}
 .intelliTrip .map {
   width: 100%;
   height: 25vh;
@@ -7523,7 +7636,7 @@ table.k-editor {
 }
 .intelliTrip .footer .intelliTrip-details svg {
   height: 0.875em;
-  max-width: 0.875em;
+  width: 0.875em;
   vertical-align: baseline;
 }
 .intelliTrip .footer a {
@@ -7620,11 +7733,14 @@ table.k-editor {
   line-height: 1em;
   margin-left: 0.25em;
   margin-right: 0.25em;
-}
-.intelliTrip-arrow > svg {
-  max-height: 1em !important;
+  height: 1em !important;
   width: 1em !important;
   vertical-align: middle;
+  background-size: contain;
+}
+.intelliTrip-arrow > svg {
+  height: 100%;
+  width: 100%;
 }
 .intelliTrip-details:first-child {
   padding-top: 0.5em !important;
@@ -7942,6 +8058,10 @@ table.k-editor {
   text-overflow: ellipsis;
   width: 100%;
   display: inline-block;
+}
+.privateNoteContent p:first-child {
+  margin-left: 1em;
+  margin-right: 1em;
 }
 .private-note-content > p:after {
   content: "...";
