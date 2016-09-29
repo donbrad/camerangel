@@ -582,6 +582,7 @@ form {
   margin-right: 0.3em;
   vertical-align: middle;
   background-size: contain;
+  display: inline-block;
   > svg {
     height: 100%;
     width: 100%;
@@ -591,6 +592,17 @@ form {
 .icon-md {
   height: 1.5em;
   width: 1.5em;
+  vertical-align: middle;
+  background-size: contain;
+  > svg {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.icon-lg {
+  height: 2em;
+  width: 2em;
   vertical-align: middle;
   background-size: contain;
   > svg {
@@ -626,6 +638,10 @@ form {
   margin-right: 0.5em;
   background-size: contain;
   display: inline-block;
+  >svg {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .loading-icon {
@@ -1769,6 +1785,7 @@ div.footer.km-footer {
   padding: 0.5em 1em;
   font-weight: 600;
   text-align: left;
+  height: 2.75em;
   img {
     height: 1em;
     max-width: 1em;
@@ -3868,16 +3885,16 @@ div.chat-message-sender.chat-message-content > div > div > svg.photo-chat-lock {
   display: inline-block;
   width: 100%;
   >span:first-child {
-    min-height: 1.2em;
+    min-height: 1em;
     vertical-align: middle;
-    width: 1.2em;
+    width: 1em;
     background-size: 100%;
     margin-right: 0.25em;
     float: left;
   }
   >span.icon-group {
-    height: 1.5em;
-    width: 1.5em;
+    height: 1.25em;
+    width: 1.25em;
   }
 }
 
@@ -5971,7 +5988,7 @@ div.contactListBox.activeContact > div > div > ul {
     }
   }
   span:not(.helper) {
-    float: left;
+    //float: left;
     padding-top: 0.75em;
     color: @shade-100;
     .font-size(12);
@@ -7341,7 +7358,11 @@ table.k-editor {
 }
 
 .icon-time {
-  &:extend(.icon-sm);
+  height: 1em;
+  width: 1em;
+  background-size: contain;
+  background-position: center;
+  display: inline-block;
   > svg {
     width: 100%;
     height: 100%;
@@ -7472,6 +7493,10 @@ table.k-editor {
       .intelliTrip-icon {
         height: 1em;
         width: 1em;
+        display: inline-block;
+        background-size: contain;
+        background-position: center;
+        vertical-align: middle;
         >svg {
           height: 100%;
           width: 100%;
@@ -7612,6 +7637,7 @@ table.k-editor {
   width: 1em !important;
   vertical-align: middle;
   background-size: contain;
+  background-position: center;
   >svg {
     height:100%;
     width: 100%;
@@ -7833,20 +7859,29 @@ table.k-editor {
   padding: 0 !important;
   background-color: #fff !important;
   overflow: hidden;
+  text-align: left;
   .header {
     padding: 0.5em 1em 0;
     text-align: left;
     border-bottom: 2px dotted @shade-200;
+    width: 100%;
     .title {
       font-size: 1em;
       font-weight: 600;
       width: 95%;
-      svg {
+      .intelliMovie-icon {
         height: 1em;
-        max-width: 1em;
-        vertical-align: text-top;
+        width: 1em;
+        background-size: contain;
+        background-position: center;
+        display: inline-block;
+        > svg {
+          height: 1em;
+          max-width: 1em;
+          vertical-align: text-top;
+        }
       }
-      span {
+      span:not(.intelliMovie-icon) {
         font-size: 0.85em;
         background-color: @shade-200;
         border-radius: 4px;

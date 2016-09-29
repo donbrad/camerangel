@@ -1592,7 +1592,7 @@
 			<h3>
 				<span class="primaryName"></span>
 				<span class="hidden" id="profileStatusVerified">
-					<span class="user-status-icon icon-verified-dark" data-grunticon-embed></span>
+					<span class="user-status-icon icon-verified-dark"></span>
 				</span>
 			</h3>
 			<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
@@ -2391,25 +2391,25 @@
 						<div data-role="footer" class="footer">
 							<div data-role="tabstrip">
 								<a href="#emoji-people">
-									<div class="icon-lg emoji-people" data-grunticon-embed></div>
+									<span class="icon-lg emoji-people" data-grunticon-embed></span>
 								</a>
 								<a href="#emoji-nature">
-									<div class="icon-lg emoji-nature" data-grunticon-embed></div>
+									<span class="icon-lg emoji-nature" data-grunticon-embed></span>
 								</a>
 								<a href="#emoji-food">
-									<div class="icon-lg emoji-food" data-grunticon-embed></div>
+									<span class="icon-lg emoji-food" data-grunticon-embed></span>
 								</a>
 								<a href="#emoji-activity">
-									<div class="icon-lg emoji-activity" data-grunticon-embed></div>
+									<span class="icon-lg emoji-activity" data-grunticon-embed></span>
 								</a>
 								<a href="#emoji-travel">
-									<div class="icon-lg emoji-travel" data-grunticon-embed></div>
+									<span class="icon-lg emoji-travel" data-grunticon-embed></span>
 								</a>
 								<a href="#emoji-objects">
-									<div class="icon-lg emoji-objects" data-grunticon-embed></div>
+									<span class="icon-lg emoji-objects" data-grunticon-embed></span>
 								</a>
 								<a href="#emoji-flags">
-									<div class="icon-lg emoji-flags" data-grunticon-embed></div>
+									<span class="icon-lg emoji-flags" data-grunticon-embed></span>
 								</a>
 							</div>
 						</div>
@@ -2419,55 +2419,48 @@
 				<ul>
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#galleryActions">
-							<div class="chat-camera" data-grunticon-embed></div>
-
+							<span class="chat-camera icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li id="messageTitleTagLi">
 						<a data-role="button" data-click="channelView.messageTitleTag">
-							<div class="icon-tag" data-grunticon-embed></div>
-
+							<span class="icon-tag icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" data-badge="0" data-click="channelView.ghostgram" id="chat-editorBtn">
-							<div class="icon-editor" id="chat-editorBtnImg" data-grunticon-embed></div>
-
+							<span class="icon-editor icon-sm" id="chat-editorBtnImg" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-click="channelView.messageSearch">
-							<div class="icon-web" id="messageSearchImg" data-grunticon-embed></div>
+							<span class="icon-web icon-sm" id="messageSearchImg" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageInsertTag">
-							<div class="smart-icon"  data-grunticon-embed></div>
-
+							<span class="smart-icon icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li class="online-only">
 						<a data-role="button" data-rel="actionsheet" href="#newMessageActions">
-							<div class="icon-smartMenu" id="chatSmartTagBtn" data-grunticon-embed></div>
-
+							<span class="icon-smartMenu icon-sm" id="chatSmartTagBtn" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.messageLockButton">
-							<div class="icon-lock"  data-grunticon-embed></div>
-
+							<span class="icon-lock icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-click="channelView.togglePrivacyMode" id="privacyMode">
-							<div class="privacy-off" id="messageLockButtonIcon" data-grunticon-embed></div>
-
+							<span class="privacy-off icon-sm" id="messageLockButtonIcon" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" class="btnClear" href="#emoji-menu" data-rel="popover">
-							<div class="emoji-icon"  data-grunticon-embed></div>
-							<div class="icon-emoji-active hidden"  data-grunticon-embed></div>
+							<span class="icon-emoji icon-sm"></span>
+							<span class="icon-emoji-active hidden icon-sm"></span>
 						</a>
 					</li>
 					<li class="right">
@@ -2493,37 +2486,37 @@
 	<ul data-role="actionsheet" id="newMessageActions" data-popup='{"width": "auto", "height": "auto" }'>
 		<li>
 			<a id="messageAlertLi" data-action="channelView.messageAlert">
-				<div class="smart-icon icon-unmute"></div>
+				<span class="smart-icon icon-unmute"></span>
 				Add Alert
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageCalendar">
-				<div class="smart-icon icon-event"></div>
+				<span class="smart-icon icon-event"></span>
 				Add Event
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageFlight">
-				<div class="smart-icon intelliFlight-icon"></div>
+				<span class="smart-icon intelliFlight-icon"></span>
 				Add Flight
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageMovie">
-				<div class="smart-icon intelliMovie-icon"></div>
+				<span class="smart-icon intelliMovie-icon"></span>
 				Add Movie
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messagePlace">
-				<div class="smart-icon icon-place-dark"></div>
+				<span class="smart-icon icon-place-dark"></span>
 				Add Place
 			</a>
 		</li>
 		<li>
 			<a data-action="channelView.messageTrip">
-				<div class="smart-icon intelliTrip-icon"></div>
+				<span class="smart-icon intelliTrip-icon"></span>
 				Add Trip
 			</a>
 		</li>
@@ -3449,9 +3442,7 @@
 <script type="text/x-kendo-tmpl" id="notesListView-add-tmpl">
 		<div>
 			<h4>
-				<svg class="icon-action">
-					<use xlink:href="styles/svg/symbol.svg\\##:data.imgUrl#"></use>
-				</svg>
+				<span class="#:data.imgUrl# icon-action"></span>
 				#: data.title #
 			</h4>
 		</div>
@@ -4102,9 +4093,7 @@
 				</p>
 				<p class="helper intelliTrip-subheader">
 					<span>#:origin#</span>
-					<span class="intelliTrip-arrow">
-						<span class="intelliTrip-arrow" data-grunticon-embed></span>
-					</span>
+					<span class="intelliTrip-arrow" data-grunticon-embed></span>
 					<span>#:destination#</span>
 				</p>
 			</div>
@@ -4115,17 +4104,17 @@
 			<div class="footer cardFooter">
 				# if(data.tripTimeType === 'arrival') {#
 					<p class="intelliTrip-details">
-						<span class="icon-sm icon-date" data-grunticon-embed></span>
+						<span class="icon-date icon-sm" data-grunticon-embed></span>
 						#:arrival#
 					</p>
 				#} else if(data.tripTimeType === 'departure'){#
 					<p class="intelliTrip-details">
-						<span class="icon-date" data-grunticon-embed></span>
+						<span class="icon-date icon-sm" data-grunticon-embed></span>
 						#:departure#
 					</p>
 				#}#
 				<p class="intelliTrip-details">
-					<span class="icon-sm icon-time" data-grunticon-embed></span>
+					<span class="icon-time icon-sm" data-grunticon-embed></span>
 					#:durationString# (#:distanceString#)
 				</p>
 			</div>
@@ -4290,13 +4279,13 @@
 			<ul class="list-unstyled">
 				<li>
 					<p class="textClamp date">
-						<span class="icon-time" data-grunticon-embed></span>
+						<span class="icon-time icon-sm" data-grunticon-embed></span>
 						#:dateStr#
 					</p>
 				</li>
 				<li>
 					<p class="textClamp location">
-						<span class="icon-location-dark" data-grunticon-embed></span>
+						<span class="icon-location-dark icon-sm" data-grunticon-embed></span>
 						#:theatreName#
 					</p>
 				</li>
@@ -4342,7 +4331,7 @@
 			<img src="" id="smartMovie-ratingImg" class="gg-rating" />
 			<span data-bind="text: runtime"></span>
 			<a class="movie-links hidden btnClear right" id="smartMovieView-imdbLink" data-role="button" data-click="smartMovieView.showLinkImdb">
-				<div class="imdb-logo" data-grunticon-embed></div>
+				View on IMDB
 			</a>
 		</p>
 	</div>
@@ -4862,28 +4851,20 @@
 	</ul>
 	<div id="modalPhotoView-footer" data-role="footer">
 		<p>
-			<span style="width: 28px;">
-				<div class="icon-tag" data-grunticon-embed></div>
-			</span>
-			<span data-bind="text: tagString">
-			</span>
+			<span class="icon-tag icon-sm" data-grunticon-embed></span>
+			<span data-bind="text: tagString"></span>
 		</p>
 		<p>
-			<span style="width: 28px;">
-				<div class="icon-place" data-grunticon-embed></div>
-			</span>
+			<span class="icon-place icon-sm" data-grunticon-embed></span>
 			<span data-bind="text: placeName"></span>
 		</p>
 		<p>
-			<span style="width: 28px;">
-				<div class="icon-location" data-grunticon-embed></div>
+			<div class="icon-location icon-sm" data-grunticon-embed></div>
 			</span>
 			<span data-bind="text: addressString"></span>
 		</p>
 		<p>
-			<span style="width: 28px;">
-				<div class="icon-date" data-grunticon-embed></div>
-			</span>
+			<span class="icon-date icon-sm" data-grunticon-embed></span>
 			<span data-bind="text: dateString"></span>
 		</p>
 	</div>
@@ -5280,28 +5261,27 @@
 				<ul>
 					<li>
 						<a data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
-							<div class="chat-camera" data-grunticon-embed></div>
+							<span class="chat-camera icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" data-click="placeView.messageTitleTag">
-							<div class="icon-tag" data-grunticon-embed></div>
-
+							<span class="icon-tag icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li >
 						<a data-role="button" data-click="placeView.ghostgram" id="placeView-editorBtn">
-							<div class="icon-editor" data-grunticon-embed></div>
+							<span class="icon-editor icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li>
 						<a data-role="button" data-click="placeView.noteSearch">
-							<div class="icon-web" data-grunticon-embed></div>
+							<span class="icon-web icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
 					<li class="hidden">
 						<a data-role="button" data-rel="actionsheet" href="#placeViewSmartObjects">
-							<div class="icon-smartMenu" data-grunticon-embed></div>
+							<span class="icon-smartMenu icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
 
@@ -6986,20 +6966,10 @@
 					#: data.title #
 				</h4>
 				<p class="helper textClamp">
-					<span class="icon-group" data-grunticon-embed></span>
+					<span class="icon-group icon-sm" data-grunticon-embed></span>
 					#= memberCount # #= memberCountTxt #
 				</p>
 			</div>
-
-			<!--<div class="left contact-status textClamp">
-				<p class="contactStatusMessage-sm">
-					#:data.description#
-				</p>
-
-				<p class="contactStatus-location">
-					#:data.tagString#
-				</p>
-			</div>-->
 		</a><!-- listBox -->
 	</div>
 </script>
