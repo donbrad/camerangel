@@ -1272,6 +1272,11 @@ div.km-header a svg{
   width: 1.5em;
   vertical-align: middle;
 }
+
+.k-autocomplete.k-state-default {
+  background-color: #fff;
+}
+
 .km-drawer-button:before,
 .km-drawer-button:after {
   content: "\E077";
@@ -7289,8 +7294,12 @@ table.k-editor {
 .intelli-header {
   margin-top: 1em;
   text-align: center;
-  div {
+  .intelliFlight-light {
     height: 2em;
+    width:100%;
+    display: inline-block;
+    background-size: contain;
+    background-position: center;
   }
   .intelli-subheader {
     font-size: 0.875em;
@@ -7861,7 +7870,7 @@ table.k-editor {
   overflow: hidden;
   text-align: left;
   .header {
-    padding: 0.5em 1em 0;
+    padding: 0.5em;
     text-align: left;
     border-bottom: 2px dotted @shade-200;
     width: 100%;
@@ -7911,8 +7920,8 @@ table.k-editor {
     ul {
       padding: 0;
       li {
-        padding-left: 1em !important;
-        padding-right: 1em !important;
+        padding-left: 0.5em !important;
+        padding-right: 0.5em !important;
         font-size: 0.85em;
         margin-top: 0.5em;
         svg {
@@ -7929,7 +7938,12 @@ table.k-editor {
   }
 }
 
-
+#smartLocation-listview {
+  li {
+    background-color: #fff;
+    border-top: 1px solid @shade-100;
+  }
+}
 
 
 .smartTripView-error {

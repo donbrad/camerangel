@@ -2701,14 +2701,13 @@ var channelView = {
 
         // User has clicked in message area, so hide the keyboard
         ux.hideKeyboard();
-
         if (e.touch.currentTarget !== undefined) {
             // Legacy IOS
-            messageId =  e.touch.currentTarget.attributes['data-uid'].value;
+            messageId = e.touch.currentTarget.attributes['data-uid'].value;
 
         } else {
             // New Android
-            messageId =   e.touch.target[0].attributes['data-uid'].value;
+            messageId = e.touch.target[0].attributes['data-uid'].value;
 
         }
 

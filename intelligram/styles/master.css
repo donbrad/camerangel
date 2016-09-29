@@ -1912,6 +1912,9 @@ div.km-header a svg {
   width: 1.5em;
   vertical-align: middle;
 }
+.k-autocomplete.k-state-default {
+  background-color: #fff;
+}
 .km-drawer-button:before,
 .km-drawer-button:after {
   content: "\E077";
@@ -7477,8 +7480,12 @@ table.k-editor {
   margin-top: 1em;
   text-align: center;
 }
-.intelli-header div {
+.intelli-header .intelliFlight-light {
   height: 2em;
+  width: 100%;
+  display: inline-block;
+  background-size: contain;
+  background-position: center;
 }
 .intelli-header .intelli-subheader {
   font-size: 0.875em;
@@ -7987,7 +7994,7 @@ table.k-editor {
   text-align: left;
 }
 .intelliMovie .header {
-  padding: 0.5em 1em 0;
+  padding: 0.5em;
   text-align: left;
   border-bottom: 2px dotted #E0E0E0;
   width: 100%;
@@ -8039,8 +8046,8 @@ table.k-editor {
   padding: 0;
 }
 .intelliMovie .footer ul li {
-  padding-left: 1em !important;
-  padding-right: 1em !important;
+  padding-left: 0.5em !important;
+  padding-right: 0.5em !important;
   font-size: 0.85em;
   margin-top: 0.5em;
 }
@@ -8052,6 +8059,10 @@ table.k-editor {
 }
 .intelliMovie .footer ul li:last-child {
   margin-bottom: 1em;
+}
+#smartLocation-listview li {
+  background-color: #fff;
+  border-top: 1px solid #979797;
 }
 .smartTripView-error .error-msg {
   font-size: 0.85em;

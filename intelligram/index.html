@@ -2391,7 +2391,7 @@
 					<div data-role="layout" data-id="emojiMenu-popover">
 						<div data-role="footer" class="footer">
 							<div data-role="tabstrip">
-								<a href="#emoji-people">
+								<a href="#emoji-people" class="icon-lg emoji-people">
 									<span class="icon-lg emoji-people" data-grunticon-embed></span>
 								</a>
 								<a href="#emoji-nature">
@@ -3766,15 +3766,11 @@
 				<label> When </label>
 				<div class="clearfix"></div>
 				<div class="smallSearch">
-							<span class="searchIcon">
-								<span class="smart-event icon-sm"></span>
-							</span>
+					<span class="smart-event icon-sm"></span>
 					<input type="text" class="viewSearchBox" id="smartMovieEdit-date"/>
 				</div>
 				<div class="smallSearch-sm">
-						<span class="searchIcon">
-							<span class="smart-time icon-sm"></span>
-						</span>
+					<span class="smart-time icon-sm"></span>
 					<input type="time" id="smartMovieEdit-time"/>
 				</div>
 			</li>
@@ -3809,13 +3805,15 @@
 			</li>
 			<li>
 				<label> Distance to Search
-					<select id="smartMovieEdit-searchDistance">
-						<option value="5">5 Miles</option>
-						<option value="10">10 Miles</option>
-						<option value="15" selected>15 Miles</option>
-						<option value="25">25 Miles</option>
-						<option value="50">50 Miles</option>
-					</select>
+					<div class="select">
+						<select id="smartMovieEdit-searchDistance">
+							<option value="5">5 Miles</option>
+							<option value="10">10 Miles</option>
+							<option value="15" selected>15 Miles</option>
+							<option value="25">25 Miles</option>
+							<option value="50">50 Miles</option>
+						</select>
+					</div>
 				</label>
 			</li>
 			<li id="searchMovieEdit-input">
@@ -4493,13 +4491,13 @@
 				<div class="clearfix"></div>
 				<div class="smallSearch">
 							<span class="searchIcon">
-								<span class="smart-event" data-grunticon-embed></span>
+								<span class="smart-event icon-sm" data-grunticon-embed></span>
 							</span>
 						<input type="text" class="viewSearchBox" id="smartEventView-date"/>
 					</div>
 					<div class="smallSearch-sm">
 						<span class="searchIcon">
-							<span  class="smart-time" data-grunticon-embed></span>
+							<span  class="smart-time icon-sm" data-grunticon-embed></span>
 						</span>
 						<input type="time" id="smartEventView-time"/>
 					</div>
@@ -5270,7 +5268,7 @@
 							<span class="icon-tag icon-sm" data-grunticon-embed></span>
 						</a>
 					</li>
-					<li >
+					<li>
 						<a data-role="button" data-click="placeView.ghostgram" id="placeView-editorBtn">
 							<span class="icon-editor icon-sm" data-grunticon-embed></span>
 						</a>
@@ -5852,7 +5850,7 @@
 <!-- smartFlight modal -->
 <div data-role="modalview" id="modalview-smartFlight" data-model="smartFlightView.status" data-init="smartFlightView.onInit"   data-open="smartFlightView.onOpen" style="width: 100%; height: 100%; display:none;" class="appearance">
 	<div class="intelli-header">
-		<div class="intelliFlight-light"></div>
+		<span class="intelliFlight-light"></span>
 		<p class="intelli-subheader">Track and share flights</p>
 	</div>
 	<div class="intelliCard flightCreator">
