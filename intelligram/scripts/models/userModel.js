@@ -733,7 +733,9 @@ var userStatus = {
         status.set('lastUpdate', ggTime.currentTime());
 
 
-       userStatusChannel.sendStatus(status)
+       userStatusChannel.sendStatus(status);
+
+        userModel.storeUserData();
 
     }
 
