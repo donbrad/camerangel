@@ -423,6 +423,9 @@ var smartEventView = {
 
                     // Use the selected item or its text
                 },
+                noDataTemplate: function (e) {
+
+                },
                 filter: "contains",
                 placeholder: "Event title"
             });
@@ -483,6 +486,9 @@ var smartEventView = {
                 ignoreCase: true,
                 dataTextField: "name",
                 dataValueField: "uuid",
+                noDataTemplate: function (e) {
+
+                },
                 change: function (e) {
                     var placeStr = $("#smartEventView-placesearch").val();
 
@@ -1137,6 +1143,9 @@ var movieListView = {
             dataSource: movieListView.moviesDS,
             dataTextField: "movieTitle",
             ignoreCase: true,
+            noDataTemplate: function (e) {
+
+            },
             select: function(e) {
                 var movieName = e.item[0].textContent;
                 var offset = e.item[0].attributes['data-offset-index'].value;
@@ -2583,6 +2592,9 @@ var smartTripView = {
             dataSource: smartTripView.placesDS,
             ignoreCase: true,
             dataTextField: "name",
+            noDataTemplate: function (e) {
+
+            },
             select: function(e) {
                 // User has selected one of their places
                 var dataItem = this.dataItem(e.item.index());
@@ -2653,6 +2665,9 @@ var smartTripView = {
             dataSource: smartTripView.placesDS,
             ignoreCase: true,
             dataTextField: "name",
+            noDataTemplate: function (e) {
+
+            },
             select: function(e) {
                 // User has selected one of their places;
                 var dataItem = this.dataItem(e.item.index());
@@ -3974,6 +3989,9 @@ var smartFlightView = {
             dataSource: airlineArray,
             ignoreCase: true,
             dataTextField: "name",
+            noDataTemplate: function (e) {
+
+            },
             select: function(e) {
                 //var airline = e.item;
                 var airline = this.dataItem(e.item.index());
@@ -3992,6 +4010,9 @@ var smartFlightView = {
             ignoreCase: true,
             template : "<span> #:city# (#:airport#) </span>",
             dataTextField: "city",
+            noDataTemplate: function (e) {
+
+            },
             select: function(e) {
                 //var depart = e.item;
 
@@ -4013,6 +4034,9 @@ var smartFlightView = {
             ignoreCase: true,
             template : "<span> #:city# (#:airport#) </span>",
             dataTextField: "city",
+            noDataTemplate: function (e) {
+
+            },
             select: function(e) {
                 //var airline = e.item;
                 var arrive = this.dataItem(e.item.index());
@@ -4031,6 +4055,9 @@ var smartFlightView = {
             dataSource: airlineArray,
             ignoreCase: true,
             dataTextField: "name",
+            noDataTemplate: function (e) {
+
+            },
             select: function(e) {
 
                 //var airline = e.item;

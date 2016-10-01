@@ -1,0 +1,15 @@
+.action-edit {
+  background-size: 100%;
+  background-position: center center;
+}
+.imdb-logo > svg {
+  height: 100%;
+  width: 100%;
+}
+.icon-emoji,
+.icon-emoji-active {
+  width: 1em;
+  height: 1em;
+  background-size: contain;
+  background-position: center;
+}
