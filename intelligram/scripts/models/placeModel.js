@@ -138,8 +138,8 @@ var placesModel = {
 
         });
 
-  /*      placesModel.placesDS.fetch();
-        placesModel.syncPlaceListDS();*/
+        placesModel.placesDS.fetch();
+        placesModel.syncPlaceListDS();
       /*  deviceModel.setAppState('hasPlaces', true);
         deviceModel.isParseSyncComplete();*/
 
