@@ -2021,6 +2021,15 @@ var galleryEditView = {
 
     },
 
+    setSave : function (enable) {
+        if (enable) {
+            $('#galleryEditor-saveBtn').removeClass('hidden');
+        } else {
+            $('#galleryEditor-saveBtn').addClass('hidden');
+        }
+    },
+
+
     onShow : function (e) {
         //_preventDefault(e);
 
@@ -2044,6 +2053,7 @@ var galleryEditView = {
 
 
         }
+
         if (e.view.params.galleryid !== undefined) {
             galleryEditView._galleryUUID = e.view.params.galleryid;
             var galleryList  =  galleryModel.findGallery(galleryEditView._galleryUUID);
@@ -2070,12 +2080,20 @@ var galleryEditView = {
             galleryEditView.photos = gallery.photos;
 
 
+
+
         } else {
             galleryEditView._galleryUUID = null;
             galleryEditView._mode = 'create';
             galleryEditView.initGallery(null);
+
         }
 
+        if (galleryEditView.activeObj.senderUUID === userModel._user.userUUID) {
+            galleryEditView.setSave(true);
+        } else {
+            galleryEditView.setSave(false);
+        }
 
         if (e.view.params.callback !== undefined) {
             galleryEditView._callback = e.view.params.callback;
