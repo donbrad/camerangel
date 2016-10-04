@@ -605,6 +605,7 @@ form {
   width: 2em;
   vertical-align: middle;
   background-size: contain;
+  background-position: center;
   > svg {
     height: 100%;
     width: 100%;
@@ -1269,8 +1270,8 @@ button {
 }
 div.km-header a svg{
   height: 1.2em;
-  width: 1.5em;
-  vertical-align: middle;
+  width: 1.2em;
+  //vertical-align: middle;
 }
 
 .k-autocomplete.k-state-default {
@@ -2770,6 +2771,13 @@ div.footer.km-footer {
 .km-material .km-view .km-navbar .km-button {
   padding: 1em;
   vertical-align: middle;
+    div {
+      height: 1.5em;
+      width: 1.5em;
+      background-size: contain;
+      background-position: center;
+      vertical-align: -webkit-baseline-middle;
+    }
 }
 
 .km-root .km-pane .km-view .km-back:after, .km-root .km-pane .km-view .km-back:before {
@@ -3498,6 +3506,13 @@ a:hover {
 
 #emoji-menu {
   //padding: 0.5em 0;
+}
+
+#emojiTabStrip {
+  a span.km-text {
+    position: absolute;
+    top: 0.5em;
+  }
 }
 
 #body > div.km-popup-overlay.km-popover-root > div {
@@ -4846,7 +4861,7 @@ div.loginBox > form > div > ul > li {
 
 #modalview-contactActions > div > div.km-scroll-container > div.modal-top {
   color: #fff;
-  background: url('../images/gradient-1.svg')no-repeat center center;
+  //background: url('../images/gradient-1.svg')no-repeat center center;
   background-size: cover;
 }
 
@@ -5876,6 +5891,10 @@ div.contactListBox.activeContact > div > div > ul {
   font-size: 0.7em !important;
 }
 
+div.k-nodata {
+  display: none !important;
+}
+
 .km-material input, .km-material select, .km-material textarea, .km-material .k-dropdown .k-input, .km-material input[type=password], .km-material input[type=search], .km-material input[type=number], .km-material input[type=tel], .km-material input[type=url], .km-material input[type=email], .km-material input[type=text]:not(.k-input), .km-root .km-material textarea {
   color: @black;
 }
@@ -6018,7 +6037,7 @@ div.contactListBox.activeContact > div > div > ul {
       margin-left: auto;
       margin-right: auto;
       display: inline-block;
-      vertical-align: middle;
+      //vertical-align: middle;
       >svg{
         height: 100%;
         width: 100%;
@@ -7381,6 +7400,13 @@ table.k-editor {
   }
 }
 
+.smart-time,
+.smart-event,
+.icon-duration {
+  float: left;
+  margin-top: 0.5em;
+}
+
 #intelliTrip-container {
   //margin-top: 2em;
 }
@@ -8013,4 +8039,22 @@ table.k-editor {
 .private-note-content > p:after {
   content: "...";
   .helper;
+}
+
+.private-note {
+  background-color: #fff;
+  //.shadowHelper(2);
+  border-radius: 4px !important;
+  .intelliTrip {
+    p {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+  .intelliTrip {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
 }

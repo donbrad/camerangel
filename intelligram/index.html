@@ -1488,9 +1488,9 @@
 
 <!-- contact action -->
 <div data-role="modalview" id="modalview-contactActions" data-model="contactActionView._activeContact"  style="width: 90%; min-height:65%; display: none;">
-	<div class="modal-top">
+	<div class="modal-top gradient-1">
 		<a data-role="button" class="modal-close" data-click="contactActionView.closeModal">
-			<div class="close-white" data-grunticon-embed></div>
+			<div class="close-white icon-lg" data-grunticon-embed></div>
 		</a>
 		<img class="circle-img-lg" id="contactProfileImg" data-bind="" />
 		<div class="status-away statusContactCard-icon contactStatusImg"></div>
@@ -2390,8 +2390,8 @@
 					</div>
 					<div data-role="layout" data-id="emojiMenu-popover">
 						<div data-role="footer" class="footer">
-							<div data-role="tabstrip">
-								<a href="#emoji-people" class="icon-lg emoji-people">
+							<div data-role="tabstrip" id="emojiTabStrip">
+								<a href="#emoji-people">
 									<span class="icon-lg emoji-people" data-grunticon-embed></span>
 								</a>
 								<a href="#emoji-nature">
@@ -3766,11 +3766,11 @@
 				<label> When </label>
 				<div class="clearfix"></div>
 				<div class="smallSearch">
-					<span class="smart-event icon-sm"></span>
+					<div class="smart-event icon-sm"></div>
 					<input type="text" class="viewSearchBox" id="smartMovieEdit-date"/>
 				</div>
 				<div class="smallSearch-sm">
-					<span class="smart-time icon-sm"></span>
+					<div class="smart-time icon-sm"></div>
 					<input type="time" id="smartMovieEdit-time"/>
 				</div>
 			</li>
@@ -3951,15 +3951,11 @@
 					<li id="smartTripView-departure-time" class="hidden">
 						<label id="smartTripView-departure-time-label"> Departure </label> <br />
 						<div class="smallSearch">
-								<span class="searchIcon">
-									<span class="smart-event icon-sm" data-grunticon-embed></span>
-								</span>
+							<div class="smart-event icon-sm" data-grunticon-embed></div>
 							<input type="text" class="viewSearchBox" id="smartTripView-dateDeparture" data-bind="value: dateDeparture" />
 						</div>
 						<div class="smallSearch-sm">
-							<span class="searchIcon">
-								<span class="smart-time icon-sm" data-grunticon-embed></span>
-							</span>
+							<div class="smart-time icon-sm" data-grunticon-embed></div>
 							<input type="time" id="smartTripView-timeDeparture" data-bind="value: timeDeparture"/>
 						</div>
 						<div class="clearfix"></div>
@@ -3969,14 +3965,12 @@
 						<div class="clearfix"></div>
 						<div class="smallSearch">
 								<span class="searchIcon">
-									<span  class="smart-event" data-grunticon-embed></span>
+									<span class="smart-event icon-sm" data-grunticon-embed></span>
 								</span>
 							<input type="text" class="viewSearchBox" id="smartTripView-dateArrival" data-bind="value: dateArrival"/>
 						</div>
 						<div class="smallSearch-sm">
-							<span class="searchIcon">
-								<span  class="smart-time" data-grunticon-embed></span>
-							</span>
+							<div class="smart-time icon-sm" data-grunticon-embed></div>
 							<input type="time" id="smartTripView-timeArrival" data-bind="value: timeArrival"/>
 						</div>
 						<div class="clearfix"></div>
@@ -4309,7 +4303,7 @@
 	<div class="eventBanner hidden">
 		<div>
 			<p>
-				<img src="" class="icon-sm eventBannerImg" />
+				<span class="icon-sm eventBannerImg"></span>
 				<span class="eventBannerTitle"></span>
 			</p>
 		</div>
@@ -4490,15 +4484,11 @@
 				<label> When </label>
 				<div class="clearfix"></div>
 				<div class="smallSearch">
-							<span class="searchIcon">
-								<span class="smart-event icon-sm" data-grunticon-embed></span>
-							</span>
-						<input type="text" class="viewSearchBox" id="smartEventView-date"/>
-					</div>
+					<div class="smart-event icon-sm" data-grunticon-embed></div>
+					<input type="text" class="viewSearchBox" id="smartEventView-date"/>
+				</div>
 					<div class="smallSearch-sm">
-						<span class="searchIcon">
-							<span  class="smart-time icon-sm" data-grunticon-embed></span>
-						</span>
+						<div class="smart-time icon-sm" data-grunticon-embed></div>
 						<input type="time" id="smartEventView-time"/>
 					</div>
 			</li>
@@ -4510,9 +4500,7 @@
 			<li id="smartEventView-durationBox" class="hidden">
 				<label> How Long (Duration) </label>
 				<div class="fullSearch">
-						<span class="searchIcon">
-							<span class="icon-duration" data-grunticon-embed></span>
-						</span>
+					<span class="icon-duration icon-sm" data-grunticon-embed></span>
 					<input type="search" class="viewSearchBox" id="smartEventView-duration"  data-bind="value: durationString" placeholder="1 hour..."/>
 				</div>
 			</li>
@@ -6697,7 +6685,6 @@
 	var sender = 'Me';
 	var noteDate = moment(timestamp);
 	var today = moment();
-
 
 	if(moment().isSame(noteDate, 'day')){
 		var dateString = moment(noteDate).fromNow();
