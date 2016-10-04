@@ -189,9 +189,10 @@ var noteModel = {
     createNote : function (type, objectId, isPrivate) {
       /*  var Notes = Parse.Object.extend(noteModel._cloudClass);
         var note = new Notes();*/
-        var note = new kendo.data.ObservableObject();
-        note.set('uuid',uuid.v4());
-        note.set('Id',uuid.v4());
+        var note = new kendo.data.ObservableObject()
+        var noteId = uuid.v4();
+        note.set('uuid',noteId);
+        note.set('Id',noteId);
         note.set('ggType',noteModel._ggClass);
         note.set('version',noteModel._version);
         note.set('userUUID',  userModel._user.userUUID);

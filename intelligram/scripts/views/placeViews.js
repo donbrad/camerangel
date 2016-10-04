@@ -2284,7 +2284,7 @@ var smartEventPlacesView = {
                                 if (smartEventPlacesView._selectPlaceFirst) {
                                     smartEventPlacesView._selectPlaceFirst = false;
                                     $('#searchEventPlaces-selectPlace').addClass('hidden');
-                                    $('#searchEventPlaces-searchDiv').removeClass('hidden');
+                                   // $('#searchEventPlaces-searchDiv').removeClass('hidden');
 
                                     $('#smartEventPlaces-query').val(smartEventPlacesView._query);
 
@@ -2481,6 +2481,7 @@ var smartEventPlacesView = {
     openModal : function (query, title, callback) {
 
         smartEventPlacesView.initDataSource();
+/*
         if (!smartEventPlacesView._inited) {
             smartEventPlacesView._inited = true;
 
@@ -2497,16 +2498,16 @@ var smartEventPlacesView = {
 
             $('#smartEventPlaces-query').on('input', function () {
                 var query =  $('#smartEventPlaces-query').val();
-                if (query.toLowerCase().indexOf('near') !== -1) {
+                /!*if (query.toLowerCase().indexOf('near') !== -1) {
                     smartEventPlacesView.preprocessQuery(query);
-                }
+                }*!/
                 if (query.length > 4) {
 
                     smartEventPlacesView._processQuery(query);
                 }
             });
 
-            /*smartEventPlacesView._searchBox.addListener('places_changed', function() {
+            /!*smartEventPlacesView._searchBox.addListener('places_changed', function() {
              var placesResults = smartEventPlacesView._searchBox.getPlaces();
              var ds = smartEventPlacesView.placesDS;
              ds.data([]);
@@ -2525,9 +2526,10 @@ var smartEventPlacesView = {
              });
 
              });
-             });*/
+             });*!/
 
         }
+*/
 
         smartEventPlacesView._lat = mapModel.lat;
         smartEventPlacesView._lng = mapModel.lng;
@@ -2556,9 +2558,9 @@ var smartEventPlacesView = {
 
             $('#smartEventPlaces-query').on('input', function () {
                 var query =  $('#smartEventPlaces-query').val();
-                if (query.toLowerCase().indexOf('near') !== -1) {
+             /*   if (query.toLowerCase().indexOf('near') !== -1) {
                     smartEventPlacesView.preprocessQuery(query);
-                }
+                }*/
                 if (query.length > 4) {
 
                     smartEventPlacesView._processQuery(query);
