@@ -61,7 +61,7 @@ var placesModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
@@ -104,7 +104,6 @@ var placesModel = {
                             placeTag.set('name', place.name);
                         }
 
-
                         if (placeList !== undefined)
                         //placeList[field] = place [field];
                             placeList.set(field, place[field]);
@@ -125,9 +124,9 @@ var placesModel = {
                     case "add" :
                         var place = e.items[0];
                         // add to placelist
-                        var placeList = placesModel.findPlaceListUUID(place.uuid);
+                      /*  var placeList = placesModel.findPlaceListUUID(place.uuid);
                         if (placeList === undefined)
-                            placesModel.placeListDS.add(place);
+                            placesModel.placeListDS.add(place);*/
                         var placeObj = placesModel.getPlaceModel(place.uuid);
                        /* if (placeObj === undefined)
                             placesModel.placesDS.add(place);*/
@@ -139,8 +138,8 @@ var placesModel = {
 
         });
 
-        placesModel.placesDS.fetch();
-        placesModel.syncPlaceListDS();
+  /*      placesModel.placesDS.fetch();
+        placesModel.syncPlaceListDS();*/
       /*  deviceModel.setAppState('hasPlaces', true);
         deviceModel.isParseSyncComplete();*/
 
@@ -364,37 +363,16 @@ var placesModel = {
         placeObj.set('distance', distance);
 
         placesModel.placesDS.add(place);
+        placesModel.sync();
         // Get a json object to add to kendo (strip the parse specific stuff)
       //  var placeObj = placeObj.toJSON();
-        everlive.createOne(placesModel._cloudClass, place, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating place " + JSON.stringify(error));
-            } 
-        });
-
-
-
-      //  placesModel.placesDS.add(place);
-       /* placesModel.placesDS.sync();
-
-        placeObj.save(null, {
-            success: function(placeIn) {
-                // Execute any logic that should take place after the object is saved.
-
-                placeObj = placeIn.toJSON();
-
-                if (callback !== undefined) {
-                    callback(placeObj);
+        if (deviceModel.isOnline()) {
+            everlive.createOne(placesModel._cloudClass, place, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating place " + JSON.stringify(error));
                 }
-
-
-            },
-            error: function(place, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and message.
-                handleParseError(error);
-            }
-        });*/
+            });
+        }
 
     },
 
@@ -403,7 +381,6 @@ var placesModel = {
         var placeObj = new kendo.data.ObservableObject();
 
         var newPlace = placesModel.newPlace();
-
         // Check that the place name is unique (in this users place's)
         place.name = place.name.toString();
 
@@ -413,7 +390,6 @@ var placesModel = {
         }
 
         var guid = uuid.v4();
-
 
        // placeObj.setACL(userModel.parseACL);
         placeObj.set('uuid', guid);
@@ -466,7 +442,7 @@ var placesModel = {
         placeObj.isDirty = true;
 
         placesModel.placesDS.add(placeObj);
-        placesModel.placesDS.sync();
+        placesModel.sync();
 
 
         if (callback !== undefined) {
@@ -480,10 +456,6 @@ var placesModel = {
                 }
             });
         }
-
-
-
-        
 
     },
 
