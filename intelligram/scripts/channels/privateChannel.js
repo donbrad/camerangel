@@ -524,6 +524,7 @@ var privateChannel = {
 
     getMessageHistory: function (channelUUID, callBack) {
 
+        userDataChannel.removeExpiredMessages();
 
         var messages = userDataChannel.queryMessages( [{ field: "channelUUID", operator: "eq", value: channelUUID }]);
 

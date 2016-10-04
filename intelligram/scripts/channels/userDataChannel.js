@@ -99,6 +99,7 @@ var userDataChannel = {
 
                 if (!userDataChannel._fetched) {
                     userDataChannel._fetched = true;
+                    userDataChannel.removeExpiredMessages();
                 }
             }
         });
@@ -321,16 +322,17 @@ var userDataChannel = {
             return;
         }
 
-        var yesterday = ggTime.lastWeek();
+        var lastWeek = ggTime.lastWeek();
        
         var queryCache = dataSource.filter();
         if (queryCache === undefined) {
             queryCache = [];
         }
-        dataSource.filter({ field: "time", operator: "lt", value:  yesterday});
+        dataSource.filter({ field: "time", operator: "lt", value:  lastWeek});
         var messageList = dataSource.view();
         dataSource.filter(queryCache);
 
+        mobileNotify('Cleaning ' + messageList.length + ' expired Private messages');
         if (messageList.length > 0) {
             for (var i=0; i< messageList.length; i++) {
                 var msg = messageList[i];
