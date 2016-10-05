@@ -611,6 +611,8 @@ var contactModel = {
         thisContact.set('contactPhoto', contact.photo);
         thisContact.set('groups', contact.groups);
         thisContact.set('groupString', contact.groupString);
+        thisContactList.set('groups', contact.groups);
+        thisContactList.set('groupString', contact.groupString);
         thisContact.set('contactAddress', contact.address);
         thisContactList.set('emailValidated', contact.emailValidated);
         thisContactList.set('contactPhoto', contact.photo);
