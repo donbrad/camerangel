@@ -70,7 +70,7 @@ var userStatusChannel = {
 
                     });
 
-                    userStatusChannel.userHistory();
+                    //userStatusChannel.userHistory();
                 }
             }
         });
@@ -111,7 +111,7 @@ var userStatusChannel = {
         //todo: don re-enable status channels
        // userStatusChannel.trackContacts();
 
-      //  userStatusChannel.contactHistory();
+        userStatusChannel.contactHistory();
     },
 
     unsubscribeContacts : function () {
@@ -170,8 +170,7 @@ var userStatusChannel = {
                         var msg = messages[i];
 
                         if (msg.msgType === userStatusChannel._status) {
-                            userStatusChannel.cacheList[msg.contactId] = msg.status;
-                            return;
+                            userStatusChannel.cacheList[msg.sender] = msg.status;
                         }
                     }
                 }
@@ -184,7 +183,7 @@ var userStatusChannel = {
 
     contactHistory : function () {
 
-        var length = userStatusChannel.statusArray;
+        var length = userStatusChannel.statusArray.length;
 
         if (length > 0) {
 
@@ -193,6 +192,7 @@ var userStatusChannel = {
                 APP.pubnub.history({
                     channel: userStatusChannel.statusArray[i],
                     include_token: true,
+                    count: 1,
                     error: userStatusChannel.error,
                     callback: function (messages) {
                         messages = messages[0];
@@ -201,11 +201,10 @@ var userStatusChannel = {
 
                         if (messages.length > 0) {
                             for (var i = 0; i < messages.length; i++) {
-                                var msg = messages[i];
+                                var msg = messages[i].message;
 
                                 if (msg.msgType === userStatusChannel._status) {
-                                    userStatusChannel.cacheList[msg.contactId] = msg.status;
-                                    return;
+                                    userStatusChannel.cacheList[msg.sender] = msg.status;
                                 }
                             }
                         }
