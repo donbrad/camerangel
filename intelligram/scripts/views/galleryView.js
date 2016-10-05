@@ -2183,10 +2183,10 @@ var galleryEditView = {
 
     processPrivatePhotos : function () {
         var obj = galleryEditView.activeObj;
-        var len = obj.photosDS.total();
+        var len = galleryEditView.photosDS.total();
         var photoArray = [];
         for (var i=0; i<len; i++) {
-            var photo = obj.photosDS.at(i);
+            var photo = galleryEditView.photosDS.at(i);
             photoArray.push(photo.uuid);
         }
         obj.photos = photoArray;

@@ -22,7 +22,7 @@ var placesView = {
             dataSource: placesModel.placeListDS,
             template: $("#placesTemplate").html(),
             dataBound: function(e) {
-                ux.checkEmptyUIState(placesModel.placesDS, "#placeListDiv >");
+                ux.checkEmptyUIState(placesModel.placeListDS, "#placeListDiv >");
             }
         }).kendoTouch({
         	filter: ".list-box",

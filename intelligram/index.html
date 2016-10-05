@@ -1129,7 +1129,6 @@
 			<div class="gallery-list" data-grunticon-embed></div>
 		</a>
 	</div>
-
 </div>
 
 <!-- galleryPicker template -->
@@ -1221,7 +1220,7 @@
 		</div>
 	</div>
 	<div id="galleryEditor-editTitleTag">
-		<input style="font-weight: 600;"  type="search" id="galleryEditor-title"  data-bind="value: title" placeholder="Add Title...">
+		<input class="input-text-lg" type="search" id="galleryEditor-title"  data-bind="value: title" placeholder="Add Title...">
 		<input id="galleryEditor-tagString"  placeholder="Click to add tags..."  data-bind="value: tagString" readonly>
 	</div>
 	<div id="galleryEditor-viewTitleTag" class="hidden">
@@ -1251,10 +1250,7 @@
 		<div style="clear:both;"></div>
 	</div>
 
-	<div style="width: 100vh;">
-		<ul id="galleryEdit-listview" ></ul>
-	</div>
-
+	<ul id="galleryEdit-listview" ></ul>
 	<div class="footer" data-role="footer">
 		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" id="galleryEditor-saveBtn">Save</a>
 	</div>
@@ -4217,20 +4213,32 @@
 
 
 <script id="intelliEvent-chat" type="text/x-kendo-template">
-<div>
-	<div class="btnSmart" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#" >
-			# var dateStr = date; if (ux.isToday(date)) { dateStr = "Today" + " at " + moment(date).format("hh:mm a"); }  if (ux.isTomorrow(date)) { dateStr = "Tomorrow" + " at " + moment(date).format("hh:mm a"); } #
-			<div class="btnSmart-content">
-				<span class="btnSmart-title"> #:title# </span><br />
-				<span class="btnSmart-date"> #:dateStr#</span><br />
-				<span class="btnSmart-date"> #:placeName#</span>
+	# var dateStr = date; if (ux.isToday(date)) { dateStr = "Today" + " at " + moment(date).format("hh:mm a"); }  if (ux.isTomorrow(date)) { dateStr = "Tomorrow" + " at " + moment(date).format("hh:mm a"); }
+	console.log(data);
+	#
+	<div class="intelliEvent" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#">
+			<div class="header">
+                <p class="title">
+                    <span class="icon-event headerImg"></span>
+                    <span>#:title#</span>
+                </p>
 			</div>
-
-			<span class="btnSmart-type">
-				<span class="icon-smartBtn smart-event-alt" data-grunticon-embed></span>
-			</span>
+			<div class="summary">
+				<p class="textClamp">
+                    <span class="icon-time icon-sm"></span>
+                    #:dateStr#
+                </p>
+				#
+					if(data.placeName !== ""){#
+					<p class="textClamp">
+						<span class="icon-location-dark icon-sm"></span>
+						#:placeName#
+					</p>
+					#}
+				#
+			</div>
 	</div>
-</div>
+
 </script>
 
 <script id="intelliMovie-chat-1" type="text/x-kendo-template">

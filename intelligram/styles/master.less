@@ -558,6 +558,8 @@ form {
   height: 1.3rem;
   width: 1.3em;
   vertical-align: middle;
+  background-position: center;
+  background-size: contain;
   > svg {
     height: 100%;
     width: 100%;
@@ -3511,7 +3513,15 @@ a:hover {
 #emojiTabStrip {
   a span.km-text {
     position: absolute;
-    top: 0.5em;
+    top: 1em;
+    left: 1em;
+    .icon-lg {
+      height: 2em;
+      width: 2em;
+      background-size: contain;
+      background-position: center;
+      display: inline-block;
+    }
   }
 }
 
@@ -5621,7 +5631,8 @@ div.contactListBox.activeContact > div > div > ul {
 }
 
 #gallery-listview,
-#galleryPicker-listview {
+#galleryPicker-listview,
+#galleryEdit-listview {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -5913,6 +5924,10 @@ div.k-nodata {
 
 #gallery > div.km-content.km-widget.km-scroll-wrapper > div.km-scroll-container > div > div.resultsBar > span.right > span > span {
   border: none;
+}
+
+#galleryEdit-listview {
+  width: 100%;
 }
 
 // Calendar
@@ -8011,6 +8026,40 @@ table.k-editor {
       font-size: 0.85em;
       position: relative;
       .helper;
+    }
+  }
+}
+
+/* IntelliEvent */
+.intelliEvent {
+  padding: 0.5em;
+  text-align: left;
+  width: 100%;
+  background-color: #fff !important;
+  .header {
+    width: 100%;
+    .title {
+      font-size: 1em;
+      font-weight: 600;
+    }
+    .headerImg {
+      height: 1em;
+      width: 1em;
+      background-size: contain;
+      background-position: center;
+      display: inline-block;
+      >svg {
+        height: 100%;
+        width: 100%;
+      }
+    }
+    border-bottom: 2px dotted @shade-200;
+  }
+  .summary {
+    width: 100%;
+    p {
+      margin-top: 0.5em;
+      font-size: 0.85em;
     }
   }
 }
