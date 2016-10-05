@@ -6403,8 +6403,13 @@
     aliasString = " (" + data.alias + ")";
     }
     #
-    <div style="padding-left: 8px; padding-right: 8px; width: 90%;">
-        <span>#:title#<em>#:aliasString#</em></span>
+    <div>
+		<h3 class="textClamp">
+			#:title#
+			#if(data.alias !== '' && data.alias !== null){#
+				<span>#:data.alias#</span>
+			#}#
+		</h3>
     </div>
 </script>
 
@@ -6525,22 +6530,27 @@
         <div data-role="navbar">
             <span>Group Picker</span>
             <a data-role="button" data-click="groupPickerView.closeModal" data-align="left" class="btnClear-grey-sm">
-				<div  class="close" data-grunticon-embed></div>
+				<div class="close icon-sm" data-grunticon-embed></div>
 			</a>
         </div>
 		<div>
 			<div class="appendSearch">
-				<span class="searchIcon">
-					<div class="search" data-grunticon-embed></div>
 				<input type="text" class="doubleAppendSearch" placeholder="Find groups..." id="groupPickerView-search" />
 			</div>
 		</div>
     </div>
 
-    <div style="width: 100vw;">
-        <div ><span style="font-size: 1.3em; float:left;">Groups</span> <span style="float:right;"><a data-role="button"  data-click="groupPickerView.addGroup"  class="btnClear-grey-sm">Add Group</a></span></div>
+    <div>
+			<h3>
+				Groups
+				<span style="float:right;">
+					<a data-role="button" data-click="groupPickerView.addGroup" class="btnClear-grey-sm">
+						Add Group
+					</a>
+				</span>
+			</h3>
         <div style="clear:both;"></div>
-        <ul id="groupPickerView-listview" class="list-inline" ></ul>
+        <ul id="groupPickerView-listview" class="list-inline"></ul>
     </div>
 
     <div class="footer" data-role="footer">

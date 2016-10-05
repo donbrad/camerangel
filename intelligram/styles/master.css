@@ -5323,6 +5323,9 @@ div.loginBox > form > div > ul > li {
   margin-left: auto;
   margin-right: auto;
 }
+#groupPickerView-listview {
+  width: 100%;
+}
 #groups-listview li {
   padding: 0 !important;
 }
@@ -7707,6 +7710,9 @@ table.k-editor {
 .intelliTrip .footer .intelliTrip-details {
   font-size: 1em;
   padding: 0.25em 0.5em;
+}
+.intelliTrip .footer .intelliTrip-details span.icon-sm {
+  margin-right: 0.5em;
 }
 .intelliTrip .footer .intelliTrip-details svg {
   height: 0.875em;
