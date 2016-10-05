@@ -1891,23 +1891,35 @@ var galleryEditView = {
     _returnview : null,
     _mode : 'create',
     _galleryUUID : null,
-    activeObj : new kendo.data.ObservableObject({title: null, tagString: null}),
+    activeObj : new kendo.data.ObservableObject({title: null, tagString: null, shareString: null}),
     tags : null,
     tagString: null,
+    members : null,
+    memberString: null,
     photosDS:  new kendo.data.DataSource(),
+    membersDS:  new kendo.data.DataSource(),
 
     onInit: function (e) {
 
         $('#galleryEditor-tagString').click(function(){
-            var that = galleryEditView;
+
             var string = $('#galleryEditor-tagString').val();
 
-            smartTagView.openModal(that.tags, that.tagString, function (tags, tagString ) {
+            smartTagView.openModal(galleryEditView.tags, galleryEditView.tagString, function (tags, tagString ) {
 
             })
 
         });
 
+        $('#galleryEditor-shareString').click(function(){
+
+            var string = $('#galleryEditor-tagString').val();
+
+            smartTagView.openModal(galleryEditView.members, galleryEditView.memberString, function (tags, tagString ) {
+
+            })
+
+        });
 
         // track photo count on adds and deletes
         galleryEditView.photosDS.bind("change", function (e) {
@@ -2106,8 +2118,6 @@ var galleryEditView = {
         } else {
             galleryEditView._returnview = null;
         }
-
-
 
 
     },

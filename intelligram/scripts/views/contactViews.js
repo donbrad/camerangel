@@ -2237,6 +2237,8 @@ var groupActionView = {
 var sharePickerView = {
     callback: null,
     _shareObj : null,
+    candidateDS : new kendo.data.DataSource(),
+    memberDS : new kendo.data.DataSource(),
 
     onInit: function () {
 
@@ -2292,6 +2294,7 @@ var sharePickerView = {
     },
 
     shareObject : function (target) {
+        // Is target a group or contact?
 
     },
 
