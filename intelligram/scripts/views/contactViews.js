@@ -1390,7 +1390,7 @@ var editContactView = {
             contact.set("publicKey", editContactView._activeContact.publicKey);
         }
 
-        contact.set("group", editContactView._activeContact.group);
+        //contact.set("group", editContactView._activeContact.group);
         contact.set("address", editContactView._activeContact.address);
         contact.set("category", editContactView._activeContact.category);
 
@@ -1401,7 +1401,8 @@ var editContactView = {
         contactList.set("email", editContactView._activeContact.email);
         contactList.set("photo", editContactView._activeContact.photo);
         contactList.set("identicon", editContactView._activeContact.identicon);
-        contactList.set("group", editContactView._activeContact.group);
+        contactList.set("groups", editContactView._activeContact.groups);
+        contactList.set("groupString", editContactView._activeContact.groupString);
         contactList.set("isFavorite", editContactView._activeContact.isFavorite);
         contactList.set("isBlocked", editContactView._activeContact.isBlocked);
         contactList.set("address", editContactView._activeContact.address);

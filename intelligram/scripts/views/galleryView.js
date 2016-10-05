@@ -8,7 +8,7 @@
 'use strict';
 
 
-/*
+/*  
  * gallery
  */
 
@@ -1913,9 +1913,9 @@ var galleryEditView = {
 
         $('#galleryEditor-shareString').click(function(){
 
-            var string = $('#galleryEditor-tagString').val();
+            var string = $('#galleryEditor-shareString').val();
 
-            smartTagView.openModal(galleryEditView.members, galleryEditView.memberString, function (tags, tagString ) {
+            sharePickerView.openModal(galleryEditView.members, galleryEditView.memberString, function (members, memberString ) {
 
             })
 
