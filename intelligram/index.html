@@ -1220,8 +1220,9 @@
 		</div>
 	</div>
 	<div id="galleryEditor-editTitleTag">
+		<input id="galleryEditor-shareString"  placeholder="Click to Share"  data-bind="value: shareString" readonly>
+		<input id="galleryEditor-tagString"  placeholder="Click to add tags"  data-bind="value: tagString" readonly>
 		<input class="input-text-lg" type="search" id="galleryEditor-title"  data-bind="value: title" placeholder="Add Title...">
-		<input id="galleryEditor-tagString"  placeholder="Click to add tags..."  data-bind="value: tagString" readonly>
 	</div>
 	<div id="galleryEditor-viewTitleTag" class="hidden">
 		<div data-bind="text: title"></div>
@@ -1250,7 +1251,10 @@
 		<div style="clear:both;"></div>
 	</div>
 
-	<ul id="galleryEdit-listview" ></ul>
+	<div style="width: 100vh;">
+		<ul id="galleryEdit-listview" ></ul>
+	</div>
+
 	<div class="footer" data-role="footer">
 		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" id="galleryEditor-saveBtn">Save</a>
 	</div>
