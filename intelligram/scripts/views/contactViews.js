@@ -2500,6 +2500,7 @@ var groupEditView = {
     tagString: null,
     memberDS:  new kendo.data.DataSource(),   // members of this group
     candidateDS :  new kendo.data.DataSource(),  // All other contacts that aren't in this group
+
     onInit: function (e) {
 
 
@@ -2547,12 +2548,14 @@ var groupEditView = {
         if (group === null) {
             groupEditView._mode = 'create';
 
+            $('#groupEditor-viewtitle').text('Add Group');
+
             that.activeObj.ggType = groupModel._ggClass;
 
             that.activeObj.uuid = uuid.v4();
-            that.activeObj.title = '';
-            that.activeObj.alias = '';
-            that.activeObj.description = '';
+            that.activeObj.set('title', null);
+            that.activeObj.set('alias', null);
+            that.activeObj.set('description', null);
             that.activeObj.tagString = '';
             that.activeObj.members = [];
             that.activeObj.memberString = null;
@@ -2565,6 +2568,8 @@ var groupEditView = {
             that.activeObj.canMedical = false;
 
         } else {
+            $('#groupEditor-viewtitle').text('Edit Group');
+
             that.activeObj.uuid = group.uuid;
             that.activeObj.set('title',group.title);
             that.activeObj.set('alias', group.alias);
