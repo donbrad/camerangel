@@ -227,6 +227,7 @@ var galleryModel = {
         return(view);
     },
 
+
     findComments: function (uuid) {
 
         var comments = galleryModel.queryComments({field: "galleryPhotoUUID", operator: "eq", value: uuid});
@@ -265,22 +266,49 @@ var galleryModel = {
 
     },
 
-    addGalleryPhoto : function (photo) {
-        galleryModel.photoDS.add(photo);
+    addGalleryPhoto : function (galleryId, photo) {
+
+        var gPhoto = {
+            photoId : photo.photoId,
+            onwerUUID : userModel._user.userUUID,
+            photoUUID : photo.photoUUID,
+            galleryUUID : galleryId,
+            cloudUrl : photo.cloudUrl,
+            deviceUrl : null,
+            lat: photo.lat,
+            lng: photo.lng,
+            dateString: photo.dateString,
+            addressString: photo.addressString,
+            tagString: photo.tagString
+
+        };
+
+        galleryModel.photoDS.add(gPhoto);
         galleryModel.photoDS.sync();
 
         if (deviceModel.isOnline()) {
-            everlive.createOne(galleryModel._galleryPhoto, photo, function (error, data){
+            everlive.createOne(galleryModel._galleryPhoto, gPhoto, function (error, data){
                 if (error !== null) {
                     mobileNotify ("Error creating Gallery Photo " + JSON.stringify(error));
                 }
             });
-
         }
-
     },
 
-    updateGalleryPhoto : function (photo) {
+    removeGalleryPhoto : function (gPhoto) {
+
+        if (deviceModel.isOnline()) {
+            everlive.deleteOne(galleryModel._galleryPhoto, gPhoto.Id, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error Deleting Gallery Photo " + JSON.stringify(error));
+                }
+            });
+        }
+        galleryModel.photoDS.remove(gPhoto);
+        galleryModel.photoDS.sync();
+    },
+
+    updateGalleryPhoto : function (gPhoto) {
 
     },
 
