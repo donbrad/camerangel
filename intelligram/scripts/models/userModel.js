@@ -628,8 +628,6 @@ var userStatus = {
 
     },
 
-
-
     getStatus : function (uuid, callback) {
         var filter = new Everlive.Query();
         filter.where().eq('userUUID', uuid);
@@ -709,8 +707,44 @@ var userStatus = {
             });
     },
 
+    isChanged : function () {
+        var status = userStatus._statusObj, user = userModel._user;
+
+        if (status.isAvailable !== user.isAvailable) {
+            return(true);
+        }
+
+        if (status.statusMessage !== user.statusMessage) {
+            return(true);
+        }
+
+        if (status.lat !== user.lat) {
+            return(true);
+        }
+
+        if (status.lng !== user.lng) {
+            return(true);
+        }
+
+        if (status.currentPlace !== user.currentPlace) {
+            return(true);
+        }
+
+        if (status.currentPlaceUUID !== user.currentPlaceUUID) {
+            return(true);
+        }
+
+        if (status.isCheckedIn !== user.isCheckedIn) {
+            return(true);
+        }
+
+        return(false);
+    },
+
     update : function () {
         var status = userStatus._statusObj;
+
+        var broadcast = userStatus.isChanged();
 
         status.set('userUUID', userModel._user.userUUID);
         status.set('isAvailable', userModel._user.isAvailable);
@@ -733,7 +767,9 @@ var userStatus = {
         status.set('lastUpdate', ggTime.currentTime());
 
 
-       userStatusChannel.sendStatus(status);
+        if (broadcast) {
+            userStatusChannel.sendStatus(status);
+        }
 
         userModel.storeUserData();
 
