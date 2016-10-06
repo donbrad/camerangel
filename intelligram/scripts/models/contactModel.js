@@ -248,11 +248,11 @@ var contactModel = {
             if (contact.category !== 'Chat') {
                 contact.identicon = contactModel.createIdenticon(contact.uuid);
                 contact.photo = contact.identicon;
-                contactModel.contactListDS.add(contact);
+
             }
             
             if (contact.category === 'member') {
-                var contactList = contactsView.contactCache[contact.contactUUID];
+                var contactList = userStatusChannel.cacheList[contact.contactUUID];
                 if (contactList !== undefined) {
                     contact.lat = contactList.lat;
                     contact.lng = contactList.lng;
@@ -264,7 +264,7 @@ var contactModel = {
                     contact.googlePlaceId = contactList.googlePlaceId;
                 }
             }
-
+            contactModel.contactListDS.add(contact);
         }
 
         contactModel.contactListDS.fetch();
