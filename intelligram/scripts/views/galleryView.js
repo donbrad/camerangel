@@ -8,7 +8,7 @@
 'use strict';
 
 
-/*  
+/*
  * gallery
  */
 
@@ -1341,6 +1341,7 @@ var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
     _address : null,
+    _deleteCallback : null,
    
     _dummyTitle : '',
     _dummyDescription : '',
@@ -1383,7 +1384,7 @@ var modalPhotoView = {
         });
     },
 
-    openModal : function (photo) {
+    openModal : function (photo, deleteCallback) {
         modalPhotoView._photo = photo;
 
         // User is inspected / editing -- make sure the photo exists in the cloud and on the device...
@@ -1391,6 +1392,12 @@ var modalPhotoView = {
         var url = null;
 
         var deviceUrl = photo.deviceUrl;
+
+        if (deleteCallback !== undefined) {
+            modalPhotoView._deleteCallback = deleteCallback;
+        } else {
+            modalPhotoView._deleteCallback = null;
+        }
 
         if (deviceUrl.indexOf('file://') === -1 ) {
             deviceUrl = 'file://' + deviceUrl;
@@ -1574,7 +1581,12 @@ var modalPhotoView = {
             "Delete" ,
             function() {
                 //User wants to delete the photo
-                photoModel.deletePhoto(modalPhotoView._activePhoto.photoId);
+                if (modalPhotoView._deleteCallback !== null) {
+                    modalPhotoView._deleteCallback(modalPhotoView._activePhoto.photoId);
+                } else {
+                    photoModel.deletePhoto(modalPhotoView._activePhoto.photoId);
+                }
+
                 modalView.close();
             },
             "Cancel",
@@ -2009,8 +2021,10 @@ var galleryEditView = {
             that.activeObj.ggType = galleryModel._ggClass;
            // $('#galleryEditor-title').val("");
            // $('#galleryEditor-tagString').val("");
+            galleryEditView._galleryUUID =  that.activeObj.uuid;
             galleryEditView._mode = 'create';
         } else {
+            galleryEditView._galleryUUID = gallery.uuid;
             that.activeObj.Id = gallery.Id;
             that.activeObj.uuid = gallery.uuid;
             that.activeObj.photos =  gallery.photos;
@@ -2136,17 +2150,56 @@ var galleryEditView = {
 
     },
 
+    queryPhoto: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = galleryEditView.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var photo = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(photo);
+    },
+
+    findPhotoByUUID : function (id) {
+        var photo = galleryEditView.queryPhoto([{ field: "uuid", operator: "eq", value: id }]);
+
+        return(photo);
+    },
+
+    findPhotoByPhotoUUID : function (id) {
+        var photo = galleryEditView.queryPhoto([{ field: "photoUUID", operator: "eq", value: id }]);
+
+        return(photo);
+    },
+
+
     addPhotoToGallery : function (photoId, displayUrl) {
         var photoObj = photoModel.findPhotoById(photoId);
 
         if (photoObj !== undefined) {
 
+            galleryModel.addGalleryPhoto(galleryEditView._galleryUUID, photoObj);
             galleryEditView.photosDS.add(photoObj);
             galleryEditView.photosDS.sync();
         }
 
     },
 
+    removePhotoFromGallery : function (photoId) {
+        var photoObj = photoModel.findPhotoById(photoId);
+
+        if (photoObj !== undefined) {
+
+        }
+
+    },
 
     updateImageUrl : function (photoId, shareUrl) {
         var photoObj = photoModel.findPhotoById(photoId);
