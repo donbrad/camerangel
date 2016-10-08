@@ -279,7 +279,11 @@ var galleryModel = {
             lng: photo.lng,
             dateString: photo.dateString,
             addressString: photo.addressString,
-            tagString: photo.tagString
+            tagString: photo.tagString,
+            commentCount: 0,
+            likeCount: 0,
+            likes: []
+
 
         };
 

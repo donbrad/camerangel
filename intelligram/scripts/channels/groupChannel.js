@@ -322,7 +322,6 @@ var groupChannel = {
         };
 
         if (!deviceModel.isOnline()) {
-
             thisMessage.wasSent = false;
             groupChannel.deferredDS.add(thisMessage);
             return;
@@ -577,7 +576,7 @@ var groupChannel = {
 
        var msgID = uuid.v4();
 
-        var notificationString = "Chat : " + groupChannel.channelName;
+        var notificationString = "Chat : " + groupChannel.channelName + ' from: ' + userModel._user.name;
         var message = {
             msgID: msgID,
             msgClass : groupChannel._class,

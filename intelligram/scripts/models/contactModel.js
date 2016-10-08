@@ -16,7 +16,8 @@ var contactModel = {
     _shareGroup   : 'Group',
     _fetched : false,
 
-   contactsDS: null,
+    contactCache : [],
+    contactsDS: null,
 
 
     shareDS : new kendo.data.DataSource({
@@ -145,6 +146,7 @@ var contactModel = {
 
                         var contact = e.items[0];
                         // add to contactlist and contacttags
+                        contactModel.contactCache[contact.uuid] = contact;
                         var contactList = contactModel.findContactList(contact.uuid);
                         if (contactList !== undefined) {
                             contact.identicon = contactModel.createIdenticon(contact.uuid);
@@ -245,6 +247,8 @@ var contactModel = {
 
         for (var i=0; i<array.length; i++) {
             var contact = (array[i]).toJSON();
+
+
             if (contact.category !== 'Chat') {
                 contact.identicon = contactModel.createIdenticon(contact.uuid);
                 contact.photo = contact.identicon;
@@ -264,6 +268,8 @@ var contactModel = {
                     contact.googlePlaceId = contactList.googlePlaceId;
                 }
             }
+
+            contactModel.contactCache[contact.uuid] = contact;
             contactModel.contactListDS.add(contact);
         }
 

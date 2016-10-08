@@ -1107,18 +1107,18 @@ var appDataChannel = {
             if (contact === undefined) {
                 // This user has been added to group but a member who's not in their contact list 
                 contactModel.createChatContact(ownerId, ownerName, uuid.v4(), function (result) {
-                    channelModel.queryChannelMap(channelUUID, function (error, data) {
-                        if (error === null && data !== null) {
+                /*    channelModel.queryChannelMap(channelUUID, function (error, data) {
+                        if (error === null && data !== null) {*/
                             channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
-                        }
-                    });
+                /*        }
+                    });*/
                 })
             } else {
-                channelModel.queryChannelMap(channelUUID, function (error, data) {
-                    if (error === null && data !== null) {
+               /* channelModel.queryChannelMap(channelUUID, function (error, data) {
+                    if (error === null && data !== null) {*/
                         channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
-                    }
-                });
+         /*           }
+                });*/
             }
             
 

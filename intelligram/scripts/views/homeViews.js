@@ -613,7 +613,8 @@ var homeView = {
                 var chanId = notification.privateId;
                 var checkChan = channelModel.findChannelModel(chanId);
                 if (checkChannel === undefined || checkChannel === null) {
-                    mobileNotify("Looking up " + notification.title);
+                    mobileNotify("Chat " + notification.title + " wasn't found");
+                   /* mobileNotify("Looking up " + notification.title);
                    channelModel.queryChannelMap(chanId, function(error, chanObj){
                        mobileNotify("Creating chat : " + chanObj.name + "...");
                         channelModel.addMemberChannel(chanObj.channelUUID, chanObj.name, chanObj,description, chanObj.members,
@@ -621,7 +622,7 @@ var homeView = {
 
                        APP.kendo.navigate(href);
                    });
-
+*/
                 } else {
                     APP.kendo.navigate(href);
                 }

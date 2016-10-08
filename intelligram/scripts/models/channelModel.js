@@ -1252,7 +1252,7 @@ var channelModel = {
         channel.set("invitedMembers", []);
 
 
-        channelModel.createChannelMap(channel);
+       // channelModel.createChannelMap(channel);
         channelModel.channelsDS.add(channel);
         serverPush.provisionGroupChannel(channel.channelUUID);
         mobileNotify('Added Chat : ' + channel.get('name'));
@@ -1328,7 +1328,7 @@ var channelModel = {
         channel.set("invitedMembers", []);
 
 
-        channelModel.createChannelMap(channel);
+       // channelModel.createChannelMap(channel);
         channelModel.channelsDS.add(channel);
         serverPush.provisionGroupChannel(channel.channelUUID);
         mobileNotify('Added Chat : ' + channel.get('name'));
@@ -1473,7 +1473,7 @@ var channelModel = {
         for (var i=0; i<channelArray.length; i++) {
             channelModel.deleteChannel(channelArray.channelUUID);
         }
-    },
+    }/*,
 
     createChannelMap : function (channel) {
         var mapObj = {};
@@ -1598,7 +1598,7 @@ var channelModel = {
                 callback(error, null);
             });
     }
-
+*/
 
 
 };

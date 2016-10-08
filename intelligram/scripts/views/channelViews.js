@@ -710,7 +710,7 @@ var editChannelView = {
             });
         }
         
-        channelModel.updateChannelMap(channelObj);
+        //channelModel.updateChannelMap(channelObj);
         
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");
@@ -1269,7 +1269,7 @@ var channelView = {
 
         var $img = $("#messages-listview img"), n = $img.length;
         if (n > 0) {
-            mobileNotify("Loading " + n + " Chat Images...");
+            //mobileNotify("Loading " + n + " Chat Images...");
             $img.on("load error", function () {
                 if(--n === 0 ) {
                     setTimeout( function () {channelView.scrollToBottom();}, 500);
@@ -1540,6 +1540,7 @@ var channelView = {
 
             //Build the members datasource and quick access list
             channelView.buildMemberDS();
+
             //*** Group Channel ***
             $('#messagePresenceButton').show();
             // Provision a group channel
@@ -1896,13 +1897,13 @@ var channelView = {
     },
 
     getContactPhotoUrl : function (contactUUID) {
+        var photoUrl = null;
         var contact = channelView.memberList[contactUUID];
         if (contact === undefined) {
-           ggError("Contact Undefined!!!");
-            debugger;
-        }
-        var photoUrl = null;
-        if (contact !== undefined) {
+
+            photoUrl = contactModel.createIdenticon(contactUUID);
+
+        } else {
             photoUrl = contact.photo;
             if (photoUrl === null) {
                 photoUrl = contact.identicon;
@@ -1911,7 +1912,7 @@ var channelView = {
         return (photoUrl);
     },
 
-    //build a cache of photos indexed by photoId
+/*    //build a cache of photos indexed by photoId
     buildPhotoList : function () {
 
         channelView.photos = [];
@@ -1922,7 +1923,7 @@ var channelView = {
         for (var i=0; i<photos.length; i++) {
             channelView.photos[photos[i].photoId] = photos[i];
         }
-    },
+    },*/
 
 
     // Build a member list for this channel
@@ -1962,22 +1963,19 @@ var channelView = {
                 var thisContact = contactModel.findContact(contactArray[i]);
 
                 if (thisContact === undefined) {
-                    // No contact entry for this contact...
-                    // Need to create a contact and then add to channels member list
-                    contact.isContact = true;
-                    contact.uuid = uuid.v4();
-                    contact.contactUUID = contactIndex;
-                    contact.alias = "New";
-                    contact.name = "New Contact...";
-                    contact.identicon = contactModel.createIdenticon(contact.uuid);
-                    contact.photo =  contact.identicon;
-                    contact.publicKey = null;
-                    contact.isPresent = false;
-                    contact.isNew = true;
-                    contactModel.createChatContact(contactIndex, 'Anonymous...', contact.uuid,  function (newContact) {
-
-                    });
-                } else {
+                 // No contact entry for this contact...
+                 // Need to create a contact and then add to channels member list
+                     contact.isContact = true;
+                     contact.uuid = uuid.v4();
+                     contact.contactUUID = contactIndex;
+                     contact.alias = "New";
+                     contact.name = "New Contact...";
+                     contact.identicon = contactModel.createIdenticon(contactIndex);
+                     contact.photo =  contact.identicon;
+                     contact.publicKey = null;
+                     contact.isPresent = false;
+                     contact.isNew = true;
+                 } else {
                     // Found a matching contact
                     contact.isContact = true;
                     contact.uuid = thisContact.uuid;
