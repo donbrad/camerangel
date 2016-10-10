@@ -1910,6 +1910,8 @@ var galleryEditView = {
     memberString: null,
     photosDS:  new kendo.data.DataSource(),
     membersDS:  new kendo.data.DataSource(),
+    membersAddedDS:  new kendo.data.DataSource(),
+    membersDeletedDS:  new kendo.data.DataSource(),
 
     onInit: function (e) {
 
@@ -2015,6 +2017,7 @@ var galleryEditView = {
             that.activeObj.isShared = false;
             that.activeObj.isOpen = false;
             that.activeObj.isTracked = false;
+            that.activeObj.members = [];
             that.activeObj.senderUUID = userModel._user.userUUID;
             that.activeObj.senderName = userModel._user.name;
             that.activeObj.timestamp = new Date();
@@ -2036,12 +2039,13 @@ var galleryEditView = {
             that.activeObj.isShared = gallery.isShared;
             that.activeObj.isOpen = gallery.isOpen;
             that.activeObj.isTracked = gallery.isTracked;
+            that.activeObj.members = gallery.members;
+            galleryEditView.buildMembersDS();
             that.activeObj.senderUUID = gallery.senderUUID;
             that.activeObj.senderName = gallery.senderName;
             that.activeObj.timestamp = gallery.timestamp;
             that.activeObj.lastUpdate = gallery.lastUpdate;
-            that.activeObj.ggType = gallery.ggType
-            ;
+            that.activeObj.ggType = gallery.ggType;
             galleryEditView._mode = 'edit';
         }
 
@@ -2180,23 +2184,59 @@ var galleryEditView = {
     },
 
 
+    buildMembersDS : function () {
+        var members = galleryEditView.activeObj.members;
+        galleryEditView.membersDS.data([]);
+
+        for (var i=0; i<members.length; i++) {
+            var contactUUID = members[i];
+
+            var member = contactModel.findContact(contactUUID);
+
+            galleryEditView.membersDS.add(member);
+
+        }
+    },
+
+    buildMemberArray : function () {
+        var members = [];
+
+        for (var i=0; i< galleryEditView.membersDS.total(); i++ ){
+            var member = galleryEditView.membersDS.at(i);
+
+            members.push(member);
+        }
+
+        galleryEditView.activeObj.members = members;
+    },
+
+
+
     addPhotoToGallery : function (photoId, displayUrl) {
         var photoObj = photoModel.findPhotoById(photoId);
 
         if (photoObj !== undefined) {
 
-            galleryModel.addGalleryPhoto(galleryEditView._galleryUUID, photoObj);
+         //   galleryModel.addGalleryPhoto(galleryEditView._galleryUUID, photoObj);
             galleryEditView.photosDS.add(photoObj);
             galleryEditView.photosDS.sync();
+
+            if (galleryEditView.activeObj.isShared) {
+                galleryModel.addGalleryPhoto(galleryEditView.activeObj.galleryUUID, photoObj);
+            }
         }
 
     },
 
     removePhotoFromGallery : function (photoId) {
-        var photoObj = photoModel.findPhotoById(photoId);
+        var photoObj = galleryEditView.findPhotoByUUID(photoId);
 
         if (photoObj !== undefined) {
 
+            if (galleryEditView.activeObj.isShared) {
+                galleryModel.removeGalleryPhoto(photoObj);
+            }
+            galleryEditView.photoDS.remove(photoObj);
         }
 
     },
@@ -2260,6 +2300,7 @@ var galleryEditView = {
 
     processSharedPhotos : function () {
         var obj = galleryEditView.activeObj;
+
     },
 
     processPrivatePhotos : function () {
@@ -2283,7 +2324,7 @@ var galleryEditView = {
 
         if (galleryEditView._mode === 'edit') {
 
-            var gallery = privateNoteModel.findGallery(activeGallery.uuid);
+            var gallery = galleryModel.findGallery(activeGallery.uuid);
 
             gallery.set('title', title);
             gallery.set('tagString', tagString);
@@ -2315,7 +2356,6 @@ var galleryEditView = {
 
             galleryModel.addGallery(activeGallery);
         }
-
 
     }
 

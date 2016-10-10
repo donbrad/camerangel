@@ -158,6 +158,14 @@ var galleryModel = {
         return (galleries);
     },
 
+    findGalleryByUUID: function (uuid) {
+
+        var galleries = galleryModel.queryGalleries({field: "galleryUUID", operator: "eq", value: uuid});
+
+        return (galleries);
+    },
+
+
     queryPhotos: function (query) {
         if (query === undefined)
             return(undefined);
@@ -255,6 +263,63 @@ var galleryModel = {
 
     },
 
+    shareGallery : function (gallery) {
+
+        gallery.isShared = true;
+
+    },
+
+    addSharedGallery : function (gallery) {
+
+        var guid = uuid.v4();
+        var sharedGallery = {
+            id : guid,
+            uuid : guid,
+            galleryUUID : gallery.uuid,
+            isShared : true,
+            photoCollection : gallery.photoCollection,
+            sendName : gallery.senderName,
+            senderUUID : gallery.senderUUID,
+            title : gallery.title,
+            description : gallery.description,
+            tagString : gallery.tagString
+
+        };
+
+
+        galleryModel.galleryDS.add(sharedGallery);
+        galleryModel.galleryDS.sync();
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(galleryModel._cloudClass, sharedGallery, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Shared Gallery " + JSON.stringify(error));
+                }
+            });
+
+        }
+
+    },
+
+    shareGalleryPhotos : function (gallery) {
+        if (gallery === undefined || gallery === null) {
+            ggError("Invalid Gallery!");
+            return;
+        }
+
+        var galleryId = gallery.uuid;
+        var photoCount = gallery.photos.length;
+
+        for (var i=0; i<photoCount; i++ ) {
+
+            var photo = gallery.photos[i];
+            galleryModel.addGalleryPhoto(galleryId, photo);
+
+        }
+
+        galleryModel.galleryDS.sync();
+
+    },
 
     updateGallery : function (gallery) {
 
@@ -268,8 +333,18 @@ var galleryModel = {
 
     addGalleryPhoto : function (galleryId, photo) {
 
+        var guid = uuid.v4();
+
+        var gallery = galleryModel.findGallery(galleryId);
+
+        if (gallery === undefined)  {
+            ggError ("GalleryPhoto: can't find gallery!");
+            return;
+        }
+
         var gPhoto = {
-            photoId : photo.photoId,
+            Id : guid,
+            photoId : guid,
             onwerUUID : userModel._user.userUUID,
             photoUUID : photo.photoUUID,
             galleryUUID : galleryId,
@@ -284,14 +359,14 @@ var galleryModel = {
             likeCount: 0,
             likes: []
 
-
         };
-
-        galleryModel.photoDS.add(gPhoto);
+        galleryModel.photoDS.add(photo);
         galleryModel.photoDS.sync();
 
+        gallery.photoCollection.push[guid];
+
         if (deviceModel.isOnline()) {
-            everlive.createOne(galleryModel._galleryPhoto, gPhoto, function (error, data){
+            everlive.createOne(galleryModel._galleryPhoto, photo, function (error, data){
                 if (error !== null) {
                     mobileNotify ("Error creating Gallery Photo " + JSON.stringify(error));
                 }
