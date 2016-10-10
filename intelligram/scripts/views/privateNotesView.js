@@ -877,6 +877,7 @@ var privateNotesView = {
                 var note = {};
                 note.ggType = 'Note';
                 note.noteType = 'Event';
+                note.uuid = objectId;
                 note.title = event.title;
                 note.description = event.description;
                 note.tagString = event.address;
@@ -913,6 +914,7 @@ var privateNotesView = {
                 var content = template(dataObj);
 
                 var note = {};
+                note.uuid = objectId;
                 note.ggType = 'Note';
                 note.noteType = 'Movie';
                 note.title = movie.movieTitle;
@@ -962,6 +964,7 @@ var privateNotesView = {
                     var note = {};
                     note.ggType = 'Note';
                     note.noteType = 'Flight';
+                    note.uuid = objectId;
                     note.title = flightObj.name;
                     note.tagString = flightObj.departureCity + " " + flightObj.arrivalCity;
                     note.description = flightObj.departureAirport + '/' + flightObj.departureAirport + " via " + flightObj.airline + flightObj.flight;
@@ -1013,6 +1016,7 @@ var privateNotesView = {
                     var note = {};
                     note.ggType = 'Note';
                     note.noteType = 'Trip';
+                    note.uuid = objectId;
                     note.title = tripObj.name;
                     note.tagString = '';
                     note.description = tripObj.tripType + " from " + tripObj.originName + " to " + tripObj.destinationName;
@@ -1066,13 +1070,22 @@ var privateNotesView = {
                     APP.kendo.navigate('#galleryEditor?galleryid='+note.uuid+"&returnview=home");
                 } else if (note.noteType === 'Movie') {
                     movieListView.openModal( note.object, function (movie) {
-                        if (movie !== null) {
+                       /* if (movie !== null) {
                             privateNoteModel.updateNote(note);
 
-                        }
+                        }*/
+                    });
+                } else if (note.noteType === 'Trip') {
+                    smartTripView.openModal(note.object, function (trip) {
+
+                    });
+                } else if (note.noteType === 'Event') {
+                    smartEventView.openModal(note.object, function (event) {
+
                     });
                 }
             }
+
         }
 
         // User actually clicked on the photo so show the open the photo viewer
