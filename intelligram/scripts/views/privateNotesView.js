@@ -452,23 +452,50 @@ var privateNotesView = {
     editNote : function (e) {
         _preventDefault(e);
 
-        if (privateNotesView.activeNote.uuid !== undefined) {
+        var that = privateNotesView, note = privateNotesView.activeNote;
 
-            APP.kendo.navigate("#noteEditor?noteid="+privateNotesView.activeNote.uuid+'&returnview=home');
-           /* var content='<p></p>';
-           
-            privateNotesView._editMode = true;
-            $('#privateNoteTitle').val(privateNotesView.activeNote.title);
-            $('#privateNoteTags').val(privateNotesView.activeNote.tagString);
-            if (privateNotesView.activeNote.content !== undefined) {
-                content =  privateNotesView.activeNote.content;
-            }
-            
-            $('#privateNoteTextArea').redactor('code.set', content);
+        switch (note.noteType) {
+            case 'Note' :
+                if (note.uuid !== undefined) {
 
-            privateNotesView.activateEditor();
-            $("#privateNoteViewActions").data("kendoMobileActionSheet").close();*/
+                    APP.kendo.navigate("#noteEditor?noteid="+privateNotesView.activeNote.uuid+'&returnview=gallery');
+
+                }
+                break;
+
+            case 'Event' :
+                smartEventView.openModal(note.object, function (event) {
+
+                });
+                break;
+
+            case 'Flight' :
+                smartFlightView.openModal(note.object, function (flight) {
+                    if (flight !== null) {
+
+                    }
+                });
+                break;
+
+            case 'Movie' :
+                movieListView.openModal( note.object, function (movie) {
+                    if (movie !== null) {
+
+
+                    }
+                });
+                break;
+
+            case 'Trip' :
+                smartTripView.openModal(note.object, function (trip) {
+                    if (trip !== null) {
+
+                    }
+                });
+                break;
+
         }
+
 
     },
 
@@ -489,9 +516,6 @@ var privateNotesView = {
         _preventDefault(e);
     },
 
-    sendChatNote : function (e) {
-        _preventDefault(e);
-    },
 
 
 
@@ -1059,36 +1083,6 @@ var privateNotesView = {
             noteId =   e.touch.target[0].attributes['data-id'].value;
         }
 
-
-        if (noteId !== undefined && noteId !== null) {
-            note = privateNoteModel.findNote(noteId);
-            if (note !== undefined && note !== null) {
-                privateNotesView.activeNote = note;
-                if (note.noteType === 'Note') {
-                    noteViewer.openModal(note.uuid, privateNotesView.activeNote);
-                } else if (note.noteType === 'Gallery') {
-                    APP.kendo.navigate('#galleryEditor?galleryid='+note.uuid+"&returnview=home");
-                } else if (note.noteType === 'Movie') {
-                    movieListView.openModal( note.object, function (movie) {
-                       /* if (movie !== null) {
-                            privateNoteModel.updateNote(note);
-
-                        }*/
-                    });
-                } else if (note.noteType === 'Trip') {
-                    smartTripView.openModal(note.object, function (trip) {
-
-                    });
-                } else if (note.noteType === 'Event') {
-                    smartEventView.openModal(note.object, function (event) {
-
-                    });
-                }
-            }
-
-        }
-
-        // User actually clicked on the photo so show the open the photo viewer
         if ($target.hasClass('photo-chat')) {
 
             var photoId = $target.attr('data-photoId');
@@ -1105,8 +1099,72 @@ var privateNotesView = {
                     }
                 }
             }
+        } else {
+            if (noteId !== undefined && noteId !== null) {
+                note = privateNoteModel.findNote(noteId);
+                $('#privateNoteView-editTitle').text('View');
+
+                if (note.noteType === 'Note') {
+                    $('#privateNoteView-editTitle').text('Edit');
+                }
+                if (note !== undefined && note !== null) {
+                    privateNotesView.activeNote = note;
+
+                    $("#privateNoteViewActions").data("kendoMobileActionSheet").open();
+                }
+            }
         }
 
+        /*if (noteId !== undefined && noteId !== null) {
+            note = privateNoteModel.findNote(noteId);
+
+            if (note !== undefined && note !== null) {
+                privateNotesView.activeNote = note;
+            }
+               /!* privateNotesView.activeNote = note;
+                if (note.noteType === 'Note') {
+                    noteViewer.openModal(note.uuid, privateNotesView.activeNote);
+                } else if (note.noteType === 'Gallery') {
+                    APP.kendo.navigate('#galleryEditor?galleryid='+note.uuid+"&returnview=home");
+                } else if (note.noteType === 'Movie') {
+                    movieListView.openModal( note.object, function (movie) {
+                       /!* if (movie !== null) {
+                            privateNoteModel.updateNote(note);
+
+                        }*!/
+                    });
+                } else if (note.noteType === 'Trip') {
+                    smartTripView.openModal(note.object, function (trip) {
+
+                    });
+                } else if (note.noteType === 'Event') {
+                    smartEventView.openModal(note.object, function (event) {
+
+                    });
+                }
+            }*!/
+
+        }*/
+
+        // User actually clicked on the photo so show the open the photo viewer
+       /* if ($target.hasClass('photo-chat')) {
+
+            var photoId = $target.attr('data-photoId');
+
+            if (message.data !== undefined && message.data.photos !== undefined) {
+                var photoList = message.data.photos;
+
+                for (var i=0; i< photoList.length; i++) {
+                    var photoObj = photoList[i];
+
+                    if (photoObj.photoId === photoId) {
+                        modalChatPhotoView.openModal(photoObj, false);
+                        return;
+                    }
+                }
+            }
+        }
+*/
     },
 
     holdNote : function (e) {
