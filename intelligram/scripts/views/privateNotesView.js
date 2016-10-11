@@ -454,6 +454,10 @@ var privateNotesView = {
 
         var that = privateNotesView, note = privateNotesView.activeNote;
 
+        if (note === undefined || note === null) {
+            ggError("No active note!");
+        }
+
         switch (note.noteType) {
             case 'Note' :
                 if (note.uuid !== undefined) {
