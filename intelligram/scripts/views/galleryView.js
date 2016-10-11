@@ -577,11 +577,14 @@ var galleryView = {
         if (noteId !== undefined && noteId !== null) {
             note = privateNoteModel.findNote(noteId);
             if (note !== undefined && note !== null) {
-               var dataObj = userDataChannel.decryptBlock(note.dataBlob);
-                if(dataObj !== null) {
-                    dataObj = JSON.parse(dataObj);
+
+                if (note.dataBlob !== undefined && note.dataBlob !== null) {
+                    var dataObj = userDataChannel.decryptBlock(note.dataBlob);
+                    if(dataObj !== null) {
+                        dataObj = JSON.parse(dataObj);
+                    }
+                    note.dataObj = dataObj;
                 }
-                note.dataObj = dataObj;
 
                 if (note.noteType === 'Note') {
                     noteViewer.openModal(note.uuid, note);

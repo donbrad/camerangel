@@ -519,12 +519,31 @@ var privateNotesView = {
     sendNote : function (e) {
         _preventDefault(e);
 
-        sharePickerView.openModal(privateNotesView.activeNote, function () {
+        sharePickerView.openModal(privateNotesView.activeNote, function (share) {
+            if (share === null) {
+                mobileNotify("Share cancelled.")
+            } else {
+
+                if (share.category === 'Group' || share.category === 'Chat') {
+
+                    privateNotesView.sendNoteToChat(share.channelUUID);
+
+                } else if (share.category === 'Contact') {
+                    privateNotesView.sendNoteToContact(share.contactUUID);
+                }
+
+            }
 
         });
     },
 
+    sendNoteToContact : function (contactUUID) {
 
+    },
+
+    sendNoteToChat : function (channelUUID) {
+
+    },
 
 
     updateTimeStamps: function () {
