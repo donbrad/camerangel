@@ -909,28 +909,10 @@ var privateNotesView = {
         smartEventView.openModal(null, function (event) {
 
             if (event !== null) {
-                var date = moment(event.date).format("ddd MMM Do YYYY h:mm A"), objectId = event.uuid;
 
-                /*var dateStr = moment(date).format('ddd MMM Do');
-                 var localTime = moment(date).format("LT");*/
+                var objectId = event.uuid;
 
-                var placeName = event.placeName;
-                if(placeName === null){
-                    placeName = "";
-                }
-
-
-                var template = kendo.template($("#intelliEvent-chat").html());
-                var dataObj = {
-                    ggType: "Event",
-                    title : event.title,
-                    date : date,
-                    placeName: placeName,
-                    objectId : objectId
-                };
-
-
-                var content = template(dataObj);
+                var content = smartEvent.renderEvent(event);
 
                 var note = {};
                 note.ggType = 'Note';
@@ -953,23 +935,10 @@ var privateNotesView = {
         _preventDefault(e);
         movieListView.openModal( null, function (movie) {
             if (movie !== null) {
-                var date = movie.showtime, objectId = movie.uuid;
+                var objectId = movie.uuid;
 
-                var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
 
-                var template = kendo.template($("#intelliMovie-chat").html());
-                var dataObj = {
-                    ggType: "Movie",
-                    imageUrl: movie.imageUrl,
-                    movieTitle : movie.movieTitle,
-                    dateStr : dateStr,
-                    theatreName: movie.theatreName,
-                    objectId : objectId,
-                    rating: movie.rating,
-                    runtime: movie.runtime
-                };
-
-                var content = template(dataObj);
+                var content = smartMovie.renderMovie(movie);
 
                 var note = {};
                 note.uuid = objectId;
@@ -994,30 +963,10 @@ var privateNotesView = {
         smartFlightView.openModal(null,function (flight) {
             if (flight !== undefined && flight !== null) {
                 smartFlight.smartAddFlight(flight, function (flightObj) {
-                    var  objectId = smartFlight.uuid;
+                    var  objectId = flightObj.uuid;
 
-                    var template = kendo.template($("#intelliFlight-chat").html());
-                    var dataObj = {
-                        ggType : "Flight",
-                        objectId : objectId,
-                        name: flightObj.name,
-                        departureAirport : flightObj.departureAirport,
-                        departureCity : flightObj.departureCity,
-                        arrivalAirport : flightObj.arrivalAirport,
-                        arrivalCity : flightObj.arrivalCity,
-                        estimatedDeparture : flightObj.estimatedDeparture,
-                        ui_estimatedDeparture : flightObj.ui_estimatedDeparture,
-                        timeDeparture: flightObj.timeDeparture,
-                        dateDeparture: flightObj.dateDeparture,
-                        timeArrival : flightObj.timeArrival,
-                        dateArrival: flightObj.dateArrival,
-                        estimatedArrival : flightObj.estimatedArrival,
-                        ui_estimatedArrival : flightObj.ui_estimatedArrival,
-                        durationString : flightObj.durationString
 
-                    };
-
-                    var content = template(dataObj);
+                    var content = smartFlight.renderFlight(flightObj);
 
                     var note = {};
                     note.ggType = 'Note';
@@ -1043,34 +992,9 @@ var privateNotesView = {
                 smartTrip.smartAddTrip(trip, function (tripObj) {
                     var  objectId = tripObj.uuid;
 
-                    var template = kendo.template($("#intelliTrip-chat").html());
 
-                    var dest = tripObj.destination.address;
-                    var orig = tripObj.origin.address;
+                    var content = smartTrip.renderTrip(tripObj);
 
-
-                    if (tripObj.destination.name !== null) {
-                        dest = tripObj.destination.name;
-                    }
-
-                    if (tripObj.origin.name !== null) {
-                        orig = tripObj.origin.name;
-                    }
-
-                    var dataObj = {
-                        ggType: "Trip",
-                        name: tripObj.name,
-                        origin: orig,
-                        destination: dest,
-                        departure: moment(tripObj.departure).format ("ddd, M/D @ h:mm a"),
-                        arrival: moment(tripObj.arrival).format ("ddd, M/D @ h:mm a"),
-                        durationString: tripObj.durationString,
-                        distanceString: tripObj.distanceString,
-                        objectId : objectId,
-                        tripTimeType: tripObj.tripTimeType
-                    };
-
-                    var content = template(dataObj);
                     var note = {};
                     note.ggType = 'Note';
                     note.noteType = 'Trip';
