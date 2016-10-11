@@ -427,7 +427,34 @@ var smartEvent = {
     deleteEvent : function (event) {
 
     },
-    
+
+    renderEvent : function (smartEvent) {
+
+        var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
+
+        /*var dateStr = moment(date).format('ddd MMM Do');
+         var localTime = moment(date).format("LT");*/
+
+        var placeName = smartEvent.placeName;
+        if(placeName === null){
+            placeName = "";
+        }
+
+
+        var template = kendo.template($("#intelliEvent-chat").html());
+        var dataObj = {
+            ggType: "Event",
+            title : smartEvent.title,
+            date : date,
+            placeName: placeName,
+            objectId : objectId
+        };
+
+
+        var content = template(dataObj);
+
+        return (content);
+    },
 
     addEvent : function (objectIn, callback) {
       /*  var smartEvents = Parse.Object.extend(smartEvent._cloudClass);

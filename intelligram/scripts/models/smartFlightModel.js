@@ -129,6 +129,36 @@ var smartFlight = {
 
     },
 
+
+    renderFlight : function (smartFlight) {
+        var  objectId = smartFlight.uuid;
+
+        var template = kendo.template($("#intelliFlight-chat").html());
+        var dataObj = {
+            ggType : "Flight",
+            objectId : objectId,
+            name: smartFlight.name,
+            departureAirport : smartFlight.departureAirport,
+            departureCity : smartFlight.departureCity,
+            arrivalAirport : smartFlight.arrivalAirport,
+            arrivalCity : smartFlight.arrivalCity,
+            estimatedDeparture : smartFlight.estimatedDeparture,
+            ui_estimatedDeparture : smartFlight.ui_estimatedDeparture,
+            timeDeparture: smartFlight.timeDeparture,
+            dateDeparture: smartFlight.dateDeparture,
+            timeArrival : smartFlight.timeArrival,
+            dateArrival: smartFlight.dateArrival,
+            estimatedArrival : smartFlight.estimatedArrival,
+            ui_estimatedArrival : smartFlight.ui_estimatedArrival,
+            durationString : smartFlight.durationString
+
+        };
+
+        var content = template(dataObj);
+
+        return(content);
+    },
+
     smartAddFlight : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 

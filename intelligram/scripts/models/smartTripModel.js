@@ -117,6 +117,42 @@ var smartTrip = {
         }
         return(todayArray);
     },
+
+    renderTrip : function (smartTrip) {
+        var  objectId = smartTrip.uuid;
+
+        var template = kendo.template($("#intelliTrip-chat").html());
+
+        var dest = smartTrip.destination.address;
+        var orig = smartTrip.origin.address;
+
+
+        if (smartTrip.destination.name !== null) {
+            dest = smartTrip.destination.name;
+        }
+
+        if (smartTrip.origin.name !== null) {
+            orig = smartTrip.origin.name;
+        }
+
+        var dataObj = {
+            ggType: "Trip",
+            name: smartTrip.name,
+            origin: orig,
+            destination: dest,
+            departure: moment(smartTrip.departure).format ("ddd, M/D @ h:mm a"),
+            arrival: moment(smartTrip.arrival).format ("ddd, M/D @ h:mm a"),
+            durationString: smartTrip.durationString,
+            distanceString: smartTrip.distanceString,
+            objectId : objectId,
+            tripTimeType: smartTrip.tripTimeType
+        };
+
+        var objectUrl = template(dataObj);
+
+        return(objectUrl);
+    },
+
     smartAddTrip : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 

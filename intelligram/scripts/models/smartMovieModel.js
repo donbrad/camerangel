@@ -132,6 +132,29 @@ var smartMovie = {
         return(result);
     },
 
+    renderMovie : function (smartMovie) {
+        var date = smartMovie.showtime, objectId = smartMovie.uuid;
+
+        var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
+
+
+        var template = kendo.template($("#intelliMovie-chat").html());
+        var dataObj = {
+            ggType: "Movie",
+            imageUrl: smartMovie.imageUrl,
+            movieTitle : smartMovie.movieTitle,
+            dateStr : dateStr,
+            theatreName: smartMovie.theatreName,
+            objectId : objectId,
+            rating: smartMovie.rating,
+            runtime: smartMovie.runtime
+        };
+
+        var content = template(dataObj);
+
+        return(content);
+    },
+
     smartAddMovie : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 

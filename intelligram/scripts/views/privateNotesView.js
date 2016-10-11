@@ -33,8 +33,8 @@ var privateNotesView = {
 
         }).kendoTouch({
             filter: ".private-note",
-            tap: privateNotesView.tapNote,
-            hold: privateNotesView.holdNote
+            tap: privateNotesView.tapNote/*,
+            hold: privateNotesView.holdNote*/
         });
 
 
@@ -538,6 +538,13 @@ var privateNotesView = {
     },
 
     sendNoteToContact : function (contactUUID) {
+
+        var contact = contactModel.findContact(contactUUID);
+
+        if (contact === undefined || contact === null) {
+            ggError("Send Note: couldn't find contact");
+        }
+
 
     },
 

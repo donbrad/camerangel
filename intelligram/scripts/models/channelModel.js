@@ -66,7 +66,7 @@ var channelModel = {
                 dataProvider: APP.everlive
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "lastAccess",
@@ -933,10 +933,14 @@ var channelModel = {
        /* var Channels = Parse.Object.extend(channelModel._cloudClass);*/
         var channel = new kendo.data.ObservableObject();
         var addTime = ggTime.currentTime();
+
+        var guid = uuid.v4();
+
         channel.set('ggType', channelModel._ggClass);
         channel.set("version", channelModel._version);
         channel.set("name", contactName);
         channel.set("isOwner", true);
+        channel.set('Id', guid);
         channel.set('ownerUUID', userModel._user.userUUID);
         channel.set('ownerName', userModel._user.name);
         channel.set('isPrivate', true);
@@ -966,18 +970,16 @@ var channelModel = {
         channelModel.channelsDS.sync();
        
 
-        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
-            if (error !== null) {
-                if (callback !== undefined) {
-                    callback(error, null);
+        if (deviceModel.isOnline()) {
+            everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Channel " + JSON.stringify(error));
+                } else {
+
+                    channelModel._cleanDupChannels(contactUUID);
                 }
-                mobileNotify ("Error creating Channel " + JSON.stringify(error));
-            } else {
-
-                channelModel._cleanDupChannels(contactUUID);
-            }
-        });
-
+            });
+        }
 
         if (callback !== undefined) {
             callback(null, channel);
@@ -1089,13 +1091,16 @@ var channelModel = {
         serverPush.provisionGroupChannel(channel.channelUUID);
         channelModel.syncChatContacts(channelMembers);
 
-        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating Channel " + JSON.stringify(error));
-            } else {
-                channelModel._cleanDupChannels(channel.channelUUID);
-            }
-        });
+        if (deviceModel.isOnline()) {
+            everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Channel " + JSON.stringify(error));
+                } else {
+                    channelModel._cleanDupChannels(channel.channelUUID);
+                }
+            });
+        }
+
        /* channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
         deviceModel.syncEverlive();*/
@@ -1130,6 +1135,10 @@ var channelModel = {
 
         var durationDays = 30;
 
+        var guid = uuid.v4();
+
+
+        channel.set('Id', guid);
         channel.set('version', channelModel._version);
         channel.set('ggType', channelModel._ggClass);
         channel.set('isMuted', false);
@@ -1140,7 +1149,7 @@ var channelModel = {
             isPrivatePlace = true;
 
         channel.set('isPlace', true);
-        channel.set('isEmergency', true)
+        channel.set('isEmergency', false);
         channel.set('isPrivatePlace', isPrivatePlace);
         channel.set('placeUUID', placeUUID);
         channel.set('placeName', placeName);
@@ -1172,14 +1181,18 @@ var channelModel = {
         channel.set("invitedMembers", []);
 
         channelModel.channelsDS.add(channel);
+        channelModel.channelsDS.sync();
 
-        everlive.createOne(channelModel._cloudClass, channel, function (error, data){
-            if (error !== null) {
-                mobileNotify ("Error creating Channel " + JSON.stringify(error));
-            } else {
-                channelModel._cleanDupChannels(channel.channelUUID);
-            }
-        });
+        if (deviceModel.isOnline()) {
+            everlive.createOne(channelModel._cloudClass, channel, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Channel " + JSON.stringify(error));
+                } else {
+                    channelModel._cleanDupChannels(channel.channelUUID);
+                }
+            });
+        }
+
     /*    channelModel.channelsDS.add(channel);
         channelModel.channelsDS.sync();
         deviceModel.syncEverlive();*/
@@ -1213,6 +1226,9 @@ var channelModel = {
 
         var durationDays = 30;
 
+        var guid = uuid.v4();
+
+        channel.set('Id', guid);
         channel.set('version', channelModel._version);
         channel.set('ggType', channelModel._ggClass);
         channel.set('isPlace', false);
@@ -1254,14 +1270,19 @@ var channelModel = {
 
        // channelModel.createChannelMap(channel);
         channelModel.channelsDS.add(channel);
-        serverPush.provisionGroupChannel(channel.channelUUID);
+        channelModel.channelsDS.sync();
+
+       // serverPush.provisionGroupChannel(channel.channelUUID);
         mobileNotify('Added Chat : ' + channel.get('name'));
 
-        everlive.createOne(channelModel._cloudClass, channel, function (error, data) {
-            if (error !== null) {
-                mobileNotify ("Error creating Emergency Chat " + JSON.stringify(error));
-            }
-        });
+        if (deviceModel.isOnline()){
+            everlive.createOne(channelModel._cloudClass, channel, function (error, data) {
+                if (error !== null) {
+                    mobileNotify ("Error creating Emergency Chat " + JSON.stringify(error));
+                }
+            });
+        }
+
     },
 
     // Add group channel for owner...
@@ -1289,6 +1310,9 @@ var channelModel = {
 
         var durationDays = 30;
 
+        var guid = uuid.v4();
+
+        channel.set('Id', guid);
         channel.set('version', channelModel._version);
         channel.set('ggType', channelModel._ggClass);
         channel.set('isPlace', false);
@@ -1330,16 +1354,20 @@ var channelModel = {
 
        // channelModel.createChannelMap(channel);
         channelModel.channelsDS.add(channel);
-        serverPush.provisionGroupChannel(channel.channelUUID);
+        channelModel.channelsDS.sync();
+      //  serverPush.provisionGroupChannel(channel.channelUUID);
         mobileNotify('Added Chat : ' + channel.get('name'));
         APP.kendo.navigate('#editChannel?channel=' + channelUUID);
 
-        everlive.createOne(channelModel._cloudClass, channel, function (error, data) {
-            if (error !== null) {
-                mobileNotify ("Error creating Channel " + JSON.stringify(error));
-            }
-        });
-        
+        if (deviceModel.isOnline()) {
+            everlive.createOne(channelModel._cloudClass, channel, function (error, data) {
+                if (error !== null) {
+                    mobileNotify ("Error creating Channel " + JSON.stringify(error));
+                }
+            });
+
+        }
+
     },
 
     deletePrivateChannel : function (channelUUID) {
