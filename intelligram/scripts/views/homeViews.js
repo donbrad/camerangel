@@ -1236,6 +1236,7 @@ var noteEditView = {
 
     onDone : function (e) {
        // _preventDefault(e);
+        noteEditView.closeEditor();
 
         if (noteEditView._returnview !== null) {
             APP.kendo.navigate('#'+noteEditView._returnview);

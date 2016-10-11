@@ -518,6 +518,10 @@ var privateNotesView = {
 
     sendNote : function (e) {
         _preventDefault(e);
+
+        sharePickerView.openModal(privateNotesView.activeNote, function () {
+
+        });
     },
 
 
