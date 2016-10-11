@@ -305,8 +305,8 @@ var galleryView = {
 
             }).kendoTouch({
                 filter: ".private-note",
-                tap: galleryView.tapNote,
-                hold: galleryView.holdNote
+                tap: privateNotesView.tapNote/*,
+                hold: galleryView.holdNote*/
             });
 
         }

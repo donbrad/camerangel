@@ -181,8 +181,22 @@ var smartMovie = {
         return (null);
     },
 
-    deleteMovie : function (movie) {
-        
+    removeMovie : function (movie) {
+        smartMovie.moviesDS.remove(movie);
+        smartMovie.moviesDS.sync();
+    },
+
+
+    removeMovieById : function (movieId) {
+
+        var movie = smartMovie.findMovie(movieId);
+
+        if (movie === undefined || movie === null) {
+            ggError("Remove Trip: couldn't find trip");
+            return;
+        }
+        smartMovie.moviesDS.remove(movie);
+        smartMovie.moviesDS.sync();
     },
     
     addMovie : function (objectIn, callback) {

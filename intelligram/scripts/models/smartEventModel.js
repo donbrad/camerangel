@@ -456,6 +456,25 @@ var smartEvent = {
         return (content);
     },
 
+
+    removeEvent : function (event) {
+        smartEvent.eventsDS.remove(event);
+        smartEvent.eventsDS.sync();
+    },
+
+
+    removeEventById : function (eventId) {
+
+        var event = smartEvent.findObject(eventId);
+
+        if (event === undefined || event === null) {
+            ggError("Remove Event: couldn't find event");
+            return;
+        }
+        smartEvent.eventsDS.remove(event);
+        smartEvent.eventsDS.sync();
+    },
+
     addEvent : function (objectIn, callback) {
       /*  var smartEvents = Parse.Object.extend(smartEvent._cloudClass);
         var smartOb = new smartEvents();*/

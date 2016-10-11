@@ -153,6 +153,24 @@ var smartTrip = {
         return(objectUrl);
     },
 
+    removeTrip : function (trip) {
+        smartTrip.tripsDS.remove(trip);
+        smartTrip.tripsDS.sync();
+    },
+
+
+    removeTripById : function (tripId) {
+
+        var trip = smartTrip.findTrip(tripId);
+
+        if (trip === undefined || trip === null) {
+            ggError("Remove Trip: couldn't find trip");
+            return;
+        }
+        smartTrip.tripsDS.remove(trip);
+        smartTrip.tripsDS.sync();
+    },
+
     smartAddTrip : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 

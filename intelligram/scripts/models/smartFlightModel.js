@@ -159,6 +159,27 @@ var smartFlight = {
         return(content);
     },
 
+
+    removeFlight : function (flight) {
+        smartFlight.flightsDS.remove(flight);
+        smartFlight.flightsDS.sync();
+    },
+
+
+    removeFlightById : function (flightId) {
+
+        var flight = smartFlight.findFlight(flightId);
+
+        if (flight === undefined || flight === null) {
+            ggError("Remove Flight: couldn't find flight");
+            return;
+        }
+        smartFlight.flightsDS.remove(flight);
+        smartFlight.flightsDS.sync();
+    },
+
+
+
     smartAddFlight : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 

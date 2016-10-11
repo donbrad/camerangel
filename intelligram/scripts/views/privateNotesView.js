@@ -83,11 +83,11 @@ var privateNotesView = {
         privateNotesView.activeNote.uuid = uuid.v4();
         privateNotesView._editView = false;
        // privateNotesView.deactivateEditor();
-       $('#privateNoteTitle').val("");
+      /* $('#privateNoteTitle').val("");
         $('#privateNoteTags').val("");
         $('#privateNoteTextArea').val('');
         $('#privateNoteTextArea').redactor('code.set', "");
-
+*/
         ux.hideKeyboard();
        // $('#privateNote-SaveBtn').addClass('hidden');
 
@@ -422,30 +422,39 @@ var privateNotesView = {
     },
 */
 
+   _deleteNote : function () {
+        var thisNote = privateNotesView.activeNote;
+
+       if (thisNote.uuid !== null) {
+           switch (thisNote.noteType) {
+               case 'Event' :
+                   smartEvent.removeEventById(thisNote.object.uuid);
+                   break;
+
+               case 'Flight' :
+                   smartFlight.removeFlightById(thisNote.object.uuid);
+                   break;
+
+               case 'Movie' :
+                   smartMovie.removeMovieById(thisNote.object.uuid);
+                   break;
+
+               case  'Trip' :
+                   smartTrip.removeTripById(thisNote.object.uuid);
+                   break;
+           }
+           privateNoteModel.deleteNote(privateNotesView.activeNote);
+           privateNotesView.noteInit();
+       }
+   },
+
     deleteNote : function (e) {
         _preventDefault(e);
 
-        if (privateNotesView.activeNote.uuid !== null) {
-            privateNoteModel.deleteNote(privateNotesView.activeNote);
-            privateNotesView.noteInit();
-        }
-       /*if (privateNotesView.activeNote.uuid !== undefined) {
+        var noteType = privateNotesView.activeNote.noteType;
 
-           var note = privateNotesView.activeNote;
-           var Id = note.Id;
-           
-           var noteObject = null;
-           
-           if (note.data.object !== undefined && note.data.objects.length > 0) {
-                noteObject =   note.data.objects; 
-           }
+        modalView.open("Are you sure?", "This " + noteType + " will be permanently deleted.", "Delete", privateNotesView._deleteNote, "Cancel", modalView.close);
 
-           everlive.deleteMatching(privateNoteModel._cloudClass, {'uuid': note.uuid}, function (error, data) {
-               privateNoteModel.deleteNote(privateNotesView.activeNote);
-               privateNotesView.activeNote = {objects: [], photos: []};
-           });
-
-       }*/
 
     },
 
