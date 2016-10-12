@@ -220,7 +220,7 @@ var appDataChannel = {
                     appDataChannel._fetchHistory(start, endTime );
                 } else {
                     appDataChannel._historyFetchComplete = true;
-                    
+
                     appDataChannel.processMessages();
                     appDataChannel.removeExpiredMessages();
                 }
