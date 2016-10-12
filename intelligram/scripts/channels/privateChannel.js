@@ -340,11 +340,28 @@ var privateChannel = {
 
         if (text === undefined || text === null)
             text = '';
-        
-        encryptMessage = userDataChannel.encryptBlockWithKey(text, privateChannel.contactKey);
+
+        var key = null;
+
+        var contact = contactModel.findContact(recipient);
+
+        if (contact === undefined || contact === null) {
+            ggError("Private Chat : no contact to send message");
+            return;
+        }
+
+        key = contact.publicKey;
+
+        if (key === undefined || key === null) {
+            ggError("Private Chat : no public key to send message");
+            return;
+        }
+
+
+        encryptMessage = userDataChannel.encryptBlockWithKey(text, key);
         
         if (data !== undefined && data !== null)
-            encryptData = userDataChannel.encryptBlockWithKey(JSON.stringify(data), privateChannel.contactKey);
+            encryptData = userDataChannel.encryptBlockWithKey(JSON.stringify(data), key);
         else
             encryptData = null;
 

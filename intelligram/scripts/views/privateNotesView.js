@@ -538,7 +538,7 @@ var privateNotesView = {
                     privateNotesView.sendNoteToChat(share.channelUUID);
 
                 } else if (share.category === 'Contact') {
-                    privateNotesView.sendNoteToContact(share.contactUUID);
+                    privateNotesView.sendNoteToContact(share.channelUUID);
                 }
 
             }
@@ -546,19 +546,55 @@ var privateNotesView = {
         });
     },
 
+
+
+
     sendNoteToContact : function (contactUUID) {
 
         var contact = contactModel.findContact(contactUUID);
+
+        var note = privateNotesView.activeNote;
 
         if (contact === undefined || contact === null) {
             ggError("Send Note: couldn't find contact");
         }
 
+        var message = {
+            canCopy: false,
+            objects: [],
+            photos: []
+        };
+
+        if (note.object !== null) {
+            message.objects.push(note.object);
+        }
+
+        mobileNotify("Shared " + note.noteType +  " with " + contact.name + " (" + contact.alias + ")");
+        privateChannel.sendMessage(contactUUID, note.content, message, 86400);
 
     },
 
     sendNoteToChat : function (channelUUID) {
+        var channel = channelModel.findChannelModel(channelUUID);
 
+        var note = privateNotesView.activeNote;
+
+        if (channel === undefined || channel === null) {
+            ggError("Send Note: couldn't find chat or group");
+        }
+
+        var message = {
+            canCopy: false,
+            objects: [],
+            photos: []
+        };
+
+        if (note.object !== null) {
+            message.objects.push(note.object);
+        }
+
+        mobileNotify("Shared " + note.noteType +  " to " + channel.channelName );
+        groupChannel.sendMessage(channel.channelUUID,  channel.channelName, note.content, message, 86400);
     },
 
 

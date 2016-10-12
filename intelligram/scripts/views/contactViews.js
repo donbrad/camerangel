@@ -2297,6 +2297,11 @@ var sharePickerView = {
     shareObject : function (target) {
         // Is target a group or contact?
 
+        if (sharePickerView.callback !== null ) {
+            sharePickerView.onDone();
+            sharePickerView.callback(target);
+        }
+
     },
 
 
@@ -2329,9 +2334,6 @@ var sharePickerView = {
 
     onDone: function () {
         $("#sharePickerView").data("kendoMobileModalView").close();
-        if (sharePickerView.callback !== null) {
-            sharePickerView.callback(null);
-        }
     }
 
 };

@@ -668,8 +668,9 @@ var editChannelView = {
             var contactId = membersAdded[ma].contactUUID;
             if (contactId !== undefined && contactId !== null) {
                 inviteArray.push(contactId);
-                appDataChannel.groupChannelInvite(contactId, channelUUID,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
-                    options);
+                appDataChannel.groupChannelInvite(contactId, channelUUID,
+                    editChannelView._activeChannel.name,  editChannelView._activeChannel.description,
+                    memberArray, options);
                 groupChannel.addMember(editChannelView._activechannelUUID, contactId);
             } else {
                 console.error("Invalid Contact " + contactId);
