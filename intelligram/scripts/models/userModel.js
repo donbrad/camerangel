@@ -724,6 +724,14 @@ var userStatus = {
         return(false);
     },
 
+    updateIsAvailable : function (isAvailable) {
+        var status = userStatus._statusObj;
+
+        status.set('isAvailable', isAvailable);
+
+        userStatus.updateStatus();
+    },
+
 
     updateStatusMessage : function (message) {
         var status = userStatus._statusObj;

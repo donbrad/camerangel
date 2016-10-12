@@ -513,7 +513,8 @@ var homeView = {
     },
 
     changeAvailable: function(){
-        var currentAvailable = userModel._user.get('isAvailable');
+
+        var currentAvailable = userStatus._statusObj.get('isAvailable');
 
         if(currentAvailable){
             $(".userAvailableRev").attr("src", "images/status-available.png");
@@ -522,9 +523,9 @@ var homeView = {
             $(".userAvailableRev").attr("src", "images/status-away.png");
             $("#currentAvailableTxt").text("busy");
         }
+       // todo:  this should be method or class function
         ux.toggleIsAvailable();
 
-        userStatus.update();
 
     },
 
