@@ -38,6 +38,7 @@ var smartMovie = {
 
                     smartMovie._initialSync = true;
                     smartMovie._todayArray = smartMovie.getTodayList();
+                    todayModel.addList(smartMovie._todayArray);
                 }
 
             } else {

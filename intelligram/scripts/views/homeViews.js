@@ -12,13 +12,12 @@
 
 var homeView = {
     _radius: 90, // 90 meters or approx 300 ft
-    today : new kendo.data.DataSource(),
     _activeView : 0,
     _needPhoneValidation : false,
     _needEmailValidation : false,
     activeObj: new kendo.data.ObservableObject({
         ux_isValidated: true,
-        ux_timeLeft: "7 days to verify account",
+        ux_timeLeft: "7 days to verify account"
     }),
 
     openNotificationAction: function(e){
@@ -282,6 +281,7 @@ var homeView = {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
             $('#checked-in-place').show();
         }
+
         homeView.activeObj.bind("change", function(e){
             var field = e.field;
             var value = homeView.activeObj.get(field);
@@ -294,54 +294,6 @@ var homeView = {
                     break;
             }
         });
-
-        /*
-    `
-         $("#homeHeaderButton").kendoTouch({
-
-         doubletap: function(e) {
-         userStatusView.openModal();
-         },
-
-         tap: function (e) {
-         $("#profilebuttonactionsheet").data("kendoMobileActionSheet").open();
-         }
-
-         });*/
-
-        /*
-         $('#homeSearchQuery').clearSearch({
-         callback: function() {
-         // todo - wire search
-         }
-         });
-         */
-
-        /*$(".home-status").kendoTouch(
-
-            { doubletap: function (e) { mobileNotify("Double Tap: Open Hot Buttons!"); }
-        });
-
-        $(".footer-menu").kendoTouch({
-            multiTouch: true,
-            gesturestart: function (e) {
-                mobileNotify("Two Finger: Open Hot Buttons!");
-            }
-        });*/
-
-        /*$('#home-buttongroup').kendoMobileButtonGroup({
-            select: function(e) {
-                var index = e.index;
-                if (index != homeView._activeView) {
-                    homeView._activeView = index;
-                    homeView.selectView(homeView._activeView);
-
-                }
-
-            },
-            index: homeView._activeView
-        });*/
-
 
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
@@ -356,11 +308,29 @@ var homeView = {
                 }
             },
             dataBound: function(e) {
-                ux.checkEmptyUIState(notificationModel.notificationDS, "#home");
+                ux.checkEmptyUIState(notificationModel.notificationDS, "#home-alerts");
             }
         });
 
-        privateNotesView.onInit();
+
+        $("#today-listview").kendoMobileListView({
+            dataSource: todayModel.objectsDS,
+            template: $("#todayTemplate").html(),
+            click: function(e){
+                var $target = $(e.target);
+                if($target.hasClass("textClamp")){
+                    $(".notify-expand").addClass("textClamp").removeClass("notify-expand");
+                    $target.removeClass("textClamp").addClass("notify-expand");
+                } else {
+                    $(".notify-expand").addClass("textClamp").removeClass("notify-expand");
+                }
+            },
+            dataBound: function(e) {
+                ux.checkEmptyUIState(todayModel.objectsDS, "#home-today");
+            }
+        });
+
+       // privateNotesView.onInit();
 
         homeView.scroller = e.view.scroller;
 
@@ -470,30 +440,17 @@ var homeView = {
 
         // Set user availability
         ux.updateHeaderStatusImages();
-
         // Hide action button on home
         ux.setAddTarget("images/nav-gear.png", null, homeView.openSettingsAction);
-
         // Set the active view and the search text
         homeView.onTabSelect(homeView._activeView);
 
         homeView.updateValidationUX();
 
-
-
         appDataChannel.history();
         userDataChannel.history();
 
-        //everlive.syncCloud();
-
-        /*if (homeView._needPhoneValidation) {
-            verifyPhoneModal.openModal();
-            // toggle off so user only sees every launch or login
-            homeView._needPhoneValidation = false;
-        }*/
-
-        // Todo:Don schedule unread channel notifications after sync complete
-        //notificationModel.processUnreadChannels();
+       
     },
 
     openSettingsAction : function (e) {

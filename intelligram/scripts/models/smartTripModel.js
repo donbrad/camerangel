@@ -33,6 +33,7 @@ var smartTrip = {
 
                     smartTrip._initialSync = true;
                     smartTrip._todayArray = smartTrip.getTodayList();
+                    todayModel.addList(smartTrip._todayArray);
                 }
 
             } else {

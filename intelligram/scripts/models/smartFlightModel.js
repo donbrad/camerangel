@@ -34,7 +34,8 @@ var smartFlight = {
                 if (changedTrips !== undefined && !smartFlight._initialSync) {
 
                     smartFlight._initialSync = true;
-                    smartFlight._todayArray = smartTrip.getTodayList();
+                    smartFlight._todayArray = smartFlight.getTodayList();
+                    todayModel.addList(smartFlight._todayArray);
                 }
 
             } else {

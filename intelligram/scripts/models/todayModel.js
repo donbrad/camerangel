@@ -29,6 +29,7 @@ var todayModel = {
 
     buildTodayDS : function () {
         todayModel.objectsDS.data([]);
+
         var movies = smartMovie.getTodayList();
         var events = smartEvent.getTodayList();
         var trips = smartTrip.getTodayList();

@@ -149,6 +149,7 @@ var smartEvent = {
 
                     smartEvent._initialSync = true;
                     smartEvent._todayArray = smartEvent.getTodayList();
+                    todayModel.addList(smartEvent._todayArray);
                 }
 
             } else {
