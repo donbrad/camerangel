@@ -450,13 +450,10 @@
 				</div>
 			</div>
 
-			<div id="home-today" data-bind="invisible: ux_isValidated">
-				<div class="notify-title ">
-					<div class="clearfix"></div>
-					<ul class="home-notification" id="today-listview"></ul>
-					<div class="emptyState hidden">
-						<div class="empty-home icon-gg-drawer" data-grunticon-embed></div>
-					</div>
+			<div id="home-today" class="hidden" data-bind="invisible: ux_isValidated">
+				<ul id="today-listview"></ul>
+				<div class="emptyState hidden">
+					<div class="empty-home icon-gg-drawer" data-grunticon-embed></div>
 				</div>
 			</div>
   	</div>
@@ -6694,49 +6691,39 @@
 </div>
 
 <script type="text/x-kendo-template" id="todayTemplate">
-	# if (noteType === 'Gallery') { #
-	<div class="private-note" data-id="#:uuid#" data-type="Gallery" data-uuid="#:uuid#">
-		<h3 class="textClamp">
-			<div class="icon-sm smart-photo-inline" data-grunticon-embed></div>
-			<span>#:titleStr#</span>
-		</h3>
-		<p class="helper" style="font-size: 0.85em;">
-			<span>#:dateString#</span>
-			<span style="float:right;">#:photoStr#</span>
-
-		</p>
-		<p class="helper" style="font-size: 0.85em; clear:both;">
-			<span> #:tagString#</span>
-		</p>
-	</div>
-	# } #
-	# if (noteType === 'Flight') { #
+	#  var ownerStr = '';
+	if (!data.isOwner) { ownerStr = "From : " + data.senderName; }
+	#
+	# if (ggType === 'Flight') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Flight" data-uuid="#:uuid#">
 		<p class="helper" style="font-size: 1.0em; clear:both;">
 		<div> #=content#</div>
 		</p>
+		<div> #=ownerStr# </div>
 	</div>
 	# } #
-	# if (noteType === 'Trip') { #
+	# if (ggType === 'Trip') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Trip" data-uuid="#:uuid#">
 		<p class="helper" style="font-size: 1.0em; clear:both;">
 		<div> #=content#</div>
 		</p>
-
+		<div> #=ownerStr# </div>
 	</div>
 	# } #
-	# if (noteType === 'Movie') { #
+	# if (ggType === 'Movie') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Movie" data-uuid="#:uuid#">
 		<p class="helper" style="font-size: 1.0em; clear:both;">
 		<div> #=content#</div>
 		</p>
+		<div> #=ownerStr# </div>
 	</div>
 	# } #
-	# if (noteType === 'Event') { #
+	# if (ggType === 'Event') { #
 	<div class="private-note" data-id="#:uuid#" data-type="Event" data-uuid="#:uuid#">
 		<p class="helper" style="font-size: 1.0em; clear:both;">
 		<div> #=content#</div>
 		</p>
+		<div> #=ownerStr# </div>
 	</div>
 	# } #
 </script>

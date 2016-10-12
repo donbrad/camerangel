@@ -134,7 +134,7 @@ var smartEvent = {
                 typeName: 'smartEvent'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "date",
@@ -266,7 +266,23 @@ var smartEvent = {
         for (var i=0; i<len; i++) {
             var event = smartEvent.eventsDS.at(i);
             if (moment(event.date).isSame(today, 'day') ) {
-                todayArray.push(event);
+                var todayObj = {ggType: 'Event', uuid: event.uuid, object: event};
+
+                var content = smartEvent.renderEvent(event);
+
+                todayObj.content = content;
+
+                if (event.senderUUID === userModel._user.userUUID) {
+                    todayObj.senderName = "Me";
+                    todayObj.isOwner = true;
+                } else {
+                    todayObj.senderName = event.senderName;
+                    todayObj.isOwner = false;
+                }
+
+
+
+                todayArray.push(todayObj);
             }
 
         }

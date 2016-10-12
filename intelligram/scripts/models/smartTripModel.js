@@ -21,7 +21,7 @@ var smartTrip = {
                 typeName: 'smartTrip'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             }
         });
         smartTrip.tripsDS.fetch();
@@ -112,7 +112,23 @@ var smartTrip = {
             var trip = smartTrip.tripsDS.at(i);
             var departure = moment(trip.departure), arrival = moment(trip.arrival);
             if (moment(today).isBetween(departure, arrival, 'day') ) {
-                todayArray.push(trip);
+
+                var todayObj = {ggType: 'Trip', uuid: trip.uuid, object: trip};
+
+                var content = smartTrip.renderTrip(trip);
+
+                todayObj.content = content;
+
+                if (trip.senderUUID === userModel._user.userUUID) {
+                    todayObj.senderName = "Me";
+                    todayObj.isOwner = true;
+                } else {
+                    todayObj.senderName = trip.senderName;
+                    todayObj.isOwner = false;
+                }
+
+
+                todayArray.push(todayObj);
             }
 
         }

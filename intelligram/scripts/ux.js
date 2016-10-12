@@ -615,14 +615,14 @@ var ux = {
 
 	isToday : function (date) {
 
-		return (moment(date).isSame(new Date(), 'day'));
+		return ( moment(date).isSame(new moment(), 'day'));
 	},
 
 	isTomorrow : function (date) {
 
-		var tomorrow = moment(new Date()).add(1, 'd');
+		var tomorrow =  moment(new moment()).add(1, 'd');
 
-		return (moment(date).isSame(tomorrow, 'day'));
+		return ( moment(date).isSame(tomorrow, 'day'));
 	},
 
 	setDefaultTime: function(buffer, bufferAmount){

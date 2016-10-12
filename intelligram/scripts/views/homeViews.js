@@ -450,7 +450,7 @@ var homeView = {
         appDataChannel.history();
         userDataChannel.history();
 
-       
+
     },
 
     openSettingsAction : function (e) {

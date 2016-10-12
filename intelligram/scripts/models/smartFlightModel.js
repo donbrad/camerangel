@@ -92,7 +92,24 @@ var smartFlight = {
         for (var i=0; i<len; i++) {
             var flight = smartFlight.flightsDS.at(i);
             if (moment(today).isBetween(flight.estimatedDeparture, flight.estimatedArrival, 'day') ) {
-                todayArray.push(movie);
+
+                var todayObj = {ggType: 'Flight', uuid: flight.uuid, object: flight};
+
+                var content = smartFlight.renderFlight(flight);
+
+                todayObj.content = content;
+
+
+                if (flight.senderUUID === userModel._user.userUUID) {
+                    todayObj.senderName = "Me";
+                    todayObj.isOwner = true;
+                } else {
+                    todayObj.senderName = flight.senderName;
+                    todayObj.isOwner = false;
+                }
+
+
+                todayArray.push(todayObj);
             }
 
         }

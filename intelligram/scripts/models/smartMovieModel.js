@@ -96,7 +96,24 @@ var smartMovie = {
         for (var i=0; i<len; i++) {
             var movie = smartMovie.moviesDS.at(i);
             if (moment(movie.showtime).isSame(today, 'day') ) {
-                todayArray.push(movie);
+
+                var todayObj = {ggType: 'Movie', uuid: movie.uuid, object: movie};
+
+                var content = smartMovie.renderMovie(movie);
+
+                todayObj.content = content;
+
+                if (movie.senderUUID === userModel._user.userUUID) {
+                    todayObj.senderName = "Me";
+                    todayObj.isOwner = true;
+                } else {
+                    todayObj.senderName = movie.senderName;
+                    todayObj.isOwner = false;
+                }
+
+
+                todayArray.push(todayObj);
+
             }
 
         }
