@@ -1037,7 +1037,6 @@ var privateNotesView = {
                 smartTrip.smartAddTrip(trip, function (tripObj) {
                     var  objectId = tripObj.uuid;
 
-
                     var content = smartTrip.renderTrip(tripObj);
 
                     var note = {};

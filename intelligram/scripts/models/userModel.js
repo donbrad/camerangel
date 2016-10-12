@@ -500,37 +500,6 @@ var userModel = {
         }
     },
 
-    checkIn : function (placeUUID, lat, lng, locationName, googlePlaceId) {
-
-        if (placeUUID !== null) {
-            var place = placesModel.getPlaceModel(placeUUID);
-
-            userModel._user.set('currentPlace', place.name);
-            userModel._user.set('currentPlaceUUID', place.uuid);
-            userModel._user.set('googlePlaceId', place.googleId);
-            userModel._user.set('lat', place.lat.toFixed(9));
-            userModel._user.set('lng', place.lng.toFixed(9));
-
-        } else {
-            userModel._user.set('currentPlace', locationName);
-            userModel._user.set('currentPlaceUUID', null);
-            userModel._user.set('googlePlaceId', googlePlaceId);
-            userModel._user.set('lat', lat.toFixed(9));
-            userModel._user.set('lng', lng.toFixed(9));
-        }
-
-        userModel._user.set('isCheckedIn', true);
-        userStatus.update();
-    },
-
-    checkOut : function () {
-        userModel._user.set('isCheckedIn', false);
-        userModel._user.set('currentPlace', null);
-        userModel._user.set('currentPlaceUUID',null);
-        userModel._user.set('googlePlaceId', null);
-        userStatus.update();
-
-    },
 
     // Need a valid uuid to initialize pubnub and create appData and userData channels
     initPubNub: function () {
@@ -606,25 +575,39 @@ var userStatus = {
 
 
     init: function () {
-        var filter = new Everlive.Query();
-        filter.where().eq('userUUID', userModel._user.userUUID);
 
-        var data = APP.everlive.data(userStatus._ggClass);
-        data.get(filter)
-            .then(function(data){
-                    if (data.count === 0) {
-                        userStatus.create();
-                    } else {
-                        userStatus._status = data.result[0];
-                        window.localStorage.setItem('ggUserStatus', JSON.stringify(userStatus._status));
+    },
 
-                    }
+    initStatus : function () {
+        var stat = userStatus._statusObj;
 
-                },
-                function(error){
-                    ggError("User Status Init error : " + JSON.stringify(error));
-                });
+        stat.lat = 0;
+        stat.lng = 0;
+        stat.isAvailable = false;
+        stat.isVisible = false;
+        stat.isCheckedIn = false;
+        stat.statusMessage = null;
+        stat.currentPlace = null;
+        stat.currentPlaceUUID = null;
+        stat.googlePlaceId = null;
 
+    },
+
+
+    saveLocal : function () {
+        var status = JSON.stringify(userStatus._statusObj);
+        window.localStorage.setItem('ggUserStatus', status);
+    },
+
+    loadLocal : function () {
+        var statusRaw = window.localStorage.getItem('ggUserStatus');
+        var status;
+
+        if (statusRaw !== undefined) {
+            status = JSON.parse(statusRaw);
+        } else {
+            userStatus.initStatus();
+        }
 
     },
 
@@ -741,6 +724,74 @@ var userStatus = {
         return(false);
     },
 
+
+    updateStatusMessage : function (message) {
+        var status = userStatus._statusObj;
+
+        status.set('statusMessage', message);
+
+        userStatus.updateStatus();
+    },
+
+
+    checkInPlace : function (place, placeUUID) {
+        var status = userStatus._statusObj;
+
+        status.set('currentPlace', place);
+        status.set('currentPlaceUUID', placeUUID);
+
+        userStatus.updateStatus();
+
+    },
+
+    checkIn : function (placeUUID, lat, lng, locationName, googlePlaceId) {
+        var status = userStatus._statusObj;
+
+        if (placeUUID !== null) {
+            var place = placesModel.getPlaceModel(placeUUID);
+
+            status.set('currentPlace', place.name);
+            status.set('currentPlaceUUID', place.uuid);
+            status.set('googlePlaceId', place.googleId);
+            status.set('lat', place.lat.toFixed(9));
+            status.set('lng', place.lng.toFixed(9));
+
+        } else {
+            status.set('currentPlace', locationName);
+            status.set('currentPlaceUUID', null);
+            status.set('googlePlaceId', googlePlaceId);
+            status.set('lat', lat.toFixed(9));
+            status.set('lng', lng.toFixed(9));
+        }
+
+        status.set('isCheckedIn', true);
+
+        userStatus.updateStatus();
+
+    },
+
+    checkOut : function () {
+        var status = userStatus._statusObj;
+
+        status.set('isCheckedIn', false);
+        status.set('currentPlace', null);
+        status.set('currentPlaceUUID',null);
+        status.set('googlePlaceId', null);
+
+        userStatus.updateStatus();
+
+    },
+
+
+    updateStatus : function () {
+        var status = userStatus._statusObj;
+
+        userStatus.saveLocal();
+
+        userStatusChannel.sendStatus(status);
+
+    },
+
     update : function () {
         var status = userStatus._statusObj;
 
@@ -771,7 +822,8 @@ var userStatus = {
             userStatusChannel.sendStatus(status);
         }
 
-        userModel.storeUserData();
+
+        userStatus.saveLocal();
 
     }
 

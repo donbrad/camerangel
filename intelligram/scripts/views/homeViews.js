@@ -220,8 +220,9 @@ var homeView = {
 
            // APP.models.places.placesDS.add(item);
 
-            userModel._user.set('currentPlace', item.name);
-            userModel._user.set('currentPlaceUUID', item.uuid);
+            userStatus.updatePlace(item.name, item.uuid);
+           /* userModel._user.set('currentPlace', item.name);
+            userModel._user.set('currentPlaceUUID', item.uuid);*/
         };
 
         // If the item has a uuid it means we've already added it,
@@ -649,14 +650,14 @@ var userStatusView = {
     _oldStatus : null,
 
     _update : function () {
-        var status = userStatusView._activeStatus, user = userModel._user;
+        var status = userStatus._statusObj, user = userModel._user;
 
-        status.set('currentPlaceUUID', user.currentPlaceUUID);
+        /*status.set('currentPlaceUUID', user.currentPlaceUUID);
         status.set('isCheckedIn', user.isCheckedIn);
         status.set('currentPlace', user.currentPlace);
         status.set('isAvailable', user.isAvailable);
         status.set('statusMessage', user.statusMessage);
-
+*/
         // Set name/alias layout
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
 
@@ -750,7 +751,7 @@ var userStatusView = {
 
         ux.hideKeyboard();
 
-        userStatusView.oldStatus =  userModel._user.statusMessage;
+        userStatusView.oldStatus =  userStatus._statusObj.statusMessage;
 
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
@@ -822,9 +823,7 @@ var userStatusView = {
         var updatedStatus = $("#profileStatusUpdate").val();
         if(updatedStatus !== "") {
             // Save new status
-            userModel._user.set("statusMessage", updatedStatus);
-            userStatus.update();
-            //updateParseObject('userStatus','userUUID', userModel._user.uuid, "statusMessage", updatedStatus);
+            userStatus.updateStatus(updatedStatus);
         }
         // clear status box
         $("#profileStatusUpdate").val("");
@@ -881,20 +880,20 @@ var userStatusView = {
         	$(element).addClass("hidden");
         	}
     	});*/
-        userModel.checkOut();
+        userStatus.checkOut();
         mapModel.checkOut();
 
         userStatusView._update();
        // $('#profileStatusCheckInPlace').text('');
     },
 
-    syncUserStatus: function (e) {
+   /* syncUserStatus: function (e) {
         _preventDefault(e);
 
         userModel._user.set(e.field, this[e.field]);
         //updateParseObject('userStatus','userUUID', userModel._user.uuid, e.field, this[e.field]);
 
-    },
+    },*/
 
     onAutoStatusChange : function (e) {
         var $autoCheckinBtn = $("#" + e.button[0].id);
@@ -919,7 +918,7 @@ var userStatusView = {
 
         userStatusView.statusCharCount(e);
 
-        userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
+        //userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
 
     },
 
