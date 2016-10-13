@@ -21,7 +21,7 @@ var smartTrip = {
                 typeName: 'smartTrip'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             }
         });
         smartTrip.tripsDS.fetch();
@@ -33,6 +33,7 @@ var smartTrip = {
 
                     smartTrip._initialSync = true;
                     smartTrip._todayArray = smartTrip.getTodayList();
+                    todayModel.addList(smartTrip._todayArray);
                 }
 
             } else {
@@ -109,14 +110,88 @@ var smartTrip = {
         var today = moment();
         for (var i=0; i<len; i++) {
             var trip = smartTrip.tripsDS.at(i);
+            var minDate = moment(trip.departure).subtract(2, 'hours'),
+                maxDate = moment(trip.arrival).add(2, 'hours');
             var departure = moment(trip.departure), arrival = moment(trip.arrival);
             if (moment(today).isBetween(departure, arrival, 'day') ) {
-                todayArray.push(trip);
+
+                var todayObj = {ggType: 'Trip', uuid: trip.uuid, object: trip};
+
+                var content = smartTrip.renderTrip(trip);
+
+                todayObj.content = content;
+
+                if (trip.senderUUID === userModel._user.userUUID) {
+                    todayObj.senderName = "Me";
+                    todayObj.isOwner = true;
+                } else {
+                    todayObj.senderName = trip.senderName;
+                    todayObj.isOwner = false;
+                }
+
+                todayObj.date = minDate.format();
+                todayObj.maxDate = maxDate.format();
+
+                todayArray.push(todayObj);
             }
 
         }
         return(todayArray);
     },
+
+    renderTrip : function (smartTrip) {
+        var  objectId = smartTrip.uuid;
+
+        var template = kendo.template($("#intelliTrip-chat").html());
+
+        var dest = smartTrip.destination.address;
+        var orig = smartTrip.origin.address;
+
+
+        if (smartTrip.destination.name !== null) {
+            dest = smartTrip.destination.name;
+        }
+
+        if (smartTrip.origin.name !== null) {
+            orig = smartTrip.origin.name;
+        }
+
+        var dataObj = {
+            ggType: "Trip",
+            name: smartTrip.name,
+            origin: orig,
+            destination: dest,
+            departure: moment(smartTrip.departure).format ("ddd, M/D @ h:mm a"),
+            arrival: moment(smartTrip.arrival).format ("ddd, M/D @ h:mm a"),
+            durationString: smartTrip.durationString,
+            distanceString: smartTrip.distanceString,
+            objectId : objectId,
+            tripTimeType: smartTrip.tripTimeType
+        };
+
+        var objectUrl = template(dataObj);
+
+        return(objectUrl);
+    },
+
+    removeTrip : function (trip) {
+        smartTrip.tripsDS.remove(trip);
+        smartTrip.tripsDS.sync();
+    },
+
+
+    removeTripById : function (tripId) {
+
+        var trip = smartTrip.findTrip(tripId);
+
+        if (trip === undefined || trip === null) {
+            ggError("Remove Trip: couldn't find trip");
+            return;
+        }
+        smartTrip.tripsDS.remove(trip);
+        smartTrip.tripsDS.sync();
+    },
+
     smartAddTrip : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 

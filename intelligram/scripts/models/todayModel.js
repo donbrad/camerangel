@@ -9,17 +9,25 @@
 
 var todayModel = {
 
-    objectsDS : null,
+    objectsDS : new kendo.data.DataSource({
+        schema: {
+            model: {
+                id: 'uuid',
+                fields: {
+                    date:  { type: "date" },
+                    content:  { type: "string" }
+                }
+            }
+        },
+        sort: {
+            field: "date",
+            dir: "asc"
+        }
+    }),
     _cloudClass : 'today',
     _ggClass : 'Today',
 
     init : function () {
-        todayModel.objectsDS = new kendo.data.DataSource({
-            sort: {
-                field: "date",
-                dir: "desc"
-            }
-        });
 
     },
 
@@ -29,6 +37,7 @@ var todayModel = {
 
     buildTodayDS : function () {
         todayModel.objectsDS.data([]);
+
         var movies = smartMovie.getTodayList();
         var events = smartEvent.getTodayList();
         var trips = smartTrip.getTodayList();

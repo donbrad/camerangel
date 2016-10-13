@@ -155,19 +155,24 @@ var appDataChannel = {
         if (!appDataChannel.needHistory) {
             return;
         }
+
         if (APP.pubnub === null || !appDataChannel._fetched || !channelModel._fetched || !contactModel._fetched || !notificationModel._fetched) {
             appDataChannel.needHistory = true;
             return;
         }
 
+        var lastMonth = ggTime.lastMonth();
         appDataChannel.needHistory = false;
         // Get any messages in the channel
 
         mobileNotify("Loading System Messages...");
 
+        if (appDataChannel.lastAccess === undefined) {
+            appDataChannel.lastAccess = lastMonth;
+        }
 
-        if (appDataChannel.lastAccess < ggTime.lastMonth() || appDataChannel.messagesDS.total() === 0 ) {
-            appDataChannel.lastAccess = ggTime.lastMonth();
+        if (appDataChannel.lastAccess < lastMonth || appDataChannel.messagesDS.total() === 0 ) {
+            appDataChannel.lastAccess = lastMonth;
         }
 
         localStorage.setItem('ggAppDataTimeStamp', appDataChannel.lastAccess);
@@ -178,22 +183,6 @@ var appDataChannel = {
         var end = ggTime.toPubNubTime(ggTime.currentTime());
         appDataChannel._fetchHistory(lastAccess, end);
 
-
-        /*APP.pubnub.history({
-            channel: appDataChannel.channelUUID,
-            start: timeStamp,
-            reverse: true,
-            callback: function(messages) {
-                messages = messages[0];
-                messages = messages || [];
-                for (var i = 0; i < messages.length; i++) {
-                    appDataChannel.channelRead(messages[i]);
-                }
-
-            }
-        });
-
-        appDataChannel.updateTimeStamp();*/
     },
 
     _fetchHistory : function (start, end) {
@@ -231,7 +220,6 @@ var appDataChannel = {
                     appDataChannel._fetchHistory(start, endTime );
                 } else {
                     appDataChannel._historyFetchComplete = true;
-
 
                     appDataChannel.processMessages();
                     appDataChannel.removeExpiredMessages();
@@ -1105,20 +1093,21 @@ var appDataChannel = {
         if (channel === undefined && channelMembers !== undefined && channelMembers.length > 1) {
             //mobileNotify("Chat invite from  " + ownerName + ' " ' + channelName + '"');
             if (contact === undefined) {
-                // This user has been added to group but a member who's not in their contact list 
-                contactModel.createChatContact(ownerId, ownerName, uuid.v4(), function (result) {
-                    channelModel.queryChannelMap(channelUUID, function (error, data) {
-                        if (error === null && data !== null) {
+                // This user has been added to group but a member who's not in their contact list
+                var guid = uuid.v4();
+                contactModel.createChatContact(ownerId, ownerName, guid, function (result) {
+                /*    channelModel.queryChannelMap(channelUUID, function (error, data) {
+                        if (error === null && data !== null) {*/
                             channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
-                        }
-                    });
+                /*        }
+                    });*/
                 })
             } else {
-                channelModel.queryChannelMap(channelUUID, function (error, data) {
-                    if (error === null && data !== null) {
+               /* channelModel.queryChannelMap(channelUUID, function (error, data) {
+                    if (error === null && data !== null) {*/
                         channelModel.addMemberChannel(channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options, false);
-                    }
-                });
+         /*           }
+                });*/
             }
             
 

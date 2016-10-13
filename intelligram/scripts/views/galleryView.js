@@ -8,7 +8,7 @@
 'use strict';
 
 
-/*  
+/*
  * gallery
  */
 
@@ -305,8 +305,8 @@ var galleryView = {
 
             }).kendoTouch({
                 filter: ".private-note",
-                tap: galleryView.tapNote,
-                hold: galleryView.holdNote
+                tap: privateNotesView.tapNote/*,
+                hold: galleryView.holdNote*/
             });
 
         }
@@ -577,11 +577,14 @@ var galleryView = {
         if (noteId !== undefined && noteId !== null) {
             note = privateNoteModel.findNote(noteId);
             if (note !== undefined && note !== null) {
-               var dataObj = userDataChannel.decryptBlock(note.dataBlob);
-                if(dataObj !== null) {
-                    dataObj = JSON.parse(dataObj);
+
+                if (note.dataBlob !== undefined && note.dataBlob !== null) {
+                    var dataObj = userDataChannel.decryptBlock(note.dataBlob);
+                    if(dataObj !== null) {
+                        dataObj = JSON.parse(dataObj);
+                    }
+                    note.dataObj = dataObj;
                 }
-                note.dataObj = dataObj;
 
                 if (note.noteType === 'Note') {
                     noteViewer.openModal(note.uuid, note);
@@ -1341,6 +1344,7 @@ var modalPhotoView = {
     _photo: null,
     _photoUrl : null,
     _address : null,
+    _deleteCallback : null,
    
     _dummyTitle : '',
     _dummyDescription : '',
@@ -1383,7 +1387,7 @@ var modalPhotoView = {
         });
     },
 
-    openModal : function (photo) {
+    openModal : function (photo, deleteCallback) {
         modalPhotoView._photo = photo;
 
         // User is inspected / editing -- make sure the photo exists in the cloud and on the device...
@@ -1391,6 +1395,12 @@ var modalPhotoView = {
         var url = null;
 
         var deviceUrl = photo.deviceUrl;
+
+        if (deleteCallback !== undefined) {
+            modalPhotoView._deleteCallback = deleteCallback;
+        } else {
+            modalPhotoView._deleteCallback = null;
+        }
 
         if (deviceUrl.indexOf('file://') === -1 ) {
             deviceUrl = 'file://' + deviceUrl;
@@ -1574,7 +1584,12 @@ var modalPhotoView = {
             "Delete" ,
             function() {
                 //User wants to delete the photo
-                photoModel.deletePhoto(modalPhotoView._activePhoto.photoId);
+                if (modalPhotoView._deleteCallback !== null) {
+                    modalPhotoView._deleteCallback(modalPhotoView._activePhoto.photoId);
+                } else {
+                    photoModel.deletePhoto(modalPhotoView._activePhoto.photoId);
+                }
+
                 modalView.close();
             },
             "Cancel",
@@ -2000,6 +2015,8 @@ var galleryEditView = {
     memberString: null,
     photosDS:  new kendo.data.DataSource(),
     membersDS:  new kendo.data.DataSource(),
+    membersAddedDS:  new kendo.data.DataSource(),
+    membersDeletedDS:  new kendo.data.DataSource(),
 
     onInit: function (e) {
 
@@ -2097,13 +2114,21 @@ var galleryEditView = {
             that.activeObj.set("isShared", false);
             that.activeObj.isOpen = false;
             that.activeObj.set("isTracked", false);
+            that.activeObj.members = [];
+
             that.activeObj.senderUUID = userModel._user.userUUID;
             that.activeObj.senderName = userModel._user.name;
             that.activeObj.timestamp = new Date();
             that.activeObj.ggType = galleryModel._ggClass;
             that.activeObj.set("ux_title", "New Gallery");
+
+           // $('#galleryEditor-title').val("");
+           // $('#galleryEditor-tagString').val("");
+            galleryEditView._galleryUUID =  that.activeObj.uuid;
+
             galleryEditView._mode = 'create';
         } else {
+            galleryEditView._galleryUUID = gallery.uuid;
             that.activeObj.Id = gallery.Id;
             that.activeObj.uuid = gallery.uuid;
             that.activeObj.photos =  gallery.photos;
@@ -2115,6 +2140,9 @@ var galleryEditView = {
             that.activeObj.set("isShared", gallery.isShared);
             that.activeObj.isOpen = gallery.isOpen;
             that.activeObj.set("isTracked", gallery.isTracked);
+
+            that.activeObj.members = gallery.members;
+            galleryEditView.buildMembersDS();
             that.activeObj.senderUUID = gallery.senderUUID;
             that.activeObj.senderName = gallery.senderName;
             that.activeObj.timestamp = gallery.timestamp;
@@ -2256,17 +2284,92 @@ var galleryEditView = {
 
     },
 
+    queryPhoto: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = galleryEditView.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var photo = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(photo);
+    },
+
+    findPhotoByUUID : function (id) {
+        var photo = galleryEditView.queryPhoto([{ field: "uuid", operator: "eq", value: id }]);
+
+        return(photo);
+    },
+
+    findPhotoByPhotoUUID : function (id) {
+        var photo = galleryEditView.queryPhoto([{ field: "photoUUID", operator: "eq", value: id }]);
+
+        return(photo);
+    },
+
+
+    buildMembersDS : function () {
+        var members = galleryEditView.activeObj.members;
+        galleryEditView.membersDS.data([]);
+
+        for (var i=0; i<members.length; i++) {
+            var contactUUID = members[i];
+
+            var member = contactModel.findContact(contactUUID);
+
+            galleryEditView.membersDS.add(member);
+
+        }
+    },
+
+    buildMemberArray : function () {
+        var members = [];
+
+        for (var i=0; i< galleryEditView.membersDS.total(); i++ ){
+            var member = galleryEditView.membersDS.at(i);
+
+            members.push(member);
+        }
+
+        galleryEditView.activeObj.members = members;
+    },
+
+
+
     addPhotoToGallery : function (photoId, displayUrl) {
         var photoObj = photoModel.findPhotoById(photoId);
 
         if (photoObj !== undefined) {
 
+         //   galleryModel.addGalleryPhoto(galleryEditView._galleryUUID, photoObj);
             galleryEditView.photosDS.add(photoObj);
             galleryEditView.photosDS.sync();
+
+            if (galleryEditView.activeObj.isShared) {
+                galleryModel.addGalleryPhoto(galleryEditView.activeObj.galleryUUID, photoObj);
+            }
         }
 
     },
 
+    removePhotoFromGallery : function (photoId) {
+        var photoObj = galleryEditView.findPhotoByUUID(photoId);
+
+        if (photoObj !== undefined) {
+
+            if (galleryEditView.activeObj.isShared) {
+                galleryModel.removeGalleryPhoto(photoObj);
+            }
+            galleryEditView.photoDS.remove(photoObj);
+        }
+
+    },
 
     updateImageUrl : function (photoId, shareUrl) {
         var photoObj = photoModel.findPhotoById(photoId);
@@ -2328,6 +2431,7 @@ var galleryEditView = {
     processSharedPhotos : function () {
         var obj = galleryEditView.activeObj;
         // todo - wire shared photos
+
     },
 
     processPrivatePhotos : function () {
@@ -2351,7 +2455,7 @@ var galleryEditView = {
 
         if (galleryEditView._mode === 'edit') {
 
-            var gallery = privateNoteModel.findGallery(activeGallery.uuid);
+            var gallery = galleryModel.findGallery(activeGallery.uuid);
 
             gallery.set('title', title);
             gallery.set('tagString', tagString);
@@ -2383,7 +2487,6 @@ var galleryEditView = {
 
             galleryModel.addGallery(activeGallery);
         }
-
 
     }
 

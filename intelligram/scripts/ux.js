@@ -171,19 +171,21 @@ var ux = {
 	},
 
 	toggleIsAvailable: function(){
-		var currentState = userModel._user.isAvailable;
-		if(currentState){
-			userModel._user.set('isAvailable', false);
+		var currentState = userStatus._statusObj.isAvailable;
+		
+		userStatus.updateIsAvailable(!currentState);
+		/*if(currentState){
+			userStatus._statusObj.set('isAvailable', false);
 		} else {
-			userModel._user.set('isAvailable', true);
-		}
+			userStatus._statusObj.set('isAvailable', true);
+		}*/
 		ux.updateHeaderStatusImages();
 
 	},
 
 	// Globally update profile and status images in the application header
 	updateHeaderStatusImages: function() {
-		var isAvailable  = userModel._user.get('isAvailable');
+		var isAvailable  = userStatus._statusObj.get('isAvailable');
 		if (isAvailable) {
 			userModel._user.set('availImgUrl', 'images/status-available.svg');
 		} else {
@@ -613,14 +615,14 @@ var ux = {
 
 	isToday : function (date) {
 
-		return (moment(date).isSame(new Date(), 'day'));
+		return ( moment(date).isSame(new moment(), 'day'));
 	},
 
 	isTomorrow : function (date) {
 
-		var tomorrow = moment(new Date()).add(1, 'd');
+		var tomorrow =  moment(new moment()).add(1, 'd');
 
-		return (moment(date).isSame(tomorrow, 'day'));
+		return ( moment(date).isSame(tomorrow, 'day'));
 	},
 
 	setDefaultTime: function(buffer, bufferAmount){

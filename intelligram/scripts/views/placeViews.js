@@ -1999,15 +1999,15 @@ var checkInView = {
                     var placeUUID = place.uuid;
                     name = place.name;
                     mapModel.checkIn(placeUUID);
-                    userModel.checkIn(placeUUID);
+                    userStatus.checkIn(placeUUID);
                 } else {
                     // Must be  ggType === "Venue" ie lightweight place
                     name = place.title;
                     mapModel.checkIn(null, place.title, place.googleId);
-                    userModel.checkIn(null, place.lat, place.lng, place.title, place.googleId);
+                    userStatus.checkIn(null, place.lat, place.lng, place.title, place.googleId);
                 }
 
-                userStatus.update();
+                //userStatus.update();
                 mobileNotify("You're checked in to " + name);
                 checkInView.closeModal();
             },

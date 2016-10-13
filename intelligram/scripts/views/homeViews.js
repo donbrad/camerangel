@@ -12,13 +12,12 @@
 
 var homeView = {
     _radius: 90, // 90 meters or approx 300 ft
-    today : new kendo.data.DataSource(),
     _activeView : 0,
     _needPhoneValidation : false,
     _needEmailValidation : false,
     activeObj: new kendo.data.ObservableObject({
         ux_isValidated: true,
-        ux_timeLeft: "7 days to verify account",
+        ux_timeLeft: "7 days to verify account"
     }),
 
     openNotificationAction: function(e){
@@ -220,8 +219,9 @@ var homeView = {
 
            // APP.models.places.placesDS.add(item);
 
-            userModel._user.set('currentPlace', item.name);
-            userModel._user.set('currentPlaceUUID', item.uuid);
+            userStatus.updatePlace(item.name, item.uuid);
+           /* userModel._user.set('currentPlace', item.name);
+            userModel._user.set('currentPlaceUUID', item.uuid);*/
         };
 
         // If the item has a uuid it means we've already added it,
@@ -281,6 +281,7 @@ var homeView = {
             $('#checked-in-place > span').html(userModel._user.currentPlace);
             $('#checked-in-place').show();
         }
+
         homeView.activeObj.bind("change", function(e){
             var field = e.field;
             var value = homeView.activeObj.get(field);
@@ -293,54 +294,6 @@ var homeView = {
                     break;
             }
         });
-
-        /*
-    `
-         $("#homeHeaderButton").kendoTouch({
-
-         doubletap: function(e) {
-         userStatusView.openModal();
-         },
-
-         tap: function (e) {
-         $("#profilebuttonactionsheet").data("kendoMobileActionSheet").open();
-         }
-
-         });*/
-
-        /*
-         $('#homeSearchQuery').clearSearch({
-         callback: function() {
-         // todo - wire search
-         }
-         });
-         */
-
-        /*$(".home-status").kendoTouch(
-
-            { doubletap: function (e) { mobileNotify("Double Tap: Open Hot Buttons!"); }
-        });
-
-        $(".footer-menu").kendoTouch({
-            multiTouch: true,
-            gesturestart: function (e) {
-                mobileNotify("Two Finger: Open Hot Buttons!");
-            }
-        });*/
-
-        /*$('#home-buttongroup').kendoMobileButtonGroup({
-            select: function(e) {
-                var index = e.index;
-                if (index != homeView._activeView) {
-                    homeView._activeView = index;
-                    homeView.selectView(homeView._activeView);
-
-                }
-
-            },
-            index: homeView._activeView
-        });*/
-
 
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
@@ -355,11 +308,25 @@ var homeView = {
                 }
             },
             dataBound: function(e) {
-                ux.checkEmptyUIState(notificationModel.notificationDS, "#home");
+                ux.checkEmptyUIState(notificationModel.notificationDS, "#home-alerts");
             }
         });
 
-        privateNotesView.onInit();
+
+        $("#today-listview").kendoMobileListView({
+            dataSource: todayModel.objectsDS,
+            autoBind: false,
+            template: $("#todayTemplate").html(),
+            click: function(e){
+                var $target = $(e.target);
+
+            },
+            dataBound: function(e) {
+                ux.checkEmptyUIState(todayModel.objectsDS, "#home-today");
+            }
+        });
+
+       // privateNotesView.onInit();
 
         homeView.scroller = e.view.scroller;
 
@@ -437,8 +404,8 @@ var homeView = {
             $("#home-tab-alert-img").attr("src", "images/icon-notify-active.png");
             $("#home-tab-today-img").attr("src", "images/icon-today.png");
 
-            $(".home-alerts").removeClass("hidden");
-            $(".home-today").addClass("hidden");
+            $("#home-alerts").removeClass("hidden");
+            $("#home-today").addClass("hidden");
 
             ux.setSearchPlaceholder("Search Alerts...");
         } else {
@@ -469,30 +436,20 @@ var homeView = {
 
         // Set user availability
         ux.updateHeaderStatusImages();
-
         // Hide action button on home
         ux.setAddTarget("images/nav-gear.png", null, homeView.openSettingsAction);
-
         // Set the active view and the search text
         homeView.onTabSelect(homeView._activeView);
 
         homeView.updateValidationUX();
 
-
-
         appDataChannel.history();
         userDataChannel.history();
 
-        //everlive.syncCloud();
 
-        /*if (homeView._needPhoneValidation) {
-            verifyPhoneModal.openModal();
-            // toggle off so user only sees every launch or login
-            homeView._needPhoneValidation = false;
-        }*/
+        todayModel.objectsDS.fetch();
 
-        // Todo:Don schedule unread channel notifications after sync complete
-        //notificationModel.processUnreadChannels();
+
     },
 
     openSettingsAction : function (e) {
@@ -512,7 +469,8 @@ var homeView = {
     },
 
     changeAvailable: function(){
-        var currentAvailable = userModel._user.get('isAvailable');
+
+        var currentAvailable = userStatus._statusObj.get('isAvailable');
 
         if(currentAvailable){
             $(".userAvailableRev").attr("src", "images/status-available.png");
@@ -521,9 +479,9 @@ var homeView = {
             $(".userAvailableRev").attr("src", "images/status-away.png");
             $("#currentAvailableTxt").text("busy");
         }
+       // todo:  this should be method or class function
         ux.toggleIsAvailable();
 
-        userStatus.update();
 
     },
 
@@ -613,7 +571,8 @@ var homeView = {
                 var chanId = notification.privateId;
                 var checkChan = channelModel.findChannelModel(chanId);
                 if (checkChannel === undefined || checkChannel === null) {
-                    mobileNotify("Looking up " + notification.title);
+                    mobileNotify("Chat " + notification.title + " wasn't found");
+                   /* mobileNotify("Looking up " + notification.title);
                    channelModel.queryChannelMap(chanId, function(error, chanObj){
                        mobileNotify("Creating chat : " + chanObj.name + "...");
                         channelModel.addMemberChannel(chanObj.channelUUID, chanObj.name, chanObj,description, chanObj.members,
@@ -621,7 +580,7 @@ var homeView = {
 
                        APP.kendo.navigate(href);
                    });
-
+*/
                 } else {
                     APP.kendo.navigate(href);
                 }
@@ -648,14 +607,14 @@ var userStatusView = {
     _oldStatus : null,
 
     _update : function () {
-        var status = userStatusView._activeStatus, user = userModel._user;
+        var status = userStatus._statusObj, user = userModel._user;
 
-        status.set('currentPlaceUUID', user.currentPlaceUUID);
+        /*status.set('currentPlaceUUID', user.currentPlaceUUID);
         status.set('isCheckedIn', user.isCheckedIn);
         status.set('currentPlace', user.currentPlace);
         status.set('isAvailable', user.isAvailable);
         status.set('statusMessage', user.statusMessage);
-
+*/
         // Set name/alias layout
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
 
@@ -749,7 +708,7 @@ var userStatusView = {
 
         ux.hideKeyboard();
 
-        userStatusView.oldStatus =  userModel._user.statusMessage;
+        userStatusView.oldStatus =  userStatus._statusObj.statusMessage;
 
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
@@ -821,9 +780,7 @@ var userStatusView = {
         var updatedStatus = $("#profileStatusUpdate").val();
         if(updatedStatus !== "") {
             // Save new status
-            userModel._user.set("statusMessage", updatedStatus);
-            userStatus.update();
-            //updateParseObject('userStatus','userUUID', userModel._user.uuid, "statusMessage", updatedStatus);
+            userStatus.updateStatus(updatedStatus);
         }
         // clear status box
         $("#profileStatusUpdate").val("");
@@ -880,20 +837,20 @@ var userStatusView = {
         	$(element).addClass("hidden");
         	}
     	});*/
-        userModel.checkOut();
+        userStatus.checkOut();
         mapModel.checkOut();
 
         userStatusView._update();
        // $('#profileStatusCheckInPlace').text('');
     },
 
-    syncUserStatus: function (e) {
+   /* syncUserStatus: function (e) {
         _preventDefault(e);
 
         userModel._user.set(e.field, this[e.field]);
         //updateParseObject('userStatus','userUUID', userModel._user.uuid, e.field, this[e.field]);
 
-    },
+    },*/
 
     onAutoStatusChange : function (e) {
         var $autoCheckinBtn = $("#" + e.button[0].id);
@@ -918,7 +875,7 @@ var userStatusView = {
 
         userStatusView.statusCharCount(e);
 
-        userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
+        //userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
 
     },
 
@@ -1235,6 +1192,7 @@ var noteEditView = {
 
     onDone : function (e) {
        // _preventDefault(e);
+        noteEditView.closeEditor();
 
         if (noteEditView._returnview !== null) {
             APP.kendo.navigate('#'+noteEditView._returnview);

@@ -364,10 +364,11 @@ var userStatusChannel = {
          case 'status' :
             // contact status message
              var status = msg.status;
-             userStatusChannel.cacheList[msg.contactId] = status;
-             var contact = contactModel.findContact(msg.contactId);
+             var contactId = msg.sender;
+             userStatusChannel.cacheList[contactId] = status;
+             var contact = contactModel.findContact(contactId);
              if (contact !== undefined && contact !== null) {
-                var contactList = contactModel.findContactList(msg.contactId);
+                var contactList = contactModel.findContactList(contactId);
                  contact.lat = status.lat;
                  contact.lng = status.lng;
                  contact.geopPoint = status.geoPoint;

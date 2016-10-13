@@ -450,9 +450,10 @@
 				</div>
 			</div>
 
-			<div id="home-today" class="hidden">
-				<div class="notify-title ">
-
+			<div id="home-today" class="hidden" data-bind="invisible: ux_isValidated">
+				<ul id="today-listview"></ul>
+				<div class="emptyState hidden">
+					<div class="empty-home icon-gg-drawer" data-grunticon-embed></div>
 				</div>
 			</div>
   	</div>
@@ -520,34 +521,29 @@
 	</ul>
 
 	<ul id="privateNoteViewActions" data-role="actionsheet" data-cancel="Cancel">
+
 		<li>
 			<a data-role="button" data-click="privateNotesView.editNote">
 				<div class="icon-action action-edit" data-grunticon-embed></div>
-				Edit Note
+				<span id="privateNoteView-editTitle">Edit </span>
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="privateNotesView.deleteNote">
 				<div class="icon-action action-delete" data-grunticon-embed></div>
-				Delete Note
+				Delete
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="privateNotesView.sendNote">
-				<div class="icon-action action-contact" data-grunticon-embed></div>
-				Send to Contact
-			</a>
-		</li>
-		<li>
-			<a data-role="button" data-action="privateNotesView.sendChatNote">
 				<div class="icon-action action-chat" data-grunticon-embed></div>
-				Share in Chat
+				Share via intelligram
 			</a>
 		</li>
 		<li>
 			<a data-role="button" data-action="privateNotesView.shareNote">
 				<div class="icon-action action-share" data-grunticon-embed></div>
-				Share Note
+				Share via phone
 			</a>
 		</li>
 	</ul>
@@ -1017,10 +1013,14 @@
 <script type="text/x-kendo-template" id="sharePicker-Template">
 	#
 	var name = data.name.capitalize('title');
+
 	var icon = 'contacts';
 	if (data.category === 'Chat') {
 		icon = 'icon-Chat';
+	} else if (data.category === 'Group') {
+		icon = 'icon-group';
 	}
+
 
 	var aliasString = "";
 	if (alias !== undefined && alias !== null && alias !== "") {
@@ -1671,7 +1671,7 @@
 	</div>
 </div>
 
-<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatusView._activeStatus"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
+<div data-role="modalview" id="modalview-profileStatus" style="width: 90%; display: none;" data-model="userStatus._statusObj"  data-init="userStatusView.onInit" data-open="userStatusView.onOpen">
 	<div class="profileStatus-top">
 		<a data-role="button" class="modal-close hidden" data-click="homeView.closeStatusModal">
 			<div class="close" data-grunticon-embed></div>
@@ -3062,7 +3062,9 @@
 <div data-role="modalview" data-model="contactModel" data-title="Add Contact" id="modalview-AddContact" data-init="addContactView.doInit" class="appearance" style="width: 100%; height: 100%; display: none;">
 		<div data-role="header">
 			<div data-role="navbar">
-				<a data-align="left" class="btnClear-grey" data-click="addContactView.closeModal" data-role="button">Cancel</a>
+				<a data-align="left" class="btnClear-grey" data-click="addContactView.closeModal" data-role="button">
+					<div  class="nav-back" data-grunticon-embed></div>
+				</a>
 				<span data-role="view-title">
 					<div class="invite" data-grunticon-embed></div>
 				</span>
@@ -6794,6 +6796,45 @@
 
 </div>
 
+<script type="text/x-kendo-template" id="todayTemplate">
+	#  var ownerStr = '';
+	if (!data.isOwner) { ownerStr = "From : " + data.senderName; }
+	#
+	# if (ggType === 'Flight') { #
+	<div class="private-note" data-id="#:uuid#" data-type="Flight" data-uuid="#:uuid#">
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+		<div> #=content#</div>
+		</p>
+		<div> #=ownerStr# </div>
+	</div>
+	# } #
+	# if (ggType === 'Trip') { #
+	<div class="private-note" data-id="#:uuid#" data-type="Trip" data-uuid="#:uuid#">
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+		<div> #=content#</div>
+		</p>
+		<div> #=ownerStr# </div>
+	</div>
+	# } #
+	# if (ggType === 'Movie') { #
+	<div class="private-note" data-id="#:uuid#" data-type="Movie" data-uuid="#:uuid#">
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+		<div> #=content#</div>
+		</p>
+		<div> #=ownerStr# </div>
+	</div>
+	# } #
+	# if (ggType === 'Event') { #
+	<div class="private-note" data-id="#:uuid#" data-type="Event" data-uuid="#:uuid#">
+		<p class="helper" style="font-size: 1.0em; clear:both;">
+		<div> #=content#</div>
+		</p>
+		<div> #=ownerStr# </div>
+	</div>
+	# } #
+</script>
+
+
 <script type="text/x-kendo-template" id="privateNote-template">
 
 	#
@@ -6861,8 +6902,6 @@
 		<p class="helper" style="font-size: 0.85em; clear:both;">
 			<span> #:tagString#</span>
 		</p>
-
-
 	</div>
 	# } #
 	# if (noteType === 'Flight') { #

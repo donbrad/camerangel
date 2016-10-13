@@ -322,7 +322,6 @@ var groupChannel = {
         };
 
         if (!deviceModel.isOnline()) {
-
             thisMessage.wasSent = false;
             groupChannel.deferredDS.add(thisMessage);
             return;
@@ -569,7 +568,7 @@ var groupChannel = {
         });
     },
 
-    sendMessage: function (text, data, ttl) {
+    sendMessage: function (channelId, channelName, text, data, ttl) {
         if (ttl === undefined || ttl < 60)
             ttl = 86400;  // 24 hours
 
@@ -577,12 +576,12 @@ var groupChannel = {
 
        var msgID = uuid.v4();
 
-        var notificationString = "Chat : " + groupChannel.channelName;
+        var notificationString = "Chat : " + channelName + ' from: ' + userModel._user.name;
         var message = {
             msgID: msgID,
             msgClass : groupChannel._class,
             msgType : groupChannel._message,
-            channelUUID : groupChannel.channelUUID,
+            channelUUID : channelId,
             pn_apns: {
                 aps: {
                     alert : notificationString,
@@ -591,8 +590,8 @@ var groupChannel = {
                 },
                 senderId: userModel._user.userUUID,
                 senderName :  userModel._user.name,
-                target: '#channel?channelUUID='+ groupChannel.channelUUID,
-                channelUUID: groupChannel.channelUUID,
+                target: '#channel?channelUUID='+ channelId,
+                channelUUID: channelId,
                 msgType : groupChannel._message,
                 isMessage: true,
                 isPrivate: false
@@ -603,8 +602,8 @@ var groupChannel = {
                     message: "Message from " + userModel._user.name,
                     senderId: userModel._user.userUUID,
                     senderName :  userModel._user.name,
-                    target: '#channel?channelUUID='+ groupChannel.channelUUID,
-                    channelUUID: groupChannel.channelUUID,
+                    target: '#channel?channelUUID='+ channelId,
+                    channelUUID: channelId,
                     msgType : groupChannel._message,
                     isMessage: true,
                     isPrivate: false
@@ -628,7 +627,7 @@ var groupChannel = {
         }
 
         APP.pubnub.publish({
-            channel: groupChannel.channelUUID,
+            channel: channelId,
             message: message,
             callback: function (m) {
                 if (m === undefined)
@@ -639,16 +638,15 @@ var groupChannel = {
                 if (status !== 1) {
                     mobileNotify('Group Channel publish error: ' + message);
                 }
-                if (channelView._channelUUID === message.channelUUID) {
-                    channelView.messagesDS.add(message);
+                if (channelView._channelUUID === pnmessage.channelUUID) {
+                    channelView.messagesDS.add(pnmessage);
                     channelView.scrollToBottom();
                 }
-                channelModel.updateLastMessageTime(groupChannel.channelUUID, null);
+                channelModel.updateLastMessageTime(pnmessage.channelUUID, null);
 
 
             }
         });
-
 
     },
 

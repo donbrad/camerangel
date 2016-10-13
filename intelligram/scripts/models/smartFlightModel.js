@@ -34,7 +34,8 @@ var smartFlight = {
                 if (changedTrips !== undefined && !smartFlight._initialSync) {
 
                     smartFlight._initialSync = true;
-                    smartFlight._todayArray = smartTrip.getTodayList();
+                    smartFlight._todayArray = smartFlight.getTodayList();
+                    todayModel.addList(smartFlight._todayArray);
                 }
 
             } else {
@@ -90,8 +91,29 @@ var smartFlight = {
         var today = moment();
         for (var i=0; i<len; i++) {
             var flight = smartFlight.flightsDS.at(i);
-            if (moment(today).isBetween(flight.estimatedDeparture, flight.estimatedArrival, 'day') ) {
-                todayArray.push(movie);
+            var minDate = moment(flight.estimatedDeparture).subtract(6, 'hours'),
+                maxDate = moment(flight.estimatedArrival).add(6, 'hours');
+            if (moment(today).isBetween(minDate, maxDate, 'day') ) {
+
+                var todayObj = {ggType: 'Flight', uuid: flight.uuid, object: flight};
+
+                var content = smartFlight.renderFlight(flight);
+
+                todayObj.content = content;
+
+
+                if (flight.senderUUID === userModel._user.userUUID) {
+                    todayObj.senderName = "Me";
+                    todayObj.isOwner = true;
+                } else {
+                    todayObj.senderName = flight.senderName;
+                    todayObj.isOwner = false;
+                }
+
+                todayObj.date = minDate.format();
+                todayObj.endDate = maxDate.format();
+
+                todayArray.push(todayObj);
             }
 
         }
@@ -128,6 +150,57 @@ var smartFlight = {
     getFlightStatus : function (flightId, callback) {
 
     },
+
+
+    renderFlight : function (smartFlight) {
+        var  objectId = smartFlight.uuid;
+
+        var template = kendo.template($("#intelliFlight-chat").html());
+        var dataObj = {
+            ggType : "Flight",
+            objectId : objectId,
+            name: smartFlight.name,
+            departureAirport : smartFlight.departureAirport,
+            departureCity : smartFlight.departureCity,
+            arrivalAirport : smartFlight.arrivalAirport,
+            arrivalCity : smartFlight.arrivalCity,
+            estimatedDeparture : smartFlight.estimatedDeparture,
+            ui_estimatedDeparture : smartFlight.ui_estimatedDeparture,
+            timeDeparture: smartFlight.timeDeparture,
+            dateDeparture: smartFlight.dateDeparture,
+            timeArrival : smartFlight.timeArrival,
+            dateArrival: smartFlight.dateArrival,
+            estimatedArrival : smartFlight.estimatedArrival,
+            ui_estimatedArrival : smartFlight.ui_estimatedArrival,
+            durationString : smartFlight.durationString
+
+        };
+
+        var content = template(dataObj);
+
+        return(content);
+    },
+
+
+    removeFlight : function (flight) {
+        smartFlight.flightsDS.remove(flight);
+        smartFlight.flightsDS.sync();
+    },
+
+
+    removeFlightById : function (flightId) {
+
+        var flight = smartFlight.findFlight(flightId);
+
+        if (flight === undefined || flight === null) {
+            ggError("Remove Flight: couldn't find flight");
+            return;
+        }
+        smartFlight.flightsDS.remove(flight);
+        smartFlight.flightsDS.sync();
+    },
+
+
 
     smartAddFlight : function (objectIn, callback) {
         var objectId = objectIn.uuid;

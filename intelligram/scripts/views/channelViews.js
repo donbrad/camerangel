@@ -668,8 +668,9 @@ var editChannelView = {
             var contactId = membersAdded[ma].contactUUID;
             if (contactId !== undefined && contactId !== null) {
                 inviteArray.push(contactId);
-                appDataChannel.groupChannelInvite(contactId, channelUUID,  editChannelView._activeChannel.name,  editChannelView._activeChannel.description, memberArray,
-                    options);
+                appDataChannel.groupChannelInvite(contactId, channelUUID,
+                    editChannelView._activeChannel.name,  editChannelView._activeChannel.description,
+                    memberArray, options);
                 groupChannel.addMember(editChannelView._activechannelUUID, contactId);
             } else {
                 console.error("Invalid Contact " + contactId);
@@ -710,7 +711,7 @@ var editChannelView = {
             });
         }
         
-        channelModel.updateChannelMap(channelObj);
+        //channelModel.updateChannelMap(channelObj);
         
         // Reset UI
         $("#showEditDescriptionBtn").velocity("fadeIn");
@@ -1269,7 +1270,7 @@ var channelView = {
 
         var $img = $("#messages-listview img"), n = $img.length;
         if (n > 0) {
-            mobileNotify("Loading " + n + " Chat Images...");
+            //mobileNotify("Loading " + n + " Chat Images...");
             $img.on("load error", function () {
                 if(--n === 0 ) {
                     setTimeout( function () {channelView.scrollToBottom();}, 500);
@@ -1540,6 +1541,7 @@ var channelView = {
 
             //Build the members datasource and quick access list
             channelView.buildMemberDS();
+
             //*** Group Channel ***
             $('#messagePresenceButton').show();
             // Provision a group channel
@@ -1896,13 +1898,13 @@ var channelView = {
     },
 
     getContactPhotoUrl : function (contactUUID) {
+        var photoUrl = null;
         var contact = channelView.memberList[contactUUID];
         if (contact === undefined) {
-           ggError("Contact Undefined!!!");
-            debugger;
-        }
-        var photoUrl = null;
-        if (contact !== undefined) {
+
+            photoUrl = contactModel.createIdenticon(contactUUID);
+
+        } else {
             photoUrl = contact.photo;
             if (photoUrl === null) {
                 photoUrl = contact.identicon;
@@ -1911,7 +1913,7 @@ var channelView = {
         return (photoUrl);
     },
 
-    //build a cache of photos indexed by photoId
+/*    //build a cache of photos indexed by photoId
     buildPhotoList : function () {
 
         channelView.photos = [];
@@ -1922,7 +1924,7 @@ var channelView = {
         for (var i=0; i<photos.length; i++) {
             channelView.photos[photos[i].photoId] = photos[i];
         }
-    },
+    },*/
 
 
     // Build a member list for this channel
@@ -1962,22 +1964,19 @@ var channelView = {
                 var thisContact = contactModel.findContact(contactArray[i]);
 
                 if (thisContact === undefined) {
-                    // No contact entry for this contact...
-                    // Need to create a contact and then add to channels member list
-                    contact.isContact = true;
-                    contact.uuid = uuid.v4();
-                    contact.contactUUID = contactIndex;
-                    contact.alias = "New";
-                    contact.name = "New Contact...";
-                    contact.identicon = contactModel.createIdenticon(contact.uuid);
-                    contact.photo =  contact.identicon;
-                    contact.publicKey = null;
-                    contact.isPresent = false;
-                    contact.isNew = true;
-                    contactModel.createChatContact(contactIndex, 'Anonymous...', contact.uuid,  function (newContact) {
-
-                    });
-                } else {
+                 // No contact entry for this contact...
+                 // Need to create a contact and then add to channels member list
+                     contact.isContact = true;
+                     contact.uuid = uuid.v4();
+                     contact.contactUUID = contactIndex;
+                     contact.alias = "New";
+                     contact.name = "New Contact...";
+                     contact.identicon = contactModel.createIdenticon(contactIndex);
+                     contact.photo =  contact.identicon;
+                     contact.publicKey = null;
+                     contact.isPresent = false;
+                     contact.isNew = true;
+                 } else {
                     // Found a matching contact
                     contact.isContact = true;
                     contact.uuid = thisContact.uuid;
@@ -2298,7 +2297,7 @@ var channelView = {
            if (channelView.isPrivateChat) {
                 privateChannel.sendMessage(channelView.privateContactId, text, channelView.activeMessage, 86400);
             } else {
-                groupChannel.sendMessage(text, channelView.activeMessage, 86400);
+                groupChannel.sendMessage(channelView._channelUUID,  channelView._channelName, text, channelView.activeMessage, 86400);
             }
             channelView.messageInit();
         }
@@ -2428,20 +2427,7 @@ var channelView = {
 
     addSmartPlaceToMessage: function (smartPlace, message) {
 
-        //  var editor = $("#messageTextArea").data("kendoEditor");
-        var  objectId = smartPlace.uuid;
-
-
-        var template = kendo.template($("#intelliPlace-chat").html());
-        var dataObj = {
-            ggType : "Place",
-            name: smartPlace.name,
-            address: smartPlace.address,
-            description: smartPlace.description,
-            objectId : objectId
-        };
-
-        var objectUrl = template(dataObj);
+        var objectUrl = placesModel.renderPlace(smartPlace);
         var fullMessage = message + objectUrl;
 
         channelView.activeMessage.objects.push(smartPlace);
@@ -2453,24 +2439,8 @@ var channelView = {
     addSmartMovieToMessage: function (smartMovie, message) {
 
         //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = smartMovie.showtime, objectId = smartMovie.uuid;
 
-        var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
-
-
-        var template = kendo.template($("#intelliMovie-chat").html());
-        var dataObj = {
-            ggType: "Movie",
-            imageUrl: smartMovie.imageUrl,
-            movieTitle : smartMovie.movieTitle,
-            dateStr : dateStr,
-            theatreName: smartMovie.theatreName,
-            objectId : objectId,
-            rating: smartMovie.rating,
-            runtime: smartMovie.runtime
-        };
-
-        var objectUrl = template(dataObj);
+        var objectUrl = smartMovie.renderMovie(smartMovie);
 
         var fullMessage = message + objectUrl;
 
@@ -2481,36 +2451,9 @@ var channelView = {
     },
 
     addSmartTripToMessage: function (smartTrip, message) {
-        var  objectId = smartTrip.uuid;
 
-        var template = kendo.template($("#intelliTrip-chat").html());
+        var objectUrl = smartTrip.renderTrip(smartTrip);
 
-        var dest = smartTrip.destination.address;
-        var orig = smartTrip.origin.address;
-
-
-        if (smartTrip.destination.name !== null) {
-            dest = smartTrip.destination.name;
-        }
-
-        if (smartTrip.origin.name !== null) {
-            orig = smartTrip.origin.name;
-        }
-
-        var dataObj = {
-            ggType: "Trip",
-            name: smartTrip.name,
-            origin: orig,
-            destination: dest,
-            departure: moment(smartTrip.departure).format ("ddd, M/D @ h:mm a"),
-            arrival: moment(smartTrip.arrival).format ("ddd, M/D @ h:mm a"),
-            durationString: smartTrip.durationString,
-            distanceString: smartTrip.distanceString,
-            objectId : objectId,
-            tripTimeType: smartTrip.tripTimeType
-        };
-
-        var objectUrl = template(dataObj);
         var fullMessage = message + objectUrl;
 
         channelView.activeMessage.objects.push(smartTrip);
@@ -2521,11 +2464,11 @@ var channelView = {
 
     addSmartEventToMessage: function (smartEvent, message) {
 
-        //  var editor = $("#messageTextArea").data("kendoEditor");
+        /*//  var editor = $("#messageTextArea").data("kendoEditor");
         var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
 
-        /*var dateStr = moment(date).format('ddd MMM Do');
-         var localTime = moment(date).format("LT");*/
+        /!*var dateStr = moment(date).format('ddd MMM Do');
+         var localTime = moment(date).format("LT");*!/
 
         var placeName = smartEvent.placeName;
         if(placeName === null){
@@ -2545,6 +2488,9 @@ var channelView = {
 
         var objectUrl = template(dataObj);
 
+*/
+        var objectUrl = smartEvent.renderEvent(smartEvent);
+
         var fullMessage = message + objectUrl;
 
         channelView.activeMessage.objects.push(smartEvent);
@@ -2554,30 +2500,9 @@ var channelView = {
     },
 
     addSmartFlightToMessage: function (smartFlight, message) {
-        var  objectId = smartFlight.uuid;
 
-        var template = kendo.template($("#intelliFlight-chat").html());
-        var dataObj = {
-            ggType : "Flight",
-            objectId : objectId,
-            name: smartFlight.name,
-            departureAirport : smartFlight.departureAirport,
-            departureCity : smartFlight.departureCity,
-            arrivalAirport : smartFlight.arrivalAirport,
-            arrivalCity : smartFlight.arrivalCity,
-            estimatedDeparture : smartFlight.estimatedDeparture,
-            ui_estimatedDeparture : smartFlight.ui_estimatedDeparture,
-            timeDeparture: smartFlight.timeDeparture,
-            dateDeparture: smartFlight.dateDeparture,
-            timeArrival : smartFlight.timeArrival,
-            dateArrival: smartFlight.dateArrival,
-            estimatedArrival : smartFlight.estimatedArrival,
-            ui_estimatedArrival : smartFlight.ui_estimatedArrival,
-            durationString : smartFlight.durationString
+        var objectUrl = smartFlight.renderFlight(smartFlight);
 
-        };
-
-        var objectUrl = template(dataObj);
         var fullMessage = message + objectUrl;
 
         channelView.activeMessage.objects.push(smartFlight);

@@ -150,7 +150,27 @@ var placesModel = {
         placesModel.syncPlaceListDS();
     },
     
-    
+
+    renderPlace : function (smartPlace) {
+        //  var editor = $("#messageTextArea").data("kendoEditor");
+        var  objectId = smartPlace.uuid;
+
+
+        var template = kendo.template($("#intelliPlace-chat").html());
+        var dataObj = {
+            ggType : "Place",
+            name: smartPlace.name,
+            address: smartPlace.address,
+            description: smartPlace.description,
+            objectId : objectId
+        };
+
+        var content = template(dataObj);
+
+        return(content);
+    },
+
+
     newPlace : function () {
         return(new Object(placesModel._placeModel));
     },

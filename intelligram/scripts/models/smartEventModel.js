@@ -134,7 +134,7 @@ var smartEvent = {
                 typeName: 'smartEvent'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "date",
@@ -149,6 +149,7 @@ var smartEvent = {
 
                     smartEvent._initialSync = true;
                     smartEvent._todayArray = smartEvent.getTodayList();
+                    todayModel.addList(smartEvent._todayArray);
                 }
 
             } else {
@@ -264,8 +265,28 @@ var smartEvent = {
         var today = moment();
         for (var i=0; i<len; i++) {
             var event = smartEvent.eventsDS.at(i);
-            if (moment(event.date).isSame(today, 'day') ) {
-                todayArray.push(event);
+            var minDate = moment(event.date).subtract(2, 'hours'),
+                maxDate =  moment(event.date).add(event.duration, 'minutes');
+            if (moment(minDate).isSame(today, 'day') ) {
+                var todayObj = {ggType: 'Event', uuid: event.uuid, object: event};
+
+                var content = smartEvent.renderEvent(event);
+
+                todayObj.content = content;
+
+                if (event.senderUUID === userModel._user.userUUID) {
+                    todayObj.senderName = "Me";
+                    todayObj.isOwner = true;
+                } else {
+                    todayObj.senderName = event.senderName;
+                    todayObj.isOwner = false;
+                }
+
+
+                todayObj.date = minDate.toDate();
+                todayObj.maxDate = maxDate.toDate();
+
+                todayArray.push(todayObj);
             }
 
         }
@@ -427,7 +448,53 @@ var smartEvent = {
     deleteEvent : function (event) {
 
     },
-    
+
+    renderEvent : function (smartEvent) {
+
+        var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
+
+        /*var dateStr = moment(date).format('ddd MMM Do');
+         var localTime = moment(date).format("LT");*/
+
+        var placeName = smartEvent.placeName;
+        if(placeName === null){
+            placeName = "";
+        }
+
+
+        var template = kendo.template($("#intelliEvent-chat").html());
+        var dataObj = {
+            ggType: "Event",
+            title : smartEvent.title,
+            date : date,
+            placeName: placeName,
+            objectId : objectId
+        };
+
+
+        var content = template(dataObj);
+
+        return (content);
+    },
+
+
+    removeEvent : function (event) {
+        smartEvent.eventsDS.remove(event);
+        smartEvent.eventsDS.sync();
+    },
+
+
+    removeEventById : function (eventId) {
+
+        var event = smartEvent.findObject(eventId);
+
+        if (event === undefined || event === null) {
+            ggError("Remove Event: couldn't find event");
+            return;
+        }
+        smartEvent.eventsDS.remove(event);
+        smartEvent.eventsDS.sync();
+    },
 
     addEvent : function (objectIn, callback) {
       /*  var smartEvents = Parse.Object.extend(smartEvent._cloudClass);

@@ -38,6 +38,7 @@ var smartMovie = {
 
                     smartMovie._initialSync = true;
                     smartMovie._todayArray = smartMovie.getTodayList();
+                    todayModel.addList(smartMovie._todayArray);
                 }
 
             } else {
@@ -94,8 +95,29 @@ var smartMovie = {
         var today = moment();
         for (var i=0; i<len; i++) {
             var movie = smartMovie.moviesDS.at(i);
+            var minDate = moment(movie.showtime).subtract(2, 'hours'),
+                maxDate = moment(movie.showtime).add(2, 'hours');
             if (moment(movie.showtime).isSame(today, 'day') ) {
-                todayArray.push(movie);
+
+                var todayObj = {ggType: 'Movie', uuid: movie.uuid, object: movie};
+
+                var content = smartMovie.renderMovie(movie);
+
+                todayObj.content = content;
+
+                if (movie.senderUUID === userModel._user.userUUID) {
+                    todayObj.senderName = "Me";
+                    todayObj.isOwner = true;
+                } else {
+                    todayObj.senderName = movie.senderName;
+                    todayObj.isOwner = false;
+                }
+
+                today.date  = minDate.toDate();
+                today.maxDate = maxDate.toDate();
+
+                todayArray.push(todayObj);
+
             }
 
         }
@@ -132,6 +154,29 @@ var smartMovie = {
         return(result);
     },
 
+    renderMovie : function (smartMovie) {
+        var date = smartMovie.showtime, objectId = smartMovie.uuid;
+
+        var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
+
+
+        var template = kendo.template($("#intelliMovie-chat").html());
+        var dataObj = {
+            ggType: "Movie",
+            imageUrl: smartMovie.imageUrl,
+            movieTitle : smartMovie.movieTitle,
+            dateStr : dateStr,
+            theatreName: smartMovie.theatreName,
+            objectId : objectId,
+            rating: smartMovie.rating,
+            runtime: smartMovie.runtime
+        };
+
+        var content = template(dataObj);
+
+        return(content);
+    },
+
     smartAddMovie : function (objectIn, callback) {
         var objectId = objectIn.uuid;
 
@@ -158,8 +203,22 @@ var smartMovie = {
         return (null);
     },
 
-    deleteMovie : function (movie) {
-        
+    removeMovie : function (movie) {
+        smartMovie.moviesDS.remove(movie);
+        smartMovie.moviesDS.sync();
+    },
+
+
+    removeMovieById : function (movieId) {
+
+        var movie = smartMovie.findMovie(movieId);
+
+        if (movie === undefined || movie === null) {
+            ggError("Remove Trip: couldn't find trip");
+            return;
+        }
+        smartMovie.moviesDS.remove(movie);
+        smartMovie.moviesDS.sync();
     },
     
     addMovie : function (objectIn, callback) {
