@@ -2408,14 +2408,17 @@ var smartEventPlacesView = {
     _processQuery : function (query) {
 
         //smartEventPlacesView.setLocationAndBounds();
-       /* var location = smartEventPlacesView._location;
-        var bounds = smartEventPlacesView._bounds;*/
+        var location = smartEventPlacesView._location;
+        var bounds = smartEventPlacesView._bounds;
 
-        smartEventPlacesView._autocomplete.getPlacePredictions({ input: query, options: { bounds: smartEventPlacesView._bounds } }, function(predictions, status) {
+
+        smartEventPlacesView._autocomplete.getPlacePredictions({ input: query, bounds: smartEventPlacesView._bounds,
+            types: ['establishment'] }, function(predictions, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
                 predictions.forEach( function (prediction) {
+                    
                     var desObj = {category:"Place",description: prediction.description};
                     desObj.placeId = prediction.place_id;
                     if (prediction.types[0] === 'establishment') {
