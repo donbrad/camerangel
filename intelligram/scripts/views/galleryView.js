@@ -1694,7 +1694,7 @@ var gallerySharedPhotoModal = {
 
     onOpen: function(){
         var dataCount = gallerySharedPhotoModal.commentDS._total;
-        console.log(dataCount);
+
     },
 
     addComment: function(){
@@ -1705,12 +1705,12 @@ var gallerySharedPhotoModal = {
     },
 
     toggleShareDialog: function(){
-        console.log("Sharing");
+        // todo - wire sharing
     },
 
     toggleComments: function(e){
         $("#galleryShared-commentPopover").data("kendoMobilePopOver").open("#galleryShared-toggleComment");
-        console.log("Comment");
+        // todo - wire comments
     },
 
     closeComments: function(){
