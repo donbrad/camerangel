@@ -653,7 +653,7 @@ var channelModel = {
         }
 
         var channel = channelModel.findChannelModel(channelUUID);
-        if (channel === undefined) {
+        if (channel === undefined || channel === null) {
             channelModel.confirmPrivateChannel(channelUUID, function(result){
             if (result !== null) {
                 var lastAccess = ggTime.currentTime();
