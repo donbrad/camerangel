@@ -265,7 +265,9 @@ var smartEvent = {
         var today = moment();
         for (var i=0; i<len; i++) {
             var event = smartEvent.eventsDS.at(i);
-            if (moment(event.date).isSame(today, 'day') ) {
+            var minDate = moment(event.date).subtract(2, 'hours'),
+                maxDate =  moment(event.date).add(event.duration, 'minutes');
+            if (moment(minDate).isSame(today, 'day') ) {
                 var todayObj = {ggType: 'Event', uuid: event.uuid, object: event};
 
                 var content = smartEvent.renderEvent(event);
@@ -281,6 +283,8 @@ var smartEvent = {
                 }
 
 
+                todayObj.date = minDate.toDate();
+                todayObj.maxDate = maxDate.toDate();
 
                 todayArray.push(todayObj);
             }

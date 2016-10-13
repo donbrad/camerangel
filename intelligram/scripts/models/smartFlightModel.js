@@ -91,7 +91,9 @@ var smartFlight = {
         var today = moment();
         for (var i=0; i<len; i++) {
             var flight = smartFlight.flightsDS.at(i);
-            if (moment(today).isBetween(flight.estimatedDeparture, flight.estimatedArrival, 'day') ) {
+            var minDate = moment(flight.estimatedDeparture).subtract(6, 'hours'),
+                maxDate = moment(flight.estimatedArrival).add(6, 'hours');
+            if (moment(today).isBetween(minDate, maxDate, 'day') ) {
 
                 var todayObj = {ggType: 'Flight', uuid: flight.uuid, object: flight};
 
@@ -108,6 +110,8 @@ var smartFlight = {
                     todayObj.isOwner = false;
                 }
 
+                todayObj.date = minDate.format();
+                todayObj.endDate = maxDate.format();
 
                 todayArray.push(todayObj);
             }

@@ -95,6 +95,8 @@ var smartMovie = {
         var today = moment();
         for (var i=0; i<len; i++) {
             var movie = smartMovie.moviesDS.at(i);
+            var minDate = moment(movie.showtime).subtract(2, 'hours'),
+                maxDate = moment(movie.showtime).add(2, 'hours');
             if (moment(movie.showtime).isSame(today, 'day') ) {
 
                 var todayObj = {ggType: 'Movie', uuid: movie.uuid, object: movie};
@@ -111,6 +113,8 @@ var smartMovie = {
                     todayObj.isOwner = false;
                 }
 
+                today.date  = minDate.toDate();
+                today.maxDate = maxDate.toDate();
 
                 todayArray.push(todayObj);
 

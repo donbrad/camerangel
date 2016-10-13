@@ -315,15 +315,11 @@ var homeView = {
 
         $("#today-listview").kendoMobileListView({
             dataSource: todayModel.objectsDS,
+            autoBind: false,
             template: $("#todayTemplate").html(),
             click: function(e){
                 var $target = $(e.target);
-                if($target.hasClass("textClamp")){
-                    $(".notify-expand").addClass("textClamp").removeClass("notify-expand");
-                    $target.removeClass("textClamp").addClass("notify-expand");
-                } else {
-                    $(".notify-expand").addClass("textClamp").removeClass("notify-expand");
-                }
+
             },
             dataBound: function(e) {
                 ux.checkEmptyUIState(todayModel.objectsDS, "#home-today");
@@ -408,8 +404,8 @@ var homeView = {
             $("#home-tab-alert-img").attr("src", "images/icon-notify-active.png");
             $("#home-tab-today-img").attr("src", "images/icon-today.png");
 
-            $(".home-alerts").removeClass("hidden");
-            $(".home-today").addClass("hidden");
+            $("#home-alerts").removeClass("hidden");
+            $("#home-today").addClass("hidden");
 
             ux.setSearchPlaceholder("Search Alerts...");
         } else {
@@ -449,6 +445,9 @@ var homeView = {
 
         appDataChannel.history();
         userDataChannel.history();
+
+
+        todayModel.objectsDS.fetch();
 
 
     },

@@ -110,6 +110,8 @@ var smartTrip = {
         var today = moment();
         for (var i=0; i<len; i++) {
             var trip = smartTrip.tripsDS.at(i);
+            var minDate = moment(trip.departure).subtract(2, 'hours'),
+                maxDate = moment(trip.arrival).add(2, 'hours');
             var departure = moment(trip.departure), arrival = moment(trip.arrival);
             if (moment(today).isBetween(departure, arrival, 'day') ) {
 
@@ -127,6 +129,8 @@ var smartTrip = {
                     todayObj.isOwner = false;
                 }
 
+                todayObj.date = minDate.format();
+                todayObj.maxDate = maxDate.format();
 
                 todayArray.push(todayObj);
             }
