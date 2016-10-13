@@ -1,5 +1,7 @@
 .action-camera { background-image: url('png/action-camera.png'); background-repeat: no-repeat; }
 
+.action-chat-light { background-image: url('png/action-chat-light.png'); background-repeat: no-repeat; }
+
 .action-chat { background-image: url('png/action-chat.png'); background-repeat: no-repeat; }
 
 .action-contact { background-image: url('png/action-contact.png'); background-repeat: no-repeat; }
@@ -315,6 +317,8 @@
 .icon-expired { background-image: url('png/icon-expired.png'); background-repeat: no-repeat; }
 
 .icon-external { background-image: url('png/icon-external.png'); background-repeat: no-repeat; }
+
+.icon-favorite { background-image: url('png/icon-favorite.png'); background-repeat: no-repeat; }
 
 .icon-feature-savings { background-image: url('png/icon-feature-savings.png'); background-repeat: no-repeat; }
 
