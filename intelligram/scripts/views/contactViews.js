@@ -2296,7 +2296,7 @@ var sharePickerView = {
 
     shareObject : function (target) {
         // Is target a group or contact?
-
+        // todo - wire share
     },
 
 

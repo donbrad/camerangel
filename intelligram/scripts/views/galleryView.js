@@ -1632,6 +1632,108 @@ var modalPhotoView = {
    }
 };
 
+var gallerySharedPhotoModal = {
+    commentDS: new kendo.data.DataSource({
+        data: [
+        {
+            authorName: "John Smith",
+            content: "Nice photo!"
+        },
+        {
+            authorName: "Jane Doe",
+            content: "Looks like fun!"
+        },
+        {
+            authorName: "Jane Doe",
+            content: "This is a really long comment and the best comment. This is a great photo and I wish I was there."
+        },
+        {
+            authorName: "John Smith",
+            content: "Nice photo!"
+        },
+        {
+            authorName: "Jane Doe",
+            content: "Looks like fun!"
+        },
+        {
+            authorName: "Jane Doe",
+            content: "This is a really long comment and the best comment. This is a great photo and I wish I was there."
+        }
+    ]}),
+    activePhoto : new kendo.data.ObservableObject({
+        title: "My Photo title",
+        thumbnailUrl: "images/photo-default.png",
+        ux_isLiked: false,
+        ux_commentCount: 8
+    }),
+
+    onInit: function(){
+
+        $("#galleryShared-commentList").kendoMobileListView({
+            dataSource: gallerySharedPhotoModal.commentDS, // todo - wire comments data source
+            template: $("#galleryShared-commentTmpl").html()
+        });
+
+
+    },
+
+    onOpen: function(){
+        var dataCount = gallerySharedPhotoModal.commentDS._total;
+        console.log(dataCount);
+    },
+
+    addComment: function(){
+        var comment = $("#galleryShared-commentContent").val();
+        // todo - wire comment
+
+        gallerySharedPhotoModal.closeComments();
+    },
+
+    toggleShareDialog: function(){
+        console.log("Sharing");
+    },
+
+    toggleComments: function(e){
+        $("#galleryShared-commentPopover").data("kendoMobilePopOver").open("#galleryShared-toggleComment");
+        console.log("Comment");
+    },
+
+    closeComments: function(){
+        $("#galleryShared-commentPopover").data("kendoMobilePopOver").close();
+    },
+
+    toggleLike: function(e){
+        if(gallerySharedPhotoModal.activePhoto.ux_isLiked){
+            gallerySharedPhotoModal.activePhoto.set("ux_isLiked", false);
+        } else {
+            gallerySharedPhotoModal.activePhoto.set("ux_isLiked", true);
+        }
+
+    },
+
+    setActivePhoto: function(photo){
+
+        if(photo !== undefined && photo.uuid !== null){
+            gallerySharedPhotoModal.activePhoto.set("title", photo.title);
+            gallerySharedPhotoModal.activePhoto.set("thumbnailUrl", photo.thumbnailUrl);
+            // todo - wire all properties
+        } else {
+            mobileNotify("Error loading photo");
+        }
+    },
+
+    openModal: function(photo){
+        gallerySharedPhotoModal.setActivePhoto(photo);
+
+        $("#gallerySharedPhotoModal").data("kendoMobileModalView").open();
+    },
+
+    onDone: function(e) {
+        // todo - clear active photo
+        $("#gallerySharedPhotoModal").data("kendoMobileModalView").close();
+    }
+};
+
 // Removing this legacy view -- gallerypicker is new replacement.  just keeping the code for reference...
 var galleryListView = {
 
@@ -1911,11 +2013,11 @@ var galleryEditView = {
 
         });
 
-        $('#galleryEditor-shareString').click(function(){
+        $('#galleryEditor-shareBtn').on("click", function(){
 
             var string = $('#galleryEditor-shareString').val();
 
-            sharePickerView.openModal(galleryEditView.members, galleryEditView.memberString, function (members, memberString ) {
+            sharePickerView.openModal(galleryEditView.members, galleryEditView.memberString, function (members, memberString) {
 
             })
 
@@ -1964,6 +2066,12 @@ var galleryEditView = {
 
     },
 
+    openSharePicker: function(){
+        sharePickerView.openModal(galleryEditView.members, galleryEditView.memberString, function (members, memberString) {
+
+        })
+    },
+
     showSaveButton : function (show) {
         if (show) {
            $('#galleryEditor-saveBtn').removeClass('hidden');
@@ -1972,20 +2080,6 @@ var galleryEditView = {
         }
     },
 
-    galleryActionView: function(e){
-        _preventDefault(e);
-        if(e.index === 0){
-            $(".galleryImg").addClass("galleryImg-grid").removeClass("galleryImg-full");
-            $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid-active.svg");
-            $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt.svg");
-            $("#galleryEdit-listview").data("kendoMobileListView").scroller().reset();
-        } else{
-            $(".galleryImg").addClass("galleryImg-full").removeClass("galleryImg-grid");
-            $(".gallerySelectBtn-grid img").attr("src", "images/icon-grid.svg");
-            $(".gallerySelectBtn-list img").attr("src", "images/icon-list-alt-active.svg");
-            $("#galleryEdit-listview").data("kendoMobileListView").scroller().reset();
-        }
-    },
 
     initGallery : function (gallery) {
         var that = galleryEditView;
@@ -2000,15 +2094,14 @@ var galleryEditView = {
             that.activeObj.description = '';
             that.activeObj.set('tagString','');
             that.activeObj.tags = [];
-            that.activeObj.isShared = false;
+            that.activeObj.set("isShared", false);
             that.activeObj.isOpen = false;
-            that.activeObj.isTracked = false;
+            that.activeObj.set("isTracked", false);
             that.activeObj.senderUUID = userModel._user.userUUID;
             that.activeObj.senderName = userModel._user.name;
             that.activeObj.timestamp = new Date();
             that.activeObj.ggType = galleryModel._ggClass;
-           // $('#galleryEditor-title').val("");
-           // $('#galleryEditor-tagString').val("");
+            that.activeObj.set("ux_title", "New Gallery");
             galleryEditView._mode = 'create';
         } else {
             that.activeObj.Id = gallery.Id;
@@ -2019,15 +2112,15 @@ var galleryEditView = {
             that.activeObj.set('description',  gallery.description);
             that.activeObj.set('tagString',  gallery.tagString);
             that.activeObj.tags = gallery.tags;
-            that.activeObj.isShared = gallery.isShared;
+            that.activeObj.set("isShared", gallery.isShared);
             that.activeObj.isOpen = gallery.isOpen;
-            that.activeObj.isTracked = gallery.isTracked;
+            that.activeObj.set("isTracked", gallery.isTracked);
             that.activeObj.senderUUID = gallery.senderUUID;
             that.activeObj.senderName = gallery.senderName;
             that.activeObj.timestamp = gallery.timestamp;
             that.activeObj.lastUpdate = gallery.lastUpdate;
-            that.activeObj.ggType = gallery.ggType
-            ;
+            that.activeObj.ggType = gallery.ggType;
+            that.activeObj.set("ux_title", gallery.title);
             galleryEditView._mode = 'edit';
         }
 
@@ -2041,6 +2134,13 @@ var galleryEditView = {
         }
     },
 
+    toggleTracking: function(){
+        if(galleryEditView.activeObj.isTracked){
+            galleryEditView.activeObj.set("isTracked", false);
+        } else {
+            galleryEditView.activeObj.set("isTracked", true);
+        }
+    },
 
     onShow : function (e) {
         //_preventDefault(e);
@@ -2052,20 +2152,21 @@ var galleryEditView = {
                 template: $("#gallery-template").html(),
                 click : function (e) {
                     // _preventDefault(e);
-
                     var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
 
-                    modalPhotoView.openModal(photo);
+                    // toggle private/public photo modal
+                    if(galleryEditView.activeObj.isShared){
+                        gallerySharedPhotoModal.openModal(photo);
+                    } else {
+                        modalPhotoView.openModal(photo);
+                    }
                 }
                 /*dataBound: function(e){
                  ux.checkEmptyUIState(photoModel.photosDS, "#channelListDiv");
                  }*/
             });
-
-
-
         }
-
+        // viewing an existing gallery
         if (e.view.params.galleryid !== undefined) {
             galleryEditView._galleryUUID = e.view.params.galleryid;
             var galleryList  =  galleryModel.findGallery(galleryEditView._galleryUUID);
@@ -2080,32 +2181,50 @@ var galleryEditView = {
                 galleryEditView.onDone();
             }
 
-            galleryEditView._mode = 'edit';
             if (gallery.tags === undefined) {
                 gallery.tags = [];
             }
             if (gallery.tagString === undefined) {
                 gallery.tagString = null;
             }
-
+            galleryEditView._mode = 'edit';
             galleryEditView.initGallery(gallery);
-            galleryEditView.photos = gallery.photos;
 
+            //galleryEditView.photos = gallery.photos;
 
+            $("#galleryEditor .createMode").addClass("hidden");
+            $("#galleryEditor .viewerMode").removeClass("hidden");
 
+            // is the user the owner
+            if (galleryEditView.activeObj.senderUUID === userModel._user.userUUID) {
+                galleryEditView.activeObj.set("ux_isOwner", true);
+                galleryEditView.activeObj.set("ux_sender", "Me");
+                galleryEditView.setSave(true);
+
+            } else {
+                // user can just view gallery
+                galleryEditView.setSave(false);
+                galleryEditView.activeObj.set("ux_isOwner", false);
+                galleryEditView.activeObj.set("ux_sender", galleryEditView.activeObj.senderName);
+
+            }
+            // process gallery photos
+            if(gallery.isShared){
+                galleryEditView.processSharedPhotos();
+            } else {
+                galleryEditView.processPrivatePhotos();
+            }
 
         } else {
+            // Create a new gallery
             galleryEditView._galleryUUID = null;
-            galleryEditView._mode = 'create';
+            galleryEditView._mode = "create";
             galleryEditView.initGallery(null);
-
+            $("#galleryEditor .createMode").removeClass("hidden");
+            $("#galleryEditor .viewerMode").addClass("hidden");
+            galleryEditView.activeObj.set("ux_isOwner", true);
         }
 
-        if (galleryEditView.activeObj.senderUUID === userModel._user.userUUID) {
-            galleryEditView.setSave(true);
-        } else {
-            galleryEditView.setSave(false);
-        }
 
         if (e.view.params.callback !== undefined) {
             galleryEditView._callback = e.view.params.callback;
@@ -2118,6 +2237,7 @@ var galleryEditView = {
         } else {
             galleryEditView._returnview = null;
         }
+
 
 
     },
@@ -2207,6 +2327,7 @@ var galleryEditView = {
 
     processSharedPhotos : function () {
         var obj = galleryEditView.activeObj;
+        // todo - wire shared photos
     },
 
     processPrivatePhotos : function () {
@@ -2253,7 +2374,7 @@ var galleryEditView = {
             activeGallery.tagString = tagString;
             activeGallery.timestamp = ggTime.currentTime();
             activeGallery.lastUpdate = ggTime.currentTime();
-            activeGallery.photoCount = galleryEditView.photosDS.total();
+            activeGallery.set("photoCount", galleryEditView.photosDS.total());
             if (activeGallery.isShared) {
                 galleryEditView.processSharedPhotos();
             } else {

@@ -685,6 +685,25 @@ var ux = {
 			}
 		}
 
+	},
+
+	updateTrackingBtn: function(btnId){
+		$(btnId + " > .icon-sm").velocity("fadeOut");
+	},
+
+	groupSummaryStr: function(groupString){
+		var str = groupString;
+		if(str !== "" && str !== null){
+			var groups = str.split(",");
+			var groupLength = parseInt(groups.length);
+			var groupStr = "";
+			if(groupLength == 1){
+			 groupStr = groups[0];
+			} else if(groupLength > 1){
+			var groupCount = groupLength - 1;
+			 groupStr = groups[0] + " +" + groupCount;
+			}
+		}
 	}
 
 };

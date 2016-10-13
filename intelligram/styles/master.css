@@ -16,6 +16,9 @@
   background-size: contain;
   background-position: center;
 }
+.icon-share-activated g#Imported-Layers {
+  fill: #6CADF3;
+}
 /* PT Sans */
 @font-face {
   font-family: 'PT Sans';
@@ -1190,6 +1193,15 @@ form p {
   margin-top: 1.5em;
   margin-bottom: 1em;
 }
+.margin-top-1 {
+  margin-top: 1em;
+}
+.margin-top-half {
+  margin-top: 0.5em;
+}
+.margin-1 {
+  margin: 1em;
+}
 /* Elements */
 .status {
   height: 10px;
@@ -1243,6 +1255,9 @@ form p {
 .icon-xs {
   height: 0.875em;
   width: 0.875em;
+  background-size: contain;
+  background-position: center;
+  display: inline-block;
 }
 .icon-xs > svg {
   height: 100%;
@@ -1289,6 +1304,8 @@ form p {
   width: 1.5em;
   vertical-align: middle;
   background-size: contain;
+  background-position: center;
+  display: inline-block;
 }
 .icon-md > svg {
   height: 100%;
@@ -1300,6 +1317,7 @@ form p {
   vertical-align: middle;
   background-size: contain;
   background-position: center;
+  display: inline-block;
 }
 .icon-lg > svg {
   height: 100%;
@@ -1319,7 +1337,7 @@ form p {
 }
 .icon-logo {
   height: 1.5em;
-  max-width: 8em;
+  width: 8em;
 }
 .icon-action {
   height: 1.2em;
@@ -1341,7 +1359,8 @@ form p {
   border: 1px solid rgba(0, 0, 0, 0.12);
 }
 .list-inline {
-  display: inline-block;
+  width: 100%;
+  display: inline-block !important;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -1755,6 +1774,17 @@ form p {
   color: #ef9a9a !important;
   background: transparent !important;
 }
+.btnClear-circle {
+  padding: 1em !important;
+  background: transparent;
+  border-radius: 50% !important;
+  height: 4em;
+  width: 4em;
+  background-image: none !important;
+}
+.btnClear-circle :active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
 .btnFull {
   width: 100%;
   color: #fff;
@@ -1854,6 +1884,11 @@ div.km-content.km-widget.km-scroll-wrapper {
 .modalview-content h5 {
   margin-left: 0px;
   margin-right: 0px;
+}
+.appGradient {
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(-1deg, #F5F5F5 60%, #FFFFFF 100%);
 }
 .loading {
   background: rgba(0, 0, 0, 0.5);
@@ -2418,6 +2453,26 @@ div.footer.km-footer {
   vertical-align: middle;
   margin-left: 0.15em;
 }
+.galleryInfo-box {
+  border-bottom: 1px solid #E0E0E0;
+}
+.galleryPhotoCount {
+  font-size: 0.875em;
+  margin-left: 0.25em;
+}
+#galleryShared-commentCount {
+  position: absolute;
+  left: 0.75em;
+}
+#galleryShared-commentIcon {
+  position: absolute;
+  left: 1.65em;
+  top: 1.25em;
+}
+#galleryPhotoSocial-list li {
+  float: left;
+  width: 5em;
+}
 .tabBar {
   box-shadow: none !important;
   border-bottom: 1px solid #E0E0E0;
@@ -2700,6 +2755,10 @@ div.footer.km-footer {
   top: 0px;
   left: 0px;
   text-align: center;
+}
+.photoCount {
+  font-size: 0.875em;
+  color: #979797;
 }
 .smallHeader {
   color: #fff !important;
@@ -3292,6 +3351,10 @@ textarea {
   padding: 1em;
   border-bottom: 1px solid #E0E0E0 !important;
 }
+.listview ul.km-list {
+  padding-left: 1em;
+  padding-right: 1em;
+}
 /*
 .km-root .km-wp .km-view.appearance .km-listview select
 {
@@ -3436,6 +3499,9 @@ textarea {
   float: right;
   position: absolute;
   right: 1em;
+  max-width: 8em;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 .edit-contact-group {
   font-size: 1em;
@@ -3830,7 +3896,8 @@ a:hover {
   vertical-align: middle;
 }
 #modalPhotoViewImage,
-#modalChatPhotoView-photoView {
+#modalChatPhotoView-photoView,
+#gallerySharedPhoto {
   max-width: 100%;
   max-height: 100%;
   position: absolute;
@@ -3840,8 +3907,53 @@ a:hover {
   right: 0;
   bottom: 0;
 }
-#modalPhotoViewImage {
+.galleryPhotoSocial {
+  padding-left: 1em;
+  position: absolute;
+  bottom: 3em;
+  color: #fff;
+}
+#body > div.km-shim.km-modalview-root.k-state-border-down > div > div > div.km-popup-overlay.km-popover-root > div {
+  width: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+#body > div.km-shim.km-modalview-root.k-state-border-down > div > div > div.km-popup-overlay.km-popover-root > div > div {
+  width: 100% !important;
+}
+#modalPhotoViewImage,
+#gallerySharedPhoto {
   top: -67px;
+}
+#galleryShared-commentPopover div.km-content.km-widget.km-scroll-wrapper {
+  padding-bottom: 0;
+  background-image: none !important;
+  max-height: 300px;
+}
+#galleryShared-commentContent {
+  padding-left: 1em;
+  border-top: 1px solid #E0E0E0;
+}
+.contentFooter {
+  background-color: #fff;
+}
+.contentFooter textarea {
+  width: 85%;
+  display: inline-block;
+  float: left;
+}
+.contentFooter a {
+  width: 15%;
+  float: left;
+}
+#galleryShared-commentList li {
+  border-bottom: 1px solid #E0E0E0;
+  background-color: #fff;
+}
+.comment-author {
+  color: #6CADF3;
+  font-weight: 600;
+  margin-right: 0.1em;
 }
 .chat-option-ul li {
   background: transparent !important;
@@ -4349,6 +4461,7 @@ div.chat-message-sender.chat-message-content > div > div > svg.photo-chat-lock {
 .placeType-list > span.icon-group {
   height: 1.25em;
   width: 1.25em;
+  background-position: center;
 }
 #checkin-listview li:not(.km-group-container) {
   border-bottom: 1px solid #E0E0E0;
@@ -4459,7 +4572,7 @@ li > .km-group-title {
 }
 .messageMediaBar ul {
   padding: 0;
-  margin-bottom: 1px;
+  margin-bottom: 0.25em;
   margin-top: 0;
 }
 .messageMediaBar ul li {
@@ -4568,9 +4681,12 @@ div.chat-message-user-content.clearfix > p {
   color: #fff;
 }
 .newuserBox .icon-logo {
-  margin-left: 2em;
-  margin-top: 0.75em;
+  margin-left: 1em;
+  margin-top: 0.25em;
   position: absolute;
+}
+#newuserhome .icon-logo {
+  margin-left: 0 !important;
 }
 #usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.newuserBox > p:nth-child(1) {
   margin-left: 2em;
@@ -4853,6 +4969,16 @@ div.loginBox > form > div > ul > li {
   float: left;
   width: 75%;
 }
+.photoInfoBox {
+  padding: 0.25em 1em;
+  color: #fff;
+}
+.photoInfoBox div:first-child {
+  float: left;
+}
+.photoInfoBox div {
+  float: right;
+}
 .photoSender {
   padding: 0.25rem;
   width: 95%;
@@ -4939,6 +5065,12 @@ div.loginBox > form > div > ul > li {
 #galleryPhotoDisplayOpts {
   float: left;
   width: 40%;
+}
+.galleryEdit-trackingBtn {
+  margin-top: 0.5em;
+  width: 100%;
+  border-top: 1px dotted #E0E0E0;
+  padding-top: 0.5em;
 }
 #calendarSelect {
   width: 100%;
@@ -5324,11 +5456,23 @@ div.loginBox > form > div > ul > li {
   margin-left: auto;
   margin-right: auto;
 }
-#groupPickerView-listview {
+#groupPickerView-listview,
+#sharePickerView-listview {
   width: 100%;
+}
+#gallerySharedPhotoModal .km-view-title span {
+  color: #fff !important;
+}
+#gallerySharedPhotoModal .km-navbar {
+  background-color: #323642 !important;
+}
+#gallerySharedPhotoModal .km-content {
+  background-color: #323642;
+  background-image: none !important;
 }
 #groups-listview li {
   padding: 0 !important;
+  background-color: #fff;
 }
 #places-listview > li > div > div.list-options {
   min-height: 6em;
@@ -7401,13 +7545,25 @@ table.k-editor {
 }
 .icon-gg-drawer {
   height: 1.25em;
-  max-width: 1.25em;
+  width: 1.25em;
   vertical-align: middle;
+  background-position: center;
+  background-size: contain;
+}
+.icon-gg-drawer > svg {
+  height: 100%;
+  width: 100%;
 }
 .icon-gg-drawer-lg {
   height: 2.5em;
-  max-width: 2.5em;
+  width: 2.5em;
   vertical-align: middle;
+  background-position: center;
+  background-size: contain;
+}
+.icon-gg-drawer-lg > svg {
+  height: 100%;
+  width: 100%;
 }
 .gg-drawer-header {
   margin-left: 0 !important;

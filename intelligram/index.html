@@ -678,7 +678,7 @@
  	<div class="newuserBox">
 		<p id="newWelcome">Welcome to</p>
 		<p id="newLogo">
-			<div class="icon-logo logo-mark-dark" data-grunticon-embed></div>
+			<span class="icon-logo logo-mark-dark" data-grunticon-embed></span>
 		</p>
 	</div>
     <div class="clearfix"></div>
@@ -735,7 +735,7 @@
 	<div class="newuserBox">
 		<p>Welcome back to</p>
 		<p>
-			<div class="icon-logo logo-mark-light" data-grunticon-embed></div>
+			<span class="icon-logo logo-mark-light" data-grunticon-embed></span>
 		</p>
 	</div>
 	<div class="clearfix"></div>
@@ -1017,20 +1017,19 @@
 <script type="text/x-kendo-template" id="sharePicker-Template">
 	#
 	var name = data.name.capitalize('title');
-	var icon = 'images/icon-contact-img.svg';
+	var icon = 'contacts';
 	if (data.category === 'Chat') {
-		icon = 'images/icon-Chat.svg';
+		icon = 'icon-Chat';
 	}
 
 	var aliasString = "";
-	if (alias !== undefined && alias !== null) {
+	if (alias !== undefined && alias !== null && alias !== "") {
 		aliasString = " (" + alias + ")";
 	}
 
 	#
-	<div style="padding-left: 8px; padding-right: 8px; width: 90%">
-		<span> <img src=#=icon#  height="20"></span> <span>#:name# <em>#:aliasString#</em></span>
-
+	<div>
+		<span class="#=icon# icon-sm"></span> <span>#:name# <em>#:aliasString#</em></span>
 	</div>
 </script>
 
@@ -1053,12 +1052,9 @@
 			</div>
 		</div>
 	</div>
-
-	<div style="width: 100%;">
-		<ul id="sharePickerView-listview"  data-style="inset" ></ul>
-		<div class="emptyState hidden">
-			<div class="empty-contacts" data-grunticon-embed></div>
-		</div>
+	<ul id="sharePickerView-listview" class="listview"></ul>
+	<div class="emptyState hidden">
+		<div class="empty-contacts" data-grunticon-embed></div>
 	</div>
 </div>
 
@@ -1089,12 +1085,23 @@
 </div>
 
 <script type="text/x-kendo-template" id="galleryList-template">
-	<h4>#: data.title #</h4>
-	<p class="helper">#: data.photoCount # photos</p>
+	<h4 class="textClamp">#: data.title #</h4>
+	<p class="helper textClamp">
+		#if(data.isShared){#
+			<span class="icon-group icon-xs"></span> Shared Gallery
+		#} else {#
+			<span class="icon-lock icon-xs"></span> Private Gallery
+		#}#
+		•
+		#if(data.photoCount === 1){#
+			#: data.photoCount # photo
+		#} else {#
+			#: data.photoCount # photos
+		#}#
+	</p>
 </script>
 
 
-<!-- User Gallery View -->
 
 
 
@@ -1108,7 +1115,7 @@
 		<div>
 			<div class="appendSearch">
 				<span class="searchIcon">
-					<span class="search" data-grunticon-embed></span>
+					<div class="search" data-grunticon-embed></div>
 				</span>
 				<input type="text" class="doubleAppendSearch gg_mainSearchInput" placeholder="" id="galleryPickerSearch" />
 				<span class="enterSearch hidden">
@@ -1208,50 +1215,139 @@
 			</div>
 		</div>
 </div>
-
-<div data-role="view" data-title="Gallery Editor" id="galleryEditor" data-model="galleryEditView.activeObj" data-init="galleryEditView.onInit" data-show="galleryEditView.onShow"  data-hide="galleryEditView.onHide"   style="width:100%; height: 100%; display: none;" >
+<!-- Shared Gallery View -->
+<div id="gallerySharedPhotoModal" data-role="modalview" style="width:100%; height: 100%; display: none;" data-init="gallerySharedPhotoModal.onInit" data-model="gallerySharedPhotoModal.activePhoto" data-open="gallerySharedPhotoModal.onOpen">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span id="galleryEditor-viewTitle">Gallery</span>
-			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear-grey-sm">
-				<div class="close" data-grunticon-embed></div>
+			<a class="btnClear" data-role="button" data-align="left" data-click="gallerySharedPhotoModal.onDone">
+				<span class="nav-back icon-sm"></span>
 			</a>
-			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear">Add</a>
+			<span data-bind="text: title"></span>
+			<a class="btnClear" data-role="button" data-click="gallerySharedPhotoModal.openOpts" data-align="right">
+				<img src="images/icon-menu-more.png" class="icon-sm"/>
+			</a>
 		</div>
 	</div>
-	<div id="galleryEditor-editTitleTag">
-		<input id="galleryEditor-shareString"  placeholder="Click to Share"  data-bind="value: shareString" readonly>
-		<input id="galleryEditor-tagString"  placeholder="Click to add tags"  data-bind="value: tagString" readonly>
-		<input class="input-text-lg" type="search" id="galleryEditor-title"  data-bind="value: title" placeholder="Add Title...">
+	<div class="photoViewBox">
+		<img id="gallerySharedPhoto" data-bind="attr: {src: thumbnailUrl}" />
 	</div>
-	<div id="galleryEditor-viewTitleTag" class="hidden">
-		<div data-bind="text: title"></div>
-		<div data-bind="text: tagString"></div>
+	<div class="galleryPhotoSocial">
+		<ul class="list-inline" id="galleryPhotoSocial-list">
+			<li>
+				<a class="btnClear-circle" data-role="button" data-click="gallerySharedPhotoModal.toggleLike">
+					<span class="icon-share-light icon-sm"></span>
+				</a>
+			</li>
+			<li>
+				<a class="btnClear-circle" data-role="button" data-click="gallerySharedPhotoModal.toggleComments" id="galleryShared-toggleComment" data-popup='{ "direction": "down" }'>
+					<span data-bind="text: ux_commentCount" id="galleryShared-commentCount"></span>
+					<span class="icon-share-light icon-sm" id="galleryShared-commentIcon"></span>
+				</a>
+			</li>
+			<li>
+				<a class="btnClear-circle" data-role="button" data-click="gallerySharedPhotoModal.toggleShareDialog">
+					<span class="icon-share-light icon-sm"></span>
+				</a>
+			</li>
+		</ul>
 	</div>
-	<div class="resultsBar">
-		<div class="results">
+	<div id="galleryShared-commentPopover" data-role="popover" data-popup='{ "direction": "right" }'>
+		<div data-role="view">
+			<div data-role="header">
+				<div data-role="navbar">
+					<a class="btnClear" data-role="button" data-align="left" data-click="gallerySharedPhotoModal.closeComments">
+						<span class="close icon-sm"></span>
+					</a>
+					Comments
+				</div>
+			</div>
+
+			<ul id="galleryShared-commentList"></ul>
+			<div data-role="footer" class="contentFooter">
+				<textarea id="galleryShared-commentContent" type="text" placeholder="Add comment..." style="height: 100%;"></textarea>
+				<a class="btnClear" data-role="button" data-click="gallerySharedPhotoModal.addComment">
+					<span class="icon-send icon-sm"></span>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/x-kendo-template" id="galleryShared-commentTmpl">
+	<div>
+		<p>
+			<span class="comment-author">#:data.authorName#</span>
+			<span class="comment-content">#:data.content#</span>
+		</p>
+	</div>
+</script>
+
+<div data-role="view" data-title="Gallery Editor" id="galleryEditor" data-model="galleryEditView.activeObj" data-init="galleryEditView.onInit" data-show="galleryEditView.onShow"  data-hide="galleryEditView.onHide"   style="width:100%; height: 100%; display: none;">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span id="galleryEditor-viewTitle" data-bind="text: ux_title"></span>
+			<a data-role="button" data-click="galleryEditView.onDone" data-align="left" class="btnClear">
+				<span class="close icon-sm" data-grunticon-embed></span>
+			</a>
+			<a data-role="button" data-rel="actionsheet" href="#galleryEditPhotoActions" data-align="right" class="btnClear" data-bind="visible: ux_isOwner">
+				<span class="menu-add icon-sm"></span>
+			</a>
+		</div>
+	</div>
+	<div class="galleryInfo-box">
+		<div class="appBox viewerMode">
+			<h4 data-bind="text: title"></h4>
+			<div data-bind="visible: isShared">
+				<p>
+					<span class="icon-group icon-sm"></span>
+					Shared with
+					<span data-bind="text: shareString"></span>
+				</p>
+				<p>
+					<a class="btnClear" data-role="button" data-click="galleryEditView.openSharePicker">Edit Sharing</a>
+				</p>
+				<div class="galleryEdit-trackingBtn">
+					<a class="btnClear-link btnSpan" data-role="button" data-click="galleryEditView.toggleTracking">
+						<span data-bind="invisible: isTracked">
+							<span class="icon-tracking-active icon-sm"></span>
+							Track
+						</span>
+						<span data-bind="visible: isTracked">
+							<span class="verified icon-sm"></span>
+							Tracking
+						</span>
+					</a>
+				</div>
+			</div>
+			<div data-bind="invisible: isShared">
+				<p>
+					<span class="icon-lock icon-xs"></span> Private Gallery
+				</p>
+				<p>
+					<a class="btnClear" data-role="button" data-click="galleryEditView.openSharePicker">
+						<span class="icon-share icon-sm icon-share-activated" data-grunticon-embed></span>
+						Share
+					</a>
+				</p>
+			</div>
+		</div>
+		<div class="hidden createMode appBox">
+			<label>
+				Gallery Name
+				<input class="input-text-lg" type="search" id="galleryEditor-title"  data-bind="value: title" />
+			</label>
 			<p>
-				<span data-bind="text: photoCount"></span> <span>Photos</span>
+				<a class="btnClear" data-role="button" data-click="galleryEditView.openSharePicker">
+					<span class="icon-share icon-sm" data-grunticon-embed></span>
+					Share
+				</a>
 			</p>
 		</div>
-		<div class="photoDisplayView">
-			<ul data-role="buttongroup" data-index="0" data-select="galleryEditView.galleryActionView">
-				<li>
-					<a class="btnClear gallerySelectBtn-grid" data-role="button">
-						<div class="icon-md icon-grid-active" data-grunticon-embed></div>
-					</a>
-				</li>
-				<li>
-					<a class="btnClear gallerySelectBtn-list" data-role="button">
-						<div class="icon-md icon-list-alt" data-grunticon-embed></div>
-					</a>
-				</li>
-			</ul>
-		</div>
-		<div style="clear:both;"></div>
+	</div>
+	<div>
+		<ul id="galleryEdit-listview"></ul>
 	</div>
 
-	<ul id="galleryEdit-listview"></ul>
 	<div class="footer" data-role="footer">
 		<a class="btnPrimary btnSpan-btm hidden" data-role="button" data-click="galleryEditView.onSave" id="galleryEditor-saveBtn">Save</a>
 	</div>
@@ -1260,19 +1356,19 @@
 	<ul data-role="actionsheet" id="galleryEditPhotoActions">
 		<li>
 			<a data-action="galleryEditView.addCamera">
-				<div class="icon-action action-camera" data-grunticon-embed></div>
+				<span class="icon-action action-camera" data-grunticon-embed></span>
 				Camera
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryEditView.addPhoto">
-				<div class="icon-action action-device" data-grunticon-embed></div>
+				<span class="icon-action action-device" data-grunticon-embed></span>
 				Device Gallery
 			</a>
 		</li>
 		<li>
 			<a data-action="galleryEditView.addGallery">
-				<div class="icon-action action-memories" data-grunticon-embed></div>
+				<span class="icon-action action-memories" data-grunticon-embed></span>
 				Memories Gallery
 			</a>
 		</li>
@@ -1772,7 +1868,7 @@
 <script type="text/x-kendo-template" id="modalGalleryTemplate">
 	<div>
 		<div class="galleryImgBox">
-			<img class="galleryImg" src="#=thumbnailUrl#" />
+			<img class="galleryImg galleryImg-grid" src="#=thumbnailUrl#" />
 		</div>
 	</div>
 </script>
@@ -2042,7 +2138,7 @@
 
 <script type="text/x-kendo-template" id="findPlacesTemplate">
 # 	var types = data.type 
-	var subType = type.split(',')
+	var subType = types.split(',')
 #
 <div>
 	<a class="findPlaceListItem">
@@ -2463,7 +2559,7 @@
 					</li>
 					<li class="right">
 						<a data-role="button" class="btnClear" id="messageSend" data-click="channelView.messageSend">
-							<div class="icon-send" data-grunticon-embed></div>
+							<div class="icon-send icon-sm" data-grunticon-embed></div>
 						</a>
 					</li>
 				</ul>
@@ -2824,7 +2920,7 @@
 			<h4 class="textClamp">
 			#= primaryName #
 			#if(data.phoneValidated){#
-				<div class="user-status-icon user-verified" data-grunticon-embed></div>
+				<span class="user-status-icon user-verified" data-grunticon-embed></span>
 			#}#
 			</h4>
 		</div>
@@ -2874,7 +2970,7 @@
 			<h4 class="textClamp">
 				#= primaryName #
 				#if(data.phoneValidated){#
-					<div class="user-status-icon user-verified" data-grunticon-embed></div>
+					<span class="user-status-icon user-verified" data-grunticon-embed></span>
 				#}#
 			</h4>
 			
@@ -2904,7 +3000,7 @@
 	</div>
 	<div id="contacts-contacts">
 		<a class="hidden btnClear topSearchReferral" data-role="button" data-click="contactsView.searchDeviceContacts" id="btnSearchDeviceContacts">
-			<div  class="contacts" data-grunticon-embed></div>
+			<span class="contacts" data-grunticon-embed></span>
 			Search device for "<span id="btnSearchDeviceName"></span>"
 		</a>
 		<div id="contactListDiv" style="padding-bottom: 24px;">
@@ -2912,12 +3008,12 @@
 			<!-- Only display if device permission is needed -->
 			<div id="deviceContactPermission" class="pad center hidden">
 				<a class="btnClear">
-					<div class="import" data-grunticon-embed></div>
+					<span class="import" data-grunticon-embed></span>
 					Find contacts on device
 				</a>
 			</div>
 			<div class="emptyState hidden">
-				<div  class="empty-contacts" data-grunticon-embed></div>
+				<div class="empty-contacts" data-grunticon-embed></div>
 			</div>
 		</div>
 	</div>
@@ -4215,7 +4311,6 @@
 
 <script id="intelliEvent-chat" type="text/x-kendo-template">
 	# var dateStr = date; if (ux.isToday(date)) { dateStr = "Today" + " at " + moment(date).format("hh:mm a"); }  if (ux.isTomorrow(date)) { dateStr = "Tomorrow" + " at " + moment(date).format("hh:mm a"); }
-	console.log(data);
 	#
 	<div class="intelliEvent" data-role="button" data-objectid="#:objectId#" data-objectType="Event" id="eventobject_#:objectId#">
 			<div class="header">
@@ -4808,6 +4903,15 @@
 			<a class="btnSpan-btm btnPrimary" data-role="button" data-click="modalPhotoView.closeTagEditor" id="modalPhotoView-update">Update</a>
 		</div>
 	</div>
+	<div class="photoInfoBox">
+		<div>
+			<span class="icon-place icon-sm" data-grunticon-embed></span>
+			<span data-bind="text: addressString"></span>
+		</div>
+		<div>
+			<span data-bind="text: dateString"></span>
+		</div>
+	</div>
 
 	<div class="photoViewBox">
 		<img id="modalPhotoViewImage" data-bind="attr: {src : thumbnailUrl}" />
@@ -4845,7 +4949,7 @@
 			</a>
 		</li>
 	</ul>
-	<div id="modalPhotoView-footer" data-role="footer">
+	<div id="modalPhotoView-footer" class="hidden" data-role="footer">
 		<p>
 			<span class="icon-tag icon-sm" data-grunticon-embed></span>
 			<span data-bind="text: tagString"></span>
@@ -6076,7 +6180,7 @@
 		</div>
 	</div>
 	<div style="text-align: center;">
-		<div  class="gg-police icon-gg-drawer" data-grunticon-embed></div>
+		<span class="gg-police icon-gg-drawer" data-grunticon-embed></span>
 		<span id="emergencyView-title" style="font-size: 1.3em;">Police</span>
 	</div>
 	<form>
@@ -6133,7 +6237,7 @@
 		</div>
 	</div>
 	<div style="text-align: center;">
-		<div  class="gg-roadside icon-gg-drawer" data-grunticon-embed></div>
+		<div class="gg-roadside icon-gg-drawer" data-grunticon-embed></div>
 		<span style="font-size: 1.3em;">Road / Commute</span>
 	</div>
 	<form>
@@ -6797,11 +6901,7 @@
 	var classNames;
 	var name = data.name;
 	var alias = data.alias;
-	var group = '';
 
-	if (data.groupString !== undefined && data.groupString !== null) {
-		group = data.groupString;
-	}
 
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
@@ -6851,13 +6951,15 @@
 			#} else {#
 				 # classNames = "contactListBox noSlide" #
 			#}#
+
+
 			<a class="#: classNames #" data-contact="#:uuid#">
 			#if (data.category === 'member') {#
 					<div class="left listPhoto">
 						<div class="statusContactList">
 							#if (data.isAvailable !== undefined && data.isAvailable) { #
 								<img class="circle-img-md" src="#:photoUrl#" />
-								<div class="statusContactList-icon statusContactList-icon" data-grunticon-embed></div>
+								<div class="status-available statusContactList-icon" data-grunticon-embed></div>
 							#} else {#
 								<img class="circle-img-md" src="#:photoUrl#" />
 								<div class="statusContactList-icon status-away" data-grunticon-embed></div>
@@ -6878,7 +6980,10 @@
 								<span class="user-status-icon user-verified" data-grunticon-embed></span>
 							#}#
 								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
-								<span class="contact-group">#: group #</span>
+							#if(data.groupString !== "" && data.groupString !== null){#
+								<span class="contact-group">#: groupString  #</span>
+							#}#
+
 						</h4>
 					</div>
 
