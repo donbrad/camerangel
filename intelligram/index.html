@@ -5220,7 +5220,9 @@
 			<input type="search"  id="smartEventPlaces-query" placeholder="Find place or address..." data-required-msg="Enter a place name" required />
 		</div>
 		<span class="k-invalid-msg" data-for="place"></span>
-		<p id="searchEventPlaces-selectPlace" class="hidden">Please select the area to search</p>
+		<div id="searchEventPlaces-selectPlace" style="text-align: center;" class="hidden">
+			<a  data-role="button" data-click="smartEventPlacesView.toggleQuery" class="btnClearLine-highlight"> Search near <span id="searchEventPlaces-startQuery"></span></a>
+		</div>
 		<div class="appendSearch">
 			<span class="searchIcon">
 				<div  class="place-icon" data-grunticon-embed></div>
