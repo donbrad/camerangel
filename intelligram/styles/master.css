@@ -1287,6 +1287,12 @@ form p {
   height: 100%;
   width: 100%;
 }
+img.icon-sm {
+  max-height: 0.75em;
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+  vertical-align: baseline !important;
+}
 .smart-icon {
   height: 1.5em;
   width: 1.5em;
@@ -4972,6 +4978,7 @@ div.loginBox > form > div > ul > li {
 .photoInfoBox {
   padding: 0.25em 1em;
   color: #fff;
+  display: inline-block;
 }
 .photoInfoBox div:first-child {
   float: left;
