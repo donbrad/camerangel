@@ -636,13 +636,13 @@ var groupChannel = {
                 var status = m[0], pnmessage = m[1], time = m[2];
 
                 if (status !== 1) {
-                    mobileNotify('Group Channel publish error: ' + message);
+                    mobileNotify('Group Channel publish error: ' + pnmessage);
                 }
-                if (channelView._channelUUID === pnmessage.channelUUID) {
-                    channelView.messagesDS.add(pnmessage);
+                if (channelView._channelUUID === channelId) {
+                    channelView.messagesDS.add(message);
                     channelView.scrollToBottom();
                 }
-                channelModel.updateLastMessageTime(pnmessage.channelUUID, null);
+                channelModel.updateLastMessageTime(channelId, null);
 
 
             }
