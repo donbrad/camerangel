@@ -6504,15 +6504,15 @@
     #
     var title = data.title.capitalize('title');
     var aliasString = "";
-    if (data.alias !== undefined && data.alias !== null) {
-    aliasString = " (" + data.alias + ")";
+    if (data.description !== undefined && data.description !== null) {
+    aliasString = " (" + data.description + ")";
     }
     #
     <div>
 		<h3 class="textClamp">
 			#:title#
-			#if(data.alias !== '' && data.alias !== null){#
-				<span>#:data.alias#</span>
+			#if(aliasString !== ""){#
+				<span>#:aliasString#</span>
 			#}#
 		</h3>
     </div>
@@ -6559,8 +6559,8 @@
 	#
 	var name = data.name.capitalize('title');
 	var aliasString = "";
-	if (data.alias !== undefined && data.alias !== null) {
-		aliasString = data.alias;
+	if (data.description !== undefined && data.description !== null) {
+		aliasString = data.description;
 	}
 	#
 	<div data-uuid="#:uuid#">
@@ -6938,7 +6938,11 @@
 	var classNames;
 	var name = data.name;
 	var alias = data.alias;
+	var groupStr = null;
 
+	if (data.groupStr !== undefined) {
+		groupStr = data.groupString;
+	}
 
 	var primaryName = ux.returnUXPrimaryName(name, alias);
 	var secondaryName = ux.returnAliasName(name, alias);
@@ -7017,8 +7021,8 @@
 								<span class="user-status-icon user-verified" data-grunticon-embed></span>
 							#}#
 								<span class="contacts-alias-sm hidden">#= secondaryName  #</span>
-							#if(data.groupString !== "" && data.groupString !== null){#
-								<span class="contact-group">#: groupString  #</span>
+							#if(groupStr !== null){#
+								<span class="contact-group">#: groupStr  #</span>
 							#}#
 
 						</h4>

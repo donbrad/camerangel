@@ -2118,7 +2118,7 @@ var galleryEditView = {
             that.activeObj.isOpen = false;
             that.activeObj.set("isTracked", false);
             that.activeObj.members = [];
-
+            that.activeObj.memberString = '';
             that.activeObj.senderUUID = userModel._user.userUUID;
             that.activeObj.senderName = userModel._user.name;
             that.activeObj.timestamp = new Date();
@@ -2144,6 +2144,9 @@ var galleryEditView = {
             that.activeObj.isOpen = gallery.isOpen;
             that.activeObj.set("isTracked", gallery.isTracked);
 
+            if (gallery.members === undefined) {
+                gallery.members = [];
+            }
             that.activeObj.members = gallery.members;
             galleryEditView.buildMembersDS();
             that.activeObj.senderUUID = gallery.senderUUID;

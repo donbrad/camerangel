@@ -2574,10 +2574,14 @@ var groupEditView = {
         } else {
             $('#groupEditor-viewtitle').text('Edit Group');
 
+            that.activeObj.Id = group.Id;
             that.activeObj.uuid = group.uuid;
             that.activeObj.set('title',group.title);
             that.activeObj.set('alias', group.alias);
             that.activeObj.set('description',group.description);
+            if (group.members === undefined) {
+                group.members = [];
+            }
             that.activeObj.members = group.members;
             that.activeObj.set('memberString',group.memberString);
             that.activeObj.set('tagString', group.tagString);
@@ -2766,6 +2770,9 @@ var groupEditView = {
 
 
         var activeGroup= groupEditView.activeObj;
+        if (activeGroup.members === undefined) {
+            activeGroup.members = [];
+        }
         var memberString = groupEditView.buildMemberString();
 
         if (galleryEditView._mode === 'edit') {
@@ -2779,7 +2786,6 @@ var groupEditView = {
             group.set('description', activeGroup.description);
             group.set('members',activeGroup.members);
             group.set ('memberString', memberString);
-
 
             groupModel.groupsDS.sync();
 
@@ -3053,7 +3059,7 @@ var groupPickerView = {
                 groupPickerView.groupsDS.filter( {"logic":"or",
                     "filters":[
                         {
-                            "field":"name",
+                            "field":"title",
                             "operator":"contains",
                             "value":query},
                         {
@@ -3071,6 +3077,10 @@ var groupPickerView = {
 
     onOpen : function () {
 
+    },
+
+    addGroup : function () {
+        APP.kendo.navigate('#groupEditor');
     },
 
     buildGroupsDS : function (members, candidates) {
