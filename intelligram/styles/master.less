@@ -4657,10 +4657,12 @@ div.loginBox > form > div > ul > li {
   color: #fff;
   display: inline-block;
   div:first-child {
-    float: left;
+    position: absolute;
+    left: 1em;
   }
   div {
-    float: right;
+    position: absolute;
+    right: 1em;
   }
 }
 
@@ -7388,6 +7390,9 @@ table.k-editor {
   vertical-align: middle;
   background-position: center;
   background-size: contain;
+  display: block !important;
+  margin-left: auto;
+  margin-right: auto;
   > svg {
     height: 100%;
     width: 100%;
@@ -7400,6 +7405,9 @@ table.k-editor {
   vertical-align: middle;
   background-position: center;
   background-size: contain;
+  display: block !important;
+  margin-left: auto;
+  margin-right: auto;
   > svg {
     height: 100%;
     width: 100%;
@@ -7493,6 +7501,8 @@ table.k-editor {
   padding: 0.5em;
   margin-left: auto;
   margin-right: auto;
+  display: block !important;
+
 }
 
 .hotButton-icon > svg {
@@ -7812,7 +7822,11 @@ table.k-editor {
   }*/
 }
 
-
+div.intelliTrip-light {
+  height: 3em;
+  width: 100%;
+  background-position: center;
+}
 
 #smartTripModal > div > div.intelliTrip.tripView > div.header {
   border-bottom: 2px dotted @shade-200;

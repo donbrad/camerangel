@@ -4981,10 +4981,12 @@ div.loginBox > form > div > ul > li {
   display: inline-block;
 }
 .photoInfoBox div:first-child {
-  float: left;
+  position: absolute;
+  left: 1em;
 }
 .photoInfoBox div {
-  float: right;
+  position: absolute;
+  right: 1em;
 }
 .photoSender {
   padding: 0.25rem;
@@ -7556,6 +7558,9 @@ table.k-editor {
   vertical-align: middle;
   background-position: center;
   background-size: contain;
+  display: block !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 .icon-gg-drawer > svg {
   height: 100%;
@@ -7567,6 +7572,9 @@ table.k-editor {
   vertical-align: middle;
   background-position: center;
   background-size: contain;
+  display: block !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 .icon-gg-drawer-lg > svg {
   height: 100%;
@@ -7644,6 +7652,7 @@ table.k-editor {
   padding: 0.5em;
   margin-left: auto;
   margin-right: auto;
+  display: block !important;
 }
 .hotButton-icon > svg {
   display: block;
@@ -7913,6 +7922,11 @@ table.k-editor {
 .intelliTrip .destination-summary label svg {
   height: 0.875em;
   max-width: 0.875em;
+}
+div.intelliTrip-light {
+  height: 3em;
+  width: 100%;
+  background-position: center;
 }
 #smartTripModal > div > div.intelliTrip.tripView > div.header {
   border-bottom: 2px dotted #E0E0E0;

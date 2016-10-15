@@ -1463,7 +1463,10 @@ var modalPhotoView = {
         // Address
         modalPhotoView._activePhoto.set('addressString', photo.addressString);
         modalPhotoView._activePhoto.set('placeString', photo.placeString);
-        modalPhotoView._activePhoto.set('dateString', photo.dateString);
+
+        var formattedDate = moment(photo.dateString, "MMMM Do YYYY, h:mm A").fromNow();
+        modalPhotoView._activePhoto.set('dateString', formattedDate);
+
         modalPhotoView._activePhoto.set('placeUUID', photo.placeUUID);
         modalPhotoView._activePhoto.set('lat', photo.lat);
         modalPhotoView._activePhoto.set('lng', photo.lng);
