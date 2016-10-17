@@ -2233,7 +2233,126 @@ var groupActionView = {
 
 };
 
+var galleryMemberView = {
+    callback: null,
+    memberArray : null,
+    contactsOnly : false,
+    candidateDS : new kendo.data.DataSource(),
+    memberDS : new kendo.data.DataSource(),
 
+    onInit: function () {
+
+        $("#galleryMemberView-listview").kendoMobileListView({
+            dataSource: contactModel.shareDS,
+            template: $("#galleryMember-Template").html(),
+            //headerTemplate: $("#contactsHeaderTemplate").html(),
+            fixedHeaders: true,
+            click: function (e) {
+                var target = e.dataItem;
+                galleryMemberView.handleSelect(target);
+            },
+            dataBound: function(e){
+                // ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
+            }
+
+        });
+
+
+        /*    $("#sharePickerView-search").kendoMultiSelect({
+         dataTextField: "name",
+         dataValueField: "objectId",
+         height: 400,
+         dataSource: contactModel.shareDS,
+         });*/
+
+
+        $("#galleryMemberView-search").on('input', function() {
+
+            var query = this.value;
+            if (query.length > 0) {
+                contactModel.shareDS.filter( {"logic":"or",
+                    "filters":[
+                        {
+                            "field":"name",
+                            "operator":"contains",
+                            "value":query},
+                        {
+                            "field":"alias",
+                            "operator":"contains",
+                            "value":query}
+                    ]});
+
+            } else {
+                contactModel.shareDS.filter([]);
+            }
+        });
+
+    },
+
+    onOpen : function () {
+
+    },
+
+    handleSelect : function (target) {
+        // Is a contact? - Yes toggle selected state
+       if (target.category === 'Contact') {
+           galleryMemberView.showSave(true);
+            if (target.status === undefined) {
+                target.status = true;
+            } else {
+                target.status = !target.status;
+            }
+       }
+
+    },
+
+    showSave : function (flag) {
+        if (flag) {
+            $('#galleryEditView.saveBtn').removeClass('hidden');
+        } else {
+            $('#galleryEditView.saveBtn').addClass('hidden');
+        }
+
+    },
+
+
+    openModal : function (members,  callback) {
+
+        contactModel.updateAllShares();
+
+        galleryMemberView.memberArray = members;
+
+        // Reset search...
+        $("#galleryMemberView-search").val('');
+        contactModel.shareDS.filter([]);
+
+        galleryMemberView.showSave(false);
+
+        galleryMemberView.callback = null;
+
+        if (callback !== undefined) {
+            galleryMemberView.callback = callback;
+        }
+
+        $("#galleryMemberView").data("kendoMobileModalView").open();
+    },
+
+    onSave : function () {
+
+    },
+
+    closeModal : function () {
+        $("#galleryMemberView").data("kendoMobileModalView").close();
+        if (galleryMemberView.callback !== null) {
+            galleryMemberView.callback(null);
+        }
+    },
+
+    onDone: function () {
+        $("#galleryMemberView").data("kendoMobileModalView").close();
+    }
+
+};
 
 var sharePickerView = {
     callback: null,

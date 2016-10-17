@@ -174,7 +174,8 @@ var smartEvent = {
                         var today = moment();
                         var event = e.items[0];
                         if (moment(event.date).isSame(today, 'day') ) {
-                            todayModel.add(event);
+                            var todayObj = smartEvent.createTodayObject(event);
+                            todayModel.add(todayObj);
                         }
                         break;
                 }
@@ -256,6 +257,32 @@ var smartEvent = {
         var result = smartEvent.queryObject({ field: "uuid", operator: "eq", value: uuid });
 
         return(result);
+    },
+
+    createTodayObject : function (event) {
+        var minDate = moment(event.date).subtract(2, 'hours'),
+            maxDate =  moment(event.date).add(event.duration, 'minutes');
+
+        var todayObj = {ggType: 'Event', uuid: event.uuid, object: event};
+
+        var content = smartEvent.renderEvent(event);
+
+        todayObj.content = content;
+
+        if (event.senderUUID === userModel._user.userUUID) {
+            todayObj.senderName = "Me";
+            todayObj.isOwner = true;
+        } else {
+            todayObj.senderName = event.senderName;
+            todayObj.isOwner = false;
+        }
+
+
+        todayObj.date = minDate.toDate();
+        todayObj.maxDate = maxDate.toDate();
+
+        return(todayObj);
+
     },
 
     getTodayList : function () {

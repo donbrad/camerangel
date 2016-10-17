@@ -23,7 +23,7 @@ var smartMovie = {
                 typeName: 'smartMovie'
             },
             schema: {
-                model: { Id:  Everlive.idField}
+                model: { id:  Everlive.idField}
             },
             sort: {
                 field: "date",
@@ -63,7 +63,8 @@ var smartMovie = {
                         var movie = e.items[0];
                         var today = moment();
                         if (moment(movie.showtime).isSame(today, 'day') ) {
-                            todayModel.add(movie);
+                            var movieObj = smartMovie.createTodayObject(movie);
+                            todayModel.add(movieObj);
                         }
                         break;
                 }
@@ -86,6 +87,31 @@ var smartMovie = {
 
     sync: function ()  {
         smartMovie.moviesDS.sync();
+    },
+
+    createTodayObject : function (movie) {
+        var minDate = moment(movie.showtime).subtract(2, 'hours'),
+            maxDate = moment(movie.showtime).add(2, 'hours');
+
+        var todayObj = {ggType: 'Movie', uuid: movie.uuid, object: movie};
+
+        var content = smartMovie.renderMovie(movie);
+
+        todayObj.content = content;
+
+        if (movie.senderUUID === userModel._user.userUUID) {
+            todayObj.senderName = "Me";
+            todayObj.isOwner = true;
+        } else {
+            todayObj.senderName = movie.senderName;
+            todayObj.isOwner = false;
+        }
+
+        todayObj.date  = minDate.toDate();
+        todayObj.maxDate = maxDate.toDate();
+
+        return(todayObj);
+
     },
 
     getTodayList : function () {
@@ -113,8 +139,8 @@ var smartMovie = {
                     todayObj.isOwner = false;
                 }
 
-                today.date  = minDate.toDate();
-                today.maxDate = maxDate.toDate();
+                todayObj.date  = minDate.toDate();
+                todayObj.maxDate = maxDate.toDate();
 
                 todayArray.push(todayObj);
 

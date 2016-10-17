@@ -2087,7 +2087,7 @@ var galleryEditView = {
     },
 
     openSharePicker: function(){
-        sharePickerView.openModal(galleryEditView.members, galleryEditView.memberString, function (members, memberString) {
+        galleryMemberView.openModal(galleryEditView.members, function (members, memberString) {
 
         })
     },

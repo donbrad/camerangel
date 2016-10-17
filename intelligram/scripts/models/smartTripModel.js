@@ -57,7 +57,8 @@ var smartTrip = {
                         var today = moment();
                         var trip = e.items[0];
                         if (moment(today).isBetween(trip.departure, trip.arrival, 'day') ) {
-                            todayModel.add(trip);
+                            var tripObj = smartTrip.createTodayObject(trip);
+                            todayModel.add(tripObj);
                         }
                         break;
                 }
@@ -101,6 +102,33 @@ var smartTrip = {
         dataSource.filter(cacheFilter);
 
         return (view[0]);
+    },
+
+    createTodayObject : function (trip) {
+        var minDate = moment(trip.departure).subtract(2, 'hours'),
+            maxDate = moment(trip.arrival).add(2, 'hours');
+        var departure = moment(trip.departure), arrival = moment(trip.arrival);
+
+
+        var todayObj = {ggType: 'Trip', uuid: trip.uuid, object: trip};
+
+        var content = smartTrip.renderTrip(trip);
+
+        todayObj.content = content;
+
+        if (trip.senderUUID === userModel._user.userUUID) {
+            todayObj.senderName = "Me";
+            todayObj.isOwner = true;
+        } else {
+            todayObj.senderName = trip.senderName;
+            todayObj.isOwner = false;
+        }
+
+        todayObj.date = minDate.format();
+        todayObj.maxDate = maxDate.format();
+
+        return(todayObj);
+
     },
 
     getTodayList : function () {

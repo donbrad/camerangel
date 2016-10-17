@@ -491,7 +491,7 @@ var privateNotesView = {
                 break;
 
             case 'Movie' :
-                movieListView.openModal( note.object, function (movie) {
+                smartMovieView.openModal( note.object, function (movie) {
                     if (movie !== null) {
 
 

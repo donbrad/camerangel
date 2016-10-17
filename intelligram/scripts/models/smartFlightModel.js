@@ -59,7 +59,8 @@ var smartFlight = {
                         var today = moment();
                         var flight = e.items[0];
                         if (moment(today).isBetween(flight.estimatedDeparture, flight.estimatedArrival, 'day') ) {
-                            todayModel.add(flight);
+                            var todayObj = smartFlight.createTodayObject(flight);
+                            todayModel.add(todayObj);
                         }
                         break;
                 }
@@ -83,6 +84,32 @@ var smartFlight = {
     sync : function ()  {
         smartFlight.flightsDS.sync();
     },
+
+    createTodayObject : function (flight) {
+        var minDate = moment(flight.estimatedDeparture).subtract(6, 'hours'),
+            maxDate = moment(flight.estimatedArrival).add(6, 'hours');
+
+        var todayObj = {ggType: 'Flight', uuid: flight.uuid, object: flight};
+
+        var content = smartFlight.renderFlight(flight);
+
+        todayObj.content = content;
+
+
+        if (flight.senderUUID === userModel._user.userUUID) {
+            todayObj.senderName = "Me";
+            todayObj.isOwner = true;
+        } else {
+            todayObj.senderName = flight.senderName;
+            todayObj.isOwner = false;
+        }
+
+        todayObj.date = minDate.format();
+        todayObj.endDate = maxDate.format();
+
+        return(todayObj);
+    },
+
 
     getTodayList : function () {
         // Does flight span today

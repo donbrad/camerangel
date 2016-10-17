@@ -540,12 +540,12 @@
 				Share via intelligram
 			</a>
 		</li>
-		<li>
+		<!--<li>
 			<a data-role="button" data-action="privateNotesView.shareNote">
 				<div class="icon-action action-share" data-grunticon-embed></div>
 				Share via phone
 			</a>
-		</li>
+		</li>-->
 	</ul>
 </div>
 
@@ -1010,7 +1010,7 @@
 	</div>
 </script>
 
-<script type="text/x-kendo-template" id="sharePicker-Template">
+<script type="text/x-kendo-template" id="galleryMember-Template">
 	#
 	var name = data.name.capitalize('title');
 
@@ -1021,10 +1021,38 @@
 		icon = 'icon-group';
 	}
 
-
+	var statusStr = "";
+	if (data.status !== undefined) {
+		if (data.status) {
+			statusStr = "In";
+		}
+	}
 	var aliasString = "";
 	if (alias !== undefined && alias !== null && alias !== "") {
 		aliasString = " (" + alias + ")";
+	}
+
+	#
+	<div style="clear: both;">
+		<span class="#=icon# icon-sm"></span> <span>#:name# <em>#:aliasString#</em></span>  <span style="float: right;">#:statusStr#</span>
+	</div>
+</script>
+
+<script type="text/x-kendo-template" id="sharePicker-Template">
+	#
+	var name = data.name.capitalize('title');
+
+	var icon = 'contacts';
+	if (data.category === 'Chat') {
+	icon = 'icon-Chat';
+	} else if (data.category === 'Group') {
+	icon = 'icon-group';
+	}
+
+
+	var aliasString = "";
+	if (alias !== undefined && alias !== null && alias !== "") {
+	aliasString = " (" + alias + ")";
 	}
 
 	#
@@ -1032,8 +1060,6 @@
 		<span class="#=icon# icon-sm"></span> <span>#:name# <em>#:aliasString#</em></span>
 	</div>
 </script>
-
-
 <!-- Share Picker : select contacts, chats and groups -->
 <div data-role="modalview" id="sharePickerView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="sharePickerView.onInit">
 	<div data-role="header">
@@ -1055,6 +1081,33 @@
 	<ul id="sharePickerView-listview" class="listview"></ul>
 	<div class="emptyState hidden">
 		<div class="empty-contacts" data-grunticon-embed></div>
+	</div>
+</div>
+
+
+<div data-role="modalview" id="galleryMemberView" style="width: 100%; height:100%; display: none;"  class="appearance" data-init="galleryMemberView.onInit">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Gallery Members</span>
+			<a data-click="galleryMemberView.closeModal" data-role="button" data-align="left" class="btnClear-grey">
+				<div class="close" data-grunticon-embed></div>
+			</a>
+		</div>
+		<div>
+			<div class="appendSearch">
+				<span class="searchIcon">
+					<div class="search" data-grunticon-embed></div>
+				</span>
+				<input type="text" class="doubleAppendSearch" placeholder="Search contact, groups, chats..." id="galleryMemberView-search" />
+			</div>
+		</div>
+	</div>
+	<ul id="galleryMemberView-listview" class="listview"></ul>
+	<div class="emptyState hidden">
+		<div class="empty-galleryMembers" data-grunticon-embed></div>
+	</div>
+	<div data-role="footer">
+		<a class="btnSecondary btnSpan-btm hidden" id="galleryEditView.saveBtn" data-role="button" data-click="galleryMemberView.onSave">Submit</a>
 	</div>
 </div>
 
@@ -1326,7 +1379,7 @@
 				<p>
 					<a class="btnClear" data-role="button" data-click="galleryEditView.openSharePicker">
 						<span class="icon-share icon-sm icon-share-activated" data-grunticon-embed></span>
-						Share
+						Share (Add Members)
 					</a>
 				</p>
 			</div>
@@ -1339,7 +1392,7 @@
 			<p>
 				<a class="btnClear" data-role="button" data-click="galleryEditView.openSharePicker">
 					<span class="icon-share icon-sm" data-grunticon-embed></span>
-					Share
+					Share (Change Membership)
 				</a>
 			</p>
 		</div>
