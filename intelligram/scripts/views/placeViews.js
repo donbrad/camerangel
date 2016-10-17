@@ -2278,6 +2278,7 @@ var smartEventPlacesView = {
 
                     if (that._mode === that._area) {
                         // User is picking an area or location to search in
+                        smartEventPlacesView.hideToggleQuery();
                         mapModel.googlePlaces.getDetails(request, function (place, status) {
                             if (status == google.maps.places.PlacesServiceStatus.OK) {
                                 smartEventPlacesView._lat = place.geometry.location.lat();
@@ -2532,6 +2533,7 @@ var smartEventPlacesView = {
             $('#smartEventPlaces-place').on('input', function () {
                var query =  $('#smartEventPlaces-place').val();
                 smartEventPlacesView._mode = smartEventPlacesView._area;
+                smartEventPlacesView.hideToggleQuery();
                 if (query.length > 2) {
                     smartEventPlacesView._processPlaceQuery(query);
                 }
@@ -2543,6 +2545,7 @@ var smartEventPlacesView = {
                     smartEventPlacesView.preprocessQuery(query);
                 }*/
                 smartEventPlacesView._mode = smartEventPlacesView._place;
+                smartEventPlacesView.hideToggleQuery();
                 if (query.length > 2) {
                     smartEventPlacesView._processQuery(query);
                 }
