@@ -2257,37 +2257,69 @@ var galleryMemberView = {
 
         });
 
-
-        /*    $("#sharePickerView-search").kendoMultiSelect({
-         dataTextField: "name",
-         dataValueField: "objectId",
-         height: 400,
-         dataSource: contactModel.shareDS,
-         });*/
-
-
         $("#galleryMemberView-search").on('input', function() {
 
             var query = this.value;
             if (query.length > 0) {
-                contactModel.shareDS.filter( {"logic":"or",
-                    "filters":[
+                if (galleryMemberView.contactsOnly) {
+                    contactModel.shareDS.filter( [{"logic":"or",
+                        "filters":[
+                            {
+                                "field":"name",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"alias",
+                                "operator":"contains",
+                                "value":query}
+                        ]},
                         {
-                            "field":"name",
+                            "field":"category",
                             "operator":"contains",
-                            "value":query},
-                        {
-                            "field":"alias",
-                            "operator":"contains",
-                            "value":query}
-                    ]});
+                            "value":'Contact'
+                        }
+
+                    ]);
+                } else {
+                    contactModel.shareDS.filter( {"logic":"or",
+                        "filters":[
+                            {
+                                "field":"name",
+                                "operator":"contains",
+                                "value":query},
+                            {
+                                "field":"alias",
+                                "operator":"contains",
+                                "value":query}
+                        ]});
+                }
+
 
             } else {
-                contactModel.shareDS.filter([]);
+                if (galleryMemberView.contactsOnly) {
+                    contactModel.shareDS.filter([{
+                        "field":"category",
+                        "operator":"contains",
+                        "value":'Contact'
+                    }]);
+                } else {
+                    contactModel.shareDS.filter([]);
+                }
+
             }
         });
 
     },
+
+    initContactShare : function () {
+        var len = contactModel.shareDS.total();
+
+        for (var i=0; i<len; i++) {
+            var contact = contactModel.shareDS.at(i);
+            contact.status = false;
+        }
+    },
+
 
     onOpen : function () {
 
@@ -2295,22 +2327,35 @@ var galleryMemberView = {
 
     handleSelect : function (target) {
         // Is a contact? - Yes toggle selected state
+        var objectId = target.objectId;
        if (target.category === 'Contact') {
            galleryMemberView.showSave(true);
+
             if (target.status === undefined) {
                 target.status = true;
             } else {
                 target.status = !target.status;
             }
+            target.set('status', target.status);
+
+           galleryMemberView.contactsOnly = true;
+           contactModel.shareDS.filter([{
+               "field":"category",
+               "operator":"contains",
+               "value":'Contact'
+           }]);
+
+       } else {
+           // Category is Chat or Group
        }
 
     },
 
     showSave : function (flag) {
         if (flag) {
-            $('#galleryEditView.saveBtn').removeClass('hidden');
+            $('#galleryMemberView-saveBtn').removeClass('hidden');
         } else {
-            $('#galleryEditView.saveBtn').addClass('hidden');
+            $('#galleryMemberView-saveBtn').addClass('hidden');
         }
 
     },
@@ -2320,12 +2365,24 @@ var galleryMemberView = {
 
         contactModel.updateAllShares();
 
-        galleryMemberView.memberArray = members;
+
+        if (members === null) {
+            galleryMemberView.initContactShare();
+            galleryMemberView.memberArray = [];
+
+        } else {
+            galleryMemberView.memberArray = members;
+
+        }
+
+
+
 
         // Reset search...
         $("#galleryMemberView-search").val('');
         contactModel.shareDS.filter([]);
 
+        galleryMemberView.contactsOnly = false;
         galleryMemberView.showSave(false);
 
         galleryMemberView.callback = null;
