@@ -172,7 +172,7 @@ var ux = {
 
 	toggleIsAvailable: function(){
 		var currentState = userStatus._statusObj.isAvailable;
-		
+
 		userStatus.updateIsAvailable(!currentState);
 		/*if(currentState){
 			userStatus._statusObj.set('isAvailable', false);

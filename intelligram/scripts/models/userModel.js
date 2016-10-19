@@ -578,18 +578,33 @@ var userStatus = {
 
     },
 
-    initStatus : function () {
+    initStatus : function (status) {
         var stat = userStatus._statusObj;
 
-        stat.lat = 0;
-        stat.lng = 0;
-        stat.isAvailable = false;
-        stat.isVisible = false;
-        stat.isCheckedIn = false;
-        stat.statusMessage = null;
-        stat.currentPlace = null;
-        stat.currentPlaceUUID = null;
-        stat.googlePlaceId = null;
+
+
+        if (status === null) {
+            stat.lat = 0;
+            stat.lng = 0;
+            stat.isAvailable = false;
+            stat.isVisible = false;
+            stat.isCheckedIn = false;
+            stat.statusMessage = null;
+            stat.currentPlace = null;
+            stat.currentPlaceUUID = null;
+            stat.googlePlaceId = null;
+        } else {
+            stat.lat = status.lat;
+            stat.lng = status.lng;
+            stat.isAvailable = status.isAvailable;
+            stat.isVisible = status.isVisible;
+            stat.isCheckedIn = status.isCheckedIn;
+            stat.statusMessage = status.statusMessage;
+            stat.currentPlace = status.currentPlace;
+            stat.currentPlaceUUID = status.currentPlaceUUID;
+            stat.googlePlaceId = status.googlePlaceId;
+        }
+
 
     },
 
@@ -605,8 +620,9 @@ var userStatus = {
 
         if (statusRaw !== undefined) {
             status = JSON.parse(statusRaw);
+            userStatus.initStatus(status);
         } else {
-            userStatus.initStatus();
+            userStatus.initStatus(null);
         }
 
     },
