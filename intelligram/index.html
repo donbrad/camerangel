@@ -1042,9 +1042,9 @@
 
 	var statusStr = "";
 	if (data.isSelected !== undefined) {
-	if (data.isSelected) {
-	statusStr = "In";
-	}
+		if (data.isSelected) {
+			statusStr = "+";
+		}
 	}
 	var aliasString = "";
 	if (alias !== undefined && alias !== null && alias !== "") {
@@ -1052,7 +1052,7 @@
 	}
 
 	#
-	<div style="clear: both;">
+	<div style="clear: both; padding: 6px;">
 		<span class="#=icon# icon-sm"></span> <span>#:name# <em>#:aliasString#</em></span>  <span style="float: right;">#:statusStr#</span>
 	</div>
 </script>

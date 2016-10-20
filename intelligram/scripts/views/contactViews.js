@@ -2237,6 +2237,8 @@ var galleryMemberView = {
     callback: null,
     memberArray : null,
     _activeView : 0,
+    _contacts : 0,
+    _groups : 1,
     contactsOnly : false,
     contactsDS : new kendo.data.DataSource({
         sort: {
@@ -2244,6 +2246,7 @@ var galleryMemberView = {
             dir: "asc"
         }
     }),
+
     candidateDS : new kendo.data.DataSource({
         group: 'category',
         sort: {
@@ -2251,6 +2254,7 @@ var galleryMemberView = {
             dir: "asc"
         }
     }),
+
     memberDS : new kendo.data.DataSource(),
 
     onInit: function () {
@@ -2262,7 +2266,25 @@ var galleryMemberView = {
             fixedHeaders: true,
             click: function (e) {
                 var target = e.dataItem;
-                galleryMemberView.handleSelect(target);
+                var objectId = target.channelUUID;
+
+                galleryMemberView.contactsOnly = true;
+                if (target.category === "Group") {
+                    var group = groupModel.findGroup(objectId);
+                    var memberList = galleryMemberView.getGroupMembers(group.members);
+                    galleryMemberView.mapContactShare(memberList);
+                    galleryMemberView.onTabSelect(0);
+
+                } else if (target.category === 'Chat') {
+                    var chat = channelModel.findChannelModel(objectId);
+                    galleryMemberView.mapContactShare(chat.members);
+
+                    galleryMemberView.onTabSelect(0);
+
+                } else if (target.category === "Gallery") {
+
+                }
+
             },
             dataBound: function(e){
                 // ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
@@ -2277,7 +2299,19 @@ var galleryMemberView = {
             fixedHeaders: true,
             click: function (e) {
                 var target = e.dataItem;
-                galleryMemberView.handleSelect(target);
+                var objectId = target.channelUUID;
+
+                galleryMemberView.showSave(true);
+
+                if (target.isSelected === undefined) {
+                    target.isSelected = true;
+                } else {
+                    target.isSelected = !target.isSelected;
+                }
+                target.set('isSelected', target.isSelected);
+
+                galleryMemberView.contactsOnly = true;
+
             },
             dataBound: function(e){
                 // ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
@@ -2289,7 +2323,7 @@ var galleryMemberView = {
 
             var query = this.value;
             if (query.length > 0) {
-                if (galleryMemberView.contactsOnly) {
+                if (galleryMemberView._activeView === galleryMemberView._groups ) {
                     galleryMemberView.candidateDS.filter( [{"logic":"or",
                         "filters":[
                             {
@@ -2300,16 +2334,11 @@ var galleryMemberView = {
                                 "field":"alias",
                                 "operator":"contains",
                                 "value":query}
-                        ]},
-                        {
-                            "field":"category",
-                            "operator":"contains",
-                            "value":'Contact'
-                        }
+                        ]}
 
                     ]);
                 } else {
-                    galleryMemberView.candidateDS.filter( {"logic":"or",
+                    galleryMemberView.contactsDS.filter( {"logic":"or",
                         "filters":[
                             {
                                 "field":"name",
@@ -2324,25 +2353,28 @@ var galleryMemberView = {
 
 
             } else {
-                if (galleryMemberView.contactsOnly) {
-                    galleryMemberView.candidateDS.filter([{
-                        "field":"category",
-                        "operator":"contains",
-                        "value":'Contact'
-                    }]);
-                } else {
-                    galleryMemberView.candidateDS.filter([]);
-                }
+
+                galleryMemberView.candidateDS.filter([]);
 
             }
         });
 
     },
 
+    getGroupMembers : function (members) {
+        var resultList = [];
+
+        for (var i=0; i<members.length; i++) {
+            var member = contactModel.findContactByUUID(members[i]);
+
+            resultList.push(member.contactUUID);
+        }
+
+        return(resultList);
+    },
+
     initContactShare : function () {
 
-        galleryMemberView.contactsDS.data([]);
-        galleryMemberView.candidateDS.data([]);
         var memberArray = contactModel.shareDS.data();
 
         var contactArray = [];
@@ -2351,6 +2383,7 @@ var galleryMemberView = {
 
         for (var i=0; i<memberArray.length; i++) {
             var member = memberArray[i];
+            member.isSelected = false;
 
             if (member.category === 'Contact') {
                 contactArray.push(member);
@@ -2371,7 +2404,7 @@ var galleryMemberView = {
     queryMember : function (query) {
         if (query === undefined)
             return(undefined);
-        var dataSource =  galleryMemberView.candidateDS;
+        var dataSource =  galleryMemberView.contactsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -2388,7 +2421,7 @@ var galleryMemberView = {
     queryMembers : function (query) {
         if (query === undefined)
             return(undefined);
-        var dataSource =  galleryMemberView.candidateDS;
+        var dataSource =  galleryMemberView.contactsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
             cacheFilter = {};
@@ -2409,7 +2442,7 @@ var galleryMemberView = {
 
 
     findMembers : function () {
-        var members = galleryMemberView.queryMember({ field: "isSelected", operator: "eq", value: true });
+        var members = galleryMemberView.queryMembers({ field: "isSelected", operator: "eq", value: true });
         return (members);
     },
 
@@ -2467,8 +2500,9 @@ var galleryMemberView = {
         } else {
             tab = $(e.item[0]).data("tab");
         }
+        $("#galleryMemberView-search").val("");
 
-        if(tab == 0){
+        if(tab == 0) {
 
             $("#galleryMember-tab-0-img").attr("src", "images/icon-contact-active.png");
             $("#galleryMember-tab-1-img").attr("src", "images/icon-group.png");
@@ -2504,11 +2538,14 @@ var galleryMemberView = {
 
     openModal : function (members,  callback) {
 
-        contactModel.updateAllShares();
+        galleryMemberView.onTabSelect(galleryMemberView._activeView);
 
+        contactModel.updateAllShares();
+        galleryMemberView.contactsDS.data([]);
+        galleryMemberView.candidateDS.data([]);
+        galleryMemberView.initContactShare();
 
         if (members === null) {
-            galleryMemberView.initContactShare();
             galleryMemberView.memberArray = [];
 
         } else {
