@@ -2364,12 +2364,12 @@ var galleryMemberView = {
     },
 
     findMember : function (memberId) {
-        var member = galleryMemberView.queryMember({ field: "objectId", operator: "eq", value:memberId });
+        var member = galleryMemberView.queryMember({ field: "channelUUID", operator: "eq", value:memberId });
         return (member);
     },
 
 
-    findMembers : function (memberId) {
+    findMembers : function () {
         var members = galleryMemberView.queryMember({ field: "isSelected", operator: "eq", value: true });
         return (members);
     },
@@ -2388,8 +2388,6 @@ var galleryMemberView = {
             if (member !== undefined && member !== null) {
                 member.isSelected = true;
             }
-
-
         }
     },
 
@@ -2464,18 +2462,59 @@ var galleryMemberView = {
         $("#galleryMemberView").data("kendoMobileModalView").open();
     },
 
+    buildMemberString : function (members) {
+
+        var memberString = '';
+        _.each(members, function(value, key){
+            var member = value;
+            var contact = contactModel.findContactByUUID(member);
+
+            if (contact !== undefined && contact !== null) {
+                memberString += contact.name + ', ';
+            }
+        });
+
+        memberString = memberString.replace(/,\s*$/, "");
+        return memberString;
+    },
+
     onSave : function () {
+        var newArray = galleryMemberView.findMembers();
+
+        var newList = newArray.items;
+        var newMemberList = [];
+
+        for (var i=0; i<newList.length; i++) {
+            newMemberList.push(newList[i].channelUUID);
+        }
+
+        var memberString = galleryMemberView.buildMemberString(newMemberList);
+        galleryMemberView.onDone();
+        if (galleryMemberView.callback !== null) {
+            galleryMemberView.callback(newMemberList, memberString);
+        }
 
     },
 
     closeModal : function () {
-        $("#galleryMemberView").data("kendoMobileModalView").close();
+      //  $("#galleryMemberView").data("kendoMobileModalView").close();
+
+        galleryMemberView.onDone();
+
+        if (galleryMemberView.callback !== null) {
+            galleryMemberView.callback(null, null);
+        }
+       /* galleryMemberView.contactsOnly = false;
+        galleryMemberView.candidateDS.filter([]);
+
         if (galleryMemberView.callback !== null) {
             galleryMemberView.callback(null);
-        }
+        }*/
     },
 
     onDone: function () {
+        galleryMemberView.contactsOnly = false;
+        galleryMemberView.candidateDS.filter([]);
         $("#galleryMemberView").data("kendoMobileModalView").close();
     }
 

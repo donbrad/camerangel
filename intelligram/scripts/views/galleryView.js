@@ -2088,6 +2088,12 @@ var galleryEditView = {
 
     openSharePicker: function(){
         galleryMemberView.openModal(galleryEditView.members, function (members, memberString) {
+            var newMembers = members, newMemberString = memberString;
+
+            galleryEditView.activeObj.set("members", newMembers);
+            galleryEditView.activeObj.set("memberString", newMemberString);
+
+            //
 
         })
     },
@@ -2148,6 +2154,7 @@ var galleryEditView = {
                 gallery.members = [];
             }
             that.activeObj.members = gallery.members;
+            that.activeObj.memberString = gallery.memberString;
             galleryEditView.buildMembersDS();
             that.activeObj.senderUUID = gallery.senderUUID;
             that.activeObj.senderName = gallery.senderName;
