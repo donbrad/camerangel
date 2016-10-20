@@ -1010,26 +1010,45 @@
 	</div>
 </script>
 
-<script type="text/x-kendo-template" id="galleryMember-Template">
+<script type="text/x-kendo-template" id="galleryMember-groupTemplate">
 	#
 	var name = data.name.capitalize('title');
 
-	var icon = 'contacts';
+	var icon = 'icon-group';
 	if (data.category === 'Chat') {
 		icon = 'icon-Chat';
 	} else if (data.category === 'Group') {
 		icon = 'icon-group';
+	} else if (data.category === 'Gallery') {
+		icon = 'icon-gallery';
 	}
 
-	var statusStr = "";
-	if (data.isSelected !== undefined) {
-		if (data.isSelected) {
-			statusStr = "In";
-		}
-	}
 	var aliasString = "";
 	if (alias !== undefined && alias !== null && alias !== "") {
 		aliasString = " (" + alias + ")";
+	}
+
+	#
+	<div style="clear: both;">
+		<span class="#=icon# icon-sm"></span> <span>#:name# <em>#:aliasString#</em></span>
+	</div>
+</script>
+
+<script type="text/x-kendo-template" id="galleryMember-contactTemplate">
+	#
+	var name = data.name.capitalize('name');
+
+	var icon = 'contacts';
+
+	var statusStr = "";
+	if (data.isSelected !== undefined) {
+	if (data.isSelected) {
+	statusStr = "In";
+	}
+	}
+	var aliasString = "";
+	if (alias !== undefined && alias !== null && alias !== "") {
+	aliasString = " (" + alias + ")";
 	}
 
 	#
@@ -1102,9 +1121,27 @@
 			</div>
 		</div>
 	</div>
-	<ul id="galleryMemberView-listview" class="listview"></ul>
-	<div class="emptyState hidden">
-		<div class="empty-galleryMembers" data-grunticon-embed></div>
+	<div data-role="tabstrip" id="galleryMember-buttongroup" class="tabBar" data-select="galleryMemberView.onTabSelect">
+		<a data-tab="0">
+			<img src="images/icon-contact-active.png" id="galleryMember-tab-0-img" />
+			Contacts
+		</a>
+		<a data-tab="1">
+			<img src="images/icon-group.png" id="galleryMember-tab-1-img" />
+			Groups
+		</a>
+	</div>
+	<div id="galleryMember-contacts">
+		<ul id="galleryMemberView-contactlistview" class="listview"></ul>
+		<div class="emptyState hidden">
+			<div class="empty-galleryMembers" data-grunticon-embed></div>
+		</div>
+	</div>
+	<div id="galleryMember-groups">
+		<ul id="galleryMemberView-grouplistview" class="listview"></ul>
+		<div class="emptyState hidden">
+			<div class="empty-galleryMembers" data-grunticon-embed></div>
+		</div>
 	</div>
 	<div data-role="footer">
 		<a class="btnPrimary btnSpan-btm hidden" id="galleryMemberView-saveBtn" data-role="button" data-click="galleryMemberView.onSave">Save</a>

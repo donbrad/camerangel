@@ -2236,7 +2236,14 @@ var groupActionView = {
 var galleryMemberView = {
     callback: null,
     memberArray : null,
+    _activeView : 0,
     contactsOnly : false,
+    contactsDS : new kendo.data.DataSource({
+        sort: {
+            field: "name",
+            dir: "asc"
+        }
+    }),
     candidateDS : new kendo.data.DataSource({
         group: 'category',
         sort: {
@@ -2248,9 +2255,24 @@ var galleryMemberView = {
 
     onInit: function () {
 
-        $("#galleryMemberView-listview").kendoMobileListView({
+        $("#galleryMemberView-grouplistview").kendoMobileListView({
             dataSource: galleryMemberView.candidateDS,
-            template: $("#galleryMember-Template").html(),
+            template: $("#galleryMember-groupTemplate").html(),
+            //headerTemplate: $("#contactsHeaderTemplate").html(),
+            fixedHeaders: true,
+            click: function (e) {
+                var target = e.dataItem;
+                galleryMemberView.handleSelect(target);
+            },
+            dataBound: function(e){
+                // ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
+            }
+
+        });
+
+        $("#galleryMemberView-contactlistview").kendoMobileListView({
+            dataSource: galleryMemberView.contactsDS,
+            template: $("#galleryMember-contactTemplate").html(),
             //headerTemplate: $("#contactsHeaderTemplate").html(),
             fixedHeaders: true,
             click: function (e) {
@@ -2319,8 +2341,25 @@ var galleryMemberView = {
 
     initContactShare : function () {
 
+        galleryMemberView.contactsDS.data([]);
+        galleryMemberView.candidateDS.data([]);
         var memberArray = contactModel.shareDS.data();
-        galleryMemberView.candidateDS.data(memberArray);
+
+        var contactArray = [];
+
+        var candidateArray = [];
+
+        for (var i=0; i<memberArray.length; i++) {
+            var member = memberArray[i];
+
+            if (member.category === 'Contact') {
+                contactArray.push(member);
+            } else {
+                candidateArray.push(member);
+            }
+        }
+        galleryMemberView.contactsDS.data(contactArray);
+        galleryMemberView.candidateDS.data(candidateArray);
         /*var len = contactModel.shareDS.total();
 
         for (var i=0; i<len; i++) {
@@ -2419,6 +2458,38 @@ var galleryMemberView = {
            // Category is Chat or Group
        }
 
+    },
+
+    onTabSelect : function (e) {
+        var tab;
+        if(_.isNumber(e)){
+            tab = e;
+        } else {
+            tab = $(e.item[0]).data("tab");
+        }
+
+        if(tab == 0){
+
+            $("#galleryMember-tab-0-img").attr("src", "images/icon-contact-active.png");
+            $("#galleryMember-tab-1-img").attr("src", "images/icon-group.png");
+
+            $("#galleryMember-contacts").removeClass("hidden");
+            $("#galleryMember-groups").addClass("hidden");
+
+            ux.setSearchPlaceholder("Search Contacts...");
+           // ux.setAddTarget(null, "#contactImport", null);
+        } else {
+
+            $("#galleryMember-tab-0-img").attr("src", "images/icon-contact-alt.png");
+            $("#contacts-tab-1-img").attr("src", "images/icon-group-active.png");
+
+            $("#galleryMember-contacts").addClass("hidden");
+            $("#galleryMember-groups").removeClass("hidden");
+
+            ux.setSearchPlaceholder("Search Groups...");
+          //  ux.setAddTarget(null, "#groupEditor?returnview=contacts", null);
+        }
+        galleryMemberView._activeView = tab;
     },
 
     showSave : function (flag) {
