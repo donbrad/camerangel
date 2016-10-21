@@ -2470,6 +2470,7 @@ var galleryMemberView = {
     onOpen : function () {
 
     },
+
     onTabSelect : function (e) {
         var tab;
         if(_.isNumber(e)){
@@ -2493,7 +2494,7 @@ var galleryMemberView = {
         } else {
 
             $("#galleryMember-tab-0-img").attr("src", "images/icon-contact-alt.png");
-            $("#contacts-tab-1-img").attr("src", "images/icon-group-active.png");
+            $("#galleryMember-tab-1-img").attr("src", "images/icon-group-active.png");
 
             $("#galleryMember-contacts").addClass("hidden");
             $("#galleryMember-groups").removeClass("hidden");
@@ -2502,6 +2503,7 @@ var galleryMemberView = {
             //ux.setSearchPlaceholder("Search Groups...");
           //  ux.setAddTarget(null, "#groupEditor?returnview=contacts", null);
         }
+
         galleryMemberView._activeView = tab;
     },
 
