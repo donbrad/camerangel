@@ -2315,6 +2315,7 @@ var galleryMemberView = {
                 }
                 target.set('isSelected', target.isSelected);
 
+                $("#galleryMemberView-contactlistview").data("kendoMobileListView").refresh();
                 galleryMemberView.contactsDS.sync();
                 galleryMemberView.contactsOnly = true;
 

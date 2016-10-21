@@ -1040,10 +1040,10 @@
 
 	var icon = 'contacts';
 
-	var statusStr = "-";
+	var statusStr = "";
 	if (isSelected !== undefined) {
 		if (isSelected) {
-			statusStr = "+";
+			statusStr = "images/icon-checked-active.svg";
 		}
 	}
 	var aliasString = "";
@@ -1053,7 +1053,7 @@
 
 	#
 	<div style="clear: both; padding: 6px;">
-		<span class="#=icon# icon-sm"></span> <span>#:nameStr# <em>#:aliasString#</em></span>  <span style="float: right;">#:statusStr#</span>
+		<span class="#=icon# icon-sm"></span> <span>#:nameStr# <em>#:aliasString#</em></span>  <span style="float: right;"><img src="#=statusStr#"></span>
 	</div>
 </script>
 
