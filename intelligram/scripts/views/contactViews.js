@@ -2275,18 +2275,20 @@ var galleryMemberView = {
                     $('#groupMember-contacts-sourceName').text('From group: ' + group.title);
                     var memberList = galleryMemberView.getGroupMembers(group.members);
                     galleryMemberView.mapContactShare(memberList);
-                    galleryMemberView.onTabSelect(0);
+
 
                 } else if (target.category === 'Chat') {
                     var chat = channelModel.findChannelModel(objectId);
                     galleryMemberView.mapContactShare(chat.members);
                     $('#groupMember-contacts-sourceName').text('From Chat: ' + chat.name);
-                    galleryMemberView.onTabSelect(0);
+
 
                 } else if (target.category === "Gallery") {
 
                 }
-
+                
+                galleryMemberView.onTabSelect(0);
+                galleryMemberView.showSave(true);
                 $('#groupMember-contacts-source').removeClass('hidden');
             },
             dataBound: function(e){
@@ -2478,6 +2480,7 @@ var galleryMemberView = {
         } else {
             tab = $(e.item[0]).data("tab");
         }
+
         $("#galleryMemberView-search").val("");
 
         if(tab == 0) {
