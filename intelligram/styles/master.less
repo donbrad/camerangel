@@ -370,8 +370,9 @@ form {
   left: 0;
   display: inline-block;
   vertical-align: middle;
-  svg {
+  div {
     width: 6rem;
+    height: 6rem;
     //margin-left: auto;
     //margin-right: auto;
     display: inline-block;
@@ -382,6 +383,10 @@ form {
     bottom: 0;
     margin: auto;
     vertical-align: middle;
+    > svg {
+      height: 100%;
+      width: 100%;
+    }
   }
   @media @mobile {
     //padding-top: 45%;

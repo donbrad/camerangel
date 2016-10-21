@@ -2493,7 +2493,7 @@ var galleryMemberView = {
         } else {
 
             $("#galleryMember-tab-0-img").attr("src", "images/icon-contact-alt.png");
-            $("#contacts-tab-1-img").attr("src", "images/icon-group-active.png");
+            $("#galleryMember-tab-1-img").attr("src", "images/icon-group-active.png");
 
             $("#galleryMember-contacts").addClass("hidden");
             $("#galleryMember-groups").removeClass("hidden");

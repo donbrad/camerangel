@@ -1102,8 +1102,9 @@ form p {
   display: inline-block;
   vertical-align: middle;
 }
-.emptyState svg {
+.emptyState div {
   width: 6rem;
+  height: 6rem;
   display: inline-block;
   position: absolute;
   top: -112px;
@@ -1112,6 +1113,10 @@ form p {
   bottom: 0;
   margin: auto;
   vertical-align: middle;
+}
+.emptyState div > svg {
+  height: 100%;
+  width: 100%;
 }
 @media only screen and (max-width: 320px) {
 }
