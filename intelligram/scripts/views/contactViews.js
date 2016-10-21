@@ -2269,8 +2269,10 @@ var galleryMemberView = {
                 var objectId = target.channelUUID;
 
                 galleryMemberView.contactsOnly = true;
+
                 if (target.category === "Group") {
                     var group = groupModel.findGroup(objectId);
+                    $('#groupMember-contacts-sourceName').text('From group: ' + group.title);
                     var memberList = galleryMemberView.getGroupMembers(group.members);
                     galleryMemberView.mapContactShare(memberList);
                     galleryMemberView.onTabSelect(0);
@@ -2278,13 +2280,14 @@ var galleryMemberView = {
                 } else if (target.category === 'Chat') {
                     var chat = channelModel.findChannelModel(objectId);
                     galleryMemberView.mapContactShare(chat.members);
-
+                    $('#groupMember-contacts-sourceName').text('From Chat: ' + chat.name);
                     galleryMemberView.onTabSelect(0);
 
                 } else if (target.category === "Gallery") {
 
                 }
 
+                $('#groupMember-contacts-source').removeClass('hidden');
             },
             dataBound: function(e){
                 // ux.checkEmptyUIState(contactModel.contactListDS, "#contactListDiv >");
@@ -2296,7 +2299,7 @@ var galleryMemberView = {
             dataSource: galleryMemberView.contactsDS,
             template: $("#galleryMember-contactTemplate").html(),
             //headerTemplate: $("#contactsHeaderTemplate").html(),
-            fixedHeaders: true,
+            //fixedHeaders: true,
             click: function (e) {
                 var target = e.dataItem;
                 var objectId = target.channelUUID;
@@ -2310,6 +2313,7 @@ var galleryMemberView = {
                 }
                 target.set('isSelected', target.isSelected);
 
+                galleryMemberView.contactsDS.sync();
                 galleryMemberView.contactsOnly = true;
 
             },
@@ -2466,33 +2470,6 @@ var galleryMemberView = {
     onOpen : function () {
 
     },
-
-    handleSelect : function (target) {
-        // Is a contact? - Yes toggle selected state
-        var objectId = target.objectId;
-       if (target.category === 'Contact') {
-           galleryMemberView.showSave(true);
-
-            if (target.isSelected === undefined) {
-                target.isSelected = true;
-            } else {
-                target.isSelected = !target.isSelected;
-            }
-            target.set('isSelected', target.isSelected);
-
-           galleryMemberView.contactsOnly = true;
-           galleryMemberView.candidateDS.filter([{
-               "field":"category",
-               "operator":"contains",
-               "value":'Contact'
-           }]);
-
-       } else {
-           // Category is Chat or Group
-       }
-
-    },
-
     onTabSelect : function (e) {
         var tab;
         if(_.isNumber(e)){
@@ -2510,7 +2487,8 @@ var galleryMemberView = {
             $("#galleryMember-contacts").removeClass("hidden");
             $("#galleryMember-groups").addClass("hidden");
 
-            ux.setSearchPlaceholder("Search Contacts...");
+            $('#galleryMemberView-search').attr('placeholder',"Search Contacts...");
+            //ux.setSearchPlaceholder("Search Contacts...");
            // ux.setAddTarget(null, "#contactImport", null);
         } else {
 
@@ -2520,7 +2498,8 @@ var galleryMemberView = {
             $("#galleryMember-contacts").addClass("hidden");
             $("#galleryMember-groups").removeClass("hidden");
 
-            ux.setSearchPlaceholder("Search Groups...");
+            $('#galleryMemberView-search').attr('placeholder',"Search Groups...");
+            //ux.setSearchPlaceholder("Search Groups...");
           //  ux.setAddTarget(null, "#groupEditor?returnview=contacts", null);
         }
         galleryMemberView._activeView = tab;
@@ -2539,6 +2518,8 @@ var galleryMemberView = {
     openModal : function (members,  callback) {
 
         galleryMemberView.onTabSelect(galleryMemberView._activeView);
+
+        $('#groupMember-contacts-source').addClass('hidden');
 
         contactModel.updateAllShares();
         galleryMemberView.contactsDS.data([]);
@@ -2589,11 +2570,11 @@ var galleryMemberView = {
     onSave : function () {
         var newArray = galleryMemberView.findMembers();
 
-        var newList = newArray.items;
+
         var newMemberList = [];
 
-        for (var i=0; i<newList.length; i++) {
-            newMemberList.push(newList[i].channelUUID);
+        for (var i=0; i<newArray.length; i++) {
+            newMemberList.push(newArray[i].channelUUID);
         }
 
         var memberString = galleryMemberView.buildMemberString(newMemberList);

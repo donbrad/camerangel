@@ -1036,24 +1036,24 @@
 
 <script type="text/x-kendo-template" id="galleryMember-contactTemplate">
 	#
-	var name = data.name.capitalize('name');
+	var nameStr = name.capitalize('name');
 
 	var icon = 'contacts';
 
-	var statusStr = "";
-	if (data.isSelected !== undefined) {
-		if (data.isSelected) {
+	var statusStr = "-";
+	if (isSelected !== undefined) {
+		if (isSelected) {
 			statusStr = "+";
 		}
 	}
 	var aliasString = "";
 	if (alias !== undefined && alias !== null && alias !== "") {
-	aliasString = " (" + alias + ")";
+	 	aliasString = " (" + alias + ")";
 	}
 
 	#
 	<div style="clear: both; padding: 6px;">
-		<span class="#=icon# icon-sm"></span> <span>#:name# <em>#:aliasString#</em></span>  <span style="float: right;">#:statusStr#</span>
+		<span class="#=icon# icon-sm"></span> <span>#:nameStr# <em>#:aliasString#</em></span>  <span style="float: right;">#:statusStr#</span>
 	</div>
 </script>
 
@@ -1117,7 +1117,7 @@
 				<span class="searchIcon">
 					<div class="search" data-grunticon-embed></div>
 				</span>
-				<input type="text" class="doubleAppendSearch" placeholder="Search contact, groups, chats..." id="galleryMemberView-search" />
+				<input type="text" class="doubleAppendSearch" placeholder="Search contacts..." id="galleryMemberView-search" />
 			</div>
 		</div>
 	</div>
@@ -1132,6 +1132,9 @@
 		</a>
 	</div>
 	<div id="galleryMember-contacts">
+		<div id="groupMember-contacts-source" class="hidden">
+			<h4 id="groupMember-contacts-sourceName"></h4>
+		</div>
 		<ul id="galleryMemberView-contactlistview" class="listview"></ul>
 		<div class="emptyState hidden">
 			<div class="empty-galleryMembers" data-grunticon-embed></div>
