@@ -2297,8 +2297,10 @@ var smartEventPlacesView = {
                         });
                     } else if (that._mode === that._place) {
 
-                        if (geo.category === 'Area') {
-                            // Geocoded address
+                        /*if (geo.category === 'Area') {
+
+
+                           /!* // Geocoded address
                             mapModel.googlePlaces.getDetails(request, function (place, status) {
                                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                                     smartEventPlacesView._lat = place.geometry.location.lat();
@@ -2318,12 +2320,12 @@ var smartEventPlacesView = {
                                 } else {
                                     mobileNotify("Couldn't find this place...");
                                 }
-                            });
+                            });*!/
 
 
                         } else if (geo.category === 'Location') {
 
-                        } else {
+                        } else {*/
                             mapModel.googlePlaces.getDetails(request, function (place, status) {
                                 if (status == google.maps.places.PlacesServiceStatus.OK) {
 
@@ -2354,7 +2356,7 @@ var smartEventPlacesView = {
                                 }
                             });
 
-                        }
+                       /* }*/
                     }
 
                 }
@@ -2379,7 +2381,7 @@ var smartEventPlacesView = {
     getCurrentLocation : function () {
         var that = smartEventPlacesView;
 
-        that._currentLocation.address =  mapModel.currentAddress + ', ' + mapModel.currentState;
+        that._currentLocation.address =  mapModel.getCurrentAddressString(mapModel.currentAddress);
         that._currentLocation.title = "Location";
 
     },
@@ -2412,7 +2414,7 @@ var smartEventPlacesView = {
             smartEventPlacesView.hideToggleQuery();
             smartEventPlacesView._query = thisQuery.trim();
             smartEventPlacesView._placeQuery = thisPlace.trim();
-
+            $('#smartEventPlaces-query').val(smartEventPlacesView._query);
             $('#smartEventPlaces-place').val(smartEventPlacesView._placeQuery);
             smartEventPlacesView._processPlaceQuery(smartEventPlacesView._placeQuery);
 
@@ -2444,6 +2446,9 @@ var smartEventPlacesView = {
         var location = smartEventPlacesView._location;
         var bounds = smartEventPlacesView._bounds;
 
+        if (query === null) {
+            return;
+        }
 
         smartEventPlacesView._autocomplete.getPlacePredictions({ input: query, bounds: smartEventPlacesView._bounds,
             types: ['establishment', 'geocode'] }, function(predictions, status) {
