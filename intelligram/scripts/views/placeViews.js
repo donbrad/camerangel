@@ -2286,6 +2286,8 @@ var smartEventPlacesView = {
                                 $('#smartEventPlaces-place').val(place.formatted_address);
                                 smartEventPlacesView.setLocationAndBounds();
 
+                                smartEventPlacesView.initDataSource();
+
                                 smartEventPlacesView._processQuery(smartEventPlacesView._query);
                             }
                         });
@@ -2406,6 +2408,14 @@ var smartEventPlacesView = {
 
     },
 
+    hideError : function () {
+        $('#smartEventPlaces-error').addClass('hidden');
+    },
+
+    showError : function (message) {
+        $('#smartEventPlaces-error').removeClass('hidden');
+        $('#smartEventPlaces-errorMessage').html(message);
+    },
 
     _processQuery : function (query) {
 
@@ -2416,6 +2426,11 @@ var smartEventPlacesView = {
 
         smartEventPlacesView._autocomplete.getPlacePredictions({ input: query, bounds: smartEventPlacesView._bounds,
             types: ['establishment'] }, function(predictions, status) {
+
+            if (status === "ZERO_RESULTS") {
+                mobileNotify("Sorry, No places matched your query");
+                smartEventPlacesView.initDataSource();
+            }
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
@@ -2458,6 +2473,10 @@ var smartEventPlacesView = {
     _processPlaceQuery : function (query) {
 
         smartEventPlacesView._autocompletePlace.getPlacePredictions({ input: query, options: {types: ['geocode']} }, function(predictions, status) {
+            if (status === "ZERO_RESULTS") {
+                mobileNotify("Sorry, No places matched your query");
+                smartEventPlacesView.initDataSource();
+            }
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
@@ -2467,6 +2486,7 @@ var smartEventPlacesView = {
                         case 'geocode':
                         case 'locality':
                         case 'political':
+                        case  'street_address':
 
                                 desObj.type = prediction.types[0];
                                 if (prediction.terms.length == 3) {
@@ -2475,6 +2495,11 @@ var smartEventPlacesView = {
                                 } else if (prediction.terms.length == 4) {
                                     desObj.title = "Area";
                                     desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
+                                } else if (prediction.terms.length == 5) {
+                                    desObj.title = "Address";
+                                    desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value + ", " + prediction.terms[3].value;
+                                } else {
+                                    desObj.address = prediction.description;
                                 }
                                 ds.add(desObj);
                             break;
