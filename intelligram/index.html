@@ -1041,19 +1041,21 @@
 	var icon = 'contacts';
 
 	var statusStr = "";
-	if (isSelected !== undefined) {
-		if (isSelected) {
-			statusStr = "images/icon-checked-active.svg";
-		}
-	}
+
 	var aliasString = "";
 	if (alias !== undefined && alias !== null && alias !== "") {
 	 	aliasString = " (" + alias + ")";
 	}
 
 	#
-	<div style="clear: both; padding: 6px;">
-		<span class="#=icon# icon-sm"></span> <span>#:nameStr# <em>#:aliasString#</em></span>  <span style="float: right;"><img src="#=statusStr#"></span>
+	<div class="galleryMember-contactTemplate-item">
+		<span class="#=icon# icon-sm"></span> <span>#:nameStr# <em>#:aliasString#</em></span>
+		#if (isSelected !== undefined) {#
+			#if (isSelected) {#
+			<span class="galleryMember-checked"><img src="images/icon-checked-active.svg" /></span>
+			#}#
+		#}#
+
 	</div>
 </script>
 
@@ -4997,10 +4999,10 @@
 	<div class="photoInfoBox">
 		<div>
 			<span class="icon-place icon-sm" data-grunticon-embed></span>
-			<span data-bind="text: addressString"></span>
+			<span data-bind="text: addressString" x-apple-data-detectors="false"></span>
 		</div>
 		<div>
-			<span data-bind="text: dateString"></span>
+			<span data-bind="text: dateString" x-apple-data-detectors="false"></span>
 		</div>
 	</div>
 
@@ -5313,9 +5315,9 @@
 			<a  data-role="button" data-click="smartEventPlacesView.toggleQuery" class="btnClearLine-highlight"> Search near <span id="searchEventPlaces-startQuery"></span></a>
 		</div>
 		<div class="appendSearch">
-			<span class="searchIcon">
+			<div class="searchIcon">
 				<div class="place-icon icon-sm" data-grunticon-embed></div>
-			</span>
+			</div>
 			<input type="search" name="Area" placeholder="Area or city to search..." id="smartEventPlaces-place" data-required-msg="Enter area to search" required />
 		</div>
 		<span class="k-invalid-msg" data-for="Area"></span>

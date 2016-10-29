@@ -6067,6 +6067,13 @@ div.contactListBox.activeContact > div > div > ul {
 #galleryMenuSelect #gallery-all {
   stroke: #4A4A4A;
 }
+.galleryMember-checked {
+  float: right;
+}
+.galleryMember-checked > img {
+  height: 1.25em;
+  width: 1.25em;
+}
 #galleryMenuSelect.km-buttongroup > .km-state-active,
 #settingChatSize > li.km-button.km-state-active {
   background-color: #6CADF3;
@@ -6178,6 +6185,9 @@ div.contactListBox.activeContact > div > div > ul {
 }
 #galleryView-noteAddView {
   min-height: 350px !important;
+}
+.galleryMember-contactTemplate-item {
+  padding: 0 1em;
 }
 #notesListView-add li {
   background-color: #fff !important;
