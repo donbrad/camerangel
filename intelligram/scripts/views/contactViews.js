@@ -2286,7 +2286,7 @@ var galleryMemberView = {
                 } else if (target.category === "Gallery") {
 
                 }
-                
+
                 galleryMemberView.onTabSelect(0);
                 galleryMemberView.showSave(true);
                 $('#groupMember-contacts-source').removeClass('hidden');

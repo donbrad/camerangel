@@ -2284,6 +2284,12 @@ var smartEventPlacesView = {
                                 smartEventPlacesView._lat = place.geometry.location.lat();
                                 smartEventPlacesView._lng = place.geometry.location.lng();
                                 $('#smartEventPlaces-place').val(place.formatted_address);
+                                var desObj = {category: "Location"};
+                                desObj.placeId = null;
+                                desObj.address = place.formatted_address;
+                                desObj.description = place.formatted_address;
+                                desObj.title = "Location";
+                                smartEventPlacesView.placesDS.add(desObj);
                                 smartEventPlacesView.setLocationAndBounds();
 
                                 smartEventPlacesView._processQuery(smartEventPlacesView._query);
@@ -2291,8 +2297,10 @@ var smartEventPlacesView = {
                         });
                     } else if (that._mode === that._place) {
 
-                        if (geo.category === 'Area') {
-                            // Geocoded address
+                        /*if (geo.category === 'Area') {
+
+
+                           /!* // Geocoded address
                             mapModel.googlePlaces.getDetails(request, function (place, status) {
                                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                                     smartEventPlacesView._lat = place.geometry.location.lat();
@@ -2312,10 +2320,12 @@ var smartEventPlacesView = {
                                 } else {
                                     mobileNotify("Couldn't find this place...");
                                 }
-                            });
+                            });*!/
 
 
-                        } else {
+                        } else if (geo.category === 'Location') {
+
+                        } else {*/
                             mapModel.googlePlaces.getDetails(request, function (place, status) {
                                 if (status == google.maps.places.PlacesServiceStatus.OK) {
 
@@ -2346,7 +2356,7 @@ var smartEventPlacesView = {
                                 }
                             });
 
-                        }
+                       /* }*/
                     }
 
                 }
@@ -2358,6 +2368,23 @@ var smartEventPlacesView = {
         smartEventPlacesView.placesDS.data([]);
     },
 
+    addCurrentLocation : function () {
+        var desObj = {category: "Location"};
+        var that = smartEventPlacesView;
+        desObj.address = that._currentLocation.address;
+        desObj.title = that._currentLocation.title;
+        desObj.placeId = that._currentLocation.placeId;
+
+        smartEventPlacesView.placesDS.add(desObj);
+    },
+
+    getCurrentLocation : function () {
+        var that = smartEventPlacesView;
+
+        that._currentLocation.address =  mapModel.getCurrentAddressString(mapModel.currentAddress);
+        that._currentLocation.title = "Location";
+
+    },
 
     setLocationAndBounds : function () {
         var geolocation = {
@@ -2378,6 +2405,7 @@ var smartEventPlacesView = {
 
     preprocessQuery : function (query) {
         var queryArray = query.toLowerCase().split('near'), thisQuery = null, thisPlace = null;
+        var addrArray = query.split(',');
 
         if (queryArray.length > 1) {
             thisQuery = queryArray[0];
@@ -2386,26 +2414,31 @@ var smartEventPlacesView = {
             smartEventPlacesView.hideToggleQuery();
             smartEventPlacesView._query = thisQuery.trim();
             smartEventPlacesView._placeQuery = thisPlace.trim();
-            smartEventPlacesView._selectPlaceFirst = true;
-          /*  $('#searchEventPlaces-selectPlace').removeClass('hidden');
-            $('#searchEventPlaces-searchDiv').addClass('hidden')*/;
-
+            $('#smartEventPlaces-query').val(smartEventPlacesView._query);
             $('#smartEventPlaces-place').val(smartEventPlacesView._placeQuery);
             smartEventPlacesView._processPlaceQuery(smartEventPlacesView._placeQuery);
 
         } else {
 
-            smartEventPlacesView._selectPlaceFirst = false;
-           /* $('#searchEventPlaces-selectPlace').addClass('hidden');
-            $('#searchEventPlaces-searchDiv').removeClass('hidden');*/
-
-            smartEventPlacesView._query = query.toLowerCase().trim();
-            $('#smartEventPlaces-query').val(smartEventPlacesView._query);
-            smartEventPlacesView._processQuery(smartEventPlacesView._query);
+            if (addrArray.length === 0) {
+                smartEventPlacesView._query = query.toLowerCase().trim();
+                $('#smartEventPlaces-query').val(smartEventPlacesView._query);
+                smartEventPlacesView._processQuery(smartEventPlacesView._query);
+            } else {
+                smartEventPlacesView.toggleQuery();
+            }
         }
 
     },
 
+    hideError : function () {
+        $('#smartEventPlaces-error').addClass('hidden');
+    },
+
+    showError : function (message) {
+        $('#smartEventPlaces-error').removeClass('hidden');
+        $('#smartEventPlaces-errorMessage').html(message);
+    },
 
     _processQuery : function (query) {
 
@@ -2413,15 +2446,25 @@ var smartEventPlacesView = {
         var location = smartEventPlacesView._location;
         var bounds = smartEventPlacesView._bounds;
 
+        if (query === null) {
+            return;
+        }
 
         smartEventPlacesView._autocomplete.getPlacePredictions({ input: query, bounds: smartEventPlacesView._bounds,
-            types: ['establishment'] }, function(predictions, status) {
+            types: ['establishment', 'geocode'] }, function(predictions, status) {
+
+            if (status === "ZERO_RESULTS") {
+                mobileNotify("Sorry, No places matched your query");
+                smartEventPlacesView.initDataSource();
+                smartEventPlacesView.addCurrentLocation();
+            }
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
+                smartEventPlacesView.addCurrentLocation();
                 predictions.forEach( function (prediction) {
 
-                    var desObj = {category:"Place",description: prediction.description};
+                    var desObj = {category:"Place", description: prediction.description};
                     desObj.placeId = prediction.place_id;
                     if (prediction.types[0] === 'establishment') {
                         desObj.title = prediction.terms[0].value;
@@ -2458,6 +2501,10 @@ var smartEventPlacesView = {
     _processPlaceQuery : function (query) {
 
         smartEventPlacesView._autocompletePlace.getPlacePredictions({ input: query, options: {types: ['geocode']} }, function(predictions, status) {
+            if (status === "ZERO_RESULTS") {
+                mobileNotify("Sorry, No places matched your query");
+                smartEventPlacesView.initDataSource();
+            }
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var ds = smartEventPlacesView.placesDS;
                 ds.data([]);
@@ -2467,6 +2514,7 @@ var smartEventPlacesView = {
                         case 'geocode':
                         case 'locality':
                         case 'political':
+                        case  'street_address':
 
                                 desObj.type = prediction.types[0];
                                 if (prediction.terms.length == 3) {
@@ -2475,26 +2523,15 @@ var smartEventPlacesView = {
                                 } else if (prediction.terms.length == 4) {
                                     desObj.title = "Area";
                                     desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
+                                } else if (prediction.terms.length == 5) {
+                                    desObj.title = "Address";
+                                    desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value + ", " + prediction.terms[3].value;
+                                } else {
+                                    desObj.address = prediction.description;
                                 }
                                 ds.add(desObj);
                             break;
                     }
-                   /*  if (prediction.types[0] === 'route' ) {
-                        desObj.title = "Area";
-                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
-                        desObj.type = 'Route';
-                    } else if (prediction.types[0] === 'street_address' ) {
-                        desObj.title = "Location";
-                        desObj.address = prediction.terms[0].value + " " + prediction.terms[1].value + ", " + prediction.terms[2].value;
-                        desObj.type = 'Street Address';
-                    } else {
-                        desObj.title = "Unknown";
-                        desObj.address = "Unknown";
-                        desObj.type = 'Unknown';
-                    }*/
-
-
-
                 });
             }
 
@@ -2516,6 +2553,8 @@ var smartEventPlacesView = {
         smartEventPlacesView._lng = mapModel.lng;
 
         smartEventPlacesView.setLocationAndBounds();
+
+        smartEventPlacesView.getCurrentLocation();
 
         if (title !== null) {
             $('#smartEventPlacesModal-title').text(title);
@@ -2555,6 +2594,7 @@ var smartEventPlacesView = {
         $('#smartEventPlaces-place').val("");
         $('#smartEventPlaces-place').attr('placeholder', "Near Me...");
      //   var form = $("#searchEventPlace-form").kendoValidator().data("kendoValidator");
+
         $('#smartEventPlaces-query').val(query);
         if (query.length > 1) {
             smartEventPlacesView.preprocessQuery(query);
@@ -2565,22 +2605,12 @@ var smartEventPlacesView = {
 
     },
 
-    toggleQuery : function () {
-        var query =   $('#smartEventPlaces-query').val();
-        $('#smartEventPlaces-place').val(query);
-        $('#smartEventPlaces-query').val("");
-
-        smartEventPlacesView.hideToggleQuery();
-        smartEventPlacesView._processPlaceQuery(query);
-    },
-
-    hideToggleQuery : function () {
-        $('#searchEventPlaces-selectPlace').addClass('hidden');
-    },
 
     openModalTargeted : function (query, title, lat, lng, callback) {
 
-        smartEventPlacesView.initDataSource();
+        var that = smartEventPlacesView;
+        that.initDataSource();
+
         that._mode = that._place;
 
         if (!smartEventPlacesView._inited) {
@@ -2589,7 +2619,6 @@ var smartEventPlacesView = {
             smartEventPlacesView._autocomplete = new google.maps.places.AutocompleteService();
             smartEventPlacesView._autocompletePlace = new google.maps.places.AutocompleteService();
 
-
             $('#smartEventPlaces-place').on('input', function () {
                 var query =  $('#smartEventPlaces-place').val();
                 if (query.length > 2) {
@@ -2607,8 +2636,6 @@ var smartEventPlacesView = {
                     smartEventPlacesView._processQuery(query);
                 }
             });
-
-
 
         }
 
@@ -2617,74 +2644,36 @@ var smartEventPlacesView = {
 
         smartEventPlacesView.setLocationAndBounds();
 
-
-
         if (title !== null) {
             $('#smartEventPlacesModal-title').text(title);
         }
 
         smartEventPlacesView._callback = callback;
 
-/*        if (!smartEventPlacesView._inited) {
-            smartEventPlacesView._inited = true;
-
-            smartEventPlacesView._autocomplete = new google.maps.places.AutocompleteService();
-            smartEventPlacesView._autocompletePlace = new google.maps.places.AutocompleteService();
-
-
-            $('#smartEventPlaces-place').on('input', function () {
-                var query =  $('#smartEventPlaces-place').val();
-                if (query.length > 4) {
-                    smartEventPlacesView._processPlaceQuery(query);
-                }
-            });
-
-            $('#smartEventPlaces-query').on('input', function () {
-                var query =  $('#smartEventPlaces-query').val();
-                if (query.toLowerCase().indexOf('near') !== -1) {
-                    smartEventPlacesView.preprocessQuery(query);
-                }
-                if (query.length > 4) {
-
-                    smartEventPlacesView._processQuery(query);
-                }
-            });
-
-            /!*smartEventPlacesView._searchBox.addListener('places_changed', function() {
-             var placesResults = smartEventPlacesView._searchBox.getPlaces();
-             var ds = smartEventPlacesView.placesDS;
-             ds.data([]);
-             placesResults.forEach( function (placeResult) {
-             var lat = placeResult.geometry.location.lat(),
-             lng = placeResult.geometry.location.lng();
-             ds.add({
-             name: placeResult.name.smartTruncate(38, true).toString(),
-             type: findPlacesView.getTypesFromComponents(placeResult.types),
-             googleId: placeResult.place_id,
-             icon: placeResult.icon,
-             address: placeResult.formatted_address,
-             reference: placeResult.reference,
-             lat: lat.toFixed(6),
-             lng: lng.toFixed(6)
-             });
-
-             });
-             });*!/
-
-        }*/
-
         $('#smartEventPlaces-query').val(query);
         if (query.length > 3) {
             smartEventPlacesView.preprocessQuery(query);
         }
 
-       /* var form = $("#searchEventPlace-form").kendoValidator().data("kendoValidator");
-        form.validate();
-*/
         $("#smartEventPlacesModal").data("kendoMobileModalView").open();
 
     },
-    
+
+
+    toggleQuery : function () {
+        var query =  $('#smartEventPlaces-query').val();
+        $('#smartEventPlaces-place').val(query);
+        $('#smartEventPlaces-query').val("");
+
+        smartEventPlacesView.hideToggleQuery();
+        smartEventPlacesView._mode =  smartEventPlacesView._place;
+        smartEventPlacesView._processPlaceQuery(query);
+    },
+
+    hideToggleQuery : function () {
+        $('#searchEventPlaces-selectPlace').addClass('hidden');
+    },
+
     closeModal : function (e) {
        // _preventDefault(e);
         if (smartEventPlacesView._callback !== null) {
