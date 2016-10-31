@@ -2282,7 +2282,6 @@ var galleryMemberView = {
                     galleryMemberView.mapContactShare(chat.members);
                     $('#groupMember-contacts-sourceName').text('From Chat: ' + chat.name);
 
-
                 } else if (target.category === "Gallery") {
 
                 }
@@ -2936,7 +2935,9 @@ var groupEditView = {
 
             that.activeObj.ggType = groupModel._ggClass;
 
-            that.activeObj.uuid = uuid.v4();
+            var guid = uuid.v4();
+            that.activeObj.uuid = guid;
+            that.activeObj.Id = guid;
             that.activeObj.set('title', null);
             that.activeObj.set('alias', null);
             that.activeObj.set('description', null);
