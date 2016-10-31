@@ -3150,7 +3150,11 @@ var groupEditView = {
     saveGroup: function () {
 
 
-        var activeGroup= groupEditView.activeObj;
+        var activeGroup = groupEditView.activeObj;
+
+        activeGroup = JSON.stringify(activeGroup);
+        activeGroup = JSON.parse(activeGroup);
+
         if (activeGroup.members === undefined) {
             activeGroup.members = [];
         }
@@ -3169,10 +3173,12 @@ var groupEditView = {
             group.set ('memberString', memberString);
 
             groupModel.groupsDS.sync();
+            groupModel.updateGroupContacts(group);
 
         } else {
             groupEditView.activeObj.set('memberString', memberString);
             groupModel.addGroup(activeGroup);
+            groupModel.updateGroupContacts(activeGroup);
         }
 
     }
