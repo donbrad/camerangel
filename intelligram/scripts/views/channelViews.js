@@ -2425,44 +2425,44 @@ var channelView = {
 
 
 
-    addSmartPlaceToMessage: function (smartPlace, message) {
+    addSmartPlaceToMessage: function (thisMovie, message) {
 
-        var objectUrl = placesModel.renderPlace(smartPlace);
+        var objectUrl = placesModel.renderPlace(thisMovie);
         var fullMessage = message + objectUrl;
 
-        channelView.activeMessage.objects.push(smartPlace);
+        channelView.activeMessage.objects.push(thisMovie);
 
         return (fullMessage);
 
     },
 
-    addSmartMovieToMessage: function (smartMovie, message) {
+    addSmartMovieToMessage: function (thisMovie, message) {
 
         //  var editor = $("#messageTextArea").data("kendoEditor");
 
-        var objectUrl = smartMovie.renderMovie(smartMovie);
+        var objectUrl = smartMovie.renderMovie(thisMovie);
 
         var fullMessage = message + objectUrl;
 
-        channelView.activeMessage.objects.push(smartMovie);
+        channelView.activeMessage.objects.push(thisMovie);
 
         return (fullMessage);
 
     },
 
-    addSmartTripToMessage: function (smartTrip, message) {
+    addSmartTripToMessage: function (thisTrip, message) {
 
-        var objectUrl = smartTrip.renderTrip(smartTrip);
+        var objectUrl = smartTrip.renderTrip(thisTrip);
 
         var fullMessage = message + objectUrl;
 
-        channelView.activeMessage.objects.push(smartTrip);
+        channelView.activeMessage.objects.push(thisTrip);
 
         return (fullMessage);
 
     },
 
-    addSmartEventToMessage: function (smartEvent, message) {
+    addSmartEventToMessage: function (thisEvent, message) {
 
         /*//  var editor = $("#messageTextArea").data("kendoEditor");
         var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
@@ -2489,23 +2489,23 @@ var channelView = {
         var objectUrl = template(dataObj);
 
 */
-        var objectUrl = smartEvent.renderEvent(smartEvent);
+        var objectUrl = smartEvent.renderEvent(thisEvent);
 
         var fullMessage = message + objectUrl;
 
-        channelView.activeMessage.objects.push(smartEvent);
+        channelView.activeMessage.objects.push(thisEvent);
 
         return (fullMessage);
 
     },
 
-    addSmartFlightToMessage: function (smartFlight, message) {
+    addSmartFlightToMessage: function (thisFlight, message) {
 
-        var objectUrl = smartFlight.renderFlight(smartFlight);
+        var objectUrl = smartFlight.renderFlight(thisFlight);
 
         var fullMessage = message + objectUrl;
 
-        channelView.activeMessage.objects.push(smartFlight);
+        channelView.activeMessage.objects.push(thisFlight);
 
         return (fullMessage);
 

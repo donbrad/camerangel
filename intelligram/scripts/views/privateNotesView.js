@@ -648,22 +648,22 @@ var privateNotesView = {
 
     },
 
-    addSmartEventToNote: function (smartEvent, note) {
+    addSmartEventToNote: function (thisEvent, note) {
 
         //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = new Date(smartEvent.date).toLocaleString(), objectId = smartEvent.uuid;
+        var date = new Date(thisEvent.date).toLocaleString(), objectId = thisEvent.uuid;
 
         var dateStr = moment(date).format('ddd MMM Do');
         var localTime = moment(date).format("LT");
 
-        var placeName = smartEvent.placeName;
+        var placeName = thisEvent.placeName;
         if(placeName === null){
             placeName = "";
         }
 
         privateNotesView.activeNote.type = privateNoteModel._event;
         if (privateNotesView.activeNote.title === '') {
-            privateNotesView.activeNote.title = smartEvent.title;
+            privateNotesView.activeNote.title = thisEvent.title;
         }
 
 
@@ -673,7 +673,7 @@ var privateNotesView = {
             'data-click="privateNotesView.onObjectClick" >' +
             '<div class="privateNote-event">' +
             '<img src="images/smart-event-home.svg" class="icon-smart-home left" />' +
-            '<h3>' + smartEvent.title + '</h3>' +
+            '<h3>' + thisEvent.title + '</h3>' +
             '<p>' + dateStr + ' at ' + localTime + '</p>' +
             '</div>' +
             '</div>';
@@ -692,35 +692,35 @@ var privateNotesView = {
 
         var fullMessage = note + objectUrl;
 
-        privateNotesView.activeNote.data.objects.push(smartEvent);
+        privateNotesView.activeNote.data.objects.push(thisEvent);
 
         return (fullMessage);
 
     },
 
-    addSmartMovieToNote: function (smartMovie, note) {
+    addSmartMovieToNote: function (thisMovie, note) {
 
         //  var editor = $("#messageTextArea").data("kendoEditor");
-        var date = smartMovie.showtime, objectId = smartMovie.uuid;
+        var date = thisMovie.showtime, objectId = thisMovie.uuid;
 
         var dateStr = moment(date).format('ddd MMM Do h:mm A');
 
         privateNotesView.activeNote.type = privateNoteModel._movie;
         
         if (privateNotesView.activeNote.title === '') {
-            privateNotesView.activeNote.title = smartMovie.movieTitle;
+            privateNotesView.activeNote.title = thisMovie.movieTitle;
         }
 
         var objectUrl = '<div><span class="btnSmartList" data-role="button" data-objectid="' + objectId +
             '" id="movieobject_' + objectId + '"'+
             'data-click="privateNotesView.onObjectClick" >' +
             '<div class="btnSmart-poster">' +
-            '<img src="' + smartMovie.imageUrl + '" class="btnSmart-img" />' +
+            '<img src="' + thisMovie.imageUrl + '" class="btnSmart-img" />' +
             '</div>' +
             '<div class="btnSmart-content">' +
-            '<p class="btnSmart-title">' + smartMovie.movieTitle + ' </p> ' +
+            '<p class="btnSmart-title">' + thisMovie.movieTitle + ' </p> ' +
             '<p class="btnSmart-date textClamp">' + dateStr + '</p> ' +
-            '<p class="btnSmart-date textClamp">' + smartMovie.theatreName + '</p> ' +
+            '<p class="btnSmart-date textClamp">' + thisMovie.theatreName + '</p> ' +
             '</div>' +
             '<span class="btnSmart-type">' +
             '<img src="images/smart-movie-circle.svg" />' +
@@ -729,7 +729,7 @@ var privateNotesView = {
 
         var fullMessage = note + objectUrl;
 
-        privateNotesView.activeNote.data.objects.push(smartMovie);
+        privateNotesView.activeNote.data.objects.push(thisMovie);
 
         return (fullMessage);
 

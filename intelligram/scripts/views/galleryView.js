@@ -695,11 +695,11 @@ var galleryView = {
 
     noteEvent : function (e) {
         _preventDefault(e);
-        smartEventView.openModal(null, function (smartEvent) {
-            if (smartEvent !== undefined && smartEvent !== null) {
-                var date = moment(smartEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = smartEvent.uuid;
+        smartEventView.openModal(null, function (thisEvent) {
+            if (thisEvent !== undefined && thisEvent !== null) {
+                var date = moment(thisEvent.date).format("ddd MMM Do YYYY h:mm A"), objectId = thisEvent.uuid;
 
-                var placeName = smartEvent.placeName;
+                var placeName = thisEvent.placeName;
                 if(placeName === null){
                     placeName = "";
                 }
@@ -708,7 +708,7 @@ var galleryView = {
                 var template = kendo.template($("#intelliEvent-chat").html());
                 var tempObj = {
                     ggType: "Event",
-                    title : smartEvent.title,
+                    title : thisEvent.title,
                     date : date,
                     placeName: placeName,
                     objectId : objectId
@@ -717,7 +717,7 @@ var galleryView = {
                 var content = template(tempObj);
 
 
-                galleryView.createNote(galleryView._noteEvent, tempObj.title, [], '', content, smartEvent);
+                galleryView.createNote(galleryView._noteEvent, tempObj.title, [], '', content, thisEvent);
 
             }
 
@@ -727,10 +727,10 @@ var galleryView = {
 
     noteMovie : function (e) {
         _preventDefault(e);
-        movieListView.openModal( null, function (smartMovie) {
+        movieListView.openModal( null, function (thisMovie) {
 
-            if (smartMovie !== undefined && smartMovie !== null) {
-                var date = smartMovie.showtime, objectId = smartMovie.uuid;
+            if (thisMovie !== undefined && thisMovie !== null) {
+                var date = thisMovie.showtime, objectId = thisMovie.uuid;
 
                 var dateStr = moment(date).format('ddd MMM Do YYYY h:mm A');
 
@@ -738,18 +738,18 @@ var galleryView = {
                 var template = kendo.template($("#intelliMovie-chat").html());
                 var tempObj = {
                     ggType: "Movie",
-                    imageUrl: smartMovie.imageUrl,
-                    movieTitle : smartMovie.movieTitle,
+                    imageUrl: thisMovie.imageUrl,
+                    movieTitle : thisMovie.movieTitle,
                     dateStr : dateStr,
-                    theatreName: smartMovie.theatreName,
+                    theatreName: thisMovie.theatreName,
                     objectId : objectId,
-                    rating: smartMovie.rating,
-                    runtime: smartMovie.runtime
+                    rating: thisMovie.rating,
+                    runtime: thisMovie.runtime
                 };
 
                 var content = template(tempObj);
 
-                galleryView.createNote(galleryView._noteMovie, tempObj.movieTitle, [], '', content, smartMovie);
+                galleryView.createNote(galleryView._noteMovie, tempObj.movieTitle, [], '', content, thisMovie);
             }
 
         });
@@ -759,33 +759,33 @@ var galleryView = {
         _preventDefault(e);
         //channelView.messageMenuTag();
 
-        smartFlightView.openModal(null,function (smartFlight) {
-            if (smartFlight !== undefined && smartFlight !== null) {
-                var  objectId = smartFlight.uuid;
+        smartFlightView.openModal(null,function (thisFlight) {
+            if (thisFlight !== undefined && thisFlight !== null) {
+                var  objectId = thisFlight.uuid;
 
                 var template = kendo.template($("#intelliFlight-chat").html());
                 var tempObj = {
                     ggType : "Flight",
                     objectId : objectId,
-                    name: smartFlight.name,
-                    departureAirport : smartFlight.departureAirport,
-                    departureCity : smartFlight.departureCity,
-                    arrivalAirport : smartFlight.arrivalAirport,
-                    arrivalCity : smartFlight.arrivalCity,
-                    estimatedDeparture : smartFlight.estimatedDeparture,
-                    ui_estimatedDeparture : smartFlight.ui_estimatedDeparture,
-                    timeDeparture: smartFlight.timeDeparture,
-                    dateDeparture: smartFlight.dateDeparture,
-                    timeArrival : smartFlight.timeArrival,
-                    dateArrival: smartFlight.dateArrival,
-                    estimatedArrival : smartFlight.estimatedArrival,
-                    ui_estimatedArrival : smartFlight.ui_estimatedArrival,
-                    durationString : smartFlight.durationString
+                    name: thisFlight.name,
+                    departureAirport : thisFlight.departureAirport,
+                    departureCity : thisFlight.departureCity,
+                    arrivalAirport : thisFlight.arrivalAirport,
+                    arrivalCity : thisFlight.arrivalCity,
+                    estimatedDeparture : thisFlight.estimatedDeparture,
+                    ui_estimatedDeparture : thisFlight.ui_estimatedDeparture,
+                    timeDeparture: thisFlight.timeDeparture,
+                    dateDeparture: thisFlight.dateDeparture,
+                    timeArrival : thisFlight.timeArrival,
+                    dateArrival: thisFlight.dateArrival,
+                    estimatedArrival : thisFlight.estimatedArrival,
+                    ui_estimatedArrival : thisFlight.ui_estimatedArrival,
+                    durationString : thisFlight.durationString
 
                 };
 
                 var content= template(tempObj);
-                galleryView.createNote(galleryView._noteFlight, tempObj.name, [], '', content, smartFlight);
+                galleryView.createNote(galleryView._noteFlight, tempObj.name, [], '', content, thisFlight);
             }
 
         });
@@ -793,40 +793,40 @@ var galleryView = {
 
     noteTrip: function (e) {
         _preventDefault(e);
-        smartTripView.openModal(null, function (smartTrip) {
-            if (smartTrip !== undefined && smartTrip !== null) {
-                var  objectId = smartTrip.uuid;
+        smartTripView.openModal(null, function (thisTrip) {
+            if (thisTrip !== undefined && thisTrip !== null) {
+                var  objectId = thisTrip.uuid;
 
                 var template = kendo.template($("#intelliTrip-chat").html());
 
-                var dest = smartTrip.destination.address;
-                var orig = smartTrip.origin.address;
+                var dest = thisTrip.destination.address;
+                var orig = thisTrip.origin.address;
 
 
-                if (smartTrip.destination.name !== null) {
-                    dest = smartTrip.destination.name;
+                if (thisTrip.destination.name !== null) {
+                    dest = thisTrip.destination.name;
                 }
 
-                if (smartTrip.origin.name !== null) {
-                    orig = smartTrip.origin.name;
+                if (thisTrip.origin.name !== null) {
+                    orig = thisTrip.origin.name;
                 }
 
                 var tempObj = {
                     ggType: "Trip",
-                    name: smartTrip.name,
+                    name: thisTrip.name,
                     origin: orig,
                     destination: dest,
-                    departure: moment(smartTrip.departure).format ("ddd, M/D @ h:mm a"),
-                    arrival: moment(smartTrip.arrival).format ("ddd, M/D @ h:mm a"),
-                    durationString: smartTrip.durationString,
-                    distanceString: smartTrip.distanceString,
+                    departure: moment(thisTrip.departure).format ("ddd, M/D @ h:mm a"),
+                    arrival: moment(thisTrip.arrival).format ("ddd, M/D @ h:mm a"),
+                    durationString: thisTrip.durationString,
+                    distanceString: thisTrip.distanceString,
                     objectId : objectId,
-                    tripTimeType: smartTrip.tripTimeType
+                    tripTimeType: thisTrip.tripTimeType
                 };
 
                 var content = template(tempObj);
 
-                galleryView.createNote(galleryView._noteTrip, tempObj.name, [], '', content, smartTrip);
+                galleryView.createNote(galleryView._noteTrip, tempObj.name, [], '', content, thisTrip);
             }
         });
     },
