@@ -278,6 +278,7 @@ var galleryModel = {
             galleryUUID : gallery.uuid,
             isShared : true,
             photoCollection : gallery.photoCollection,
+            photos: gallery.photos,
             sendName : gallery.senderName,
             senderUUID : gallery.senderUUID,
             title : gallery.title,
@@ -289,6 +290,8 @@ var galleryModel = {
 
         galleryModel.galleryDS.add(sharedGallery);
         galleryModel.galleryDS.sync();
+
+        galleryModel.shareGalleryPhotos(gallery);
 
         if (deviceModel.isOnline()) {
             everlive.createOne(galleryModel._cloudClass, sharedGallery, function (error, data){

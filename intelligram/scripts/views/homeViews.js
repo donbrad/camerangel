@@ -754,8 +754,8 @@ var userStatusView = {
         if(updatedStatus !== "" && updatedStatus !== userStatusView.oldStatus) {
             // Save new status
             userModel._user.set("statusMessage", updatedStatus);
+            userStatus.updateStatusMessage(updatedStatus);
             userStatus.update();
-            //updateParseObject('userStatus','userUUID', userModel._user.uuid, "statusMessage", updatedStatus);
         }
         // clear status box
         $("#profileStatusUpdate").val("");
