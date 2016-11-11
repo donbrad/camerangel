@@ -424,10 +424,13 @@ var privateChannel = {
             userDataChannel.addMessage(message);
 
             // Add the clear content to the message before passing to channelview
-            message.data = contentData;
-            message.content = content;
-            channelView.preprocessMessage(message);
-            channelView.messagesDS.add(message);
+            if (channelView._active) {
+                message.data = contentData;
+                message.content = content;
+                channelView.preprocessMessage(message);
+                channelView.messagesDS.add(message);
+            }
+
             return;
         }
 
@@ -482,11 +485,12 @@ var privateChannel = {
                 //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                 channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
 
-                channelView.preprocessMessage(parsedMsg);
-                channelView.messagesDS.add(parsedMsg);
+                if (channelView._active) {
+                    channelView.preprocessMessage(parsedMsg);
+                    channelView.messagesDS.add(parsedMsg);
 
-
-                channelView.scrollToBottom();
+                    channelView.scrollToBottom();
+                }
 
             }
         });

@@ -27,6 +27,8 @@ var userStatusChannel = {
     statusArray  : [],  // Array of channel id's for pubnub subscribe.
     trackArray  : [],
     cacheList : [],
+    subscribed : false,
+    tracked : false,
     pendingDS : new kendo.data.DataSource(),
 
     init : function (userId) {
@@ -82,6 +84,11 @@ var userStatusChannel = {
     subscribeContacts : function () {
         var count = contactModel.contactsDS.total();
 
+        if (userStatusChannel.subscribed) {
+            return;
+        }
+
+        userStatusChannel.subscribed = true;
         if (count === 0)
             return;
 

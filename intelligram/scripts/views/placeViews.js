@@ -1419,6 +1419,11 @@ var placeView = {
         }
     },
 
+    getWeather : function () {
+
+    },
+
+
     onShow : function (e) {
        // _preventDefault(e);
         ux.hideKeyboard();

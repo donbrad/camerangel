@@ -638,7 +638,8 @@ var groupChannel = {
                 if (status !== 1) {
                     mobileNotify('Group Channel publish error: ' + pnmessage);
                 }
-                if (channelView._channelUUID === channelId) {
+
+                if (channelView._active && channelView._channelUUID === channelId) {
                     channelView.messagesDS.add(message);
                     channelView.scrollToBottom();
                 }
