@@ -296,6 +296,10 @@ var smartEventView = {
 
         _preventDefault(e);
 
+        // fix bug of autocomplete
+        var placeSearch = $("#smartEventView-placesearch").data("kendoAutoComplete");
+        placeSearch.close();
+
         var placeStr =  $("#smartEventView-placesearch").val();
 
            smartEventPlacesView.openModal(placeStr, null, function (geo) {
@@ -4343,9 +4347,11 @@ var smartPlaceView = {
         that.callback = callback;
 
         that.placeObject = placeObj;
-        that.activeObj.set('name', placeObj.name);
-        that.activeObj.set('address', placeObj.address);
-        that.activeObj.set('description', null);
+        if(that.activeObj.address !== null){
+            that.activeObj.set('name', placeObj.name);
+            that.activeObj.set('address', placeObj.address);
+            that.activeObj.set('description', null);
+        }
 
         $("#smartPlaceView").data("kendoMobileModalView").open();
     },

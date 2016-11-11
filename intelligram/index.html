@@ -680,9 +680,6 @@
     <div class="clearfix"></div>
 	 <div class="feature-card preMotion" id="featureCard1">
 		 <div class="featureList">
-			 <div class="icon-feature-img">
-				 <div class="contacts" data-grunticon-embed></div>
-			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Personal</h3>
 				 <p class="feature-body-text"> Stay connected to the important people in your life -- without distractions.
@@ -690,9 +687,6 @@
 			 </div>
 		 </div>
 		 <div class="featureList">
-			 <div class="icon-feature-img">
-				 <div class="icon-feature-smart" data-grunticon-embed></div>
-			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Intelligent</h3>
 				 <p class="feature-body-text">Keep track of all your important information and events
@@ -700,17 +694,16 @@
 			 </div>
 		 </div>
 		 <div class="featureList">
-			 <div class="icon-feature-img">
-				 <div class="icon-feature-trusted" data-grunticon-embed></div>
-			 </div>
 			 <div class="icon-feature-body">
 				 <h3>Organized</h3>
 				 <p class="feature-body-text">Set up a dinner, track a flight, go to a movie, share a list -- with the people you choose. All in 1 app.
 				 </p>
 			 </div>
 		 </div>
+	 </div>
+	 <div data-role="footer">
 		 <a class="btnFull-modal btnSecondary" data-role="button" href="#signup" id="newUserHomeBtn">
-			 Sign up
+			 Join intelligram
 		 </a>
 	 </div>
 	 <a class="btnClear btnFull-modal" href="#usersignin" data-role="button" id="newUserHome-signIn">
@@ -2191,18 +2184,18 @@
 				   <span class="left">
 				 		# if (data.isPrivate === true) { #
 					   		<span class="place-tag place-type">
-								<span class="place-private" data-grunticon-embed></span>
+								<span class="icon-sm place-private" data-grunticon-embed></span>
 								 Private
 							</span>
 				 		#} else {#
 					   		<span class="place-tag place-type">
-								<span class="place-public" data-grunticon-embed></span>
+								<span class="icon-sm place-public" data-grunticon-embed></span>
 								Public
 							</span>
 				 		#}#
 				   	#if (data.hasPlaceChat) {#
 					   <span class="place-tag placeChat-chatIcon">
-						   <span class="icon-md icon-Chat" data-grunticon-embed></span>
+						   <span class="icon-sm icon-Chat" data-grunticon-embed></span>
 						   Chat
 					   </span>
 					#}#
@@ -5296,7 +5289,7 @@
 <div data-role="modalview" id="smartEventPlacesModal" data-init="smartEventPlacesView.onInit" style="height:100%; width:100%; z-index:1000; display: none;">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span id="smartEventPlacesModal-title">IntelliEvent Places</span>
+			<span id="smartEventPlacesModal-title">Event Place</span>
 			<a data-role="button" data-align="left" data-click="smartEventPlacesView.closeModal">
 				<div class="nav-back" data-grunticon-embed></div>
 			</a>
@@ -5312,7 +5305,9 @@
 		</div>
 		<span class="k-invalid-msg" data-for="place"></span>
 		<div id="searchEventPlaces-selectPlace" style="text-align: center;" class="hidden">
-			<a  data-role="button" data-click="smartEventPlacesView.toggleQuery" class="btnClearLine-highlight"> Search near <span id="searchEventPlaces-startQuery"></span></a>
+			<a  data-role="button" data-click="smartEventPlacesView.toggleQuery" class="btnClearLine-highlight">
+				Search near <span id="searchEventPlaces-startQuery"></span>
+			</a>
 		</div>
 		<div class="appendSearch">
 			<div class="searchIcon">
@@ -5393,7 +5388,7 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="button" data-align="left" data-click="placeView.onDone">
-				<div  class="nav-back" data-grunticon-embed></div>
+				<div class="nav-back" data-grunticon-embed></div>
 			</a>
 			<span class="textClamp navbar-btn" data-role="button" data-click="placeView.openChat">
 				<!--<img src="images/icon-chat-active.svg" class="icon-btn" id="placeView-gotochat" />-->
@@ -5401,7 +5396,7 @@
 				<span class="place-tag placeChat-headerTop helper">Tap to view chat</span>
 			</span>
 			<a data-role="button" data-align="right" data-click="ux.toggleSearch">
-				<div  class="icon-search" data-grunticon-embed></div>
+				<div class="icon-search" data-grunticon-embed></div>
 			</a>
 		</div>
 		<div class="gg_mainSearchBox" data-visible="false">
@@ -5448,7 +5443,7 @@
 		<ul id="placeView-listview"></ul>
 
 	</div>
-	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px;" id="placeViewEditor" style="min-height: 48px; max-height: 60%;">
+	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 60%;" id="placeViewEditor">
 		<div class="messageCompose">
 			<div id="placeViewTitleTag" class="hidden">
 				<input type="search" id="placeViewTitle" placeholder="Title...">

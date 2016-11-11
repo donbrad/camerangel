@@ -1283,7 +1283,6 @@ form p {
 .placeCardTop .placeCardImg {
   height: 1.2em;
   width: 1.2em;
-  vertical-align: middle;
   background-size: contain;
   background-position: center;
   display: inline-block;
@@ -1719,6 +1718,9 @@ img.icon-sm {
 .btnClearLine-light :disabled {
   color: #A4A4A4 !important;
   background: transparent !important;
+}
+.userAvailableRev {
+  max-height: 1.2em !important;
 }
 .btnClearLine-sm {
   font-size: 0.875em !important;
@@ -7612,7 +7614,6 @@ table.k-editor {
 }
 .icon-feature-img {
   float: left;
-  width: 20%;
   text-align: center;
 }
 .icon-feature-img > svg {
@@ -7621,7 +7622,6 @@ table.k-editor {
 }
 .icon-feature-body {
   float: left;
-  width: 80%;
 }
 .icon-feature-body h3 {
   font-weight: 600;
@@ -7939,7 +7939,7 @@ table.k-editor {
   max-width: 0.875em;
 }
 div.intelliTrip-light {
-  height: 3em;
+  height: 2.25em;
   width: 100%;
   background-position: center;
 }
@@ -8008,9 +8008,9 @@ div.intelliTrip-light {
   margin-right: 0.25em;
   height: 1em !important;
   width: 1em !important;
-  vertical-align: middle;
   background-size: contain;
   background-position: center;
+  display: inline-block;
 }
 .intelliTrip-arrow > svg {
   height: 100%;
@@ -8403,4 +8403,8 @@ div.intelliTrip-light {
   width: 100%;
   margin-left: 0;
   margin-right: 0;
+}
+.action-delete svg {
+  fill: #FA756F;
+  stroke: #FA756F;
 }
