@@ -177,7 +177,7 @@ var everlive = {
 
     goOffline : function () {
         if (APP.everlive !== null)
-            APP.everlive.online();
+            APP.everlive.offline();
     },
 
     syncCloud : function (){

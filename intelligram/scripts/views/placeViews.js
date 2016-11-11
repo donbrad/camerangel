@@ -1419,6 +1419,28 @@ var placeView = {
         }
     },
 
+    getWeather : function () {
+
+        $('#placeCard-weather').addClass('hidden');
+
+        if (placeView._lat === null || placeView._lng === null) {
+            return;
+        }
+
+        weatherModel.currentObservation(placeView._lat, placeView._lng, function (err, data) {
+
+            if (err === null && data !== null) {
+                $('#placeCard-weather-img').attr('src', data.icon);
+                var weatherString = data.weather + " " + data.temp + " F " + data.wind + " " + data.windDirection;
+                $('#placeCard-weather-info').text(weatherString);
+                $('#placeCard-weather').removeClass('hidden');
+            }
+
+        });
+
+    },
+
+
     onShow : function (e) {
        // _preventDefault(e);
         ux.hideKeyboard();
@@ -1458,6 +1480,8 @@ var placeView = {
         var alias = placeView._activePlace.alias;
         var place = placeView._activePlace.isPrivate;
         var address = placeView._activePlace.address;
+
+        placeView.getWeather();
 
       //  $("#placeViewName").text(name.smartTruncate(16, true));
         ux.formatNameAlias(name, alias, "#placeView");
@@ -1591,6 +1615,9 @@ var placeView = {
         placeView._activePlace.set('isAvailable', placeObj.isAvailable);
         placeView._activePlace.set('hasPlaceChat', placeObj.hasPlaceChat);
         placeView._activePlace.set('placeChatId', placeObj.placeChatId);
+
+        placeView._lat =  placeObj.lat;
+        placeView._lng=  placeObj.lng;
 
         // Show go to chat helper UI
         if(placeView._activePlace.hasPlaceChat){

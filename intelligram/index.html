@@ -27,9 +27,6 @@
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.all.min.js"></script>
-<!--  deferred to deviceModel to handle offline startup
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-XdXhoF08ubebxTjTh9jf0Ra4xFV1Jwo&libraries=places"></script>
--->
 
 	<!-- bower components -->
 	<script src="bower_components/everlive/min/everlive.all.min.js"></script>
@@ -111,6 +108,7 @@
 	<script src="scripts/models/tagModel.js"></script>
 	<script src="scripts/models/todayModel.js"></script>
 	<script src="scripts/models/userModel.js"></script>
+	<script src="scripts/models/weatherModel.js"></script>
     <!--<script src="scripts/views/sentinel.js"></script>-->
 	<script src="scripts/views/smartViews.js"></script>
     <script src="scripts/views/archiveView.js"></script>
@@ -5395,8 +5393,8 @@
 				<span id="placeViewName">Place View</span><br/>
 				<span class="place-tag placeChat-headerTop helper">Tap to view chat</span>
 			</span>
-			<a data-role="button" data-align="right" data-click="ux.toggleSearch">
-				<div class="icon-search" data-grunticon-embed></div>
+			<a class="hidden" data-role="button" data-align="right" data-click="ux.toggleSearch">
+				<div  class="icon-search" data-grunticon-embed></div>
 			</a>
 		</div>
 		<div class="gg_mainSearchBox" data-visible="false">
@@ -5421,6 +5419,14 @@
 				<span class="secondName"></span>
 			</h4>
 			<p data-bind="text: address"></p>
+			<div id="placeCard-weather" class="hidden">
+				<div style="float: left;">
+					<img id="placeCard-weather-img" width="55" height="55" src="images/aeris/fog.png">
+				</div>
+				<div id="placeCard-weather-info" style="float: right;">
+				</div>
+			</div>
+			<div style="clear:both;"></div>
 			<a class="btnClear" data-role="button" data-click="placeView.doMap">Map</a>
 			<a class="btnClear-grey right" data-role="button" data-click="placeView.togglePlaceDetails">Hide Info</a>
 		</div>
@@ -5431,17 +5437,16 @@
 				<span class="icon-memories icon"></span>
 				No Memories here yet
 			</span>
-			<span style="vertical-align: sub;">
+			<span style="vertical-align: sub; display:none;">
 				<span class="icon-memories icon"></span>
 				Memories
 			</span>
 			<a class="right btnClear-grey" data-role="button" data-click="placeView.togglePlaceDetails" id="placeView-showDetails">
-				View Address
+				View Info
 			</a>
 		</p>
 		<div class="clearfix"></div>
 		<ul id="placeView-listview"></ul>
-
 	</div>
 	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 60%;" id="placeViewEditor">
 		<div class="messageCompose">
