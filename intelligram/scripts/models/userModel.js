@@ -513,7 +513,7 @@ var userModel = {
             return;
         }
 
-        APP.pubnub = PUBNUB.init({
+       /* APP.pubnub = PUBNUB.init({
             publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
             subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
             ssl: true,
@@ -523,8 +523,16 @@ var userModel = {
             error : function (error) {
                 ggError("PubNub: Init" + error);
             }
-        });
+        });*/
 
+
+        APP.pubnub = new PubNub({
+         publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
+         subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
+         ssl: true,
+         jsonp: true,
+         uuid: uuid
+        });
 
 
         deviceModel.setAppState('pubnubInit', true);

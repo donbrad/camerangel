@@ -1,4 +1,4 @@
-/*! 3.15.2 / web */
+/*! 3.16.3 / web */
 (function webpackUniversalModuleDefinition(root, factory) {
     if(typeof exports === 'object' && typeof module === 'object')
         module.exports = factory();
@@ -55,22 +55,19 @@
         /* 0 */
         /***/ function(module, exports, __webpack_require__) {
 
-            /* globals window, console, 'Web' */
+            /* globals window, console */
             /* eslint no-unused-expressions: 0, no-console: 0, camelcase: 0, curly: 0 */
 
             __webpack_require__(1);
 
             var crypto_obj = __webpack_require__(2);
             var CryptoJS = __webpack_require__(3);
-            var packageJSON = __webpack_require__(4);
-            var pubNubCore = __webpack_require__(5);
+            var pubNubCore = __webpack_require__(4);
             var WS = __webpack_require__(8);
 
             /**
              * UTIL LOCALS
              */
-
-            var PNSDK = 'PubNub-JS-' + 'Web' + '/' + packageJSON.version;
 
             /**
              * CONSOLE COMPATIBILITY
@@ -325,7 +322,6 @@
                     };
                     xhr.onload = xhr.onloadend = finished;
 
-                    data.pnsdk = PNSDK;
                     var url = pubNubCore.build_url(setup.url, data);
                     xhr.open('GET', url, async);
                     if (async) xhr.timeout = xhrtme;
@@ -371,7 +367,7 @@
                 setup['hmac_SHA256'] = get_hmac_SHA256;
                 setup['crypto_obj'] = crypto_obj();
                 setup['sendBeacon'] = sendBeacon;
-                setup['params'] = { pnsdk: PNSDK };
+                setup['sdk_family'] = 'Web';
 
                 var SELF = function (setup) {
                     return CREATE_PUBNUB(setup);
@@ -800,104 +796,6 @@
 
             /***/ },
         /* 4 */
-        /***/ function(module, exports) {
-
-            module.exports = {
-                "name": "pubnub",
-                "preferGlobal": false,
-                "version": "3.15.2",
-                "author": "PubNub <support@pubnub.com>",
-                "description": "Publish & Subscribe Real-time Messaging with PubNub",
-                "contributors": [
-                    {
-                        "name": "Stephen Blum",
-                        "email": "stephen@pubnub.com"
-                    }
-                ],
-                "bin": {},
-                "scripts": {
-                    "test": "grunt test --force"
-                },
-                "main": "./node.js/pubnub.js",
-                "browser": "./modern/dist/pubnub.js",
-                "repository": {
-                    "type": "git",
-                    "url": "git://github.com/pubnub/javascript.git"
-                },
-                "keywords": [
-                    "cloud",
-                    "publish",
-                    "subscribe",
-                    "websockets",
-                    "comet",
-                    "bosh",
-                    "xmpp",
-                    "real-time",
-                    "messaging"
-                ],
-                "dependencies": {
-                    "agentkeepalive": "~0.2",
-                    "lodash": "^4.1.0"
-                },
-                "noAnalyze": false,
-                "devDependencies": {
-                    "chai": "^3.5.0",
-                    "eslint": "2.4.0",
-                    "eslint-config-airbnb": "^6.0.2",
-                    "eslint-plugin-flowtype": "^2.1.0",
-                    "eslint-plugin-mocha": "^2.0.0",
-                    "eslint-plugin-react": "^4.1.0",
-                    "flow-bin": "^0.22.0",
-                    "grunt": "^0.4.5",
-                    "grunt-contrib-clean": "^1.0.0",
-                    "grunt-contrib-copy": "^0.8.2",
-                    "grunt-contrib-uglify": "^0.11.1",
-                    "grunt-env": "^0.4.4",
-                    "grunt-eslint": "^18.0.0",
-                    "grunt-flow": "^1.0.3",
-                    "grunt-karma": "^0.12.1",
-                    "grunt-mocha-istanbul": "^3.0.1",
-                    "grunt-text-replace": "^0.4.0",
-                    "grunt-webpack": "^1.0.11",
-                    "imports-loader": "^0.6.5",
-                    "isparta": "^4.0.0",
-                    "json-loader": "^0.5.4",
-                    "karma": "^0.13.21",
-                    "karma-chai": "^0.1.0",
-                    "karma-mocha": "^0.2.1",
-                    "karma-phantomjs-launcher": "^1.0.0",
-                    "karma-spec-reporter": "0.0.24",
-                    "load-grunt-tasks": "^3.4.0",
-                    "mocha": "^2.4.5",
-                    "nock": "^1.1.0",
-                    "node-uuid": "^1.4.7",
-                    "nodeunit": "^0.9.0",
-                    "phantomjs-prebuilt": "^2.1.4",
-                    "proxyquire": "^1.7.4",
-                    "sinon": "^1.17.2",
-                    "uglify-js": "^2.6.1",
-                    "underscore": "^1.7.0",
-                    "webpack": "^1.12.13",
-                    "webpack-dev-server": "^1.14.1"
-                },
-                "bundleDependencies": [],
-                "license": "MIT",
-                "engine": {
-                    "node": ">=0.8"
-                },
-                "files": [
-                    "core",
-                    "node.js",
-                    "modern",
-                    "CHANGELOG",
-                    "FUTURE.md",
-                    "LICENSE",
-                    "README.md"
-                ]
-            };
-
-            /***/ },
-        /* 5 */
         /***/ function(module, exports, __webpack_require__) {
 
             /* eslint camelcase: 0, no-use-before-define: 0, no-unused-expressions: 0  */
@@ -906,7 +804,7 @@
             /* eslint guard-for-in: 0 */
             /* eslint block-scoped-var: 0 space-return-throw-case: 0, no-unused-vars: 0 */
 
-            var packageJSON = __webpack_require__(4);
+            var packageJSON = __webpack_require__(5);
             var defaultConfiguration = __webpack_require__(6);
             var utils = __webpack_require__(7);
 
@@ -1006,13 +904,14 @@
                         m['pn_apns'] = {
                             aps: {
                                 alert: msg['apns']['alert'],
-                                badge: msg['apns']['badge']
+                                badge: msg['apns']['badge'],
+                                sound: msg['apns']['sound']
                             }
                         };
                         for (var k in msg['apns']) {
                             m['pn_apns'][k] = msg['apns'][k];
                         }
-                        var exclude1 = ['badge', 'alert'];
+                        var exclude1 = ['badge', 'alert', 'sound'];
                         for (var k in exclude1) {
                             delete m['pn_apns'][exclude1[k]];
                         }
@@ -1098,6 +997,8 @@
                 var CIPHER_KEY = setup['cipher_key'];
                 var UUID = setup['uuid'] || (!setup['unique_uuid'] && db && db['get'](SUBSCRIBE_KEY + 'uuid') || '');
                 var USE_INSTANCEID = setup['instance_id'] || false;
+                var PARTNER_ID = setup['partner_id'];
+                var SDK_FAMILY = setup['sdk_family'];
                 var INSTANCEID = '';
                 var shutdown = setup['shutdown'];
                 var use_send_beacon = (typeof setup['use_send_beacon'] != 'undefined') ? setup['use_send_beacon'] : true;
@@ -1116,11 +1017,26 @@
                         }
                     };
 
+                function _prepareClientIdentifier() {
+                    var base = 'PubNub-JS-' + SDK_FAMILY;
+
+                    if (PARTNER_ID) {
+                        base += '-' + PARTNER_ID;
+                    }
+
+                    base += '/' + SDK_VER;
+                    return base;
+                }
+
                 function _get_url_params(data) {
                     if (!data) data = {};
                     utils.each(params, function (key, value) {
                         if (!(key in data)) data[key] = value;
                     });
+
+                    // add PNSDK to the mix.
+                    data.pnsdk = _prepareClientIdentifier();
+
                     return data;
                 }
 
@@ -1227,7 +1143,7 @@
                         PUB_QUEUE.sending = 1;
                     }
 
-                    xdr(PUB_QUEUE.shift());
+                    executeRequest(PUB_QUEUE.shift());
                 }
 
                 function each_channel_group(callback) {
@@ -1309,6 +1225,47 @@
                     }
                 }
 
+                /*
+                 Abstraction over XHR to allow common parameter modification before
+                 dispatching to the networking layer.
+                 */
+                function executeRequest(requestConfig) {
+                    var operationType = requestConfig['operation'];
+                    var timestamp = Math.floor(new Date().getTime() / 1000);
+                    var requestData = requestConfig['data'] || {};
+
+                    if (SECRET_KEY) {
+                        // delete the auth key if it comes up empty.
+                        if (!requestData['auth']) {
+                            delete requestData['auth'];
+                        }
+
+                        requestData['timestamp'] = timestamp;
+                        var signInput = SUBSCRIBE_KEY + '\n' + PUBLISH_KEY + '\n';
+
+                        if (operationType === 'PNAccessManagerGrant') {
+                            signInput += 'grant' + '\n';
+                        } else if (operationType === 'PNAccessManagerAudit') {
+                            signInput += 'audit' + '\n';
+                        } else {
+                            var newPath = requestConfig['url'].slice();
+                            newPath.shift();
+                            signInput += '/' + newPath.join('/') + '\n';
+                        }
+
+                        signInput += _get_pam_sign_input_from_params(requestData);
+                        var signature = hmac_SHA256(signInput, SECRET_KEY);
+
+                        signature = signature.replace(/\+/g, '-');
+                        signature = signature.replace(/\//g, '_');
+
+                        requestData['signature'] = signature;
+                        requestConfig['data'] = requestData;
+                    }
+
+                    return xdr(requestConfig);
+                }
+
                 function CR(args, callback, url1, data) {
                     var callback = args['callback'] || callback;
                     var err = args['error'] || error;
@@ -1329,7 +1286,7 @@
 
                     if (jsonp) data['callback'] = jsonp;
 
-                    xdr({
+                    executeRequest({
                         callback: jsonp,
                         data: _get_url_params(data),
                         success: function (response) {
@@ -1385,7 +1342,7 @@
                         }
 
 
-                        xdr({
+                        executeRequest({
                             blocking: blocking || SSL,
                             callback: jsonp,
                             data: params,
@@ -1440,7 +1397,7 @@
                             }
                         }
 
-                        xdr({
+                        executeRequest({
                             blocking: blocking || SSL,
                             callback: jsonp,
                             data: params,
@@ -1672,7 +1629,7 @@
                         if (string_msg_token) params['string_message_token'] = 'true';
 
                         // Send Message
-                        xdr({
+                        executeRequest({
                             callback: jsonp,
                             data: _get_url_params(params),
                             success: function (response) {
@@ -1757,7 +1714,7 @@
                         ];
 
                         // Start (or Stop) Replay!
-                        xdr({
+                        executeRequest({
                             callback: jsonp,
                             success: function (response) {
                                 _invoke_callback(response, callback, err);
@@ -1788,7 +1745,7 @@
 
                         if (USE_INSTANCEID) data['instanceid'] = INSTANCEID;
 
-                        xdr({
+                        executeRequest({
                             callback: jsonp,
                             data: _get_url_params(data),
                             url: [STD_ORIGIN, 'time', jsonp],
@@ -2206,7 +2163,7 @@
                             if (USE_INSTANCEID) data['instanceid'] = INSTANCEID;
 
                             start_presence_heartbeat();
-                            SUB_RECEIVER = xdr({
+                            SUB_RECEIVER = executeRequest({
                                 timeout: sub_timeout,
                                 callback: jsonp,
                                 fail: function (response) {
@@ -2312,15 +2269,16 @@
                                             var channel2 = list2.shift();
 
                                             var chobj = {};
+                                            var default_chobj = { callback: function () {} };
 
                                             if (channel2) {
                                                 if (channel && channel.indexOf('-pnpres') >= 0
                                                     && channel2.indexOf('-pnpres') < 0) {
                                                     channel2 += '-pnpres';
                                                 }
-                                                chobj = CHANNEL_GROUPS[channel2] || CHANNELS[channel2] || { callback: function () {} };
+                                                chobj = CHANNEL_GROUPS[channel2] || CHANNELS[channel2] || default_chobj;
                                             } else {
-                                                chobj = CHANNELS[channel];
+                                                chobj = CHANNELS[channel] || default_chobj;
                                             }
 
                                             var r = [
@@ -2398,7 +2356,7 @@
 
                         if (USE_INSTANCEID) data['instanceid'] = INSTANCEID;
 
-                        xdr({
+                        executeRequest({
                             callback: jsonp,
                             data: _get_url_params(data),
                             success: function (response) {
@@ -2433,7 +2391,7 @@
 
                         if (USE_INSTANCEID) data['instanceid'] = INSTANCEID;
 
-                        xdr({
+                        executeRequest({
                             callback: jsonp,
                             data: _get_url_params(data),
                             success: function (response) {
@@ -2508,7 +2466,7 @@
                             ];
                         }
 
-                        xdr({
+                        executeRequest({
                             callback: jsonp,
                             data: _get_url_params(data),
                             success: function (response) {
@@ -2550,10 +2508,7 @@
                         if (!PUBLISH_KEY) return error('Missing Publish Key');
                         if (!SECRET_KEY) return error('Missing Secret Key');
 
-                        var timestamp = Math.floor(new Date().getTime() / 1000);
-                        var sign_input = SUBSCRIBE_KEY + '\n' + PUBLISH_KEY + '\n' + 'grant' + '\n';
-
-                        var data = { w: w, r: r, timestamp: timestamp };
+                        var data = { w: w, r: r };
 
                         if (args['manage']) {
                             data['m'] = m;
@@ -2579,16 +2534,8 @@
 
                         if (!auth_key) delete data['auth'];
 
-                        sign_input += _get_pam_sign_input_from_params(data);
-
-                        var signature = hmac_SHA256(sign_input, SECRET_KEY);
-
-                        signature = signature.replace(/\+/g, '-');
-                        signature = signature.replace(/\//g, '_');
-
-                        data['signature'] = signature;
-
-                        xdr({
+                        executeRequest({
+                            operation: 'PNAccessManagerGrant',
                             callback: jsonp,
                             data: data,
                             success: function (response) {
@@ -2649,7 +2596,7 @@
 
                         if (USE_INSTANCEID) params['instanceid'] = INSTANCEID;
 
-                        xdr({
+                        executeRequest({
                             callback: jsonp,
                             data: params,
                             success: function (response) {
@@ -2686,10 +2633,7 @@
                         if (!PUBLISH_KEY) return error('Missing Publish Key');
                         if (!SECRET_KEY) return error('Missing Secret Key');
 
-                        var timestamp = Math.floor(new Date().getTime() / 1000);
-                        var sign_input = SUBSCRIBE_KEY + '\n' + PUBLISH_KEY + '\n' + 'audit' + '\n';
-
-                        var data = { timestamp: timestamp };
+                        var data = {};
                         if (jsonp != '0') {
                             data['callback'] = jsonp;
                         }
@@ -2703,15 +2647,8 @@
 
                         if (!auth_key) delete data['auth'];
 
-                        sign_input += _get_pam_sign_input_from_params(data);
-
-                        var signature = hmac_SHA256(sign_input, SECRET_KEY);
-
-                        signature = signature.replace(/\+/g, '-');
-                        signature = signature.replace(/\//g, '_');
-
-                        data['signature'] = signature;
-                        xdr({
+                        executeRequest({
+                            operation: 'PNAccessManagerAudit',
                             callback: jsonp,
                             data: data,
                             success: function (response) {
@@ -2781,7 +2718,7 @@
 
                         if (USE_INSTANCEID) data['instanceid'] = INSTANCEID;
 
-                        xdr({
+                        executeRequest({
                             callback: jsonp,
                             data: _get_url_params(data),
                             url: [
@@ -2908,6 +2845,104 @@
                 map: utils.map
             };
 
+
+            /***/ },
+        /* 5 */
+        /***/ function(module, exports) {
+
+            module.exports = {
+                "name": "pubnub",
+                "preferGlobal": false,
+                "version": "3.16.3",
+                "author": "PubNub <support@pubnub.com>",
+                "description": "Publish & Subscribe Real-time Messaging with PubNub",
+                "contributors": [
+                    {
+                        "name": "Stephen Blum",
+                        "email": "stephen@pubnub.com"
+                    }
+                ],
+                "bin": {},
+                "scripts": {
+                    "test": "grunt test --force"
+                },
+                "main": "./node.js/pubnub.js",
+                "browser": "./modern/dist/pubnub.js",
+                "repository": {
+                    "type": "git",
+                    "url": "git://github.com/pubnub/javascript.git"
+                },
+                "keywords": [
+                    "cloud",
+                    "publish",
+                    "subscribe",
+                    "websockets",
+                    "comet",
+                    "bosh",
+                    "xmpp",
+                    "real-time",
+                    "messaging"
+                ],
+                "dependencies": {
+                    "agentkeepalive": "~0.2",
+                    "lodash": "^4.1.0"
+                },
+                "noAnalyze": false,
+                "devDependencies": {
+                    "chai": "^3.5.0",
+                    "eslint": "2.4.0",
+                    "eslint-config-airbnb": "^6.0.2",
+                    "eslint-plugin-flowtype": "^2.1.0",
+                    "eslint-plugin-mocha": "^2.0.0",
+                    "eslint-plugin-react": "^4.1.0",
+                    "flow-bin": "^0.22.0",
+                    "grunt": "^0.4.5",
+                    "grunt-contrib-clean": "^1.0.0",
+                    "grunt-contrib-copy": "^0.8.2",
+                    "grunt-contrib-uglify": "^0.11.1",
+                    "grunt-env": "^0.4.4",
+                    "grunt-eslint": "^18.0.0",
+                    "grunt-flow": "^1.0.3",
+                    "grunt-karma": "^0.12.1",
+                    "grunt-mocha-istanbul": "^3.0.1",
+                    "grunt-text-replace": "^0.4.0",
+                    "grunt-webpack": "^1.0.11",
+                    "imports-loader": "^0.6.5",
+                    "isparta": "^4.0.0",
+                    "json-loader": "^0.5.4",
+                    "karma": "^0.13.21",
+                    "karma-chai": "^0.1.0",
+                    "karma-mocha": "^0.2.1",
+                    "karma-phantomjs-launcher": "^1.0.0",
+                    "karma-spec-reporter": "0.0.24",
+                    "load-grunt-tasks": "^3.4.0",
+                    "mocha": "^2.4.5",
+                    "nock": "^1.1.0",
+                    "node-uuid": "^1.4.7",
+                    "nodeunit": "^0.9.0",
+                    "phantomjs-prebuilt": "^2.1.4",
+                    "proxyquire": "^1.7.4",
+                    "sinon": "^1.17.2",
+                    "uglify-js": "^2.6.1",
+                    "underscore": "^1.7.0",
+                    "webpack": "^1.12.13",
+                    "webpack-dev-server": "^1.14.1"
+                },
+                "bundleDependencies": [],
+                "license": "MIT",
+                "engine": {
+                    "node": ">=0.8"
+                },
+                "files": [
+                    "core",
+                    "node.js",
+                    "modern",
+                    "CHANGELOG",
+                    "FUTURE.md",
+                    "LICENSE",
+                    "README.md"
+                ]
+            };
 
             /***/ },
         /* 6 */

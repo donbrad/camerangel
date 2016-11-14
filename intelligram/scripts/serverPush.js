@@ -253,13 +253,11 @@ var serverPush = {
             type = 'gcm';
         }
 
-        APP.pubnub.mobile_gw_provision ({
-            device_id: regId,
-            op    : 'add',
-            gw_type  : type,
-            channel  :  channelUUID,
-            callback : serverPush._successProvision,
-            error  : serverPush._errorProvision
+        APP.pubnub.push.addChannels ({
+            device: regId,
+            pushGateway  : type,
+            channel  :  [channelUUID],
+            callback : serverPush._status
         });
     },
 
@@ -276,14 +274,21 @@ var serverPush = {
             type = 'gcm';
         }
 
-        APP.pubnub.mobile_gw_provision ({
+        APP.pubnub.push.removeChannels ({
+            device: regId,
+            pushGateway  : type,
+            channel  :  [channelUUID],
+            callback : serverPush._status
+        });
+
+       /* APP.pubnub.mobile_gw_provision ({
             device_id: regId,
             op    : 'remove',
             gw_type  : type,
             channel  :  channelUUID,
             callback : serverPush._successProvision,
             error  : serverPush._errorProvision
-        });
+        });*/
     },
 
     setBadge: function(count) {
@@ -308,7 +313,15 @@ var serverPush = {
             var regId = serverPush._regId;
             var dataChannel = appDataChannel.channelUUID, userChannel = userDataChannel.channelUUID;
 
-            APP.pubnub.mobile_gw_provision ({
+
+            APP.pubnub.push.addChannels ({
+                device: regId,
+                pushGateway  : type,
+                channel  :  [userChannel, dataChannel],
+                callback : serverPush._status
+            });
+
+            /*APP.pubnub.mobile_gw_provision ({
                 device_id: regId,
                 op    : 'add',
                 gw_type  : type,
@@ -325,7 +338,7 @@ var serverPush = {
                 callback : serverPush._successProvision,
                 error  : serverPush._errorProvision
             });
-
+*/
             serverPush._dataChannelsProvisioned = true;
 
             //mobileNotify("pubnub push provisioned!!!");
@@ -351,7 +364,14 @@ var serverPush = {
             var regId = serverPush._regId;
             var dataChannel = appDataChannel.channelUUID, userChannel = userDataChannel.channelUUID;
 
-            APP.pubnub.mobile_gw_provision ({
+            APP.pubnub.push.removeChannels ({
+                device: regId,
+                pushGateway  : type,
+                channel  :  [userChannel, dataChannel],
+                callback : serverPush._status
+            });
+
+            /*APP.pubnub.mobile_gw_provision ({
                 device_id: regId,
                 op    : 'remove',
                 gw_type  : type,
@@ -367,7 +387,7 @@ var serverPush = {
                 channel  : userChannel,
                 callback : serverPush._successProvision,
                 error  : serverPush._errorProvision
-            });
+            });*/
 
             serverPush._dataChannelsProvisioned = false;
 
@@ -392,7 +412,14 @@ var serverPush = {
     _errorProvision : function (error) {
         if (error !== undefined)
             ggError("Pubnub Provision Error " + JSON.stringify(error));
-    }
+    },
 
+    _status : function(status) {
+        if (status.error) {
+            ggError("Pubnub Push Channel Error " + JSON.stringify(status));
+        } else {
+
+        }
+    }
 
 };

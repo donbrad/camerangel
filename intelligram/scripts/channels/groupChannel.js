@@ -249,16 +249,11 @@ var groupChannel = {
         APP.pubnub.publish({
             channel: channelId,
             message: thisMessage,
-            callback: function (m) {
-                if (m === undefined)
-                    return;
-
-                var status = m[0], message = m[1], time = m[2];
-
-                if (status !== 1) {
-                    mobileNotify('Group Channel publish error: ' + message);
+            callback: function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Channel: Add Member -" + JSON.stringify(status.error));
                 }
-
             }
         });
     },
@@ -289,16 +284,11 @@ var groupChannel = {
         APP.pubnub.publish({
             channel: channelId,
             message: thisMessage,
-            callback: function (m) {
-                if (m === undefined)
-                    return;
-
-                var status = m[0], message = m[1], time = m[2];
-
-                if (status !== 1) {
-                    mobileNotify('Group Channel publish error: ' + message);
+            callback: function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Channel: Remove Member -" + JSON.stringify(status.error));
                 }
-
             }
         });
     },
@@ -330,16 +320,11 @@ var groupChannel = {
         APP.pubnub.publish({
             channel: channelId,
             message: thisMessage,
-            callback: function (m) {
-                if (m === undefined)
-                    return;
-
-                var status = m[0], message = m[1], time = m[2];
-
-                if (status !== 1) {
-                    mobileNotify('Group Channel publish error: ' + message);
+            callback: function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Channel: Update Channel -" + JSON.stringify(status.error));
                 }
-
             }
         });
     },
@@ -370,16 +355,11 @@ var groupChannel = {
         APP.pubnub.publish({
             channel: channelId,
             message: thisMessage,
-            callback: function (m) {
-                if (m === undefined)
-                    return;
-
-                var status = m[0], message = m[1], time = m[2];
-
-                if (status !== 1) {
-                    mobileNotify('Group Channel publish error: ' + message);
+            callback: function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Channel: Recall Message -" + JSON.stringify(status.error));
                 }
-
             }
         });
     },
@@ -411,16 +391,11 @@ var groupChannel = {
         APP.pubnub.publish({
             channel: channelId,
             message: thisMessage,
-            callback: function (m) {
-                if (m === undefined)
-                    return;
-
-                var status = m[0], message = m[1], time = m[2];
-
-                if (status !== 1) {
-                    mobileNotify('Group Channel publish error: ' + message);
+            callback: function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Channel: Recall Photo -" + JSON.stringify(status.error));
                 }
-
             }
         });
     },
@@ -629,29 +604,23 @@ var groupChannel = {
         APP.pubnub.publish({
             channel: channelId,
             message: message,
-            callback: function (m) {
-                if (m === undefined)
-                    return;
-
-                var status = m[0], pnmessage = m[1], time = m[2];
-
-                if (status !== 1) {
-                    mobileNotify('Group Channel publish error: ' + pnmessage);
+            callback: function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Channel: Send Message -" + JSON.stringify(status.error));
+                } else {
+                    if (channelView._active && channelView._channelUUID === channelId) {
+                        channelView.messagesDS.add(message);
+                        channelView.scrollToBottom();
+                    }
+                    channelModel.updateLastMessageTime(channelId, null);
                 }
-
-                if (channelView._active && channelView._channelUUID === channelId) {
-                    channelView.messagesDS.add(message);
-                    channelView.scrollToBottom();
-                }
-                channelModel.updateLastMessageTime(channelId, null);
-
-
             }
         });
 
     },
 
-    getAllMessages:  function(timetoken) {
+   /* getAllMessages:  function(timetoken) {
         APP.pubnub.history({
             start: timetoken,
             channel: groupChannel.channelUUID,
@@ -672,36 +641,43 @@ var groupChannel = {
             }
         });
     },
-
+*/
     _fetchHistory : function (start, end) {
        
         APP.pubnub.history({
             channel: groupChannel.channelUUID,
+            stringifiedTimeToken: true,
             start: start.toString(),
             end: end.toString(),
             error: function (error) {
                 ggError("Group Chat History Error " + JSON.stringify(error));
             },
-            callback: function (messages) {
-                var messageList = messages[0];
-                var pnStart = messages[1];
-                var pnEnd = messages[2];
-                var length = messageList.length;
-                //messages = messages || [];
-                var endTime = parseInt(pnStart);
-                
-                groupChannel.end = endTime;
-                if (length < 100) {
-                    groupChannel.moreMessages = false;
-                } else if (length === 100) {
-                    if (endTime >= groupChannel.start) {
-                        groupChannel.moreMessages = true;
-                    } else {
+            callback: function (status, response) {
+                if (status.error) {
+                    ggError("Group History Error: " + JSON.stringify(status.error));
+                } else {
+
+                    var messageList = response.messages;
+                    var pnStart = response.startTimeToken;
+                    var pnEnd = response.endTimeToken;
+                    var length = messageList.length;
+                    //messages = messages || [];
+                    var endTime = parseInt(pnStart);
+
+                    groupChannel.end = endTime;
+                    if (length < 100) {
                         groupChannel.moreMessages = false;
+                    } else if (length === 100) {
+                        if (endTime >= groupChannel.start) {
+                            groupChannel.moreMessages = true;
+                        } else {
+                            groupChannel.moreMessages = false;
+                        }
                     }
+                    if(groupChannel.channelFetchCallBack !== null)
+                        groupChannel.channelFetchCallBack(messageList);
                 }
-                if(groupChannel.channelFetchCallBack !== null)
-                    groupChannel.channelFetchCallBack(messageList);
+
             }
 
         });
