@@ -300,14 +300,17 @@ var galleryChannel = {
 
         APP.pubnub.publish({
             channel: message.galleryId,
-            message: message,
-            error: galleryChannel.channelError,
-            callback: function (m) {
-                var status = m[0], statusText = m[1];
-                // userStatusChannel.addMessage(m);
+            message: message
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Gallery Publish: " + JSON.stringify(status.error));
+
+                }
 
             }
-        });
+        );
     },
 
     processPending : function () {

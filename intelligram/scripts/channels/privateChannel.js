@@ -121,14 +121,15 @@ var privateChannel = {
 
         APP.pubnub.publish({
             channel: channelId,
-            message: thisMessage,
-            callback:  function (status, response) {
+            message: thisMessage
+        },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Recall Message Error : " + JSON.stringify(status.error));
                 }
             }
-        });
+        );
     },
 
 
@@ -157,14 +158,15 @@ var privateChannel = {
 
         APP.pubnub.publish({
             channel: channelId,
-            message: thisMessage,
-            callback:  function (status, response) {
+            message: thisMessage
+        },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Private Recall Photo Error : " + JSON.stringify(status.error));
                 }
             }
-        });
+        );
     },
 
     doAlertMessage : function (msg) {

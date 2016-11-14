@@ -302,14 +302,15 @@ var userStatusChannel = {
     publish : function (message) {
         APP.pubnub.publish({
             channel: userStatusChannel.channelUUID,
-            message: message,
-            error: userStatusChannel.channelError,
-            callback: function (m) {
-                var status = m[0], statusText = m[1];
-                // userStatusChannel.addMessage(m);
-
+            message: message
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Status Publish Error: " + JSON.stringify(status.error));
+                }
             }
-        });
+        );
     },
 
     sendUpdate : function () {

@@ -248,14 +248,15 @@ var groupChannel = {
 
         APP.pubnub.publish({
             channel: channelId,
-            message: thisMessage,
-            callback: function (status, response) {
+            message: thisMessage
+        },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Group Channel: Add Member -" + JSON.stringify(status.error));
                 }
             }
-        });
+        );
     },
 
     removeMember : function (channelId, memberId) {
@@ -283,14 +284,15 @@ var groupChannel = {
 
         APP.pubnub.publish({
             channel: channelId,
-            message: thisMessage,
-            callback: function (status, response) {
+            message: thisMessage
+        },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Group Channel: Remove Member -" + JSON.stringify(status.error));
                 }
             }
-        });
+        );
     },
 
     updateChannel : function (channelId, name, description, memberList) {
@@ -319,14 +321,15 @@ var groupChannel = {
 
         APP.pubnub.publish({
             channel: channelId,
-            message: thisMessage,
-            callback: function (status, response) {
+            message: thisMessage
+        },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Group Channel: Update Channel -" + JSON.stringify(status.error));
                 }
             }
-        });
+        );
     },
 
     recallMessage : function (channelId, messageId) {
@@ -354,14 +357,15 @@ var groupChannel = {
 
         APP.pubnub.publish({
             channel: channelId,
-            message: thisMessage,
-            callback: function (status, response) {
+            message: thisMessage
+        },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Group Channel: Recall Message -" + JSON.stringify(status.error));
                 }
             }
-        });
+        );
     },
 
     recallPhoto : function (channelId,  photoId) {
@@ -390,14 +394,15 @@ var groupChannel = {
 
         APP.pubnub.publish({
             channel: channelId,
-            message: thisMessage,
-            callback: function (status, response) {
+            message: thisMessage
+        },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Group Channel: Recall Photo -" + JSON.stringify(status.error));
                 }
             }
-        });
+        );
     },
 
     receiveMessage : function (message) {
@@ -527,15 +532,15 @@ var groupChannel = {
 
         APP.pubnub.publish({
             channel: message.channelUUID,
-            message: message,
-            callback:
-                function (status, response) {
-                    if (status.error) {
-                        ggError("Private Send - Deferred : " + JSON.stringify(status.error));
-                    }
+            message: message
+            },
+            function (status, response) {
+                if (status.error) {
+                    ggError("Private Send - Deferred : " + JSON.stringify(status.error));
+                }
 
             }
-        });
+        );
     },
 
     sendMessage: function (channelId, channelName, text, data, ttl) {
@@ -597,9 +602,10 @@ var groupChannel = {
         }
 
         APP.pubnub.publish({
-            channel: channelId,
-            message: message,
-            callback: function (status, response) {
+                channel: channelId,
+                message: message
+            },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Group Channel: Send Message -" + JSON.stringify(status.error));
@@ -611,7 +617,7 @@ var groupChannel = {
                     channelModel.updateLastMessageTime(channelId, null);
                 }
             }
-        });
+        );
 
     },
 
