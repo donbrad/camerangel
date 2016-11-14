@@ -257,7 +257,14 @@ var serverPush = {
             device: regId,
             pushGateway  : type,
             channel  :  [channelUUID],
-            callback : serverPush._status
+            callback : function (status, response) {
+                    if (status.error) {
+                        ggError("Provision Group Channels Error; ", JSON.stringify(status.error));
+                    } else {
+
+                    }
+
+            }
         });
     },
 
@@ -278,7 +285,14 @@ var serverPush = {
             device: regId,
             pushGateway  : type,
             channel  :  [channelUUID],
-            callback : serverPush._status
+            callback : function (status, response) {
+                    if (status.error) {
+                        ggError("UnProvision Data Channels Error; ", JSON.stringify(status.error));
+                    } else {
+
+                    }
+
+            }
         });
 
        /* APP.pubnub.mobile_gw_provision ({
@@ -318,7 +332,14 @@ var serverPush = {
                 device: regId,
                 pushGateway  : type,
                 channel  :  [userChannel, dataChannel],
-                callback : serverPush._status
+                callback : function (status, response) {
+                        if (status.error) {
+                            ggError("Provision Data Channels Error; ", JSON.stringify(status.error));
+                        } else {
+
+                        }
+                    }
+
             });
 
             /*APP.pubnub.mobile_gw_provision ({
@@ -368,7 +389,13 @@ var serverPush = {
                 device: regId,
                 pushGateway  : type,
                 channel  :  [userChannel, dataChannel],
-                callback : serverPush._status
+                callback : function (status, response) {
+                        if (status.error) {
+                            ggError("Provision Data Channels Error; ", JSON.stringify(status.error));
+                        } else {
+
+                        }
+                }
             });
 
             /*APP.pubnub.mobile_gw_provision ({
