@@ -190,7 +190,7 @@ var appDataChannel = {
         // Get any messages in the channel
         APP.pubnub.history({
             channel: appDataChannel.channelUUID,
-            stringifyTimeToken : true,
+            stringifiedTimeToken : true,
             start: start.toString(),
             end: end.toString(),
             callback: function(status, response) {
@@ -212,7 +212,9 @@ var appDataChannel = {
 
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i];
+                    var msg  =  messages[i].entry;
+                    msg.timeToken = messages[i].timetoken;
+
                     if (!appDataChannel.isArchivedMessage(msg.msgID))
                         appDataChannel.archiveMessage(msg);
                 }
@@ -496,8 +498,13 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: appDataChannel.channelUUID,
             message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Alert Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
         });
     },
 
@@ -517,8 +524,13 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: appDataChannel.channelUUID,
             message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("New User Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
         });
     },
 
@@ -538,8 +550,13 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Recall Message Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
         });
     },
 
@@ -559,8 +576,13 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Recall Photo Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
         });
     },
 
@@ -580,8 +602,13 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: appDataChannel.channelUUID,
             message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Validated Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
         });
     },
 
@@ -628,8 +655,13 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Connect Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
         });
 
     },
@@ -685,8 +717,13 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Connect Response Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
         });
 
     },
@@ -732,8 +769,13 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Event Accept Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
         });
 
     },
@@ -777,8 +819,12 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Event Decline Error: " + JSON.stringify(status.error));
+                }
+            }
         });
 
     },
@@ -821,8 +867,12 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Event Cancel Error: " + JSON.stringify(status.error));
+                }
+            }
         });
     },
 
@@ -866,8 +916,12 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Event Update Error: " + JSON.stringify(status.error));
+                }
+            }
         });
     },
 
@@ -906,8 +960,12 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Member Autoconnect Error: " + JSON.stringify(status.error));
+                }
+            }
         }); 
     },
 
@@ -957,8 +1015,12 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Invite Error: " + JSON.stringify(status.error));
+                }
+            }
         });
     },
 
@@ -1001,8 +1063,12 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Delete Error: " + JSON.stringify(status.error));
+                }
+            }
 
         });
     },
@@ -1047,8 +1113,12 @@ var appDataChannel = {
         APP.pubnub.publish({
             channel: channel,
             message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Delete Error: " + JSON.stringify(status.error));
+                }
+            }
 
         });
     },

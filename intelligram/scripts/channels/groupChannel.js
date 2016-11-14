@@ -649,12 +649,17 @@ var groupChannel = {
                     ggError("Group History Error: " + JSON.stringify(status.error));
                 } else {
 
-                    var messageList = response.messages;
+                    var messages = response.messages;
                     var pnStart = response.startTimeToken;
                     var pnEnd = response.endTimeToken;
-                    var length = messageList.length;
-                    //messages = messages || [];
+                    var length = messages.length;
                     var endTime = parseInt(pnStart);
+
+                    var messageList = [];
+
+                    for (var i=0; i< length; i++) {
+                        messageList.push(messages[i].entry);
+                    }
 
                     groupChannel.end = endTime;
                     if (length < 100) {
@@ -680,7 +685,7 @@ var groupChannel = {
             callback([]);
             return;
         }
-        groupChannel.channelFetchCallBack = callBack;
+        groupChannel.channelFetchCallBack = callback;
         groupChannel._fetchHistory(groupChannel.start, groupChannel.end);
     },
     

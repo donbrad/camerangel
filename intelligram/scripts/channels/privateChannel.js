@@ -427,7 +427,6 @@ var privateChannel = {
         APP.pubnub.publish({
             channel: recipient,
             message: message,
-            error: userDataChannel.channelError,
             callback:  function (status, response) {
                 if (status.error) {
                     // handle error

@@ -242,7 +242,9 @@ var userDataChannel = {
               
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i];
+                    var msg  =  messages[i].entry;
+                    msg.timeToken = messages[i].timetoken;
+
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
                         var msgClear= userDataChannel.decryptMessage(msg);
                         msgClear.fromHistory = true;

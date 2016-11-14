@@ -165,7 +165,7 @@ var userStatusChannel = {
     userHistory : function () {
         APP.pubnub.history({
             channel: userStatusChannel.channelUUID,
-            stringifyTimeToken : true,
+            stringifiedTimeToken : true,
             callback: function(status, response) {
                 if (status.error) {
                     // handle error
@@ -181,7 +181,8 @@ var userStatusChannel = {
 
                 if (messages.length > 0) {
                     for (var i=0; i<messages.length; i++) {
-                        var msg = messages[i];
+                        var msg = messages[i].entry;
+                        msg.timeToken  = messages[i].timetoken;
 
                         if (msg.msgType === userStatusChannel._status) {
                             userStatusChannel.cacheList[msg.sender] = msg.status;
@@ -205,7 +206,7 @@ var userStatusChannel = {
 
                 APP.pubnub.history({
                     channel: userStatusChannel.statusArray[i],
-                    stringifyTimeTokens : true,
+                    stringifiedTimeTokens : true,
                     count: 1,
                     callback: function (status, response) {
                         if (status.error) {
