@@ -122,16 +122,11 @@ var privateChannel = {
         APP.pubnub.publish({
             channel: channelId,
             message: thisMessage,
-            callback: function (m) {
-                if (m === undefined)
-                    return;
-
-                var status = m[0], message = m[1], time = m[2];
-
-                if (status !== 1) {
-                    mobileNotify('Group Channel publish error: ' + message);
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Recall Message Error : " + JSON.stringify(status.error));
                 }
-
             }
         });
     },
@@ -163,16 +158,11 @@ var privateChannel = {
         APP.pubnub.publish({
             channel: channelId,
             message: thisMessage,
-            callback: function (m) {
-                if (m === undefined)
-                    return;
-
-                var status = m[0], message = m[1], time = m[2];
-
-                if (status !== 1) {
-                    mobileNotify('recall photo publish error: ' + message);
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Private Recall Photo Error : " + JSON.stringify(status.error));
                 }
-
             }
         });
     },
@@ -438,11 +428,11 @@ var privateChannel = {
             channel: recipient,
             message: message,
             error: userDataChannel.channelError,
-            callback: function (m) {
-                var status = m[0], statusText = m[1];
-
-                if (status !== 1) {
-                    ggError("Private Channel Publish error "  + statusText);
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Private Channel Send : " + JSON.stringify(status.error));
+                    return;
                 }
 
                 // Store a local copy of the sent message.  Need to update channelUUID :
@@ -485,7 +475,7 @@ var privateChannel = {
                 //channelModel.updateLastAccess(parsedMsg.channelUUID, null);
                 channelModel.updateLastMessageTime(parsedMsg.channelUUID, null);
 
-                if (channelView._active) {
+                if (channelView._active && channelView._channelUUID === parsedMsg.channelUUID) {
                     channelView.preprocessMessage(parsedMsg);
                     channelView.messagesDS.add(parsedMsg);
 
@@ -505,11 +495,11 @@ var privateChannel = {
             channel: recipient,
             message: message,
             error: userDataChannel.channelError,
-            callback: function (m) {
-                var status = m[0], statusText = m[1];
-
-                if (status !== 1) {
-                    ggError("Private Channel Publish error "  + statusText);
+            callback:  function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Private Channel Deferred Send : " + JSON.stringify(status.error));
+                    return;
                 }
 
                 // Store a local copy of the sent message.  Need to update channelUUID :

@@ -165,12 +165,19 @@ var userStatusChannel = {
     userHistory : function () {
         APP.pubnub.history({
             channel: userStatusChannel.channelUUID,
-            include_token : true,
-            error: userStatusChannel.error,
-            callback: function(messages) {
-                messages = messages[0];
-                var chanStart = messages[1], chanEnd = messages[2];
-                messages = messages || [];
+            stringifyTimeToken : true,
+            callback: function(status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Contact History : " + JSON.stringify(status.error));
+                    return;
+                }
+                var messages = response.messages;
+                if (messages.length === 0) {
+                    return;
+                }
+
+                var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
 
                 if (messages.length > 0) {
                     for (var i=0; i<messages.length; i++) {
@@ -198,14 +205,20 @@ var userStatusChannel = {
 
                 APP.pubnub.history({
                     channel: userStatusChannel.statusArray[i],
-                    include_token: true,
+                    stringifyTimeTokens : true,
                     count: 1,
-                    error: userStatusChannel.error,
-                    callback: function (messages) {
-                        messages = messages[0];
-                        var chanStart = messages[1], chanEnd = messages[2];
-                        messages = messages || [];
+                    callback: function (status, response) {
+                        if (status.error) {
+                            // handle error
+                            ggError("User Contact History : " + JSON.stringify(status.error));
+                            return;
+                        }
+                        var messages = response.messages;
+                        if (messages.length === 0) {
+                            return;
+                        }
 
+                        var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
                         if (messages.length > 0) {
                             for (var i = 0; i < messages.length; i++) {
                                 var msg = messages[i].message;

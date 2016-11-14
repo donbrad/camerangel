@@ -190,13 +190,21 @@ var appDataChannel = {
         // Get any messages in the channel
         APP.pubnub.history({
             channel: appDataChannel.channelUUID,
+            stringifyTimeToken : true,
             start: start.toString(),
             end: end.toString(),
-            error: appDataChannel.error,
-            callback: function(messages) {
-                messages = messages[0];
-                var pnStart = messages[1], pnEnd = messages[2];
-                messages = messages || [];
+            callback: function(status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("App Data History : " + JSON.stringify(status.error));
+                    return;
+                }
+                var messages = response.messages;
+                if (messages.length === 0) {
+                    return;
+                }
+
+                var appStart = response.startTimeToken, appEnd = response.endTimeToken;
                 if (messages.length === 0) {
                     appDataChannel.updateTimeStamp();
                     return;
@@ -214,7 +222,7 @@ var appDataChannel = {
                 /*   channelKeys = Object.keys(channelList);
                  channelModel.updatePrivateChannels(channelKeys, channelList);*/
 
-                var endTime = parseInt(pnStart);
+                var endTime = parseInt(appStart);
                 if (messages.length === 100 && endTime >= start) {
 
                     appDataChannel._fetchHistory(start, endTime );

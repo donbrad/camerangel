@@ -528,16 +528,11 @@ var groupChannel = {
         APP.pubnub.publish({
             channel: message.channelUUID,
             message: message,
-            callback: function (m) {
-                if (m === undefined)
-                    return;
-
-                var status = m[0], message = m[1], time = m[2];
-
-                if (status !== 1) {
-                    mobileNotify('Group Channel publish error: ' + message);
-                }
-
+            callback:
+                function (status, response) {
+                    if (status.error) {
+                        ggError("Private Send - Deferred : " + JSON.stringify(status.error));
+                    }
 
             }
         });
@@ -649,9 +644,6 @@ var groupChannel = {
             stringifiedTimeToken: true,
             start: start.toString(),
             end: end.toString(),
-            error: function (error) {
-                ggError("Group Chat History Error " + JSON.stringify(error));
-            },
             callback: function (status, response) {
                 if (status.error) {
                     ggError("Group History Error: " + JSON.stringify(status.error));
