@@ -1147,6 +1147,11 @@ img.icon-sm {
   }
 }
 
+.btnClear-white {
+  background-color: #fff !important;
+  color: @primary-200 !important;
+}
+
 
 .btnFull {
   &:extend(.btnStyle);
@@ -1154,6 +1159,16 @@ img.icon-sm {
   color: #fff;
   text-align: center;
 }
+
+.btnHalf {
+  &:extend(.btnStyle);
+  width: 50%;
+  color: #fff;
+  text-align: center;
+  float: left;
+  background-color: #fff;
+}
+
 .btnSpan {
   width: 100%;
 }
@@ -1170,6 +1185,15 @@ img.icon-sm {
   padding-bottom: 1rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.4px;
+}
+
+.btnHalf-modal {
+  .btnHalf;
+  height: 3rem;
+  padding-top: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
+  font-size: 1em !important;
 }
 
 .btnFull-modal {
@@ -4319,6 +4343,26 @@ div.chat-message-user-content.clearfix > p {
   background-size: cover;
 }
 
+#newuserhome-footer {
+  opacity: 0;
+  border-top: 1px solid @shade-200;
+  a:first-child {
+    border-right: 1px solid @shade-200;
+  }
+}
+
+#newUserHomeBtn {
+  svg {
+    height: 1.5em;
+    width: 1.5em;
+    vertical-align: text-bottom;
+  }
+}
+
+#signUp-goToSignIn {
+
+}
+
 .newuserBox {
   margin-top: 16.667%;
   h3 {
@@ -5618,6 +5662,12 @@ div.contactListBox.activeContact > div > div > ul {
     //margin-bottom: 0.5em;
   }
 }
+
+.signUp-position {
+  position: relative;
+}
+
+
 
 .mobile-input {
   float: left;
@@ -7105,10 +7155,6 @@ table.k-editor {
   background-color: white;
 }
 
-#newUserHome-signIn {
-  opacity: 0;
-}
-
 .km-state-disabled {
   background-color: rgba(128, 128, 128, 1) !important;
 }
@@ -7171,7 +7217,7 @@ table.k-editor {
 }
 
 #signUpBox {
-  top: 20%;
+  margin-top: 2em;
   margin-bottom: 4rem;
 }
 
@@ -7953,29 +7999,30 @@ div.intelliTrip-light {
   .header {
     padding: 0.5em;
     border-bottom: 2px dotted @shade-200;
+    .intelliFlight-icon,
+    svg {
+      height: 1em;
+      max-width: 1em;
+      vertical-align: baseline;
+    }
     .title {
       font-size: 1.2em;
       font-weight: 600;
-      svg {
-        height: 1.2em;
-        max-width: 1.2em;
-        vertical-align: sub;
-      }
-      >span:not(.info) {
+      /*>span:not(.info) {
         font-size: 0.85em;
-        background-color: @shade-100;
+        //background-color: @shade-100;
         border-radius: 4px;
         margin: 0 0.5em;
         color: #fff;
         font-weight: 400;
         padding: 0.1em 0.25em;
-      }
+      }*/
       padding: 0;
       margin: 0 !important;
     }
     .subheader {
       font-size: 0.85em;
-      margin: 0 0 0 2em;
+      //margin: 0 0 0 3em;
       .helper;
     }
   }
@@ -7983,7 +8030,7 @@ div.intelliTrip-light {
     padding: 0.5em;
     display: inline-block;
     width: 100%;
-    border-bottom: 2px dotted @shade-200;
+    //border-bottom: 2px dotted @shade-200;
     div {
       width: 40%;
       float: left;
@@ -8114,8 +8161,8 @@ div.intelliTrip-light {
   border: 2px solid @black;
   background-color: #fff;
   position: relative;
-  top: -0.25em;
-  right: -0.5em;
+  top: -0.35em;
+  right: -0.35em;
   float: right;
 }
 .liner::before {
@@ -8129,8 +8176,8 @@ div.intelliTrip-light {
   border: 2px solid @black;
   background-color: @black;
   position: relative;
-  top: -0.25em;
-  left: -0.5em;
+  top: -0.35em;
+  left: -0.35em;
   float: left;
 }
 
@@ -8161,7 +8208,7 @@ div.intelliTrip-light {
     .title {
       font-size: 1em;
       font-weight: 600;
-      width: 95%;
+      width: 90%;
       .intelliMovie-icon {
         height: 1em;
         width: 1em;
@@ -8335,7 +8382,7 @@ div.intelliTrip-light {
 
 .private-note {
   background-color: #fff;
-  //.shadowHelper(2);
+  .shadowHelper(1);
   border-radius: 4px !important;
   .intelliTrip {
     p {

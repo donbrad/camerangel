@@ -2155,7 +2155,7 @@ var newUserView = {
         	$("#newLogo").velocity({opacity: 1}, {delay: 600, duration: 500, easing: "easeIn"});
         	
         	$("#featureCard1").velocity({opacity: 1, translateY: "-10px"}, {delay: 1000, duration: 1000});
-        	$("#newUserHome-signIn").velocity({opacity: 1}, {delay: 1000,duration: 1000});
+        	$("#newuserhome-footer").velocity({opacity: 1}, {delay: 1000,duration: 1000});
     		newUserView._introRun = true;
     		
         }

@@ -1450,6 +1450,8 @@ img.icon-sm {
 .btnClear-grey,
 .btnClear-red,
 .btnFull,
+.btnHalf,
+.btnHalf-modal,
 .btnFull-modal,
 .twoBtn,
 .km-material .km-buttongroup .km-button,
@@ -1798,10 +1800,21 @@ img.icon-sm {
 .btnClear-circle :active {
   background-color: rgba(255, 255, 255, 0.1);
 }
+.btnClear-white {
+  background-color: #fff !important;
+  color: #6CADF3 !important;
+}
 .btnFull {
   width: 100%;
   color: #fff;
   text-align: center;
+}
+.btnHalf {
+  width: 50%;
+  color: #fff;
+  text-align: center;
+  float: left;
+  background-color: #fff;
 }
 .btnSpan {
   width: 100%;
@@ -1818,6 +1831,18 @@ img.icon-sm {
   padding-bottom: 1rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.4px;
+}
+.btnHalf-modal {
+  width: 50%;
+  color: #fff;
+  text-align: center;
+  float: left;
+  background-color: #fff;
+  height: 3rem;
+  padding-top: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
+  font-size: 1em !important;
 }
 .btnFull-modal {
   width: 100%;
@@ -4684,6 +4709,18 @@ div.chat-message-user-content.clearfix > p {
   -o-background-size: cover;
   background-size: cover;
 }
+#newuserhome-footer {
+  opacity: 0;
+  border-top: 1px solid #E0E0E0;
+}
+#newuserhome-footer a:first-child {
+  border-right: 1px solid #E0E0E0;
+}
+#newUserHomeBtn svg {
+  height: 1.5em;
+  width: 1.5em;
+  vertical-align: text-bottom;
+}
 .newuserBox {
   margin-top: 16.667%;
 }
@@ -5799,6 +5836,9 @@ div.contactListBox.activeContact > div > div > ul {
 }
 #signup-error-txt {
   color: #E57373;
+}
+.signUp-position {
+  position: relative;
 }
 .mobile-input {
   float: left;
@@ -7310,9 +7350,6 @@ table.k-editor {
   background-size: contain;
   background-color: white;
 }
-#newUserHome-signIn {
-  opacity: 0;
-}
 .km-state-disabled {
   background-color: #808080 !important;
 }
@@ -7366,7 +7403,7 @@ table.k-editor {
   opacity: 0;
 }
 #signUpBox {
-  top: 20%;
+  margin-top: 2em;
   margin-bottom: 4rem;
 }
 #usersignin > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent,
@@ -8032,29 +8069,29 @@ div.intelliTrip-light {
   padding: 0.5em;
   border-bottom: 2px dotted #E0E0E0;
 }
+.intelliFlight .header .intelliFlight-icon,
+.intelliFlight .header svg {
+  height: 1em;
+  max-width: 1em;
+  vertical-align: baseline;
+}
 .intelliFlight .header .title {
   font-size: 1.2em;
   font-weight: 600;
+  /*>span:not(.info) {
+        font-size: 0.85em;
+        //background-color: @shade-100;
+        border-radius: 4px;
+        margin: 0 0.5em;
+        color: #fff;
+        font-weight: 400;
+        padding: 0.1em 0.25em;
+      }*/
   padding: 0;
   margin: 0 !important;
 }
-.intelliFlight .header .title svg {
-  height: 1.2em;
-  max-width: 1.2em;
-  vertical-align: sub;
-}
-.intelliFlight .header .title > span:not(.info) {
-  font-size: 0.85em;
-  background-color: #979797;
-  border-radius: 4px;
-  margin: 0 0.5em;
-  color: #fff;
-  font-weight: 400;
-  padding: 0.1em 0.25em;
-}
 .intelliFlight .header .subheader {
   font-size: 0.85em;
-  margin: 0 0 0 2em;
   color: #979797;
 }
 .intelliFlight .header .subheader svg {
@@ -8065,7 +8102,6 @@ div.intelliTrip-light {
   padding: 0.5em;
   display: inline-block;
   width: 100%;
-  border-bottom: 2px dotted #E0E0E0;
 }
 .intelliFlight .summary div {
   width: 40%;
@@ -8186,8 +8222,8 @@ div.intelliTrip-light {
   border: 2px solid #4A4A4A;
   background-color: #fff;
   position: relative;
-  top: -0.25em;
-  right: -0.5em;
+  top: -0.35em;
+  right: -0.35em;
   float: right;
 }
 .liner::before {
@@ -8201,8 +8237,8 @@ div.intelliTrip-light {
   border: 2px solid #4A4A4A;
   background-color: #4A4A4A;
   position: relative;
-  top: -0.25em;
-  left: -0.5em;
+  top: -0.35em;
+  left: -0.35em;
   float: left;
 }
 #modalview-smartFlight > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container {
@@ -8231,7 +8267,7 @@ div.intelliTrip-light {
 .intelliMovie .header .title {
   font-size: 1em;
   font-weight: 600;
-  width: 95%;
+  width: 90%;
   padding: 0;
   margin: 0 !important;
 }
@@ -8393,6 +8429,7 @@ div.intelliTrip-light {
 }
 .private-note {
   background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 4px !important;
 }
 .private-note .intelliTrip p {
