@@ -76,15 +76,7 @@ var userDataChannel = {
                     userDataChannel._initialSync = true;
 
                     APP.pubnub.subscribe({
-                        channel: userDataChannel.channelUUID,
-                        windowing: 100,
-                        restore: true,
-                        message: userDataChannel.channelRead,
-                        connect: userDataChannel.channelConnect,
-                        disconnect: userDataChannel.channelDisconnect,
-                        reconnect: userDataChannel.channelReconnect,
-                        error: userDataChannel.channelError
-
+                        channel: userDataChannel.channelUUID
                     });
 
                     userDataChannel.history();

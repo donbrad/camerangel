@@ -44,14 +44,7 @@ var galleryChannel = {
 
     subscribeGalleries : function () {
         APP.pubnub.subscribe({
-            channel: galleryChannel.galleryArray,
-            windowing: 300,
-            message: galleryChannel.channelRead,
-            connect: galleryChannel.channelConnect,
-            disconnect:galleryChannel.channelDisconnect,
-            reconnect: galleryChannel.channelReconnect,
-            error: galleryChannel.channelError
-
+            channel: galleryChannel.galleryArray
         });
 
     },
