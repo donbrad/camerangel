@@ -58,18 +58,25 @@ var galleryChannel = {
 
     galleryHistory : function (galleryId) {
 
-        APP.pubnub.history({ channel: galleryId,
+        APP.pubnub.history({
+            channel: galleryId,
+            stringifiedTimeToken : true,
+            callback: function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Gallery History : " + JSON.stringify(status.error));
+                    return;
+                }
+                var messages = response.messages;
+                if (messages.length === 0) {
+                    return;
+                }
 
-            include_token: true,
-            error: galleryChannel.error,
-            callback: function (messages) {
-                messages = messages[0];
-                var chanStart = messages[1], chanEnd = messages[2];
-                messages = messages || [];
-
+                var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
                 if (messages.length > 0) {
                     for (var i = 0; i < messages.length; i++) {
-                        var msg = messages[i].message;
+                        var msg = messages[i].entry;
+                        msg.timeToken = messages[i].timetoken;
 
                         galleryChannel.processMessage(msg);
                     }
@@ -293,14 +300,17 @@ var galleryChannel = {
 
         APP.pubnub.publish({
             channel: message.galleryId,
-            message: message,
-            error: galleryChannel.channelError,
-            callback: function (m) {
-                var status = m[0], statusText = m[1];
-                // userStatusChannel.addMessage(m);
+            message: message
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Gallery Publish: " + JSON.stringify(status.error));
+
+                }
 
             }
-        });
+        );
     },
 
     processPending : function () {

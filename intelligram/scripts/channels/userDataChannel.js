@@ -220,23 +220,31 @@ var userDataChannel = {
             channel: userDataChannel.channelUUID,
             start: start.toString(),
             end: end.toString(),
-            include_token : true,
-            error: userDataChannel.error,
-            callback: function(messages) {
-                messages = messages[0];
-                var pnStart = messages[1], pnEnd = messages[2];
-                messages = messages || [];
-                userDataChannel.updateTimeStamp();
+            stringifiedTimeToken: true,
+            callback: function(status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User History : " + JSON.stringify(status.error));
+                    return;
+                }
+                var messages = response.messages;
                 if (messages.length === 0) {
                     return;
                 }
+
+                var pnStart = response.startTimeToken, pnEnd = response.endTimeToken;
+
+                userDataChannel.updateTimeStamp();
+
                 if (userDataChannel.RSAKey === null) {
                     userDataChannel.RSAKey = cryptico.privateKeyFromString(userModel.privateKey);
                 }
               
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i];
+                    var msg  =  messages[i].entry;
+                    msg.timeToken = messages[i].timetoken;
+
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
                         var msgClear= userDataChannel.decryptMessage(msg);
                         msgClear.fromHistory = true;

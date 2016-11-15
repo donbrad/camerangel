@@ -165,16 +165,24 @@ var userStatusChannel = {
     userHistory : function () {
         APP.pubnub.history({
             channel: userStatusChannel.channelUUID,
-            include_token : true,
-            error: userStatusChannel.error,
-            callback: function(messages) {
-                messages = messages[0];
-                var chanStart = messages[1], chanEnd = messages[2];
-                messages = messages || [];
+            stringifiedTimeToken : true,
+            callback: function(status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Contact History : " + JSON.stringify(status.error));
+                    return;
+                }
+                var messages = response.messages;
+                if (messages.length === 0) {
+                    return;
+                }
+
+                var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
 
                 if (messages.length > 0) {
                     for (var i=0; i<messages.length; i++) {
-                        var msg = messages[i];
+                        var msg = messages[i].entry;
+                        msg.timeToken  = messages[i].timetoken;
 
                         if (msg.msgType === userStatusChannel._status) {
                             userStatusChannel.cacheList[msg.sender] = msg.status;
@@ -198,14 +206,20 @@ var userStatusChannel = {
 
                 APP.pubnub.history({
                     channel: userStatusChannel.statusArray[i],
-                    include_token: true,
+                    stringifiedTimeTokens : true,
                     count: 1,
-                    error: userStatusChannel.error,
-                    callback: function (messages) {
-                        messages = messages[0];
-                        var chanStart = messages[1], chanEnd = messages[2];
-                        messages = messages || [];
+                    callback: function (status, response) {
+                        if (status.error) {
+                            // handle error
+                            ggError("User Contact History : " + JSON.stringify(status.error));
+                            return;
+                        }
+                        var messages = response.messages;
+                        if (messages.length === 0) {
+                            return;
+                        }
 
+                        var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
                         if (messages.length > 0) {
                             for (var i = 0; i < messages.length; i++) {
                                 var msg = messages[i].message;
@@ -288,14 +302,15 @@ var userStatusChannel = {
     publish : function (message) {
         APP.pubnub.publish({
             channel: userStatusChannel.channelUUID,
-            message: message,
-            error: userStatusChannel.channelError,
-            callback: function (m) {
-                var status = m[0], statusText = m[1];
-                // userStatusChannel.addMessage(m);
-
+            message: message
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Status Publish Error: " + JSON.stringify(status.error));
+                }
             }
-        });
+        );
     },
 
     sendUpdate : function () {
@@ -363,7 +378,9 @@ var userStatusChannel = {
         }*/
     },
 
-    channelStatusRead : function (msg) {
+    channelStatusRead : function (message) {
+
+        var msg = message.entry, timeStamp = message.timestamp;
 
       //  console.log("Status : " + JSON.stringify(msg));
         switch(msg.msgType) {

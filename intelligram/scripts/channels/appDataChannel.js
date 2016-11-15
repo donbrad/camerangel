@@ -14,6 +14,7 @@ var appDataChannel = {
     channelUUID: '',   // current app channel
     lastAccess: 0,   // last access time stamp
     _channelName: 'app',
+    _class : 'app',
     _cloudClass: 'appmessages',
     _version: 1,
     messagesDS : null,
@@ -190,13 +191,21 @@ var appDataChannel = {
         // Get any messages in the channel
         APP.pubnub.history({
             channel: appDataChannel.channelUUID,
+            stringifiedTimeToken : true,
             start: start.toString(),
             end: end.toString(),
-            error: appDataChannel.error,
-            callback: function(messages) {
-                messages = messages[0];
-                var pnStart = messages[1], pnEnd = messages[2];
-                messages = messages || [];
+            callback: function(status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("App Data History : " + JSON.stringify(status.error));
+                    return;
+                }
+                var messages = response.messages;
+                if (messages.length === 0) {
+                    return;
+                }
+
+                var appStart = response.startTimeToken, appEnd = response.endTimeToken;
                 if (messages.length === 0) {
                     appDataChannel.updateTimeStamp();
                     return;
@@ -204,7 +213,9 @@ var appDataChannel = {
 
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i];
+                    var msg  =  messages[i].entry;
+                    msg.timeToken = messages[i].timetoken;
+
                     if (!appDataChannel.isArchivedMessage(msg.msgID))
                         appDataChannel.archiveMessage(msg);
                 }
@@ -214,7 +225,7 @@ var appDataChannel = {
                 /*   channelKeys = Object.keys(channelList);
                  channelModel.updatePrivateChannels(channelKeys, channelList);*/
 
-                var endTime = parseInt(pnStart);
+                var endTime = parseInt(appStart);
                 if (messages.length === 100 && endTime >= start) {
 
                     appDataChannel._fetchHistory(start, endTime );
@@ -453,6 +464,7 @@ var appDataChannel = {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'userAlert';
         msg.version = appDataChannel._version;
         msg.ownerUUID = userModel._user.userUUID;
@@ -487,10 +499,16 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: appDataChannel.channelUUID,
-            message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
-        });
+            message: msg
+        },
+           function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Alert Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
+        );
     },
 
 
@@ -498,6 +516,7 @@ var appDataChannel = {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'newUser';
         msg.version = appDataChannel._version;
         msg.userUUID = userUUID;
@@ -508,16 +527,24 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: appDataChannel.channelUUID,
-            message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
-        });
+            message: msg
+            },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("New User Error: " + JSON.stringify(status.error));
+                    return;
+                }
+
+            }
+        );
     },
 
     recallMessage : function (contactId, channelUUID, messageId, ownerId, isPrivateChat) {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'recallMessage';
         msg.version = appDataChannel._version;
         msg.channelUUID = channelUUID;
@@ -529,16 +556,23 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
-        });
+            message: msg
+        },
+           function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Recall Message Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
+        );
     },
 
     recallPhoto : function (channelUUID, photoId, ownerId, isPrivateChat) {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'recallMessage';
         msg.version = appDataChannel._version;
         msg.channelUUID = channelUUID;
@@ -550,16 +584,22 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
-        });
+            message: msg
+        },
+           function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Recall Photo Error: " + JSON.stringify(status.error));
+                }
+            }
+        );
     },
 
     userValidatedMessage : function (userUUID, phone, email, publicKey) {
         var msg = new Object();
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'userValidated';
         msg.version = appDataChannel._version;
         msg.userUUID = userUUID;
@@ -571,10 +611,15 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: appDataChannel.channelUUID,
-            message: msg,
-            success: appDataChannel.channelSuccess,
-            error: appDataChannel.channelError
-        });
+            message: msg
+        },
+           function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Validated Error: " + JSON.stringify(status.error));
+                }
+            }
+        );
     },
 
     connectRequest: function (recipientId, comment) {
@@ -584,6 +629,7 @@ var appDataChannel = {
         var event = smartEvent.findObject(eventId);
         var notificationString =  userModel._user.name + " wants to connect on intelligram";
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'connectRequest';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -619,10 +665,15 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
-        });
+            message: msg
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Connect Error: " + JSON.stringify(status.error));
+                }
+            }
+        );
 
     },
 
@@ -633,6 +684,7 @@ var appDataChannel = {
         var event = smartEvent.findObject(eventId);
         var notificationString =  userModel._user.name + " wants to connect on intelligram";
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'connectResponse';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -676,10 +728,15 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
-        });
+            message: msg
+        }, function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Connect Response Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
+        );
 
     },
 
@@ -692,6 +749,7 @@ var appDataChannel = {
 
         var notificationString =  userModel._user.name + " has accepted " + event.title;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'eventAccept';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -723,10 +781,16 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
-        });
+            message: msg
+            },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Event Accept Error: " + JSON.stringify(status.error));
+                    return;
+                }
+            }
+        );
 
     },
 
@@ -738,6 +802,7 @@ var appDataChannel = {
 
         var notificationString =  userModel._user.name + " has declined " + event.title;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'eventDecline';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -768,10 +833,15 @@ var appDataChannel = {
         };
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
-        });
+            message: msg
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Event Decline Error: " + JSON.stringify(status.error));
+                }
+            }
+        );
 
     },
 
@@ -783,6 +853,7 @@ var appDataChannel = {
 
         var notificationString =  userModel._user.name + " has cancelled " + event.name;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'eventCancel';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -812,10 +883,15 @@ var appDataChannel = {
         };
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
-        });
+            message: msg
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Event Cancel Error: " + JSON.stringify(status.error));
+                }
+            }
+        );
     },
 
     // Must be sent to each invitee or accepted member
@@ -826,6 +902,7 @@ var appDataChannel = {
 
         var notificationString =  userModel._user.name + " has updated " + event.name;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'eventUpdate';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -857,15 +934,21 @@ var appDataChannel = {
         };
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
-        });
+            message: msg
+        },
+           function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Event Update Error: " + JSON.stringify(status.error));
+                }
+            }
+        );
     },
 
     memberAutoConnect : function (contactUUID) {
         var msg = {};
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         var notificationString = "New contact : " + userModel._user.name;
         msg.type = 'autoConnect';
         msg.version = appDataChannel._version;
@@ -897,16 +980,22 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
-        }); 
+            message: msg
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Member Autoconnect Error: " + JSON.stringify(status.error));
+                }
+            }
+        );
     },
 
     groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  members, options) {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         var notificationString = "Chat Invite : " + channelName;
         msg.type = 'groupInvite';
         msg.version = appDataChannel._version;
@@ -948,10 +1037,15 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
-        });
+            message: msg
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Invite Error: " + JSON.stringify(status.error));
+                }
+            }
+        );
     },
 
 
@@ -960,6 +1054,7 @@ var appDataChannel = {
 
         var notificationString = channelName + " has been deleted...";
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'groupDelete';
         msg.version = appDataChannel._version;
         msg.ownerId = userModel._user.get('userUUID');
@@ -992,11 +1087,16 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            message: msg
+        },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Delete Error: " + JSON.stringify(status.error));
+                }
+            }
 
-        });
+        );
     },
 
     groupChannelUpdate : function (contactUUID, channelUUID, channelName, channelDescription,  members) {
@@ -1004,6 +1104,7 @@ var appDataChannel = {
 
         var notificationString = "Chat Update : " + channelName;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'groupUpdate';
         msg.version = appDataChannel._version;
         msg.ownerId = userModel._user.get('userUUID');
@@ -1038,11 +1139,16 @@ var appDataChannel = {
 
         APP.pubnub.publish({
             channel: channel,
-            message: msg,
-            callback: appDataChannel.publishCallback,
-            error: appDataChannel.errorCallback
+            message: msg
+        },
+           function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Delete Error: " + JSON.stringify(status.error));
+                }
+            }
 
-        });
+        );
     },
     
 
