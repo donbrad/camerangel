@@ -513,18 +513,6 @@ var userModel = {
             return;
         }
 
-       /* APP.pubnub = PUBNUB.init({
-            publish_key: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
-            subscribe_key: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
-            ssl: true,
-            jsonp: true,
-            restore: true,
-            uuid: uuid,
-            error : function (error) {
-                ggError("PubNub: Init" + error);
-            }
-        });*/
-
 
         APP.pubnub = new PubNub({
          publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
@@ -532,6 +520,57 @@ var userModel = {
          ssl: true,
          jsonp: true,
          uuid: uuid
+        });
+
+        // This is new message read multiplexer...
+        APP.pubnub.addListener({
+
+            message: function(m) {
+                // handle message
+                var channelName = m.channel; // The channel for which the message belongs
+                var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
+                var pubTT = m.timetoken; // Publish timetoken
+                var msg = m.message; // The Payload
+
+                var msgClass = msg.msgClass;
+
+
+                switch (msgClass) {
+
+                    case appDataChannel._class:
+                        appDataChannel.channelRead(msg);
+                        break;
+
+                    case groupChannel._class:
+                        groupChannel.receiveHandler(msg);
+                        break;
+
+                    case privateChannel._class:
+                        userDataChannel.channelRead(msg);
+                        break;
+
+                    case userStatusChannel._class:
+                        userStatusChannel.channelStatusRead(msg);
+                        break;
+
+                }
+
+
+            },
+            presence: function(p) {
+                // handle presence
+                var action = p.action; // Can be join, leave, state-change or timeout
+                var channelName = p.channel; // The channel for which the message belongs
+                var occupancy = p.occupancy; // No. of users connected with the channel
+                var state = p.state; // User State
+                var channelGroup = p.subscription; //  The channel group or wildcard subscription match (if exists)
+                var publishTime = p.timestamp; // Publish timetoken
+                var timetoken = p.timetoken;  // Current timetoken
+                var uuid = p.uuid; // UUIDs of users who are connected with the channel
+            },
+            status: function(s) {
+                // handle status
+            }
         });
 
 

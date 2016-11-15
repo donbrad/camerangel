@@ -14,6 +14,7 @@ var appDataChannel = {
     channelUUID: '',   // current app channel
     lastAccess: 0,   // last access time stamp
     _channelName: 'app',
+    _class : 'app',
     _cloudClass: 'appmessages',
     _version: 1,
     messagesDS : null,
@@ -463,6 +464,7 @@ var appDataChannel = {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'userAlert';
         msg.version = appDataChannel._version;
         msg.ownerUUID = userModel._user.userUUID;
@@ -514,6 +516,7 @@ var appDataChannel = {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'newUser';
         msg.version = appDataChannel._version;
         msg.userUUID = userUUID;
@@ -541,6 +544,7 @@ var appDataChannel = {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'recallMessage';
         msg.version = appDataChannel._version;
         msg.channelUUID = channelUUID;
@@ -568,6 +572,7 @@ var appDataChannel = {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'recallMessage';
         msg.version = appDataChannel._version;
         msg.channelUUID = channelUUID;
@@ -594,6 +599,7 @@ var appDataChannel = {
         var msg = new Object();
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'userValidated';
         msg.version = appDataChannel._version;
         msg.userUUID = userUUID;
@@ -623,6 +629,7 @@ var appDataChannel = {
         var event = smartEvent.findObject(eventId);
         var notificationString =  userModel._user.name + " wants to connect on intelligram";
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'connectRequest';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -677,6 +684,7 @@ var appDataChannel = {
         var event = smartEvent.findObject(eventId);
         var notificationString =  userModel._user.name + " wants to connect on intelligram";
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'connectResponse';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -741,6 +749,7 @@ var appDataChannel = {
 
         var notificationString =  userModel._user.name + " has accepted " + event.title;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'eventAccept';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -793,6 +802,7 @@ var appDataChannel = {
 
         var notificationString =  userModel._user.name + " has declined " + event.title;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'eventDecline';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -843,6 +853,7 @@ var appDataChannel = {
 
         var notificationString =  userModel._user.name + " has cancelled " + event.name;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'eventCancel';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -891,6 +902,7 @@ var appDataChannel = {
 
         var notificationString =  userModel._user.name + " has updated " + event.name;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'eventUpdate';
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
@@ -936,6 +948,7 @@ var appDataChannel = {
     memberAutoConnect : function (contactUUID) {
         var msg = {};
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         var notificationString = "New contact : " + userModel._user.name;
         msg.type = 'autoConnect';
         msg.version = appDataChannel._version;
@@ -982,6 +995,7 @@ var appDataChannel = {
         var msg = {};
 
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         var notificationString = "Chat Invite : " + channelName;
         msg.type = 'groupInvite';
         msg.version = appDataChannel._version;
@@ -1040,6 +1054,7 @@ var appDataChannel = {
 
         var notificationString = channelName + " has been deleted...";
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'groupDelete';
         msg.version = appDataChannel._version;
         msg.ownerId = userModel._user.get('userUUID');
@@ -1089,6 +1104,7 @@ var appDataChannel = {
 
         var notificationString = "Chat Update : " + channelName;
         msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
         msg.type = 'groupUpdate';
         msg.version = appDataChannel._version;
         msg.ownerId = userModel._user.get('userUUID');
