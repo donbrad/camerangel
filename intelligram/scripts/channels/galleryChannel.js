@@ -72,8 +72,6 @@ var galleryChannel = {
     },
 
 
-
-
     galleryHistory : function (galleryId) {
 
         APP.pubnub.history({
@@ -129,7 +127,6 @@ var galleryChannel = {
 
              case that._deleteGallery :
                  break;
-
 
          }
 
