@@ -398,27 +398,9 @@ var serverPush = {
                 }
             });
 
-            /*APP.pubnub.mobile_gw_provision ({
-                device_id: regId,
-                op    : 'remove',
-                gw_type  : type,
-                channel  :  dataChannel,
-                callback : serverPush._successProvision,
-                error  : serverPush._errorProvision
-            });
-
-            APP.pubnub.mobile_gw_provision ({
-                device_id: regId,
-                op    : 'remove',
-                gw_type  :type,
-                channel  : userChannel,
-                callback : serverPush._successProvision,
-                error  : serverPush._errorProvision
-            });*/
 
             serverPush._dataChannelsProvisioned = false;
 
-            //mobileNotify("pubnub push provisioned!!!");
 
         }
     },
