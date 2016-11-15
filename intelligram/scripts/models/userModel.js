@@ -545,6 +545,10 @@ var userModel = {
                         groupChannel.receiveHandler(msg);
                         break;
 
+                    case galleryChannel._class:
+                        galleryChannel.receiveHandler(msg);
+                        break;
+
                     case privateChannel._class:
                         userDataChannel.channelRead(msg);
                         break;
