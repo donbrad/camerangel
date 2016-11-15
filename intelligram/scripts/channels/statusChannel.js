@@ -378,7 +378,9 @@ var userStatusChannel = {
         }*/
     },
 
-    channelStatusRead : function (msg) {
+    channelStatusRead : function (message) {
+
+        var msg = message.entry, timeStamp = message.timestamp;
 
       //  console.log("Status : " + JSON.stringify(msg));
         switch(msg.msgType) {
