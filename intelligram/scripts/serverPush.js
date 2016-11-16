@@ -46,9 +46,11 @@ var serverPush = {
             return;
 
         serverPush._registered = true;
-        //mobileNotify("Server Push enabled : " + data);
+        mobileNotify("Server Push enabled : " + data);
 
         serverPush._regId =  data;
+
+        //console.log("Device Id : " + data);
 
         deviceModel.setAppState('isDeviceRegistered', true);
 
@@ -59,7 +61,7 @@ var serverPush = {
     // Handle iOS / Apple Notifications
     onNotificationAPN : function (e) {
 
-        console.log("Notification : " + JSON.stringify(e));
+        //console.log("Notification : " + JSON.stringify(e));
 
         // If this is a message and there's a channelUUID, update activeChannels so we can
         // build inApp notifications on launch.
@@ -130,7 +132,7 @@ var serverPush = {
     // Handle Android / Google Notifications
     onNotificationECM : function (e) {
 
-        console.log("Notification : " + JSON.stringify(e));
+        //console.log("Notification : " + JSON.stringify(e));
 
         switch( e.event )
         {
@@ -146,6 +148,8 @@ var serverPush = {
 
                     //mobileNotify("Notification: Android regID = " + e.regid);
                     serverPush._regId =  e.regid;
+
+                    console.log("Device Id " +  e.regid);
 
                     deviceModel.setAppState('isDeviceRegistered', true);
 
