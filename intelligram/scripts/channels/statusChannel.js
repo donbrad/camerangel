@@ -285,10 +285,10 @@ var userStatusChannel = {
 
     },
 
-    publish : function (message) {
+    publish : function (msg) {
         APP.pubnub.publish({
             channel: userStatusChannel.channelUUID,
-            message: message
+            message: msg
         },
             function (status, response) {
                 if (status.error) {
@@ -327,6 +327,7 @@ var userStatusChannel = {
             addressValidated : user.addressValidated
         };
 
+        var msgID = uuid.v4();
         var message = {
             msgID: msgID,
             msgClass : userStatusChannel._class,
