@@ -1338,6 +1338,10 @@ img.icon-sm {
   max-width: 1em;
   vertical-align: middle;
 }
+.icon-notify-unread-highlight {
+  height: 1em;
+  width: 1em;
+}
 .icon-bar {
   height: 1em;
   max-width: 1em;
@@ -4467,6 +4471,24 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   position: relative;
   top: -0.5em;
 }
+#placeViewName {
+  display: block;
+  width: 90%;
+}
+.placeWeather-box {
+  width: 50%;
+  float: left;
+}
+.weather_tempBox {
+  font-size: 1.65em;
+}
+.weather_tempBox > * {
+  vertical-align: middle;
+}
+#placeCard-weather-img {
+  height: 2.25em;
+  width: 2.25em;
+}
 div.chat-message-sender.chat-message-content > div > div > svg.photo-chat-lock {
   display: inline-block;
 }
@@ -6666,6 +6688,9 @@ div.k-nodata {
   color: #4A4A4A;
 }
 /* Chat styles */
+#messages-listview {
+  margin-top: 2em;
+}
 #messages-listview > li {
   width: 100%;
   padding-right: 1rem !important;
@@ -7303,15 +7328,20 @@ div.k-nodata {
   padding: 0.25rem 1rem;
   color: #fff;
 }
+#placeView > div.km-header > div {
+  background-color: #4B6CB7 !important;
+  color: #fff;
+  box-shadow: none !important;
+}
 .placeCard {
   background: #f5f5f5;
-  border-radius: 3px;
   width: 100%;
   padding-left: 5%;
   padding-right: 5%;
   border-bottom: 1px solid #E0E0E0;
   margin-bottom: 1em;
-  display: none;
+  background-color: #4B6CB7;
+  color: #fff;
 }
 #placeView > div.footerMenu.km-footer {
   display: none;

@@ -12,6 +12,7 @@
 	<link href="bower_components/pickadate/lib/themes/default.time.css" rel="stylesheet" />
 	<link href="bower_components/pickadate/lib/themes/default.date.css" rel="stylesheet" />
 	<link href="bower_components/emojione/assets/sprites/emojione.sprites.css" rel="stylesheet"/>
+	<link href="bower_components/weather-icons/css/weather-icons.css" rel="stylesheet" />
 	<link href="styles/redactor.css" rel="stylesheet" />
 
 	<link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
@@ -2192,24 +2193,23 @@
 				   <span class="left">
 				 		# if (data.isPrivate === true) { #
 					   		<span class="place-tag place-type">
-								<span class="icon-sm place-private" data-grunticon-embed></span>
 								 Private
 							</span>
 				 		#} else {#
 					   		<span class="place-tag place-type">
-								<span class="icon-sm place-public" data-grunticon-embed></span>
 								Public
 							</span>
 				 		#}#
 				   	#if (data.hasPlaceChat) {#
 					   <span class="place-tag placeChat-chatIcon">
-						   <span class="icon-sm icon-Chat" data-grunticon-embed></span>
 						   Chat
 					   </span>
 					#}#
 				   </span>
 					 <span class="distPlace">
-						 # var fixedDistance = 0;  if (data.distance !== undefined) {fixedDistance = data.distance; } #
+						 # var fixedDistance = 0;  if (data.distance !== undefined) {
+						 	fixedDistance = data.distance.toFixed(1);
+						 }#
 						 #: fixedDistance # mi
 					 </span>
 				</p>
@@ -2477,7 +2477,6 @@
 							#}else {#
 								#if(data.unreadCount > 0){#
 									<div class="unreadBanner"></div>
-
 									<div class="list-status icon-notify-unread-highlight" data-grunticon-embed></div>
 								#}#
 							#}#
@@ -5396,43 +5395,46 @@
 	<div data-role="header">
 		<div data-role="navbar">
 			<a data-role="button" data-align="left" data-click="placeView.onDone">
-				<div class="nav-back" data-grunticon-embed></div>
+				<div class="nav-back-light" data-grunticon-embed></div>
 			</a>
-			<span class="textClamp navbar-btn" data-role="button" data-click="placeView.openChat">
-				<!--<img src="images/icon-chat-active.svg" class="icon-btn" id="placeView-gotochat" />-->
-				<span id="placeViewName">Place View</span><br/>
-				<span class="place-tag placeChat-headerTop helper">Tap to view chat</span>
-			</span>
-			<a class="hidden" data-role="button" data-align="right" data-click="ux.toggleSearch">
-				<div  class="icon-search" data-grunticon-embed></div>
+			<span id="placeViewName" data-bind="text: name" class="textClamp">Place View</span>
+			<a data-role="button" data-align="right">
+				<span class="nav-gear" data-grunticon-embed></span>
 			</a>
-		</div>
-		<div class="gg_mainSearchBox" data-visible="false">
-			<div class="appendSearch">
-				<span class="searchIcon">
-					<span class="search"></span>
-				</span>
-				<input type="text" class="doubleAppendSearch gg_mainSearchInput" id="placeViewSearch" placeholder="" />
-				<span class="enterSearch hidden">
-					<a class="btnClear-grey">
-						<span class="icon-sm close" data-grunticon-embed></span>
-					</a>
-				</span>
-			</div>
 		</div>
 	</div>
 	<div class="placeCard">
 		<div class="placeCardTop">
-			<h4 class="textClamp">
-				<span class="place-public placeCardImg"></span>
-				<span class="primaryName"></span>
-				<span class="secondName"></span>
-			</h4>
+
 			<p data-bind="text: address"></p>
-			<div id="placeCard-weather" class="hidden">
-				<div style="float: left;">
-					<img id="placeCard-weather-img" width="55" height="55" src="images/aeris/fog.png">
+			<p>
+				<span data-bind="text: city"></span>,
+				<span data-bind="text: state"></span>
+				<span data-bind="text: zipcode"></span>
+			</p>
+			<div id="placeCard-weather">
+				<div class="placeWeather-box">
+					<p class="weather_tempBox" data-bind="text: w_weather"></p>
+					<p class="weather_tempBox">
+						<span data-bind="text: w_temp"></span>
+						<span>°F</span>
+						<img id="placeCard-weather-img" src="images/aeris/fog.png" data-bind="attr: {src: w_icon}">
+					</p>
+
+					<p>
+						<span>Feels like </span>
+						<span data-bind="text: w_feelsLike"></span>
+						<span>°F</span>
+					</p>
 				</div>
+				<div class="placeWeather-box">
+					<p>
+						<span>Humidity: </span>
+						<span data-bind="text: w_humidity"></span>
+						<span>%</span>
+					</p>
+				</div>
+
 				<div id="placeCard-weather-info" style="float: right;">
 				</div>
 			</div>
@@ -5458,7 +5460,7 @@
 		<div class="clearfix"></div>
 		<ul id="placeView-listview"></ul>
 	</div>
-	<div data-role="footer" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 60%;" id="placeViewEditor">
+	<!--<div data-role="footer" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 60%;" id="placeViewEditor">
 		<div class="messageCompose">
 			<div id="placeViewTitleTag" class="hidden">
 				<input type="search" id="placeViewTitle" placeholder="Title...">
@@ -5500,7 +5502,7 @@
 				</ul>
 			</div>
 		</div>
-	</div>
+	</div>-->
 
 	<ul data-role="actionsheet" id="placeViewSmartObjects" >
 		<li>

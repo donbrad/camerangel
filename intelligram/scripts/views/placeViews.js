@@ -1421,7 +1421,7 @@ var placeView = {
 
     getWeather : function () {
 
-        $('#placeCard-weather').addClass('hidden');
+        //$('#placeCard-weather').addClass('hidden');
 
         if (placeView._lat === null || placeView._lng === null) {
             return;
@@ -1430,14 +1430,50 @@ var placeView = {
         weatherModel.currentObservation(placeView._lat, placeView._lng, function (err, data) {
 
             if (err === null && data !== null) {
-                $('#placeCard-weather-img').attr('src', data.icon);
                 var weatherString = data.weather + " " + data.temp + " F " + data.wind + " " + data.windDirection;
-                $('#placeCard-weather-info').text(weatherString);
-                $('#placeCard-weather').removeClass('hidden');
+                placeView.setActiveWeather(data);
             }
 
         });
 
+    },
+
+    setActiveWeather: function(weatherData){
+        if(weatherData !== undefined && weatherData !== null){
+            placeView._activePlace.set("w_date", weatherData.date);
+            placeView._activePlace.set("w_feelsLike", weatherData.feelsLike);
+            placeView._activePlace.set("w_humidity", weatherData.humidity);
+            placeView._activePlace.set("w_icon", weatherData.icon);
+            placeView._activePlace.set("w_lat", weatherData.lat);
+            placeView._activePlace.set("w_lng", weatherData.lng);
+            placeView._activePlace.set("w_place", weatherData.place);
+            placeView._activePlace.set("w_rain", weatherData.rain);
+            placeView._activePlace.set("w_snow", weatherData.snow);
+            placeView._activePlace.set("w_sunrise", weatherData.sunrise);
+            placeView._activePlace.set("w_sunset", weatherData.sunset);
+            placeView._activePlace.set("w_temp", weatherData.temp);
+            placeView._activePlace.set("w_timestamp", weatherData.timestamp);
+            placeView._activePlace.set("w_weather", weatherData.weather);
+            placeView._activePlace.set("w_wind", weatherData.wind);
+            placeView._activePlace.set("w_windDirection", weatherData.windDirection);
+        } else {
+            placeView._activePlace.set("w_date", null);
+            placeView._activePlace.set("w_feelsLike", null);
+            placeView._activePlace.set("w_humidity", null);
+            placeView._activePlace.set("w_icon", null);
+            placeView._activePlace.set("w_lat", null);
+            placeView._activePlace.set("w_lng", null);
+            placeView._activePlace.set("w_place", null);
+            placeView._activePlace.set("w_rain", null);
+            placeView._activePlace.set("w_snow", null);
+            placeView._activePlace.set("w_sunrise", null);
+            placeView._activePlace.set("w_sunset", null);
+            placeView._activePlace.set("w_temp", null);
+            placeView._activePlace.set("w_timestamp", null);
+            placeView._activePlace.set("w_weather", null);
+            placeView._activePlace.set("w_wind", null);
+            placeView._activePlace.set("w_windDirection", null);
+        }
     },
 
 
@@ -1481,10 +1517,12 @@ var placeView = {
         var place = placeView._activePlace.isPrivate;
         var address = placeView._activePlace.address;
 
+        //placeView._activePlace.set("name", );
+
         placeView.getWeather();
 
-      //  $("#placeViewName").text(name.smartTruncate(16, true));
-        ux.formatNameAlias(name, alias, "#placeView");
+        //  $("#placeViewName").text(name.smartTruncate(16, true));
+        //ux.formatNameAlias(name, alias, "#placeView");
 
         // Toggle display of private/public icons 
        /* if (placeView._activePlace.isPrivate) {
@@ -1527,13 +1565,13 @@ var placeView = {
         mobileNotify("Looking up Memories...");
         placeView.buildMemoriesDS();
 
-        if(!placeView._showDetails){
+        /*if(!placeView._showDetails){
             $(".placeCard").css("display", "block");
             $("#placeView-showDetails").addClass("hidden");
         } else {
             $(".placeCard").css("display", "none");
             $("#placeView-showDetails").removeClass("hidden");
-        }
+        }*/
 
     },
 
@@ -1620,11 +1658,11 @@ var placeView = {
         placeView._lng=  placeObj.lng;
 
         // Show go to chat helper UI
-        if(placeView._activePlace.hasPlaceChat){
+        /*if(placeView._activePlace.hasPlaceChat){
             $(".placeChat-headerTop").velocity("fadeIn");
         } else {
             $(".placeChat-headerTop").css("display", "none");
-        }
+        }*/
 
     },
 

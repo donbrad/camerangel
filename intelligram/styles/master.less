@@ -652,6 +652,11 @@ img.icon-sm {
   vertical-align: middle;
 }
 
+.icon-notify-unread-highlight {
+  height: 1em;
+  width: 1em;
+}
+
 .icon-bar {
   height: 1em;
   max-width: 1em;
@@ -4062,6 +4067,28 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   top: -0.5em;
 }
 
+#placeViewName {
+  display: block;
+  width: 90%;
+}
+
+.placeWeather-box {
+  width: 50%;
+  float: left;
+}
+
+.weather_tempBox {
+  font-size: 1.65em;
+  > * {
+    vertical-align: middle;
+  }
+}
+
+#placeCard-weather-img {
+  height: 2.25em;
+  width: 2.25em;
+}
+
 div.chat-message-sender.chat-message-content > div > div > svg.photo-chat-lock {
   display: inline-block;
 }
@@ -6371,11 +6398,15 @@ div.k-nodata {
 
 /* Chat styles */
 
-#messages-listview > li {
-  width: 100%;
-  padding-right: 1rem !important;
-  padding-left: 1rem !important;
+#messages-listview {
+  margin-top: 2em;
+  > li {
+    width: 100%;
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+  }
 }
+
 
 #messages-listview > li:last-child {
   margin-bottom: 2em;
@@ -7097,17 +7128,25 @@ div.k-nodata {
   color: #fff;
 }
 
+#placeView > div.km-header > div {
+  background-color: @primary-100 !important;
+  color: #fff;
+  box-shadow: none !important;
+}
+
 .placeCard {
   //width: 100%;
   //.shadowHelper(1);
   background: @shade-300;
-  border-radius: 3px;
+  //border-radius: 3px;
   width: 100%;
   padding-left: 5%;
   padding-right: 5%;
   border-bottom: 1px solid @shade-200;
   margin-bottom: 1em;
-  display: none;
+  //display: none;
+  background-color: @primary-100;
+  color: #fff;
 }
 
 #placeView > div.footerMenu.km-footer {
