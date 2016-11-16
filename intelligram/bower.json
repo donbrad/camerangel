@@ -13,7 +13,8 @@
     "jquery.maskedinput": "~1.4.1",
     "google-libphonenumber": "~1.0.16",
     "emojione": "~2.2.0",
-    "svg4everybody": "~2.0.3"
+    "svg4everybody": "~2.0.3",
+    "weather-icons": "^2.0.10"
   },
   "homepage": "https://github.com/donbrad/ghostgram",
   "authors": [
