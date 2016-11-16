@@ -59,6 +59,8 @@ var serverPush = {
     // Handle iOS / Apple Notifications
     onNotificationAPN : function (e) {
 
+        console.log("Notification : " + JSON.stringify(e));
+
         // If this is a message and there's a channelUUID, update activeChannels so we can
         // build inApp notifications on launch.
         if (e.isMessage !== undefined && e.isMessage) {
@@ -70,7 +72,7 @@ var serverPush = {
                         if (e.isPrivate) {
                             channelModel.updatePrivateUnreadCount(e.channelUUID);
                         } else {
-                            channelModel.updateUnreadCount(e.channelUUID,1);
+                            channelModel.updateUnreadCount(e.channelUUID, 1);
                             channelModel.updateActiveChannel(e.channelUUID);
                         }
                     }
@@ -97,8 +99,8 @@ var serverPush = {
                 }
 
                 /*if (e.isEvent !== undefined && e.isEvent) {
-                    mobileNotify(e.alert);
-                }*/
+                 mobileNotify(e.alert);
+                 }*/
 
                 if (e.isAlert !== undefined && e.isAlert) {
                     mobileNotify(e.alert);
@@ -109,28 +111,26 @@ var serverPush = {
             serverPush._badgeCount = 0;
             serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
 
-        } else {
-            //if (e.badge) {
-                serverPush._badgeCount++;
-                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
-                serverPush.plugin.finish();
-           // }
-
-
         }
 
+        if (e.badge) {
+            if (e.badge === 0) {
+                serverPush._badgeCount = 0;
+            } else {
+                serverPush._badgeCount += e.badge;
+            }
 
-       /* if (e.sound) {
-            // playing a sound also requires the org.apache.cordova.media plugin
-            var snd = new Media(e.sound);
-            snd.play();
-        }*/
+            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
+            serverPush.plugin.finish();
+        }
 
 
     },
 
     // Handle Android / Google Notifications
     onNotificationECM : function (e) {
+
+        console.log("Notification : " + JSON.stringify(e));
 
         switch( e.event )
         {
@@ -174,7 +174,10 @@ var serverPush = {
                 else
                 {	// otherwise we were launched because the user touched a notification in the notification tray.
                     if (e.coldstart)
-                        mobileNotify('Notification : Cold Start');
+                        console.log('Notification : Cold Start');
+                    else {
+                        console.log('Notification : Background');
+                    }
 
                 }
                 break;
