@@ -121,12 +121,8 @@ var groupChannel = {
             case groupChannel._recallPhoto :
                 groupChannel.doRecallPhoto(msg);
                 break;
-
-
         }
-       
 
-  
     },
 
     doRecallMessage : function (msg) {

@@ -515,11 +515,11 @@ var userModel = {
 
 
         APP.pubnub = new PubNub({
-         publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
-         subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
-         ssl: true,
-         jsonp: true,
-         uuid: uuid
+            publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
+            subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
+            ssl: true,
+            logVerbosity: true,
+            uuid: uuid
         });
 
         // This is new message read multiplexer...
@@ -572,17 +572,23 @@ var userModel = {
                 var timetoken = p.timetoken;  // Current timetoken
                 var uuid = p.uuid; // UUIDs of users who are connected with the channel
             },
+            
             status: function(s) {
                 // handle status
+                if (s.category === "PNConnectedCategory") {
+                    mobileNotify("Pubnub Listener Active");
+
+                    deviceModel.setAppState('pubnubInit', true);
+                    deviceModel.isPushProvisioned();
+                    appDataChannel.history();
+                    userDataChannel.history();
+                }
             }
         });
 
 
-        deviceModel.setAppState('pubnubInit', true);
-        deviceModel.isPushProvisioned();
 
-        appDataChannel.history();
-        userDataChannel.history();
+
 
     },
 
