@@ -167,7 +167,7 @@ var userStatusChannel = {
 
                 if (messages.length > 0) {
                     for (var i=0; i<messages.length; i++) {
-                        var msg = messages[i].entry;
+                        var msg = messages[i].message;
                         msg.timeToken  = messages[i].timetoken;
 
                         if (msg.msgType === userStatusChannel._status) {
@@ -366,7 +366,7 @@ var userStatusChannel = {
 
     channelStatusRead : function (message) {
 
-        var msg = message.entry, timeStamp = message.timestamp;
+        var msg = message.message, timeStamp = message.timestamp;
 
         console.log("Status : " + JSON.stringify(msg));
 
