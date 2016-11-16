@@ -572,7 +572,7 @@ var userModel = {
                 var timetoken = p.timetoken;  // Current timetoken
                 var uuid = p.uuid; // UUIDs of users who are connected with the channel
             },
-            
+
             status: function(s) {
                 // handle status
                 if (s.category === "PNConnectedCategory") {

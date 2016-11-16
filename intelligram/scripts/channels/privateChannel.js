@@ -357,8 +357,6 @@ var privateChannel = {
         else
             encryptData = null;
 
-
-
         var msgID = uuid.v4();
 
         var notificationString = "Message from: " + userModel._user.name;
