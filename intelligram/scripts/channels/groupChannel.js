@@ -648,7 +648,7 @@ var groupChannel = {
                     var messageList = [];
 
                     for (var i=0; i< length; i++) {
-                        messageList.push(messages[i].entry);
+                        messageList.push(messages[i].message);
                     }
 
                     groupChannel.end = endTime;

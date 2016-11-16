@@ -234,7 +234,7 @@ var userDataChannel = {
               
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i].entry;
+                    var msg  =  messages[i].message;
                     msg.timeToken = messages[i].timetoken;
 
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
