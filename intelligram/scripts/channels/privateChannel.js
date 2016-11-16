@@ -428,8 +428,9 @@ var privateChannel = {
 
         APP.pubnub.publish({
             channel: recipient,
-            message: message,
-            callback:  function (status, response) {
+            message: message
+            },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Private Channel Send : " + JSON.stringify(status.error));
@@ -484,7 +485,7 @@ var privateChannel = {
                 }
 
             }
-        });
+        );
 
     },
 
@@ -494,9 +495,8 @@ var privateChannel = {
 
         APP.pubnub.publish({
             channel: recipient,
-            message: message,
-            error: userDataChannel.channelError,
-            callback:  function (status, response) {
+            message: message
+        },function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Private Channel Deferred Send : " + JSON.stringify(status.error));
@@ -531,7 +531,7 @@ var privateChannel = {
                 }
 
             }
-        });
+        );
     },
 
     getMessageHistory: function (channelUUID, callBack) {

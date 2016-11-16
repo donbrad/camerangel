@@ -70,25 +70,13 @@ var groupChannel = {
 
     subscribeChannelArray : function (channelArray) {
         APP.pubnub.subscribe({
-            channel: channelArray,
-            windowing: 500,
-            restore: true,
-            callback: groupChannel.receiveHandler/*,
-             presence: groupChannel.presenceHandler,
-             // Set our state to our user object, which contains our username and public key.
-             state: groupChannel.thisUser*/
+            channel: channelArray
         });
     },
 
     subscribeChannel : function (channelId) {
         APP.pubnub.subscribe({
-            channel:  channelId,
-            windowing: 500,
-            restore: true,
-            callback: groupChannel.receiveHandler/*,
-             presence: groupChannel.presenceHandler,
-             // Set our state to our user object, which contains our username and public key.
-             state: groupChannel.thisUser*/
+            channel:  channelId
         });
     },
 

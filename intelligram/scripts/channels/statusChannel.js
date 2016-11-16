@@ -62,14 +62,7 @@ var userStatusChannel = {
                     userStatusChannel._fetched = true;
 
                     APP.pubnub.subscribe({
-                        channel: userStatusChannel.channelUUID,
-                        windowing: 100,
-                        message: userStatusChannel.channelRead,
-                        connect: userStatusChannel.channelConnect,
-                        disconnect:userStatusChannel.channelDisconnect,
-                        reconnect: userStatusChannel.channelReconnect,
-                        error: userStatusChannel.channelError
-
+                        channel: userStatusChannel.channelUUID
                     });
 
                     //userStatusChannel.userHistory();
@@ -105,14 +98,7 @@ var userStatusChannel = {
         }
 
         APP.pubnub.subscribe({
-            channel: userStatusChannel.statusArray,
-            windowing: 100,
-            message: userStatusChannel.channelStatusRead,
-            connect: userStatusChannel.channelConnect,
-            disconnect:userStatusChannel.channelDisconnect,
-            reconnect: userStatusChannel.channelReconnect,
-            error: userStatusChannel.channelError
-
+            channel: userStatusChannel.statusArray
         });
 
         //todo: don re-enable status channels
@@ -381,6 +367,8 @@ var userStatusChannel = {
     channelStatusRead : function (message) {
 
         var msg = message.entry, timeStamp = message.timestamp;
+
+        console.log("Status : " + JSON.stringify(msg));
 
       //  console.log("Status : " + JSON.stringify(msg));
         switch(msg.msgType) {

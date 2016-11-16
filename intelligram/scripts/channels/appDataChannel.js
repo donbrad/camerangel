@@ -71,14 +71,7 @@ var appDataChannel = {
 
 
                     APP.pubnub.subscribe({
-                        channel: appDataChannel.channelUUID,
-                        windowing: 200,
-                        restore : true,
-                        message: appDataChannel.channelRead,
-                        connect: appDataChannel.channelConnect,
-                        disconnect: appDataChannel.channelDisconnect,
-                        reconnect:appDataChannel.channelReconnect,
-                        error: appDataChannel.channelError
+                        channel: appDataChannel.channelUUID
 
                     });
                     appDataChannel.history();

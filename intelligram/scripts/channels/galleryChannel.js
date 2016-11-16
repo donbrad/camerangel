@@ -44,17 +44,33 @@ var galleryChannel = {
 
     subscribeGalleries : function () {
         APP.pubnub.subscribe({
-            channel: galleryChannel.galleryArray,
-            windowing: 300,
-            message: galleryChannel.channelRead,
-            connect: galleryChannel.channelConnect,
-            disconnect:galleryChannel.channelDisconnect,
-            reconnect: galleryChannel.channelReconnect,
-            error: galleryChannel.channelError
-
+            channel: galleryChannel.galleryArray
         });
 
     },
+
+    subscribeGallery : function (gallery) {
+        APP.pubnub.subscribe({
+            channel: gallery
+        });
+
+    },
+
+
+    unsubscribeGalleries : function () {
+        APP.pubnub.unsubscribe({
+            channel: galleryChannel.galleryArray
+        });
+
+    },
+
+    unsubscribeGallery : function (gallery) {
+        APP.pubnub.unsubscribe({
+            channel: gallery
+        });
+
+    },
+
 
     galleryHistory : function (galleryId) {
 
@@ -78,7 +94,7 @@ var galleryChannel = {
                         var msg = messages[i].entry;
                         msg.timeToken = messages[i].timetoken;
 
-                        galleryChannel.processMessage(msg);
+                        galleryChannel.receiveHandler(msg);
                     }
                 }
 
@@ -87,7 +103,7 @@ var galleryChannel = {
         });
      },
 
-    processMessage: function (message) {
+    receiveHandler: function (message) {
         var that = galleryChannel;
         var galleryId = message.galleryId;
         var photoId = null;
@@ -111,7 +127,6 @@ var galleryChannel = {
 
              case that._deleteGallery :
                  break;
-
 
          }
 
