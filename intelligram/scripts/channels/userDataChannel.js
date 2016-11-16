@@ -21,7 +21,6 @@ var userDataChannel = {
     _inited : false,
     _initialSync: false,
 
-    
 
     init: function (channelUUID) {
 
@@ -69,6 +68,8 @@ var userDataChannel = {
 
         }
 
+
+
         userDataChannel.messagesDS.bind("change", function (e) {
             var changedMessages = e.items;
             if (e.action === undefined) {
@@ -76,7 +77,7 @@ var userDataChannel = {
                     userDataChannel._initialSync = true;
 
                     APP.pubnub.subscribe({
-                        channel: userDataChannel.channelUUID
+                        channels: [userDataChannel.channelUUID]
                     });
 
                     userDataChannel.history();

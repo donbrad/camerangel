@@ -62,7 +62,7 @@ var userStatusChannel = {
                     userStatusChannel._fetched = true;
 
                     APP.pubnub.subscribe({
-                        channel: userStatusChannel.channelUUID
+                        channels: [userStatusChannel.channelUUID]
                     });
 
                     //userStatusChannel.userHistory();
@@ -98,7 +98,7 @@ var userStatusChannel = {
         }
 
         APP.pubnub.subscribe({
-            channel: userStatusChannel.statusArray
+            channels: userStatusChannel.statusArray
         });
 
         //todo: don re-enable status channels
@@ -109,7 +109,7 @@ var userStatusChannel = {
 
     unsubscribeContacts : function () {
         APP.pubnub.unsubscribe({
-            channel: userStatusChannel.statusArray
+            channels: userStatusChannel.statusArray
         });
     },
 

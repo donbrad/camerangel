@@ -44,14 +44,14 @@ var galleryChannel = {
 
     subscribeGalleries : function () {
         APP.pubnub.subscribe({
-            channel: galleryChannel.galleryArray
+            channels: galleryChannel.galleryArray
         });
 
     },
 
     subscribeGallery : function (gallery) {
         APP.pubnub.subscribe({
-            channel: gallery
+            channels: [gallery]
         });
 
     },

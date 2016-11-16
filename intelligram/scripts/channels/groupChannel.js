@@ -70,19 +70,19 @@ var groupChannel = {
 
     subscribeChannelArray : function (channelArray) {
         APP.pubnub.subscribe({
-            channel: channelArray
+            channels: [channelArray]
         });
     },
 
     subscribeChannel : function (channelId) {
         APP.pubnub.subscribe({
-            channel:  channelId
+            channels:  [channelId]
         });
     },
 
     unsubscribeChannel : function (channelId) {
         APP.pubnub.unsubscribe({
-            channel: channelId
+            channels: [channelId]
         });
     },
 
