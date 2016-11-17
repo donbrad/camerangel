@@ -70,19 +70,19 @@ var groupChannel = {
 
     subscribeChannelArray : function (channelArray) {
         APP.pubnub.subscribe({
-            channel: channelArray
+            channels: [channelArray]
         });
     },
 
     subscribeChannel : function (channelId) {
         APP.pubnub.subscribe({
-            channel:  channelId
+            channels:  [channelId]
         });
     },
 
     unsubscribeChannel : function (channelId) {
         APP.pubnub.unsubscribe({
-            channel: channelId
+            channels: [channelId]
         });
     },
 
@@ -121,12 +121,8 @@ var groupChannel = {
             case groupChannel._recallPhoto :
                 groupChannel.doRecallPhoto(msg);
                 break;
-
-
         }
-       
 
-  
     },
 
     doRecallMessage : function (msg) {
@@ -548,7 +544,7 @@ var groupChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    badge: 1,
+                    badge: "+1",
                     'content-available' : 1
                 },
                 senderId: userModel._user.userUUID,
@@ -562,7 +558,7 @@ var groupChannel = {
             pn_gcm : {
                 data : {
                     title: notificationString,
-                    message: "Message from " + userModel._user.name,
+                    message: channelName + " : Message from " + userModel._user.name,
                     senderId: userModel._user.userUUID,
                     senderName :  userModel._user.name,
                     target: '#channel?channelUUID='+ channelId,
@@ -652,7 +648,7 @@ var groupChannel = {
                     var messageList = [];
 
                     for (var i=0; i< length; i++) {
-                        messageList.push(messages[i].entry);
+                        messageList.push(messages[i].message);
                     }
 
                     groupChannel.end = endTime;

@@ -31,6 +31,9 @@ var appDataChannel = {
         appDataChannel.channelUUID = channel;
 
 
+
+
+
         var ts = localStorage.getItem('ggAppDataTimeStamp');
 
         if (ts !== undefined && ts !== "NaN") {
@@ -69,11 +72,10 @@ var appDataChannel = {
                 if (changedMessages !== undefined && !appDataChannel._initialSync) {
                     appDataChannel._initialSync = true;
 
-
                     APP.pubnub.subscribe({
-                        channel: appDataChannel.channelUUID
-
+                        channels: [appDataChannel.channelUUID]
                     });
+
                     appDataChannel.history();
                 }
             }
@@ -206,7 +208,7 @@ var appDataChannel = {
 
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i].entry;
+                    var msg  =  messages[i].message;
                     msg.timeToken = messages[i].timetoken;
 
                     if (!appDataChannel.isArchivedMessage(msg.msgID))

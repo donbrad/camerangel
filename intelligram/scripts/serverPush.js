@@ -31,10 +31,14 @@ var serverPush = {
         serverPush._initialized = true;
         if (device.platform === 'android' || device.platform === 'Android' || device.platform === 'amazon-fireos' ) {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {senderID: serverPush._googleSenderId, icon: 'icon', iconColor: '#FFFFFF', ecb: 'serverPush.onNotificationECM', badge: true});
+                {
+                    senderID: serverPush._googleSenderId, icon: 'icon', iconColor: '#FFFFFF', ecb: 'serverPush.onNotificationECM', badge: true
+                });
         } else if (device.platform === 'iOS') {
             serverPush.plugin.register(serverPush.onRegistration, serverPush.onError,
-                {badge: true, clearBadge: true, sound : true, alert: true, ecb : 'serverPush.onNotificationAPN'});
+                {
+                    badge: true, clearBadge: true, sound : true, alert: true, ecb : 'serverPush.onNotificationAPN'
+                });
         }
 
 
@@ -263,7 +267,7 @@ var serverPush = {
         APP.pubnub.push.addChannels ({
             device: regId,
             pushGateway  : type,
-            channel  :  [channelUUID],
+            channels  :  [channelUUID],
             callback : function (status, response) {
                     if (status.error) {
                         ggError("Provision Group Channels Error; ", JSON.stringify(status.error));
@@ -291,7 +295,7 @@ var serverPush = {
         APP.pubnub.push.removeChannels ({
             device: regId,
             pushGateway  : type,
-            channel  :  [channelUUID],
+            channels  :  [channelUUID],
             callback : function (status, response) {
                     if (status.error) {
                         ggError("UnProvision Data Channels Error; ", JSON.stringify(status.error));
@@ -338,7 +342,7 @@ var serverPush = {
             APP.pubnub.push.addChannels ({
                 device: regId,
                 pushGateway  : type,
-                channel  :  [userChannel, dataChannel],
+                channels  :  [userChannel, dataChannel],
                 callback : function (status, response) {
                         if (status.error) {
                             ggError("Provision Data Channels Error; ", JSON.stringify(status.error));
@@ -395,7 +399,7 @@ var serverPush = {
             APP.pubnub.push.removeChannels ({
                 device: regId,
                 pushGateway  : type,
-                channel  :  [userChannel, dataChannel],
+                channels  :  [userChannel, dataChannel],
                 callback : function (status, response) {
                         if (status.error) {
                             ggError("Provision Data Channels Error; ", JSON.stringify(status.error));

@@ -21,7 +21,6 @@ var userDataChannel = {
     _inited : false,
     _initialSync: false,
 
-    
 
     init: function (channelUUID) {
 
@@ -69,6 +68,8 @@ var userDataChannel = {
 
         }
 
+
+
         userDataChannel.messagesDS.bind("change", function (e) {
             var changedMessages = e.items;
             if (e.action === undefined) {
@@ -76,7 +77,7 @@ var userDataChannel = {
                     userDataChannel._initialSync = true;
 
                     APP.pubnub.subscribe({
-                        channel: userDataChannel.channelUUID
+                        channels: [userDataChannel.channelUUID]
                     });
 
                     userDataChannel.history();
@@ -206,7 +207,6 @@ var userDataChannel = {
     // we have full 72 hours for all contacts
     _fetchHistory : function (start, end) {
 
-
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelUUID,
@@ -234,7 +234,7 @@ var userDataChannel = {
               
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i].entry;
+                    var msg  =  messages[i].message;
                     msg.timeToken = messages[i].timetoken;
 
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {

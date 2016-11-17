@@ -145,15 +145,18 @@ var userModel = {
 
         notificationModel.init();
 
+
+        // Initialize application data channel with gg's unique ID
+        appDataChannel.init();
+
+
         var uuid = userModel._user.userUUID;
         // Initialize the user's data channel with the user's UUID...
-
         userDataChannel.init(uuid);
 
         userStatusChannel.init(uuid);
 
-        // Initialize application data channel with gg's unique ID
-        appDataChannel.init();
+
 
 
         mapModel.init();
@@ -515,11 +518,11 @@ var userModel = {
 
 
         APP.pubnub = new PubNub({
-         publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
-         subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
-         ssl: true,
-         jsonp: true,
-         uuid: uuid
+            publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
+            subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
+            ssl: true,
+            logVerbosity: true,
+            uuid: uuid
         });
 
         // This is new message read multiplexer...
@@ -529,11 +532,12 @@ var userModel = {
                 // handle message
                 var channelName = m.channel; // The channel for which the message belongs
                 var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
-                var pubTT = m.timetoken; // Publish timetoken
+                var timeToken = m.timetoken; // Publish timetoken
                 var msg = m.message; // The Payload
 
                 var msgClass = msg.msgClass;
 
+                console.log(JSON.stringify(msg));
 
                 switch (msgClass) {
 
@@ -561,6 +565,7 @@ var userModel = {
 
 
             },
+
             presence: function(p) {
                 // handle presence
                 var action = p.action; // Can be join, leave, state-change or timeout
@@ -572,17 +577,23 @@ var userModel = {
                 var timetoken = p.timetoken;  // Current timetoken
                 var uuid = p.uuid; // UUIDs of users who are connected with the channel
             },
+
             status: function(s) {
                 // handle status
+                if (s.category === "PNConnectedCategory") {
+                    mobileNotify("Pubnub Listener Active");
+
+                    deviceModel.setAppState('pubnubInit', true);
+                    deviceModel.isPushProvisioned();
+                    appDataChannel.history();
+                    userDataChannel.history();
+                }
             }
         });
 
 
-        deviceModel.setAppState('pubnubInit', true);
-        deviceModel.isPushProvisioned();
 
-        appDataChannel.history();
-        userDataChannel.history();
+
 
     },
 

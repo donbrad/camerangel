@@ -62,7 +62,7 @@ var userStatusChannel = {
                     userStatusChannel._fetched = true;
 
                     APP.pubnub.subscribe({
-                        channel: userStatusChannel.channelUUID
+                        channels: [userStatusChannel.channelUUID]
                     });
 
                     //userStatusChannel.userHistory();
@@ -98,7 +98,7 @@ var userStatusChannel = {
         }
 
         APP.pubnub.subscribe({
-            channel: userStatusChannel.statusArray
+            channels: userStatusChannel.statusArray
         });
 
         //todo: don re-enable status channels
@@ -109,7 +109,7 @@ var userStatusChannel = {
 
     unsubscribeContacts : function () {
         APP.pubnub.unsubscribe({
-            channel: userStatusChannel.statusArray
+            channels: userStatusChannel.statusArray
         });
     },
 
@@ -167,7 +167,7 @@ var userStatusChannel = {
 
                 if (messages.length > 0) {
                     for (var i=0; i<messages.length; i++) {
-                        var msg = messages[i].entry;
+                        var msg = messages[i].message;
                         msg.timeToken  = messages[i].timetoken;
 
                         if (msg.msgType === userStatusChannel._status) {
@@ -260,7 +260,7 @@ var userStatusChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    badge: 1,
+                    badge: "+1",
                     'content-available' : 1
                 },
                 target: '#contacts?contactaction='+ userModel._user.userUUID,
@@ -269,7 +269,7 @@ var userStatusChannel = {
             pn_gcm : {
                 data : {
                     title: notificationString,
-                    message: status.statusMessage,
+                    message:  userModel._user.name + " : " + status.statusMessage,
                     image: "icon",
                     target: '#contacts?contactaction='+ userModel._user.userUUID,
                     contactId: userModel._user.userUUID
@@ -285,10 +285,10 @@ var userStatusChannel = {
 
     },
 
-    publish : function (message) {
+    publish : function (msg) {
         APP.pubnub.publish({
             channel: userStatusChannel.channelUUID,
-            message: message
+            message: msg
         },
             function (status, response) {
                 if (status.error) {
@@ -327,6 +327,7 @@ var userStatusChannel = {
             addressValidated : user.addressValidated
         };
 
+        var msgID = uuid.v4();
         var message = {
             msgID: msgID,
             msgClass : userStatusChannel._class,
@@ -366,7 +367,7 @@ var userStatusChannel = {
 
     channelStatusRead : function (message) {
 
-        var msg = message.entry, timeStamp = message.timestamp;
+        var msg = message.message, timeStamp = message.timestamp;
 
         console.log("Status : " + JSON.stringify(msg));
 
