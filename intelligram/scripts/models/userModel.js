@@ -529,11 +529,12 @@ var userModel = {
                 // handle message
                 var channelName = m.channel; // The channel for which the message belongs
                 var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
-                var pubTT = m.timetoken; // Publish timetoken
+                var timeToken = m.timetoken; // Publish timetoken
                 var msg = m.message; // The Payload
 
                 var msgClass = msg.msgClass;
 
+                console.log(JSON.stringify(msg));
 
                 switch (msgClass) {
 
@@ -561,6 +562,7 @@ var userModel = {
 
 
             },
+
             presence: function(p) {
                 // handle presence
                 var action = p.action; // Can be join, leave, state-change or timeout
