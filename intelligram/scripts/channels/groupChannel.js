@@ -579,7 +579,6 @@ var groupChannel = {
         };
 
         if (!deviceModel.isOnline()) {
-
             message.wasSent = false;
             groupChannel.deferredDS.add(message);
             return;

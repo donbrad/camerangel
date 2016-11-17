@@ -19,6 +19,7 @@ var userStatusChannel = {
     _event : 'event',    // shared event : emergency, trip, flight...
     _inited : false,
     channelUUID : null,
+    userStatus : null,
     myChannel : null,
     messagesDS : null,
     eventActive : false,
@@ -53,19 +54,18 @@ var userStatusChannel = {
             }
         });
 
-        userStatusChannel.messagesDS.bind("requestEnd", function (e) {
-            var response = e.response,  type = e.type;
+        userStatusChannel.messagesDS.bind("change", function (e) {
 
-            if (type === 'read' && e.response) {
+            var changedChannels = e.items;
+            if (e.action === undefined) {
+                if (changedChannels !== undefined && !userStatusChannel._fetched) {
 
-                if (!userStatusChannel._fetched) {
-                    userStatusChannel._fetched = true;
+                    if (!userStatusChannel._fetched) {
+                        userStatusChannel._fetched = true;
 
-                    APP.pubnub.subscribe({
-                        channels: [userStatusChannel.channelUUID]
-                    });
+                        userStatusChannel.subscribeContacts();
 
-                    //userStatusChannel.userHistory();
+                    }
                 }
             }
         });
@@ -80,6 +80,12 @@ var userStatusChannel = {
         if (userStatusChannel.subscribed) {
             return;
         }
+
+        userStatusChannel.statusArray = [];
+        userStatusChannel.trackArray = [];
+
+        userStatusChannel.statusArray.push(userStatusChannel.channelUUID);
+
 
         userStatusChannel.subscribed = true;
         if (count === 0)
@@ -152,6 +158,7 @@ var userStatusChannel = {
         APP.pubnub.history({
             channel: userStatusChannel.channelUUID,
             stringifiedTimeToken : true,
+            count : 1,
             callback: function(status, response) {
                 if (status.error) {
                     // handle error
