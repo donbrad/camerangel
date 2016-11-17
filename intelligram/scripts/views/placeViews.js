@@ -1588,6 +1588,7 @@ var placeView = {
             var place = placesModel.getPlaceModel(placeUUID);
             if (place !== undefined)
                 placesModel.deletePlace(placeUUID);
+            mobileNotify("Deleting " + place.name);
             APP.kendo.navigate("#places");
         }
     },

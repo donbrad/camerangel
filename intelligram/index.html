@@ -5398,8 +5398,8 @@
 				<div class="nav-back-light" data-grunticon-embed></div>
 			</a>
 			<span id="placeViewName" data-bind="text: name" class="textClamp">Place View</span>
-			<a data-role="button" data-align="right">
-				<span class="nav-gear-light" data-grunticon-embed></span>
+			<a data-role="button" data-align="right" data-rel="actionsheet" href="#placeViewOptions">
+				<span class="nav-gear-light icon-sm" data-grunticon-embed></span>
 			</a>
 		</div>
 	</div>
@@ -5407,7 +5407,8 @@
 		<div class="placeCardTop">
 			<p data-bind="text: address"></p>
 			<p>
-				<span data-bind="text: city"></span>,
+				<span data-bind="text: city"></span>
+				<span data-bind="visible: city">,</span>
 				<span data-bind="text: state"></span>
 				<span data-bind="text: zipcode"></span>
 			</p>
@@ -5520,13 +5521,13 @@
 		</li>
 		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
 		<li>
-			<a data-action="placeView.editPlace">
+			<a data-action="placeView.editActivePlace">
 				<div class="icon-sm action-edit" data-grunticon-embed></div>
 				Edit
 			</a>
 		</li>
 		<li>
-			<a>
+			<a data-action="placeView.deleteActivePlace">
 				<div class="icon-sm action-delete" data-grunticon-embed></div>
 				Delete
 			</a>
@@ -5587,46 +5588,17 @@
 
 <script type="text/x-kendo-template" id="placeViewMemories-template">
 
-		#   var titleStr = "";
-			if (data.title === null || data.title === '') {
-				titleStr = "Untitled"; }
-			else {
-				titleStr = data.title
-			}
-		  var tagString = "";
-		 	if (data.tagString !== undefined && data.tagString !== null) { tagString = data.tagString;}
-		  var sender = 'You';
-		    if (data.senderName !== undefined && data.senderName !== null && data.senderName !== "") { sender = data.senderName }
-		  var dateString = moment(data.updatedAt).fromNow();
 		#
-		# if (data.ggType === "Note"){#
-		<div class="note">
-			<h3 class="textClamp">
-				<div class="icon-md smart-note-inline" data-grunticon-embed></div>
-				<span>#: titleStr #</span>
-				<span class="helper right" style="font-size: 0.75em">#:dateString#</span>
-			</h3>
-			<p>#: tagString #</p>
-			<p style="margin-top: 0.5em; width: 100%;">#= data.content #</p>
-		</div>
-		#}#
-		# if(data.ggType === "Photo") {#
-		<div class="photo">
-			<h3>
-				<span class="icon-md smart-photo-inline" data-grunticon-embed></span>
-				<span>#: titleStr # </span>
-				<span class="helper right" style="font-size: 12px">#:dateString#</span>
-			</h3>
-			<p> #: tagString #</p>
-			<div class="smartPhoto">
-				<img src="#= data.thumbnailUrl #" />
+		  	var dateString = moment(data.updatedAt).fromNow();
+			var photoUrl = data.imageUrl;
+		#
+		<div>
+			<div>
+				<div class="galleryImgBox">
+					<div class="galleryImg galleryImg-grid" style="background-image: url('#=photoUrl#')"> </div>
+				</div>
 			</div>
-			<div class="photoInfo">
-				<p class="helper"> From #: sender #</p>
-			</div>
-			<div class="clearfix"></div>
 		</div>
-		#}#
 </script>
 
 <!--/*

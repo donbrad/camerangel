@@ -4494,6 +4494,7 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
 }
 #placeCard-weather {
   display: inline-block;
+  width: 100%;
 }
 #placeCard-weather-img {
   height: 1.75em;
