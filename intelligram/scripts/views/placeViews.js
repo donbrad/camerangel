@@ -74,7 +74,6 @@ var placesView = {
     	var place = e.button[0].dataset["uuid"];
 
         var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(place)+"&returnview=places";
-
         APP.kendo.navigate(navStr);
     },
 
@@ -1303,6 +1302,7 @@ var placeView = {
     _lng: null,
     _returnView : 'places',
     _returnModal: null,
+    _showExtWeather: false,
     _showDetails: true,
     _editorActive: false,
     _titleTagActive : false,
@@ -1334,6 +1334,14 @@ var placeView = {
 
         // ToDo: bind change functions for notes and photos here
 
+    },
+
+    toggleExtWeather: function(){
+        if(placeView._showExtWeather){
+            $(".extWeather").velocity("slideDown");
+        } else {
+            $(".extWeather").velocity("slideUp");
+        }
     },
 
     queryMemories : function (query) {
@@ -1512,26 +1520,9 @@ var placeView = {
             }
 
         }
-        var name = placeView._activePlace.name;
-        var alias = placeView._activePlace.alias;
-        var place = placeView._activePlace.isPrivate;
-        var address = placeView._activePlace.address;
-
-        //placeView._activePlace.set("name", );
 
         placeView.getWeather();
 
-        //  $("#placeViewName").text(name.smartTruncate(16, true));
-        //ux.formatNameAlias(name, alias, "#placeView");
-
-        // Toggle display of private/public icons 
-       /* if (placeView._activePlace.isPrivate) {
-            $('#publicPlaceView').addClass('hidden');
-            $('#privatePlaceView').removeClass('hidden');
-        } else {
-            $('#privatePlaceView').addClass('hidden');
-            $('#publicPlaceView').removeClass('hidden');
-        }*/
 
         if (placeView._activePlace.hasPlaceChat === true && placeView._activePlace.placeChatId !== null) {
             $('#placeView-gotochat').removeClass('hidden');
@@ -1540,38 +1531,17 @@ var placeView = {
         }
 
 
-        ux.setSearchPlaceholder("Search memories...");
 
-
-        $('#placeViewSearch').on('input', function() {
-            var query = this.value;
-            if (query.length > 0) {
-                // todo - wire data source
-                $("#placeView .enterSearch").removeClass("hidden");
-            } else {
-                $("#placeView .enterSearch").addClass("hidden");
-
-            }
-        });
-
-        // bind clear search btn
-        $("#placeView .enterSearch").on("click", function(){
-            $("#placeViewSearch").val('');
-
-            // hide clear btn
-            $(this).addClass('hidden');
-        });
-
-        mobileNotify("Looking up Memories...");
+        mobileNotify("Looking up photos...");
         placeView.buildMemoriesDS();
 
-        /*if(!placeView._showDetails){
+        if(!placeView._showDetails){
             $(".placeCard").css("display", "block");
             $("#placeView-showDetails").addClass("hidden");
         } else {
             $(".placeCard").css("display", "none");
             $("#placeView-showDetails").removeClass("hidden");
-        }*/
+        }
 
     },
 
@@ -1602,6 +1572,24 @@ var placeView = {
     shrinkEditor : function ()  {
         $('#placeViewTextArea').css( "height","36" );
         placeView._editorExpanded = false;
+    },
+
+    editActivePlace: function(){
+        var placeUUID = placeView._activePlace.placeUUID;
+        if(placeUUID !== null && placeUUID !== undefined){
+            var navStr = "#editPlace?place="+LZString.compressToEncodedURIComponent(placeUUID)+"&returnview=places";
+            APP.kendo.navigate(navStr);
+        }
+    },
+
+    deleteActivePlace: function(){
+        var placeUUID = placeView._activePlace.placeUUID;
+        if(placeUUID !== null && placeUUID !== undefined){
+            var place = placesModel.getPlaceModel(placeUUID);
+            if (place !== undefined)
+                placesModel.deletePlace(placeUUID);
+            APP.kendo.navigate("#places");
+        }
     },
 
 
