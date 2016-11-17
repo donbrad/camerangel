@@ -148,7 +148,6 @@ var galleryChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    badge: 1,
                     'content-available' : 1
                 },
                 target: targetStr ,

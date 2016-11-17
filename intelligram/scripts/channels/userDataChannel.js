@@ -207,7 +207,6 @@ var userDataChannel = {
     // we have full 72 hours for all contacts
     _fetchHistory : function (start, end) {
 
-
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelUUID,
