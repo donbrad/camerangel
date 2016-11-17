@@ -145,15 +145,18 @@ var userModel = {
 
         notificationModel.init();
 
+
+        // Initialize application data channel with gg's unique ID
+        appDataChannel.init();
+
+
         var uuid = userModel._user.userUUID;
         // Initialize the user's data channel with the user's UUID...
-
         userDataChannel.init(uuid);
 
         userStatusChannel.init(uuid);
 
-        // Initialize application data channel with gg's unique ID
-        appDataChannel.init();
+
 
 
         mapModel.init();
@@ -574,7 +577,7 @@ var userModel = {
                 var timetoken = p.timetoken;  // Current timetoken
                 var uuid = p.uuid; // UUIDs of users who are connected with the channel
             },
-            
+
             status: function(s) {
                 // handle status
                 if (s.category === "PNConnectedCategory") {

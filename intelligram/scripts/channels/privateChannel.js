@@ -357,8 +357,6 @@ var privateChannel = {
         else
             encryptData = null;
 
-
-
         var msgID = uuid.v4();
 
         var notificationString = "Message from: " + userModel._user.name;
@@ -374,7 +372,7 @@ var privateChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    badge: 1,
+                    badge : "+1",
                     'content-available' : 1
                 },
                 target: '#channel?channelUUID=' + privateChannel.userId,
@@ -388,7 +386,8 @@ var privateChannel = {
                     title: notificationString,
                     message: 'You have an new private message from ' + userModel._user.name,
                     target: '#channel?channelUUID=' + privateChannel.userId,
-                    image: "icon",
+                    largeIcon: "icon",
+                    msgcnt: 1,
                     channelUUID : userModel._user.userUUID,
                     senderId: userModel._user.userUUID,
                     isMessage: true,

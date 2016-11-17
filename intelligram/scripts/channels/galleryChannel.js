@@ -44,14 +44,14 @@ var galleryChannel = {
 
     subscribeGalleries : function () {
         APP.pubnub.subscribe({
-            channel: galleryChannel.galleryArray
+            channels: galleryChannel.galleryArray
         });
 
     },
 
     subscribeGallery : function (gallery) {
         APP.pubnub.subscribe({
-            channel: gallery
+            channels: [gallery]
         });
 
     },
@@ -148,7 +148,7 @@ var galleryChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    badge: 1,
+                    badge : "+1",
                     'content-available' : 1
                 },
                 target: targetStr ,
@@ -191,7 +191,7 @@ var galleryChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    badge: 1,
+                    badge : "+1",
                     'content-available' : 1
                 },
                 target: targetStr,
@@ -236,7 +236,7 @@ var galleryChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    badge: 1,
+                    badge : "+1",
                     'content-available' : 1
                 },
                 target: targetStr ,
@@ -280,7 +280,7 @@ var galleryChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    badge: 1,
+                    badge : "+1",
                     'content-available' : 1
                 },
                 target: targetStr ,
