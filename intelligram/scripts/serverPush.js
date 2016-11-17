@@ -76,7 +76,7 @@ var serverPush = {
                 if (e.channelUUID !== channelView._channelUUID) {
                     if (e.senderId !== undefined && e.senderId !== userModel._user.userUUID) {
                         if (e.isPrivate) {
-                            channelModel.updatePrivateUnreadCount(e.channelUUID);
+                            channelModel.updatePrivateUnreadCount(e.channelUUID, 1);
                         } else {
                             channelModel.updateUnreadCount(e.channelUUID, 1);
                             channelModel.updateActiveChannel(e.channelUUID);
@@ -103,19 +103,14 @@ var serverPush = {
                         mobileNotify(e.alert);
                     }
                 }
-
-                /*if (e.isEvent !== undefined && e.isEvent) {
-                 mobileNotify(e.alert);
-                 }*/
-
                 if (e.isAlert !== undefined && e.isAlert) {
                     mobileNotify(e.alert);
                 }
 
 
             }
-            serverPush._badgeCount = 0;
-            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
+           /* serverPush._badgeCount = 0;
+            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);*/
 
         }
 
@@ -123,11 +118,11 @@ var serverPush = {
             if (e.badge === 0) {
                 serverPush._badgeCount = 0;
             } else {
-                serverPush._badgeCount += e.badge;
+                serverPush._badgeCount += parseInt(e.badge);
             }
 
             serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
-            serverPush.plugin.finish();
+            //serverPush.plugin.finish();
         }
 
 

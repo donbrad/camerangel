@@ -579,7 +579,6 @@ var groupChannel = {
         };
 
         if (!deviceModel.isOnline()) {
-
             message.wasSent = false;
             groupChannel.deferredDS.add(message);
             return;
@@ -628,12 +627,13 @@ var groupChannel = {
     },
 */
     _fetchHistory : function (start, end) {
-       
+       var startStr = start.toString(), endStr =  end.toString();
         APP.pubnub.history({
             channel: groupChannel.channelUUID,
             stringifiedTimeToken: true,
-            start: start.toString(),
-            end: end.toString(),
+            start: startStr,
+            count: 100,
+            end: endStr,
             callback: function (status, response) {
                 if (status.error) {
                     ggError("Group History Error: " + JSON.stringify(status.error));
