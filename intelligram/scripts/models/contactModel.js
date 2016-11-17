@@ -84,6 +84,7 @@ var contactModel = {
             if (e.action === undefined) {
                 if (changedContacts !== undefined && !contactModel._initialSync) {
 
+                    deviceModel.setAppState('hasContacts', true);
                     contactModel._initialSync = true;
                     appDataChannel.history();
                     userDataChannel.history();
@@ -184,7 +185,7 @@ var contactModel = {
         contactModel.contactsDS.fetch();
       
       //  contactModel.syncContactTags();
-        deviceModel.setAppState('hasContacts', true);
+
        /* deviceModel.isParseSyncComplete();*/
 
         //contactModel.contactListDS.online(false);
