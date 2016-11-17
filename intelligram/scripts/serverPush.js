@@ -263,7 +263,7 @@ var serverPush = {
         APP.pubnub.push.addChannels ({
             device: regId,
             pushGateway  : type,
-            channel  :  [channelUUID],
+            channels  :  [channelUUID],
             callback : function (status, response) {
                     if (status.error) {
                         ggError("Provision Group Channels Error; ", JSON.stringify(status.error));
@@ -291,7 +291,7 @@ var serverPush = {
         APP.pubnub.push.removeChannels ({
             device: regId,
             pushGateway  : type,
-            channel  :  [channelUUID],
+            channels  :  [channelUUID],
             callback : function (status, response) {
                     if (status.error) {
                         ggError("UnProvision Data Channels Error; ", JSON.stringify(status.error));
@@ -338,7 +338,7 @@ var serverPush = {
             APP.pubnub.push.addChannels ({
                 device: regId,
                 pushGateway  : type,
-                channel  :  [userChannel, dataChannel],
+                channels  :  [userChannel, dataChannel],
                 callback : function (status, response) {
                         if (status.error) {
                             ggError("Provision Data Channels Error; ", JSON.stringify(status.error));
@@ -395,7 +395,7 @@ var serverPush = {
             APP.pubnub.push.removeChannels ({
                 device: regId,
                 pushGateway  : type,
-                channel  :  [userChannel, dataChannel],
+                channels  :  [userChannel, dataChannel],
                 callback : function (status, response) {
                         if (status.error) {
                             ggError("Provision Data Channels Error; ", JSON.stringify(status.error));
