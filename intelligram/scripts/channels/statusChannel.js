@@ -260,8 +260,7 @@ var userStatusChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    data : userModel._user.name + " : " + status.statusMessage,
-                    badge: 1,
+                    badge: "+1",
                     'content-available' : 1
                 },
                 target: '#contacts?contactaction='+ userModel._user.userUUID,

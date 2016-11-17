@@ -544,7 +544,7 @@ var groupChannel = {
             pn_apns: {
                 aps: {
                     alert : notificationString,
-                    data:  channelName + " : Message from " + userModel._user.name,
+                    badge: "+1",
                     'content-available' : 1
                 },
                 senderId: userModel._user.userUUID,
