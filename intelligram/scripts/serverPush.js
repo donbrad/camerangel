@@ -103,19 +103,14 @@ var serverPush = {
                         mobileNotify(e.alert);
                     }
                 }
-
-                /*if (e.isEvent !== undefined && e.isEvent) {
-                 mobileNotify(e.alert);
-                 }*/
-
                 if (e.isAlert !== undefined && e.isAlert) {
                     mobileNotify(e.alert);
                 }
 
 
             }
-            serverPush._badgeCount = 0;
-            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
+           /* serverPush._badgeCount = 0;
+            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);*/
 
         }
 
@@ -123,11 +118,11 @@ var serverPush = {
             if (e.badge === 0) {
                 serverPush._badgeCount = 0;
             } else {
-                serverPush._badgeCount += e.badge;
+                serverPush._badgeCount += parseInt(e.badge);
             }
 
             serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
-            serverPush.plugin.finish();
+            //serverPush.plugin.finish();
         }
 
 

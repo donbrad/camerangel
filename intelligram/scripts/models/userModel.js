@@ -507,6 +507,8 @@ var userModel = {
     // Need a valid uuid to initialize pubnub and create appData and userData channels
     initPubNub: function () {
         if (APP.pubnub !== null) {
+            appDataChannel.history();
+            userDataChannel.history();
             return;
         }
         var uuid = userModel._user.get('userUUID');
@@ -587,6 +589,15 @@ var userModel = {
                     deviceModel.isPushProvisioned();
                     appDataChannel.history();
                     userDataChannel.history();
+                } else if (s.category === "PNReconnectedCategory") {
+                    appDataChannel.history();
+                    userDataChannel.history();
+                } else if (s.category === "PNNetworkDownCategory") {
+                    mobileNotify("Pubnub Network Down!");
+
+                } else if (s.category === "PNNetworkUpCategory") {
+                    mobileNotify("Pubnub Network Up");
+
                 }
             }
         });
