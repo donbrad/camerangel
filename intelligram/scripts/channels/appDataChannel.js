@@ -72,8 +72,9 @@ var appDataChannel = {
                 if (changedMessages !== undefined && !appDataChannel._initialSync) {
                     appDataChannel._initialSync = true;
 
+                    var channelArray = [appDataChannel.channelUUID];
                     APP.pubnub.subscribe({
-                        channels: [appDataChannel.channelUUID]
+                        channels: channelArray
                     });
 
                     appDataChannel.history();
