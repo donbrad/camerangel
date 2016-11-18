@@ -540,8 +540,6 @@ var userModel = {
 
                 var msgClass = msg.msgClass;
 
-                console.log(JSON.stringify(msg));
-
                 switch (msgClass) {
 
                     case appDataChannel._class:
@@ -567,18 +565,6 @@ var userModel = {
                 }
 
 
-            },
-
-            presence: function(p) {
-                // handle presence
-                var action = p.action; // Can be join, leave, state-change or timeout
-                var channelName = p.channel; // The channel for which the message belongs
-                var occupancy = p.occupancy; // No. of users connected with the channel
-                var state = p.state; // User State
-                var channelGroup = p.subscription; //  The channel group or wildcard subscription match (if exists)
-                var publishTime = p.timestamp; // Publish timetoken
-                var timetoken = p.timetoken;  // Current timetoken
-                var uuid = p.uuid; // UUIDs of users who are connected with the channel
             },
 
             status: function(s) {

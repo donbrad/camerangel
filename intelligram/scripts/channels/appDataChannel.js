@@ -164,7 +164,7 @@ var appDataChannel = {
 
         mobileNotify("Loading System Messages...");
 
-        if (appDataChannel.lastAccess === undefined) {
+        if (appDataChannel.lastAccess === undefined || appDataChannel.lastAccess === null) {
             appDataChannel.lastAccess = lastMonth;
         }
 
@@ -184,17 +184,18 @@ var appDataChannel = {
 
     _fetchHistory : function (start, end) {
 
+        var startStr = start.toString(), endStr = end.toString();
         // Get any messages in the channel
         APP.pubnub.history({
             channel: appDataChannel.channelUUID,
             stringifiedTimeToken: true,
-            start: start.toString(),
-            end: end.toString()
+            start: startStr,
+            end: endStr
         },
         function(status, response) {
                 if (status.error) {
                     // handle error
-                    ggError("App Data History : " + JSON.stringify(status.error));
+                    ggError("App Data History : " + JSON.stringify(status));
                     return;
                 }
                 var messages = response.messages;

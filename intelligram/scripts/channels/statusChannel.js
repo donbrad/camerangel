@@ -84,7 +84,7 @@ var userStatusChannel = {
         userStatusChannel.statusArray = [];
         userStatusChannel.trackArray = [];
 
-        userStatusChannel.statusArray.push(userStatusChannel.channelUUID);
+        //userStatusChannel.statusArray.push(userStatusChannel.channelUUID);
 
 
         userStatusChannel.subscribed = true;

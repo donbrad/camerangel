@@ -140,6 +140,10 @@ var groupChannel = {
     doAddMember : function (msg) {
         var channelId = msg.channelUUID, memberId = msg.memberUUID;
 
+        if (memberId === undefined || memberId === null) {
+            ggError("addMember - null MemberId ");
+        }
+
         var channel = channelModel.findChannelModel(msg.channelUUID);
 
         if (channel !== undefined && channel !== null) {
@@ -148,7 +152,6 @@ var groupChannel = {
 
             for (var i=0; i<members.length; i++) {
                 var member = members[i];
-
                 if (member === memberId) {
                     found = true;
                 }
@@ -179,7 +182,6 @@ var groupChannel = {
                     newMembers.push(member);
                 }
             }
-
 
             channel.set('members', newMembers);
 
