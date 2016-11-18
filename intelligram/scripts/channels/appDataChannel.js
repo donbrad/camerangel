@@ -652,7 +652,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' wants to share contact information with you.',
                 target: '#contacts',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isConnect: true,
                 eventId :eventId
@@ -715,7 +716,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' wants to share contact information with you.',
                 target: '#contacts',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isConnect: true,
                 eventId :eventId
@@ -768,7 +770,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#smartEvent?event='+eventId,
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isEvent: true,
                 eventId :eventId
@@ -821,7 +824,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#smartEvent?event='+eventId,
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isEvent: true,
                 eventId :eventId
@@ -871,7 +875,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isEvent: true,
                 eventId :eventId
@@ -922,7 +927,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#smartEvent?event='+eventId,
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isEvent: true,
                 eventId :eventId
@@ -967,7 +973,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: msg.ownerName + " is a new intelligram contact.",
                 target: '#contacts',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false
             }
         };
@@ -1023,7 +1030,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: "You've been invited to " + channelName,
                 target: '#channel?channelUUID=' + channelUUID,
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 channelUUID : channelUUID
             }
@@ -1073,7 +1081,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: "The owner has deleted : " + channelName,
                 target: "#channels",
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 channelUUID : channelUUID
             }
@@ -1126,7 +1135,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: "Owner has updated  " + channelName,
                 target: '#channels',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 channelUUID : channelUUID
             }

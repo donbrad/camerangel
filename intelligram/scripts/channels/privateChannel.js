@@ -386,7 +386,7 @@ var privateChannel = {
                     title: notificationString,
                     message: 'You have an new private message from ' + userModel._user.name,
                     target: '#channel?channelUUID=' + privateChannel.userId,
-                    largeIcon: "icon",
+                    icon: "www/images/androidlogo.png",
                     msgcnt: 1,
                     channelUUID : userModel._user.userUUID,
                     senderId: userModel._user.userUUID,

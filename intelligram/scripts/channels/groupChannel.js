@@ -564,6 +564,8 @@ var groupChannel = {
                     target: '#channel?channelUUID='+ channelId,
                     channelUUID: channelId,
                     msgType : groupChannel._message,
+                    icon: "www/images/androidlogo.png",
+                    msgcnt: 1,
                     isMessage: true,
                     isPrivate: false
                 }

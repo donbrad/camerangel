@@ -160,7 +160,8 @@ var galleryChannel = {
                 data : {
                     title: notificationString,
                     message: notificationString,
-                    image: "icon",
+                    icon: "www/images/androidlogo.png",
+                    msgcnt: 1,
                     target: targetStr,
                     galleryId: galleryId,
                     photoId : photoId
@@ -203,7 +204,8 @@ var galleryChannel = {
                 data : {
                     title: notificationString,
                     message: notificationString,
-                    image: "icon",
+                    icon: "www/images/androidlogo.png",
+                    msgcnt: 1,
                     target: targetStr,
                     galleryId: galleryId,
                     photoId : photoId
@@ -248,7 +250,8 @@ var galleryChannel = {
                 data : {
                     title: notificationString,
                     message: comment,
-                    image: "icon",
+                    icon: "www/images/androidlogo.png",
+                    msgcnt: 1,
                     target: targetStr,
                     galleryId: galleryId,
                     photoId : photoId
@@ -292,7 +295,8 @@ var galleryChannel = {
                 data : {
                     title: notificationString,
                     message: notificationString,
-                    image: "icon",
+                    icon: "www/images/androidlogo.png",
+                    msgcnt: 1,
                     target: targetStr,
                     galleryId: galleryId,
                     photoId : photoId

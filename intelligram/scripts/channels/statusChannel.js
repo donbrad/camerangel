@@ -279,7 +279,8 @@ var userStatusChannel = {
                 data : {
                     title: notificationString,
                     message:  userModel._user.name + " : " + status.statusMessage,
-                    image: "icon",
+                    icon: "www/images/androidlogo.png",
+                    msgcnt: 1,
                     target: '#contacts?contactaction='+ userModel._user.userUUID,
                     contactId: userModel._user.userUUID
                 }
