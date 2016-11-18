@@ -33,9 +33,9 @@ var groupChannel = {
 
     close: function () {
         if (groupChannel.channelUUID !== null) {
-            APP.pubnub.unsubscribe({
+           /* APP.pubnub.unsubscribe({
                 channel: groupChannel.channelUUID
-            });
+            });*/
 
             groupChannel.channelUUID = null;
             groupChannel.channelName = null;

@@ -164,13 +164,16 @@ var channelModel = {
                 if (changedChannels !== undefined && !channelModel._initialSync) {
 
                     channelModel._initialSync = true;
+                    deviceModel.setAppState('hasChannels', true);
 
-                    appDataChannel.history();
-                    userDataChannel.history();
+                  /*  appDataChannel.history();
+                    userDataChannel.history();*/
                     channelsView.updateChannelListDS();
                     contactModel.updateChatShares();
                     channelModel.buildChannelsArray();
                     groupChannel.subscribeChannelArray(channelModel.channelsArray);
+
+
                 }
             } else {
                 switch (e.action) {
@@ -210,9 +213,6 @@ var channelModel = {
 
 
         channelModel.channelsDS.fetch();
-    /*    channelModel.photosDS.fetch();
-        channelModel.groupMessagesDS.fetch();
-*/
 
 
         channelModel.channelsDS.bind("requestEnd", function (e) {
@@ -227,7 +227,7 @@ var channelModel = {
 
         });
 
-        deviceModel.setAppState('hasChannels', true);
+
 
     },
 
