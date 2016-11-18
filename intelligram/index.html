@@ -1711,7 +1711,7 @@
 			</li>
 			<li>
 				<a class="btnClear" data-role="button" data-click="contactActionView.privateChat" >
-					<div class="icon-private-alt icon-action" data-grunticon-embed></div>
+					<div class="icon-private-alt icon-action primary-200-stroke" data-grunticon-embed></div>
 					Private Chat
 				</a>
 			</li>
@@ -5412,6 +5412,9 @@
 				<span data-bind="text: state"></span>
 				<span data-bind="text: zipcode"></span>
 			</p>
+			<div class="hasPlaceChat">
+				<a class="btn btnClearLine-light btnFull" data-role="button" data-click="placeView.openChat">View Chat</a>
+			</div>
 			<div id="placeCard-weather">
 				<div class="placeWeather-box">
 					<p class="weather-temp" data-bind="text: w_weather"></p>
@@ -5430,6 +5433,16 @@
 				<div class="placeWeather-box">
 					<br/>
 					<br/>
+					<p>
+						<i class="wi wi-sunrise"></i>
+						<span>Sunrise:</span>
+						<span data-bind="text: w_sunrise"></span>
+					</p>
+					<p>
+						<i class="wi wi-sunset"></i>
+						<span>Sunset:</span>
+						<span data-bind="text: w_sunset"></span>
+					</p>
 					<p data-bind="visible: w_humidity">
 						<span>Humidity: </span>
 						<span data-bind="text: w_humidity"></span>
@@ -5444,7 +5457,7 @@
 				</div>
 				<div class="clearfix"></div>
 				<div class="place-weatherActions">
-					<a class="left btnClear-white" data-role="button" data-click="placeView.toggleExtWeather">Show forecast</a>
+					<a class="left btnClear-white hidden" data-role="button" data-click="placeView.toggleExtWeather">Show forecast</a>
 					<a class="btnClear-light right" data-role="button" data-click="placeView.togglePlaceDetails">Hide</a>
 				</div>
 			</div>
@@ -5455,135 +5468,49 @@
 		<p class="helper" style="padding-top: 0.5em;">
 			<span class="hidden">
 				<span class="icon-memories icon"></span>
-				No Memories here yet
+				No Photos here yet
 			</span>
 			<span style="vertical-align: sub; display:none;">
 				<span class="icon-memories icon"></span>
 				Memories
 			</span>
 			<a class="right btnClear-grey" data-role="button" data-click="placeView.togglePlaceDetails" id="placeView-showDetails">
-				View weather
+				View details
 			</a>
 		</p>
 		<div class="clearfix"></div>
+		<div id="placeView-empty" class="emptyState hidden">
+			<div class="empty-gallery"></div>
+		</div>
 		<ul id="placeView-listview"></ul>
 	</div>
-	<!--<div data-role="footer" style="display: block; background: #fff; padding-left: 2px; min-height: 48px; max-height: 60%;" id="placeViewEditor">
-		<div class="messageCompose">
-			<div id="placeViewTitleTag" class="hidden">
-				<input type="search" id="placeViewTitle" placeholder="Title...">
-				<input type="search" id="placeViewTag" placeholder="Tags...">
-			</div>
-			<div id="placeViewToolbar" class="hidden"></div>
-			<textarea id="placeViewTextArea" type='text' name="placeViewTextArea" autofocus="false"></textarea>
-			<div class="messageMediaBar">
-				<ul>
-					<li>
-						<a data-role="button" data-rel="actionsheet" href="#placeViewPhotoActions">
-							<span class="chat-camera icon-sm" data-grunticon-embed></span>
-						</a>
-					</li>
-					<li>
-						<a data-role="button" data-click="placeView.messageTitleTag">
-							<span class="icon-tag icon-sm" data-grunticon-embed></span>
-						</a>
-					</li>
-					<li>
-						<a data-role="button" data-click="placeView.ghostgram" id="placeView-editorBtn">
-							<span class="icon-editor icon-sm" data-grunticon-embed></span>
-						</a>
-					</li>
-					<li>
-						<a data-role="button" data-click="placeView.noteSearch">
-							<span class="icon-web icon-sm" data-grunticon-embed></span>
-						</a>
-					</li>
-					<li class="hidden">
-						<a data-role="button" data-rel="actionsheet" href="#placeViewSmartObjects">
-							<span class="icon-smartMenu icon-sm" data-grunticon-embed></span>
-						</a>
-					</li>
-
-					<li class="right">
-						<a data-role="button" class="btnClear"  data-click="placeView.saveNote">Save</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>-->
 
 	<ul data-role="actionsheet" id="placeViewOptions">
 		<li>
 			<a data-action="placeView.doMap">
-				<div class="icon-sm action-map" data-grunticon-embed></div>
+				<div class="icon-action action-map" data-grunticon-embed></div>
 				View on map
 			</a>
 		</li>
-		<!--<li><a data-action="channelView.messageFlight"><img src="images/smart-flight.svg" class="icon-sm"/> Add Flight</a></li>-->
+		<li class="noPlaceChat">
+			<a>
+				<div class="icon-action action-chat" data-grunticon-embed></div>
+				Add place chat
+			</a>
+		</li>
 		<li>
 			<a data-action="placeView.editActivePlace">
-				<div class="icon-sm action-edit" data-grunticon-embed></div>
+				<div class="icon-action action-edit" data-grunticon-embed></div>
 				Edit
 			</a>
 		</li>
 		<li>
 			<a data-action="placeView.deleteActivePlace">
-				<div class="icon-sm action-delete" data-grunticon-embed></div>
+				<div class="icon-action action-delete" data-grunticon-embed></div>
 				Delete
 			</a>
 		</li>
 	</ul>
-
-	<!--<ul data-role="actionsheet"  id="placeViewPhotoActions" >
-		<li>
-			<a data-action="placeView.addCamera">
-				<span class="action-camera icon-action"></span>
-				Phone Camera
-			</a>
-		</li>
-		<li>
-			<a data-action="placeView.addPhoto">
-				<span class="icon-gallery icon-action"></span>
-				Phone Gallery
-			</a>
-		</li>
-		<li>
-			<a data-action="placeView.addGallery">
-				<span class="icon-memories icon-action"></span>
-				Memories Gallery
-			</a>
-		</li>
-	</ul>
-
-
-	<ul id="placeViewItemActions" data-role="actionsheet" data-cancel="Cancel">
-			<li><a data-role="button" data-click="placeView.editItem"> Edit </a></li>
-			&lt;!&ndash;<li><a data-role="button">Add Place Chat</a></li>&ndash;&gt;
-			<li><a data-role="button" data-action="placeView.shareItem" > Share </a></li>
-			<li><a data-role="button" data-action="placeView.deleteItem"> Delete </a></li>
-	</ul>
-
-	<ul id="placeViewOptions" data-role="actionsheet" data-cancel="Cancel">
-		<li>
-			<a data-role="button" data-click="placeView.addNote">
-				<div class="icon-sm smart-note" data-grunticon-embed></div>
-				Add A Note
-			</a>
-		</li>
-		&lt;!&ndash;<li><a data-role="button">Add Place Chat</a></li>&ndash;&gt;
-		<li>
-			<a data-role="button" data-action="placeView.camera">
-				<div class="icon-sm icon-camera-dark" data-grunticon-embed></div>
-				Take A Photo
-			</a>
-		</li>
-		<li>
-			<a data-role="button" data-action="placeView.gallery">
-				<div class="icon-sm icon-Photos" data-grunticon-embed></div>
-				Add A Photo
-			</a>
-		</li>
-	</ul>-->
 </div>
 
 <script type="text/x-kendo-template" id="placeViewMemories-template">
@@ -6963,9 +6890,9 @@
     photoStr = photos + " photos";
     }
     #
-		<div class="private-note" data-id="#:uuid#" data-uuid="#:uuid#">
+		<div class="private-note intelliNote" data-id="#:uuid#" data-uuid="#:uuid#">
 			<h3 class="textClamp">
-				<div class="icon-sm smart-note-inline" data-grunticon-embed></div>
+				<div class="icon-sm icon-myNotes-dark" data-grunticon-embed></div>
 				<span>#:titleStr#</span>
 			</h3>
 			<p class="helper" style="font-size: 0.85em;">

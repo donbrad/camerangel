@@ -452,6 +452,14 @@ form {
   color: #fff;
 }
 
+.primary-100-stroke {
+  stroke: @primary-100;
+}
+
+.primary-200-stroke {
+  stroke: @primary-200;
+}
+
 .secondary-100 {
   background: @secondary-100 !important;
   color: #fff;
@@ -4079,6 +4087,10 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   float: left;
 }
 
+.placeWeather-box-full {
+  width: 100%;
+}
+
 .weather_tempBox {
   font-size: 1.65em;
   line-height: 1;
@@ -5927,6 +5939,7 @@ div.contactListBox.activeContact > div > div > ul {
   display: inline-flex;
 }
 
+#placeView-listview,
 #gallery-listview,
 #galleryPicker-listview,
 #galleryEdit-listview {
@@ -7160,10 +7173,14 @@ div.k-nodata {
   padding-left: 5%;
   padding-right: 5%;
   border-bottom: 1px solid @shade-200;
-  margin-bottom: 1em;
   //display: none;
   background-color: @primary-100;
   color: #fff;
+  z-index: 1;
+}
+
+.hasPlaceChat {
+  margin-top: 0.5em;
 }
 
 #placeView > div.footerMenu.km-footer {
@@ -7678,6 +7695,16 @@ table.k-editor {
     color: #fff;
   }
 }
+
+/* intelliNote */
+
+.intelliNote {
+  h3, p {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
 
 /* intelliTrip */
 #smartTripModal > div.km-content.km-widget.km-native-scroller {

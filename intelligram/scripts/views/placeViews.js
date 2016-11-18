@@ -1303,7 +1303,7 @@ var placeView = {
     _returnView : 'places',
     _returnModal: null,
     _showExtWeather: false,
-    _showDetails: true,
+    _showDetails: false,
     _editorActive: false,
     _titleTagActive : false,
     _memoriesDS : new kendo.data.DataSource({
@@ -1323,13 +1323,20 @@ var placeView = {
             template: $("#placeViewMemories-template").html(),
             click: function(e) {
                 placeView._currentItem =  e.dataItem;
-                $("#placeViewItemActions").data("kendoMobileActionSheet").open();
 
-            }
-            /*,
+
+                modalPhotoView.openModal(placeView._currentItem);
+                // toggle private/public photo modal
+                /*if(placeView._currentItem.isShared){
+                    gallerySharedPhotoModal.openModal(photo);
+                } else {
+                    modalPhotoView.openModal(photo);
+                }*/
+
+            },
             dataBound: function(e){
-                ux.checkEmptyUIState(placeView._memoriesDS, "#channelListDiv");
-            }*/
+                ux.checkEmptyUIState(placeView._memoriesDS, "#placeView-empty");
+            }
         });
 
         // ToDo: bind change functions for notes and photos here
@@ -1457,8 +1464,20 @@ var placeView = {
             placeView._activePlace.set("w_place", weatherData.place);
             placeView._activePlace.set("w_rain", weatherData.rain);
             placeView._activePlace.set("w_snow", weatherData.snow);
-            placeView._activePlace.set("w_sunrise", weatherData.sunrise);
-            placeView._activePlace.set("w_sunset", weatherData.sunset);
+            var sunset = weatherData.sunset;
+            if(sunset !== undefined && sunset !== null){
+                //sunset
+                var formattedSunset = moment(sunset).format("h:ma");
+                placeView._activePlace.set("w_sunrise", formattedSunset);
+            }
+
+            var sunrise = weatherData.sunrise;
+            if(sunrise !== undefined && sunrise !== null){
+                //sunset
+                var formattedSunrise = moment(sunrise).format("h:ma");
+                placeView._activePlace.set("w_sunset", formattedSunrise);
+            }
+
             placeView._activePlace.set("w_temp", weatherData.temp);
             placeView._activePlace.set("w_timestamp", weatherData.timestamp);
             placeView._activePlace.set("w_weather", weatherData.weather);
@@ -1525,9 +1544,11 @@ var placeView = {
 
 
         if (placeView._activePlace.hasPlaceChat === true && placeView._activePlace.placeChatId !== null) {
-            $('#placeView-gotochat').removeClass('hidden');
+            $('.hasPlaceChat').removeClass('hidden');
+            $('.noPlaceChat').addClass("hidden");
         } else {
-            $('#placeView-gotochat').addClass('hidden');
+            $('.hasPlaceChat').addClass('hidden');
+            $('.noPlaceChat').removeClass("hidden");
         }
 
 

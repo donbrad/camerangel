@@ -1167,6 +1167,12 @@ form p {
   background: #6CADF3 !important;
   color: #fff;
 }
+.primary-100-stroke {
+  stroke: #4B6CB7;
+}
+.primary-200-stroke {
+  stroke: #6CADF3;
+}
 .secondary-100 {
   background: #FFB74D !important;
   color: #fff;
@@ -4481,6 +4487,9 @@ div.footerMenu.km-footer > ul > li:nth-child(5) > a.km-state-active #nav-gallery
   width: 50%;
   float: left;
 }
+.placeWeather-box-full {
+  width: 100%;
+}
 .weather_tempBox {
   font-size: 1.65em;
   line-height: 1;
@@ -6056,6 +6065,7 @@ div.contactListBox.activeContact > div > div > ul {
   width: 100%;
   display: inline-flex;
 }
+#placeView-listview,
 #gallery-listview,
 #galleryPicker-listview,
 #galleryEdit-listview {
@@ -6065,6 +6075,7 @@ div.contactListBox.activeContact > div > div > ul {
   list-style-type: none;
   text-align: center;
 }
+#placeView-listview li,
 #gallery-listview li,
 #galleryPicker-listview li,
 #galleryEdit-listview li {
@@ -7353,9 +7364,12 @@ div.k-nodata {
   padding-left: 5%;
   padding-right: 5%;
   border-bottom: 1px solid #E0E0E0;
-  margin-bottom: 1em;
   background-color: #4B6CB7;
   color: #fff;
+  z-index: 1;
+}
+.hasPlaceChat {
+  margin-top: 0.5em;
 }
 #placeView > div.footerMenu.km-footer {
   display: none;
@@ -7786,6 +7800,12 @@ table.k-editor {
 .intelli-header .intelli-subheader {
   font-size: 0.875em;
   color: #fff;
+}
+/* intelliNote */
+.intelliNote h3,
+.intelliNote p {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 /* intelliTrip */
 #smartTripModal > div.km-content.km-widget.km-native-scroller {
