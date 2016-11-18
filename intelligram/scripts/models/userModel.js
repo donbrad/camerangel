@@ -523,6 +523,7 @@ var userModel = {
             publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
             subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
             ssl: true,
+            heartbeatInterval : 3600,
             logVerbosity: true,
             uuid: uuid
         });

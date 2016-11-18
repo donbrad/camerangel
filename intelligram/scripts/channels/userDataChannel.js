@@ -76,8 +76,9 @@ var userDataChannel = {
                 if (changedMessages !== undefined && !userDataChannel._initialSync) {
                     userDataChannel._initialSync = true;
 
+                    var channelArray = [userDataChannel.channelUUID];
                     APP.pubnub.subscribe({
-                        channels: [userDataChannel.channelUUID]
+                        channels: channelArray
                     });
 
                     userDataChannel.history();
@@ -207,13 +208,14 @@ var userDataChannel = {
     // we have full 72 hours for all contacts
     _fetchHistory : function (start, end) {
 
+        var startStr =  start.toString(), endStr = end.toString();
         // Get any messages in the channel
         APP.pubnub.history({
             channel: userDataChannel.channelUUID,
-            start: start.toString(),
-            end: end.toString(),
-            stringifiedTimeToken: true,
-            callback: function(status, response) {
+            start:startStr,
+            end: endStr,
+            stringifiedTimeToken: true
+        }, function(status, response) {
                 if (status.error) {
                     // handle error
                     ggError("User History : " + JSON.stringify(status.error));
@@ -234,11 +236,11 @@ var userDataChannel = {
               
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i].message;
+                    var msg  =  messages[i].entry;
                     msg.timeToken = messages[i].timetoken;
 
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
-                        var msgClear= userDataChannel.decryptMessage(msg);
+                        var msgClear= privateChannel.decryptMessage(msg);
                         msgClear.fromHistory = true;
                         userDataChannel.addMessage(msgClear);
                         channelModel.updatePrivateUnreadCount(msg.channelUUID, 1);
@@ -256,7 +258,7 @@ var userDataChannel = {
             }
 
 
-        });
+        );
     },
 
     resumeHistory : function () {

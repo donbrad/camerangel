@@ -16,6 +16,7 @@ var channelsView = {
     _viewInitialized : false,
     _showDeletedChannels : false,
     _channelListDS : null,
+    _channelListInited : false,
 
 
     onInit : function (e) {
@@ -105,6 +106,7 @@ var channelsView = {
             return;
         }
 
+
         if (channelsView._showDeletedChannels) {
             channelsView._channelListDS.data(channelModel.channelsDS.data());
         } else {
@@ -126,7 +128,7 @@ var channelsView = {
             dataSource.filter(cacheFilter);
 
         }
-
+        channelsView._channelListInited = true;
     },
 
     // Get the current alias for privateChat contact  

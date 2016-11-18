@@ -72,8 +72,9 @@ var appDataChannel = {
                 if (changedMessages !== undefined && !appDataChannel._initialSync) {
                     appDataChannel._initialSync = true;
 
+                    var channelArray = [appDataChannel.channelUUID];
                     APP.pubnub.subscribe({
-                        channels: [appDataChannel.channelUUID]
+                        channels: channelArray
                     });
 
                     appDataChannel.history();
@@ -186,10 +187,11 @@ var appDataChannel = {
         // Get any messages in the channel
         APP.pubnub.history({
             channel: appDataChannel.channelUUID,
-            stringifiedTimeToken : true,
+            stringifiedTimeToken: true,
             start: start.toString(),
-            end: end.toString(),
-            callback: function(status, response) {
+            end: end.toString()
+        },
+        function(status, response) {
                 if (status.error) {
                     // handle error
                     ggError("App Data History : " + JSON.stringify(status.error));
@@ -208,7 +210,7 @@ var appDataChannel = {
 
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i].message;
+                    var msg  =  messages[i].entry;
                     msg.timeToken = messages[i].timetoken;
 
                     if (!appDataChannel.isArchivedMessage(msg.msgID))
@@ -233,8 +235,7 @@ var appDataChannel = {
 
             }
 
-
-        });
+        );
     },
 
     removeExpiredMessages : function () {
@@ -651,7 +652,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' wants to share contact information with you.',
                 target: '#contacts',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isConnect: true,
                 eventId :eventId
@@ -714,7 +716,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' wants to share contact information with you.',
                 target: '#contacts',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isConnect: true,
                 eventId :eventId
@@ -767,7 +770,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#smartEvent?event='+eventId,
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isEvent: true,
                 eventId :eventId
@@ -820,7 +824,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#smartEvent?event='+eventId,
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isEvent: true,
                 eventId :eventId
@@ -870,7 +875,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isEvent: true,
                 eventId :eventId
@@ -921,7 +927,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: userModel._user.name +  ' says "' + comment + '"',
                 target: '#smartEvent?event='+eventId,
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 isEvent: true,
                 eventId :eventId
@@ -966,7 +973,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: msg.ownerName + " is a new intelligram contact.",
                 target: '#contacts',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false
             }
         };
@@ -1022,7 +1030,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: "You've been invited to " + channelName,
                 target: '#channel?channelUUID=' + channelUUID,
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 channelUUID : channelUUID
             }
@@ -1072,7 +1081,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: "The owner has deleted : " + channelName,
                 target: "#channels",
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 channelUUID : channelUUID
             }
@@ -1125,7 +1135,8 @@ var appDataChannel = {
                 title: notificationString,
                 message: "Owner has updated  " + channelName,
                 target: '#channels',
-                image: "icon",
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
                 isMessage: false,
                 channelUUID : channelUUID
             }

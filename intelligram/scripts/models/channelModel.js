@@ -29,6 +29,8 @@ var channelModel = {
     intervalTimer : undefined,
     _sentMessages : "sentMessages",
     activeChannels: [],
+    _unreadList : [],   // associative array of unread counts
+    _lastAccess : [],   // associative array of last access set by last message received time or last channel access time
     _syncingChannels : false,
     _fetched : false,
     _initialSync : false,
@@ -183,16 +185,21 @@ var channelModel = {
                         var channel = e.items[0];
                         if (channel !== undefined && channel !== null) {
                             var channelUUID = channel.channelUUID;
-                            var channelList = channelsView.findChannelModel(channelUUID);
-                            if (channelList !== undefined)
-                                channelList.set(field, channel [field]);
+                            if (channelsView._channelListInited) {
+                                var channelList = channelsView.findChannelModel(channelUUID);
+                                if (channelList !== undefined)
+                                    channelList.set(field, channel [field]);
+                            }
+
                         }
 
                         break;
 
                     case "remove" :
                         var channel = e.items[0];
-                        channelsView._channelListDS.remove(channel);
+                        if (channelsView._channelListInited) {
+                            channelsView._channelListDS.remove(channel);
+                        }
                         // unsubscribe channel
                         groupChannel.unsubscribeChannel(channel.channelUUID);
                         break;
@@ -201,10 +208,11 @@ var channelModel = {
                         var channel = e.items[0];
                         // subscribe channel
                         groupChannel.subscribeChannel(channel.channelUUID);
-                        var channelList = channelsView.findChannelModel(channel.channelUUID);
-                        if (channelList !== undefined)
-                            channelsView._channelListDS.add(channel);
-
+                        if (channelsView._channelListInited) {
+                            var channelList = channelsView.findChannelModel(channel.channelUUID);
+                            if (channelList !== undefined)
+                                channelsView._channelListDS.add(channel);
+                        }
                         break;
                 }
             }
@@ -213,7 +221,6 @@ var channelModel = {
 
 
         channelModel.channelsDS.fetch();
-
 
         channelModel.channelsDS.bind("requestEnd", function (e) {
             var response = e.response,  type = e.type;
@@ -439,8 +446,6 @@ var channelModel = {
 
 
     addPhotoRecall : function (channelUUID, photoId, ownerId, isPrivateChat) {
-
-
 
         if (isPrivateChat) {
             privateChannel.recallPhoto(channelUUID, photoId);
