@@ -76,8 +76,9 @@ var galleryChannel = {
 
         APP.pubnub.history({
             channel: galleryId,
-            stringifiedTimeToken : true,
-            callback: function (status, response) {
+            stringifiedTimeToken: true
+        },
+            function (status, response) {
                 if (status.error) {
                     // handle error
                     ggError("Gallery History : " + JSON.stringify(status.error));
@@ -91,7 +92,7 @@ var galleryChannel = {
                 var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
                 if (messages.length > 0) {
                     for (var i = 0; i < messages.length; i++) {
-                        var msg = messages[i].message;
+                        var msg = messages[i].entry;
                         msg.timeToken = messages[i].timetoken;
 
                         galleryChannel.receiveHandler(msg);
@@ -100,7 +101,7 @@ var galleryChannel = {
 
             }
 
-        });
+        );
      },
 
     receiveHandler: function (message) {

@@ -157,9 +157,10 @@ var userStatusChannel = {
     userHistory : function () {
         APP.pubnub.history({
             channel: userStatusChannel.channelUUID,
-            stringifiedTimeToken : true,
-            count : 1,
-            callback: function(status, response) {
+            stringifiedTimeToken: true,
+            count: 1
+        },
+         function(status, response) {
                 if (status.error) {
                     // handle error
                     ggError("User Contact History : " + JSON.stringify(status.error));
@@ -174,7 +175,7 @@ var userStatusChannel = {
 
                 if (messages.length > 0) {
                     for (var i=0; i<messages.length; i++) {
-                        var msg = messages[i].message;
+                        var msg = messages[i].entry;
                         msg.timeToken  = messages[i].timetoken;
 
                         if (msg.msgType === userStatusChannel._status) {
@@ -186,7 +187,7 @@ var userStatusChannel = {
             }
 
 
-        });
+        );
     },
 
     contactHistory : function () {
@@ -199,9 +200,10 @@ var userStatusChannel = {
 
                 APP.pubnub.history({
                     channel: userStatusChannel.statusArray[i],
-                    stringifiedTimeTokens : true,
-                    count: 1,
-                    callback: function (status, response) {
+                    stringifiedTimeTokens: true,
+                    count: 1
+                },
+                  function (status, response) {
                         if (status.error) {
                             // handle error
                             ggError("User Contact History : " + JSON.stringify(status.error));
@@ -215,7 +217,7 @@ var userStatusChannel = {
                         var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
                         if (messages.length > 0) {
                             for (var i = 0; i < messages.length; i++) {
-                                var msg = messages[i].message;
+                                var msg = messages[i].entry;
 
                                 if (msg.msgType === userStatusChannel._status) {
                                     userStatusChannel.cacheList[msg.sender] = msg.status;
@@ -225,7 +227,7 @@ var userStatusChannel = {
 
                     }
 
-                });
+                );
             }
         }
     },

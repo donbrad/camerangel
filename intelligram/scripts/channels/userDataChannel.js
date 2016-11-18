@@ -212,8 +212,9 @@ var userDataChannel = {
             channel: userDataChannel.channelUUID,
             start: start.toString(),
             end: end.toString(),
-            stringifiedTimeToken: true,
-            callback: function(status, response) {
+            stringifiedTimeToken: true
+        },
+            function(status, response) {
                 if (status.error) {
                     // handle error
                     ggError("User History : " + JSON.stringify(status.error));
@@ -234,7 +235,7 @@ var userDataChannel = {
               
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i].message;
+                    var msg  =  messages[i].entry;
                     msg.timeToken = messages[i].timetoken;
 
                     if (msg.type === 'privateMessage' && !userDataChannel.isDuplicateMessage(msg.msgID)) {
@@ -256,7 +257,7 @@ var userDataChannel = {
             }
 
 
-        });
+        );
     },
 
     resumeHistory : function () {

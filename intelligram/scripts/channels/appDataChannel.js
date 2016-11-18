@@ -186,10 +186,11 @@ var appDataChannel = {
         // Get any messages in the channel
         APP.pubnub.history({
             channel: appDataChannel.channelUUID,
-            stringifiedTimeToken : true,
+            stringifiedTimeToken: true,
             start: start.toString(),
-            end: end.toString(),
-            callback: function(status, response) {
+            end: end.toString()
+        },
+        function(status, response) {
                 if (status.error) {
                     // handle error
                     ggError("App Data History : " + JSON.stringify(status.error));
@@ -208,7 +209,7 @@ var appDataChannel = {
 
                 var latestTime = 0;
                 for (var i = 0; i < messages.length; i++) {
-                    var msg  =  messages[i].message;
+                    var msg  =  messages[i].entry;
                     msg.timeToken = messages[i].timetoken;
 
                     if (!appDataChannel.isArchivedMessage(msg.msgID))
@@ -233,8 +234,7 @@ var appDataChannel = {
 
             }
 
-
-        });
+        );
     },
 
     removeExpiredMessages : function () {

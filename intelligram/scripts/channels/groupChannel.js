@@ -628,13 +628,15 @@ var groupChannel = {
 */
     _fetchHistory : function (start, end) {
        var startStr = start.toString(), endStr =  end.toString();
+
         APP.pubnub.history({
             channel: groupChannel.channelUUID,
             stringifiedTimeToken: true,
             start: startStr,
-            count: 100,
             end: endStr,
-            callback: function (status, response) {
+            count: 100
+        },
+            function (status, response) {
                 if (status.error) {
                     ggError("Group History Error: " + JSON.stringify(status.error));
                 } else {
@@ -648,7 +650,7 @@ var groupChannel = {
                     var messageList = [];
 
                     for (var i=0; i< length; i++) {
-                        messageList.push(messages[i].message);
+                        messageList.push(messages[i].entry);
                     }
 
                     groupChannel.end = endTime;
@@ -667,7 +669,7 @@ var groupChannel = {
 
             }
 
-        });
+        );
     },
     
     getMoreMessages : function (callback) {
