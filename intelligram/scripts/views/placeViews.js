@@ -1465,17 +1465,18 @@ var placeView = {
             placeView._activePlace.set("w_rain", weatherData.rain);
             placeView._activePlace.set("w_snow", weatherData.snow);
             var sunset = weatherData.sunset;
+
             if(sunset !== undefined && sunset !== null){
                 //sunset
                 var formattedSunset = moment(sunset).format("h:ma");
-                placeView._activePlace.set("w_sunrise", formattedSunset);
+                placeView._activePlace.set("w_sunset", formattedSunset);
             }
 
             var sunrise = weatherData.sunrise;
             if(sunrise !== undefined && sunrise !== null){
                 //sunset
                 var formattedSunrise = moment(sunrise).format("h:ma");
-                placeView._activePlace.set("w_sunset", formattedSunrise);
+                placeView._activePlace.set("w_sunrise", formattedSunrise);
             }
 
             placeView._activePlace.set("w_temp", weatherData.temp);
