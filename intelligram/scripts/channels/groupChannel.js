@@ -194,7 +194,7 @@ var groupChannel = {
         var channelId = msg.channelUUID;
         var channel = channelModel.findChannelModel(msg.channelUUID);
         if (channel !== undefined && channel !== null) {
-            channelModel.deleteChannel(channelId, true);
+            channelModel.deleteChannel(channelId);
         }
     },
 

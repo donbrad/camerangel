@@ -1387,7 +1387,7 @@ var channelModel = {
         }
     },
 
-    deleteChannel : function (channelUUID, silent) {
+    deleteChannel : function (channelUUID) {
         var dataSource = channelModel.channelsDS;
         var cacheFilter = dataSource.filter();
         if (cacheFilter === undefined) {
@@ -1403,18 +1403,6 @@ var channelModel = {
             groupChannel.removeMember(channelUUID, userModel._user.userUUID);
 
             if (channel.isOwner) {
-                // If this user is the owner -- delete the channel map
-
-               /* if (silent === undefined || silent === false) {
-                    if (channel.isPrivate === false) {
-                        // Send delete channel messages to all members
-                        var members = channel.members;
-                        // Skip the first member as it's the owner
-                        for (var i = 1; i < channel.members.length; i++) {
-                            appDataChannel.groupChannelDelete(members[i], channelUUID, channel.name, 'Chat "' + channel.name + 'has been deleted');
-                        }
-                    }
-                }*/
 
                 if (channel.isPlace) {
                     var placeUUID = channel.placeUUID;

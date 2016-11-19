@@ -494,7 +494,7 @@ var placesModel = {
 
                 // If there's a channel related to this place, need to delete it
                 if (place.placeChatId !== undefined && place.placeChatId !== null) {
-                    channelModel.deleteChannel(place.placeChatId, false);
+                    channelModel.deleteChannel(place.placeChatId);
                 }
                 // var placeObj = place.toJSON();
                /* placesModel.placesDS.remove(place);
