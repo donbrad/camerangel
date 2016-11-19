@@ -660,12 +660,11 @@ var channelModel = {
         var channel = channelModel.findChannelModel(channelUUID);
         if (channel === undefined || channel === null) {
             channelModel.confirmPrivateChannel(channelUUID, function(result){
-            if (result !== null) {
-                var lastAccess = ggTime.currentTime();
-
-                notificationModel.updateUnreadNotification(result.channelUUID, result.name, count);
-                channelModel.updateLastMessageTime(result.channelUUID, lastAccess);
-            }
+                if (result !== null) {
+                    var lastAccess = ggTime.currentTime();
+                    notificationModel.updateUnreadNotification(result.channelUUID, result.name, count);
+                    channelModel.updateLastMessageTime(result.channelUUID, lastAccess);
+                }
             });
         } else {
 
@@ -673,8 +672,7 @@ var channelModel = {
 
             notificationModel.updateUnreadNotification(channelUUID, channel.get('name'), count);
             channel.set('unreadCount',channel.get('unreadCount') + count);
-            //channelsView.updateUnreadCount(channelUUID,  channel.unreadCount + count);
-            //updateParseObject('channels', 'channelUUID', channelUUID, 'unreadCount', count);
+
             channelModel.updateLastMessageTime(channelUUID, lastAccess);
 
         }
@@ -713,8 +711,9 @@ var channelModel = {
            var contact = contactModel.findContact(channelUUID);   // ChannelUUID is same as contactUUID
             if (contact !== undefined && contact.contactUUID !== undefined && !contact.isBlocked) {
                 channelModel.addPrivateChannel(contact.contactUUID, contact.publicKey, contact.name);
+                channel = channelModel.findChannelModel(contact.contactUUID);
                 if (callback !== undefined)
-                    callback(channelUUID);
+                    callback(channel);
             } else {
                 if (callback !== undefined)
                     callback(null);
