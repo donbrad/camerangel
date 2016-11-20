@@ -1,4 +1,15 @@
 {
+  "CordovaPluginVariables": {
+    "nl.x-services.plugins.launchmyapp": {
+      "URL_SCHEME": "ghostgrams"
+    },
+    "cc.fovea.cordova.purchase": {
+      "BILLING_KEY": "needtoget"
+    },
+    "nl.x-services.plugins.calendar": {
+      "CALENDAR_USAGE_DESCRIPTION": "ig"
+    }
+  },
   "CorePlugins": [
     "ch.ti8m.documenthandler@0.2.2",
     "com.ionic.keyboard@2.0.1",
@@ -30,13 +41,13 @@
     "de.appplant.cordova.plugin.local-notification@0.8.4.1",
     "de.appplant.cordova.plugin.printer@0.7.2",
     "nl.x-services.plugins.actionsheet@2.3.1",
-    "nl.x-services.plugins.calendar@4.5.2",
     "nl.x-services.plugins.launchmyapp@4.1.5",
     "nl.x-services.plugins.socialsharing@5.1.1",
     "nl.x-services.plugins.toast@2.5.2",
     "org.apache.cordova.labs.keyboard",
     "org.apache.cordova.plugin.sms@0.1.1",
     "org.devgeeks.privacyscreen@0.2.0",
-    "uk.co.whiteoctober.cordova.appversion@0.1.7"
+    "uk.co.whiteoctober.cordova.appversion@0.1.7",
+    "nl.x-services.plugins.calendar@4.5.5"
   ]
 }
