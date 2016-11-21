@@ -359,7 +359,8 @@ var contactModel = {
         return(view);
     },
 
-    getMemberContacts : function (query) {
+
+    getMemberContacts : function () {
         var query = { field: "category", operator: "eq", value: "member" };
         var dataSource = contactModel.contactsDS;
         var cacheFilter = dataSource.filter();
@@ -374,7 +375,7 @@ var contactModel = {
         return(view);
     },
 
-    getICEContacts : function (query) {
+    getICEContacts : function () {
         var query = { field: "isICE", operator: "eq", value: true };
         var dataSource = contactModel.contactsDS;
         var cacheFilter = dataSource.filter();
@@ -506,6 +507,21 @@ var contactModel = {
             queryCache = {};
         }
         dataSource.filter( [{ field: "phone", operator: "eq", value: phone }]);
+        var view = dataSource.view();
+        var contact = view[0];
+        dataSource.filter(queryCache);
+
+        return(contact);
+    },
+
+    findContactByEmail: function (email) {
+
+        var dataSource = this.contactsDS;
+        var queryCache = dataSource.filter();
+        if (queryCache === undefined) {
+            queryCache = {};
+        }
+        dataSource.filter( [{ field: "email", operator: "eq", value: email }]);
         var view = dataSource.view();
         var contact = view[0];
         dataSource.filter(queryCache);

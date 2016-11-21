@@ -175,6 +175,16 @@ var groupModel = {
         return (groups[0]);
     },
 
+    findContact : function (uuid) {
+
+        var groups = groupModel.queryGroups({field: "members", operator: "contains", value: uuid});
+
+        if (groups.length === 0) {
+            return(null);
+        }
+        return (groups);
+    },
+
     checkIdenticon : function (group) {
         if (group !== undefined && group !== null) {
 

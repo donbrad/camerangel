@@ -308,6 +308,27 @@ var channelModel = {
 
     },
 
+
+    findContactChannels : function (uuid) {
+        var query = [{ field: "members", operator: "contains", value: uuid },
+            { field: "isOwner", operator: "eq", value: true }
+        ];
+        var dataSource = channelModel.channelsDS;
+        if (dataSource === null) {
+            ggError("Channels not initialized!");
+            return ([]);
+        }
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        dataSource.filter(cacheFilter);
+        return(view);
+    },
+
+
     queryChannels : function (query) {
         if (query === undefined)
             return([]);
