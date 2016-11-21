@@ -6,7 +6,7 @@
 		_isOnline = true;
 	// create an object to store the models for each view
 	window.APP = {
-		version: "prealpha : 0.8",
+		version: "prealpha : 0.220",
 
 		models: {
 
@@ -148,21 +148,7 @@
 
 			});
 
-			cordova.plugins.notification.local.hasPermission(function(granted) {
 
-				cordova.plugins.notification.local.registerPermission(function (granted) {
-
-					/*cordova.plugins.notification.local.schedule({
-						id         : 1,
-						title      : 'Welcome Back!',
-						text       : 'intelligram missed you...',
-						sound      : null,
-						autoClear  : true,
-						at         : new Date(new Date().getTime())
-					});*/
-				});
-
-			});
 
 			// Initialize AppBuilder App Feedback Plugin
 			//feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
