@@ -8,6 +8,7 @@
 var deviceContacts = {
     
     _missingProfileImg : "images/default-img.png",
+    _needPermission : false,
     _name : 0,
     _phone: 1,
     _email : 2,
@@ -113,11 +114,25 @@ var deviceContacts = {
                 }
     
                 if (callback !== undefined) {
-                    callback(contactModel.deviceContactsDS.data());
+                    var contactArray = contactModel.deviceContactsDS.data();
+                    callback(contactArray);
                 }
             },
             function(error){
-                mobileNotify(error);
+                if (error.code === 20) {
+                    mobileNotify("You've denied access to contacts!");
+                    //Todo : Need to add UX to inform the user that they've blocked access to contacts
+                    deviceContacts._needPermission = true;
+                    if (callback !== undefined) {
+                        callback([]);
+                    }
+                } else {
+                    mobileNotify("Contact Error: " + JSON.stringify(error));
+                    if (callback !== undefined) {
+                        callback([]);
+                    }
+                }
+
             },
             options);
     },
