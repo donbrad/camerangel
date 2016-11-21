@@ -13,8 +13,6 @@
   ],
   "iOSBackgroundMode": [
     "location",
-    "external-accessory",
-    "bluetooth-central",
     "fetch",
     "remote-notification"
   ],
