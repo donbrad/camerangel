@@ -123,6 +123,7 @@ var deviceContacts = {
                     mobileNotify("You've denied access to contacts!");
                     //Todo : Need to add UX to inform the user that they've blocked access to contacts
                     deviceContacts._needPermission = true;
+                    $('#contactImport-permission').removeClass('hidden');
                     if (callback !== undefined) {
                         callback([]);
                     }
