@@ -2589,6 +2589,30 @@ div.footer.km-footer {
 #home-buttongroup > a.km-button > span {
   display: inline-block;
 }
+#modalview-groupActions > div {
+  padding-bottom: 0 !important;
+}
+.groupAction-title {
+  font-size: 24px;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+.groupActions-box {
+  margin-top: 1em;
+}
+.groupActions-box .action-chat #iPhone-6 {
+  stroke: #6CADF3;
+}
+.groupActions-box .icon-gallery #Page-1 {
+  fill: #6CADF3;
+}
+.groupActions-box .action-map #Page-1 > path {
+  fill: #6CADF3;
+}
+.groupAction-section {
+  color: #979797;
+  font-size: 0.875em;
+}
 #home-buttongroup > li.km-button > span > svg {
   vertical-align: text-top;
   margin-right: 0.15em;
