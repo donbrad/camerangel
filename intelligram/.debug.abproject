@@ -1,13 +1,13 @@
 {
   "CordovaPluginVariables": {
     "nl.x-services.plugins.launchmyapp": {
-      "URL_SCHEME": "ghostgrams"
+      "URL_SCHEME": "intelligram"
     },
     "cc.fovea.cordova.purchase": {
       "BILLING_KEY": "needtoget"
     },
     "nl.x-services.plugins.calendar": {
-      "CALENDAR_USAGE_DESCRIPTION": "intelligram"
+      "CALENDAR_USAGE_DESCRIPTION": "integration with intelligram"
     }
   },
   "CorePlugins": [

@@ -6,15 +6,13 @@
   "DisplayName": "intelligram",
   "Author": "kyburz codeworks llc",
   "Description": "intelligram for iOS and Android phones",
-  "BundleVersion": "0.0.214",
-  "AndroidVersionCode": "214",
+  "BundleVersion": "0.0.220",
+  "AndroidVersionCode": "220",
   "iOSDeviceFamily": [
     "1"
   ],
   "iOSBackgroundMode": [
     "location",
-    "external-accessory",
-    "bluetooth-central",
     "fetch",
     "remote-notification"
   ],
