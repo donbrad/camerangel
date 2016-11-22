@@ -322,7 +322,7 @@ var channelModel = {
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
-        dataSource.filter( query);
+        dataSource.filter(query);
         var view = dataSource.view();
         dataSource.filter(cacheFilter);
         return(view);

@@ -60,7 +60,6 @@ var contactsView = {
                     return;
                 }
 
-
                 if (contact.contactUUID !== undefined && contact.contactUUID !== null){
                     $("#contactActionBtns > li:first-child").show();
                 } else {
@@ -417,13 +416,14 @@ var contactsView = {
 
         var contactId = e.button[0].attributes["data-contact"].value;
         var contact = contactModel.findContactByUUID(contactId);
-        var channels = channelModel.findContactChannels(contactId);
-        var groups = groupModel._findContactGroups(contactId);
+        /*var channels = channelModel.findContactChannels(contactId);
+        var groups = groupModel._findContactGroups(contactId);*/
 
-        modalView.open("Are you sure?", contact.name  + " will be removed from your contacts.", "Recall", function () {
+        var contactStr = contact.name + " ("+ contact.alias + ")";
+        modalView.open("Are you sure?", contactStr + " will be removed from your contacts.   Your private chat with them will also be deleted.", "Delete", function () {
             contactModel.deleteContact(contactId);
 
-            var string = "Deleted contact: " + contact.name + " ("+ contact.alias + ")" ;
+            var string = "Deleted contact: " + contactStr ;
 
             mobileNotify(string);
             APP.kendo.navigate('#contacts');
@@ -803,7 +803,6 @@ var addContactView = {
             addContactView._phoneValid = false;
             return;
         }
-
         memberdirectory.findMemberByPhone(phone, function (user) {
             if (user !== null) {
                 mobileNotify(user.name + " is a intelligram member!");
@@ -852,8 +851,15 @@ var addContactView = {
             addContactView._emailValid = false;
             mobileNotify(email + " + is not a valid email address");
         } else {
-            addContactView._emailValid = true;
-            addContactView.isContactValid();
+
+            var contact = contactModel.findContactByEmail(email);
+            if (contact !== undefined && contact !== null) {
+                mobileNotify("Contact : " + contact.name + " has email " + contact.email);
+            } else {
+                addContactView.isContactValid();
+                addContactView._emailValid = true;
+            }
+
         }
     },
 
@@ -879,7 +885,6 @@ var addContactView = {
     },
     
     openModal : function (contact) {
-
 
         addContactView._guid = uuid.v4();
 
