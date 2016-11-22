@@ -645,6 +645,7 @@ var userStatus = {
     _ggClass : 'userStatus',
     _version : 1,
     _statusObj : new kendo.data.ObservableObject(),
+    _prevObj : null,
     _status : null,
     _id : null,
     _needsSync: false,
@@ -773,9 +774,7 @@ var userStatus = {
 
         data.create(userStatus._statusObj,
             function(data){
-
                 userStatus.update();
-
             },
             function(error){
                 ggError("User Status create error : " + JSON.stringify(error));
@@ -783,33 +782,38 @@ var userStatus = {
     },
 
     isChanged : function () {
-        var status = userStatus._statusObj, user = userModel._user;
+        if (userStatus._prevObj === null) {
+            userStatus._prevObj = JSON.parse(JSON.stringify(userStatus._statusObj));
+            return (true);
+        }
 
-        if (status.isAvailable !== user.isAvailable) {
+        var status = userStatus._statusObj, prev = userStatus._prevObj ;
+
+        if (status.isAvailable !== prev.isAvailable) {
             return(true);
         }
 
-        if (status.statusMessage !== user.statusMessage) {
+        if (status.statusMessage !== prev.statusMessage) {
             return(true);
         }
 
-        if (status.lat !== user.lat) {
+        if (status.lat !== prev.lat) {
             return(true);
         }
 
-        if (status.lng !== user.lng) {
+        if (status.lng !== prev.lng) {
             return(true);
         }
 
-        if (status.currentPlace !== user.currentPlace) {
+        if (status.currentPlace !== prev.currentPlace) {
             return(true);
         }
 
-        if (status.currentPlaceUUID !== user.currentPlaceUUID) {
+        if (status.currentPlaceUUID !== prev.currentPlaceUUID) {
             return(true);
         }
 
-        if (status.isCheckedIn !== user.isCheckedIn) {
+        if (status.isCheckedIn !== prev.isCheckedIn) {
             return(true);
         }
 
@@ -890,6 +894,8 @@ var userStatus = {
 
         userStatusChannel.sendStatus(status);
 
+        userStatus._prevObj = JSON.parse(JSON.stringify(userStatus._statusObj));
+
     },
 
     update : function () {
@@ -897,24 +903,8 @@ var userStatus = {
 
         var broadcast = userStatus.isChanged();
 
-        status.set('userUUID', userModel._user.userUUID);
-        status.set('isAvailable', userModel._user.isAvailable);
-        status.set('isVisible', userModel._user.isVisible);
-        status.set('statusMessage', userModel._user.statusMessage);
-        status.set('currentPlace', userModel._user.currentPlace);
-        var lat = userModel._user.lat;
-        /* if (lat !== null)
-         lat = lat.toFixed(6);*/
-        status.set('lat', userModel._user.lat);
-        var lng = userModel._user.lng;
-        /* if (lng !== null)
-         lng = lng.toFixed(6);*/
-        status.set('lng', userModel._user.lng);
         var gp = {Longitude : parseFloat(userModel._user.lng), Latitude : parseFloat(userModel._user.lat)};
         status.set("geoPoint", gp);
-        status.set('googlePlaceId', userModel._user.googlePlaceId);
-        status.set('currentPlaceUUID', userModel._user.currentPlaceUUID);
-        status.set('isCheckedIn', userModel._user.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
 
 
