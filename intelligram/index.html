@@ -1608,70 +1608,63 @@
 
 
 
-<div data-role="modalview" id="modalview-groupActions" data-model="groupActionView._activeGroup"  style="width: 90%; min-height:65%; display: none;">
-	<div class="modal-top">
-		<a data-role="button" class="modal-close" data-click="groupActionView.closeModal">
-			<div class="close-white" data-grunticon-embed></div>
+<div data-role="modalview" id="modalview-groupActions" data-model="groupActionView._activeGroup"  style="width: 90%; display: none;">
+	<div>
+		<p class="textClamp groupAction-title" data-bind="text: title"></p>
+		<p class="textClamp helper">
+			<span data-bind="text: ux_membersCount"></span>
+			<span data-bind="text: description"></span>
+		</p>
+
+		<div class="groupActions-box">
+			<p class="groupAction-section">intelligram</p>
+			<ul class="list-unstyled">
+				<li>
+					<a class="btnClear" data-role="button" data-click="groupActionView.groupTracking" >
+						<span class="user-status-icon icon-tracking-active icon-action" data-grunticon-embed></span>
+						<span id="groupActions-track">Start Tracking</span>
+					</a>
+				</li>
+				<li>
+					<a class="btnClear" data-role="button" data-click="groupActionView.newChat" >
+						<span class="user-status-icon action-chat icon-action" data-grunticon-embed></span>
+						Create New Chat
+					</a>
+				</li>
+				<li>
+					<a class="btnClear" data-role="button" data-click="groupActionView.newGallery" >
+						<span class="user-status-icon icon-gallery icon-action" data-grunticon-embed></span>
+						Create New Gallery
+					</a>
+				</li>
+				<li>
+					<a data-role="button" data-click="groupActionView.showGroupMap"  class="btnClear">
+						<span class="user-status-icon action-map icon-action" data-grunticon-embed></span>
+						Show members on map
+					</a>
+				</li>
+			</ul>
+			<p class="groupAction-section">
+				Device
+			</p>
+			<ul class="list-unstyled">
+				<li>
+					<a class="btnClear" data-role="button" data-click="groupActionView.sendEmail">
+						<span class="user-status-icon icon-ghostMail icon-action" data-grunticon-embed></span>
+						Send Email
+					</a>
+				</li>
+				<li>
+					<a class="btnClear" data-role="button" data-click="groupActionView.sendSMS">
+						<span class="user-status-icon icon-sms icon-action" data-grunticon-embed></span>
+						Send SMS
+					</a>
+				</li>
+			</ul>
+		</div>
+		<a class="btnFull-modal btnPrimary" data-role="button" data-click="groupActionView.closeModal">
+			Done
 		</a>
-
-		<img class="circle-img-lg" id="groupProfileImg" data-bind="" />
-
-		<h2 class="preMotionUp textClamp">
-			<span class="primaryName" data-bind="text: title"></span>
-		</h2>
-
-		<p class="preMotionUp">
-			<span class="contactStatusMessage" data-bind="text: description"></span>
-		</p>
-		<p class="preMotionUp">
-			<a data-role="button" data-click="groupActionView.showGroupMap"  class="btnClear-grey ">Show On Map</a>
-		</p>
-	</div>
-	<div class="modal-bottom">
-		<ul class="list-inline hasMotion" id="groupActionBtns">
-			<li>
-				<a class="btnClear" data-role="button" id="groupActions-track" data-click="groupActionView.groupTracking" >
-					<div class="user-status-icon icon-tracking listIcon" data-grunticon-embed></div>
-					Start Tracking
-				</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="groupActionView.groupChat" >
-					<div class="user-status-icon contacts listIcon" data-grunticon-embed></div>
-					Group Chat
-				</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="groupActionView.groupGallery" >
-					<div class="user-status-icon icon-gallery listIcon" data-grunticon-embed></div>
-					Group Gallery
-				</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="groupActionView.sendEmail">
-					<div class="user-status-icon icon-ghostMail listIcon" data-grunticon-embed></div>
-					Send Email
-				</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="groupActionView.sendSMS">
-					<div class="user-status-icon icon-sms listIcon" data-grunticon-embed></div>
-					Send SMS
-				</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="groupActionView.AddChat" >
-					<div class="user-status-icon contacts listIcon" data-grunticon-embed></div>
-					Create New Chat
-				</a>
-			</li>
-			<li>
-				<a class="btnClear" data-role="button" data-click="groupActionView.AddGallery" >
-					<div class="user-status-icon icon-gallery listIcon" data-grunticon-embed></div>
-					Create New Gallery
-				</a>
-			</li>
-		</ul>
 	</div>
 </div>
 

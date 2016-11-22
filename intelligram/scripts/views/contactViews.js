@@ -1966,10 +1966,10 @@ var groupActionView = {
     updateTrackingUX : function () {
         var tracking = groupActionView._activeGroup.activeTracking;
         if (tracking) {
-            $("#groupActions-track").html('<img src="images/icon-tracking-active.svg" /> Stop Tracking');
+            $("#groupActions-track").html('Stop Tracking');
 
         } else {
-            $("#groupActions-track").html('<img src="images/icon-tracking.svg" /> Start Tracking');
+            $("#groupActions-track").html('Start Tracking');
         }
     },
 
@@ -1978,7 +1978,7 @@ var groupActionView = {
 
         tracking = !tracking;
 
-        groupActionView._activeGroup.activeTracking.set('activeTracking', tracking);
+        groupActionView._activeGroup.set('activeTracking', tracking);
 
         groupActionView.updateTrackingUX();
     },
@@ -2133,7 +2133,8 @@ var groupActionView = {
     },
 
     showGroupMap : function (e) {
-
+        // todo - wire group chat
+        mobileNotify("Coming soon");
     },
 
     groupChat : function (e) {
@@ -2183,23 +2184,26 @@ var groupActionView = {
 
 
     newChat : function (e) {
-
+        // todo - wire group chat
+        mobileNotify("Coming soon");
     },
 
     newGallery : function (e) {
-
+        // todo - wire group gallery
+        mobileNotify("Coming soon");
     },
 
     sendEmail : function (e) {
         _preventDefault(e);
-
-        var email = contactActionView._activeContact.get('email');
+        // todo - wire group email
+        mobileNotify("Coming soon");
+        /*var email = contactActionView._activeContact.get('email');
         var properties = {
             to: email
         };
         cordova.plugins.email.open(properties, function () {
             mobileNotify("Email sent...");
-        }, this);
+        }, this);*/
     },
 
     sendSMS : function (e) {
@@ -2231,7 +2235,6 @@ var groupActionView = {
 
 
     setGroup : function (thisGroup) {
-
         groupActionView._activeGroupId = thisGroup.uuid;
         groupActionView._activeGroup.set('title', thisGroup.title);
         groupActionView._activeGroup.set('description', thisGroup.description);
@@ -2242,6 +2245,14 @@ var groupActionView = {
         groupActionView._activeGroup.set('tags', thisGroup.tags);
         groupActionView._activeGroup.set('tagString',thisGroup.tagString);
         groupActionView._activeGroup.set('isAvailable', thisGroup.isAvailable);
+        var groupCount = thisGroup.members.length;
+        if(groupCount > 1){
+            groupActionView._activeGroup.set('ux_membersCount', groupCount + " members");
+        } else if(groupCount === 1){
+            groupActionView._activeGroup.set('ux_membersCount', groupCount + " member");
+        } else {
+            groupActionView._activeGroup.set('ux_membersCount', "No members");
+        }
 
     }
 
