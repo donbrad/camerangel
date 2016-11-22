@@ -549,7 +549,7 @@ var userModel = {
 
             message: function(m) {
                 // handle message
-                var channelName = m.channel; // The channel for which the message belongs
+                var channelId = m.channel; // The channel for which the message belongs
                 var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
                 var timeToken = m.timetoken; // Publish timetoken
                 var msg = m.message; // The Payload

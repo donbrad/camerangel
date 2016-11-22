@@ -375,17 +375,12 @@ var userStatusChannel = {
         }*/
     },
 
-    channelStatusRead : function (message) {
+    channelStatusRead : function (msg) {
 
-        if (message === undefined || message === null) {
+        if (msg === undefined || msg === null) {
             return;
         }
 
-        var msg = message.message, timeStamp = message.timestamp;
-
-        console.log("Status : " + JSON.stringify(msg));
-
-      //  console.log("Status : " + JSON.stringify(msg));
         switch(msg.msgType) {
 
          case 'status' :
