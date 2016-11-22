@@ -305,10 +305,11 @@ var appDataChannel = {
             return;
         }
 
-        m.set('processed', true);
-        m.set('processTime', ggTime.currentTime());
+        // Messages are flattened to basic js objects - no set...
+        m.processed = true;
+        m.sprocessTime = ggTime.currentTime();
 
-        appDataChannel.messagesDS.sync();
+       // appDataChannel.messagesDS.sync();
 
         switch(m.type) {
             //  { type: 'newUser',  userId: <userUUID>,  phone: <phone>, email: <email>}
