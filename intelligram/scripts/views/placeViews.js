@@ -82,8 +82,12 @@ var placesView = {
 
         var placeUUID = e.button[0].dataset["uuid"];
         var place = placesModel.getPlaceModel(placeUUID);
-        if (place !== undefined)
-    	    placesModel.deletePlace(placeUUID);
+        if (place !== undefined && place !== null) {
+            modalView.open("Are you sure?", place.name + " will be removed from your Places. ", "Delete", function () {
+                placesModel.deletePlace(placeUUID);
+            });
+        }
+
 
 
     },

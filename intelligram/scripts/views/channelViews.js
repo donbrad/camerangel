@@ -266,10 +266,15 @@ var channelsView = {
         e.preventDefault();
 
         var channelUUID = e.button[0].attributes["data-channel"].value;
+        var channel = channelModel.findChannelModel(channelUUID);
 
-        var channelListModel = channelsView.findChannelModel(channelUUID);
-        channelsView._channelListDS.remove(channelListModel);
-        channelModel.deleteChannel(channelUUID);
+        modalView.open("Are you sure?", channel.name + " will be removed from your Channels. ", "Delete", function () {
+            var channelListModel = channelsView.findChannelModel(channelUUID);
+            channelsView._channelListDS.remove(channelListModel);
+            
+            channelModel.deleteChannel(channelUUID);
+        });
+
 
     },
 

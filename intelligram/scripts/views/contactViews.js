@@ -381,9 +381,10 @@ var contactsView = {
         var groupId = e.button[0].attributes["data-group"].value;
         // todo - wire up
         var group = groupModel.findGroup(groupId);
-
         if (group !== undefined && group !== null) {
-            groupModel.deleteGroup(group);
+            modalView.open("Are you sure?", group.title + " will be removed from your Groups. ", "Delete", function () {
+                groupModel.deleteGroup(group);
+            });
         }
     },
 
