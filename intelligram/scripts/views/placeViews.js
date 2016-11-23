@@ -85,7 +85,7 @@ var placesView = {
         if (place !== undefined && place !== null) {
             modalView.open("Are you sure?", place.name + " will be removed from your Places. ", "Delete", function () {
                 placesModel.deletePlace(placeUUID);
-            });
+            },"Cancel", modalView.close);
         }
 
 

@@ -271,9 +271,9 @@ var channelsView = {
         modalView.open("Are you sure?", channel.name + " will be removed from your Channels. ", "Delete", function () {
             var channelListModel = channelsView.findChannelModel(channelUUID);
             channelsView._channelListDS.remove(channelListModel);
-            
+
             channelModel.deleteChannel(channelUUID);
-        });
+        },"Cancel", modalView.close);
 
 
     },

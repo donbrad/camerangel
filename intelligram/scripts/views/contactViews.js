@@ -384,7 +384,7 @@ var contactsView = {
         if (group !== undefined && group !== null) {
             modalView.open("Are you sure?", group.title + " will be removed from your Groups. ", "Delete", function () {
                 groupModel.deleteGroup(group);
-            });
+            }, "Cancel", modalView.close);
         }
     },
 
@@ -427,7 +427,7 @@ var contactsView = {
             var string = "Deleted contact: " + contactStr ;
 
             mobileNotify(string);
-            APP.kendo.navigate('#contacts');
+           // APP.kendo.navigate('#contacts');
         }, "Cancel", modalView.close);
 
 
