@@ -647,7 +647,16 @@ var userStatus = {
 
     _ggClass : 'userStatus',
     _version : 1,
-    _statusObj : new kendo.data.ObservableObject(),
+    _statusObj : new kendo.data.ObservableObject({
+        lat: 0, lng: 0,
+        isAvailable : false,
+        isVisible : false,
+        isCheckedIn : false,
+        statusMessage : null,
+        currentPlace : null,
+        currentPlaceUUID : null,
+        googlePlaceId : null
+    }),
     _prevObj : null,
     _status : null,
     _id : null,
@@ -655,25 +664,23 @@ var userStatus = {
 
 
     init: function () {
-
+        userStatus.loadLocal();
     },
 
     initStatus : function (status) {
         var stat = userStatus._statusObj;
 
+        stat.lat = 0;
+        stat.lng = 0;
+        stat.isAvailable = false;
+        stat.isVisible = false;
+        stat.isCheckedIn = false;
+        stat.statusMessage = null;
+        stat.currentPlace = null;
+        stat.currentPlaceUUID = null;
+        stat.googlePlaceId = null;
 
-
-        if (status === null) {
-            stat.lat = 0;
-            stat.lng = 0;
-            stat.isAvailable = false;
-            stat.isVisible = false;
-            stat.isCheckedIn = false;
-            stat.statusMessage = null;
-            stat.currentPlace = null;
-            stat.currentPlaceUUID = null;
-            stat.googlePlaceId = null;
-        } else {
+        if (status !== null) {
             stat.lat = status.lat;
             stat.lng = status.lng;
             stat.isAvailable = status.isAvailable;
@@ -685,7 +692,7 @@ var userStatus = {
             stat.googlePlaceId = status.googlePlaceId;
         }
 
-
+        userStatus.cachePrevious();
     },
 
 
@@ -701,6 +708,7 @@ var userStatus = {
         if (statusRaw !== undefined) {
             status = JSON.parse(statusRaw);
             userStatus.initStatus(status);
+
         } else {
             userStatus.initStatus(null);
         }
@@ -889,6 +897,9 @@ var userStatus = {
 
     },
 
+    cachePrevious : function () {
+        userStatus._prevObj = JSON.parse(JSON.stringify(userStatus._statusObj));
+    },
 
     updateStatus : function () {
         var status = userStatus._statusObj;
@@ -897,7 +908,7 @@ var userStatus = {
 
         userStatusChannel.sendStatus(status);
 
-        userStatus._prevObj = JSON.parse(JSON.stringify(userStatus._statusObj));
+       userStatus.cachePrevious();
 
     },
 

@@ -253,7 +253,12 @@ var userStatusChannel = {
 
         var msgID = uuid.v4();
 
-        var truncStr = status.statusMessage.smartTruncate(32, true);
+        var truncStr = "";
+
+        if (status.statusMessage !== undefined && status.statusMessage !== null) {
+            status.statusMessage.smartTruncate(32, true);
+        }
+
         var availStr = ' (avail)';
         if (!status.isAvailable) {
             availStr = ' (busy)';
