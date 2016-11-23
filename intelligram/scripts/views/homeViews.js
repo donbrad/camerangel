@@ -427,11 +427,9 @@ var homeView = {
         } else {
             $('#home-verify-div').removeClass('hidden');
         }
-
     },
 
     onShow: function (e) {
-
 
         // Set user availability
         ux.updateHeaderStatusImages();
@@ -442,13 +440,9 @@ var homeView = {
 
         homeView.updateValidationUX();
 
-        /*appDataChannel.history();
-        userDataChannel.history();*/
-
         notificationModel.processUnreadChannels();
 
         todayModel.objectsDS.fetch();
-
 
     },
 
