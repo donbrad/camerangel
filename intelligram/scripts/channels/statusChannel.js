@@ -97,7 +97,8 @@ var userStatusChannel = {
             if (contact.contactUUID !== null) {
                 var statusUUID = 'status-' + contact.contactUUID;
                     userStatusChannel.statusArray.push(statusUUID);
-                if (contact.activeTracking) {
+
+                if (contact.activeTracking !== undefined && contact.activeTracking) {
                     userStatusChannel.trackArray.push(statusUUID);
                 }
             }
