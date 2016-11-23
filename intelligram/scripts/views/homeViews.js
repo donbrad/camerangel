@@ -326,7 +326,6 @@ var homeView = {
             }
         });
 
-       // privateNotesView.onInit();
 
         homeView.scroller = e.view.scroller;
 

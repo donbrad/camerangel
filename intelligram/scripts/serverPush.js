@@ -72,6 +72,15 @@ var serverPush = {
         if (e.isMessage !== undefined && e.isMessage) {
             //This is userDataChannel Notification
             if (e.channelUUID !== undefined) {
+
+                channelModel._lastMessageTime[e.channelUUID] = ggTime.currentTimeInSeconds();
+                if (channelModel._unreadList[e.channelUUID] === undefined) {
+                    channelModel._unreadList[e.channelUUID] = 1;
+                } else {
+                    channelModel._unreadList[e.channelUUID] = channelModel._unreadList[e.channelUUID] + 1;
+                }
+
+
                 // Update unread  unless it's the current channel
                 if (e.channelUUID !== channelView._channelUUID) {
                     if (e.senderId !== undefined && e.senderId !== userModel._user.userUUID) {
@@ -79,7 +88,7 @@ var serverPush = {
                             channelModel.updatePrivateUnreadCount(e.channelUUID, 1);
                         } else {
                             channelModel.updateUnreadCount(e.channelUUID, 1);
-                            channelModel.updateActiveChannel(e.channelUUID);
+
                         }
                     }
                 }
@@ -118,7 +127,7 @@ var serverPush = {
             if (e.badge === 0) {
                 serverPush._badgeCount = 0;
             } else {
-                serverPush._badgeCount += parseInt(e.badge);
+                serverPush._badgeCount += 1;
             }
 
             serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);

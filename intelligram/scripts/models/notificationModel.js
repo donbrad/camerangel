@@ -60,14 +60,12 @@ var notificationModel = {
             notificationModel._actionCache [notificationModel._actionMap.name] = notificationModel._actionMap.action;
         }
 
-        notificationModel.notificationDS.bind('requestEnd',function (e) {
-            var response = e.response,  type = e.type;
+        notificationModel.notificationDS.bind('change',function (e) {
 
-            if (type === 'read' && response) {
-                if (!notificationModel._fetched) {
+            var changedNotifications = e.items;
+            if (e.action === undefined) {
+                if (changedNotifications !== undefined && !notificationModel._fetched) {
                     notificationModel._fetched = true;
-                    appDataChannel.history();
-                    userDataChannel.history();
                     notificationModel._actionMap =[
                         {name: 'verifyemail', action : verifyEmailModal.openModal },
                         {name: 'verifyphone', action : verifyPhoneModal.openModal }
@@ -76,9 +74,7 @@ var notificationModel = {
                         notificationModel._actionCache [notificationModel._actionMap.name] = notificationModel._actionMap.action;
                     }
 
-                    // Perform initial load logic
                 }
-
             }
         });
 
@@ -254,8 +250,8 @@ var notificationModel = {
             '#contacts', true);
     },
 
-    addUnreadNotification : function (channelUUID, channelName, unreadCount) {
-        this.newNotification(this._unreadCount, channelUUID, channelName, null, unreadCount + " new messages.", 'Read Messages', null,
+    addUnreadNotification : function (channelUUID, channelName, unreadCount, lastMessage) {
+        this.newNotification(this._unreadCount, channelUUID, channelName, lastMessage, unreadCount + " new messages.", 'Read Messages', null,
         '#channel?channelUUID='+channelUUID, true);
     },
 
@@ -308,12 +304,12 @@ var notificationModel = {
         return(contact);*/
     },
 
-    updateUnreadNotification : function (channelUUID, channelName, unreadCount) {
+    updateUnreadNotification : function (channelUUID, channelName, unreadCount, lastMessage) {
         var notObj = notificationModel.findNotificationByPrivateId(channelUUID);
 
         if (notObj === undefined ) {
             if (unreadCount > 0)
-                notificationModel.addUnreadNotification(channelUUID, channelName, unreadCount);
+                notificationModel.addUnreadNotification(channelUUID, channelName, unreadCount, lastMessage);
         } else {
             if (unreadCount === undefined || unreadCount === 0) {
 
@@ -322,6 +318,7 @@ var notificationModel = {
 
             } else {
                 notObj.set('unreadCount', notObj.unreadCount + unreadCount);
+                notObj.set('lastMessage', lastMessage);
 
                 notificationModel.notificationDS.sync();
 
@@ -332,7 +329,21 @@ var notificationModel = {
 
     processUnreadChannels : function () {
         // app is resuming / becoming active -- add unread notifications
-        var channels = channelModel.getUnreadChannels();
+
+        var keys =  Object.keys(channelModel._unreadList);
+        var length = keys.length;
+
+        for (var i=0; i<length; i++) {
+            var channelId = keys[i];
+            var channel = channelModel.findChannelModel(channelId);
+            var unreadCount = channelModel._unreadList[channelId];
+            var lastMessage = channelModel._lastMessageTime[channelId]
+
+            notificationModel.updateUnreadNotification(channel.channelUUID, channel.name, unreadCount, lastMessage);
+        }
+
+
+       /* var channels = channelModel.getUnreadChannels();
 
         for (var i=0; i<channels.length; i++) {
             var channel = channels[i];
@@ -342,7 +353,7 @@ var notificationModel = {
             notificationModel.updateUnreadNotification(channel.channelUUID, channel.name, Number(channel.unreadCount));
 
 
-        }
+        }*/
     },
 
 
