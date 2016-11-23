@@ -40,21 +40,21 @@ var userStatusChannel = {
         userStatusChannel.channelUUID = 'status-' + userId;
         userStatusChannel._inited = true;
         userStatusChannel.messagesDS = new kendo.data.DataSource({
-            type: 'everlive',
+           /* type: 'everlive',
             transport: {
                 typeName: 'statuschannel',
                 dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField }
-            },
+            },*/
             sort : {
                 field : "time",
                 dir: 'asc'
             }
         });
 
-        userStatusChannel.messagesDS.bind("change", function (e) {
+       /* userStatusChannel.messagesDS.bind("change", function (e) {
 
             var changedChannels = e.items;
             if (e.action === undefined) {
@@ -70,7 +70,7 @@ var userStatusChannel = {
             }
         });
 
-        userStatusChannel.messagesDS.fetch();
+        userStatusChannel.messagesDS.fetch();*/
     },
 
     // Process contacts to build statusArray and trackArray
