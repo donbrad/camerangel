@@ -3290,3 +3290,141 @@ var mapViewModal = {
 };
 
 
+/*
+ * groupMapModal
+ *
+ */
+
+var groupMapModal = {
+    _inited: false,
+    _memberList : [],
+    _markerList : [],
+    _lat: null,
+    _lng: null,
+    _name: null,
+    _returnModal : null,
+    _zoom: 14,  // Default zoom for the map.
+
+    onInit: function (e) {
+        //_preventDefault(e);
+    },
+
+    buildMemberList : function (members) {
+        groupMapModal._memberList = [];
+
+        for (var i=0; i<members; i++) {
+           var contact = contactModel.findContactList(members[i]);
+           if (contact !== undefined && contact !== null) {
+               groupMapModal._memberList.push(contact);
+           }
+        }
+    },
+
+    buildMarkerList : function () {
+        var bounds = new google.maps.LatLngBounds();
+        groupMapModal._markerList = [];
+
+        for (var i=0; i<groupMapModal._memberList; i++) {
+            var member = groupMapModal._memberList[i];
+
+            var latlng = new google.maps.LatLng(member.lat, member.lng);
+            var indexText = i + 1;
+            var labelText = indexText.toString();
+            var labelObj = {
+                color: "#fff",
+                fontWeight: "600",
+                fontSize: "1.5em",
+                text: labelText
+            };
+
+            if (member.lat !== 0 && member.lng !== 0) {
+                var marker = new google.maps.Marker({
+                    markerId : i,
+                    position: {lat: member.lat, lng: nenber.lng},
+                    label: labelObj,
+                   // icon: imageObj,
+                    map: groupMapModal.googleMap
+                });
+            }
+
+            //marker.addListener('click', locationView.markerClick);
+
+           groupMapModal._markerList.push(marker);
+
+            bounds.extend(latlng);
+        }
+
+        groupMapModal.googleMap.fitBounds(bounds);
+
+    },
+
+    openModal: function (title,  members,  callback) {
+        // _preventDefault(e);
+        var valid = false;
+
+        if (members === undefined || members === null) {
+            ggError("No members to display!");
+            return;
+        }
+
+        groupMapModal._memberList = [];
+        groupMapModal._markerList = [];
+
+        if (title !== null) {
+            var titleStr = title.smartTruncate(16, true);
+            $('#groupMapModal-title').html(titleStr);
+        }
+
+
+        if (callback !== undefined) {
+            groupMapModal._returnModal = callback;
+        }
+
+
+        var options = {
+            zoom: groupMapModal._zoom,
+            center: new google.maps.LatLng(mapModel._lat, mapModel._lng)
+        };
+
+
+        if (!groupMapModal._inited) {
+
+            var mapElement = $("#groupMapModal-mapdiv");
+            //   mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), options);
+            groupMapModal.googleMap = new google.maps.Map(mapElement[0], options);
+
+            mapViewModal._inited = true;
+        }
+
+
+        $("#groupMapModal").data("kendoMobileModalView").open();
+
+        groupMapModal.buildMemberList(members);
+        groupMapModal.buildMarkerList();
+
+
+    },
+
+
+    onDone: function (e) {
+        _preventDefault(e);
+
+
+        // Delete map markers on close
+        if ( groupMapModal._markerList.length > 0) {
+
+            for (var i=0; i< groupMapModal._markerList.length; i++){
+                var marker = groupMapModal._markerList[i];
+                marker.setMap(null);
+            }
+        }
+
+        $("#groupMapModal").data("kendoMobileModalView").close();
+
+
+        if (groupMapModal._returnModal !== null) {
+            groupMapModal._returnModal();
+        }
+
+    }
+};

@@ -1957,8 +1957,6 @@ var groupActionView = {
 
     },
 
-
-
     setReturnModal : function (modalId) {
         groupActionView._returnModalId = modalId;
     },
@@ -2134,7 +2132,11 @@ var groupActionView = {
 
     showGroupMap : function (e) {
         // todo - wire group chat
-        mobileNotify("Coming soon");
+
+        groupMapModal.openModal(groupActionView._activeGroup.title, groupActionView._activeGroup.members, function () {
+
+        });
+
     },
 
     groupChat : function (e) {
@@ -2245,6 +2247,7 @@ var groupActionView = {
         groupActionView._activeGroup.set('tags', thisGroup.tags);
         groupActionView._activeGroup.set('tagString',thisGroup.tagString);
         groupActionView._activeGroup.set('isAvailable', thisGroup.isAvailable);
+        groupActionView._activeGroup.set('members', thisGroup.members);
         var groupCount = thisGroup.members.length;
         if(groupCount > 1){
             groupActionView._activeGroup.set('ux_membersCount', groupCount + " members");
