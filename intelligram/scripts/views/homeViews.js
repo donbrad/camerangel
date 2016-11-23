@@ -442,9 +442,10 @@ var homeView = {
 
         homeView.updateValidationUX();
 
-        appDataChannel.history();
-        userDataChannel.history();
+        /*appDataChannel.history();
+        userDataChannel.history();*/
 
+        notificationModel.processUnreadChannels();
 
         todayModel.objectsDS.fetch();
 
