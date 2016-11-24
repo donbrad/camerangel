@@ -3301,37 +3301,44 @@ var mapViewModal = {
 
 var groupMapModal = {
     _inited: false,
-    _memberList : [],
+    _memberList : null,
     _markerList : [],
     _lat: null,
     _lng: null,
     _name: null,
     _returnModal : null,
+    _bounds : null,
     _zoom: 14,  // Default zoom for the map.
 
     onInit: function (e) {
         //_preventDefault(e);
+
     },
 
     buildMemberList : function (members) {
-        groupMapModal._memberList = [];
+        groupMapModal._memberList.data([]);
 
         for (var i=0; i<members.length; i++) {
            var contact = contactModel.findContactListUUID(members[i]);
            if (contact !== undefined && contact !== null) {
-               groupMapModal._memberList.push(contact);
+               groupMapModal._memberList.add(contact);
            }
         }
     },
 
     buildMarkerList : function () {
-        var bounds = new google.maps.LatLngBounds();
+        groupMapModal._bounds = new google.maps.LatLngBounds();
+        var length = groupMapModal._memberList.total();
+
         groupMapModal._markerList = [];
+        google.maps.event.trigger(groupMapModal.googleMap, "resize");
 
-        for (var i=0; i<groupMapModal._memberList.length; i++) {
-            var member = groupMapModal._memberList[i];
+        for (var i=0; i<length; i++) {
+            var member = groupMapModal._memberList.at(i);
 
-            var latlng = new google.maps.LatLng(parseFloat(member.lat), parseFloat(member.lng));
+            var lat  = parseFloat(member.lat);
+            var lng = parseFloat(member.lng);
+            var latlng = new google.maps.LatLng(lat,lng );
             var indexText = i + 1;
             var labelText = indexText.toString();
             var labelObj = {
@@ -3341,10 +3348,10 @@ var groupMapModal = {
                 text: labelText
             };
 
-            if (member.lat !== 0 && member.lng !== 0) {
+            if (lat !== 0 && lng !== 0) {
                 var marker = new google.maps.Marker({
                     markerId : i,
-                    position: {lat: parseFloat(member.lat), lng: parseFloat(member.lng)},
+                    position: {lat: lat, lng: lng},
                     label: labelObj,
                    // icon: imageObj,
                     map: groupMapModal.googleMap
@@ -3354,11 +3361,9 @@ var groupMapModal = {
             //marker.addListener('click', locationView.markerClick);
 
            groupMapModal._markerList.push(marker);
-
-            bounds.extend(latlng);
+            groupMapModal._bounds.extend(latlng);
         }
 
-        groupMapModal.googleMap.fitBounds(bounds);
 
     },
 
@@ -3371,7 +3376,6 @@ var groupMapModal = {
             return;
         }
 
-        groupMapModal._memberList = [];
         groupMapModal._markerList = [];
 
         if (title !== null) {
@@ -3385,19 +3389,18 @@ var groupMapModal = {
         }
 
 
-        var options = {
-            zoom: groupMapModal._zoom,
-            center: new google.maps.LatLng(mapModel._lat, mapModel._lng)
-        };
+        var options = { center : {lat: mapModel.lat, lng: mapModel.lng}, streetViewControl: true, mapTypeControl: true, zoom: 8, minZoom: 3, maxZoom: 16 };
 
 
         if (!groupMapModal._inited) {
 
-            var mapElement = $("#groupMapModal-mapdiv");
-            //   mapModel.googleMapModal = new google.maps.Map(document.getElementById('mapModalView-mapdiv'), options);
-            groupMapModal.googleMap = new google.maps.Map(mapElement[0], options);
+            groupMapModal._memberList = new kendo.data.DataSource();
 
-            mapViewModal._inited = true;
+            var mapElement = $("#groupMapModal-mapdiv");
+            groupMapModal.googleMap = new google.maps.Map(mapElement[0], options);
+            google.maps.event.trigger(groupMapModal.googleMap, 'resize');
+
+            groupMapModal._inited = true;
         }
 
 
@@ -3405,6 +3408,7 @@ var groupMapModal = {
 
         groupMapModal.buildMemberList(members);
         groupMapModal.buildMarkerList();
+        groupMapModal.googleMap.fitBounds(groupMapModal._bounds);
 
 
     },
@@ -3413,7 +3417,7 @@ var groupMapModal = {
     onDone: function (e) {
         _preventDefault(e);
 
-
+        groupMapModal._bounds = null;
         // Delete map markers on close
         if ( groupMapModal._markerList.length > 0) {
 
