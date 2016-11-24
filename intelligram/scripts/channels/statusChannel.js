@@ -104,9 +104,9 @@ var userStatusChannel = {
             }
         }
 
-        APP.pubnub.subscribe({
+        /*APP.pubnub.subscribe({
             channels: userStatusChannel.statusArray
-        });
+        });*/
 
         //todo: don re-enable status channels
        // userStatusChannel.trackContacts();
