@@ -3316,8 +3316,8 @@ var groupMapModal = {
     buildMemberList : function (members) {
         groupMapModal._memberList = [];
 
-        for (var i=0; i<members; i++) {
-           var contact = contactModel.findContactList(members[i]);
+        for (var i=0; i<members.length; i++) {
+           var contact = contactModel.findContactListUUID(members[i]);
            if (contact !== undefined && contact !== null) {
                groupMapModal._memberList.push(contact);
            }
@@ -3328,10 +3328,10 @@ var groupMapModal = {
         var bounds = new google.maps.LatLngBounds();
         groupMapModal._markerList = [];
 
-        for (var i=0; i<groupMapModal._memberList; i++) {
+        for (var i=0; i<groupMapModal._memberList.length; i++) {
             var member = groupMapModal._memberList[i];
 
-            var latlng = new google.maps.LatLng(member.lat, member.lng);
+            var latlng = new google.maps.LatLng(parseFloat(member.lat), parseFloat(member.lng));
             var indexText = i + 1;
             var labelText = indexText.toString();
             var labelObj = {
@@ -3344,7 +3344,7 @@ var groupMapModal = {
             if (member.lat !== 0 && member.lng !== 0) {
                 var marker = new google.maps.Marker({
                     markerId : i,
-                    position: {lat: member.lat, lng: nenber.lng},
+                    position: {lat: parseFloat(member.lat), lng: parseFloat(member.lng)},
                     label: labelObj,
                    // icon: imageObj,
                     map: groupMapModal.googleMap
@@ -3376,7 +3376,7 @@ var groupMapModal = {
 
         if (title !== null) {
             var titleStr = title.smartTruncate(16, true);
-            $('#groupMapModal-title').html(titleStr);
+            $('#groupMapModal-title').html(titleStr + " Map");
         }
 
 
