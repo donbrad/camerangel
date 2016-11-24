@@ -3317,7 +3317,8 @@ var groupMapModal = {
 
     buildMemberList : function (members) {
         groupMapModal._memberList.data([]);
-
+        var user = {name: "Me", lat : mapModel.lat.toString(), lng: mapModel.lng.toString(), address: mapModel.currentAddressString};
+        groupMapModal._memberList.add(user);
         for (var i=0; i<members.length; i++) {
            var contact = contactModel.findContactListUUID(members[i]);
            if (contact !== undefined && contact !== null) {
@@ -3336,7 +3337,7 @@ var groupMapModal = {
         for (var i=0; i<length; i++) {
             var member = groupMapModal._memberList.at(i);
 
-            var lat  = parseFloat(member.lat);
+            var lat = parseFloat(member.lat);
             var lng = parseFloat(member.lng);
             var latlng = new google.maps.LatLng(lat,lng );
             var indexText = i + 1;
