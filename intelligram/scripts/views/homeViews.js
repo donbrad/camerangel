@@ -169,9 +169,9 @@ var homeView = {
         var verified = userModel._user.phoneValidated;
         var name = userModel._user.name;
 
-        var status = userModel._user.statusMessage;
-        var available = userModel._user.isAvailable;
-        var location = userModel._user.currentPlace;
+        var status = userStatus._statusObj.statusMessage;
+        var available = userStatus._statusObj.isAvailable;
+        var location = userStatus._statusObj.currentPlace;
 
         ux.formatNameAlias(name, alias, "#modalview-profileStatus");
 
@@ -252,8 +252,8 @@ var homeView = {
     checkOutOfPlace: function () {
         $('#checked-in-place').hide(200);
 
-        userModel._user.set('currentPlace', '');
-        userModel._user.set('currentPlaceUUID', '');
+        userStatus._statusObj.set('currentPlace', '');
+        userStatus._statusObj.set('currentPlaceUUID', '');
     },
 
     clearNotifications : function (e) {
@@ -277,8 +277,8 @@ var homeView = {
     onInit: function(e) {
        // _preventDefault(e);
 
-        if (userModel._user.currentPlace !== '') {
-            $('#checked-in-place > span').html(userModel._user.currentPlace);
+        if (userStatus._statusObj.currentPlace !== '') {
+            $('#checked-in-place > span').html(userStatus._statusObj.currentPlace);
             $('#checked-in-place').show();
         }
 
@@ -489,7 +489,7 @@ var homeView = {
 
         if(updatedStatus !== ""){
             // Save new status
-            userModel._user.set("statusMessage", updatedStatus);
+            userStatus._statusObj.set("statusMessage", updatedStatus);
         }
         // clear status box
         $("#profileStatusUpdate").val("");
