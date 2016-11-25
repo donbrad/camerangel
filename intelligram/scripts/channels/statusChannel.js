@@ -112,6 +112,7 @@ var userStatusChannel = {
        // userStatusChannel.trackContacts();
 
         userStatusChannel.contactHistory();
+        userStatusChannel.userHistory();
     },
 
     unsubscribeContacts : function () {
@@ -174,16 +175,16 @@ var userStatusChannel = {
 
                 var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
 
-                if (messages.length > 0) {
-                    for (var i=0; i<messages.length; i++) {
-                        var msg = messages[i].entry;
-                        msg.timeToken  = messages[i].timetoken;
 
-                        if (msg.msgType === userStatusChannel._status) {
-                            userStatusChannel.cacheList[msg.sender] = msg.status;
-                        }
-                    }
+                var msg = messages[0].entry;
+                msg.timeToken  = messages[0].timetoken;
+
+                if (msg.msgType === userStatusChannel._status) {
+                    userStatusChannel.cacheList[msg.sender] = msg.status;
+                    userStatus.initStatus(msg.status);
                 }
+
+
 
             }
 
