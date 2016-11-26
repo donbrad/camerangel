@@ -3475,6 +3475,12 @@ var groupMapModal = {
 
     },
 
+    recenterMap : function () {
+        if (groupMapModal._bounds !== null) {
+            groupMapModal.googleMap.fitBounds(groupMapModal._bounds);
+        }
+    },
+
 
     onDone: function (e) {
         _preventDefault(e);
