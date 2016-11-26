@@ -2081,6 +2081,7 @@ var groupActionView = {
         _preventDefault(e);
 
         var email = groupModel.getGroupEmailString(groupActionView._activeGroup);
+        var nameStr = groupModel.getGroupNamesString(groupActionView._activeGroup);
         var properties = {
             to: email
         };
@@ -2089,7 +2090,7 @@ var groupActionView = {
             alert('Simulating Email to ' + email);
         } else {
             cordova.plugins.email.open(properties, function () {
-                mobileNotify("Email sent...");
+                mobileNotify("Email sent to " + nameStr);
             }, this);
         }
 
@@ -2099,6 +2100,7 @@ var groupActionView = {
         _preventDefault(e);
 
         var numberStr = groupModel.getGroupPhoneString(groupActionView._activeGroup);
+        var nameStr = groupModel.getGroupNamesString(groupActionView._activeGroup);
         var message = "";
 
         //CONFIGURATION
@@ -2108,13 +2110,14 @@ var groupActionView = {
                 //intent: '' // send SMS without openning any other app
             }
         };
-        var success = function () { mobileNotify('Message sent successfully'); };
-        var error = function (e) { ggError('Message Failed:' + JSON.stringify(e)); };
+        var success = function () { mobileNotify('SMS sent to ' + nameStr); };
+        var error = function (e) { ggError('SMS send error: ' + JSON.stringify(e)); };
 
         if (window.navigator.simulator === true){
             //running in the simulator
             alert('Simulating SMS to ' + numberStr );
         } else {
+
             sms.send(numberStr, message, options, success, error);
         }
     },
