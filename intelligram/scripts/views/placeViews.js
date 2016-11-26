@@ -3308,16 +3308,61 @@ var groupMapModal = {
     _name: null,
     _returnModal : null,
     _bounds : null,
-    _zoom: 14,  // Default zoom for the map.
+    _zoomIn: 14,  // Default zoom for the map.
+    _zoomOut: 8,
 
     onInit: function (e) {
         //_preventDefault(e);
 
     },
 
+    queryMarkers: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource =  groupMapModal._memberList;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+
+        dataSource.filter( query);
+        var view = dataSource.view();
+
+        dataSource.filter(cacheFilter);
+
+        return(view);
+    },
+
+    findMarker : function (markerId) {
+
+        var markers = groupMapModal.queryMarkers({field: "mapIndex", operator: "eq", value: markerId});
+
+        if (markers.length === 0) {
+            return(null);
+        }
+        return (markers[0]);
+    },
+
+    selectMember : function (member) {
+        //Center the map on the current location
+        groupMapModal.googleMap.setCenter({lat: parseFloat(member.lat), lng: parseFloat(member.lng)});
+        groupMapModal.googleMap.setZoom(groupMapModal._zoomIn);
+    },
+
+    markerClick : function (e) {
+
+        var marker = this;
+        var markerId = marker.markerId;
+
+        var member = groupMapModal.findMarker(markerId);
+
+        groupMapModal.selectMember(member);
+
+    },
+
     buildMemberList : function (members) {
         groupMapModal._memberList.data([]);
-        var user = {mapIndex: 0, name: "Me", lat : mapModel.lat.toString(), lng: mapModel.lng.toString(), address: mapModel.currentAddressString};
+        var user = {mapIndex: 0, name: userModel._user.name, alias: "Me", lat : mapModel.lat.toString(), lng: mapModel.lng.toString(), address: mapModel.currentAddressString};
         groupMapModal._memberList.add(user);
         var index = 0;
         for (var i=0; i<members.length; i++) {
@@ -3362,7 +3407,7 @@ var groupMapModal = {
                 });
             }
 
-            //marker.addListener('click', locationView.markerClick);
+            marker.addListener('click', groupMapModal.markerClick);
 
            groupMapModal._markerList.push(marker);
             groupMapModal._bounds.extend(latlng);
@@ -3392,7 +3437,6 @@ var groupMapModal = {
             groupMapModal._returnModal = callback;
         }
 
-
         var options = { center : {lat: mapModel.lat, lng: mapModel.lng}, streetViewControl: true, mapTypeControl: true, zoom: 8, minZoom: 3, maxZoom: 16 };
 
 
@@ -3408,7 +3452,13 @@ var groupMapModal = {
                 dataSource: groupMapModal._memberList,
                 template: $("#groupMapModal-template").html(),
                 click: function (e) {
-                    var marker = e.item;
+                    var marker = e.dataItem;
+                    if (marker.lat === null || marker.lat === 0) {
+                        mobileNotify(marker.name + " hasn't shared their location.");
+                    } else {
+                        groupMapModal.selectMember(marker);
+                    }
+
 
                 }
             });
