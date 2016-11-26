@@ -40,21 +40,21 @@ var userStatusChannel = {
         userStatusChannel.channelUUID = 'status-' + userId;
         userStatusChannel._inited = true;
         userStatusChannel.messagesDS = new kendo.data.DataSource({
-            type: 'everlive',
+           /* type: 'everlive',
             transport: {
                 typeName: 'statuschannel',
                 dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField }
-            },
+            },*/
             sort : {
                 field : "time",
                 dir: 'asc'
             }
         });
 
-        userStatusChannel.messagesDS.bind("change", function (e) {
+       /* userStatusChannel.messagesDS.bind("change", function (e) {
 
             var changedChannels = e.items;
             if (e.action === undefined) {
@@ -70,7 +70,7 @@ var userStatusChannel = {
             }
         });
 
-        userStatusChannel.messagesDS.fetch();
+        userStatusChannel.messagesDS.fetch();*/
     },
 
     // Process contacts to build statusArray and trackArray
@@ -97,20 +97,22 @@ var userStatusChannel = {
             if (contact.contactUUID !== null) {
                 var statusUUID = 'status-' + contact.contactUUID;
                     userStatusChannel.statusArray.push(statusUUID);
-                if (contact.activeTracking) {
+
+                if (contact.activeTracking !== undefined && contact.activeTracking) {
                     userStatusChannel.trackArray.push(statusUUID);
                 }
             }
         }
 
-        APP.pubnub.subscribe({
+        /*APP.pubnub.subscribe({
             channels: userStatusChannel.statusArray
-        });
+        });*/
 
         //todo: don re-enable status channels
        // userStatusChannel.trackContacts();
 
         userStatusChannel.contactHistory();
+        userStatusChannel.userHistory();
     },
 
     unsubscribeContacts : function () {
@@ -173,16 +175,16 @@ var userStatusChannel = {
 
                 var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
 
-                if (messages.length > 0) {
-                    for (var i=0; i<messages.length; i++) {
-                        var msg = messages[i].entry;
-                        msg.timeToken  = messages[i].timetoken;
 
-                        if (msg.msgType === userStatusChannel._status) {
-                            userStatusChannel.cacheList[msg.sender] = msg.status;
-                        }
-                    }
+                var msg = messages[0].entry;
+                msg.timeToken  = messages[0].timetoken;
+
+                if (msg.msgType === userStatusChannel._status) {
+                    userStatusChannel.cacheList[msg.sender] = msg.status;
+                    userStatus.initStatus(msg.status);
                 }
+
+
 
             }
 
@@ -221,6 +223,7 @@ var userStatusChannel = {
 
                                 if (msg.msgType === userStatusChannel._status) {
                                     userStatusChannel.cacheList[msg.sender] = msg.status;
+                                    userStatusChannel.updateContactStatus(msg.sender, msg.status);
                                 }
                             }
                         }
@@ -252,7 +255,12 @@ var userStatusChannel = {
 
         var msgID = uuid.v4();
 
-        var truncStr = status.statusMessage.smartTruncate(32, true);
+        var truncStr = "";
+
+        if (status.statusMessage !== undefined && status.statusMessage !== null) {
+            status.statusMessage.smartTruncate(32, true);
+        }
+
         var availStr = ' (avail)';
         if (!status.isAvailable) {
             availStr = ' (busy)';
@@ -310,7 +318,7 @@ var userStatusChannel = {
     },
 
     sendUpdate : function () {
-        var user = userModel._user;
+        var user = userModel._user, stat = userStatus._statusObj;
         var update = {
             msgClass : userStatusChannel._class,
             msgType : userStatusChannel._update,
@@ -324,14 +332,14 @@ var userStatusChannel = {
             email : user.email,
             address : user.address,
             birthday : user.birthday,
-            isCheckedIn : user.isCheckedIn,
-            isAvailable : user.isAvailable,
-            currentPlace : user.currentPlace,
-            currentPlaceUUID : user.currentPlaceUUID,
-            googlePlaceId : user.googlePlaceId,
-            lat : user.lat,
-            lng : user.lng,
-            geoPoint : user.geoPoint,
+            isCheckedIn : stat.isCheckedIn,
+            isAvailable : stat.isAvailable,
+            currentPlace : stat.currentPlace,
+            currentPlaceUUID : stat.currentPlaceUUID,
+            googlePlaceId : stat.googlePlaceId,
+            lat : stat.lat,
+            lng : stat.lng,
+            geoPoint : stat.geoPoint,
             emailValidated : user.emailValidated,
             phoneValidated : user.phoneValidated,
             addressValidated : user.addressValidated
@@ -375,17 +383,42 @@ var userStatusChannel = {
         }*/
     },
 
-    channelStatusRead : function (message) {
+    updateContactStatus : function (contactId, status) {
+        var contact = contactModel.findContact(contactId);
+        if (contact !== undefined && contact !== null) {
+            var contactList = contactModel.findContactListUUID(contactId);
+            contact.lat = status.lat;
+            contact.lng = status.lng;
+            contact.geopPoint = status.geoPoint;
+            contact.statusMessage = status.statusMessage;
+            contact.isAvailable = status.isAvailable;
+            contact.currentPlace = status.currentPlace;
+            contact.currentPlaceUUID = status.currentPlaceUUID;
+            contact.googlePlaceId = status.googlePlaceId;
 
-        if (message === undefined || message === null) {
+            if (contactList !== undefined && contactList !== null) {
+                contactList.set('lat', status.lat);
+                contactList.set('lng', status.lng);
+                contactList.set('geopPoint', status.geoPoint);
+                contactList.set('statusMessage', status.statusMessage);
+                contactList.set('isAvailable', status.isAvailable);
+                contactList.set('currentPlace', status.currentPlace);
+                contactList.set('currentPlaceUUID', status.currentPlaceUUID);
+                contactList.set('googlePlaceId', status.googlePlaceId);
+                if (status.time === undefined) {
+                    status.time = ggTime.currentTimeInSeconds();
+                }
+                contactList.set('time', status.time);
+            }
+        }
+    },
+
+    channelStatusRead : function (msg) {
+
+        if (msg === undefined || msg === null) {
             return;
         }
 
-        var msg = message.message, timeStamp = message.timestamp;
-
-        console.log("Status : " + JSON.stringify(msg));
-
-      //  console.log("Status : " + JSON.stringify(msg));
         switch(msg.msgType) {
 
          case 'status' :
@@ -393,34 +426,9 @@ var userStatusChannel = {
              var status = msg.status;
              var contactId = msg.sender;
              userStatusChannel.cacheList[contactId] = status;
-             var contact = contactModel.findContact(contactId);
-             if (contact !== undefined && contact !== null) {
-                var contactList = contactModel.findContactList(contactId);
-                 contact.lat = status.lat;
-                 contact.lng = status.lng;
-                 contact.geopPoint = status.geoPoint;
-                 contact.statusMessage = status.statusMessage;
-                 contact.isAvailable = status.isAvailable;
-                 contact.currentPlace = status.currentPlace;
-                 contact.currentPlaceUUID = status.currentPlaceUUID;
-                 contact.googlePlaceId = status.googlePlaceId;
 
-                 if (contactList !== undefined && contactList !== null) {
-                     contactList.set('lat', status.lat);
-                     contactList.set('lng', status.lng);
-                     contactList.set('geopPoint', status.geoPoint);
-                     contactList.set('statusMessage', status.statusMessage);
-                     contactList.set('isAvailable', status.isAvailable);
-                     contactList.set('currentPlace', status.currentPlace);
-                     contactList.set('currentPlaceUUID', status.currentPlaceUUID);
-                     contactList.set('googlePlaceId', status.googlePlaceId);
-                     if (status.time === undefined) {
-                         status.time = ggTime.currentTimeInSeconds();
-                     }
-                     contactList.set('time', status.time);
-                 }
+             userStatusChannel.updateContactStatus(contactId, status);
 
-             }
 
               break;
 

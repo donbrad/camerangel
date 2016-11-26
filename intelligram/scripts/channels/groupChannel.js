@@ -138,10 +138,10 @@ var groupChannel = {
     },
 
     doAddMember : function (msg) {
-        var channelId = msg.channelUUID, memberId = msg.memberUUID;
+        var channelId = msg.channelUUID, memberId = msg.memberId;
 
         if (memberId === undefined || memberId === null) {
-            ggError("addMember - null MemberId ");
+            ggError("Add Member: can't find member ");
         }
 
         var channel = channelModel.findChannelModel(msg.channelUUID);

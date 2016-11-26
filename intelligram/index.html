@@ -985,7 +985,7 @@
 		<div data-role="navbar">
 			<div class="icon-sm icon-checkin"  style="vertical-align: text-top;" data-grunticon-embed></div>
 			<span data-role="view-title"></span>
-			<a data-role="button" data-align="left" data-click="checkInView.closeModal" class="btnClear-grey"> Cancel </a>
+			<a data-role="button" data-align="left" data-click="checkInView.closeModal" class="btnClear-grey"></a>
 		</div>
 	</div>
 	<div>
@@ -1619,7 +1619,7 @@
 		<div class="groupActions-box">
 			<p class="groupAction-section">intelligram</p>
 			<ul class="list-unstyled">
-				<li>
+				<li class="hidden">
 					<a class="btnClear" data-role="button" data-click="groupActionView.groupTracking" >
 						<span class="user-status-icon icon-tracking-active icon-action" data-grunticon-embed></span>
 						<span id="groupActions-track">Start Tracking</span>
@@ -1697,7 +1697,7 @@
 	<div class="modal-bottom">
 		<ul class="list-inline hasMotion" id="contactActionBtns">
 			<li>
-				<a class="btnClear" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking">
+				<a class="btnClear hidden" data-role="button" id="contactActions-track" data-click="contactActionView.contactTracking">
 					<div class="icon-tracking-active icon-action" data-grunticon-embed></div>
 					Start Tracking
 				</a>
@@ -2127,6 +2127,39 @@
 	</div>
 </div>
 
+<script type="text/x-kendo-template" id="groupMapModal-template">
+	# var indexStr = "?"
+	  if (data.mapIndex !== undefined) { indexStr = data.mapIndex; }
+	#
+	<div class="">
+		<span class="left">#: indexStr # </span>
+		<span class="right">
+			#: data.name # (#:data.alias#)
+		</span>
+	</div>
+</script>
+
+<div data-role="modalview"  id="groupMapModal" style="width: 100%; height: 100%; display:none;"  data-init="groupMapModal.onInit" data-transition="fade"  data-stretch="true">
+	<div data-role="header">
+		<div data-role="navbar">
+
+			<a data-role="button" data-align="left" data-click="groupMapModal.onDone">
+				<div class="close" data-grunticon-embed></div>
+			</a>
+			<span id="groupMapModal-title">Group Map</span>
+			<a data-role="button" data-align="right" data-click="groupMapModal.recenterMap">
+				<div class="action-map" data-grunticon-embed></div>
+			</a>
+		</div>
+	</div>
+	<div style="clear:both;">
+		<div id="groupMapModal-mapdiv"></div>
+		<div style="height: 40vh; z-order: 1000; padding: 6px;">
+			<div id="groupMapModal-listview"></div>
+		</div>
+
+	</div>
+</div>
 
 <div data-role="view" data-title="Map" id="mapView" data-layout="main"  data-show="mapView.onShow" data-init="mapView.onInit" data-transition="fade" data-stretch="true">
 	<div data-role="header">

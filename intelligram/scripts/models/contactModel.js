@@ -131,7 +131,7 @@ var contactModel = {
                         var contact = e.items[0];
                         // delete from contact list
                         var contactList = contactModel.findContactList(contact.uuid);
-                        if (contactList !== undefined) {
+                        if (contactList !== undefined && contactList !== null) {
                             contactModel.contactListDS.remove(contactList);
                         }
                         //todo: don - remove to update userStatusChannel
@@ -398,20 +398,15 @@ var contactModel = {
         var contact = contactModel.queryContact({ field: "uuid", operator: "eq", value: contactId });
 
         if (contact !== undefined) {
-            contact.set('isDeleted', true);
-            contact.set('xcategory', contact.get('category'));
-            contact.set('category', 'zapped');
-
-            var contactList = contactModel.queryContactList({ field: "contactUUID", operator: "eq", value: contact.contactUUID });
-            if (contactList !== undefined) {
-                contactList.set('isDeleted', true);
-                contactList.set('category', 'zapped');
-            }
-           // dataSource.remove(contact);
-
 
             // Delete any current private channel
             channelModel.deletePrivateChannel(contactId);
+
+
+            contactModel.contactsDS.remove(contact);
+            contactModel.contactsDS.sync();
+
+
 
         }
     },

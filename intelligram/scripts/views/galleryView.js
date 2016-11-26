@@ -1596,10 +1596,9 @@ var modalPhotoView = {
                 modalView.close();
             },
             "Cancel",
-            function() {
                 // Just cancel the delete request
-                modalView.close();
-            });
+            modalView.close()
+            );
 
     },
 

@@ -263,6 +263,70 @@ var groupModel = {
             }
         }
 
+    },
+
+    getMemberContacts : function (group) {
+        if (group === null || group.members === null) {
+            return(null)
+        }
+
+        var members = group.members, contactArray = [];
+
+        for (var i=0; i<members.length; i++) {
+            var contact = contactModel.findContactByUUID(members[i]);
+            if (contact !== null && contact !== undefined) {
+                contactArray.push(contact);
+            }
+        }
+
+        return (contactArray);
+
+    },
+
+    getGroupNamesString : function (group) {
+        if (group === null ) {
+            return(null)
+        }
+        var nameStr = '', members =  groupModel.getMemberContacts(group);
+
+        for (var i=0; i<members.length; i++) {
+            nameStr = members[i].phone + ',';
+        }
+
+        nameStr = nameStr.substring(0, nameStr.length-1);
+
+        return(nameStr);
+    },
+
+    getGroupPhoneString : function (group) {
+        if (group === null ) {
+            return(null)
+        }
+        var phoneStr = '', members =  groupModel.getMemberContacts(group);
+
+        for (var i=0; i<members.length; i++) {
+            phoneStr = members[i].phone + ',';
+        }
+
+        phoneStr = phoneStr.substring(0, phoneStr.length-1);
+
+        return(phoneStr);
+    },
+
+
+    getGroupEmailString : function (group) {
+        if (group === null ) {
+            return(null)
+        }
+        var emailStr = '', members = groupModel.getMemberContacts(group);
+
+        for (var i=0; i<members.length; i++) {
+            emailStr = members[i].email + ',';
+        }
+
+        emailStr = emailStr.substring(0, emailStr.length-1);
+
+        return(emailStr);
     }
 
 };

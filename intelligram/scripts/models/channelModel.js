@@ -28,9 +28,8 @@ var channelModel = {
     currentChannel: new kendo.data.ObservableObject(),
     intervalTimer : undefined,
     _sentMessages : "sentMessages",
-    activeChannels: [],
     _unreadList : [],   // associative array of unread counts
-    _lastAccess : [],   // associative array of last access set by last message received time or last channel access time
+    _lastMessageTime : [],   // associative array of last access set by last message received time or last channel access time
     _syncingChannels : false,
     _fetched : false,
     _initialSync : false,
@@ -59,7 +58,8 @@ var channelModel = {
 
     init :  function () {
 
-        channelModel.activeChannels = [];
+        channelModel._unreadList = [];
+        channelModel._lastMessageTime = [];
 
         channelModel.channelsDS = new kendo.data.DataSource({
             type: 'everlive',
@@ -259,10 +259,6 @@ var channelModel = {
         }
     },
 
-    updateActiveChannel : function (channelUUID) {
-        channelModel.activeChannels[channelUUID] = 1;
-    },
-
     defer : function (action, actionObj) {
 
     },
@@ -322,7 +318,7 @@ var channelModel = {
         if (cacheFilter === undefined) {
             cacheFilter = {};
         }
-        dataSource.filter( query);
+        dataSource.filter(query);
         var view = dataSource.view();
         dataSource.filter(cacheFilter);
         return(view);

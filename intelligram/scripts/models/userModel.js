@@ -542,7 +542,10 @@ var userModel = {
             publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
             subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
             ssl: true,
-            heartbeatInterval : 4800,
+            heartbeatInterval : 3600,
+            restore : true,
+            suppressLeaveEvents : true,
+            announceFailedHeartbeats : false,
            // logVerbosity: true,
             uuid: uuid
         });
@@ -552,7 +555,7 @@ var userModel = {
 
             message: function(m) {
                 // handle message
-                var channelName = m.channel; // The channel for which the message belongs
+                var channelId = m.channel; // The channel for which the message belongs
                 var channelGroup = m.subscription; // The channel group or wildcard subscription match (if exists)
                 var timeToken = m.timetoken; // Publish timetoken
                 var msg = m.message; // The Payload
@@ -647,32 +650,40 @@ var userStatus = {
 
     _ggClass : 'userStatus',
     _version : 1,
-    _statusObj : new kendo.data.ObservableObject(),
+    _statusObj : new kendo.data.ObservableObject({
+        lat: 0, lng: 0,
+        isAvailable : false,
+        isVisible : false,
+        isCheckedIn : false,
+        statusMessage : null,
+        currentPlace : null,
+        currentPlaceUUID : null,
+        googlePlaceId : null
+    }),
+    _prevObj : null,
     _status : null,
     _id : null,
     _needsSync: false,
 
 
     init: function () {
-
+        userStatus.loadLocal();
     },
 
     initStatus : function (status) {
         var stat = userStatus._statusObj;
 
+        stat.lat = 0;
+        stat.lng = 0;
+        stat.isAvailable = false;
+        stat.isVisible = false;
+        stat.isCheckedIn = false;
+        stat.statusMessage = null;
+        stat.currentPlace = null;
+        stat.currentPlaceUUID = null;
+        stat.googlePlaceId = null;
 
-
-        if (status === null) {
-            stat.lat = 0;
-            stat.lng = 0;
-            stat.isAvailable = false;
-            stat.isVisible = false;
-            stat.isCheckedIn = false;
-            stat.statusMessage = null;
-            stat.currentPlace = null;
-            stat.currentPlaceUUID = null;
-            stat.googlePlaceId = null;
-        } else {
+        if (status !== null) {
             stat.lat = status.lat;
             stat.lng = status.lng;
             stat.isAvailable = status.isAvailable;
@@ -684,7 +695,7 @@ var userStatus = {
             stat.googlePlaceId = status.googlePlaceId;
         }
 
-
+        userStatus.cachePrevious();
     },
 
 
@@ -700,6 +711,7 @@ var userStatus = {
         if (statusRaw !== undefined) {
             status = JSON.parse(statusRaw);
             userStatus.initStatus(status);
+
         } else {
             userStatus.initStatus(null);
         }
@@ -776,9 +788,7 @@ var userStatus = {
 
         data.create(userStatus._statusObj,
             function(data){
-
                 userStatus.update();
-
             },
             function(error){
                 ggError("User Status create error : " + JSON.stringify(error));
@@ -786,33 +796,38 @@ var userStatus = {
     },
 
     isChanged : function () {
-        var status = userStatus._statusObj, user = userModel._user;
+        if (userStatus._prevObj === null) {
+            userStatus._prevObj = JSON.parse(JSON.stringify(userStatus._statusObj));
+            return (true);
+        }
 
-        if (status.isAvailable !== user.isAvailable) {
+        var status = userStatus._statusObj, prev = userStatus._prevObj ;
+
+        if (status.isAvailable !== prev.isAvailable) {
             return(true);
         }
 
-        if (status.statusMessage !== user.statusMessage) {
+        if (status.statusMessage !== prev.statusMessage) {
             return(true);
         }
 
-        if (status.lat !== user.lat) {
+        if (status.lat !== prev.lat) {
             return(true);
         }
 
-        if (status.lng !== user.lng) {
+        if (status.lng !== prev.lng) {
             return(true);
         }
 
-        if (status.currentPlace !== user.currentPlace) {
+        if (status.currentPlace !== prev.currentPlace) {
             return(true);
         }
 
-        if (status.currentPlaceUUID !== user.currentPlaceUUID) {
+        if (status.currentPlaceUUID !== prev.currentPlaceUUID) {
             return(true);
         }
 
-        if (status.isCheckedIn !== user.isCheckedIn) {
+        if (status.isCheckedIn !== prev.isCheckedIn) {
             return(true);
         }
 
@@ -885,6 +900,9 @@ var userStatus = {
 
     },
 
+    cachePrevious : function () {
+        userStatus._prevObj = JSON.parse(JSON.stringify(userStatus._statusObj));
+    },
 
     updateStatus : function () {
         var status = userStatus._statusObj;
@@ -893,6 +911,8 @@ var userStatus = {
 
         userStatusChannel.sendStatus(status);
 
+       userStatus.cachePrevious();
+
     },
 
     update : function () {
@@ -900,24 +920,8 @@ var userStatus = {
 
         var broadcast = userStatus.isChanged();
 
-        status.set('userUUID', userModel._user.userUUID);
-        status.set('isAvailable', userModel._user.isAvailable);
-        status.set('isVisible', userModel._user.isVisible);
-        status.set('statusMessage', userModel._user.statusMessage);
-        status.set('currentPlace', userModel._user.currentPlace);
-        var lat = userModel._user.lat;
-        /* if (lat !== null)
-         lat = lat.toFixed(6);*/
-        status.set('lat', userModel._user.lat);
-        var lng = userModel._user.lng;
-        /* if (lng !== null)
-         lng = lng.toFixed(6);*/
-        status.set('lng', userModel._user.lng);
         var gp = {Longitude : parseFloat(userModel._user.lng), Latitude : parseFloat(userModel._user.lat)};
         status.set("geoPoint", gp);
-        status.set('googlePlaceId', userModel._user.googlePlaceId);
-        status.set('currentPlaceUUID', userModel._user.currentPlaceUUID);
-        status.set('isCheckedIn', userModel._user.isCheckedIn);
         status.set('lastUpdate', ggTime.currentTime());
 
 

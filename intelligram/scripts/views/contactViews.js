@@ -60,7 +60,6 @@ var contactsView = {
                     return;
                 }
 
-
                 if (contact.contactUUID !== undefined && contact.contactUUID !== null){
                     $("#contactActionBtns > li:first-child").show();
                 } else {
@@ -382,9 +381,10 @@ var contactsView = {
         var groupId = e.button[0].attributes["data-group"].value;
         // todo - wire up
         var group = groupModel.findGroup(groupId);
-
         if (group !== undefined && group !== null) {
-            groupModel.deleteGroup(group);
+            modalView.open("Are you sure?", group.title + " will be removed from your Groups. ", "Delete", function () {
+                groupModel.deleteGroup(group);
+            }, "Cancel", modalView.close);
         }
     },
 
@@ -417,16 +417,17 @@ var contactsView = {
 
         var contactId = e.button[0].attributes["data-contact"].value;
         var contact = contactModel.findContactByUUID(contactId);
-        var channels = channelModel.findContactChannels(contactId);
-        var groups = groupModel._findContactGroups(contactId);
+        /*var channels = channelModel.findContactChannels(contactId);
+        var groups = groupModel._findContactGroups(contactId);*/
 
-        modalView.open("Are you sure?", contact.name  + " will be removed from your contacts.", "Recall", function () {
+        var contactStr = contact.name + " ("+ contact.alias + ")";
+        modalView.open("Are you sure?", contactStr + " will be removed from your contacts.   Your private chat with them will also be deleted.", "Delete", function () {
             contactModel.deleteContact(contactId);
 
-            var string = "Deleted contact: " + contact.name + " ("+ contact.alias + ")" ;
+            var string = "Deleted contact: " + contactStr ;
 
             mobileNotify(string);
-            APP.kendo.navigate('#contacts');
+           // APP.kendo.navigate('#contacts');
         }, "Cancel", modalView.close);
 
 
@@ -803,7 +804,6 @@ var addContactView = {
             addContactView._phoneValid = false;
             return;
         }
-
         memberdirectory.findMemberByPhone(phone, function (user) {
             if (user !== null) {
                 mobileNotify(user.name + " is a intelligram member!");
@@ -852,8 +852,15 @@ var addContactView = {
             addContactView._emailValid = false;
             mobileNotify(email + " + is not a valid email address");
         } else {
-            addContactView._emailValid = true;
-            addContactView.isContactValid();
+
+            var contact = contactModel.findContactByEmail(email);
+            if (contact !== undefined && contact !== null) {
+                mobileNotify("Contact : " + contact.name + " has email " + contact.email);
+            } else {
+                addContactView.isContactValid();
+                addContactView._emailValid = true;
+            }
+
         }
     },
 
@@ -879,7 +886,6 @@ var addContactView = {
     },
     
     openModal : function (contact) {
-
 
         addContactView._guid = uuid.v4();
 
@@ -1952,8 +1958,6 @@ var groupActionView = {
 
     },
 
-
-
     setReturnModal : function (modalId) {
         groupActionView._returnModalId = modalId;
     },
@@ -1986,114 +1990,6 @@ var groupActionView = {
         groupModel.checkIdenticon(thisGroup);
         groupActionView.setGroup(thisGroup);
         groupActionView.updateTrackingUX();
-
-        //Show the status update div
-      /*  if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
-
-            var user = userStatusChannel.getStatus(thisContact.contactUUID);
-            if (user !== null) {
-                var contactIsAvailable = user.isAvailable;
-                var contactPlace = user.currentPlace;
-                contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
-                contactActionView._activeContact.set('statusMessage', user.statusMessage);
-                contactActionView._activeContact.set('currentPlace', user.currentPlace);
-                contactActionView._activeContact.set('currentPlaceUUID', user.currentPlaceUUID);
-                contactActionView._activeContact.set('googlePlaceId', user.googlePlaceId);
-                contactActionView._activeContact.set('lat', user.lat);
-                contactActionView._activeContact.set('lng', user.lng);
-                contactActionView._activeContact.set('isAvailable', contactIsAvailable);
-                // set available
-                if (contactIsAvailable) {
-                    $(".statusContactCard-icon").attr("src", "images/status-available.svg");
-                }
-
-                // Update the contactList object too
-                var contactList = contactModel.findContactList(thisContact.contactUUID);
-                if (contactList !== undefined) {
-                    contactList.set('statusMessage', user.statusMessage);
-                    contactList.set('currentPlace', contactPlace);
-                    contactList.set('currentPlaceUUID', user.currentPlaceUUID);
-                    contactList.set('googlePlaceId', user.googlePlaceId);
-                    contactList.set('lat', user.lat);
-                    contactList.set('lng', user.lng);
-                    contactList.set('isAvailable', contactIsAvailable);
-
-                    contactsView.contactCache[thisContact.contactUUID] = contactList;
-
-                    // set current place
-                    if (contactPlace !== ""  && contactPlace !== null && contactPlace !== undefined) {
-                        $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
-                    } else {
-                        $("#contactCurrentPlace").addClass('hidden').text("");
-                    }
-
-                }
-
-            }
-
-        }
-
-        if (thisContact.category !== 'unknown') {
-            // Need to connect with this user before updating contact details
-            contactModel.updateContactDetails(contactId, function (contact) {
-
-                if (contact === undefined) {
-                    // This is a new contact.
-                    contact = contactModel.findContactByUUID(contactId);
-                }
-
-
-                var contactName = contact.name;
-                var contactAlias = contact.alias;
-                var contactVerified = contact.phoneValidated;
-                var contactGroup = contact.group;
-
-                var contactIsAvailable = contact.isAvailable;
-                var contactTracking = contact.activeTracking;
-                if (contactTracking === undefined) {
-                    contactTracking = false;
-                }
-
-                // Add group name
-                if (contactGroup !== '' && contactGroup !== null) {
-                    $("#currentGroup").removeClass("hidden");
-                    $("#currentContactGroup").text(contactGroup);
-                } else {
-                    $("#currentGroup").addClass("hidden");
-                    $("#currentContactGroup").text("");
-                }
-
-                contactActionView._activeContact.set('contactUUID', contact.contactUUID);
-                contactActionView._activeContact.set('publicKey', contact.publicKey);
-                contactActionView._activeContact.set('phone', contact.phone);
-                contactActionView._activeContact.set('category', contact.category);
-                contactActionView._activeContact.set('name', contactName);
-                contactActionView._activeContact.set('alias', contactAlias);
-                contactActionView._activeContact.set('activeTracking', contactTracking);
-                if (contact.photo !== undefined && contact.photo !== null) {
-                    contactActionView._activeContact.set('photo', contact.photo);
-                } else {
-                    contactActionView._activeContact.set('photo', contact.identicon);
-                }
-
-                // Set name/alias layout
-                ux.formatNameAlias(contactName, contactAlias, "#modalview-contactActions");
-
-                // set verified status
-                if (contactVerified) {
-                    $("#currentContactVerified").removeClass("hidden");
-                } else {
-                    $("#currentContactVerified").addClass("hidden");
-                }
-
-                //$("#contactCurrentPlace").addClass('hidden');
-
-
-                contactActionView.refreshUX(contact);
-
-
-            });
-        }*/
 
 
         $("#modalview-groupActions").data("kendoMobileModalView").open();
@@ -2129,7 +2025,11 @@ var groupActionView = {
 
     showGroupMap : function (e) {
         // todo - wire group chat
-        mobileNotify("Coming soon");
+
+        groupMapModal.openModal(groupActionView._activeGroup.title, groupActionView._activeGroup.members, function () {
+
+        });
+
     },
 
     groupChat : function (e) {
@@ -2161,21 +2061,10 @@ var groupActionView = {
     },
 
     groupGallery : function (e) {
-
-    },
-
-
-
-    groupEmail : function (e) {
         _preventDefault(e);
-        var viewId = APP.kendo.view().id;
-
-        //Close contactAction to display ghostEdit
-        contactActionView.closeModal();
-
-        APP.kendo.navigate("#ghostEditor?returnview="+viewId+"&callback=contactaction");
 
     },
+
 
 
     newChat : function (e) {
@@ -2190,21 +2079,28 @@ var groupActionView = {
 
     sendEmail : function (e) {
         _preventDefault(e);
-        // todo - wire group email
-        mobileNotify("Coming soon");
-        /*var email = contactActionView._activeContact.get('email');
+
+        var email = groupModel.getGroupEmailString(groupActionView._activeGroup);
+        var nameStr = groupModel.getGroupNamesString(groupActionView._activeGroup);
         var properties = {
             to: email
         };
-        cordova.plugins.email.open(properties, function () {
-            mobileNotify("Email sent...");
-        }, this);*/
+        if (window.navigator.simulator === true) {
+            //running in the simulator
+            alert('Simulating Email to ' + email);
+        } else {
+            cordova.plugins.email.open(properties, function () {
+                mobileNotify("Email sent to " + nameStr);
+            }, this);
+        }
+
     },
 
     sendSMS : function (e) {
         _preventDefault(e);
 
-        var number = contactActionView._activeContact.get('phone');
+        var numberStr = groupModel.getGroupPhoneString(groupActionView._activeGroup);
+        var nameStr = groupModel.getGroupNamesString(groupActionView._activeGroup);
         var message = "";
 
         //CONFIGURATION
@@ -2214,15 +2110,15 @@ var groupActionView = {
                 //intent: '' // send SMS without openning any other app
             }
         };
-
-        var success = function () { mobileNotify('Message sent successfully'); };
-        var error = function (e) { mobileNotify('Message Failed:' + e); };
+        var success = function () { mobileNotify('SMS sent to ' + nameStr); };
+        var error = function (e) { ggError('SMS send error: ' + JSON.stringify(e)); };
 
         if (window.navigator.simulator === true){
             //running in the simulator
-            alert('Simulating SMS to ' + number + ' message: ' + message);
+            alert('Simulating SMS to ' + numberStr );
         } else {
-            sms.send(number, message, options, success, error);
+
+            sms.send(numberStr, message, options, success, error);
         }
     },
 
@@ -2240,6 +2136,7 @@ var groupActionView = {
         groupActionView._activeGroup.set('tags', thisGroup.tags);
         groupActionView._activeGroup.set('tagString',thisGroup.tagString);
         groupActionView._activeGroup.set('isAvailable', thisGroup.isAvailable);
+        groupActionView._activeGroup.set('members', thisGroup.members);
         var groupCount = thisGroup.members.length;
         if(groupCount > 1){
             groupActionView._activeGroup.set('ux_membersCount', groupCount + " members");
