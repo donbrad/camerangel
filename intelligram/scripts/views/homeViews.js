@@ -2574,3 +2574,145 @@ var hotButtonView = {
         $("#hotButtonModal").data("kendoMobileModalView").close();
     }
 };
+
+var userPermission = {
+    _permissionActive: false,
+    _type: null,
+    activePermissionObj: new kendo.data.ObservableObject({
+        title: null,
+        description: null,
+        icon: "images/icon-notify-recommend.svg"
+    }),
+
+    toggle: function(type){
+
+        if(type === undefined){
+            userPermission.activePermissionObj.set("title", null);
+            userPermission.activePermissionObj.set("description", null);
+            userPermission.activePermissionObj.set("icon", "images/icon-notify-recommend.svg");
+            userPermission._type = null;
+            $("#permissionModal").data("kendoMobileModalView").close();
+            userPermission._permissionActive = false;
+
+        } else {
+            userPermission._type = type;
+            switch(type){
+                case "notification":
+                    userPermission.activePermissionObj.set("title", "Enable notification");
+                    userPermission.activePermissionObj.set("description", "We don’t like unnecessary notifications so we optimized them to only notify you for the most important things.");
+                    userPermission.activePermissionObj.set("icon", "images/permission-notify.png");
+
+                    break;
+                case "contact":
+                    userPermission.activePermissionObj.set("title", "Enable contacts");
+                    userPermission.activePermissionObj.set("description", "Connect with family and friends quickly.");
+                    userPermission.activePermissionObj.set("icon", "images/permission-contact.png");
+                    break;
+                case "location":
+                    userPermission.activePermissionObj.set("title", "Enable GPS");
+                    userPermission.activePermissionObj.set("description", "We use geolocation to help with mapping places and trips.");
+                    userPermission.activePermissionObj.set("icon", "images/permission-location.png");
+                    break;
+            }
+
+            $("#permissionModal").data("kendoMobileModalView").open();
+            userPermission._permissionActive = true;
+
+        }
+    },
+
+    triggerSystemDialog: function(){
+
+            switch(userPermission._type){
+                // trigger system notification dialog
+                case "notification":
+                    cordova.plugins.notification.local.hasPermission(function(granted) {
+
+                        cordova.plugins.notification.local.registerPermission(function (granted) {
+
+                            /*cordova.plugins.notification.local.schedule({
+                             id         : 1,
+                             title      : 'Welcome Back!',
+                             text       : 'intelligram missed you...',
+                             sound      : null,
+                             autoClear  : true,
+                             at         : new Date(new Date().getTime())
+                             });*/
+                        }, function(rejected){
+                            //console.log(rejected)
+                        });
+
+                    }, function(rejected){
+                        //console.log(rejected)
+                    });
+
+                    break;
+                case "contacts":
+                    // testing contacts access call
+
+
+                    /*var options      = new ContactFindOptions();
+                    options.filter   = "Bob";
+                    options.multiple = true;
+                    options.desiredFields = [navigator.contacts.fieldType.id];
+                    options.hasPhoneNumber = true;
+                    var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+                    navigator.contacts.find(fields, function(contacts){
+                            console.log(contacts);
+                        },
+                        function(contactError){
+                        console.log("contact error " + contactError);
+                    }, options);*/
+
+
+                    break;
+                case "location":
+                    // testing location access call
+                    navigator.geolocation.getCurrentPosition(function(position){
+                            console.log(position);
+                        },
+                        function(PositionError){
+                            // handle denial case, possibly set a flag.
+                            console.log(PositionError);
+
+                        });
+
+                    break;
+            }
+
+    },
+
+
+
+    dismiss: function(){
+        userPermission.activePermissionObj.set("title", null);
+        userPermission.activePermissionObj.set("description", null);
+        userPermission.activePermissionObj.set("icon", "images/icon-notify-recommend.svg");
+
+        $("#permissionModal").data("kendoMobileModalView").close();
+        userPermission._permissionActive = false;
+    },
+
+    triggerDeniedModal: function(){
+        $("#permissionDeniedModal").data("kendoMobileModalView").open();
+    },
+
+    dismissDeniedModal: function(){
+        $("#permissionDeniedModal").data("kendoMobileModalView").close();
+    },
+
+    triggerStackModal: function(){
+        $("#permissionStackModal").data("kendoMobileModalView").open();
+    },
+
+    dismissStackModal: function(){
+        $("#permissionStackModal").data("kendoMobileModalView").close();
+    },
+
+    goTriggerSystem: function(e){
+        var btnType = e.button[0].dataset.type;
+        userPermission._type = btnType;
+        userPermission.triggerSystemDialog()
+    }
+
+};

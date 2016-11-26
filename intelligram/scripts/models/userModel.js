@@ -195,21 +195,24 @@ var userModel = {
 
         if (window.navigator.simulator === undefined) {
 
-            cordova.plugins.notification.local.hasPermission(function(granted) {
+            // toggle intelligram permission modal
+            userPermission.triggerStackModal();
+
+            /*cordova.plugins.notification.local.hasPermission(function(granted) {
 
                 cordova.plugins.notification.local.registerPermission(function (granted) {
 
-                    /*cordova.plugins.notification.local.schedule({
+                    /!*cordova.plugins.notification.local.schedule({
                      id         : 1,
                      title      : 'Welcome Back!',
                      text       : 'intelligram missed you...',
                      sound      : null,
                      autoClear  : true,
                      at         : new Date(new Date().getTime())
-                     });*/
+                     });*!/
                 });
 
-            });
+            });*/
             serverPush.init();
         }
 

@@ -2452,7 +2452,7 @@ div.footer.km-footer {
   color: #fff;
   border-radius: 3px;
   background-color: #65BBB3 !important;
-  vertical-align: baseline;
+  vertical-align: middle;
   font-size: 10px;
   padding: 0.1em;
   padding-left: 0.3em;
@@ -2675,6 +2675,44 @@ div.footer.km-footer {
 #places > div.km-header > div.km-widget.km-navbar > div.km-view-title,
 #gallery > div.km-header > div.km-widget.km-navbar > div.km-view-title {
   padding-left: 3em;
+}
+#permissionModal > div.km-header > div {
+  box-shadow: none !important;
+}
+#permissionStackModal > div.km-header > div > div,
+#permissionDeniedModal > div.km-header > div > div,
+#permissionModal > div.km-header > div > div {
+  padding-left: 1rem !important;
+}
+#permissionModal-title .icon-notify-active > svg {
+  height: 1em;
+  width: 1em;
+}
+#permissionModal-title .icon-notify-active #icon-notify-light {
+  fill: #4A4A4A;
+}
+#permission-img {
+  height: 0.875em;
+  width: 0.875em;
+}
+#permissionDenied-img {
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 1em;
+}
+.permissionStackModal-img {
+  height: 1em;
+}
+.permissionStackModal-list li:first-child {
+  margin-top: 0.5em;
+}
+.permissionStackModal-list li {
+  margin-bottom: 1em;
+}
+.permissionStackModal-list li p {
+  margin-left: 0;
+  margin-right: 0;
 }
 #home > div.km-header > div > div.km-view-title > span {
   font-family: 'Ubuntu', sans-serif !important;

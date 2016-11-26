@@ -122,8 +122,9 @@ var deviceContacts = {
                 if (error.code === 20) {
                     mobileNotify("You've denied access to contacts!");
                     //Todo : Need to add UX to inform the user that they've blocked access to contacts
+                    userPermission.triggerDeniedModal();
                     deviceContacts._needPermission = true;
-                    $('#contactImport-permission').removeClass('hidden');
+                    //$('#contactImport-permission').removeClass('hidden');
                     if (callback !== undefined) {
                         callback([]);
                     }

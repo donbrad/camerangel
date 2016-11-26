@@ -5462,7 +5462,7 @@
 	</div>
 	<div class="clearfix"></div>
 	<div class="placeContent">
-		<p class="helper" style="padding-top: 0.5em;">
+		<p class="helper">
 			<span class="hidden">
 				<span class="icon-memories icon"></span>
 				No Photos here yet
@@ -6407,6 +6407,87 @@
 	</div>
 </div>
 
+<!-- Permission stack modal -->
+<div data-role="modalview" id="permissionStackModal" style="width: 90%; display: none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Required permissions</span>
+		</div>
+	</div>
+	<ul class="list-unstyled permissionStackModal-list">
+		<li>
+			<p>
+				<img src="images/permission-notify.png" class="permissionStackModal-img"/>
+				Notifications
+			</p>
+			<p class="helper">We don’t like unnecessary notifications so we optimized them to only notify you for the most important things.</p>
+			<a class="btnFull btnClearLine" data-role="button" data-click="userPermission.goTriggerSystem" data-type="notification">Enable Notifications</a>
+		</li>
+		<li>
+			<p>
+				<img src="images/permission-location.png" class="permissionStackModal-img"/>
+				Geolocation
+			</p>
+			<p class="helper">We use geolocation to help with mapping places and trips.</p>
+			<a class="btnFull btnClearLine" data-role="button" data-click="userPermission.goTriggerSystem" data-type="location">Enable Geolocation</a>
+		</li>
+		<li>
+			<p>
+				<img src="images/permission-contact.png" class="permissionStackModal-img"/>
+				Contacts access
+			</p>
+			<p class="helper">Connect with family and friends quickly.</p>
+			<a class="btnFull btnClearLine" data-role="button" data-click="userPermission.goTriggerSystem" data-type="contact">Enable Contacts</a>
+		</li>
+	</ul>
+	<div class="footer" data-role="footer">
+		<a class="btnFull-modal btnClear" data-role="button" data-click="userPermission.dismissStackModal">
+			Dismiss
+		</a>
+	</div>
+</div>
+
+<!-- Permission modal -->
+<div data-role="modalview" id="permissionModal" style="width: 90%; display: none;" class="appearance" data-model="userPermission.activePermissionObj">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Permission needed</span>
+		</div>
+	</div>
+	<h3 id="permissionModal-title">
+		<img id="permission-img" data-bind="attr: {src: icon}" />
+		<span data-bind="text: title"></span>
+		<span class="helper helper-verified">Recommended</span>
+	</h3>
+	<p data-bind="text: description"></p>
+	<div data-role="footer" class="footer">
+		<a class="btnClear twoBtn" data-role="button" data-click="userPermission.dismiss">Not now</a>
+		<a class="btnClear twoBtn" data-role="button" data-click="userPermission.triggerSystemDialog">Yes, enable</a>
+	</div>
+</div>
+
+<!-- Permission denied modal -->
+<div data-role="modalview" id="permissionDeniedModal" style="width: 90%; display: none;" class="appearance">
+	<div data-role="header">
+		<div data-role="navbar">
+			<span>Permission denied</span>
+		</div>
+	</div>
+	<p>
+		<img src="images/permission-setting.png" alt="permission needed" id="permissionDenied-img"/>
+	</p>
+	<p>You must enable device permission to use this feature. </p>
+	<ul class="list-unstyled">
+		<li> 1. Close the app and open up "Settings" app on the device.</li>
+		<li> 2. Scroll down to the intelligram app in the list.</li>
+		<li> 3. Tap and allow permissions </li>
+	</ul>
+	<div class="footer" data-role="footer">
+		<a class="btnClear btnFull-modal" data-role="button" data-click="userPermission.dismissDeniedModal">
+			Dismiss
+		</a>
+	</div>
+</div>
 
 <!--/*
  * Settings
