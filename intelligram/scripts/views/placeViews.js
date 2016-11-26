@@ -3317,11 +3317,14 @@ var groupMapModal = {
 
     buildMemberList : function (members) {
         groupMapModal._memberList.data([]);
-        var user = {name: "Me", lat : mapModel.lat.toString(), lng: mapModel.lng.toString(), address: mapModel.currentAddressString};
+        var user = {mapIndex: 0, name: "Me", lat : mapModel.lat.toString(), lng: mapModel.lng.toString(), address: mapModel.currentAddressString};
         groupMapModal._memberList.add(user);
+        var index = 0;
         for (var i=0; i<members.length; i++) {
            var contact = contactModel.findContactListUUID(members[i]);
            if (contact !== undefined && contact !== null) {
+
+               contact.mapIndex = i+1;
                groupMapModal._memberList.add(contact);
            }
         }
@@ -3340,7 +3343,7 @@ var groupMapModal = {
             var lat = parseFloat(member.lat);
             var lng = parseFloat(member.lng);
             var latlng = new google.maps.LatLng(lat,lng );
-            var indexText = i + 1;
+            var indexText = member.mapIndex;
             var labelText = indexText.toString();
             var labelObj = {
                 color: "#fff",
@@ -3351,7 +3354,7 @@ var groupMapModal = {
 
             if (lat !== 0 && lng !== 0) {
                 var marker = new google.maps.Marker({
-                    markerId : i,
+                    markerId : member.mapIndex,
                     position: {lat: lat, lng: lng},
                     label: labelObj,
                    // icon: imageObj,
@@ -3401,6 +3404,14 @@ var groupMapModal = {
             groupMapModal.googleMap = new google.maps.Map(mapElement[0], options);
             google.maps.event.trigger(groupMapModal.googleMap, 'resize');
 
+            $("#groupMapModal-listview").kendoMobileListView({
+                dataSource: groupMapModal._memberList,
+                template: $("#groupMapModal-template").html(),
+                click: function (e) {
+                    var marker = e.item;
+
+                }
+            });
             groupMapModal._inited = true;
         }
 
