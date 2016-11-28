@@ -2112,6 +2112,7 @@ var galleryEditView = {
         if (gallery === null) {
             that.activeObj.noteType = privateNoteModel._gallery;
             that.activeObj.uuid = uuid.v4();
+            that.activeObj.galleryUUID = that.activeObj.uuid;
             that.activeObj.Id = that.activeObj.uuid;
             that.activeObj.photos= [];
             that.activeObj.set('photoCount', 0);
@@ -2124,8 +2125,8 @@ var galleryEditView = {
             that.activeObj.set("isTracked", false);
             that.activeObj.members = [];
             that.activeObj.memberString = '';
-            that.activeObj.senderUUID = userModel._user.userUUID;
-            that.activeObj.senderName = userModel._user.name;
+            that.activeObj.ownerUUID = userModel._user.userUUID;
+            that.activeObj.ownerName = userModel._user.name;
             that.activeObj.timestamp = new Date();
             that.activeObj.ggType = galleryModel._ggClass;
             that.activeObj.set("ux_title", "New Gallery");
@@ -2136,16 +2137,18 @@ var galleryEditView = {
 
             galleryEditView._mode = 'create';
         } else {
-            galleryEditView._galleryUUID = gallery.uuid;
+            galleryEditView._galleryUUID = gallery.galleryUUID;
             that.activeObj.Id = gallery.Id;
             that.activeObj.uuid = gallery.uuid;
-            that.activeObj.photos =  gallery.photos;
+            that.activeObj.galleryUUID = gallery.galleryUUID;
+            that.activeObj.set(photos, gallery.photos);
             that.activeObj.set('photoCount',  gallery.photoCount);
             that.activeObj.set('title',  gallery.title);
             that.activeObj.set('description',  gallery.description);
             that.activeObj.set('tagString',  gallery.tagString);
             that.activeObj.tags = gallery.tags;
             that.activeObj.set("isShared", gallery.isShared);
+
             that.activeObj.isOpen = gallery.isOpen;
             that.activeObj.set("isTracked", gallery.isTracked);
 
@@ -2155,15 +2158,53 @@ var galleryEditView = {
             that.activeObj.members = gallery.members;
             that.activeObj.memberString = gallery.memberString;
             galleryEditView.buildMembersDS();
-            that.activeObj.senderUUID = gallery.senderUUID;
-            that.activeObj.senderName = gallery.senderName;
+            that.activeObj.ownerUUID = gallery.ownerUUID;
+            that.activeObj.ownerName = gallery.ownerName;
             that.activeObj.timestamp = gallery.timestamp;
             that.activeObj.lastUpdate = gallery.lastUpdate;
             that.activeObj.ggType = gallery.ggType;
             that.activeObj.set("ux_title", gallery.title);
             galleryEditView._mode = 'edit';
+
+            if (gallery.isShared) {
+                that.loadSharedPhotos();
+            } else {
+                that.loadPrivatePhotos()
+            }
         }
 
+    },
+
+    loadPrivatePhotos : function () {
+        var photoList = galleryEditView.activeObj.photos;
+        galleryEditView.activeObj.photoCount = photoList.length;
+
+        for (var i=0; i<photoList.length; i++ ) {
+            var photo = photoModel.findPhotoById(photoList[i]);
+            galleryEditView.photosDS.data([]);
+            if (photo !== null) {
+                galleryEditView.photosDS.add(photo);
+            }
+        }
+    },
+
+    updatePhotoArray : function () {
+        var photoList = galleryEditView.photosDS.data(),
+            photoArray = [];
+
+        for (var i=0; i< photoList.length; i++) {
+            photoArray.push(photoList[i].photoId);
+        }
+
+        galleryEditView.activeObj.set('photos', photoArray);
+        galleryEditView.activeObj.set('photoCount', photoArray.length);
+    },
+
+    loadSharedPhotos : function () {
+
+        galleryModel.fetchPhotos(galleryEditView.activeObj.galleryUUID, function (error, result) {
+
+        })
     },
 
     setSave : function (enable) {
@@ -2198,7 +2239,9 @@ var galleryEditView = {
                     if(galleryEditView.activeObj.isShared){
                         gallerySharedPhotoModal.openModal(photo);
                     } else {
-                        modalPhotoView.openModal(photo);
+                        modalPhotoView.openModal(photo, function (photoId) {
+
+                        });
                     }
                 }
                 /*dataBound: function(e){
@@ -2250,9 +2293,9 @@ var galleryEditView = {
             }
             // process gallery photos
             if(gallery.isShared){
-                galleryEditView.processSharedPhotos();
+                galleryEditView.loadSharedPhotos();
             } else {
-                galleryEditView.processPrivatePhotos();
+                galleryEditView.loadPrivatePhotos();
             }
 
         } else {

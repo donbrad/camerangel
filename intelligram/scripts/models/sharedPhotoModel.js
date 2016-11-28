@@ -48,7 +48,7 @@ var sharedPhotoModel = {
         share.set('uuid', shareuuid);
         share.set('photoUUID', photoUUID);
         share.set('channelUUID', channelUUID);
-        share.set('ownerId', userModel._user.userUUID);
+        share.set('ownerUUID', userModel._user.userUUID);
         share.set('ownerName', userModel._user.name);
 
         share.set('title', photo.title);

@@ -17,8 +17,8 @@ var galleryModel = {
     _fetched : false,
     _initialSync : false,
     galleryDS : null,
-    photoDS : new kendo.data.DataSource(),
-    commentDS : new kendo.data.DataSource(),
+    photoDS : new kendo.data.DataSource(),    // cache of photos from galleries fetched
+    commentDS : new kendo.data.DataSource(),  // cache of comments from galleries fetched
 
 
     init : function() {
@@ -312,6 +312,7 @@ var galleryModel = {
 
         var galleryId = gallery.uuid;
         var photoCount = gallery.photos.length;
+        gallery.photoCount = photoCount;
 
         for (var i=0; i<photoCount; i++ ) {
 
@@ -348,7 +349,8 @@ var galleryModel = {
         var gPhoto = {
             Id : guid,
             photoId : guid,
-            onwerUUID : userModel._user.userUUID,
+            ownerUUID : userModel._user.userUUID,
+            ownerName : userModel._user.name,
             photoUUID : photo.photoUUID,
             galleryUUID : galleryId,
             cloudUrl : photo.cloudUrl,
@@ -366,7 +368,8 @@ var galleryModel = {
         galleryModel.photoDS.add(photo);
         galleryModel.photoDS.sync();
 
-        gallery.photoCollection.push[guid];
+        gallery.photoCollection.push(guid);
+        gallery.photos.push(guid);
 
         if (deviceModel.isOnline()) {
             everlive.createOne(galleryModel._galleryPhoto, photo, function (error, data){
