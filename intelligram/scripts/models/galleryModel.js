@@ -380,6 +380,18 @@ var galleryModel = {
         }
     },
 
+    // from a photo from all private galleries -- when user deletes from user gallery
+    removePhotoFromPrivateGalleries : function (photoId) {
+
+        // loop through list of galleries and remove this photo (brute force currently)
+
+    },
+
+    removePhotoFromSharedGalleries : function (photoId) {
+        // loop through list of shared galleries and remove all gallery photo objects
+    },
+
+
     removeGalleryPhoto : function (gPhoto) {
 
         if (deviceModel.isOnline()) {
