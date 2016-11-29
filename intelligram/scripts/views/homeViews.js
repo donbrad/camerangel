@@ -2573,7 +2573,7 @@ var userPermission = {
     _permissionActive: false,
     _type: null,
     _notification : 'notification',
-    _contacts   : 'contacts',
+    _contacts   : 'contact',
     _location   :  'location',
     _localStorage : 'ggPermissions',
 
@@ -2735,7 +2735,7 @@ var userPermission = {
             }
 
     },
-    
+
     dismiss: function(){
         userPermission.activePermissionObj.set("title", null);
         userPermission.activePermissionObj.set("description", null);
