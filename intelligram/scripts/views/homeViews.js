@@ -2671,9 +2671,9 @@ var userPermission = {
         }
 
         if (perm.hasLocation) {
-            $('#permission-location').text("Location Enabled!");
+            $('#permission-location').text("Auto-Location Enabled!");
         } else {
-            $('#permission-location').text("Enable Location");
+            $('#permission-location').text("Enable Auto-Location");
         }
     },
 
@@ -2683,11 +2683,16 @@ var userPermission = {
             switch(userPermission._type){
                 // trigger system notification dialog
                 case userPermission._notification:
+
+                    if (userPermission.permissions.hasNotifications)
+                        return;
+
                     cordova.plugins.notification.local.hasPermission(function(granted) {
 
                         cordova.plugins.notification.local.registerPermission(function (granted) {
                             userPermission.permissions.hasNotifications = true;
                             userPermission.savePermissions();
+                            userPermission.updateUX();
 
                         }, function(rejected){
                             userPermission.permissions.hasNotifications = false;
@@ -2701,7 +2706,8 @@ var userPermission = {
 
                     break;
                 case userPermission._contacts:
-
+                    if (userPermission.permissions.hasContacts)
+                        return;
                     var options      = new ContactFindOptions();
                     options.filter   = "Bob";
                     options.multiple = true;
@@ -2711,6 +2717,7 @@ var userPermission = {
 
                     navigator.contacts.find(fields, function(contacts){
                             userPermission.permissions.hasContacts = true;
+                            userPermission.updateUX();
                             userPermission.savePermissions();
                         },
                         function(contactError){
@@ -2721,9 +2728,12 @@ var userPermission = {
 
                     break;
                 case  userPermission._location:
+                    if (userPermission.permissions.hasLocation)
+                        return;
                     // testing location access call
                     navigator.geolocation.getCurrentPosition(function(position){
                             userPermission.permissions.hasLocation = true;
+                            userPermission.updateUX();
                             userPermission.savePermissions();
                         },
                         function(PositionError){
