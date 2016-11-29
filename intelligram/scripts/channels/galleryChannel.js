@@ -131,6 +131,7 @@ var galleryChannel = {
 
                  if (memberId === userModel._user.userUUID || memberId === "*") {
                      mobileNotify(message.senderName + " has deleted Gallery : " +  message.galleryName);
+                     galleryModel.removeMemberGallery(galleryId);
                  }
 
 
@@ -183,6 +184,7 @@ var galleryChannel = {
         }
 
     },
+
     sendAddPhoto : function (galleryId, galleryName,  photoId) {
         var msgID = uuid.v4();
 

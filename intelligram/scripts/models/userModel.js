@@ -27,6 +27,9 @@ var userModel = {
     _needStatusSync: false,
     _userObj : null,
     localKey : 'bXVsdGlwYXNz',
+    hasNotification : false,
+    hasCalendar : false,
+    hasContacts : false,
     
     initialView : '#newuserhome',
 
@@ -134,7 +137,7 @@ var userModel = {
         
     },
 
-    
+
     initCloudModels : function () {
 
         tagModel.init();
@@ -155,9 +158,6 @@ var userModel = {
         userDataChannel.init(uuid);
 
         userStatusChannel.init(uuid);
-
-
-
 
         mapModel.init();
 
@@ -193,26 +193,12 @@ var userModel = {
 
         groupModel.init();
 
-        if (window.navigator.simulator === undefined) {
+        userPermission.init();
 
+        if (window.navigator.simulator === undefined) {
             // toggle intelligram permission modal
             userPermission.triggerStackModal();
 
-            /*cordova.plugins.notification.local.hasPermission(function(granted) {
-
-                cordova.plugins.notification.local.registerPermission(function (granted) {
-
-                    /!*cordova.plugins.notification.local.schedule({
-                     id         : 1,
-                     title      : 'Welcome Back!',
-                     text       : 'intelligram missed you...',
-                     sound      : null,
-                     autoClear  : true,
-                     at         : new Date(new Date().getTime())
-                     });*!/
-                });
-
-            });*/
             serverPush.init();
         }
 

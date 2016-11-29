@@ -2572,11 +2572,29 @@ var hotButtonView = {
 var userPermission = {
     _permissionActive: false,
     _type: null,
+    _notification : 'notification',
+    _contacts   : 'contacts',
+    _location   :  'location',
+    _localStorage : 'ggPermissions',
+
+    needPermissions : false,   // true if any required permissions are unknown or false
+    permissions : { // permission state that's updated as required and persisted to local storage
+        hasNotifications : false,
+        hasContacts : false,
+        hasLocation : false
+    },
+
+
     activePermissionObj: new kendo.data.ObservableObject({
         title: null,
         description: null,
         icon: "images/icon-notify-recommend.svg"
     }),
+
+
+    init : function () {
+        userPermission.loadPermissions();
+    },
 
     toggle: function(type){
 
@@ -2615,69 +2633,109 @@ var userPermission = {
         }
     },
 
-    triggerSystemDialog: function(){
+    loadPermissions : function () {
+        var perm = localStorage.getItem(userPermission._localStorage);
+        if (perm !== undefined && perm !== null) {
+            var permObj = JSON.parse(perm);
+            userPermission.needPermissions = true;
+            if (permObj.hasNotifications && permObj.hasContacts && permObj.hasLocation) {
+                userPermission.needPermissions = false;
+            }
+            userPermission.permissions = permObj;
+        } else {
+            userPermission.needPermissions = true;
+            userPermission.savePermissions();
+        }
+    },
+
+    savePermissions : function () {
+        var perm = JSON.stringify (userPermission.permissions);
+
+        localStorage.setItem(userPermission._localStorage, perm);
+
+    },
+
+    updateUX : function () {
+        var perm = userPermission.permissions;
+
+        if (perm.hasNotifications) {
+            $('#permission-notification').text("Notifications Enabled!");
+        } else {
+            $('#permission-notification').text("Enable Notifications");
+        }
+
+        if (perm.hasContacts) {
+            $('#permission-contacts').text("Contact Access Enabled!");
+        } else {
+            $('#permission-contacts').text("Enable Contact Access");
+        }
+
+        if (perm.hasLocation) {
+            $('#permission-location').text("Location Enabled!");
+        } else {
+            $('#permission-location').text("Enable Location");
+        }
+    },
+
+
+    triggerSystemDialog: function() {
 
             switch(userPermission._type){
                 // trigger system notification dialog
-                case "notification":
+                case userPermission._notification:
                     cordova.plugins.notification.local.hasPermission(function(granted) {
 
                         cordova.plugins.notification.local.registerPermission(function (granted) {
+                            userPermission.permissions.hasNotifications = true;
+                            userPermission.savePermissions();
 
-                            /*cordova.plugins.notification.local.schedule({
-                             id         : 1,
-                             title      : 'Welcome Back!',
-                             text       : 'intelligram missed you...',
-                             sound      : null,
-                             autoClear  : true,
-                             at         : new Date(new Date().getTime())
-                             });*/
                         }, function(rejected){
-                            //console.log(rejected)
+                            userPermission.permissions.hasNotifications = false;
+                            userPermission.savePermissions();
                         });
 
                     }, function(rejected){
-                        //console.log(rejected)
+                       userPermission.permissions.hasNotifications = false;
+                        userPermission.savePermissions();
                     });
 
                     break;
-                case "contacts":
-                    // testing contacts access call
+                case userPermission._contacts:
 
-
-                    /*var options      = new ContactFindOptions();
+                    var options      = new ContactFindOptions();
                     options.filter   = "Bob";
                     options.multiple = true;
                     options.desiredFields = [navigator.contacts.fieldType.id];
                     options.hasPhoneNumber = true;
                     var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+
                     navigator.contacts.find(fields, function(contacts){
-                            console.log(contacts);
+                            userPermission.permissions.hasContacts = true;
+                            userPermission.savePermissions();
                         },
                         function(contactError){
-                        console.log("contact error " + contactError);
-                    }, options);*/
+                            userPermission.permissions.hasContacts = false;
+                            userPermission.savePermissions();
+                    }, options);
 
 
                     break;
-                case "location":
+                case  userPermission._location:
                     // testing location access call
                     navigator.geolocation.getCurrentPosition(function(position){
-                            console.log(position);
+                            userPermission.permissions.hasLocation = true;
+                            userPermission.savePermissions();
                         },
                         function(PositionError){
-                            // handle denial case, possibly set a flag.
-                            console.log(PositionError);
-
+                            userPermission.permissions.hasLocation = false;
+                            userPermission.savePermissions();
                         });
 
                     break;
             }
 
     },
-
-
-
+    
     dismiss: function(){
         userPermission.activePermissionObj.set("title", null);
         userPermission.activePermissionObj.set("description", null);
@@ -2696,6 +2754,7 @@ var userPermission = {
     },
 
     triggerStackModal: function(){
+        userPermission.updateUX();
         $("#permissionStackModal").data("kendoMobileModalView").open();
     },
 
