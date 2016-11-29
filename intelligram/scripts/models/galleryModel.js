@@ -17,8 +17,8 @@ var galleryModel = {
     _fetched : false,
     _initialSync : false,
     galleryDS : null,
-    photoDS : new kendo.data.DataSource(),    // cache of photos from galleries fetched
-    commentDS : new kendo.data.DataSource(),  // cache of comments from galleries fetched
+    photoDS : new kendo.data.DataSource(),    // cache of photos from shared galleries already fetched
+    commentDS : new kendo.data.DataSource(),  // cache of comments from shared galleries already fetched
 
 
     init : function() {
@@ -269,18 +269,55 @@ var galleryModel = {
 
     },
 
-    addSharedGallery : function (gallery) {
+    addGuestGallery : function (galleryUUID, galleryName, ownerUUID, ownerName) {
+        var guid = uuid.v4();
+        var guestGallery = {
+            id : guid,
+            uuid : galleryUUID,
+            galleryUUID : galleryUUID,
+            isShared : true,
+            photoCollection :[],
+            photos: [],
+            ownerName : ownerName,
+            ownerUUID : ownerUUID,
+            title : galleryName,
+            description : null,
+            tagString : null
 
+        };
+
+        galleryModel.galleryDS.add(guestGallery);
+        galleryModel.galleryDS.sync();
+
+        galleryModel.shareGalleryPhotos(guestGallery);
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(galleryModel._cloudClass, guestGallery, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Shared Gallery " + JSON.stringify(error));
+                }
+            });
+
+        }
+    },
+
+    createGallery : function () {
+        // action function called from notification manager if user accepts
+        // data-uuid is id of the notification.
+    },
+
+    addSharedGallery : function (gallery) {
         var guid = uuid.v4();
         var sharedGallery = {
             id : guid,
             uuid : guid,
             galleryUUID : gallery.uuid,
             isShared : true,
+            members : gallery.members,
             photoCollection : gallery.photoCollection,
             photos: gallery.photos,
-            sendName : gallery.senderName,
-            senderUUID : gallery.senderUUID,
+            ownerName : gallery.ownerName,
+            ownerUUID : gallery.ownerUUID,
             title : gallery.title,
             description : gallery.description,
             tagString : gallery.tagString

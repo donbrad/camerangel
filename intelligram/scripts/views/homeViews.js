@@ -298,7 +298,7 @@ var homeView = {
         $("#notification-listview").kendoMobileListView({
             dataSource: notificationModel.notificationDS,
             template: $("#notificationTemplate").html(),
-            click: function(e){
+            click: function(e) {
                 var $target = $(e.target);
                 if($target.hasClass("textClamp")){
                     $(".notify-expand").addClass("textClamp").removeClass("notify-expand");

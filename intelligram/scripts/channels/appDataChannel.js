@@ -30,10 +30,6 @@ var appDataChannel = {
 
         appDataChannel.channelUUID = channel;
 
-
-
-
-
         var ts = localStorage.getItem('ggAppDataTimeStamp');
 
         if (ts !== undefined && ts !== "NaN") {
@@ -365,6 +361,10 @@ var appDataChannel = {
                     appDataChannel.processUserAlert( m.channelUUID, m.channelName, m.ownerId, m.ownerName,  m.message);
             } break;
 
+            case 'galleryInvite' : {
+                if (m.version === appDataChannel._version && m.msgID !== undefined)
+                    appDataChannel.processGalleryInvite( m.galleryUUID, m.galleryName, m.ownerId, m.ownerName);
+            } break;
             //  { type: 'channelInvite',  channelUUID: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
@@ -1197,6 +1197,9 @@ var appDataChannel = {
 
     },
 
+    processGalleyInvite : function (galleryUUID, galleryName, ownerId, ownerName) {
+
+    },
 
     processGroupInvite: function (channelUUID, channelName, channelDescription, channelMembers, ownerId, ownerName, options) {
         // Todo:  Does channel exist?  If not create,  if so notify user of request

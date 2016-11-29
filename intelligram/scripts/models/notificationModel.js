@@ -16,6 +16,8 @@ var notificationModel = {
     _fetched : false,
     _intro: 'intelligram recommends',
     _unreadCount : 'Unread Messages',
+    _inviteChat : 'Gallery Invite',
+    _inviteGallery : 'Chat Invite',
     _newChat : 'New Chat',
     _newPrivate : 'New Private Chat',
     _newMember : 'New Member',
@@ -184,7 +186,7 @@ var notificationModel = {
 
                     if (note.Id === undefined) {
                         mobileNotify("Cleaning duplicate notification");
-                        notificationModel.notificationsDS.remove(note);
+                        notificationModel.notificationDS.remove(note);
                     }
                 }
             }
@@ -235,7 +237,6 @@ var notificationModel = {
         }
     },
 
-
     addConnectRequest : function (contactId, contactName) {
         this.newNotification(this._connectRequest, contactId, contactName, null, contactName  + " wants to connect.", 'New Contact', null,
             '#contacts', true);
@@ -258,6 +259,16 @@ var notificationModel = {
     addNewChatNotification : function (channelUUID, channelName, channelDescription) {
         this.newNotification(this._newChat, channelUUID, channelName, null, channelDescription, 'Goto Chat', null,
             '#channel?channelUUID='+channelUUID, true);
+    },
+
+    addChatInviteNotification : function (channelUUID, channelName, channelDescription) {
+        this.newNotification(this._inviteChat, channelUUID, channelName, null, channelDescription, 'Create Chat', channelModel.createChat,
+            null, true);
+    },
+
+    addGalleryInviteNotification : function (galleryUUID, galleryName, galleryDescription) {
+        this.newNotification(this._inviteGallery, galleryUUID, galleryName, null, galleryDescription, 'Create Gallery', galleryModel.createGallery,
+            null, true);
     },
 
     addUserAlert : function (channelUUID, channelName, senderName, message) {
