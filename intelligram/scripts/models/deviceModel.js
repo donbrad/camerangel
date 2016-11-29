@@ -161,7 +161,7 @@ var deviceModel = {
 
         deviceModel.state.googleMapsLoaded = true;
 
-        mapModel.getCurrentAddress(function (isNew, address){
+      /*  mapModel.getCurrentAddress(function (isNew, address){
 
             if (isNew) {
                 mapModel.wasPrompted = false;
@@ -177,7 +177,7 @@ var deviceModel = {
                     mapModel.currentZipcode = address.zipcode;
                 }
             });
-        });
+        });*/
     },
 
 
