@@ -50,7 +50,7 @@ var serverPush = {
             return;
 
         serverPush._registered = true;
-        mobileNotify("Server Push enabled : " + data);
+      //  mobileNotify("Server Push enabled : " + data);
 
         serverPush._regId =  data;
 

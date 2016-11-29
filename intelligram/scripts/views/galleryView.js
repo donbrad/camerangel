@@ -24,7 +24,6 @@ var galleryView = {
     _activeView: 0,
     scroller: null,
 
-    // todo - delete, testing ui
     notesAddOpts: new kendo.data.DataSource({
         group: 'category',
         data: [
@@ -1789,6 +1788,10 @@ var galleryListView = {
         $("#galleryListModal").data("kendoMobileModalView").close();
     },
 
+    addGallery : function (e) {
+        APP.kendo.navigate("#galleryEditor?returnview=gallery");
+    },
+
     galleryClick : function (e) {
         _preventDefault(e);
 
@@ -2007,14 +2010,17 @@ var sendViaModal = {
 var galleryEditView = {
     _callback : null,
     _initialized : false,
+    _notifyMembers : false,
     _returnview : null,
     _mode : 'create',
     _galleryUUID : null,
-    activeObj : new kendo.data.ObservableObject({title: null, tagString: null, shareString: null}),
+    activeObj : new kendo.data.ObservableObject({title: null, tagString: null, shareString: null, photoCount: 0, photos: [], photoCollection: []}),
     tags : null,
     tagString: null,
     members : null,
     memberString: null,
+    addMembers : [],
+    deletedMembers : [],
     photosDS:  new kendo.data.DataSource(),
     membersDS:  new kendo.data.DataSource(),
     membersAddedDS:  new kendo.data.DataSource(),
@@ -2085,14 +2091,84 @@ var galleryEditView = {
 
     },
 
+    mapMembers : function (newMembers, oldMembers) {
+
+        galleryEditView.addedMembers =  [];
+        galleryEditView.deletedMembers = [];
+
+        if (oldMembers.length === 0) {
+            galleryEditView.addedMembers = newMembers;
+            galleryEditView._notifyMembers = true;
+            return;
+        }
+        var newMem = [], oldMem = [];
+
+        for (var n=0; n<newMembers.length; n++) {
+            newMem[newMembers[n]] = 1;
+        }
+
+        for (var o=0; o<oldMembers.length; o++) {
+            oldMem[oldMembers[0]] = 1;
+        }
+
+        for (var i=0; i<newMembers.length; i++) {
+            if (oldMem[newMembers[i]] === undefined) {
+                galleryEditView.addedMembers.push(newMembers[i])
+            }
+        }
+
+        for (var j=0; j<oldMembers.length; j++) {
+            if (newMem[oldMembers[j]] === undefined) {
+                galleryEditView.deletedMembers.push(oldMembers[i])
+            }
+        }
+    },
+
+    sendMemberNotifications : function () {
+        var gallery = galleryEditView.activeObj;
+        if (galleryEditView.addedMembers.length > 0) {
+            for (var i=0; i<galleryEditView.addedMembers; i++) {
+                var contact = contactModel.findContactByUUID(galleryEditView.addedMembers[i]);
+
+                if (contact !== undefined && contact !== null) {
+                    appDataChannel.groupGalleryInvite(contact.contactUUID, gallery.galleryUUID, gallery.title, userModel._user.name + "has invited you to their gallery");
+                }
+            }
+        }
+
+        if (galleryEditView.deletedMembers.length > 0) {
+            for (var j=0; j<galleryEditView.deletedMembers; j++) {
+                var member = contactModel.findContactByUUID(galleryEditView.deletedMembers[j]);
+
+                if (member !== undefined && member !== null) {
+                   galleryChannel.sendDeleteGallery(gallery.galleryUUID, gallery.title, member.contactUUID);
+                }
+            }
+        }
+    },
+
+
     openSharePicker: function(){
         galleryMemberView.openModal(galleryEditView.members, function (members, memberString) {
-            var newMembers = members, newMemberString = memberString;
+            if (members !== null) {
+                var newMembers = members, newMemberString = memberString, oldMembers = galleryEditView.activeObj.members;
 
-            galleryEditView.activeObj.set("members", newMembers);
-            galleryEditView.activeObj.set("memberString", newMemberString);
+                if (!galleryEditView.activeObj.isShared) {
+                    galleryEditView.activeObj.isShared = true;
+                }
+                galleryEditView.mapMembers();
+                galleryEditView.activeObj.set("members", newMembers);
+                galleryEditView.activeObj.set("memberString", newMemberString);
 
-            //
+                galleryModel.updateGallery(galleryEditView.activeObj);
+
+                if (galleryEditView._notifyMembers) {
+                    galleryEditView.sendMemberNotifications();
+                }
+
+            } else {
+                mobileNotify("Member update cancelled...");
+            }
 
         })
     },
@@ -2141,7 +2217,10 @@ var galleryEditView = {
             that.activeObj.Id = gallery.Id;
             that.activeObj.uuid = gallery.uuid;
             that.activeObj.galleryUUID = gallery.galleryUUID;
-            that.activeObj.set(photos, gallery.photos);
+            if (gallery.photos === undefined) {
+                gallery.photos = [];
+            }
+            that.activeObj.set('photos', gallery.photos);
             that.activeObj.set('photoCount',  gallery.photoCount);
             that.activeObj.set('title',  gallery.title);
             that.activeObj.set('description',  gallery.description);
@@ -2279,7 +2358,7 @@ var galleryEditView = {
             $("#galleryEditor .viewerMode").removeClass("hidden");
 
             // is the user the owner
-            if (galleryEditView.activeObj.senderUUID === userModel._user.userUUID) {
+            if (galleryEditView.activeObj.ownerUUID === userModel._user.userUUID) {
                 galleryEditView.activeObj.set("ux_isOwner", true);
                 galleryEditView.activeObj.set("ux_sender", "Me");
                 galleryEditView.setSave(true);
@@ -2288,12 +2367,16 @@ var galleryEditView = {
                 // user can just view gallery
                 galleryEditView.setSave(false);
                 galleryEditView.activeObj.set("ux_isOwner", false);
-                galleryEditView.activeObj.set("ux_sender", galleryEditView.activeObj.senderName);
+                galleryEditView.activeObj.set("ux_sender", galleryEditView.activeObj.ownerName);
 
             }
             // process gallery photos
             if(gallery.isShared){
                 galleryEditView.loadSharedPhotos();
+                mobileNotify("Syncing Gallery " + galleryEditView.activeObj.title);
+                galleryModel.fetchPhotos(galleryEditView._galleryUUID, function (error, data) {
+                    var photos = data;
+                })
             } else {
                 galleryEditView.loadPrivatePhotos();
             }
@@ -2308,7 +2391,6 @@ var galleryEditView = {
             galleryEditView.activeObj.set("ux_isOwner", true);
         }
 
-
         if (e.view.params.callback !== undefined) {
             galleryEditView._callback = e.view.params.callback;
         } else {
@@ -2320,9 +2402,6 @@ var galleryEditView = {
         } else {
             galleryEditView._returnview = null;
         }
-
-
-
     },
 
     onHide: function (e) {
@@ -2485,13 +2564,17 @@ var galleryEditView = {
 
     processSharedPhotos : function () {
         var obj = galleryEditView.activeObj;
-        // todo - wire shared photos
+        var obj = galleryEditView.activeObj;
+        var len = galleryEditView.photosDS.total();
+        obj.photoCollection = [];
+        var photoArray = [];
 
     },
 
     processPrivatePhotos : function () {
         var obj = galleryEditView.activeObj;
         var len = galleryEditView.photosDS.total();
+        obj.photoCollection = [];
         var photoArray = [];
         for (var i=0; i<len; i++) {
             var photo = galleryEditView.photosDS.at(i);
@@ -2507,38 +2590,46 @@ var galleryEditView = {
 
         var activeGallery = galleryEditView.activeObj;
 
+        if (activeGallery.ux_isOwner) {
+            delete activeGallery.ux_isOwner;
+        }
+        if (activeGallery.ux_sender) {
+            delete activeGallery.ux_sender;
+        }
 
         if (galleryEditView._mode === 'edit') {
 
             var gallery = galleryModel.findGallery(activeGallery.uuid);
 
-            gallery.set('title', title);
-            gallery.set('tagString', tagString);
-            gallery.set('tags', []);
-            gallery.set('photoCount', galleryEditView.photosDS.total());
             if (gallery.isShared) {
                 galleryEditView.processSharedPhotos();
             } else {
                 galleryEditView.processPrivatePhotos();
             }
+
+            gallery.set('title', title);
+            gallery.set('tagString', tagString);
+            gallery.set('tags', []);
+            gallery.set('photoCount', activeGallery.photoCount);
+            gallery.set('photos', activeGallery.photos);
+            gallery.set('photoCollection', activeGallery.photoCollection);
+
             gallery.set('lastUpdate',ggTime.currentTime());
             gallery.set('timestamp',ggTime.currentTime());
 
             galleryModel.updateGallery(gallery);
 
         } else {
-
+            // Creating a new gallery
             activeGallery.title = title;
             activeGallery.tags = [];
             activeGallery.tagString = tagString;
             activeGallery.timestamp = ggTime.currentTime();
             activeGallery.lastUpdate = ggTime.currentTime();
-            activeGallery.set("photoCount", galleryEditView.photosDS.total());
-            if (activeGallery.isShared) {
-                galleryEditView.processSharedPhotos();
-            } else {
-                galleryEditView.processPrivatePhotos();
-            }
+            activeGallery.photoCount = 0;
+            activeGallery.photos = [];
+            activeGallery.photoCollection = [];
+
 
             galleryModel.addGallery(activeGallery);
         }

@@ -365,6 +365,7 @@ var appDataChannel = {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
                     appDataChannel.processGalleryInvite( m.galleryUUID, m.galleryName, m.ownerId, m.ownerName);
             } break;
+
             //  { type: 'channelInvite',  channelUUID: <channelUUID>, ownerID: <ownerUUID>,  ownerName: <text>, channelName: <text>, channelDescription: <text>}
             case 'groupInvite' : {
                 if (m.version === appDataChannel._version && m.msgID !== undefined)
@@ -470,6 +471,7 @@ var appDataChannel = {
         msg.channelUUID = channelUUID;
         msg.channelName = channelName;
         msg.message = message;
+        msg.isMessage = false;
         msg.pn_apns = {
             aps: {
                 alert :  msg.ownerName + ' : "'  + message + '"',
@@ -521,8 +523,7 @@ var appDataChannel = {
         msg.phone = phone;
         msg.email = email;
         msg.time = new Date().getTime();
-
-
+        msg.isMessage = false;
         APP.pubnub.publish({
             channel: appDataChannel.channelUUID,
             message: msg
@@ -550,6 +551,7 @@ var appDataChannel = {
         msg.ownerId = ownerId;
         msg.isPrivateChat = isPrivateChat;
         msg.time = new Date().getTime();
+        msg.isMessage = false;
         var channel = appDataChannel.getContactAppChannel(contactId);
 
         APP.pubnub.publish({
@@ -578,6 +580,7 @@ var appDataChannel = {
         msg.ownerId = ownerId;
         msg.isPrivateChat = isPrivateChat;
         msg.time = new Date().getTime();
+        msg.isMessage = false;
         var channel = appDataChannel.getContactAppChannel(contactId);
 
         APP.pubnub.publish({
@@ -638,6 +641,7 @@ var appDataChannel = {
         msg.phone = userModel._user.phone;
         msg.email = userModel._user.email;
         msg.publicKey = userModel._user.publicKey;
+        msg.isMessage = false;
         msg.pn_apns = {
             aps: {
                 alert : notificationString,
@@ -688,6 +692,7 @@ var appDataChannel = {
         msg.version = appDataChannel._version;
         msg.date = new Date.today();
         msg.accept = accept;
+        msg.isMessage = false;
         if (accept === true) {
             msg.userUUID = userModel._user.userUUID;
             msg.name = userModel._user.name;
@@ -756,6 +761,7 @@ var appDataChannel = {
         msg.eventId = eventId;
         msg.recipientId = recipientId;
         msg.comment = comment;
+        msg.isMessage = false;
         msg.pn_apns = {
             aps: {
                 alert : notificationString,
@@ -810,6 +816,7 @@ var appDataChannel = {
         msg.eventId = eventId;
         msg.recipientId = recipientId;
         msg.comment = comment;
+        msg.isMessage = false;
         msg.pn_apns = {
             aps: {
                 alert : notificationString,
@@ -861,6 +868,7 @@ var appDataChannel = {
         msg.date = new Date.today();
         msg.eventId = eventId;
         msg.comment = comment;
+        msg.isMessage = false;
         msg.pn_apns = {
             aps: {
                 alert : notificationString,
@@ -912,7 +920,7 @@ var appDataChannel = {
         msg.eventId = eventId;
         msg.eventUpdate = updateObject;
         msg.comment = comment;
-
+        msg.isMessage = false;
         msg.pn_apns = {
             aps: {
                 alert : notificationString,
@@ -959,7 +967,7 @@ var appDataChannel = {
         msg.ownerId = userModel._user.get('userUUID');
         msg.ownerName = userModel._user.get('name');
         msg.message  =  msg.ownerName + " is a new intelligram contact." ;
-
+        msg.isMessage = false;
         msg.time = new Date().getTime();
         msg.pn_apns = {
             aps: {
@@ -996,6 +1004,62 @@ var appDataChannel = {
         );
     },
 
+    groupGalleryInvite : function (contactUUID, galleryUUID, galleryName, galleryDescription) {
+        var msg = {};
+
+        msg.msgID = uuid.v4();
+        msg.msgClass = appDataChannel._class;
+        var notificationString = "Gallery Invite : " + galleryName;
+        msg.type = 'galleryInvite';
+        msg.version = appDataChannel._version;
+        msg.ownerId = userModel._user.get('userUUID');
+        msg.ownerName = userModel._user.get('name');
+        msg.galleryUUID = galleryUUID;
+        msg.galleryName = galleryName;
+        msg.galleryDescription = galleryDescription;
+        msg.isMessage = false;
+        msg.isGallery = true;
+        msg.message  = "You've been invited to Gallery: " + galleryName;
+
+
+        msg.time = new Date().getTime();
+        msg.pn_apns = {
+            aps: {
+                alert : notificationString,
+                badge: 1,
+                'content-available' : 1
+            },
+            isMessage : false,
+            target: '#channel?channelUUID=' + channelUUID,
+            galleryUUID :galleryUUID
+        };
+        msg.pn_gcm = {
+            data : {
+                title: notificationString,
+                message: "You've been invited to " + channelName,
+                target: '#gallery?channelUUID=' + channelUUID,
+                icon: "www/images/androidlogo.png",
+                msgcnt: 1,
+                isMessage: false,
+                galleryUUID : galleryUUID
+            }
+        };
+
+        var channel = appDataChannel.getContactAppChannel(contactUUID);
+
+        APP.pubnub.publish({
+                channel: channel,
+                message: msg
+            },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("Group Invite Error: " + JSON.stringify(status.error));
+                }
+            }
+        );
+    },
+
     groupChannelInvite : function (contactUUID, channelUUID, channelName, channelDescription,  members, options) {
         var msg = {};
 
@@ -1010,7 +1074,8 @@ var appDataChannel = {
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;
         msg.channelMembers = members;
-        msg.message  = "You've been invited to " + channelName;
+        msg.isMessage = false;
+        msg.message  = "You've been invited to Chat: " + channelName;
         if (options === undefined) {
             options = null;
         }
@@ -1068,6 +1133,7 @@ var appDataChannel = {
         msg.channelUUID = channelUUID;
         msg.channelName = channelName;
         msg.message  = message;
+        msg.isMessage = false;
         msg.time = new Date().getTime();
         msg.pn_apns = {
             aps: {
@@ -1120,6 +1186,7 @@ var appDataChannel = {
         msg.channelName = channelName;
         msg.channelDescription = channelDescription;
         msg.channelMembers = members;
+        msg.isMessage = false;
         msg.message  = "Chat " + channelName + " has been updated...";
         msg.time = new Date().getTime();
         msg.pn_apns = {
@@ -1197,7 +1264,7 @@ var appDataChannel = {
 
     },
 
-    processGalleyInvite : function (galleryUUID, galleryName, ownerId, ownerName) {
+    processGalleryInvite : function (galleryUUID, galleryName, ownerId, ownerName) {
 
     },
 
