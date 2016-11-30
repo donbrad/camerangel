@@ -3615,7 +3615,6 @@ var groupMapModal = {
         }
     },
 
-
     onDone: function (e) {
         _preventDefault(e);
 
@@ -3630,7 +3629,6 @@ var groupMapModal = {
         }
 
         $("#groupMapModal").data("kendoMobileModalView").close();
-
 
         if (groupMapModal._returnModal !== null) {
             groupMapModal._returnModal();

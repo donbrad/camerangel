@@ -219,7 +219,6 @@ var channelModel = {
 
         });
 
-
         channelModel.channelsDS.fetch();
 
         channelModel.channelsDS.bind("requestEnd", function (e) {
@@ -233,9 +232,6 @@ var channelModel = {
             }
 
         });
-
-
-
     },
 
     sync : function () {
@@ -243,6 +239,12 @@ var channelModel = {
      /*   channelModel.photosDS.sync();
         channelModel.groupMessagesDS.sync();*/
     },
+
+    createChannel : function () {
+        // action function called from notification manager if user accepts
+        // data-uuid is the uuid of the notification
+    },
+
 
     buildChannelsArray : function () {
         var len = channelModel.channelsDS.total();

@@ -17,8 +17,8 @@ var galleryModel = {
     _fetched : false,
     _initialSync : false,
     galleryDS : null,
-    photoDS : new kendo.data.DataSource(),
-    commentDS : new kendo.data.DataSource(),
+    photoDS : new kendo.data.DataSource(),    // cache of photos from shared galleries already fetched
+    commentDS : new kendo.data.DataSource(),  // cache of comments from shared galleries already fetched
 
 
     init : function() {
@@ -108,7 +108,7 @@ var galleryModel = {
         galleryModel.galleryDS.sync();
     },
 
-    fetchGallery : function (galleryId, callback) {
+    fetchSharedGallery : function (galleryId, callback) {
         var hasPhotos = false, hasComments = false;
         var result = {photoError: null, photos: null, commentError: null, comments: null};
 
@@ -155,14 +155,14 @@ var galleryModel = {
 
         var galleries = galleryModel.queryGalleries({field: "uuid", operator: "eq", value: uuid});
 
-        return (galleries);
+        return (galleries[0]);
     },
 
     findGalleryByUUID: function (uuid) {
 
         var galleries = galleryModel.queryGalleries({field: "galleryUUID", operator: "eq", value: uuid});
 
-        return (galleries);
+        return (galleries[0]);
     },
 
 
@@ -194,8 +194,8 @@ var galleryModel = {
         var filter = new Everlive.Query();
         filter.where().eq('galleryUUID', galleryUUID);
 
-        var data = el.data(galleryModel._galleryPhoto);
-        data.get(filter)
+        var photodata = el.data(galleryModel._galleryPhoto);
+        photodata.get(filter)
             .then(function(data){
                    callback (null, data);
                 },
@@ -204,13 +204,13 @@ var galleryModel = {
                 });
     },
 
-    // Get gallery photos from the everlive cloud
+    // Get gallery comments from the everlive cloud
     fetchComments : function (galleryUUID, callback) {
         var filter = new Everlive.Query();
         filter.where().eq('galleryUUID', galleryUUID);
 
-        var data = el.data(galleryModel._galleryComment);
-        data.get(filter)
+        var commentdata = el.data(galleryModel._galleryComment);
+        commentdata.get(filter)
             .then(function(data){
                     callback (null, data);
                 },
@@ -249,11 +249,12 @@ var galleryModel = {
             gallery.Id = uuid.v4();
         }
 
-        galleryModel.galleryDS.add(gallery);
+        var galleryObj = JSON.parse(JSON.stringify(gallery));
+        galleryModel.galleryDS.add(galleryObj);
         galleryModel.galleryDS.sync();
 
         if (deviceModel.isOnline()) {
-            everlive.createOne(galleryModel._cloudClass, gallery, function (error, data){
+            everlive.createOne(galleryModel._cloudClass, galleryObj, function (error, data){
                 if (error !== null) {
                     mobileNotify ("Error creating Gallery " + JSON.stringify(error));
                 }
@@ -269,18 +270,56 @@ var galleryModel = {
 
     },
 
-    addSharedGallery : function (gallery) {
+    addGuestGallery : function (galleryUUID, galleryName, ownerUUID, ownerName) {
+        var guid = uuid.v4();
+        var guestGallery = {
+            id : guid,
+            uuid : galleryUUID,
+            galleryUUID : galleryUUID,
+            isShared : true,
+            photoCollection :[],
+            photos: [],
+            ownerName : ownerName,
+            ownerUUID : ownerUUID,
+            title : galleryName,
+            description : null,
+            tagString : null
 
+        };
+
+        galleryModel.galleryDS.add(guestGallery);
+        galleryModel.galleryDS.sync();
+
+        galleryModel.shareGalleryPhotos(guestGallery);
+
+        if (deviceModel.isOnline()) {
+            everlive.createOne(galleryModel._cloudClass, guestGallery, function (error, data){
+                if (error !== null) {
+                    mobileNotify ("Error creating Shared Gallery " + JSON.stringify(error));
+                }
+            });
+
+        }
+    },
+
+    createGallery : function () {
+        // action function called from notification manager if user accepts
+        // data-uuid is id of the notification.
+    },
+
+    addSharedGallery : function (gallery) {
         var guid = uuid.v4();
         var sharedGallery = {
             id : guid,
             uuid : guid,
             galleryUUID : gallery.uuid,
             isShared : true,
+            members : gallery.members,
             photoCollection : gallery.photoCollection,
+            photoCount : gallery.photos.length,
             photos: gallery.photos,
-            sendName : gallery.senderName,
-            senderUUID : gallery.senderUUID,
+            ownerName : gallery.ownerName,
+            ownerUUID : gallery.ownerUUID,
             title : gallery.title,
             description : gallery.description,
             tagString : gallery.tagString
@@ -312,11 +351,13 @@ var galleryModel = {
 
         var galleryId = gallery.uuid;
         var photoCount = gallery.photos.length;
-
+        gallery.photoCount = photoCount;
+        gallery.photos = [];
+        gallery.photoCollection = [];
         for (var i=0; i<photoCount; i++ ) {
-
-            var photo = gallery.photos[i];
-            galleryModel.addGalleryPhoto(galleryId, photo);
+            var photoId = uuid.v4();
+            var photo = photoModel.findPhotoById(gallery.photos[i]);
+            galleryModel.addGalleryPhoto(galleryId, photoId, photo);
 
         }
 
@@ -328,15 +369,15 @@ var galleryModel = {
 
         if (deviceModel.isOnline()) {
             everlive.update(galleryModel._cloudClass, gallery, {'uuid': gallery.uuid}, function (error, data) {
-                //placeNoteModel.notesDS.remove(note);
+                if (error !== null) {
+                    ggError ("Error updating gallery " + JSON.stringify(error));
+                }
             });
         }
 
     },
 
-    addGalleryPhoto : function (galleryId, photo) {
-
-        var guid = uuid.v4();
+    addGalleryPhoto : function (galleryId, photoId, photo) {
 
         var gallery = galleryModel.findGallery(galleryId);
 
@@ -346,9 +387,10 @@ var galleryModel = {
         }
 
         var gPhoto = {
-            Id : guid,
-            photoId : guid,
-            onwerUUID : userModel._user.userUUID,
+            Id : photoId,
+            photoId : photoId,
+            ownerUUID : userModel._user.userUUID,
+            ownerName : userModel._user.name,
             photoUUID : photo.photoUUID,
             galleryUUID : galleryId,
             cloudUrl : photo.cloudUrl,
@@ -363,18 +405,57 @@ var galleryModel = {
             likes: []
 
         };
+
         galleryModel.photoDS.add(photo);
         galleryModel.photoDS.sync();
 
-        gallery.photoCollection.push[guid];
+        gallery.photoCollection.push(photoId);
+        gallery.photos.push(photoId);
+        galleryModel.galleryDS.sync();
 
         if (deviceModel.isOnline()) {
             everlive.createOne(galleryModel._galleryPhoto, photo, function (error, data){
                 if (error !== null) {
-                    mobileNotify ("Error creating Gallery Photo " + JSON.stringify(error));
+                    ggError ("Error creating Gallery Photo " + JSON.stringify(error));
                 }
             });
         }
+    },
+
+    // from a photo from all private galleries -- when user deletes from user gallery
+    removePhotoFromPrivateGalleries : function (photoId) {
+
+        // loop through list of galleries and remove this photo (brute force currently)
+
+    },
+
+    removePhotoFromSharedGalleries : function (photoId) {
+        // loop through list of shared galleries and remove all gallery photo objects
+    },
+
+
+    removeGallery : function (galleryId) {
+        // remove private gallery
+        var gallery = galleryModel.findGallery(galleryId);
+
+        galleryModel.galleryDS.remove(gallery);
+        galleryModel.galleryDS.sync();
+    },
+
+    removeSharedGallery : function (galleryId) {
+        // need to remove galleryphotos in everlive and in photosDS
+    },
+
+    removeMemberGallery : function (galleryId) {
+        var gallery = galleryModel.findGallery(galleryId);
+
+        var photos = galleryModel.findPhotos(galleryId);
+        for (var i=0; i<photos.length; i++) {
+            galleryModel.photosDS.remove(photos[i]);
+        }
+        galleryModel.photosDS.sync();
+        galleryModel.galleryDS.remove(gallery);
+        galleryModel.galleryDS.sync();
     },
 
     removeGalleryPhoto : function (gPhoto) {
@@ -395,17 +476,9 @@ var galleryModel = {
     },
 
 
-    addGalleryComment: function ( comment) {
-        galleryModel.commentDS.add(photo);
+    addGalleryComment: function (comment) {
+        galleryModel.commentDS.add(comment);
         galleryModel.commentDS.sync();
 
-        if (deviceModel.isOnline()) {
-            everlive.createOne(galleryModel._galleryComment, comment, function (error, data){
-                if (error !== null) {
-                    mobileNotify ("Error creating Gallery Comment " + JSON.stringify(error));
-                }
-            });
-
-        }
     }
 };

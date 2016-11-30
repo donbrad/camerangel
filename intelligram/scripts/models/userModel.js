@@ -27,6 +27,9 @@ var userModel = {
     _needStatusSync: false,
     _userObj : null,
     localKey : 'bXVsdGlwYXNz',
+    hasNotification : false,
+    hasCalendar : false,
+    hasContacts : false,
     
     initialView : '#newuserhome',
 
@@ -117,6 +120,10 @@ var userModel = {
                 userModel.username = null;
             }
 
+            if (userModel.userName !== null) {
+                $('#home-signin-username').val(userModel.userName);
+            }
+
         }
 
         if (userModel.userUUID !== undefined && userModel.userUUID !== null) {
@@ -134,7 +141,7 @@ var userModel = {
         
     },
 
-    
+
     initCloudModels : function () {
 
         tagModel.init();
@@ -145,19 +152,14 @@ var userModel = {
 
         notificationModel.init();
 
-
         // Initialize application data channel with gg's unique ID
         appDataChannel.init();
-
 
         var uuid = userModel._user.userUUID;
         // Initialize the user's data channel with the user's UUID...
         userDataChannel.init(uuid);
 
         userStatusChannel.init(uuid);
-
-
-
 
         mapModel.init();
 
@@ -193,27 +195,36 @@ var userModel = {
 
         groupModel.init();
 
-        if (window.navigator.simulator === undefined) {
+        userPermission.init();
 
+        if (window.navigator.simulator === undefined) {
             // toggle intelligram permission modal
             userPermission.triggerStackModal();
 
-            /*cordova.plugins.notification.local.hasPermission(function(granted) {
-
-                cordova.plugins.notification.local.registerPermission(function (granted) {
-
-                    /!*cordova.plugins.notification.local.schedule({
-                     id         : 1,
-                     title      : 'Welcome Back!',
-                     text       : 'intelligram missed you...',
-                     sound      : null,
-                     autoClear  : true,
-                     at         : new Date(new Date().getTime())
-                     });*!/
-                });
-
-            });*/
             serverPush.init();
+        }
+
+        if (userPermission.permissions.hasLocation) {
+
+            // If we have permission, get current location
+            mobileNotify("Looking current location...");
+            mapModel.getCurrentAddress(function (isNew, address){
+
+                if (isNew) {
+                    mapModel.wasPrompted = false;
+                    mapModel.newLocationDetected = true;
+                }
+
+                mapModel.reverseGeoCode(mapModel.lat, mapModel.lng, function (results, error) {
+                    if (results !== null) {
+                        var address = mapModel._updateAddress(results[0].address_components);
+                        mapModel.currentAddress = address;
+                        mapModel.currentCity = address.city;
+                        mapModel.currentState = address.state;
+                        mapModel.currentZipcode = address.zipcode;
+                    }
+                });
+            });
         }
 
 
@@ -664,6 +675,7 @@ var userStatus = {
     _status : null,
     _id : null,
     _needsSync: false,
+    _needStatus : true,
 
 
     init: function () {
@@ -686,11 +698,11 @@ var userStatus = {
         if (status !== null) {
             stat.lat = status.lat;
             stat.lng = status.lng;
-            stat.isAvailable = status.isAvailable;
+            stat.set('isAvailable',status.isAvailable);
             stat.isVisible = status.isVisible;
             stat.isCheckedIn = status.isCheckedIn;
-            stat.statusMessage = status.statusMessage;
-            stat.currentPlace = status.currentPlace;
+            stat.set('statusMessage', status.statusMessage);
+            stat.set('currentPlace',status.currentPlace);
             stat.currentPlaceUUID = status.currentPlaceUUID;
             stat.googlePlaceId = status.googlePlaceId;
         }
@@ -708,18 +720,18 @@ var userStatus = {
         var statusRaw = window.localStorage.getItem('ggUserStatus');
         var status;
 
-        if (statusRaw !== undefined) {
+        if (statusRaw !== undefined && statusRaw !== null) {
             status = JSON.parse(statusRaw);
             userStatus.initStatus(status);
 
         } else {
             userStatus.initStatus(null);
         }
-
+        userStatusChannel.userHistory();
     },
 
     getStatus : function (uuid, callback) {
-        var filter = new Everlive.Query();
+       /* var filter = new Everlive.Query();
         filter.where().eq('userUUID', uuid);
 
         var data = APP.everlive.data(userStatus._ggClass);
@@ -735,11 +747,14 @@ var userStatus = {
                 },
                 function(error){
                     callback(error, null);
-                });
+                });*/
     },
 
     getMemberStatus : function (uuid, callback) {
-        var filter = new Everlive.Query();
+
+
+        userStatusChannel.contactStatus(uuid, callback);
+       /* var filter = new Everlive.Query();
         filter.where().eq('userUUID', uuid);
 
         var data = APP.everlive.data(userStatus._ggClass);
@@ -757,7 +772,7 @@ var userStatus = {
                 },
                 function(error){
                     callback(error, null);
-                });
+                });*/
     },
 
     syncField : function (field) {

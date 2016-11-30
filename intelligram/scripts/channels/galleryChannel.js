@@ -127,9 +127,61 @@ var galleryChannel = {
                  break;
 
              case that._deleteGallery :
+                 var memberId = message.memberId;
+
+                 if (memberId === userModel._user.userUUID || memberId === "*") {
+                     mobileNotify(message.senderName + " has deleted Gallery : " +  message.galleryName);
+                     galleryModel.removeMemberGallery(galleryId);
+                 }
+
+
                  break;
 
          }
+
+    },
+
+    sendDeleteGallery : function (galleryId, galleryName, memberId) {
+        var msgID = uuid.v4();
+
+        var targetStr = '#gallery';
+        var notificationString =  userModel._user.name + ' has removed "' + galleryName + '"';
+        var message = {
+            msgID: msgID,
+            msgClass : galleryChannel._class,
+            msgType : galleryChannel._deleteGallery,
+            sender: userModel._user.userUUID,
+            senderName: userModel._user.name,
+            galleryName : galleryName,
+            memberId : memberId,
+            time: ggTime.currentTimeInSeconds(),
+            galleryId: galleryId,
+            pn_apns: {
+                aps: {
+                    alert : notificationString,
+                    badge : "+1",
+                    'content-available' : 1
+                },
+                target: targetStr,
+                galleryId: galleryId
+            },
+            pn_gcm : {
+                data : {
+                    title: notificationString,
+                    message: notificationString,
+                    icon: "www/images/androidlogo.png",
+                    msgcnt: 1,
+                    target: targetStr,
+                    galleryId: galleryId
+                }
+            }
+        };
+
+        if (!deviceModel.isOnline()) {
+            galleryChannel.pendingDS.add(message);
+        } else {
+            galleryChannel.publish(message);
+        }
 
     },
 

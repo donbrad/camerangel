@@ -1171,6 +1171,9 @@
 			<a data-click="galleryListView.closeModal" data-role="button" data-align="left">
 				<div class="close" data-grunticon-embed></div>
 			</a>
+			<a data-click="galleryListView.addGallery" data-role="button" data-align="right">
+				<div class="menu-add" data-grunticon-embed></div>
+			</a>
 		</div>
 	</div>
 	<div class="km-group-title">
@@ -6498,7 +6501,7 @@
 <div data-role="modalview" id="permissionStackModal" style="width: 90%; display: none;" class="appearance">
 	<div data-role="header">
 		<div data-role="navbar">
-			<span>Required permissions</span>
+			<span>intelligram permissions</span>
 		</div>
 	</div>
 	<ul class="list-unstyled permissionStackModal-list">
@@ -6507,24 +6510,24 @@
 				<img src="images/permission-notify.png" class="permissionStackModal-img"/>
 				Notifications
 			</p>
-			<p class="helper">We don’t like unnecessary notifications so we optimized them to only notify you for the most important things.</p>
-			<a class="btnFull btnClearLine" data-role="button" data-click="userPermission.goTriggerSystem" data-type="notification">Enable Notifications</a>
+			<p class="helper">Get notfications of important messages and events from your contacts -- when intelligram isn't running.</p>
+			<a class="btnFull btnClearLine" id="permission-notification" data-role="button" data-click="userPermission.goTriggerSystem" data-type="notification">Enable Notifications</a>
 		</li>
 		<li>
 			<p>
 				<img src="images/permission-location.png" class="permissionStackModal-img"/>
 				Geolocation
 			</p>
-			<p class="helper">We use geolocation to help with mapping places and trips.</p>
-			<a class="btnFull btnClearLine" data-role="button" data-click="userPermission.goTriggerSystem" data-type="location">Enable Geolocation</a>
+			<p class="helper">Automatically determine your current location.  You control whether it's shared with your contacts.</p>
+			<a class="btnFull btnClearLine"  id="permission-location" data-role="button" data-click="userPermission.goTriggerSystem" data-type="location">Enable Geolocation</a>
 		</li>
 		<li>
 			<p>
 				<img src="images/permission-contact.png" class="permissionStackModal-img"/>
 				Contacts access
 			</p>
-			<p class="helper">Connect with family and friends quickly.</p>
-			<a class="btnFull btnClearLine" data-role="button" data-click="userPermission.goTriggerSystem" data-type="contact">Enable Contacts</a>
+			<p class="helper">Use your device contacts to instantly connect with family and friedns</p>
+			<a class="btnFull btnClearLine" id="permission-contacts" data-role="button" data-click="userPermission.goTriggerSystem" data-type="contact">Enable Contacts</a>
 		</li>
 	</ul>
 	<div class="footer" data-role="footer">

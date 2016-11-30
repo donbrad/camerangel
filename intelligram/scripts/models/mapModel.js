@@ -276,11 +276,14 @@ var mapModel = {
                 mapModel._updatePosition(lat, lng);
                 callback(lat, lng);
             }, function (error) {
-                if (error.code === 3) {
+                if (error.code === 3 || error.code === 2) {
+                    // Time out -- uer
                     mobileNotify("GPS : using cached location");
                     callback(mapModel.lat, mapModel.lng);
-                } else {
-                    mobileNotify("GPS error :" + error.message);
+                } else if (error.code === 1) {
+                    userPermission.permissions.hasLocation = false;
+                    userPermission.savePermissions();
+                    mobileNotify("Autolocate Permission Denied");
                     callback(0, 0);
                 }
 

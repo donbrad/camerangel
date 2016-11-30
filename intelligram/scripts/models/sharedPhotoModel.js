@@ -42,13 +42,13 @@ var sharedPhotoModel = {
             ggError("SharePhoto -- can't find source photo!!!");
             return;
         }
-        
+
         share.set('version', sharedPhotoModel._version);
         share.set('ggType', sharedPhotoModel._ggClass);
         share.set('uuid', shareuuid);
         share.set('photoUUID', photoUUID);
         share.set('channelUUID', channelUUID);
-        share.set('ownerId', userModel._user.userUUID);
+        share.set('ownerUUID', userModel._user.userUUID);
         share.set('ownerName', userModel._user.name);
 
         share.set('title', photo.title);
@@ -90,8 +90,8 @@ var sharedPhotoModel = {
         var filter = new Everlive.Query();
         filter.where().eq('uuid', uuid);
 
-        var data = APP.everlive.data(sharedPhotoModel._ggClass);
-        data.get(filter)
+        var photodata = APP.everlive.data(sharedPhotoModel._ggClass);
+        photodata.get(filter)
             .then(function(data){
                     if (data.count === 0) {
                         callback(null)
@@ -102,7 +102,7 @@ var sharedPhotoModel = {
 
                 },
                 function(error){
-                    mobileNotify("MemberDirectory Find error : " + JSON.stringify(error));
+                    mobileNotify("SharedPhoto Find error : " + JSON.stringify(error));
                 });
     },
 
@@ -110,8 +110,8 @@ var sharedPhotoModel = {
         var filter = new Everlive.Query();
         filter.where().eq('channelUUID', channelUUID);
 
-        var data = APP.everlive.data(sharedPhotoModel._ggClass);
-        data.get(filter)
+        var photodata = APP.everlive.data(sharedPhotoModel._ggClass);
+        photodata.get(filter)
             .then(function(data){
                     if (data.count === 0) {
                         callback(null)
