@@ -3134,12 +3134,15 @@ var mapViewModal = {
         //_preventDefault(e);
     },
 
+
     openModal: function (locObj,  callback) {
         // _preventDefault(e);
         var valid = false;
+        var title = null;
+
 
         if (locObj.title !== null) {
-            var title = locObj.title.smartTruncate(16, true);
+             title = locObj.title.smartTruncate(22, true);
             $('#mapViewModal-title').html(title);
         }
 
