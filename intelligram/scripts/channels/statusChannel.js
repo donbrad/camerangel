@@ -192,6 +192,43 @@ var userStatusChannel = {
         );
     },
 
+    contactStatus : function (contactUUID, callback) {
+        var statusUUID = 'status-' + contactUUID;
+        APP.pubnub.history({
+                channel: statusUUID,
+                stringifiedTimeTokens: true,
+                count: 1
+            },
+            function (status, response) {
+                if (status.error) {
+                    // handle error
+                    ggError("User Contact History : " + JSON.stringify(status.error));
+                    callback(status.error, null);
+                }
+                var messages = response.messages;
+                if (messages.length === 0) {
+                    return;
+                }
+
+                var chanStart = response.startTimeToken, chanEnd = response.endTimeToken;
+                if (messages.length > 0) {
+                    for (var i = 0; i < messages.length; i++) {
+                        var msg = messages[i].entry;
+
+                        if (msg.msgType === userStatusChannel._status) {
+                            userStatusChannel.cacheList[msg.sender] = msg.status;
+                            userStatusChannel.updateContactStatus(msg.sender, msg.status);
+                            callback(null, msg.status);
+                        }
+                    }
+                }
+
+            }
+
+        );
+    },
+
+
     contactHistory : function () {
 
         var length = userStatusChannel.statusArray.length;

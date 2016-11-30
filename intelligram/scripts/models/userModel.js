@@ -675,6 +675,7 @@ var userStatus = {
     _status : null,
     _id : null,
     _needsSync: false,
+    _needStatus : true,
 
 
     init: function () {
@@ -697,11 +698,11 @@ var userStatus = {
         if (status !== null) {
             stat.lat = status.lat;
             stat.lng = status.lng;
-            stat.isAvailable = status.isAvailable;
+            stat.set('isAvailable',status.isAvailable);
             stat.isVisible = status.isVisible;
             stat.isCheckedIn = status.isCheckedIn;
-            stat.statusMessage = status.statusMessage;
-            stat.currentPlace = status.currentPlace;
+            stat.set('statusMessage', status.statusMessage);
+            stat.set('currentPlace',status.currentPlace);
             stat.currentPlaceUUID = status.currentPlaceUUID;
             stat.googlePlaceId = status.googlePlaceId;
         }
@@ -719,18 +720,18 @@ var userStatus = {
         var statusRaw = window.localStorage.getItem('ggUserStatus');
         var status;
 
-        if (statusRaw !== undefined) {
+        if (statusRaw !== undefined && statusRaw !== null) {
             status = JSON.parse(statusRaw);
             userStatus.initStatus(status);
 
         } else {
             userStatus.initStatus(null);
         }
-
+        userStatusChannel.userHistory();
     },
 
     getStatus : function (uuid, callback) {
-        var filter = new Everlive.Query();
+       /* var filter = new Everlive.Query();
         filter.where().eq('userUUID', uuid);
 
         var data = APP.everlive.data(userStatus._ggClass);
@@ -746,11 +747,14 @@ var userStatus = {
                 },
                 function(error){
                     callback(error, null);
-                });
+                });*/
     },
 
     getMemberStatus : function (uuid, callback) {
-        var filter = new Everlive.Query();
+
+
+        userStatusChannel.contactStatus(uuid, callback);
+       /* var filter = new Everlive.Query();
         filter.where().eq('userUUID', uuid);
 
         var data = APP.everlive.data(userStatus._ggClass);
@@ -768,7 +772,7 @@ var userStatus = {
                 },
                 function(error){
                     callback(error, null);
-                });
+                });*/
     },
 
     syncField : function (field) {
