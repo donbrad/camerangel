@@ -607,8 +607,8 @@ var userStatusView = {
         status.set('isCheckedIn', user.isCheckedIn);
         status.set('currentPlace', user.currentPlace);
         status.set('isAvailable', user.isAvailable);
-        status.set('statusMessage', user.statusMessage);
-*/
+        status.set('statusMessage', user.statusMessage);*/
+
         // Set name/alias layout
         ux.formatNameAlias(user.name, user.alias, "#modalview-profileStatus");
 
@@ -701,6 +701,13 @@ var userStatusView = {
         ux.hideKeyboard();
 
         userStatusView.oldStatus =  userStatus._statusObj.statusMessage;
+        var user = userModel._user;
+
+        userStatus._statusObj.set('currentPlaceUUID', user.currentPlaceUUID);
+        userStatus._statusObj.set('isCheckedIn', user.isCheckedIn);
+        userStatus._statusObj.set('currentPlace', user.currentPlace);
+        userStatus._statusObj.set('isAvailable', user.isAvailable);
+        userStatus._statusObj.set('statusMessage', user.statusMessage);
 
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
@@ -744,9 +751,11 @@ var userStatusView = {
 
         var updatedStatus = $("#profileStatusUpdate").val();
         if(updatedStatus !== "" && updatedStatus !== userStatusView.oldStatus) {
+            var rendered = emojione.toImage(updatedStatus);
+
             // Save new status
-            userModel._user.set("statusMessage", updatedStatus);
-            userStatus.updateStatusMessage(updatedStatus);
+            userModel._user.set("statusMessage", rendered);
+            userStatus.updateStatusMessage(rendered);
             userStatus.update();
         }
         // clear status box
@@ -770,9 +779,11 @@ var userStatusView = {
         $(userStatusView._modalId).data("kendoMobileModalView").close();
 
         var updatedStatus = $("#profileStatusUpdate").val();
+
         if(updatedStatus !== "") {
+            var renderedStatus = emojione.toImage(updatedStatus);
             // Save new status
-            userStatus.updateStatus(updatedStatus);
+            userStatus.updateStatus(renderedStatus);
         }
         // clear status box
         $("#profileStatusUpdate").val("");
@@ -866,7 +877,6 @@ var userStatusView = {
         //_preventDefault(e);
 
         userStatusView.statusCharCount(e);
-
         //userStatusView._activeStatus.bind('change' , userStatusView.syncUserStatus);
 
     },

@@ -2220,12 +2220,18 @@ div.footer.km-footer {
 #profileStatusUpdate {
   width: 100%;
   .font-size(16);
-  background-color: #fff;
-  min-height: 6em;
+  //background-color: #fff;
+  //min-height: 6em;
   border-bottom: 1px solid @shade-200;
   padding: 0.5em;
   margin-top: 0.5em;
+}
 
+#profileStatusUpdate[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+  color: @shade-100;
+  vertical-align: middle;
 }
 
 .circle-img-home {
@@ -2273,9 +2279,14 @@ div.footer.km-footer {
 }
 
 
-#profileStatusMessage {
+#profileStatusMessage,
+.contactStatusMessage-sm,
+.contactStatusMessage {
   //display:none;
-  font-style: italic;
+  //font-style: italic;
+  .emojione {
+    transform: scale(0.75);
+  }
 }
 
 #profilePhotoForm > div > ul > li:nth-child(1) {
@@ -3462,7 +3473,7 @@ a:hover {
 }
 
 .contactStatusMessage {
-  font-style: italic;
+  //font-style: italic;
 }
 
 #contactCurrentPlace {
@@ -3481,7 +3492,8 @@ a:hover {
 }
 
 .contactStatus-location {
-  color: @shade-100;
+  color: @primary-200;
+  font-size: 0.875em;
 }
 
 #contactProfileImg,
@@ -6682,7 +6694,7 @@ div.k-nodata {
   border-top: 0.4rem solid transparent;
   border-bottom: 0.4rem solid transparent;
   border-right: 0.4rem solid lighten(@primary-200, 20%);
-  top: 2em;
+  top: 2.25em;
   left: 10.5%;
   @media @mobile {
     left: 13.5%;

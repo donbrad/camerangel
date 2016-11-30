@@ -1688,7 +1688,7 @@
 			<span id="currentGroup">
 				<span class="group-contactCard" id="currentContactGroup"></span><br/>
 			</span>
-			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
+			<span class="contactStatusMessage" data-bind="html: statusMessage"></span>
 		</p>
 		<p class="preMotionUp">
 			<a data-role="button" data-click="contactActionView.showLocation" id="contactCurrentPlace" class="btnClearLine-sm hidden"></a>
@@ -1772,13 +1772,13 @@
 		</div>
 
 		<div class="left" style="width: 80%;">
-			<h3>
+			<h2>
 				<span class="primaryName"></span>
 				<span class="hidden" id="profileStatusVerified">
 					<span class="user-status-icon icon-verified-dark"></span>
 				</span>
-			</h3>
-			<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
+			</h2>
+			<p id="profileStatusMessage" data-bind="html: statusMessage"></p>
 			<p id="profileLocation">
 				<a data-role="button" style="text-align: left; font-size: 0.875em;" data-click="userStatusView.gotoPlace">
 					<span class="primary-200-text">@</span>
@@ -1811,7 +1811,7 @@
 			</li>
 			<li>
 				<label for="profileStatusUpdate">Quick Status</label>
-				<textarea id="profileStatusUpdate" maxlength="35" placeholder="What's going on..."></textarea>
+				<textarea id="profileStatusUpdate" placeholder="What's going on..." maxlength="35"></textarea>
 				<div class="statusCharacterCount">
 					<span class="statusCharCount"></span>
 				</div>
@@ -7222,7 +7222,7 @@
 							message = data.statusMessage;
 							}#
 
-							#:message#
+							#=message#
 						</p>
 
 						# if (data.currentPlace !== undefined && data.currentPlace !== null && data.currentPlace !== ""){#
