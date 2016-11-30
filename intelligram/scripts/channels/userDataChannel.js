@@ -50,8 +50,13 @@ var userDataChannel = {
             userDataChannel.channelUUID = channelUUID;
 
             var ts = localStorage.getItem('ggUserDataTimeStamp');
-            if (ts !== undefined && ts !== "NaN") {
+            if (ts !== undefined && ts !== null) {
                 userDataChannel.lastAccess = parseInt(ts);
+
+                // Additional check for random localStorage corruption
+                if (isNaN(userDataChannel.lastAccess)) {
+                    userDataChannel.lastAccess = ggTime.lastWeek();
+                }
 
                 // Was last access more than 1 week ago -- if yes set it to 1 week ago
                 if (userDataChannel.lastAccess < ggTime.lastWeek() || userDataChannel.lastAccess) {

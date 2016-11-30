@@ -2680,15 +2680,22 @@ var userPermission = {
 
     triggerSystemDialog: function() {
 
-            switch(userPermission._type){
-                // trigger system notification dialog
-                case userPermission._notification:
+        userPermission.updateUX();
 
-                    if (userPermission.permissions.hasNotifications)
-                        return;
+        switch(userPermission._type){
+            // trigger system notification dialog
+            case userPermission._notification:
 
-                    cordova.plugins.notification.local.hasPermission(function(granted) {
+                if (userPermission.permissions.hasNotifications)
+                    return;
 
+                cordova.plugins.notification.local.hasPermission(function(granted) {
+
+                    if (granted) {
+                        userPermission.permissions.hasNotifications = true;
+                        userPermission.savePermissions();
+                        userPermission.updateUX();
+                    } else {
                         cordova.plugins.notification.local.registerPermission(function (granted) {
                             userPermission.permissions.hasNotifications = true;
                             userPermission.savePermissions();
@@ -2698,51 +2705,53 @@ var userPermission = {
                             userPermission.permissions.hasNotifications = false;
                             userPermission.savePermissions();
                         });
+                    }
+                }, function(rejected){
+                   userPermission.permissions.hasNotifications = false;
+                    userPermission.savePermissions();
+                });
 
-                    }, function(rejected){
-                       userPermission.permissions.hasNotifications = false;
+                break;
+
+            case userPermission._contacts:
+                if (userPermission.permissions.hasContacts)
+                    return;
+                var options      = new ContactFindOptions();
+                options.filter   = "Bob";
+                options.multiple = true;
+                options.desiredFields = [navigator.contacts.fieldType.id];
+                options.hasPhoneNumber = true;
+                var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+
+                navigator.contacts.find(fields, function(contacts){
+                        userPermission.permissions.hasContacts = true;
+                        userPermission.updateUX();
+                        userPermission.savePermissions();
+                    },
+                    function(contactError){
+                        userPermission.permissions.hasContacts = false;
+                        userPermission.savePermissions();
+                }, options);
+
+
+                break;
+
+            case  userPermission._location:
+                if (userPermission.permissions.hasLocation)
+                    return;
+                // testing location access call
+                navigator.geolocation.getCurrentPosition(function(position){
+                        userPermission.permissions.hasLocation = true;
+                        userPermission.updateUX();
+                        userPermission.savePermissions();
+                    },
+                    function(PositionError){
+                        userPermission.permissions.hasLocation = false;
                         userPermission.savePermissions();
                     });
 
-                    break;
-                case userPermission._contacts:
-                    if (userPermission.permissions.hasContacts)
-                        return;
-                    var options      = new ContactFindOptions();
-                    options.filter   = "Bob";
-                    options.multiple = true;
-                    options.desiredFields = [navigator.contacts.fieldType.id];
-                    options.hasPhoneNumber = true;
-                    var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
-
-                    navigator.contacts.find(fields, function(contacts){
-                            userPermission.permissions.hasContacts = true;
-                            userPermission.updateUX();
-                            userPermission.savePermissions();
-                        },
-                        function(contactError){
-                            userPermission.permissions.hasContacts = false;
-                            userPermission.savePermissions();
-                    }, options);
-
-
-                    break;
-                case  userPermission._location:
-                    if (userPermission.permissions.hasLocation)
-                        return;
-                    // testing location access call
-                    navigator.geolocation.getCurrentPosition(function(position){
-                            userPermission.permissions.hasLocation = true;
-                            userPermission.updateUX();
-                            userPermission.savePermissions();
-                        },
-                        function(PositionError){
-                            userPermission.permissions.hasLocation = false;
-                            userPermission.savePermissions();
-                        });
-
-                    break;
-            }
+                break;
+        }
 
     },
 
