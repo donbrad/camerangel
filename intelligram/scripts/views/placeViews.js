@@ -3310,6 +3310,18 @@ var groupMapModal = {
     _bounds : null,
     _zoomIn: 14,  // Default zoom for the map.
     _zoomOut: 8,
+    activeObj :  new kendo.data.ObservableObject({
+        name: null,
+        alias: null,
+        icon: null,
+        lat: 0,
+        lng: 0,
+        phone: null,
+        email: null,
+        contactUUID: null,
+        privateKey: null,
+        uuid: null
+    }),
 
     onInit: function (e) {
         //_preventDefault(e);
@@ -3343,9 +3355,9 @@ var groupMapModal = {
         return (markers[0]);
     },
 
-    selectMember : function (member) {
+    selectMember : function () {
         //Center the map on the current location
-        groupMapModal.googleMap.setCenter({lat: parseFloat(member.lat), lng: parseFloat(member.lng)});
+        groupMapModal.googleMap.setCenter({lat: parseFloat(groupMapModal.activeObj.lat), lng: parseFloat(groupMapModal.activeObj.lng)});
         groupMapModal.googleMap.setZoom(groupMapModal._zoomIn);
     },
 
@@ -3368,7 +3380,6 @@ var groupMapModal = {
         for (var i=0; i<members.length; i++) {
            var contact = contactModel.findContactListUUID(members[i]);
            if (contact !== undefined && contact !== null) {
-
                contact.mapIndex = i+1;
                groupMapModal._memberList.add(contact);
            }
@@ -3453,16 +3464,13 @@ var groupMapModal = {
                 template: $("#groupMapModal-template").html(),
                 click: function (e) {
                     var marker = e.dataItem;
-                    if (marker.lat === null || marker.lat === 0) {
-                        mobileNotify(marker.name + " hasn't shared their location.");
-                    } else {
-                        groupMapModal.selectMember(marker);
-                    }
-
-
+                    groupMapModal.setActiveMember(marker);
+                    groupMapModal.openActions();
                 }
             });
             groupMapModal._inited = true;
+
+            kendo.bind($("#groupMapModalActions"), groupMapModal.activeObj);
         }
 
 
@@ -3473,6 +3481,132 @@ var groupMapModal = {
         groupMapModal.googleMap.fitBounds(groupMapModal._bounds);
 
 
+    },
+
+    setActiveMember: function(member){
+      if(member !== undefined){
+          groupMapModal.activeObj.set("name", member.name);
+          groupMapModal.activeObj.set("alias", member.alias);
+          groupMapModal.activeObj.set("lat", member.lat);
+          groupMapModal.activeObj.set("lng", member.lng);
+          groupMapModal.activeObj.set("phone", member.phone);
+          groupMapModal.activeObj.set("email", member.email);
+          groupMapModal.activeObj.set("contactUUID", member.contactUUID);
+          groupMapModal.activeObj.set("publicKey", member.publicKey);
+          groupMapModal.activeObj.set("uuid", member.uuid);
+      }
+    },
+
+    openActions: function(){
+
+        // show map actions
+        if(groupMapModal.activeObj.lng !== 0 && groupMapModal.activeObj.lng !== null){
+            $("#groupMapModal-centerLoc").removeClass("hidden");
+        } else {
+            $("#groupMapModal-centerLoc").addClass("hidden");
+        }
+
+        // show phone actions
+        if(groupMapModal.activeObj.phone !== null){
+            $("#groupMapModal-call, #groupMapModal-sms").removeClass("hidden");
+        } else {
+            $("#groupMapModal-call, #groupMapModal-sms").addClass("hidden");
+        }
+
+        // show email action
+        if(groupMapModal.activeObj.email !== null){
+            $("#groupMapModal-email").removeClass("hidden");
+        } else {
+            $("#groupMapModal-email").addClass("hidden");
+        }
+
+        $("#groupMapModalActions").data("kendoMobileActionSheet").open();
+    },
+
+    privateChat: function(e){
+        _preventDefault(e);
+
+        var contact = groupMapModal.activeObj;
+        var contactUUID = contact.contactUUID, contactName = contact.name, contactPublicKey = contact.publicKey;
+
+        if (contactUUID === undefined || contactUUID === null) {
+            mobileNotify(contact.name + " hasn't verified their contact info");
+            return;
+        }
+        // Is there already a private channel provisioned for this user?
+        var channel = channelModel.findPrivateChannel(contactUUID);
+
+        var navStr = '#channel?channelUUID=';
+        if (channel !== undefined) {
+            navStr = navStr + channel.channelUUID;
+            APP.kendo.navigate(navStr);
+        } else {
+            mobileNotify("Creating Private Chat with " + contactName);
+            channelModel.addPrivateChannel(contactUUID, contactPublicKey, contactName, function (error, data) {
+                navStr = navStr + contactUUID;
+                APP.kendo.navigate(navStr);
+            });
+
+        }
+    },
+
+    callPhone : function (e) {
+        _preventDefault(e);
+
+        if (window.navigator.simulator === true){
+            mobileNotify("Phone Calls are't supported in the emulator");
+            return;
+        }
+
+        var number = groupMapModal.activeObj.get('phone');
+        window.plugins.CallNumber.callNumber(
+
+            function(success) {
+                mobileNotify("Dialing " + number);
+            },
+            function(err) {
+                mobileNotify("Dailer error: " + err);
+            },
+            number
+        );
+    },
+
+    sendEmail : function (e) {
+        _preventDefault(e);
+
+        var email = groupMapModal.activeObj.get('email');
+        var properties = {
+            to: email
+        };
+        // todo don - review email plugin
+        cordova.plugins.email.open(properties, function () {
+            mobileNotify("Email sent...");
+        }, this);
+    },
+
+    sendSMS : function (e) {
+        _preventDefault(e);
+
+        var number = groupMapModal.activeObj.get('phone');
+        var message = "";
+
+        //CONFIGURATION
+        var options = {
+            android: {
+                intent: 'INTENT'  // send SMS with the native android SMS messaging
+                //intent: '' // send SMS without openning any other app
+            }
+        };
+
+        var success = function () { mobileNotify('Message sent successfully'); };
+        var error = function (e) { mobileNotify('Message Failed:' + e); };
+
+        if (window.navigator.simulator === true){
+            //running in the simulator
+            alert('Simulating SMS to ' + number + ' message: ' + message);
+        } else {
+            sms.send(number, message, options, success, error);
+        }
     },
 
     recenterMap : function () {

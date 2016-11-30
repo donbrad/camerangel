@@ -1170,7 +1170,7 @@ form p {
 .primary-100-stroke {
   stroke: #4B6CB7;
 }
-.primary-200-stroke {
+.primary-200-stroke #iPhone-6-Copy-2 {
   stroke: #6CADF3;
 }
 .secondary-100 {
@@ -1212,6 +1212,9 @@ form p {
 }
 .margin-1 {
   margin: 1em;
+}
+.inline {
+  display: inline;
 }
 /* Elements */
 .status {
@@ -1371,6 +1374,14 @@ img.icon-sm {
   height: 100%;
   width: 100%;
 }
+img.icon-action {
+  height: auto !important;
+  max-height: 1.2em !important;
+  width: 1.2em !important;
+  vertical-align: baseline;
+  margin-right: 0.5em;
+  display: inline-block;
+}
 .loading-icon {
   height: 1rem;
   vertical-align: middle;
@@ -1389,6 +1400,39 @@ img.icon-sm {
   list-style: none;
   padding: 0.25rem 1rem;
   margin: 0;
+}
+.circle-round {
+  border-radius: 50%;
+  height: 2em;
+  width: 2em;
+}
+.google-map-icon {
+  background-color: #F76C60;
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 50%;
+  display: inline-block;
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.875em;
+}
+.groupMapModal-name {
+  position: absolute;
+  left: 3em;
+  display: inline-block;
+}
+.groupMapModal-name span:first-child {
+  font-size: 1.2em;
+}
+#groupMapModal-name {
+  font-weight: 600;
+}
+#groupMapModal-img {
+  vertical-align: text-bottom !important;
+}
+#groupMapModal-info {
+  padding: 0.25em 1.2em;
 }
 .circle-img {
   border-radius: 50%;
@@ -1491,6 +1535,13 @@ img.icon-sm {
 .km-material .km-navbar .km-button.km-state-active,
 .km-material .k-toolbar .km-button.km-state-active {
   background: none;
+}
+.km-actionsheet-cancel a {
+  color: #E57373 !important;
+}
+.km-actionsheet-cancel a:active {
+  background: #E57373 !important;
+  color: #fff !important;
 }
 #modalview-verifyPhone > div {
   padding: 0;
@@ -2753,7 +2804,11 @@ div.footer.km-footer {
   width: 100%;
   font-size: 16px;
   font-size: 1em;
-  resize: none;
+  background-color: #fff;
+  min-height: 6em;
+  border-bottom: 1px solid #E0E0E0;
+  padding: 0.5em;
+  margin-top: 0.5em;
 }
 .circle-img-home {
   border-radius: 50%;
@@ -7273,6 +7328,12 @@ div.k-nodata {
 #checked-in-place {
   display: none;
 }
+#groupMapModal-recenter {
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: middle;
+  text-align: center;
+}
 #groupMapModal-mapdiv {
   position: absolute;
   top: 0;
@@ -7280,7 +7341,25 @@ div.k-nodata {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 60vh;
+  height: 50vh;
+}
+#groupMapModal-listBox {
+  position: absolute;
+  top: 50vh;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 50vh;
+}
+#groupMapModal-listBox img {
+  height: 2em;
+}
+.groupMapModal-alias {
+  font-size: 0.85em;
+  margin-left: 0.25em;
+  color: #979797;
+  font-style: italic;
 }
 .map-placeLayer {
   width: 100%;

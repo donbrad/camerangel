@@ -1780,7 +1780,7 @@
 			</h3>
 			<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
 			<p id="profileLocation">
-				<a  data-role="button" style="text-align: left; font-size: 0.875em;" data-click="userStatusView.gotoPlace">
+				<a data-role="button" style="text-align: left; font-size: 0.875em;" data-click="userStatusView.gotoPlace">
 					<span class="primary-200-text">@</span>
 					<span class="primary-200-text" data-bind="text: currentPlace"></span>
 				</a>
@@ -2128,34 +2128,92 @@
 </div>
 
 <script type="text/x-kendo-template" id="groupMapModal-template">
-	<div style="clear: both;">
-		<span class="left">#:data.mapIndex#</span>
-		<span class="right">
-			#: data.name # (#:data.alias#)
-		</span>
+	<div>
+		<p class="textClamp inline">
+			#
+				if (data.lat !== null && data.lat !== 0) {#
+					<span class="groupMapModal-icon google-map-icon">#:data.mapIndex#</span>
+				#}
+			#
+
+			<span class="groupMapModal-name">
+					<span>#: data.name #</span>
+				#
+					if(data.alias !== null && data.alias !== ""){#
+						<span class="groupMapModal-alias">#:data.alias#</span>
+					#}
+				#
+			</span>
+		</p>
 	</div>
 </script>
 
 <div data-role="modalview"  id="groupMapModal" style="width: 100%; height: 100%; display:none;"  data-init="groupMapModal.onInit" data-transition="fade"  data-stretch="true">
 	<div data-role="header">
 		<div data-role="navbar">
-
 			<a data-role="button" data-align="left" data-click="groupMapModal.onDone">
 				<div class="close" data-grunticon-embed></div>
 			</a>
 			<span id="groupMapModal-title">Group Map</span>
 			<a data-role="button" data-align="right" data-click="groupMapModal.recenterMap">
-				<div class="action-map" data-grunticon-embed></div>
+				<img src="images/icon-center.png" id="groupMapModal-recenter"/>
 			</a>
 		</div>
 	</div>
 	<div style="clear:both;">
 		<div id="groupMapModal-mapdiv"></div>
-		<div style="margin-top: 60vh; height: 40vh; padding: 16px;">
-			<div id="groupMapModal-listview"></div>
+		<div id="groupMapModal-listBox">
+			<div class="km-group-title">
+				<div class="km-group-text">
+					Group Members
+				</div>
+			</div>
+			<ul class="listview" id="groupMapModal-listview"></ul>
 		</div>
 	</div>
+	<!-- contact action sheet -->
+	<ul data-role="actionsheet" id="groupMapModalActions">
+		<li id="groupMapModal-info">
+			<p>
+				<span class="contacts icon-md hidden" data-grunticon-embed id="groupMapModal-img"></span>
+				<span id="groupMapModal-name" data-bind="text: name"></span>
+				<span class="groupMapModal-alias" data-bind="text: alias"></span>
+			</p>
+		</li>
+		<li>
+			<a data-role="button" data-click="groupMapModal.privateChat">
+				<img class="icon-action" src="images/icon-private-dark.png" />
+				Private Chat
+			</a>
+		</li>
+		<li id="groupMapModal-call">
+			<a data-role="button" data-click="groupMapModal.callPhone">
+				<img class="icon-action" src="images/icon-phone-dark.png" />
+				Call
+			</a>
+		</li>
+		<li id="groupMapModal-email">
+			<a data-role="button" data-click="groupMapModal.sendEmail">
+				<img class="icon-action" src="images/icon-ghostMail-dark.png" />
+				Send Email
+			</a>
+		</li>
+		<li id="groupMapModal-sms">
+			<a data-role="button" data-click="groupMapModal.sendSMS">
+				<img class="icon-action" src="images/icon-sms-dark.png" />
+				Send SMS
+			</a>
+		</li>
+		<li>
+			<a data-role="button" data-click="groupMapModal.selectMember" id="groupMapModal-centerLoc">
+				<img class="icon-action" src="images/icon-center.png" />
+				Center on map
+			</a>
+		</li>
+	</ul>
+
 </div>
+
 
 <div data-role="view" data-title="Map" id="mapView" data-layout="main"  data-show="mapView.onShow" data-init="mapView.onInit" data-transition="fade" data-stretch="true">
 	<div data-role="header">

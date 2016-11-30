@@ -457,7 +457,10 @@ form {
 }
 
 .primary-200-stroke {
-  stroke: @primary-200;
+
+  #iPhone-6-Copy-2 {
+    stroke: @primary-200;
+  }
 }
 
 .secondary-100 {
@@ -510,6 +513,10 @@ form {
 .margin-1 {
   margin: 1em;
   //margin-bottom: 1em;
+}
+
+.inline {
+  display: inline;
 }
 
 /* Elements */
@@ -692,6 +699,15 @@ img.icon-sm {
   }
 }
 
+img.icon-action {
+  height: auto !important;
+  max-height: 1.2em !important;
+  width: 1.2em !important;
+  vertical-align: baseline;
+  margin-right: 0.5em;
+  display: inline-block;
+}
+
 .loading-icon {
   height: 1rem;
   vertical-align: middle;
@@ -713,6 +729,56 @@ img.icon-sm {
   list-style: none;
   padding: 0.25rem 1rem;
   margin: 0;
+}
+
+.circle-round {
+  border-radius: 50%;
+  height: 2em;
+  width: 2em;
+}
+
+.google-map-icon {
+  background-color: #F76C60;
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 50%;
+  display: inline-block;
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.875em;
+}
+
+.groupMapModal-name {
+  position: absolute;
+  left: 3em;
+  display: inline-block;
+  span:first-child {
+    font-size: 1.2em;
+  }
+}
+
+#groupMapModal-name {
+  font-weight: 600;
+}
+
+#groupMapModal-img {
+  vertical-align: text-bottom !important;
+}
+
+#groupMapModal-info {
+  padding: 0.25em 1.2em;
+  //border-bottom: 1px solid @shade-200;
+}
+
+.groupMapModal-icon {
+
+}
+
+#groupMapModalActions {
+  .icon-locationPin {
+
+  }
 }
 
 .circle-img {
@@ -781,6 +847,15 @@ img.icon-sm {
   background: none;
 }
 
+.km-actionsheet-cancel {
+  a {
+    color: @warning-100 !important;
+  }
+  a:active {
+    background: @warning-100 !important;
+    color: #fff !important;
+  }
+}
 
 
 #modalview-verifyPhone > div {
@@ -2145,7 +2220,12 @@ div.footer.km-footer {
 #profileStatusUpdate {
   width: 100%;
   .font-size(16);
-  resize: none;
+  background-color: #fff;
+  min-height: 6em;
+  border-bottom: 1px solid @shade-200;
+  padding: 0.5em;
+  margin-top: 0.5em;
+
 }
 
 .circle-img-home {
@@ -7057,6 +7137,13 @@ div.k-nodata {
   display: none;
 }
 
+#groupMapModal-recenter {
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: middle;
+  text-align: center;
+}
+
 #groupMapModal-mapdiv {
   position: absolute;
   top: 0;
@@ -7064,7 +7151,27 @@ div.k-nodata {
   margin: 0;
   padding : 0;
   width: 100%;
-  height: 60vh;
+  height: 50vh;
+}
+
+#groupMapModal-listBox {
+  position: absolute;
+  top: 50vh;
+  left: 0;
+  margin: 0;
+  padding : 0;
+  width: 100%;
+  height: 50vh;
+  img {
+    height: 2em;
+  }
+}
+
+.groupMapModal-alias {
+  font-size: 0.85em;
+  margin-left: 0.25em;
+  color: @shade-100;
+  font-style: italic;
 }
 
 .map-placeLayer {
