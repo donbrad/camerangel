@@ -199,7 +199,7 @@ var userModel = {
 
         if (window.navigator.simulator === undefined) {
             userPermission.init();
-            
+
             // toggle intelligram permission modal
             userPermission.triggerStackModal();
 

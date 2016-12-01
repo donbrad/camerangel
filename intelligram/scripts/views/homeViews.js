@@ -750,11 +750,11 @@ var userStatusView = {
 
         var updatedStatus = $("#profileStatusUpdate").val();
         if(updatedStatus !== "" && updatedStatus !== userStatusView.oldStatus) {
-            var rendered = emojione.toImage(updatedStatus);
+            //var rendered = emojione.toImage(updatedStatus);
 
             // Save new status
-            userModel._user.set("statusMessage", rendered);
-            userStatus.updateStatusMessage(rendered);
+            //userModel._user.set("statusMessage", rendered);
+            userStatus.updateStatusMessage(status);
             userStatus.update();
         }
         // clear status box
