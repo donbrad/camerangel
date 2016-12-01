@@ -195,10 +195,13 @@ var userModel = {
 
         groupModel.init();
 
-        userPermission.init();
+
 
         if (window.navigator.simulator === undefined) {
+            userPermission.init();
+            
             // toggle intelligram permission modal
+            userPermission.triggerStackModal();
 
             serverPush.init();
         }

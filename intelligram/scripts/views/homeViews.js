@@ -159,11 +159,11 @@ var homeView = {
         $('#modalview-locate-me').data('kendoMobileModalView').close();
     },
 
-    onShowProfileStatus: function(e){
+    onShowProfileStatus: function(e) {
 
-        if (e !== undefined && e.preventDefault !== undefined) {
+        /*if (e !== undefined && e.preventDefault !== undefined) {
             e.preventDefault();
-        }
+        }*/
 
         var alias = userModel._user.alias;
         var verified = userModel._user.phoneValidated;
@@ -478,7 +478,6 @@ var homeView = {
 
 
     },
-
 
     closeModalViewProfileStatus: function(e){
         _preventDefault(e);
