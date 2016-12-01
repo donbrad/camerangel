@@ -2109,7 +2109,6 @@
 <div data-role="modalview"  id="mapViewModal" data-model="mapViewModal._activePlace" style="width: 100%; height: 100%; display:none;"  data-init="mapViewModal.onInit" data-transition="fade"  data-stretch="true">
 	<div data-role="header">
 		<div data-role="navbar">
-
 			<a data-role="button" data-align="left" data-click="mapViewModal.onDone">
 				<div class="close" data-grunticon-embed></div>
 			</a>
@@ -2119,14 +2118,18 @@
 			</a>
 		</div>
 	</div>
-	<div style="clear:both;">
-		<div style="height: 10vh; z-order: 1000; padding: 6px;">
-			<div> Name:    <span data-bind="text: name"></span></div>
-			<div> Address: <span data-bind="text: address"></span></div>
+		<div class="mapModalView-info">
+			<h3 class="mapModalView-name" data-bind="text: name"></h3>
+			<p class="mapModalView-address" data-bind="text: address"></p>
+			<div data-bind="visible: w_temp">
+				<img class="mapModalView-weather" src="images/aeris/clear.png" data-bind="attr: {src: w_icon}" />
+				<span class="mapModalView-temp">
+					<span data-bind="text: w_temp"></span>°F
+				</span>
+				<span class="mapModalView-weather-txt" data-bind="text: w_weather"></span>
+			</div>
 		</div>
-
 		<div id="mapModalView-mapdiv"></div>
-
 	</div>
 </div>
 
