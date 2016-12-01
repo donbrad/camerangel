@@ -699,7 +699,7 @@ var userStatusView = {
 
         ux.hideKeyboard();
 
-        userStatusView.oldStatus =  userStatus._statusObj.statusMessage;
+       /* userStatusView.oldStatus =  userStatus._statusObj.statusMessage;
         var user = userModel._user;
 
         userStatus._statusObj.set('currentPlaceUUID', user.currentPlaceUUID);
@@ -707,7 +707,7 @@ var userStatusView = {
         userStatus._statusObj.set('currentPlace', user.currentPlace);
         userStatus._statusObj.set('isAvailable', user.isAvailable);
         userStatus._statusObj.set('statusMessage', user.statusMessage);
-
+*/
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
 
@@ -754,8 +754,8 @@ var userStatusView = {
 
             // Save new status
             //userModel._user.set("statusMessage", rendered);
-            userStatus.updateStatusMessage(status);
-            userStatus.update();
+            userStatus.updateStatusMessage(updatedStatus);
+           // userStatus.update();
         }
         // clear status box
         $("#profileStatusUpdate").val("");
