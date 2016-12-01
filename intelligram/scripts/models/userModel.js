@@ -257,6 +257,24 @@ var userModel = {
         groupModel.sync();
     },
 
+    clearCloudModels : function () {
+        photoModel.clearStorage();
+        contactModel.clearStorage();
+        channelModel.clearStorage();
+        placesModel.clearStorage();
+        galleryModel.clearStorage();
+        groupModel.clearStorage();
+        privateNoteModel.clearStorage();
+        sharedPhotoModel.clearStorage();
+        smartEvent.clearStorage();
+        smartMovie.clearStorage();
+        smartTrip.clearStorage();
+        smartFlight.clearStorage();
+        todayModel.clearStorage();
+        notificationModel.clearStorage()
+    },
+
+
     initKendo : function () {
         if (userModel.kendoInit)
             return;

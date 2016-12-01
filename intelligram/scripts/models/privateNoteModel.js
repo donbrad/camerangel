@@ -101,6 +101,11 @@ var privateNoteModel = {
     },
 
 
+    clearStorage : function () {
+        privateNoteModel.notesDS.data([]);
+        privateNoteModel._fetched = false;
+        privateNoteModel._initialSync = false;
+    },
 
 
     addNote : function (note) {

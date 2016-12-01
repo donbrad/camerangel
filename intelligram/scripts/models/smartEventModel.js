@@ -200,7 +200,13 @@ var smartEvent = {
     sync : function () {
         smartEvent.eventsDS.sync();
     },
-    
+
+    clearStorage : function () {
+        smartEvent.eventsDS.data([]);
+        smartEvent._fetched = false;
+        smartEvent._initialSync;
+    },
+
     queryTerm: function (query) {
 
         if (query === undefined)

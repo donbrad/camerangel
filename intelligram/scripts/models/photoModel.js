@@ -168,7 +168,15 @@ var photoModel = {
         photoModel.photosDS.sync();
         //photoModel.deletedPhotosDS.sync();
     },
-    
+
+    clearStorage : function () {
+        photoModel.photosDS.data([]);
+        photoModel._fetched = false;
+        photoModel._initialSync = false;
+
+        photoModel.deletedPhotosDS.data([]);
+    },
+
     updateLocalUrl : function (uuid, localUrl) {
         var photo = photoModel.findPhotoById(uuid);
 

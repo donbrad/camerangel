@@ -4,6 +4,8 @@ var sharedPhotoModel = {
     _version: 1,
     _cloudClass: 'sharedphoto',
     _ggClass: 'SharedPhoto',
+    _fetched : false,
+    _initialSync : false,
 
 
     photosDS : null,
@@ -19,11 +21,31 @@ var sharedPhotoModel = {
                 model: { id:  Everlive.idField}
             }
         });
+
+        sharedPhotoModel.photosDS.bind("change", function (e) {
+
+            var changedPhotos = e.items;
+
+            if (e.action === undefined) {
+                if (changedPhotos !== undefined && !sharedPhotoModel._initialSync) {
+
+                    sharedPhotoModel._initialSync = true;
+
+                }
+            }
+        });
+
         sharedPhotoModel.photosDS.fetch();
     },
     
     sync: function () {
         sharedPhotoModel.photosDS.sync();
+    },
+
+    clearStorage : function () {
+        sharedPhotoModel.photosDS.data([]);
+        sharedPhotoModel._fetched = false;
+        sharedPhotoModel._initialSync = false;
     },
     
     updateCloud : function (photoObj)  {

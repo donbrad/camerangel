@@ -52,7 +52,11 @@ var statusReporter = {
         statusReporter.reportsDS.sync();
     },
 
-
+    clearStorage : function () {
+        statusReporter.reportsDS.data([]);
+        statusReporter._fetched = false;
+        statusReporter._initialSync;
+    },
     startTracking : function (trackingClass, objectUUID, ChannelUUID, deltaMinutes) {
 
     },

@@ -90,6 +90,12 @@ var smartMovie = {
         smartMovie.moviesDS.sync();
     },
 
+    clearStorage : function () {
+        smartMovie.moviesDS.data([]);
+        smartMovie._fetched = false;
+        smartMovie._initialSync;
+    },
+
     createTodayObject : function (movie) {
         var minDate = moment(movie.showtime).subtract(2, 'hours'),
             maxDate = moment(movie.showtime).add(2, 'hours');

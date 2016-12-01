@@ -35,6 +35,10 @@ var todayModel = {
         todayModel.objectsDS.sync();
     },
 
+    clearStorage : function () {
+        todayModel.objectsDS.data([]);
+    },
+
     buildTodayDS : function () {
         todayModel.objectsDS.data([]);
 

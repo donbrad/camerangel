@@ -240,6 +240,13 @@ var channelModel = {
         channelModel.groupMessagesDS.sync();*/
     },
 
+    clearStorage : function () {
+        channelModel.channelsDS.data([]);
+        channelModel._fetched = false;
+        channelModel._initialSync = false;
+
+    },
+
     createChannel : function () {
         // action function called from notification manager if user accepts
         // data-uuid is the uuid of the notification

@@ -97,6 +97,14 @@ var groupModel = {
         groupModel.groupsDS.fetch();
     },
 
+
+    clearStorage : function () {
+        groupModel.groupsDS.data([]);
+        groupModel._fetched = false;
+        groupModel._initialSync = false;
+    },
+
+
     addGroup : function (group) {
 
         if (group.Id === undefined) {

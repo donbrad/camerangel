@@ -108,6 +108,12 @@ var galleryModel = {
         galleryModel.galleryDS.sync();
     },
 
+    clearStorage : function () {
+        galleryModel.galleryDS.data([]);
+        galleryModel._fetched  = false;
+        galleryModel._initialSync = false;
+    },
+
     fetchSharedGallery : function (galleryId, callback) {
         var hasPhotos = false, hasComments = false;
         var result = {photoError: null, photos: null, commentError: null, comments: null};

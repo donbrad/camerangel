@@ -686,6 +686,7 @@ var userStatusView = {
             deviceModel.resetDeviceState();
             everlive.clearLocalStorage();
             everlive.clearAuthentication();
+            userModel.clearCloudModels();
             userStatusView.closeModal();
             APP.kendo.navigate('#usersignin');
         });

@@ -18,6 +18,7 @@ var placesModel = {
     placesArray : [],
     deferredList : [],
     _fetched : false,
+    _initialSync : false,
     _placeModel : {   // Schema and default values to place model
         uuid: null,
         category: "Venue",
@@ -62,7 +63,7 @@ var placesModel = {
             },
             schema: {
                 model: { id:  Everlive.idField}
-            },
+            }/*,
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
 
@@ -78,7 +79,7 @@ var placesModel = {
                         }
                     }
                 }
-            }
+            }*/
         });
         
         // Reflect any core contact changes to contactList
@@ -87,8 +88,19 @@ var placesModel = {
             //placesModel.syncPlaceListDS();
             var changedPlaces = e.items;
 
-            if (e.action !== undefined) {
+            if (e.action === undefined) {
+                if (changedPlaces !== undefined && !placesModel._initialSync) {
+                    placesModel._initialSync = true;
+                    deviceModel.setAppState('hasPlaces', true);
+                    var len = changedPlaces.length;
+                    for (var i = 0; i < len; i++) {
+                        var place = changedPlaces[i];
+                        // add to placelist
+                        tagModel.addPlaceTag(place.name, place.alias, '', place.uuid);
+                    }
+                }
 
+            } else {
 
                 switch (e.action) {
                     case "itemchange" :
@@ -149,7 +161,14 @@ var placesModel = {
         placesModel.placesDS.sync();
         placesModel.syncPlaceListDS();
     },
-    
+
+    clearStorage : function () {
+        placesModel.placesDS.data([]);
+        placesModel.placeListDS.data([]);
+        placesModel._fetched = false;
+        placesModel._initSync = false;
+    },
+
 
     renderPlace : function (smartPlace) {
         //  var editor = $("#messageTextArea").data("kendoEditor");

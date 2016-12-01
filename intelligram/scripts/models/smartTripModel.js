@@ -83,6 +83,12 @@ var smartTrip = {
         smartTrip.tripsDS.sync();
     },
 
+    clearStorage : function () {
+        smartTrip.tripsDS.data([]);
+        smartTrip._fetched = false;
+        smartTrip._initialSync;
+    },
+
     findTrip: function (uuid) {
         var result = smartTrip.queryTrip({ field: "uuid", operator: "eq", value: uuid });
 

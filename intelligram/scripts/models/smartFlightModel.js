@@ -86,6 +86,12 @@ var smartFlight = {
         smartFlight.flightsDS.sync();
     },
 
+    clearStorage : function () {
+        smartFlight.flightsDS.data([]);
+        smartFlight._fetched = false;
+        smartFlight._initialSync;
+    },
+
     createTodayObject : function (flight) {
         var minDate = moment(flight.estimatedDeparture).subtract(6, 'hours'),
             maxDate = moment(flight.estimatedArrival).add(6, 'hours');

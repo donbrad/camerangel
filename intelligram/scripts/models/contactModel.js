@@ -195,7 +195,14 @@ var contactModel = {
     sync : function () {
         contactModel.contactsDS.sync();
     },
-    
+
+    clearStorage : function () {
+        contactModel.contactsDS.data([]);
+        contactModel.contactListDS.data([]);
+        contactModel._fetched = false;
+        contactModel._initialSync = false;
+    },
+
     processContactUpdates : function (contacts) {
         for (var i=0; i<contacts.length; i++) {
 

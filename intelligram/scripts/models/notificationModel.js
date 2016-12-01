@@ -87,6 +87,10 @@ var notificationModel = {
         notificationModel.notificationDS.sync();
     },
 
+    clearStorage: function () {
+        notificationModel.notificationDS.data([]);
+    },
+
     findNotification : function (type, id) {
         var query = [
             { field: "type", operator: "eq", value: type },
