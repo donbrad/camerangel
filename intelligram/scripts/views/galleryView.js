@@ -187,7 +187,7 @@ var galleryView = {
 
     updateTotalPhotos : function () {
         // set result count
-        var photoCount = photoModel._totalPhotos;
+        photoModel._totalPhotos = photoModel.photosDS.total();
 
         if(photoModel._totalPhotos > 0){
             /// single photo
@@ -198,7 +198,7 @@ var galleryView = {
                 $("#resultsName").text("Photos");
             }
             $(".results").css("visibility", "visible");
-            $("#resultCount").text(photoCount);
+            $("#resultCount").text( photoModel._totalPhotos);
         } else {
             $(".results").css("visibility", "hidden");
             $("#resultsName").text("No Photos");
@@ -211,8 +211,9 @@ var galleryView = {
 
         ux.hideKeyboard();
 
+        galleryView.updateTotalPhotos();
         // Make sure all the local photos have been uploaded
-        photoModel.syncPhotosToCloud();
+        //photoModel.syncPhotosToCloud();
         photoModel.syncPhotosToDevice();
 
         if (!galleryView._viewInitialized) {

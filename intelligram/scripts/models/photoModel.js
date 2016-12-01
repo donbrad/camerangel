@@ -52,7 +52,7 @@ var photoModel = {
         // Reflect any core contact changes to contactList
         photoModel.photosDS.bind("change", function (e) {
             var changedPhotos = e.items;
-            //photoModel._totalPhotos = photoModel.photosDS.total();
+            photoModel._totalPhotos = photoModel.photosDS.total();
             //galleryView.updateTotalPhotos();
 
             if (e.action === undefined) {
@@ -130,7 +130,7 @@ var photoModel = {
         });
 
 
-        photoModel.photosDS.bind('requestEnd',function (e) {
+      /*  photoModel.photosDS.bind('requestEnd',function (e) {
             var response = e.response,  type = e.type;
             if (!photoModel._fetched ) {
                 if (type === 'read' && response) {
@@ -150,7 +150,7 @@ var photoModel = {
 
             }
 
-        });
+        });*/
 
         photoModel.photosDS.fetch();
       //  photoModel.deletedPhotosDS.fetch();
