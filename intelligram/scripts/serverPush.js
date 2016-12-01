@@ -130,8 +130,11 @@ var serverPush = {
                 serverPush._badgeCount += 1;
             }
 
-            serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
-            //serverPush.plugin.finish();
+            if (userPermission.permissions.hasNotifications) {
+                serverPush.plugin.setApplicationIconBadgeNumber(serverPush.onSuccess, serverPush.onError, serverPush._badgeCount);
+                //serverPush.plugin.finish();
+            }
+
         }
 
 
@@ -321,7 +324,10 @@ var serverPush = {
     },
 
     setBadge: function(count) {
-        serverPush.setApplicationIconBadgeNumber(function () {}, function () {mobileNotify("Error setting badge count....");}, count);
+        if (userPermission.permissions.hasNotifications) {
+            serverPush.setApplicationIconBadgeNumber(function () {}, function () {ggError("Error setting badge count....");}, count);
+        }
+
     },
 
     provisionDataChannels : function () {

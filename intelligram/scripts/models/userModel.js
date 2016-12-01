@@ -231,6 +231,7 @@ var userModel = {
         tagModel.sync();
         galleryModel.sync();
         groupModel.sync();
+        photoModel.syncPhotosToCloud();
     },
 
     clearCloudModels : function () {
@@ -554,10 +555,12 @@ var userModel = {
             restore : true,
             suppressLeaveEvents : true,
             announceFailedHeartbeats : false,
-           // logVerbosity: true,
+           logVerbosity: true,
             uuid: uuid
         });
 
+        /* appDataChannel.history();
+         userDataChannel.history();*/
         // This is new message read multiplexer...
         APP.pubnub.addListener({
 
@@ -600,13 +603,13 @@ var userModel = {
             status: function(s) {
                 // handle status
                 if (s.category === "PNConnectedCategory") {
-                    mobileNotify("Pubnub Listener Active");
-
+                    mobileNotify("Pubnub Connected");
                     deviceModel.setAppState('pubnubInit', true);
                     deviceModel.isPushProvisioned();
-                    appDataChannel.history();
-                    userDataChannel.history();
+                   /* appDataChannel.history();
+                    userDataChannel.history();*/
                 } else if (s.category === "PNReconnectedCategory") {
+                    mobileNotify("Pubnub ReConnected");
                     appDataChannel.history();
                     userDataChannel.history();
                 } else if (s.category === "PNNetworkDownCategory") {

@@ -52,15 +52,16 @@ var photoModel = {
         // Reflect any core contact changes to contactList
         photoModel.photosDS.bind("change", function (e) {
             var changedPhotos = e.items;
-            photoModel._totalPhotos = photoModel.photosDS.total();
+            //photoModel._totalPhotos = photoModel.photosDS.total();
             //galleryView.updateTotalPhotos();
 
             if (e.action === undefined) {
                 if (changedPhotos !== undefined && !photoModel._initialSync) {
                     photoModel._initialSync = true;
                     deviceModel.setAppState('hasPhotos', true);
-                    photoModel.syncPhotosToCloud();
-                    photoModel.syncPhotosToDevice()
+                    mobileNotify('Photos loaded');
+                    photoModel.syncPhotosToDevice();
+
                 }
             } else  {
                 switch (e.action) {
@@ -167,6 +168,11 @@ var photoModel = {
     sync : function () {
         photoModel.photosDS.sync();
         //photoModel.deletedPhotosDS.sync();
+    },
+
+    syncPhotos : function () {
+        photoModel.syncPhotosToCloud();
+         photoModel.syncPhotosToDevice();
     },
 
     clearStorage : function () {
