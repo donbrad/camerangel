@@ -195,10 +195,13 @@ var userModel = {
 
         groupModel.init();
 
-        userPermission.init();
+
 
         if (window.navigator.simulator === undefined) {
+            userPermission.init();
+
             // toggle intelligram permission modal
+            userPermission.triggerStackModal();
 
             serverPush.init();
         }
@@ -930,7 +933,7 @@ var userStatus = {
 
         var broadcast = userStatus.isChanged();
 
-        var gp = {Longitude : parseFloat(userModel._user.lng), Latitude : parseFloat(userModel._user.lat)};
+        var gp = {Longitude : parseFloat(status.lng), Latitude : parseFloat(status.lat)};
         status.set("geoPoint", gp);
         status.set('lastUpdate', ggTime.currentTime());
 

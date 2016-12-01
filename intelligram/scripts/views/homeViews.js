@@ -159,11 +159,11 @@ var homeView = {
         $('#modalview-locate-me').data('kendoMobileModalView').close();
     },
 
-    onShowProfileStatus: function(e){
+    onShowProfileStatus: function(e) {
 
-        if (e !== undefined && e.preventDefault !== undefined) {
+        /*if (e !== undefined && e.preventDefault !== undefined) {
             e.preventDefault();
-        }
+        }*/
 
         var alias = userModel._user.alias;
         var verified = userModel._user.phoneValidated;
@@ -479,7 +479,6 @@ var homeView = {
 
     },
 
-
     closeModalViewProfileStatus: function(e){
         _preventDefault(e);
 
@@ -700,7 +699,7 @@ var userStatusView = {
 
         ux.hideKeyboard();
 
-        userStatusView.oldStatus =  userStatus._statusObj.statusMessage;
+       /* userStatusView.oldStatus =  userStatus._statusObj.statusMessage;
         var user = userModel._user;
 
         userStatus._statusObj.set('currentPlaceUUID', user.currentPlaceUUID);
@@ -708,7 +707,7 @@ var userStatusView = {
         userStatus._statusObj.set('currentPlace', user.currentPlace);
         userStatus._statusObj.set('isAvailable', user.isAvailable);
         userStatus._statusObj.set('statusMessage', user.statusMessage);
-
+*/
         //Cache the current view
         userStatusView._returnView = APP.kendo.view().id;
 
@@ -751,12 +750,12 @@ var userStatusView = {
 
         var updatedStatus = $("#profileStatusUpdate").val();
         if(updatedStatus !== "" && updatedStatus !== userStatusView.oldStatus) {
-            var rendered = emojione.toImage(updatedStatus);
+            //var rendered = emojione.toImage(updatedStatus);
 
             // Save new status
-            userModel._user.set("statusMessage", rendered);
-            userStatus.updateStatusMessage(rendered);
-            userStatus.update();
+            //userModel._user.set("statusMessage", rendered);
+            userStatus.updateStatusMessage(updatedStatus);
+           // userStatus.update();
         }
         // clear status box
         $("#profileStatusUpdate").val("");

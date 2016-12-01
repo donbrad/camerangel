@@ -1691,7 +1691,7 @@
 			<span id="currentGroup">
 				<span class="group-contactCard" id="currentContactGroup"></span><br/>
 			</span>
-			<span class="contactStatusMessage" data-bind="html: statusMessage"></span>
+			<span class="contactStatusMessage" data-bind="text: statusMessage"></span>
 		</p>
 		<p class="preMotionUp">
 			<a data-role="button" data-click="contactActionView.showLocation" id="contactCurrentPlace" class="btnClearLine-sm hidden"></a>
@@ -1781,7 +1781,7 @@
 					<span class="user-status-icon icon-verified-dark"></span>
 				</span>
 			</h2>
-			<p id="profileStatusMessage" data-bind="html: statusMessage"></p>
+			<p id="profileStatusMessage" data-bind="text: statusMessage"></p>
 			<p id="profileLocation">
 				<a data-role="button" style="text-align: left; font-size: 0.875em;" data-click="userStatusView.gotoPlace">
 					<span class="primary-200-text">@</span>
