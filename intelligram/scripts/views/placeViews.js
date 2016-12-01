@@ -1472,14 +1472,14 @@ var placeView = {
 
             if(sunset !== undefined && sunset !== null){
                 //sunset
-                var formattedSunset = moment(sunset).format("h:ma");
+                var formattedSunset = moment(sunset).format("h:mma");
                 placeView._activePlace.set("w_sunset", formattedSunset);
             }
 
             var sunrise = weatherData.sunrise;
             if(sunrise !== undefined && sunrise !== null){
                 //sunset
-                var formattedSunrise = moment(sunrise).format("h:ma");
+                var formattedSunrise = moment(sunrise).format("h:mma");
                 placeView._activePlace.set("w_sunrise", formattedSunrise);
             }
 

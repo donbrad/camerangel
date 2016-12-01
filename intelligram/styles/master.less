@@ -535,6 +535,12 @@ form {
   background: #fff;
 }
 
+.verified {
+  #Layer_1 > polygon {
+    fill: #fff;
+  }
+}
+
 .verified-txt {
   color: @primary-200;
   .font-size(12);
@@ -1501,8 +1507,13 @@ div.km-header a svg{
 }
 
 #profileEdit > div.km-content.km-widget.km-scroll-wrapper.km-insetcontent > div.km-scroll-container > div.profileEdit > div.profileTopBox > div > div.profilePrivateImg > a > span > img {
-  height: 1em;
-  max-width: 1em;
+  border-radius: 50%;
+  width: 3em;
+  height: 3em !important;
+  z-index: -1;
+  padding: 1px;
+  border: 1px solid #E0E0E0;
+  background: #fff;
 }
 
 .listStyle {

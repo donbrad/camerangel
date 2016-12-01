@@ -5638,7 +5638,9 @@
 		<div class="profileTopBox">
 			<div class="profileEditPrivate">
 				<div class="profilePrivateImg">
-				<a data-role="button" href="#profilePhotoEdit?isUserProfile=true">	<img  data-bind="attr: {src: photo}"/> </a>
+				<a data-role="button" href="#profilePhotoEdit?isUserProfile=true">
+					<img data-bind="attr: {src: photo}" src="images/icon-contact-alt.png"/>
+				</a>
 				</div>
 				<div class="profilePrivateImgBtn">
 					<label>Profile photo</label>
@@ -5715,7 +5717,7 @@
 	<ul id="profileEditOptions" data-role="actionsheet" data-cancel="Cancel">
 		<li>
 			<a data-role="button" data-action="profileEditView.doChangePhone">
-				<span class="icon-action contact-call listIcon" data-grunticon-embed></span>
+				<img src="images/icon-phone-dark.png" class="icon-action"/>
 				Change Phone Number
 			</a>
 		</li>
