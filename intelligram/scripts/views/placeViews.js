@@ -3151,6 +3151,17 @@ var mapViewModal = {
             mapViewModal._returnModal = callback;
         }
 
+        weatherModel.currentObservation(locObj.lat, locObj.lng, function (err, data) {
+
+            if (err === null && data !== null) {
+                mapViewModal._activePlace.set('w_feelsLike', data.feelsLike);
+                mapViewModal._activePlace.set('w_temp', data.temp);
+                mapViewModal._activePlace.set('w_icon', data.icon);
+                mapViewModal._activePlace.set('w_weather', data.weather);
+            }
+
+        });
+
 
         mapViewModal._activePlaceId = null;
 
