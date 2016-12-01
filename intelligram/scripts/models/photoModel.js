@@ -35,8 +35,7 @@ var photoModel = {
 
     init: function () {
 
-        photoModel.cloudPushList = [];
-        photoModel.localPushList = [];
+
         photoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
@@ -52,13 +51,12 @@ var photoModel = {
         // Reflect any core contact changes to contactList
         photoModel.photosDS.bind("change", function (e) {
             var changedPhotos = e.items;
-            photoModel._totalPhotos = photoModel.photosDS.total();
-            //galleryView.updateTotalPhotos();
-
+            
             if (e.action === undefined) {
                 if (changedPhotos !== undefined && !photoModel._initialSync) {
                     photoModel._initialSync = true;
                     deviceModel.setAppState('hasPhotos', true);
+                    photoModel._totalPhotos = photoModel.photosDS.total();
                     mobileNotify('Photos loaded');
                     photoModel.syncPhotosToDevice();
 
@@ -129,8 +127,10 @@ var photoModel = {
             }
         });
 
+        photoModel.cloudPushList = [];
+        photoModel.localPushList = [];
 
-      /*  photoModel.photosDS.bind('requestEnd',function (e) {
+        photoModel.photosDS.bind('requestEnd',function (e) {
             var response = e.response,  type = e.type;
             if (!photoModel._fetched ) {
                 if (type === 'read' && response) {
@@ -140,17 +140,7 @@ var photoModel = {
             }
         });
 
-        photoModel.photosDS.bind("requestEnd", function (e) {
-            var response = e.response,  type = e.type;
 
-            if (type === 'read' && response) {
-                if (!photoModel._fetched){
-                    photoModel._fetched = true;
-                }
-
-            }
-
-        });*/
 
         photoModel.photosDS.fetch();
       //  photoModel.deletedPhotosDS.fetch();
