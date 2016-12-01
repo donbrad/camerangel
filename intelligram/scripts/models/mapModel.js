@@ -30,6 +30,7 @@ var mapModel = {
     gpsOptions : {enableHighAccuracy : true, timeout: 5000, maximumAge: 10000},
     lastPosition: {},
     lastPingSeconds : null,
+    _initialFix : false,
     _pingInterval: 30, //Ping debounce interval in seconds.  app will only get position after _pingInterval seconds
     _radiusCheckIn : 1000,
     _radiusNewLocation : 500,

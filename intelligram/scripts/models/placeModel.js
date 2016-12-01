@@ -91,6 +91,29 @@ var placesModel = {
             if (e.action === undefined) {
                 if (changedPlaces !== undefined && !placesModel._initialSync) {
                     placesModel._initialSync = true;
+                    if (mapModel._initialFix) {
+
+                        mapModel._initialFix = true;
+                        // If we have permission, get current location
+                        mobileNotify("Looking up current location...");
+                        mapModel.getCurrentAddress(function (isNew, address){
+
+                            if (isNew) {
+                                mapModel.wasPrompted = false;
+                                mapModel.newLocationDetected = true;
+                            }
+
+                            mapModel.reverseGeoCode(mapModel.lat, mapModel.lng, function (results, error) {
+                                if (results !== null) {
+                                    var address = mapModel._updateAddress(results[0].address_components);
+                                    mapModel.currentAddress = address;
+                                    mapModel.currentCity = address.city;
+                                    mapModel.currentState = address.state;
+                                    mapModel.currentZipcode = address.zipcode;
+                                }
+                            });
+                        });
+                    }
                     deviceModel.setAppState('hasPlaces', true);
                     var len = changedPlaces.length;
                     for (var i = 0; i < len; i++) {

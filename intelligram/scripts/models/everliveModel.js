@@ -428,19 +428,16 @@ var everlive = {
         everlive.updateUser();
         userModel.initCloudModels();
         userStatus.update();
-        //userModel.syncCloudModels();
-
-
-        //deviceModel.syncEverlive();
 
         homeView.enableHotButtons();
-        userModel._user.bind('change', userModel.sync);
+
+       /* userModel._user.bind('change', userModel.sync);
 
         if (deviceModel.initialAction !== null) {
             var action = deviceModel.initialAction.action.capitalize('title');
             mobileNotify(action + " requested @ " + moment(deviceModel.initialAction.timestamp).format("MM/DD/YY hh:mm a"));
 
-        }
+        }*/
 
         if (APP.kendo.view().id !== 'home') {
             APP.kendo.navigate("#home");
