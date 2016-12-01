@@ -12,7 +12,8 @@ var sharedPhotoModel = {
         sharedPhotoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
-                typeName: 'sharedphoto'
+                typeName: 'sharedphoto',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}

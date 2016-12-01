@@ -33,8 +33,6 @@ var photoModel = {
     
     deletedPhotosDS: null,
 
-
-
     init: function () {
 
         photoModel.cloudPushList = [];
@@ -55,7 +53,7 @@ var photoModel = {
         photoModel.photosDS.bind("change", function (e) {
             var changedPhotos = e.items;
             photoModel._totalPhotos = photoModel.photosDS.total();
-            galleryView.updateTotalPhotos();
+            //galleryView.updateTotalPhotos();
 
             if (e.action === undefined) {
                 if (changedPhotos !== undefined && !photoModel._initialSync) {
@@ -122,7 +120,8 @@ var photoModel = {
             // offlineStorage: "photos",
             type: 'everlive',
             transport: {
-                typeName: 'deletedphotos'
+                typeName: 'deletedphotos',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

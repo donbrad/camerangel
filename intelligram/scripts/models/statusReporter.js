@@ -33,7 +33,8 @@ var statusReporter = {
        statusReporter.reportsDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
-                typeName: 'statusReport'
+                typeName: 'statusReport',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

@@ -21,7 +21,8 @@ var smartFlight = {
         smartFlight.flightsDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
-                typeName: 'smartFlight'
+                typeName: 'smartFlight',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

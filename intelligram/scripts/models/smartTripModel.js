@@ -18,7 +18,8 @@ var smartTrip = {
         smartTrip.tripsDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
-                typeName: 'smartTrip'
+                typeName: 'smartTrip',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}

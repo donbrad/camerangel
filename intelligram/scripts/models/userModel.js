@@ -203,7 +203,10 @@ var userModel = {
             // toggle intelligram permission modal
             userPermission.triggerStackModal();
 
-            serverPush.init();
+            if (userPermission.permissions.hasNotifications) {
+                serverPush.init();
+            }
+
         }
 
         if (userPermission.permissions.hasLocation) {

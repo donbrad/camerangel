@@ -19,7 +19,8 @@ var profilePhotoModel = {
         profilePhotoModel.photosDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
-                typeName: profilePhotoModel._cloudClass
+                typeName: profilePhotoModel._cloudClass,
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}

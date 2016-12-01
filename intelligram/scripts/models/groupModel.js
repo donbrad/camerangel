@@ -17,7 +17,8 @@ var groupModel = {
         groupModel.groupsDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'group'
+                typeName: 'group',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}

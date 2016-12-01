@@ -20,7 +20,8 @@ var smartMovie = {
         smartMovie.moviesDS = new kendo.data.DataSource({
             type: 'everlive',
             transport: {
-                typeName: 'smartMovie'
+                typeName: 'smartMovie',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { id:  Everlive.idField}

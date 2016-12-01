@@ -14,7 +14,8 @@ var statusTracker = {
         statusTracker.objectsDS = new kendo.data.DataSource({  // this is the gallery datasource
             type: 'everlive',
             transport: {
-                typeName: 'statusTrack'
+                typeName: 'statusTrack',
+                dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
