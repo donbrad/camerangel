@@ -173,12 +173,12 @@ var ux = {
 	toggleIsAvailable: function(){
 		var currentState = userStatus._statusObj.isAvailable;
 
+		if (currentState === undefined) {
+			currentState = true;
+		}
+
 		userStatus.updateIsAvailable(!currentState);
-		/*if(currentState){
-			userStatus._statusObj.set('isAvailable', false);
-		} else {
-			userStatus._statusObj.set('isAvailable', true);
-		}*/
+
 		ux.updateHeaderStatusImages();
 
 	},
@@ -192,7 +192,6 @@ var ux = {
 			userModel._user.set('availImgUrl', 'images/status-away.svg');
 		}
 		$('.userAvailable').attr('src',userModel._user.get('availImgUrl'));
-
 
 
 	    var useIdenticon = userModel._user.get('useIdenticon');

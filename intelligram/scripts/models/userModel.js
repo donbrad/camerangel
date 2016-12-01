@@ -199,7 +199,6 @@ var userModel = {
 
         if (window.navigator.simulator === undefined) {
             // toggle intelligram permission modal
-            userPermission.triggerStackModal();
 
             serverPush.init();
         }
@@ -279,7 +278,6 @@ var userModel = {
             userModel.generateNewPrivateKey();
         }
 
-
         userModel._user.set('Username', user.Username);
         userModel._user.set('DisplayName', user.DisplayName);
         userModel._user.set('accountCreateDate', user.CreatedAt);
@@ -291,7 +289,7 @@ var userModel = {
         userModel._user.set('alias', user.alias);
         userModel._user.set('address', user.address);
         userModel._user.set('aliasPhoto', user.aliasPhoto);
-        userModel._user.set('statusMessage', user.statusMessage);
+        userModel._user.set('statusMessage', null);
         userModel._user.set('isAvailable', user.isAvailable);
         userModel._user.set('isCheckedIn', user.isCheckedIn);
         userModel._user.set('isVisible', user.isVisible);
@@ -548,7 +546,6 @@ var userModel = {
             return;
         }
 
-
         APP.pubnub = new PubNub({
             publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
             subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
@@ -664,7 +661,6 @@ var userStatus = {
     _statusObj : new kendo.data.ObservableObject({
         lat: 0, lng: 0,
         isAvailable : false,
-        isVisible : false,
         isCheckedIn : false,
         statusMessage : null,
         currentPlace : null,
@@ -688,18 +684,19 @@ var userStatus = {
         stat.lat = 0;
         stat.lng = 0;
         stat.isAvailable = false;
-        stat.isVisible = false;
         stat.isCheckedIn = false;
         stat.statusMessage = null;
         stat.currentPlace = null;
         stat.currentPlaceUUID = null;
         stat.googlePlaceId = null;
 
+        if (status.isAvailable === undefined) {
+            status.isAvailable = false;
+        }
         if (status !== null) {
             stat.lat = status.lat;
             stat.lng = status.lng;
             stat.set('isAvailable',status.isAvailable);
-            stat.isVisible = status.isVisible;
             stat.isCheckedIn = status.isCheckedIn;
             stat.set('statusMessage', status.statusMessage);
             stat.set('currentPlace',status.currentPlace);
@@ -752,7 +749,6 @@ var userStatus = {
 
     getMemberStatus : function (uuid, callback) {
 
-
         userStatusChannel.contactStatus(uuid, callback);
        /* var filter = new Everlive.Query();
         filter.where().eq('userUUID', uuid);
@@ -782,7 +778,6 @@ var userStatus = {
         switch(field) {
             case 'userUUID':
             case 'isAvailable' :
-            case 'isVisible' :
             case 'isCheckedIn' :
             case 'statusMessage' :
             case 'currentPlace' :

@@ -2689,16 +2689,11 @@ var userPermission = {
             $('#permission-location').text("Enable Auto-Location");
             flag = true;
         }
-
-
         userPermission.needPermissions = flag;
-
     },
 
 
     triggerSystemDialog: function() {
-
-        userPermission.updateUX();
 
         switch(userPermission._type){
             // trigger system notification dialog
@@ -2792,8 +2787,10 @@ var userPermission = {
 
     triggerStackModal: function(){
         userPermission.updateUX();
-        if (userPermission.needPermissions)
+        if (userPermission.needPermissions) {
             $("#permissionStackModal").data("kendoMobileModalView").open();
+
+        }
     },
 
     dismissStackModal: function(){
