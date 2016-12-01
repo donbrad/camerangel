@@ -51,7 +51,7 @@ var photoModel = {
         // Reflect any core contact changes to contactList
         photoModel.photosDS.bind("change", function (e) {
             var changedPhotos = e.items;
-            
+
             if (e.action === undefined) {
                 if (changedPhotos !== undefined && !photoModel._initialSync) {
                     photoModel._initialSync = true;
