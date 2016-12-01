@@ -459,7 +459,6 @@ var privateNotesView = {
     },
 
     editNote : function (e) {
-        _preventDefault(e);
 
         var that = privateNotesView, note = privateNotesView.activeNote;
 
@@ -513,7 +512,7 @@ var privateNotesView = {
     },
 
     shareNote : function (e) {
-        _preventDefault(e);
+
 
         if (window.navigator.simulator === true) {
             mobileNotify("Export and Sharing only on device...");
@@ -526,7 +525,6 @@ var privateNotesView = {
     },
 
     sendNote : function (e) {
-        _preventDefault(e);
 
         sharePickerView.openModal(privateNotesView.activeNote, function (share) {
             if (share === null) {

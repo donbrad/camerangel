@@ -1909,7 +1909,7 @@ var contactActionView = {
             lat: contactActionView._activeContact.lat,
             lng: contactActionView._activeContact.lng,
             name : contactActionView._activeContact.currentPlace,
-            title: "Contact Action",
+            title: contactActionView._activeContact.name,
             targetName: contactActionView._activeContact.name + ' (' + contactActionView._activeContact.alias + ')',
             placeUUID: contactActionView._activeContact.currentPlaceUUID
         };

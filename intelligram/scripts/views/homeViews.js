@@ -2667,24 +2667,32 @@ var userPermission = {
 
     updateUX : function () {
         var perm = userPermission.permissions;
+        var flag = false;
 
         if (perm.hasNotifications) {
             $('#permission-notification').text("Notifications Enabled!");
         } else {
             $('#permission-notification').text("Enable Notifications");
+            flag = true;
         }
 
         if (perm.hasContacts) {
             $('#permission-contacts').text("Contact Access Enabled!");
         } else {
             $('#permission-contacts').text("Enable Contact Access");
+            flag = true;
         }
 
         if (perm.hasLocation) {
             $('#permission-location').text("Auto-Location Enabled!");
         } else {
             $('#permission-location').text("Enable Auto-Location");
+            flag = true;
         }
+
+
+        userPermission.needPermissions = flag;
+
     },
 
 
@@ -2784,7 +2792,8 @@ var userPermission = {
 
     triggerStackModal: function(){
         userPermission.updateUX();
-        $("#permissionStackModal").data("kendoMobileModalView").open();
+        if (userPermission.needPermissions)
+            $("#permissionStackModal").data("kendoMobileModalView").open();
     },
 
     dismissStackModal: function(){
