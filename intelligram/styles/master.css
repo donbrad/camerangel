@@ -2868,9 +2868,9 @@ div.footer.km-footer {
 #contacts-tab-1-img {
   max-width: 2em !important;
 }
-#profileStatusMessage .emojione,
-.contactStatusMessage-sm .emojione,
-.contactStatusMessage .emojione {
+#profileStatusMessage > .emojione,
+.contactStatusMessage-sm > .emojione,
+.contactStatusMessage > .emojione {
   transform: scale(0.75);
 }
 #profilePhotoForm > div > ul > li:nth-child(1) {
@@ -4064,6 +4064,9 @@ a:hover {
 }
 #addChatHasContacts {
   margin-top: 1em;
+}
+#channelView-emoji {
+  vertical-align: text-top;
 }
 #addChannelBtn {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12), 0px 1px 1px 0px rgba(0, 0, 0, 0.24);

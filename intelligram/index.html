@@ -2271,8 +2271,12 @@
 					#}#
 				</h4>
 				#}#
-				# if(addressOnly !== true){#
-				<p class="textClamp">#:data.address#, #:data.city#, #:data.state# #:data.zipcode#</p>
+				# if(!addressOnly){#
+				<p class="textClamp">
+					#if(data.address !== null && data.address !== "" && data.address !== " "){#
+						#:data.address#,
+					#}#
+					 #:data.city#, #:data.state# #:data.zipcode#</p>
 				#}#
 
 				<p class="helper">
@@ -2584,7 +2588,7 @@
 		    				<span class="icon-place"  id="chatList-place-icon" data-grunticon-embed></span>
 		    				<span>Place Chat - #:ownerString#</span>
 		    			</span>
-		    		#} else if(membersCount <= 2) {#
+		    		#} else if(membersCount < 2) {#
 		    			<span class="placeType-list">
 		    			<span class="icon-group" data-grunticon-embed></span>
 		    				<span>#:ownerString#</span>
@@ -2733,7 +2737,7 @@
 						</a>
 					</li>
 					<li>
-						<a data-role="button" class="btnClear" href="#emoji-menu" data-rel="popover">
+						<a data-role="button" class="btnClear" href="#emoji-menu" data-rel="popover" id="channelView-emoji">
 							<span class="icon-emoji icon-sm"></span>
 							<span class="icon-emoji-active hidden icon-sm"></span>
 						</a>
