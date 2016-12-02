@@ -22,6 +22,8 @@ var photoModel = {
     currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
+    deviceSync : false,
+    _forceCache: true,
     _fetched : false,
     _initialSync : false,
 
@@ -142,13 +144,9 @@ var photoModel = {
         });
 
 
-
         photoModel.photosDS.fetch();
       //  photoModel.deletedPhotosDS.fetch();
 
-
-
-        /*deviceModel.isParseSyncComplete();*/
     },
 
     initOffer : function () {
@@ -163,13 +161,14 @@ var photoModel = {
 
     syncPhotos : function () {
         photoModel.syncPhotosToCloud();
-         photoModel.syncPhotosToDevice();
+        photoModel.syncPhotosToDevice();
     },
 
     clearStorage : function () {
         photoModel.photosDS.data([]);
         photoModel._fetched = false;
         photoModel._initialSync = false;
+        photoModel._forceCache = true;
 
         photoModel.deletedPhotosDS.data([]);
     },
@@ -206,10 +205,11 @@ var photoModel = {
 
             //Check for the file.
             window.resolveLocalFileSystemURL(localUrl,
-                function () {
+                function (fileEntry) {
+                  var url = fileEntry.name;
 
                 },
-                function () {
+                function (error) {
                     photoModel.addToLocalCache(urlCloud, localUrl, photo.photoId);
                     console.log("Caching photo on device :  " + photo.uuid);
                 });
@@ -261,7 +261,7 @@ var photoModel = {
 
     addToLocalCache : function (url, localUrl, photoId) {
 
-        if (url === null || photoId === null) {
+        if (url === null || photoId === null || photoModel.photosDS === null) {
             ggError("Local Cache Error - Null Url");
             return;
             
@@ -311,7 +311,6 @@ var photoModel = {
         if (url === undefined || url === null)
             return(false);
 
-      
         var result = url.indexOf('cloudinary');
 
         if (result === -1) {
@@ -323,23 +322,44 @@ var photoModel = {
 
 
     syncPhotosToDevice: function () {
+        if (photoModel.photosDS === null || photoModel.deviceSync) {
+            return;
+        }
+
+        photoModel.deviceSync = true;
         var total = photoModel.photosDS.total();
 
         for (var i=0; i< total; i++ ) {
             var photo = photoModel.photosDS.at(i);
 
-            if (!photoModel.isValidDeviceUrl(photo.deviceUrl) && photo.cloudUrl !== null) {
-                var filename = photoModel.createPhotoLocalName(photo.photoId);
-                var store = deviceModel.fileDirectory;
-                var localUrl = store + filename;
-                photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
+            if (photo.cloudUrl !== null) {
+                if (!photoModel.isValidDeviceUrl(photo.deviceUrl) || photoModel._forceCache  ) {
+                    var filename = photoModel.createPhotoLocalName(photo.photoId);
+                    var store = deviceModel.fileDirectory;
+                    var localUrl = store + filename;
+                    photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
 
+                } else {
+                    window.resolveLocalFileSystemURL(photo.cloudUrl,
+                        function (fileEntry) {
+                            var url = fileEntry.name;
+
+                        },
+                        function (error) {
+                            photoModel.addToLocalCache(photo.cloudUrl, photo.cloudUrl, photo.photoId);
+                            console.log("Caching photo on device :  " + photo.uuid);
+                        });
+                }
             }
-
         }
+        photoModel.deviceSync = false;
+        photoModel._forceCache = false;
     },
 
     syncPhotosToCloud : function () {
+        if (photoModel.photosDS === null) {
+            return;
+        }
         var total = photoModel.photosDS.total();
 
         for (var i=0; i< total; i++ ) {
@@ -377,6 +397,9 @@ var photoModel = {
 
 
     uploadPhotoToCloud : function (photo) {
+        if (photoModel.photosDS === null) {
+            return;
+        }
 
         if (photo === undefined || photo === null)
             return;
@@ -449,7 +472,6 @@ var photoModel = {
         }
         dataSource.filter( query);
         var view = dataSource.view();
-
 
         dataSource.filter(cacheFilter);
 
