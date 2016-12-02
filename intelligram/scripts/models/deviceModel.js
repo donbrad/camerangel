@@ -265,7 +265,7 @@ var deviceModel = {
             channelModel.processDeferred();
          /*   userDataChannel.history();
             appDataChannel.history();*/
-            everlive.syncCloud();
+            //everlive.syncCloud();
            // photoModel.processCloudPushList();
             photoModel.syncPhotosToCloud();
             profilePhotoModel.processCloudPushList();

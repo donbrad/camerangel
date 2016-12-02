@@ -194,12 +194,12 @@ var userModel = {
         todayModel.init();
 
 
-
-
         if (window.navigator.simulator === undefined) {
             userPermission.init();
 
-            // toggle intelligram permission modal
+            userPermission.checkPermissions();
+
+
             userPermission.triggerStackModal();
 
             if (userPermission.permissions.hasNotifications) {

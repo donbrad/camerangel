@@ -311,7 +311,6 @@ var photoModel = {
         if (url === undefined || url === null)
             return(false);
 
-      
         var result = url.indexOf('cloudinary');
 
         if (result === -1) {
@@ -323,6 +322,9 @@ var photoModel = {
 
 
     syncPhotosToDevice: function () {
+        if (photoModel.photosDS === null) {
+            return;
+        }
         var total = photoModel.photosDS.total();
 
         for (var i=0; i< total; i++ ) {
@@ -340,6 +342,9 @@ var photoModel = {
     },
 
     syncPhotosToCloud : function () {
+        if (photoModel.photosDS === null) {
+            return;
+        }
         var total = photoModel.photosDS.total();
 
         for (var i=0; i< total; i++ ) {
@@ -377,6 +382,9 @@ var photoModel = {
 
 
     uploadPhotoToCloud : function (photo) {
+        if (photoModel.photosDS === null) {
+            return;
+        }
 
         if (photo === undefined || photo === null)
             return;
@@ -449,8 +457,7 @@ var photoModel = {
         }
         dataSource.filter( query);
         var view = dataSource.view();
-
-
+        
         dataSource.filter(cacheFilter);
 
         return(view);

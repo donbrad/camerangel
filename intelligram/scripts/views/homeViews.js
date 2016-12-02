@@ -2836,7 +2836,6 @@ var userPermission = {
     },
 
     triggerStackModal: function(){
-        userPermission.checkPermissions();
         userPermission.updateUX();
         if (userPermission.needPermissions) {
             $("#permissionStackModal").data("kendoMobileModalView").open();
