@@ -1398,9 +1398,8 @@ var placeView = {
         ds.data([]);
         var placeUUID = placeView._activePlaceId;
         var zipcode = placeView._activePlace.zipcode;
-        var photoList = photoModel.findPhotosByPlaceId(placeUUID);
+        /*var photoList = photoModel.findPhotosByPlaceId(placeUUID);
 
-        var notesList = noteModel.findNotesByObjectId(noteModel._places, placeUUID);
 
         if (photoList !== undefined && photoList.length > 0) {
             for (var p = 0; p < photoList.length; p++) {
@@ -1409,17 +1408,9 @@ var placeView = {
                 photo.date = new Date(photo.updatedAt);
                 ds.add(photo);
             }
-        }
+        }*/
 
-        if (notesList !== undefined && notesList.length > 0) {
 
-            for (var i = 0; i < notesList.length; i++) {
-                var note = notesList[i];
-                note.ggType = 'Note';
-                note.date = new Date(note.updatedAt);
-                ds.add(note);
-            }
-        }
 
         var placeObj = placeView._activePlace;
         var point = {Latitude : placeObj.lat, Longitude: placeObj.lng}, radius = 1000;

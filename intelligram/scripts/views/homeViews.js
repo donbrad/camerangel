@@ -2841,6 +2841,8 @@ var userPermission = {
         if (userPermission.needPermissions) {
             $("#permissionStackModal").data("kendoMobileModalView").open();
 
+        } else {
+            mobileNotify("Intelligram permissions confirmed!");
         }
     },
 
