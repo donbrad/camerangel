@@ -1449,6 +1449,7 @@ var placeView = {
     },
 
     setActiveWeather: function(weatherData){
+        var localOffset = 0;
         if(weatherData !== undefined && weatherData !== null){
             placeView._activePlace.set("w_date", weatherData.date);
             placeView._activePlace.set("w_feelsLike", weatherData.feelsLike);
@@ -1463,15 +1464,19 @@ var placeView = {
 
             if(sunset !== undefined && sunset !== null){
                 //sunset
-                var formattedSunset = moment(sunset).format("h:mma");
-                placeView._activePlace.set("w_sunset", formattedSunset);
+                localOffset = moment.parseZone(sunset).utcOffset();
+                var formattedSunset = moment(sunset).utcOffset(localOffset);
+                var localSunset = formattedSunset.format("h:mma");
+                placeView._activePlace.set("w_sunset", localSunset);
             }
 
             var sunrise = weatherData.sunrise;
             if(sunrise !== undefined && sunrise !== null){
                 //sunset
-                var formattedSunrise = moment(sunrise).format("h:mma");
-                placeView._activePlace.set("w_sunrise", formattedSunrise);
+                var formattedSunrise = moment(sunrise).utcOffset(localOffset);
+                var localSunrise = formattedSunrise.format("h:mma");
+
+                placeView._activePlace.set("w_sunrise", localSunrise);
             }
 
             placeView._activePlace.set("w_temp", weatherData.temp);
