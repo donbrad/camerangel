@@ -24,7 +24,7 @@ var galleryView = {
     _activeView: 0,
     scroller: null,
 
-    notesAddOpts: new kendo.data.DataSource({
+   notesAddOpts: new kendo.data.DataSource({
         group: 'category',
         data: [
             {
@@ -78,7 +78,6 @@ var galleryView = {
 
         ]
     }),
-
 
     _noteNote : 'Note',
     _noteGallery : 'Gallery',

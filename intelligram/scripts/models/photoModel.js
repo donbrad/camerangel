@@ -144,13 +144,9 @@ var photoModel = {
         });
 
 
-
         photoModel.photosDS.fetch();
       //  photoModel.deletedPhotosDS.fetch();
 
-
-
-        /*deviceModel.isParseSyncComplete();*/
     },
 
     initOffer : function () {
@@ -165,13 +161,14 @@ var photoModel = {
 
     syncPhotos : function () {
         photoModel.syncPhotosToCloud();
-         photoModel.syncPhotosToDevice();
+        photoModel.syncPhotosToDevice();
     },
 
     clearStorage : function () {
         photoModel.photosDS.data([]);
         photoModel._fetched = false;
         photoModel._initialSync = false;
+        photoModel._forceCache = true;
 
         photoModel.deletedPhotosDS.data([]);
     },
