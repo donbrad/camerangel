@@ -338,6 +338,16 @@ var photoModel = {
                 var localUrl = store + filename;
                 photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
 
+            } else {
+                window.resolveLocalFileSystemURL(photo.cloudUrl,
+                    function (fileEntry) {
+                        var url = fileEntry.name;
+
+                    },
+                    function (error) {
+                        photoModel.addToLocalCache(photo.cloudUrl, photo.cloudUrl, photo.photoId);
+                        console.log("Caching photo on device :  " + photo.uuid);
+                    });
             }
 
         }
