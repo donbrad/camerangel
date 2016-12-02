@@ -22,6 +22,7 @@ var photoModel = {
     currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
+    deviceSync : false,
     _forceCache: true,
     _fetched : false,
     _initialSync : false,
@@ -324,33 +325,38 @@ var photoModel = {
 
 
     syncPhotosToDevice: function () {
-        if (photoModel.photosDS === null) {
+        if (photoModel.photosDS === null || photoModel.deviceSync) {
             return;
         }
+
+        photoModel.deviceSync = true;
         var total = photoModel.photosDS.total();
 
         for (var i=0; i< total; i++ ) {
             var photo = photoModel.photosDS.at(i);
 
-            if (!photoModel.isValidDeviceUrl(photo.deviceUrl) && photo.cloudUrl !== null) {
-                var filename = photoModel.createPhotoLocalName(photo.photoId);
-                var store = deviceModel.fileDirectory;
-                var localUrl = store + filename;
-                photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
+            if (photo.cloudUrl !== null) {
+                if (!photoModel.isValidDeviceUrl(photo.deviceUrl) || photoModel._forceCache  ) {
+                    var filename = photoModel.createPhotoLocalName(photo.photoId);
+                    var store = deviceModel.fileDirectory;
+                    var localUrl = store + filename;
+                    photoModel.addToLocalCache(photo.cloudUrl, localUrl, photo.photoId);
 
-            } else {
-                window.resolveLocalFileSystemURL(photo.cloudUrl,
-                    function (fileEntry) {
-                        var url = fileEntry.name;
+                } else {
+                    window.resolveLocalFileSystemURL(photo.cloudUrl,
+                        function (fileEntry) {
+                            var url = fileEntry.name;
 
-                    },
-                    function (error) {
-                        photoModel.addToLocalCache(photo.cloudUrl, photo.cloudUrl, photo.photoId);
-                        console.log("Caching photo on device :  " + photo.uuid);
-                    });
+                        },
+                        function (error) {
+                            photoModel.addToLocalCache(photo.cloudUrl, photo.cloudUrl, photo.photoId);
+                            console.log("Caching photo on device :  " + photo.uuid);
+                        });
+                }
             }
-
         }
+        photoModel.deviceSync = false;
+        photoModel._forceCache = false;
     },
 
     syncPhotosToCloud : function () {
