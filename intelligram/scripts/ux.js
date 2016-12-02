@@ -600,7 +600,7 @@ var ux = {
 
 	hideSearch: function(){
 		// kendo hack - this is needed
-		$(".enterSearch").click();
+		//$(".enterSearch").click();
 		$(".gg_mainSearchBox").css("display", "none").data("visible", false);
 	},
 

@@ -2693,6 +2693,56 @@ var userPermission = {
     },
 
 
+    checkPermissions : function () {
+        cordova.plugins.notification.local.hasPermission(function(granted) {
+
+            if (granted) {
+                userPermission.permissions.hasNotifications = true;
+                userPermission.savePermissions();
+            } else {
+                cordova.plugins.notification.local.registerPermission(function (granted) {
+                    userPermission.permissions.hasNotifications = true;
+                    userPermission.savePermissions();
+
+                }, function(rejected){
+                    userPermission.permissions.hasNotifications = false;
+
+                });
+            }
+        }, function(rejected){
+            userPermission.permissions.hasNotifications = false;
+            userPermission.savePermissions();
+        });
+
+        var options      = new ContactFindOptions();
+        options.filter   = "Bob";
+        options.multiple = true;
+        options.desiredFields = [navigator.contacts.fieldType.id];
+        options.hasPhoneNumber = true;
+        var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+
+        navigator.contacts.find(fields, function(contacts){
+                userPermission.permissions.hasContacts = true;
+
+                userPermission.savePermissions();
+            },
+            function(contactError){
+                userPermission.permissions.hasContacts = false;
+                userPermission.savePermissions();
+            }, options);
+
+        navigator.geolocation.getCurrentPosition(function(position){
+                userPermission.permissions.hasLocation = true;
+                userPermission.savePermissions();
+            },
+            function(PositionError){
+                userPermission.permissions.hasLocation = false;
+                userPermission.savePermissions();
+            });
+    },
+
+
+
     triggerSystemDialog: function() {
 
         switch(userPermission._type){
@@ -2786,6 +2836,7 @@ var userPermission = {
     },
 
     triggerStackModal: function(){
+        userPermission.checkPermissions();
         userPermission.updateUX();
         if (userPermission.needPermissions) {
             $("#permissionStackModal").data("kendoMobileModalView").open();

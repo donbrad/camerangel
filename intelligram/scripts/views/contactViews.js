@@ -193,6 +193,7 @@ var contactsView = {
       // _preventDefault(e);
 
         $("#contacts-listview").data("kendoMobileListView").scroller().reset();
+        userStatusChannel.contactHistory();
 
         contactsView.clearSearchFilter();
 

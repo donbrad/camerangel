@@ -165,15 +165,17 @@ var userModel = {
 
         placesModel.init();
 
+        photoModel.init();
+
+        galleryModel.init();
+
+        groupModel.init();
+
         privateNoteModel.init();  // Depends on everlive...
 
         userStatus.init();
 
         memberdirectory.init();
-
-        noteModel.init();
-
-        photoModel.init();
 
         profilePhotoModel.init();
 
@@ -191,9 +193,7 @@ var userModel = {
 
         todayModel.init();
 
-        galleryModel.init();
 
-        groupModel.init();
 
 
         if (window.navigator.simulator === undefined) {
@@ -727,7 +727,7 @@ var userStatus = {
         } else {
             userStatus.initStatus(null);
         }
-        userStatusChannel.userHistory();
+
     },
 
     getStatus : function (uuid, callback) {

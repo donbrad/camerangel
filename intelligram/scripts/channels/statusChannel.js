@@ -112,7 +112,7 @@ var userStatusChannel = {
        // userStatusChannel.trackContacts();
 
         userStatusChannel.contactHistory();
-        userStatusChannel.userHistory();
+        //userStatusChannel.userHistory();
     },
 
     unsubscribeContacts : function () {
