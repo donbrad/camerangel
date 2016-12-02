@@ -59,6 +59,7 @@ var photoModel = {
                     photoModel._totalPhotos = photoModel.photosDS.total();
                     mobileNotify('Photos loaded');
                     photoModel.syncPhotosToDevice();
+                    photoModel.syncPhotosToCloud();
 
                 }
             } else  {
