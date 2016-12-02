@@ -264,8 +264,8 @@ var photoModel = {
         if (url === null || photoId === null || photoModel.photosDS === null) {
             ggError("Local Cache Error - Null Url");
             return;
-            
         }
+
         if (photoModel.localPushList[url] !== undefined && photoModel.localPushList[url]) {
             return;
         }
@@ -283,7 +283,7 @@ var photoModel = {
             },
             function(err) {
                 photoModel.localPushList[url] = false;
-              ggError("Local Cache Error " + JSON.stringify(err));
+                ggError("Local Cache Error " + JSON.stringify(err));
             });
     },
 

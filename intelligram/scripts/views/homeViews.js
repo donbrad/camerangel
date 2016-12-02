@@ -2698,16 +2698,11 @@ var userPermission = {
 
             if (granted) {
                 userPermission.permissions.hasNotifications = true;
+                serverPush.init();
                 userPermission.savePermissions();
             } else {
-                cordova.plugins.notification.local.registerPermission(function (granted) {
-                    userPermission.permissions.hasNotifications = true;
-                    userPermission.savePermissions();
-
-                }, function(rejected){
-                    userPermission.permissions.hasNotifications = false;
-
-                });
+                userPermission.permissions.hasNotifications = false;
+                userPermission.savePermissions();
             }
         }, function(rejected){
             userPermission.permissions.hasNotifications = false;
@@ -2757,11 +2752,13 @@ var userPermission = {
                     if (granted) {
                         userPermission.permissions.hasNotifications = true;
                         userPermission.savePermissions();
+                        serverPush.init();
                         userPermission.updateUX();
                     } else {
                         cordova.plugins.notification.local.registerPermission(function (granted) {
                             userPermission.permissions.hasNotifications = true;
                             userPermission.savePermissions();
+                            serverPush.init();
                             userPermission.updateUX();
 
                         }, function(rejected){

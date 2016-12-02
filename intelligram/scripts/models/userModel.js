@@ -199,9 +199,6 @@ var userModel = {
 
             userPermission.checkPermissions();
 
-
-            userPermission.triggerStackModal();
-
             if (userPermission.permissions.hasNotifications) {
                 serverPush.init();
             }

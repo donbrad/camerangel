@@ -19,8 +19,11 @@ var galleryView = {
     _currentPhoto: {},
     _currentPhotoId: null,
     _currentPhotoUrl: null,
+    _filter : null,
     _previewSize: "33%",
     _viewInitialized : false,
+    _photoInitialized : false,
+    _noteInitialized : false,
     _activeView: 0,
     scroller: null,
 
@@ -103,6 +106,7 @@ var galleryView = {
 
         photoModel.optionsShown = true;
 
+        galleryView._filter = galleryView.noteFilter;
 
         // Set img size for gallery
         //$("#gallery-listview li").css("width",galleryView._previewSize);
@@ -229,62 +233,13 @@ var galleryView = {
                 index: galleryView._activeView
             });*/
 
-            $("#gallery-listview").kendoMobileListView({
-                dataSource: photoModel.photosDS,
-                template: $("#gallery-template").html(),
-                click : function (e) {
-                    _preventDefault(e);
 
-                    var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
-
-                    modalPhotoView.openModal(photo);
-                }
-
-            });
 
             //data-source="photoModel.photosDS" data-template="gallery-template" data-click="galleryView.galleryClick"
             $("#gallery .gg_mainSearchInput").on('input', function() {
                 var query = this.value;
-                if (query.length > 0) {
 
-				photoModel.photosDS.filter( {"logic":"or",
-                        "filters":[
-                            {
-                                "field":"title",
-                                "operator":"contains",
-                                "value":query},
-                            {
-                                "field":"description",
-                                "operator":"contains",
-                                "value":query},
-                            {
-                                "field":"tagsString",
-                                "operator":"contains",
-                                "value":query},
-                            {
-                                "field":"dateString",
-                                "operator":"contains",
-                                "value":query},
-                            {
-                                "field":"addressString",
-                                "operator":"contains",
-                                "value":query},
-                            {
-                                "field":"placeString",
-                                "operator":"contains",
-                                "value":query},
-                            {
-                                "field":"senderName",
-                                "operator":"contains",
-                                "value":query}
-                        ]});
-
-                	$("#gallery .enterSearch").removeClass('hidden');
-                } else {
-                	$("#gallery .enterSearch").addClass('hidden');
-                	photoModel.photosDS.filter([]);
-                }
-
+                galleryView._filter(query);
             });
            
             // bind clear search btn
@@ -292,7 +247,7 @@ var galleryView = {
 					$("#gallery .gg_mainSearchInput").val('');
 					
 					// reset data filters
-                   photoModel.photosDS.filter([]);
+                    galleryView._filter('');
 
                    // hide clear btn
                    $(this).addClass('hidden');
@@ -332,7 +287,13 @@ var galleryView = {
         galleryView.scroller.setOptions({
             pullToRefresh: true,
             pull: function() {
-                photoModel.photosDS.sync();
+                if (galleryView._activeView === 0) {
+                    privateNoteModel.notesDS.sync();
+                } else {
+                    if (photoModel.photosDS !== null)
+                        photoModel.photosDS.sync();
+                }
+
                 ux.toggleSearch();
                 galleryView.scroller.pullHandled();
 
@@ -340,7 +301,7 @@ var galleryView = {
         });
 
 
-        galleryView.updateTotalPhotos();
+        //galleryView.updateTotalPhotos();
 
         ux.setAddTarget(null, null, galleryView.onAddGallery);
         // set filter count
@@ -354,6 +315,72 @@ var galleryView = {
         	$("#filterText").text("Filter");
         } else {
         	$("#filterText").text("Filter");
+        }
+
+    },
+
+    photoFilter : function (query) {
+        if (query.length > 0) {
+
+            photoModel.photosDS.filter( {"logic":"or",
+                "filters":[
+                    {
+                        "field":"title",
+                        "operator":"contains",
+                        "value":query},
+                    {
+                        "field":"description",
+                        "operator":"contains",
+                        "value":query},
+                    {
+                        "field":"tagsString",
+                        "operator":"contains",
+                        "value":query},
+                    {
+                        "field":"dateString",
+                        "operator":"contains",
+                        "value":query},
+                    {
+                        "field":"addressString",
+                        "operator":"contains",
+                        "value":query},
+                    {
+                        "field":"placeString",
+                        "operator":"contains",
+                        "value":query},
+                    {
+                        "field":"senderName",
+                        "operator":"contains",
+                        "value":query}
+                ]});
+
+           // $("#gallery .enterSearch").removeClass('hidden');
+        } else {
+          //  $("#gallery .enterSearch").addClass('hidden');
+            photoModel.photosDS.filter([]);
+        }
+
+    },
+
+
+    noteFilter : function (query) {
+        if (query.length > 0) {
+            privateNoteModel.notesDS.filter( {"logic":"or",
+                "filters":[
+                    {
+                        "field":"title",
+                        "operator":"contains",
+                        "value":query},
+                    {
+                        "field":"noteType",
+                        "operator":"contains",
+                        "value":query}
+                ]});
+
+           // $("#gallery .enterSearch").removeClass('hidden');
+        } else {
+           // $("#gallery .enterSearch").addClass('hidden');
+            privateNoteModel.notesDS.filter([]);
         }
 
     },
@@ -375,6 +402,7 @@ var galleryView = {
             $("#galleryView-tab-photos").attr("src", "images/icon-Photo.png");
 
             ux.setSearchPlaceholder("Search Notes...");
+            galleryView._filter = galleryView.noteFilter;
 
         } else {
             // Photos
@@ -385,6 +413,29 @@ var galleryView = {
             $("#galleryView-tab-photos").attr("src", "images/icon-photo-active.png");
 
             ux.setSearchPlaceholder("Search Photos...");
+            galleryView._filter = galleryView.photoFilter;
+
+            galleryView.updateTotalPhotos();
+
+
+            if (!galleryView._photoInitialized) {
+                galleryView._photoInitialized = true;
+
+                $("#gallery-listview").kendoMobileListView({
+                    dataSource: photoModel.photosDS,
+                    template: $("#gallery-template").html(),
+                    click : function (e) {
+                        _preventDefault(e);
+
+                        var photo = e.dataItem, photoId = e.dataItem.photoId, photoUrl = e.dataItem.imageUrl;
+
+                        modalPhotoView.openModal(photo);
+                    }
+
+                });
+            }
+
+
 
         }
         galleryView._activeView = tab;
