@@ -22,6 +22,7 @@ var photoModel = {
     currentOffer: null,
     previewSize: "33%",
     optionsShown: false,
+    _forceCache: true,
     _fetched : false,
     _initialSync : false,
 
@@ -206,10 +207,11 @@ var photoModel = {
 
             //Check for the file.
             window.resolveLocalFileSystemURL(localUrl,
-                function () {
+                function (fileEntry) {
+                  var url = fileEntry.name;
 
                 },
-                function () {
+                function (error) {
                     photoModel.addToLocalCache(urlCloud, localUrl, photo.photoId);
                     console.log("Caching photo on device :  " + photo.uuid);
                 });
@@ -261,7 +263,7 @@ var photoModel = {
 
     addToLocalCache : function (url, localUrl, photoId) {
 
-        if (url === null || photoId === null) {
+        if (url === null || photoId === null || photoModel.photosDS === null) {
             ggError("Local Cache Error - Null Url");
             return;
             
@@ -457,7 +459,7 @@ var photoModel = {
         }
         dataSource.filter( query);
         var view = dataSource.view();
-        
+
         dataSource.filter(cacheFilter);
 
         return(view);
