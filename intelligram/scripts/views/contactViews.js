@@ -1677,46 +1677,48 @@ var contactActionView = {
         //Show the status update div
         if (thisContact.contactUUID !== undefined && thisContact.contactUUID !== null && thisContact.category !== 'unknown') {
 
-            var user = userStatusChannel.getStatus(thisContact.contactUUID);
-            if (user !== null) {
-                var contactIsAvailable = user.isAvailable;
-                var contactPlace = user.currentPlace;
-                contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
-                contactActionView._activeContact.set('statusMessage', user.statusMessage);
-                contactActionView._activeContact.set('currentPlace', user.currentPlace);
-                contactActionView._activeContact.set('currentPlaceUUID', user.currentPlaceUUID);
-                contactActionView._activeContact.set('googlePlaceId', user.googlePlaceId);
-                contactActionView._activeContact.set('lat', user.lat);
-                contactActionView._activeContact.set('lng', user.lng);
-                contactActionView._activeContact.set('isAvailable', contactIsAvailable);
+            var user = userStatusChannel.contactStatus(thisContact.contactUUID, function (error, user) {
+                if (user !== null) {
+                    var contactIsAvailable = user.isAvailable;
+                    var contactPlace = user.currentPlace;
+                    contactActionView._activeContact.set('contactUUID', thisContact.contactUUID);
+                    contactActionView._activeContact.set('statusMessage', user.statusMessage);
+                    contactActionView._activeContact.set('currentPlace', user.currentPlace);
+                    contactActionView._activeContact.set('currentPlaceUUID', user.currentPlaceUUID);
+                    contactActionView._activeContact.set('googlePlaceId', user.googlePlaceId);
+                    contactActionView._activeContact.set('lat', user.lat);
+                    contactActionView._activeContact.set('lng', user.lng);
+                    contactActionView._activeContact.set('isAvailable', contactIsAvailable);
 
-                if (contactIsAvailable) {
-                    $(".statusContactCard-icon").removeClass("status-away").addClass("status-available");
-                }
+                    if (contactIsAvailable) {
+                        $(".statusContactCard-icon").removeClass("status-away").addClass("status-available");
+                    }
 
-                // Update the contactList object too
-                var contactList = contactModel.findContactList(thisContact.contactUUID);
-                if (contactList !== undefined) {
-                    contactList.set('statusMessage', user.statusMessage);
-                    contactList.set('currentPlace', contactPlace);
-                    contactList.set('currentPlaceUUID', user.currentPlaceUUID);
-                    contactList.set('googlePlaceId', user.googlePlaceId);
-                    contactList.set('lat', user.lat);
-                    contactList.set('lng', user.lng);
-                    contactList.set('isAvailable', contactIsAvailable);
+                    // Update the contactList object too
+                    var contactList = contactModel.findContactList(thisContact.contactUUID);
+                    if (contactList !== undefined) {
+                        contactList.set('statusMessage', user.statusMessage);
+                        contactList.set('currentPlace', contactPlace);
+                        contactList.set('currentPlaceUUID', user.currentPlaceUUID);
+                        contactList.set('googlePlaceId', user.googlePlaceId);
+                        contactList.set('lat', user.lat);
+                        contactList.set('lng', user.lng);
+                        contactList.set('isAvailable', contactIsAvailable);
 
-                    contactsView.contactCache[thisContact.contactUUID] = contactList;
+                        contactsView.contactCache[thisContact.contactUUID] = contactList;
 
-                    // set current place
-                    if (contactPlace !== ""  && contactPlace !== null && contactPlace !== undefined) {
-                        $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
-                    } else {
-                        $("#contactCurrentPlace").addClass('hidden').text("");
+                        // set current place
+                        if (contactPlace !== ""  && contactPlace !== null && contactPlace !== undefined) {
+                            $("#contactCurrentPlace").removeClass('hidden').text("@" + contactPlace);
+                        } else {
+                            $("#contactCurrentPlace").addClass('hidden').text("");
+                        }
+
                     }
 
                 }
+            });
 
-            }
 
         }
 
