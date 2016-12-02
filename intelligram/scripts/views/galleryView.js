@@ -214,7 +214,7 @@ var galleryView = {
         galleryView.updateTotalPhotos();
         // Make sure all the local photos have been uploaded
         //photoModel.syncPhotosToCloud();
-        photoModel.syncPhotosToDevice();
+        //photoModel.syncPhotosToDevice();
 
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;

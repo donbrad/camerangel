@@ -555,7 +555,7 @@ var userModel = {
             restore : true,
             suppressLeaveEvents : true,
             announceFailedHeartbeats : false,
-           logVerbosity: true,
+           //logVerbosity: true,
             uuid: uuid
         });
 
