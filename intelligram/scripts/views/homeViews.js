@@ -41,7 +41,7 @@ var homeView = {
     },
 
     goMyNotes: function () {
-        APP.kendo.navigate("#privateNotes");
+        APP.kendo.navigate("#gallery");
     },
 
     disableHotButtons : function () {

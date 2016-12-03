@@ -24,49 +24,6 @@ var privateNotesView = {
     _editorMin : "3em", /// changing to relative sizing
     _editorMax : "16em", /// changing to relative sizing
 
-    onInit : function (e) {
-       // _preventDefault(e);
-
-        $("#notesView-listview").kendoMobileListView({
-            dataSource: privateNoteModel.notesDS,
-            template: $("#privateNote-template").html()
-
-        }).kendoTouch({
-            filter: ".private-note",
-            tap: privateNotesView.tapNote/*,
-            hold: privateNotesView.holdNote*/
-        });
-
-
-       /* $('#privateNoteTextArea').click(function() {
-            if (privateNotesView._editorExpanded)
-                return;
-            privateNotesView._editorExpanded = true;
-            privateNotesView.activateEditor();
-        });*/
-
-
-       /* $("#privateNoteTags").kendoMultiSelect({
-            dataTextField: "name",
-            dataValueField: "uuid",
-            autoBind: false,
-            autoClose: false,
-            tagMode: "multiple",
-            ignoreCase: true,
-            dataSource: tagModel.tagsDS,
-            select: function (e) {
-                var item = e.item;
-                var text = item.text();
-            },
-            change: function(e) {
-                var value = this.value();
-                // Use the value of the widget
-            }
-        });
-*/
-
-    },
-
 
     // Initialize the channel specific view data sources.
     noteInit : function () {
