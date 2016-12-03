@@ -91,14 +91,7 @@ var galleryView = {
 
 
     onInit : function (e) {
-        //_preventDefault(e);
 
-        /*archiveView.init();
-
-        var setSentinelHeight = function () {
-            $('#search-archives').height(getSentinelHeight());
-        };
-*/
         // ToDo: Initialize list view
         var itemWidth = $(window).width()/4;
         photoModel.rotationAngle = 0;
@@ -156,6 +149,7 @@ var galleryView = {
         $('#gallery-photos').addClass("hidden");
         $('#gallery-notes').removeClass("hidden");
 
+        ux.setSearchPlaceholder("Search Notes...");
         galleryView._activeView = 0;
     },
 
@@ -222,7 +216,7 @@ var galleryView = {
         if (!galleryView._viewInitialized) {
             galleryView._viewInitialized = true;
 
-            /*$('#gallery-buttongroup').kendoMobileButtonGroup({
+            $('#gallery-buttongroup').kendoMobileButtonGroup({
                 select: function(e) {
                     var index = e.index;
                     if (index != galleryView._activeView) {
@@ -231,7 +225,7 @@ var galleryView = {
                     }
                 },
                 index: galleryView._activeView
-            });*/
+            });
 
 
 
@@ -264,10 +258,6 @@ var galleryView = {
             });
 
         }
-
-        ux.setSearchPlaceholder("Search safe...");
-
-
         if (e.view.params.mode !== undefined && e.view.params.mode === 'picker') {
             galleryView._pickerMode = true;
             mobileNotify("Please select an image to send...")
@@ -280,32 +270,21 @@ var galleryView = {
         }
 
         photoModel.rotationAngle = 0;
-        
 
         galleryView.scroller = e.view.scroller;
 
         galleryView.scroller.setOptions({
             pullToRefresh: true,
             pull: function() {
-                if (galleryView._activeView === 0) {
-                    privateNoteModel.notesDS.sync();
-                } else {
-                    if (photoModel.photosDS !== null)
-                        photoModel.photosDS.sync();
-                }
-
                 ux.toggleSearch();
                 galleryView.scroller.pullHandled();
 
             }
         });
 
-
-        //galleryView.updateTotalPhotos();
-
         ux.setAddTarget(null, null, galleryView.onAddGallery);
         // set filter count
-        var filterCount = 0;
+       /* var filterCount = 0;
         $("#filterCount").text(filterCount);
 
         if(filterCount > 1){
@@ -315,7 +294,7 @@ var galleryView = {
         	$("#filterText").text("Filter");
         } else {
         	$("#filterText").text("Filter");
-        }
+        }*/
 
     },
 

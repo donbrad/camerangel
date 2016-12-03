@@ -3583,7 +3583,7 @@
 <!--/*
  * gallery
  */-->
-<div data-role="view" data-title="My Safe" id="gallery" data-layout="main" data-model="photoModel" data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
+<div data-role="view" data-title="My Safe" id="gallery" data-layout="main"  data-init="galleryView.OnInit" data-show="galleryView.onShow" data-before-hide="galleryView.onHide">
 	<div  class="appBox noPad">
 		<div id="gallery-buttongroup" class="tabBar" data-role="tabstrip" data-select="galleryView.onTabSelect">
 			<a data-tab="0">
@@ -3598,20 +3598,6 @@
 
 
 		<div id="gallery-photos" class="hidden">
-			<!--<div>
-				<ul data-role="buttongroup" style="padding: 6px; font-size: 1.2em;">
-					<li>
-						<a class="btnClear-grey-sm" data-role="button" >Edit </a>
-					</li>
-					<li>
-						<a class="btnHighlight" data-role="button" data-click="galleryView.openGalleryPicker">All Photos </a>
-					</li>
-					<li>
-						<a class="btnClear-grey-sm" data-role="button">Add </a>
-					</li>
-				</ul>
-			</div>-->
-
 
 			<div class="resultsBar">
 				<div class="results">
@@ -3626,21 +3612,6 @@
 						<div class="icon icon-arrow-right-active" data-grunticon-embed></div>
 					</a>
 				</div>
-				<!--<div class="photoDisplayView">
-					<ul data-role="buttongroup" data-index="0" data-select="galleryView.galleryActionView">
-						<li>
-							<a class="btnClear gallerySelectBtn-grid" data-role="button">
-								<object data="images/icon-grid-active.svg" type="image/svg+xml" class="icon-md"></object>
-							</a>
-						</li>
-						<li>
-							<a class="btnClear gallerySelectBtn-list" data-role="button">
-								<object data="images/icon-list-alt.svg" type="image/svg+xml" class="icon-md"></object>
-							</a>
-						</li>
-					</ul>
-
-				</div>-->
 				<div class="clearfix"></div>
 			</div>
 			<!-- Photos -->
