@@ -34,6 +34,6 @@
 		<permission android:name="com.kyburzcodeworks.intelligram.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 		<uses-permission android:name="com.kyburzcodeworks.intelligram.permission.C2D_MESSAGE" />
 		
-        <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21"/>
+        <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="21"/>
 	
 	</manifest>
