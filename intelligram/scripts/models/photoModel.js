@@ -33,7 +33,7 @@ var photoModel = {
 
     offersDS : null,
     
-    deletedPhotosDS: null,
+  //  deletedPhotosDS: null,
 
     init: function () {
 
@@ -118,7 +118,7 @@ var photoModel = {
             }
         });
 
-        photoModel.deletedPhotosDS = new kendo.data.DataSource({
+      /*  photoModel.deletedPhotosDS = new kendo.data.DataSource({
             // offlineStorage: "photos",
             type: 'everlive',
             transport: {
@@ -128,12 +128,12 @@ var photoModel = {
             schema: {
                 model: { Id:  Everlive.idField}
             }
-        });
+        });*/
 
         photoModel.cloudPushList = [];
         photoModel.localPushList = [];
 
-        photoModel.photosDS.bind('requestEnd',function (e) {
+       /* photoModel.photosDS.bind('requestEnd',function (e) {
             var response = e.response,  type = e.type;
             if (!photoModel._fetched ) {
                 if (type === 'read' && response) {
@@ -141,7 +141,7 @@ var photoModel = {
                     // Do any special processing for initial read of cloud data
                 }
             }
-        });
+        });*/
 
 
         photoModel.photosDS.fetch();
@@ -170,7 +170,7 @@ var photoModel = {
         photoModel._initialSync = false;
         photoModel._forceCache = true;
 
-        photoModel.deletedPhotosDS.data([]);
+      //  photoModel.deletedPhotosDS.data([]);
     },
 
     updateLocalUrl : function (uuid, localUrl) {
