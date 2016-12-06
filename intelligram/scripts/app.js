@@ -154,7 +154,26 @@
 			//feedback.initialize('152d2190-9201-11e5-94db-2f6555e1caa0');
 			window.open = cordova.InAppBrowser.open;
 
+            cordova.plugins.notification.local.hasPermission(function(granted) {
 
+                if (granted) {
+                    userPermission.permissions.hasNotifications = true;
+                    userPermission.savePermissions();
+
+                } else {
+                    cordova.plugins.notification.local.registerPermission(function (granted) {
+                        userPermission.permissions.hasNotifications = true;
+                        userPermission.savePermissions();
+
+                    }, function(rejected){
+                        userPermission.permissions.hasNotifications = false;
+                        userPermission.savePermissions();
+                    });
+                }
+            }, function(rejected){
+                userPermission.permissions.hasNotifications = false;
+                userPermission.savePermissions();
+            });
 
 			ThreeDeeTouch.isAvailable(function (avail) {
 
