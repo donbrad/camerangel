@@ -2693,22 +2693,26 @@ var userPermission = {
     },
 
 
-    checkPermissions : function () {
+    checkNotification : function (callback) {
         cordova.plugins.notification.local.hasPermission(function(granted) {
 
             if (granted) {
                 userPermission.permissions.hasNotifications = true;
-                serverPush.init();
                 userPermission.savePermissions();
             } else {
                 userPermission.permissions.hasNotifications = false;
                 userPermission.savePermissions();
             }
+
+            callback(userPermission.permissions.hasNotifications);
         }, function(rejected){
             userPermission.permissions.hasNotifications = false;
             userPermission.savePermissions();
+            callback(userPermission.permissions.hasNotifications);
         });
+    },
 
+    checkContact: function (callback) {
         var options      = new ContactFindOptions();
         options.filter   = "Bob";
         options.multiple = true;
@@ -2720,20 +2724,47 @@ var userPermission = {
                 userPermission.permissions.hasContacts = true;
 
                 userPermission.savePermissions();
+                callback(userPermission.permissions.hasContacts);
             },
             function(contactError){
                 userPermission.permissions.hasContacts = false;
                 userPermission.savePermissions();
+                callback(userPermission.permissions.hasContacts);
             }, options);
+    },
 
+    checkLocation : function (callback) {
         navigator.geolocation.getCurrentPosition(function(position){
                 userPermission.permissions.hasLocation = true;
                 userPermission.savePermissions();
+                callback(userPermission.permissions.hasLocation);
             },
             function(PositionError){
                 userPermission.permissions.hasLocation = false;
                 userPermission.savePermissions();
+                callback(userPermission.permissions.hasLocation);
             });
+    },
+
+
+    checkPermissions : function () {
+
+        userPermission.checkNotification(function (statusNot) {
+            if (!statusNot)
+                mobileNotify("Please enable notifications!");
+            userPermission.checkContact(function(statusContact) {
+                if (!statusContact)
+                    mobileNotify("Please enable Contact Access!");
+                userPermission.checkLocation(function(statusLocation) {
+                    if (!statusLocation)
+                        mobileNotify("Please enable GeoLocation!");
+                    }
+                );
+                }
+            );
+
+        });
+
     },
 
 

@@ -156,7 +156,26 @@
 
 
 
-			ThreeDeeTouch.isAvailable(function (avail) {
+            cordova.plugins.notification.local.hasPermission(function(granted) {
+
+                if (granted) {
+                    userPermission.permissions.hasNotifications = true;
+
+                } else {
+                    cordova.plugins.notification.local.registerPermission(function (granted) {
+                        userPermission.permissions.hasNotifications = true;
+
+                    }, function(rejected){
+                        userPermission.permissions.hasNotifications = false;
+
+                    });
+                }
+            }, function(rejected){
+                userPermission.permissions.hasNotifications = false;
+            });
+
+
+            ThreeDeeTouch.isAvailable(function (avail) {
 
 				if (avail) {
 					mobileNotify("3d Touch Enabled!");

@@ -197,7 +197,7 @@ var userModel = {
         if (window.navigator.simulator === undefined) {
             userPermission.init();
 
-            userPermission.checkPermissions();
+          userPermission.checkPermissions();
 
             if (userPermission.permissions.hasNotifications) {
                 serverPush.init();

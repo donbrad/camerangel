@@ -84,10 +84,7 @@
   "iOSDeploymentTarget": "8.0",
   "CordovaPluginVariables": {
     "nl.x-services.plugins.launchmyapp": {
-      "URL_SCHEME": "ghostgrams"
-    },
-    "cc.fovea.cordova.purchase": {
-      "BILLING_KEY": "needtoget"
+      "URL_SCHEME": "intelligram"
     }
   }
 }
