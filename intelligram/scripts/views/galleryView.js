@@ -1481,6 +1481,7 @@ var modalPhotoView = {
         modalPhotoView._activePhoto.set('addressString', photo.addressString);
         modalPhotoView._activePhoto.set('placeString', photo.placeString);
 
+
         var formattedDate = moment(photo.dateString, "MMMM Do YYYY, h:mm A").fromNow();
         modalPhotoView._activePhoto.set('dateString', formattedDate);
 
@@ -1531,7 +1532,7 @@ var modalPhotoView = {
             photoObj.set('title',modalPhotoView._activePhoto.title);
             photoObj.set('description',modalPhotoView._activePhoto.description);
             photoObj.set('addressString', modalPhotoView._activePhoto.addressString);
-            photoObj.set('placeName', modalPhotoView._activePhoto.placeName);
+            photoObj.set('placeString', modalPhotoView._activePhoto.placeString);
             photoObj.set('lat', modalPhotoView._activePhoto.lat);
             photoObj.set('lng', modalPhotoView._activePhoto.lng);
             photoObj.set('placeUUID', modalPhotoView._activePhoto.placeUUID);
@@ -1561,7 +1562,7 @@ var modalPhotoView = {
             modalPhotoView._activePhoto.set('addressString', placeObj.address);
             modalPhotoView._activePhoto.set('lat', placeObj.lat);
             modalPhotoView._activePhoto.set('lng', placeObj.lng);
-            modalPhotoView._activePhoto.set('placeName', placeObj.name);
+            modalPhotoView._activePhoto.set('placeString', placeObj.name);
 
             $("#modalPhotoView").data("kendoMobileModalView").open();
         });
