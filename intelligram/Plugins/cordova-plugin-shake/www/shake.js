@@ -16,7 +16,7 @@ module.exports = (function () {
     };
 
     var shakeCallBack = null;
-    var sensitivity = 30;
+    var sensitivity = 60;
 
     // Start watching the accelerometer for a shake gesture
     shake.startWatch = function (onShake, _sensitivity, onError) {

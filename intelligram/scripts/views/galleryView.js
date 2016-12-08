@@ -206,7 +206,7 @@ var galleryView = {
 
        // _preventDefault(e);
 
-        ux.hideKeyboard();
+        //ux.hideKeyboard();
 
         galleryView.updateTotalPhotos();
         // Make sure all the local photos have been uploaded
@@ -233,14 +233,15 @@ var galleryView = {
             $("#gallery .gg_mainSearchInput").on('input', function() {
                 var query = this.value;
 
-                galleryView._filter(query);
+                if (galleryView._filter !== undefined && galleryView._filter !== null)
+                    galleryView._filter(query);
             });
            
             // bind clear search btn
 			$("#gallery .enterSearch").on("click", function(){
 					$("#gallery .gg_mainSearchInput").val('');
-					
-					// reset data filters
+
+                if (galleryView._filter !== undefined && galleryView._filter !== null)
                     galleryView._filter('');
 
                    // hide clear btn
@@ -283,19 +284,6 @@ var galleryView = {
         });
 
         ux.setAddTarget(null, null, galleryView.onAddGallery);
-        // set filter count
-       /* var filterCount = 0;
-        $("#filterCount").text(filterCount);
-
-        if(filterCount > 1){
-        	$("#filterText").text("Filters");
-        } else if(filterCount === 0) {
-        	$("#filterCount").text("");
-        	$("#filterText").text("Filter");
-        } else {
-        	$("#filterText").text("Filter");
-        }*/
-
     },
 
     photoFilter : function (query) {

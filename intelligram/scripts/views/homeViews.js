@@ -28,7 +28,12 @@ var homeView = {
         if (window.navigator.simulator === undefined) {
             shake.startWatch(function () {
                 hotButtonView.openModal();
-            }, 30 /*, onError */);
+            },
+            1000,
+                function (error) {
+
+                }
+            );
         }
     },
 
