@@ -693,13 +693,16 @@ var userStatus = {
         stat.currentPlaceUUID = null;
         stat.googlePlaceId = null;
 
-        if (status.isAvailable === undefined) {
-            status.isAvailable = false;
-        }
+
 
         if (status !== null) {
+
             stat.lat = status.lat;
             stat.lng = status.lng;
+
+            if (status.isAvailable === undefined) {
+                status.isAvailable = false;
+            }
             stat.set('isAvailable',status.isAvailable);
             stat.isCheckedIn = status.isCheckedIn;
             stat.set('statusMessage', status.statusMessage);
