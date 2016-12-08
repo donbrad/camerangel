@@ -197,7 +197,7 @@ var userModel = {
         if (window.navigator.simulator === undefined) {
             userPermission.init();
 
-          userPermission.checkPermissions();
+          //userPermission.checkPermissions();
 
             if (userPermission.permissions.hasNotifications) {
                 serverPush.init();
@@ -614,7 +614,8 @@ var userModel = {
 
                 } else if (s.category === "PNNetworkUpCategory") {
                     mobileNotify("Pubnub Network Up");
-
+                    appDataChannel.history();
+                    userDataChannel.history();
                 }
             }
         });

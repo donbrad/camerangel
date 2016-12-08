@@ -25,7 +25,7 @@ var homeView = {
     },
 
     enableHotButtons : function () {
-        if (window.navigator.simulator === undefined) {
+       /* if (window.navigator.simulator === undefined) {
             shake.startWatch(function () {
                 hotButtonView.openModal();
             },
@@ -34,7 +34,7 @@ var homeView = {
 
                 }
             );
-        }
+        }*/
     },
 
     goHome: function () {
@@ -50,7 +50,7 @@ var homeView = {
     },
 
     disableHotButtons : function () {
-        shake.stopWatch();
+       /* shake.stopWatch();*/
     },
     
     openLocateMeModal: function () {
