@@ -68,6 +68,7 @@ var sharedPhotoModel = {
 
         share.set('version', sharedPhotoModel._version);
         share.set('ggType', sharedPhotoModel._ggClass);
+        share.set('Id', shareuuid);
         share.set('uuid', shareuuid);
         share.set('photoUUID', photoUUID);
         share.set('channelUUID', channelUUID);

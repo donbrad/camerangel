@@ -144,7 +144,6 @@ var userModel = {
 
     initCloudModels : function () {
 
-        tagModel.init();
 
         channelModel.init();
 
@@ -167,19 +166,19 @@ var userModel = {
 
         photoModel.init();
 
+        sharedPhotoModel.init();
+
         galleryModel.init();
 
         groupModel.init();
 
-        privateNoteModel.init();  // Depends on everlive...
+        privateNoteModel.init();
 
         userStatus.init();
 
         memberdirectory.init();
 
-        profilePhotoModel.init();
-
-        sharedPhotoModel.init();
+        tagModel.init();
 
         smartEvent.init();
 
@@ -188,6 +187,8 @@ var userModel = {
         smartTrip.init();
 
         smartFlight.init();
+
+        profilePhotoModel.init();
 
         statusTracker.init();
 
@@ -673,6 +674,7 @@ var userStatus = {
     _id : null,
     _needsSync: false,
     _needStatus : true,
+    _needSave : true,
 
 
     init: function () {
@@ -694,6 +696,7 @@ var userStatus = {
         if (status.isAvailable === undefined) {
             status.isAvailable = false;
         }
+
         if (status !== null) {
             stat.lat = status.lat;
             stat.lng = status.lng;
@@ -703,6 +706,8 @@ var userStatus = {
             stat.set('currentPlace',status.currentPlace);
             stat.currentPlaceUUID = status.currentPlaceUUID;
             stat.googlePlaceId = status.googlePlaceId;
+        } else {
+            userStatus.saveLocal();
         }
 
         userStatus.cachePrevious();
@@ -721,9 +726,11 @@ var userStatus = {
         if (statusRaw !== undefined && statusRaw !== null) {
             status = JSON.parse(statusRaw);
             userStatus.initStatus(status);
+            userStatus._needSave = false;
 
         } else {
             userStatus.initStatus(null);
+            userStatus._needSave = true;
         }
 
     },
@@ -792,7 +799,7 @@ var userStatus = {
         }
     },
 
-    create : function () {
+    /*create : function () {
         var data = APP.everlive.data(userStatus._ggClass);
 
         userStatus._statusObj.Id  = everlive._id;
@@ -804,7 +811,7 @@ var userStatus = {
             function(error){
                 ggError("User Status create error : " + JSON.stringify(error));
             });
-    },
+    },*/
 
     isChanged : function () {
         if (userStatus._prevObj === null) {
