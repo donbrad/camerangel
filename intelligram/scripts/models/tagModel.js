@@ -54,7 +54,7 @@ var tagModel = {
             sort: {
                 field: "tagName",
                 dir: "asc"
-            }/*,
+            },/*
 
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
