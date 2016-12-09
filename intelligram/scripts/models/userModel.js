@@ -143,7 +143,7 @@ var userModel = {
 
 
     initCloudModels : function () {
-        
+
         channelModel.init();
 
         contactModel.init();
@@ -548,10 +548,7 @@ var userModel = {
             publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
             subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
             ssl: true,
-            heartbeatInterval : 3600,
             restore : true,
-            suppressLeaveEvents : true,
-            announceFailedHeartbeats : false,
            //logVerbosity: true,
             uuid: uuid
         });
@@ -603,8 +600,7 @@ var userModel = {
                     mobileNotify("Pubnub Connected");
                     deviceModel.setAppState('pubnubInit', true);
                     deviceModel.isPushProvisioned();
-                   /* appDataChannel.history();
-                    userDataChannel.history();*/
+
                 } else if (s.category === "PNReconnectedCategory") {
                     mobileNotify("Pubnub ReConnected");
                     appDataChannel.history();
