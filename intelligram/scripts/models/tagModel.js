@@ -54,7 +54,7 @@ var tagModel = {
             sort: {
                 field: "tagName",
                 dir: "asc"
-            },
+            }/*,
 
             requestEnd : function (e) {
                 var response = e.response,  type = e.type;
@@ -65,12 +65,12 @@ var tagModel = {
                         tagModel.processDeferred();
                     }
                 }
-            },
+            },*/
 
             autoSync : true
         });
 
-        /*tagModel.tagsDS.bind("change", function (e) {
+        tagModel.tagsDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
             //placesModel.syncPlaceListDS();
             var changedTags = e.items;
@@ -81,7 +81,7 @@ var tagModel = {
                     tagModel.processDeferred();
                 }
             }
-        });*/
+        });
 
         tagModel.tagsDS.fetch();
     },
