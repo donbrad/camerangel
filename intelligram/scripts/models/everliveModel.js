@@ -427,7 +427,7 @@ var everlive = {
         userModel.initPubNub();
         everlive.updateUser();
         userModel.initCloudModels();
-        userPermission.checkPermissions();
+       // userPermission.checkPermissions();
        // userStatus.update();
 
         homeView.enableHotButtons();
