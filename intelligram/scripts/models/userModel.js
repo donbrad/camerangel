@@ -143,8 +143,7 @@ var userModel = {
 
 
     initCloudModels : function () {
-
-
+        
         channelModel.init();
 
         contactModel.init();
@@ -193,7 +192,6 @@ var userModel = {
         statusTracker.init();
 
         todayModel.init();
-
 
 
         if (window.navigator.simulator === undefined) {
