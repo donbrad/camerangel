@@ -43,34 +43,21 @@ var tagModel = {
     init : function () {
         
         tagModel.tagsDS = new kendo.data.DataSource({
-            type: 'everlive',
+            /*type: 'everlive',
             transport: {
                 typeName: 'tags',
                 dataProvider: APP.everlive
             },
             schema: {
                 model: { Id:  Everlive.idField}
-            },
+            },*/
             sort: {
                 field: "tagName",
                 dir: "asc"
-            },/*
-
-            requestEnd : function (e) {
-                var response = e.response,  type = e.type;
-
-                if (!tagModel._fetched) {
-                    if (type === 'read') {
-                        tagModel._fetched = true;
-                        tagModel.processDeferred();
-                    }
-                }
-            },*/
-
-            autoSync : true
+            }
         });
 
-        tagModel.tagsDS.bind("change", function (e) {
+        /*tagModel.tagsDS.bind("change", function (e) {
             // Rebuild the contactList cache when the underlying list changes: add, delete, update...
             //placesModel.syncPlaceListDS();
             var changedTags = e.items;
@@ -81,9 +68,9 @@ var tagModel = {
                     tagModel.processDeferred();
                 }
             }
-        });
+        });*/
 
-        tagModel.tagsDS.fetch();
+      //  tagModel.tagsDS.fetch();
     },
 
 
@@ -167,7 +154,7 @@ var tagModel = {
         tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
 
-        everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
+      /*  everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
@@ -175,15 +162,15 @@ var tagModel = {
                 //tagModel.tagsDS.add(tagObj);
 
             }
-        });
+        });*/
 
     },
 
     addGroupTag : function (tag, alias, description, categoryId) {
-        if (!tagModel.tagsFetched) {
+      /*  if (!tagModel.tagsFetched) {
             tagModel.defer(tag, alias, description, categoryId, tagModel._group);
             return;
-        }
+        }*/
 
         var normTag = tagModel.normalizeTag(tag);
 
@@ -212,7 +199,7 @@ var tagModel = {
 
         tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
-
+/*
         everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
@@ -221,14 +208,14 @@ var tagModel = {
 
 
             }
-        });
+        });*/
     },
 
     addContactTag : function (tag, alias, description, categoryId) {
-        if (!tagModel.tagsFetched) {
+      /*  if (!tagModel.tagsFetched) {
             tagModel.defer(tag, alias, description, categoryId, tagModel._contact);
             return;
-        }
+        }*/
         var normTag = tagModel.normalizeTag(tag);
 
         var tagExists = tagModel.findTagByCategoryId(categoryId);
@@ -255,7 +242,7 @@ var tagModel = {
         tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
 
-        everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
+       /* everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
@@ -263,14 +250,14 @@ var tagModel = {
 
 
             }
-        });
+        });*/
     },
 
     addPlaceTag : function (tag, alias, description, categoryId) {
-        if (!tagModel.tagsFetched) {
+       /* if (!tagModel.tagsFetched) {
             tagModel.defer(tag, alias, description, categoryId, tagModel._place);
             return;
-        }
+        }*/
         var normTag = tagModel.normalizeTag(tag);
         var tagExists = tagModel.findTagByCategoryId(categoryId);
 
@@ -297,7 +284,7 @@ var tagModel = {
         tagModel.tagsDS.add(tagObj);
         tagModel.tagsDS.sync();
 
-        everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
+      /*  everlive.createOne(tagModel._cloudClass, tagObj, function (error, data){
             if (error !== null) {
                 mobileNotify ("Error creating photo " + JSON.stringify(error));
             } else {
@@ -305,7 +292,7 @@ var tagModel = {
                // tagModel.tagsDS.add(tagObj);
 
             }
-        });
+        });*/
     },
 
 

@@ -160,6 +160,8 @@ var userModel = {
 
         userStatusChannel.init(uuid);
 
+        tagModel.init();
+
         mapModel.init();
 
         placesModel.init();
@@ -178,8 +180,6 @@ var userModel = {
 
         memberdirectory.init();
 
-        tagModel.init();
-
         smartEvent.init();
 
         smartMovie.init();
@@ -193,6 +193,7 @@ var userModel = {
         statusTracker.init();
 
         todayModel.init();
+
 
 
         if (window.navigator.simulator === undefined) {

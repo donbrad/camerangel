@@ -670,28 +670,24 @@ var userStatusView = {
         //everlive.syncCloud();
         appDataChannel.closeChannel();
         userDataChannel.closeChannel();
-        
+        userModel._user.unbind('change', userModel.sync);
+
+        // The user is signed out - so unprovision all push notifications
+        serverPush.unprovisionGroupChannels();
+        serverPush.unprovisionDataChannels();
+
+        everlive.isAuthenticated = false;
+        deviceModel.resetDeviceState();
+        everlive.clearLocalStorage();
+
+        userModel.clearCloudModels();
+
         everlive.logout(function (status) {
             if (!status) {
                 mobileNotify("Signout Error....");
             }
 
-            userModel._user.unbind('change', userModel.sync);
-            userModel._user.set('username', null);
-            userModel._user.set('email', null);
-            userModel._user.set('phone',null);
-            userModel._user.set('alias', null);
-            userModel._user.set('userUUID', null);
-            userModel._user.set('rememberUsername', false);
-            // The user is signed out - so unprovision all push notifications
-            serverPush.unprovisionGroupChannels();
-            serverPush.unprovisionDataChannels();
-
-            everlive.isAuthenticated = false;
-            deviceModel.resetDeviceState();
-            everlive.clearLocalStorage();
             everlive.clearAuthentication();
-            userModel.clearCloudModels();
             userStatusView.closeModal();
             APP.kendo.navigate('#usersignin');
         });

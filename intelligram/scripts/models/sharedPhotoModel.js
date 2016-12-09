@@ -37,7 +37,34 @@ var sharedPhotoModel = {
 
         sharedPhotoModel.photosDS.fetch();
     },
-    
+
+    queryPhoto: function (query) {
+        if (query === undefined)
+            return(undefined);
+        var dataSource = sharedPhotoModel.photosDS;
+        var cacheFilter = dataSource.filter();
+        if (cacheFilter === undefined) {
+            cacheFilter = {};
+        }
+        dataSource.filter( query);
+        var view = dataSource.view();
+        var photo = view[0];
+
+        dataSource.filter(cacheFilter);
+
+        return(photo);
+    },
+
+    findPhotoByUUID : function (photoId) {
+
+        return(sharedPhotoModel.queryPhoto({ field: "uuid", operator: "eq", value: photoid }));
+    },
+
+    findPhotoByPhotoUUID : function (photoId) {
+
+        return(sharedPhotoModel.queryPhoto({ field: "photoUUID", operator: "eq", value: photoId }));
+    },
+
     sync: function () {
         sharedPhotoModel.photosDS.sync();
     },
