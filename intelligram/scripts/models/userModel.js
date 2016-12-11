@@ -144,8 +144,6 @@ var userModel = {
 
     initCloudModels : function () {
 
-        tagModel.init();
-
         channelModel.init();
 
         contactModel.init();
@@ -161,25 +159,25 @@ var userModel = {
 
         userStatusChannel.init(uuid);
 
+        tagModel.init();
+
         mapModel.init();
 
         placesModel.init();
 
         photoModel.init();
 
+        sharedPhotoModel.init();
+
         galleryModel.init();
 
         groupModel.init();
 
-        privateNoteModel.init();  // Depends on everlive...
+        privateNoteModel.init();
 
         userStatus.init();
 
         memberdirectory.init();
-
-        profilePhotoModel.init();
-
-        sharedPhotoModel.init();
 
         smartEvent.init();
 
@@ -189,6 +187,8 @@ var userModel = {
 
         smartFlight.init();
 
+        profilePhotoModel.init();
+
         statusTracker.init();
 
         todayModel.init();
@@ -197,7 +197,7 @@ var userModel = {
         if (window.navigator.simulator === undefined) {
             userPermission.init();
 
-          userPermission.checkPermissions();
+          //userPermission.checkPermissions();
 
             if (userPermission.permissions.hasNotifications) {
                 serverPush.init();
@@ -548,10 +548,7 @@ var userModel = {
             publishKey: 'pub-c-d4fcc2b9-2c1c-4a38-9e2c-a11331c895be',
             subscribeKey: 'sub-c-4624e1d4-dcad-11e4-adc7-0619f8945a4f',
             ssl: true,
-            heartbeatInterval : 3600,
             restore : true,
-            suppressLeaveEvents : true,
-            announceFailedHeartbeats : false,
            //logVerbosity: true,
             uuid: uuid
         });
@@ -603,8 +600,7 @@ var userModel = {
                     mobileNotify("Pubnub Connected");
                     deviceModel.setAppState('pubnubInit', true);
                     deviceModel.isPushProvisioned();
-                   /* appDataChannel.history();
-                    userDataChannel.history();*/
+
                 } else if (s.category === "PNReconnectedCategory") {
                     mobileNotify("Pubnub ReConnected");
                     appDataChannel.history();
@@ -614,7 +610,8 @@ var userModel = {
 
                 } else if (s.category === "PNNetworkUpCategory") {
                     mobileNotify("Pubnub Network Up");
-
+                    appDataChannel.history();
+                    userDataChannel.history();
                 }
             }
         });
@@ -672,6 +669,7 @@ var userStatus = {
     _id : null,
     _needsSync: false,
     _needStatus : true,
+    _needSave : true,
 
 
     init: function () {
@@ -690,18 +688,24 @@ var userStatus = {
         stat.currentPlaceUUID = null;
         stat.googlePlaceId = null;
 
-        if (status.isAvailable === undefined) {
-            status.isAvailable = false;
-        }
+
+
         if (status !== null) {
+
             stat.lat = status.lat;
             stat.lng = status.lng;
+
+            if (status.isAvailable === undefined) {
+                status.isAvailable = false;
+            }
             stat.set('isAvailable',status.isAvailable);
             stat.isCheckedIn = status.isCheckedIn;
             stat.set('statusMessage', status.statusMessage);
             stat.set('currentPlace',status.currentPlace);
             stat.currentPlaceUUID = status.currentPlaceUUID;
             stat.googlePlaceId = status.googlePlaceId;
+        } else {
+            userStatus.saveLocal();
         }
 
         userStatus.cachePrevious();
@@ -720,9 +724,11 @@ var userStatus = {
         if (statusRaw !== undefined && statusRaw !== null) {
             status = JSON.parse(statusRaw);
             userStatus.initStatus(status);
+            userStatus._needSave = false;
 
         } else {
             userStatus.initStatus(null);
+            userStatus._needSave = true;
         }
 
     },
@@ -791,7 +797,7 @@ var userStatus = {
         }
     },
 
-    create : function () {
+    /*create : function () {
         var data = APP.everlive.data(userStatus._ggClass);
 
         userStatus._statusObj.Id  = everlive._id;
@@ -803,7 +809,7 @@ var userStatus = {
             function(error){
                 ggError("User Status create error : " + JSON.stringify(error));
             });
-    },
+    },*/
 
     isChanged : function () {
         if (userStatus._prevObj === null) {

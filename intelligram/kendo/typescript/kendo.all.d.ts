@@ -1,4 +1,4 @@
-// Type definitions for Kendo UI Professional v2016.3.914
+// Type definitions for Kendo UI Professional v2016.3.1118
 // Project: http://www.telerik.com/kendo-ui
 // Definitions by: Telerik <https://github.com/telerik/>
 
@@ -1108,7 +1108,7 @@ declare namespace kendo.data {
     }
 
     interface DataSourceFilterItem extends DataSourceFilter {
-        operator?: string;
+        operator?: string|Function;
         field?: string;
         value?: any;
     }
@@ -1241,6 +1241,7 @@ declare namespace kendo.data {
         type?: string;
         change? (e: DataSourceChangeEvent): void;
         error?(e: DataSourceErrorEvent): void;
+		push?(e: DataSourcePushEvent): void;
         sync?(e: DataSourceEvent): void;
         requestStart?(e: DataSourceRequestStartEvent): void;
         requestEnd?(e: DataSourceRequestEndEvent): void;
@@ -1268,6 +1269,12 @@ declare namespace kendo.data {
         index?: number;
         items?: DataSourceItemOrGroup[];
         node?: any;
+    }
+
+	interface DataSourcePushEvent extends DataSourceEvent {
+        items?: DataSourceItemOrGroup[];
+		type?: string;
+       
     }
 
     interface DataSourceErrorEvent extends DataSourceEvent {
@@ -1409,7 +1416,6 @@ declare namespace kendo.ui {
         hint?: Function|JQuery;
         holdToDrag?: boolean;
         ignore?: string;
-        cancelHold(): void;
         drag?(e: DraggableEvent): void;
         dragcancel?(e: DraggableEvent): void;
         dragend?(e: DraggableEvent): void;
@@ -1475,6 +1481,7 @@ declare namespace kendo.mobile {
         statusBarStyle?: string;
         transition?: string;
         useNativeScrolling?: boolean;
+		init?(e: ApplicationEvent): void;
     }
 
     interface ApplicationEvent {
@@ -1524,7 +1531,7 @@ declare namespace kendo.drawing.pdf {
 }
 
 declare namespace kendo.ui {
-    class Alert extends kendo.ui.Widget {
+    class Alert extends kendo.ui.Dialog {
 
         static fn: Alert;
 
@@ -2029,12 +2036,13 @@ declare namespace kendo.ui {
     }
 
 
-    class Confirm extends kendo.ui.Widget {
+    class Confirm extends kendo.ui.Dialog {
 
         static fn: Confirm;
 
         options: ConfirmOptions;
 
+        result: JQueryPromise<any>;
 
         element: JQuery;
         wrapper: JQuery;
@@ -2794,66 +2802,95 @@ declare namespace kendo.ui {
     }
 
     interface EditorMessages {
-        bold?: string;
-        italic?: string;
-        underline?: string;
-        strikethrough?: string;
-        superscript?: string;
-        subscript?: string;
-        justifyCenter?: string;
-        justifyLeft?: string;
-        justifyRight?: string;
-        justifyFull?: string;
-        insertUnorderedList?: string;
-        insertOrderedList?: string;
-        indent?: string;
-        outdent?: string;
-        createLink?: string;
-        unlink?: string;
-        insertImage?: string;
-        insertFile?: string;
-        insertHtml?: string;
-        viewHtml?: string;
-        fontName?: string;
-        fontNameInherit?: string;
-        fontSize?: string;
-        fontSizeInherit?: string;
-        formatBlock?: string;
-        formatting?: string;
-        foreColor?: string;
-        backColor?: string;
-        style?: string;
-        emptyFolder?: string;
-        uploadFile?: string;
-        editAreaTitle?: string;
-        orderBy?: string;
-        orderBySize?: string;
-        orderByName?: string;
-        invalidFileType?: string;
-        deleteFile?: string;
-        overwriteFile?: string;
-        directoryNotFound?: string;
-        imageWebAddress?: string;
-        imageAltText?: string;
-        imageWidth?: string;
-        imageHeight?: string;
-        fileWebAddress?: string;
-        fileTitle?: string;
-        linkWebAddress?: string;
-        linkText?: string;
-        linkToolTip?: string;
-        linkOpenInNewWindow?: string;
-        dialogUpdate?: string;
-        dialogInsert?: string;
-        dialogCancel?: string;
-        createTable?: string;
-        createTableHint?: string;
+        accessibilityTab?: string;
         addColumnLeft?: string;
         addColumnRight?: string;
         addRowAbove?: string;
         addRowBelow?: string;
-        deleteRow?: string;
+        alignCenter?: string;
+        alignCenterBottom?: string;
+        alignCenterMiddle?: string;
+        alignCenterTop?: string;
+        alignLeft?: string;
+        alignLeftBottom?: string;
+        alignLeftMiddle?: string;
+        alignLeftTop?: string;
+        alignRemove?: string;
+        alignRight?: string;
+        alignRightBottom?: string;
+        alignRightMiddle?: string;
+        alignRightTop?: string;
+        alignment?: string;
+        associateCellsWithHeaders?: string;
+        backColor?: string;
+        background?: string;
+        bold?: string;
+        border?: string;
+        style?: string;
+        caption?: string;
+        cellMargin?: string;
+        cellPadding?: string;
+        cellSpacing?: string;
+        cellTab?: string;
+        cleanFormatting?: string;
+        collapseBorders?: string;
+        columns?: string;
+        createLink?: string;
+        createTable?: string;
+        createTableHint?: string;
+        cssClass?: string;
         deleteColumn?: string;
+        deleteRow?: string;
+        dialogCancel?: string;
+        dialogInsert?: string;
+        dialogOk?: string;
+        dialogUpdate?: string;
+        editAreaTitle?: string;
+        fileTitle?: string;
+        fileWebAddress?: string;
+        fontName?: string;
+        fontNameInherit?: string;
+        fontSize?: string;
+        fontSizeInherit?: string;
+        foreColor?: string;
+        formatBlock?: string;
+        formatting?: string;
+        height?: string;
+        id?: string;
+        imageAltText?: string;
+        imageHeight?: string;
+        imageWebAddress?: string;
+        imageWidth?: string;
+        indent?: string;
+        insertFile?: string;
+        insertHtml?: string;
+        insertImage?: string;
+        insertOrderedList?: string;
+        insertUnorderedList?: string;
+        italic?: string;
+        justifyCenter?: string;
+        justifyFull?: string;
+        justifyLeft?: string;
+        justifyRight?: string;
+        linkOpenInNewWindow?: string;
+        linkText?: string;
+        linkToolTip?: string;
+        linkWebAddress?: string;
+        outdent?: string;
+        print?: string;
+        rows?: string;
+        selectAllCells?: string;
+        strikethrough?: string;
+        subscript?: string;
+        summary?: string;
+        superscript?: string;
+        tableTab?: string;
+        tableWizard?: string;
+        underline?: string;
+        unlink?: string;
+        viewHtml?: string;
+        width?: string;
+        wrapText?: string;
     }
 
     interface EditorPasteCleanup {
@@ -5124,12 +5161,13 @@ declare namespace kendo.ui {
     }
 
 
-    class Prompt extends kendo.ui.Widget {
+    class Prompt extends kendo.ui.Dialog {
 
         static fn: Prompt;
 
         options: PromptOptions;
 
+        result: JQueryPromise<any>;
 
         element: JQuery;
         wrapper: JQuery;
@@ -5524,6 +5562,7 @@ declare namespace kendo.ui {
         minorTimeHeaderTemplate?: string|Function;
         selected?: boolean;
         selectedDateFormat?: string;
+        selectedShortDateFormat?: string;
         showWorkHours?: boolean;
         slotTemplate?: string|Function;
         startTime?: Date;
@@ -5555,6 +5594,7 @@ declare namespace kendo.ui {
         eventTemplate?: string|Function;
         footer?: boolean|SchedulerFooter;
         group?: SchedulerGroup;
+        groupHeaderTemplate?: string|Function;
         height?: number|string;
         majorTick?: number;
         majorTimeHeaderTemplate?: string|Function;
@@ -5573,7 +5613,6 @@ declare namespace kendo.ui {
         timezone?: string;
         toolbar?: SchedulerToolbarItem[];
         views?: SchedulerView[];
-        groupHeaderTemplate?: string|Function;
         width?: number|string;
         workDayStart?: Date;
         workDayEnd?: Date;
@@ -6050,6 +6089,7 @@ declare namespace kendo.ui {
         comparerType?: string;
         dataType?: string;
         from?: string;
+        showButton?: boolean;
         to?: string;
         allowNulls?: boolean;
         messageTemplate?: string;
@@ -6084,6 +6124,7 @@ declare namespace kendo.ui {
         cells?: SpreadsheetSheetRowCell[];
         height?: number;
         index?: number;
+        type?: string;
     }
 
     interface SpreadsheetSheetSortColumn {
@@ -7273,7 +7314,8 @@ declare namespace kendo.ui {
         destroy(): void;
         disable(): void;
         enable(enable?: boolean): void;
-        getFiles(): void;
+        focus(): void;
+        getFiles(): any;
         removeAllFiles(): void;
         removeFile(): void;
         removeFileByUid(): void;
@@ -7452,6 +7494,8 @@ declare namespace kendo.ui {
         content(content?: string): kendo.ui.Window;
         content(content?: JQuery): kendo.ui.Window;
         destroy(): void;
+        isMaximized(): boolean;
+        isMinimized(): boolean;
         maximize(): kendo.ui.Window;
         minimize(): kendo.ui.Window;
         open(): kendo.ui.Window;
@@ -7547,6 +7591,274 @@ declare namespace kendo.ui {
     interface WindowErrorEvent extends WindowEvent {
         xhr?: JQueryXHR;
         status?: string;
+    }
+
+
+}
+declare namespace kendo.geometry {
+    class Arc extends Observable {
+
+
+        options: ArcOptions;
+
+        anticlockwise: boolean;
+        center: kendo.geometry.Point;
+        endAngle: number;
+        radiusX: number;
+        radiusY: number;
+        startAngle: number;
+
+        constructor(center: any|kendo.geometry.Point, options?: ArcOptions);
+
+
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        getAnticlockwise(): boolean;
+        getCenter(): kendo.geometry.Point;
+        getEndAngle(): number;
+        getRadiusX(): number;
+        getRadiusY(): number;
+        getStartAngle(): number;
+        pointAt(angle: number): kendo.geometry.Point;
+        setAnticlockwise(value: boolean): kendo.geometry.Arc;
+        setCenter(value: kendo.geometry.Point): kendo.geometry.Arc;
+        setEndAngle(value: number): kendo.geometry.Arc;
+        setRadiusX(value: number): kendo.geometry.Arc;
+        setRadiusY(value: number): kendo.geometry.Arc;
+        setStartAngle(value: number): kendo.geometry.Arc;
+
+    }
+
+    interface ArcOptions {
+        name?: string;
+    }
+    interface ArcEvent {
+        sender: Arc;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Circle extends Observable {
+
+
+        options: CircleOptions;
+
+        center: kendo.geometry.Point;
+        radius: number;
+
+        constructor(center: any|kendo.geometry.Point, radius: number);
+
+
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        clone(): kendo.geometry.Circle;
+        equals(other: kendo.geometry.Circle): boolean;
+        getCenter(): kendo.geometry.Point;
+        getRadius(): number;
+        pointAt(angle: number): kendo.geometry.Point;
+        setCenter(value: kendo.geometry.Point): kendo.geometry.Point;
+        setCenter(value: any): kendo.geometry.Point;
+        setRadius(value: number): kendo.geometry.Circle;
+
+    }
+
+    interface CircleOptions {
+        name?: string;
+    }
+    interface CircleEvent {
+        sender: Circle;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Matrix extends Observable {
+
+
+        options: MatrixOptions;
+
+        a: number;
+        b: number;
+        c: number;
+        d: number;
+        e: number;
+        f: number;
+
+
+        static rotate(angle: number, x: number, y: number): kendo.geometry.Matrix;
+        static scale(scaleX: number, scaleY: number): kendo.geometry.Matrix;
+        static translate(x: number, y: number): kendo.geometry.Matrix;
+        static unit(): kendo.geometry.Matrix;
+
+        clone(): kendo.geometry.Matrix;
+        equals(other: kendo.geometry.Matrix): boolean;
+        round(digits: number): kendo.geometry.Matrix;
+        multiplyCopy(matrix: kendo.geometry.Matrix): kendo.geometry.Matrix;
+        toArray(digits: number): any;
+        toString(digits: number, separator: string): string;
+
+    }
+
+    interface MatrixOptions {
+        name?: string;
+    }
+    interface MatrixEvent {
+        sender: Matrix;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Point extends Observable {
+
+
+        options: PointOptions;
+
+        x: number;
+        y: number;
+
+        constructor(x: number, y: number);
+
+        static create(x: number, y: number): kendo.geometry.Point;
+        static create(x: any, y: number): kendo.geometry.Point;
+        static create(x: kendo.geometry.Point, y: number): kendo.geometry.Point;
+        static min(): kendo.geometry.Point;
+        static max(): kendo.geometry.Point;
+        static minPoint(): kendo.geometry.Point;
+        static maxPoint(): kendo.geometry.Point;
+
+        clone(): kendo.geometry.Point;
+        distanceTo(point: kendo.geometry.Point): number;
+        equals(other: kendo.geometry.Point): boolean;
+        getX(): number;
+        getY(): number;
+        move(x: number, y: number): kendo.geometry.Point;
+        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Point;
+        rotate(angle: number, center: any): kendo.geometry.Point;
+        round(digits: number): kendo.geometry.Point;
+        scale(scaleX: number, scaleY: number): kendo.geometry.Point;
+        scaleCopy(scaleX: number, scaleY: number): kendo.geometry.Point;
+        setX(value: number): kendo.geometry.Point;
+        setY(value: number): kendo.geometry.Point;
+        toArray(digits: number): any;
+        toString(digits: number, separator: string): string;
+        transform(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
+        transformCopy(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
+        translate(dx: number, dy: number): kendo.geometry.Point;
+        translateWith(vector: kendo.geometry.Point): kendo.geometry.Point;
+        translateWith(vector: any): kendo.geometry.Point;
+
+    }
+
+    interface PointOptions {
+        name?: string;
+    }
+    interface PointEvent {
+        sender: Point;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Rect extends Observable {
+
+
+        options: RectOptions;
+
+        origin: kendo.geometry.Point;
+        size: kendo.geometry.Size;
+
+        constructor(origin: kendo.geometry.Point|any, size: kendo.geometry.Size|any);
+
+        static fromPoints(pointA: kendo.geometry.Point, pointB: kendo.geometry.Point): kendo.geometry.Rect;
+        static union(rectA: kendo.geometry.Rect, rectB: kendo.geometry.Rect): kendo.geometry.Rect;
+
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        bottomLeft(): kendo.geometry.Point;
+        bottomRight(): kendo.geometry.Point;
+        center(): kendo.geometry.Point;
+        clone(): kendo.geometry.Rect;
+        equals(other: kendo.geometry.Rect): boolean;
+        getOrigin(): kendo.geometry.Point;
+        getSize(): kendo.geometry.Size;
+        height(): number;
+        setOrigin(value: kendo.geometry.Point): kendo.geometry.Rect;
+        setOrigin(value: any): kendo.geometry.Rect;
+        setSize(value: kendo.geometry.Size): kendo.geometry.Rect;
+        setSize(value: any): kendo.geometry.Rect;
+        topLeft(): kendo.geometry.Point;
+        topRight(): kendo.geometry.Point;
+        width(): number;
+
+    }
+
+    interface RectOptions {
+        name?: string;
+    }
+    interface RectEvent {
+        sender: Rect;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Size extends Observable {
+
+
+        options: SizeOptions;
+
+        width: number;
+        height: number;
+
+
+        static create(width: number, height: number): kendo.geometry.Size;
+        static create(width: any, height: number): kendo.geometry.Size;
+        static create(width: kendo.geometry.Size, height: number): kendo.geometry.Size;
+
+        clone(): kendo.geometry.Size;
+        equals(other: kendo.geometry.Size): boolean;
+        getWidth(): number;
+        getHeight(): number;
+        setWidth(value: number): kendo.geometry.Size;
+        setHeight(value: number): kendo.geometry.Size;
+
+    }
+
+    interface SizeOptions {
+        name?: string;
+    }
+    interface SizeEvent {
+        sender: Size;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Transformation extends Observable {
+
+
+        options: TransformationOptions;
+
+
+
+
+        clone(): kendo.geometry.Transformation;
+        equals(other: kendo.geometry.Transformation): boolean;
+        matrix(): kendo.geometry.Matrix;
+        multiply(transformation: kendo.geometry.Transformation): kendo.geometry.Transformation;
+        rotate(angle: number, center: any): kendo.geometry.Transformation;
+        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Transformation;
+        scale(scaleX: number, scaleY: number): kendo.geometry.Transformation;
+        translate(x: number, y: number): kendo.geometry.Transformation;
+
+    }
+
+    interface TransformationOptions {
+        name?: string;
+    }
+    interface TransformationEvent {
+        sender: Transformation;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
     }
 
 
@@ -8338,274 +8650,6 @@ declare namespace kendo.drawing {
 
     }
 
-
-
-}
-declare namespace kendo.geometry {
-    class Arc extends Observable {
-
-
-        options: ArcOptions;
-
-        anticlockwise: boolean;
-        center: kendo.geometry.Point;
-        endAngle: number;
-        radiusX: number;
-        radiusY: number;
-        startAngle: number;
-
-        constructor(center: any|kendo.geometry.Point, options?: ArcOptions);
-
-
-        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
-        getAnticlockwise(): boolean;
-        getCenter(): kendo.geometry.Point;
-        getEndAngle(): number;
-        getRadiusX(): number;
-        getRadiusY(): number;
-        getStartAngle(): number;
-        pointAt(angle: number): kendo.geometry.Point;
-        setAnticlockwise(value: boolean): kendo.geometry.Arc;
-        setCenter(value: kendo.geometry.Point): kendo.geometry.Arc;
-        setEndAngle(value: number): kendo.geometry.Arc;
-        setRadiusX(value: number): kendo.geometry.Arc;
-        setRadiusY(value: number): kendo.geometry.Arc;
-        setStartAngle(value: number): kendo.geometry.Arc;
-
-    }
-
-    interface ArcOptions {
-        name?: string;
-    }
-    interface ArcEvent {
-        sender: Arc;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Circle extends Observable {
-
-
-        options: CircleOptions;
-
-        center: kendo.geometry.Point;
-        radius: number;
-
-        constructor(center: any|kendo.geometry.Point, radius: number);
-
-
-        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
-        clone(): kendo.geometry.Circle;
-        equals(other: kendo.geometry.Circle): boolean;
-        getCenter(): kendo.geometry.Point;
-        getRadius(): number;
-        pointAt(angle: number): kendo.geometry.Point;
-        setCenter(value: kendo.geometry.Point): kendo.geometry.Point;
-        setCenter(value: any): kendo.geometry.Point;
-        setRadius(value: number): kendo.geometry.Circle;
-
-    }
-
-    interface CircleOptions {
-        name?: string;
-    }
-    interface CircleEvent {
-        sender: Circle;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Matrix extends Observable {
-
-
-        options: MatrixOptions;
-
-        a: number;
-        b: number;
-        c: number;
-        d: number;
-        e: number;
-        f: number;
-
-
-        static rotate(angle: number, x: number, y: number): kendo.geometry.Matrix;
-        static scale(scaleX: number, scaleY: number): kendo.geometry.Matrix;
-        static translate(x: number, y: number): kendo.geometry.Matrix;
-        static unit(): kendo.geometry.Matrix;
-
-        clone(): kendo.geometry.Matrix;
-        equals(other: kendo.geometry.Matrix): boolean;
-        round(digits: number): kendo.geometry.Matrix;
-        multiplyCopy(matrix: kendo.geometry.Matrix): kendo.geometry.Matrix;
-        toArray(digits: number): any;
-        toString(digits: number, separator: string): string;
-
-    }
-
-    interface MatrixOptions {
-        name?: string;
-    }
-    interface MatrixEvent {
-        sender: Matrix;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Point extends Observable {
-
-
-        options: PointOptions;
-
-        x: number;
-        y: number;
-
-        constructor(x: number, y: number);
-
-        static create(x: number, y: number): kendo.geometry.Point;
-        static create(x: any, y: number): kendo.geometry.Point;
-        static create(x: kendo.geometry.Point, y: number): kendo.geometry.Point;
-        static min(): kendo.geometry.Point;
-        static max(): kendo.geometry.Point;
-        static minPoint(): kendo.geometry.Point;
-        static maxPoint(): kendo.geometry.Point;
-
-        clone(): kendo.geometry.Point;
-        distanceTo(point: kendo.geometry.Point): number;
-        equals(other: kendo.geometry.Point): boolean;
-        getX(): number;
-        getY(): number;
-        move(x: number, y: number): kendo.geometry.Point;
-        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Point;
-        rotate(angle: number, center: any): kendo.geometry.Point;
-        round(digits: number): kendo.geometry.Point;
-        scale(scaleX: number, scaleY: number): kendo.geometry.Point;
-        scaleCopy(scaleX: number, scaleY: number): kendo.geometry.Point;
-        setX(value: number): kendo.geometry.Point;
-        setY(value: number): kendo.geometry.Point;
-        toArray(digits: number): any;
-        toString(digits: number, separator: string): string;
-        transform(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
-        transformCopy(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
-        translate(dx: number, dy: number): kendo.geometry.Point;
-        translateWith(vector: kendo.geometry.Point): kendo.geometry.Point;
-        translateWith(vector: any): kendo.geometry.Point;
-
-    }
-
-    interface PointOptions {
-        name?: string;
-    }
-    interface PointEvent {
-        sender: Point;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Rect extends Observable {
-
-
-        options: RectOptions;
-
-        origin: kendo.geometry.Point;
-        size: kendo.geometry.Size;
-
-        constructor(origin: kendo.geometry.Point|any, size: kendo.geometry.Size|any);
-
-        static fromPoints(pointA: kendo.geometry.Point, pointB: kendo.geometry.Point): kendo.geometry.Rect;
-        static union(rectA: kendo.geometry.Rect, rectB: kendo.geometry.Rect): kendo.geometry.Rect;
-
-        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
-        bottomLeft(): kendo.geometry.Point;
-        bottomRight(): kendo.geometry.Point;
-        center(): kendo.geometry.Point;
-        clone(): kendo.geometry.Rect;
-        equals(other: kendo.geometry.Rect): boolean;
-        getOrigin(): kendo.geometry.Point;
-        getSize(): kendo.geometry.Size;
-        height(): number;
-        setOrigin(value: kendo.geometry.Point): kendo.geometry.Rect;
-        setOrigin(value: any): kendo.geometry.Rect;
-        setSize(value: kendo.geometry.Size): kendo.geometry.Rect;
-        setSize(value: any): kendo.geometry.Rect;
-        topLeft(): kendo.geometry.Point;
-        topRight(): kendo.geometry.Point;
-        width(): number;
-
-    }
-
-    interface RectOptions {
-        name?: string;
-    }
-    interface RectEvent {
-        sender: Rect;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Size extends Observable {
-
-
-        options: SizeOptions;
-
-        width: number;
-        height: number;
-
-
-        static create(width: number, height: number): kendo.geometry.Size;
-        static create(width: any, height: number): kendo.geometry.Size;
-        static create(width: kendo.geometry.Size, height: number): kendo.geometry.Size;
-
-        clone(): kendo.geometry.Size;
-        equals(other: kendo.geometry.Size): boolean;
-        getWidth(): number;
-        getHeight(): number;
-        setWidth(value: number): kendo.geometry.Size;
-        setHeight(value: number): kendo.geometry.Size;
-
-    }
-
-    interface SizeOptions {
-        name?: string;
-    }
-    interface SizeEvent {
-        sender: Size;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Transformation extends Observable {
-
-
-        options: TransformationOptions;
-
-
-
-
-        clone(): kendo.geometry.Transformation;
-        equals(other: kendo.geometry.Transformation): boolean;
-        matrix(): kendo.geometry.Matrix;
-        multiply(transformation: kendo.geometry.Transformation): kendo.geometry.Transformation;
-        rotate(angle: number, center: any): kendo.geometry.Transformation;
-        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Transformation;
-        scale(scaleX: number, scaleY: number): kendo.geometry.Transformation;
-        translate(x: number, y: number): kendo.geometry.Transformation;
-
-    }
-
-    interface TransformationOptions {
-        name?: string;
-    }
-    interface TransformationEvent {
-        sender: Transformation;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
 
 
 }
@@ -9753,6 +9797,7 @@ declare namespace kendo.dataviz.ui {
         aggregate?: string|Function;
         axis?: string;
         border?: ChartSeriesItemBorder;
+        categoryAxis?: string;
         categoryField?: string;
         closeField?: string;
         color?: string|Function;
@@ -16879,6 +16924,26 @@ declare namespace kendo {
     }
 
 
+    namespace date {
+        function setDayOfWeek(targetDate: Date, dayOfWeek: number, direction: number): void;
+        function dayOfWeek(targetDate: Date, dayOfWeek: number, direction: number): Date;
+        function getDate(date: Date): Date;
+        function isInDateRange(targetDate: Date, lowerLimitDate: Date, upperLimitDate: Date): boolean;
+        function isInTimeRange(targetDate: Date, lowerLimitDate: Date, upperLimitDate: Date): boolean;
+        function isToday(targetDate: Date): boolean;
+        function nextDay(targetDate: Date): Date;
+        function previousDay(targetDate: Date): Date;
+        function toUtcTime(targetDate: Date): number;
+        function setTime(targetDate: Date, millisecondsToAdd: number, ignoreDST: boolean): void;
+        function setHours(targetDate: Date, sourceDate: number): Date;
+        function addDays(targetDate: Date): Date;
+        function today(): Date;
+        function toInvariantTime(targetDate: Date): Date;
+        function firstDayOfMonth(targetDate: Date): Date;
+        function lastDayOfMonth(targetDate: Date): Date;
+        function getMilliseconds(targetDate: Date): Date;
+    }
+
     namespace drawing {
         function align(elements: any, rect: kendo.geometry.Rect, alignment: string): void;
         function drawDOM(element: JQuery, options: any): JQueryPromise<any>;
@@ -16909,7 +16974,7 @@ declare namespace kendo {
         function bind(element: Element, viewModel: any, namespace?: any): void;
         function bind(element: Element, viewModel: kendo.data.ObservableObject, namespace?: any): void;
         function observableHierarchy(array: any): void;
-        function confirm(text: string): void;
+        function confirm(text: string): JQueryPromise<any>;
         function culture(culture: string): void;
         function destroy(element: string): void;
         function destroy(element: JQuery): void;
@@ -16920,7 +16985,7 @@ declare namespace kendo {
         function parseFloat(value: string, culture?: string): number;
         function parseInt(value: string, culture?: string): number;
         function parseColor(color: string, noerror: boolean): kendo.Color;
-        function prompt(text: string, defaultValue: string): void;
+        function prompt(text: string, defaultValue: string): JQueryPromise<any>;
         function proxyModelSetters(): void;
         function proxyModelSetters(data: kendo.data.Model): void;
         function resize(element: string, force: boolean): void;
@@ -16928,7 +16993,7 @@ declare namespace kendo {
         function resize(element: Element, force: boolean): void;
         function saveAs(options: any): void;
         function stringify(value: any): string;
-        function throttle(fn: Function, timeout: number): void;
+        function throttle(fn: Function, timeout: number): Function;
         function touchScroller(element: string): void;
         function touchScroller(element: JQuery): void;
         function touchScroller(element: Element): void;
@@ -16940,6 +17005,22 @@ declare namespace kendo {
 
     namespace pdf {
         function defineFont(map: any): void;
+    }
+
+    namespace timezone {
+        function offset(utcTime: Date, timezone: string): number;
+        function offset(utcTime: number, timezone: string): number;
+        function convert(targetDate: Date, fromOffset: number, toOffset: number): Date;
+        function convert(targetDate: Date, fromOffset: number, toOffset: string): Date;
+        function convert(targetDate: Date, fromOffset: string, toOffset: number): Date;
+        function convert(targetDate: Date, fromOffset: string, toOffset: string): Date;
+        function apply(targetDate: Date, offset: number): Date;
+        function apply(targetDate: Date, offset: string): Date;
+        function remove(targetDate: Date, offset: number): Date;
+        function remove(targetDate: Date, offset: string): Date;
+        function abbr(targetDate: Date, timezone: string): string;
+        function toLocalDate(targetDate: Date): Date;
+        function toLocalDate(targetDate: number): Date;
     }
 
 }
@@ -17013,6 +17094,8 @@ declare namespace kendo.spreadsheet {
         clear(options?: any): void;
         clearFilter(indices: any): void;
         clearFilter(indices: number): void;
+        editor(): string;
+        editor(value?: string): void;
         enable(): boolean;
         enable(value?: boolean): void;
         fillFrom(srcRange: Range, direction?: number): void;
@@ -18254,6 +18337,274 @@ declare namespace kendo.ooxml {
 
 }
 
+declare namespace kendo.dataviz.geometry {
+    class Arc extends Observable {
+
+
+        options: ArcOptions;
+
+        anticlockwise: boolean;
+        center: kendo.geometry.Point;
+        endAngle: number;
+        radiusX: number;
+        radiusY: number;
+        startAngle: number;
+
+        constructor(center: any|kendo.geometry.Point, options?: ArcOptions);
+
+
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        getAnticlockwise(): boolean;
+        getCenter(): kendo.geometry.Point;
+        getEndAngle(): number;
+        getRadiusX(): number;
+        getRadiusY(): number;
+        getStartAngle(): number;
+        pointAt(angle: number): kendo.geometry.Point;
+        setAnticlockwise(value: boolean): kendo.geometry.Arc;
+        setCenter(value: kendo.geometry.Point): kendo.geometry.Arc;
+        setEndAngle(value: number): kendo.geometry.Arc;
+        setRadiusX(value: number): kendo.geometry.Arc;
+        setRadiusY(value: number): kendo.geometry.Arc;
+        setStartAngle(value: number): kendo.geometry.Arc;
+
+    }
+
+    interface ArcOptions {
+        name?: string;
+    }
+    interface ArcEvent {
+        sender: Arc;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Circle extends Observable {
+
+
+        options: CircleOptions;
+
+        center: kendo.geometry.Point;
+        radius: number;
+
+        constructor(center: any|kendo.geometry.Point, radius: number);
+
+
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        clone(): kendo.geometry.Circle;
+        equals(other: kendo.geometry.Circle): boolean;
+        getCenter(): kendo.geometry.Point;
+        getRadius(): number;
+        pointAt(angle: number): kendo.geometry.Point;
+        setCenter(value: kendo.geometry.Point): kendo.geometry.Point;
+        setCenter(value: any): kendo.geometry.Point;
+        setRadius(value: number): kendo.geometry.Circle;
+
+    }
+
+    interface CircleOptions {
+        name?: string;
+    }
+    interface CircleEvent {
+        sender: Circle;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Matrix extends Observable {
+
+
+        options: MatrixOptions;
+
+        a: number;
+        b: number;
+        c: number;
+        d: number;
+        e: number;
+        f: number;
+
+
+        static rotate(angle: number, x: number, y: number): kendo.geometry.Matrix;
+        static scale(scaleX: number, scaleY: number): kendo.geometry.Matrix;
+        static translate(x: number, y: number): kendo.geometry.Matrix;
+        static unit(): kendo.geometry.Matrix;
+
+        clone(): kendo.geometry.Matrix;
+        equals(other: kendo.geometry.Matrix): boolean;
+        round(digits: number): kendo.geometry.Matrix;
+        multiplyCopy(matrix: kendo.geometry.Matrix): kendo.geometry.Matrix;
+        toArray(digits: number): any;
+        toString(digits: number, separator: string): string;
+
+    }
+
+    interface MatrixOptions {
+        name?: string;
+    }
+    interface MatrixEvent {
+        sender: Matrix;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Point extends Observable {
+
+
+        options: PointOptions;
+
+        x: number;
+        y: number;
+
+        constructor(x: number, y: number);
+
+        static create(x: number, y: number): kendo.geometry.Point;
+        static create(x: any, y: number): kendo.geometry.Point;
+        static create(x: kendo.geometry.Point, y: number): kendo.geometry.Point;
+        static min(): kendo.geometry.Point;
+        static max(): kendo.geometry.Point;
+        static minPoint(): kendo.geometry.Point;
+        static maxPoint(): kendo.geometry.Point;
+
+        clone(): kendo.geometry.Point;
+        distanceTo(point: kendo.geometry.Point): number;
+        equals(other: kendo.geometry.Point): boolean;
+        getX(): number;
+        getY(): number;
+        move(x: number, y: number): kendo.geometry.Point;
+        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Point;
+        rotate(angle: number, center: any): kendo.geometry.Point;
+        round(digits: number): kendo.geometry.Point;
+        scale(scaleX: number, scaleY: number): kendo.geometry.Point;
+        scaleCopy(scaleX: number, scaleY: number): kendo.geometry.Point;
+        setX(value: number): kendo.geometry.Point;
+        setY(value: number): kendo.geometry.Point;
+        toArray(digits: number): any;
+        toString(digits: number, separator: string): string;
+        transform(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
+        transformCopy(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
+        translate(dx: number, dy: number): kendo.geometry.Point;
+        translateWith(vector: kendo.geometry.Point): kendo.geometry.Point;
+        translateWith(vector: any): kendo.geometry.Point;
+
+    }
+
+    interface PointOptions {
+        name?: string;
+    }
+    interface PointEvent {
+        sender: Point;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Rect extends Observable {
+
+
+        options: RectOptions;
+
+        origin: kendo.geometry.Point;
+        size: kendo.geometry.Size;
+
+        constructor(origin: kendo.geometry.Point|any, size: kendo.geometry.Size|any);
+
+        static fromPoints(pointA: kendo.geometry.Point, pointB: kendo.geometry.Point): kendo.geometry.Rect;
+        static union(rectA: kendo.geometry.Rect, rectB: kendo.geometry.Rect): kendo.geometry.Rect;
+
+        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
+        bottomLeft(): kendo.geometry.Point;
+        bottomRight(): kendo.geometry.Point;
+        center(): kendo.geometry.Point;
+        clone(): kendo.geometry.Rect;
+        equals(other: kendo.geometry.Rect): boolean;
+        getOrigin(): kendo.geometry.Point;
+        getSize(): kendo.geometry.Size;
+        height(): number;
+        setOrigin(value: kendo.geometry.Point): kendo.geometry.Rect;
+        setOrigin(value: any): kendo.geometry.Rect;
+        setSize(value: kendo.geometry.Size): kendo.geometry.Rect;
+        setSize(value: any): kendo.geometry.Rect;
+        topLeft(): kendo.geometry.Point;
+        topRight(): kendo.geometry.Point;
+        width(): number;
+
+    }
+
+    interface RectOptions {
+        name?: string;
+    }
+    interface RectEvent {
+        sender: Rect;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Size extends Observable {
+
+
+        options: SizeOptions;
+
+        width: number;
+        height: number;
+
+
+        static create(width: number, height: number): kendo.geometry.Size;
+        static create(width: any, height: number): kendo.geometry.Size;
+        static create(width: kendo.geometry.Size, height: number): kendo.geometry.Size;
+
+        clone(): kendo.geometry.Size;
+        equals(other: kendo.geometry.Size): boolean;
+        getWidth(): number;
+        getHeight(): number;
+        setWidth(value: number): kendo.geometry.Size;
+        setHeight(value: number): kendo.geometry.Size;
+
+    }
+
+    interface SizeOptions {
+        name?: string;
+    }
+    interface SizeEvent {
+        sender: Size;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+    class Transformation extends Observable {
+
+
+        options: TransformationOptions;
+
+
+
+
+        clone(): kendo.geometry.Transformation;
+        equals(other: kendo.geometry.Transformation): boolean;
+        matrix(): kendo.geometry.Matrix;
+        multiply(transformation: kendo.geometry.Transformation): kendo.geometry.Transformation;
+        rotate(angle: number, center: any): kendo.geometry.Transformation;
+        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Transformation;
+        scale(scaleX: number, scaleY: number): kendo.geometry.Transformation;
+        translate(x: number, y: number): kendo.geometry.Transformation;
+
+    }
+
+    interface TransformationOptions {
+        name?: string;
+    }
+    interface TransformationEvent {
+        sender: Transformation;
+        preventDefault: Function;
+        isDefaultPrevented(): boolean;
+    }
+
+
+}
 declare namespace kendo.dataviz.drawing {
     class Arc extends kendo.drawing.Element {
 
@@ -19041,274 +19392,6 @@ declare namespace kendo.dataviz.drawing {
 
     }
 
-
-
-}
-declare namespace kendo.dataviz.geometry {
-    class Arc extends Observable {
-
-
-        options: ArcOptions;
-
-        anticlockwise: boolean;
-        center: kendo.geometry.Point;
-        endAngle: number;
-        radiusX: number;
-        radiusY: number;
-        startAngle: number;
-
-        constructor(center: any|kendo.geometry.Point, options?: ArcOptions);
-
-
-        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
-        getAnticlockwise(): boolean;
-        getCenter(): kendo.geometry.Point;
-        getEndAngle(): number;
-        getRadiusX(): number;
-        getRadiusY(): number;
-        getStartAngle(): number;
-        pointAt(angle: number): kendo.geometry.Point;
-        setAnticlockwise(value: boolean): kendo.geometry.Arc;
-        setCenter(value: kendo.geometry.Point): kendo.geometry.Arc;
-        setEndAngle(value: number): kendo.geometry.Arc;
-        setRadiusX(value: number): kendo.geometry.Arc;
-        setRadiusY(value: number): kendo.geometry.Arc;
-        setStartAngle(value: number): kendo.geometry.Arc;
-
-    }
-
-    interface ArcOptions {
-        name?: string;
-    }
-    interface ArcEvent {
-        sender: Arc;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Circle extends Observable {
-
-
-        options: CircleOptions;
-
-        center: kendo.geometry.Point;
-        radius: number;
-
-        constructor(center: any|kendo.geometry.Point, radius: number);
-
-
-        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
-        clone(): kendo.geometry.Circle;
-        equals(other: kendo.geometry.Circle): boolean;
-        getCenter(): kendo.geometry.Point;
-        getRadius(): number;
-        pointAt(angle: number): kendo.geometry.Point;
-        setCenter(value: kendo.geometry.Point): kendo.geometry.Point;
-        setCenter(value: any): kendo.geometry.Point;
-        setRadius(value: number): kendo.geometry.Circle;
-
-    }
-
-    interface CircleOptions {
-        name?: string;
-    }
-    interface CircleEvent {
-        sender: Circle;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Matrix extends Observable {
-
-
-        options: MatrixOptions;
-
-        a: number;
-        b: number;
-        c: number;
-        d: number;
-        e: number;
-        f: number;
-
-
-        static rotate(angle: number, x: number, y: number): kendo.geometry.Matrix;
-        static scale(scaleX: number, scaleY: number): kendo.geometry.Matrix;
-        static translate(x: number, y: number): kendo.geometry.Matrix;
-        static unit(): kendo.geometry.Matrix;
-
-        clone(): kendo.geometry.Matrix;
-        equals(other: kendo.geometry.Matrix): boolean;
-        round(digits: number): kendo.geometry.Matrix;
-        multiplyCopy(matrix: kendo.geometry.Matrix): kendo.geometry.Matrix;
-        toArray(digits: number): any;
-        toString(digits: number, separator: string): string;
-
-    }
-
-    interface MatrixOptions {
-        name?: string;
-    }
-    interface MatrixEvent {
-        sender: Matrix;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Point extends Observable {
-
-
-        options: PointOptions;
-
-        x: number;
-        y: number;
-
-        constructor(x: number, y: number);
-
-        static create(x: number, y: number): kendo.geometry.Point;
-        static create(x: any, y: number): kendo.geometry.Point;
-        static create(x: kendo.geometry.Point, y: number): kendo.geometry.Point;
-        static min(): kendo.geometry.Point;
-        static max(): kendo.geometry.Point;
-        static minPoint(): kendo.geometry.Point;
-        static maxPoint(): kendo.geometry.Point;
-
-        clone(): kendo.geometry.Point;
-        distanceTo(point: kendo.geometry.Point): number;
-        equals(other: kendo.geometry.Point): boolean;
-        getX(): number;
-        getY(): number;
-        move(x: number, y: number): kendo.geometry.Point;
-        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Point;
-        rotate(angle: number, center: any): kendo.geometry.Point;
-        round(digits: number): kendo.geometry.Point;
-        scale(scaleX: number, scaleY: number): kendo.geometry.Point;
-        scaleCopy(scaleX: number, scaleY: number): kendo.geometry.Point;
-        setX(value: number): kendo.geometry.Point;
-        setY(value: number): kendo.geometry.Point;
-        toArray(digits: number): any;
-        toString(digits: number, separator: string): string;
-        transform(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
-        transformCopy(tansformation: kendo.geometry.Transformation): kendo.geometry.Point;
-        translate(dx: number, dy: number): kendo.geometry.Point;
-        translateWith(vector: kendo.geometry.Point): kendo.geometry.Point;
-        translateWith(vector: any): kendo.geometry.Point;
-
-    }
-
-    interface PointOptions {
-        name?: string;
-    }
-    interface PointEvent {
-        sender: Point;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Rect extends Observable {
-
-
-        options: RectOptions;
-
-        origin: kendo.geometry.Point;
-        size: kendo.geometry.Size;
-
-        constructor(origin: kendo.geometry.Point|any, size: kendo.geometry.Size|any);
-
-        static fromPoints(pointA: kendo.geometry.Point, pointB: kendo.geometry.Point): kendo.geometry.Rect;
-        static union(rectA: kendo.geometry.Rect, rectB: kendo.geometry.Rect): kendo.geometry.Rect;
-
-        bbox(matrix: kendo.geometry.Matrix): kendo.geometry.Rect;
-        bottomLeft(): kendo.geometry.Point;
-        bottomRight(): kendo.geometry.Point;
-        center(): kendo.geometry.Point;
-        clone(): kendo.geometry.Rect;
-        equals(other: kendo.geometry.Rect): boolean;
-        getOrigin(): kendo.geometry.Point;
-        getSize(): kendo.geometry.Size;
-        height(): number;
-        setOrigin(value: kendo.geometry.Point): kendo.geometry.Rect;
-        setOrigin(value: any): kendo.geometry.Rect;
-        setSize(value: kendo.geometry.Size): kendo.geometry.Rect;
-        setSize(value: any): kendo.geometry.Rect;
-        topLeft(): kendo.geometry.Point;
-        topRight(): kendo.geometry.Point;
-        width(): number;
-
-    }
-
-    interface RectOptions {
-        name?: string;
-    }
-    interface RectEvent {
-        sender: Rect;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Size extends Observable {
-
-
-        options: SizeOptions;
-
-        width: number;
-        height: number;
-
-
-        static create(width: number, height: number): kendo.geometry.Size;
-        static create(width: any, height: number): kendo.geometry.Size;
-        static create(width: kendo.geometry.Size, height: number): kendo.geometry.Size;
-
-        clone(): kendo.geometry.Size;
-        equals(other: kendo.geometry.Size): boolean;
-        getWidth(): number;
-        getHeight(): number;
-        setWidth(value: number): kendo.geometry.Size;
-        setHeight(value: number): kendo.geometry.Size;
-
-    }
-
-    interface SizeOptions {
-        name?: string;
-    }
-    interface SizeEvent {
-        sender: Size;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
-
-
-    class Transformation extends Observable {
-
-
-        options: TransformationOptions;
-
-
-
-
-        clone(): kendo.geometry.Transformation;
-        equals(other: kendo.geometry.Transformation): boolean;
-        matrix(): kendo.geometry.Matrix;
-        multiply(transformation: kendo.geometry.Transformation): kendo.geometry.Transformation;
-        rotate(angle: number, center: any): kendo.geometry.Transformation;
-        rotate(angle: number, center: kendo.geometry.Point): kendo.geometry.Transformation;
-        scale(scaleX: number, scaleY: number): kendo.geometry.Transformation;
-        translate(x: number, y: number): kendo.geometry.Transformation;
-
-    }
-
-    interface TransformationOptions {
-        name?: string;
-    }
-    interface TransformationEvent {
-        sender: Transformation;
-        preventDefault: Function;
-        isDefaultPrevented(): boolean;
-    }
 
 
 }

@@ -1,4 +1,4 @@
-// Type definitions for Kendo UI Professional v2016.3.914
+// Type definitions for Kendo UI Professional v2016.3.1118
 // Project: http://www.telerik.com/kendo-ui
 // Definitions by: Telerik <https://github.com/telerik/>
 
@@ -1107,7 +1107,7 @@ declare namespace kendo.data {
     }
 
     interface DataSourceFilterItem extends DataSourceFilter {
-        operator?: string;
+        operator?: string|Function;
         field?: string;
         value?: any;
     }
@@ -1240,6 +1240,7 @@ declare namespace kendo.data {
         type?: string;
         change? (e: DataSourceChangeEvent): void;
         error?(e: DataSourceErrorEvent): void;
+		push?(e: DataSourcePushEvent): void;
         sync?(e: DataSourceEvent): void;
         requestStart?(e: DataSourceRequestStartEvent): void;
         requestEnd?(e: DataSourceRequestEndEvent): void;
@@ -1267,6 +1268,12 @@ declare namespace kendo.data {
         index?: number;
         items?: DataSourceItemOrGroup[];
         node?: any;
+    }
+
+	interface DataSourcePushEvent extends DataSourceEvent {
+        items?: DataSourceItemOrGroup[];
+		type?: string;
+       
     }
 
     interface DataSourceErrorEvent extends DataSourceEvent {
@@ -1406,7 +1413,6 @@ declare namespace kendo.ui {
         hint?: Function|JQuery;
         holdToDrag?: boolean;
         ignore?: string;
-        cancelHold(): void;
         drag?(e: DraggableEvent): void;
         dragcancel?(e: DraggableEvent): void;
         dragend?(e: DraggableEvent): void;
@@ -3656,6 +3662,7 @@ declare namespace kendo.dataviz.ui {
         aggregate?: string|Function;
         axis?: string;
         border?: ChartSeriesItemBorder;
+        categoryAxis?: string;
         categoryField?: string;
         closeField?: string;
         color?: string|Function;
@@ -10782,6 +10789,26 @@ declare namespace kendo {
     }
 
 
+    namespace date {
+        function setDayOfWeek(targetDate: Date, dayOfWeek: number, direction: number): void;
+        function dayOfWeek(targetDate: Date, dayOfWeek: number, direction: number): Date;
+        function getDate(date: Date): Date;
+        function isInDateRange(targetDate: Date, lowerLimitDate: Date, upperLimitDate: Date): boolean;
+        function isInTimeRange(targetDate: Date, lowerLimitDate: Date, upperLimitDate: Date): boolean;
+        function isToday(targetDate: Date): boolean;
+        function nextDay(targetDate: Date): Date;
+        function previousDay(targetDate: Date): Date;
+        function toUtcTime(targetDate: Date): number;
+        function setTime(targetDate: Date, millisecondsToAdd: number, ignoreDST: boolean): void;
+        function setHours(targetDate: Date, sourceDate: number): Date;
+        function addDays(targetDate: Date): Date;
+        function today(): Date;
+        function toInvariantTime(targetDate: Date): Date;
+        function firstDayOfMonth(targetDate: Date): Date;
+        function lastDayOfMonth(targetDate: Date): Date;
+        function getMilliseconds(targetDate: Date): Date;
+    }
+
     namespace drawing {
         function align(elements: any, rect: kendo.geometry.Rect, alignment: string): void;
         function drawDOM(element: JQuery, options: any): JQueryPromise<any>;
@@ -10812,7 +10839,7 @@ declare namespace kendo {
         function bind(element: Element, viewModel: any, namespace?: any): void;
         function bind(element: Element, viewModel: kendo.data.ObservableObject, namespace?: any): void;
         function observableHierarchy(array: any): void;
-        function confirm(text: string): void;
+        function confirm(text: string): JQueryPromise<any>;
         function culture(culture: string): void;
         function destroy(element: string): void;
         function destroy(element: JQuery): void;
@@ -10823,7 +10850,7 @@ declare namespace kendo {
         function parseFloat(value: string, culture?: string): number;
         function parseInt(value: string, culture?: string): number;
         function parseColor(color: string, noerror: boolean): kendo.Color;
-        function prompt(text: string, defaultValue: string): void;
+        function prompt(text: string, defaultValue: string): JQueryPromise<any>;
         function proxyModelSetters(): void;
         function proxyModelSetters(data: kendo.data.Model): void;
         function resize(element: string, force: boolean): void;
@@ -10831,7 +10858,7 @@ declare namespace kendo {
         function resize(element: Element, force: boolean): void;
         function saveAs(options: any): void;
         function stringify(value: any): string;
-        function throttle(fn: Function, timeout: number): void;
+        function throttle(fn: Function, timeout: number): Function;
         function touchScroller(element: string): void;
         function touchScroller(element: JQuery): void;
         function touchScroller(element: Element): void;
@@ -10843,6 +10870,22 @@ declare namespace kendo {
 
     namespace pdf {
         function defineFont(map: any): void;
+    }
+
+    namespace timezone {
+        function offset(utcTime: Date, timezone: string): number;
+        function offset(utcTime: number, timezone: string): number;
+        function convert(targetDate: Date, fromOffset: number, toOffset: number): Date;
+        function convert(targetDate: Date, fromOffset: number, toOffset: string): Date;
+        function convert(targetDate: Date, fromOffset: string, toOffset: number): Date;
+        function convert(targetDate: Date, fromOffset: string, toOffset: string): Date;
+        function apply(targetDate: Date, offset: number): Date;
+        function apply(targetDate: Date, offset: string): Date;
+        function remove(targetDate: Date, offset: number): Date;
+        function remove(targetDate: Date, offset: string): Date;
+        function abbr(targetDate: Date, timezone: string): string;
+        function toLocalDate(targetDate: Date): Date;
+        function toLocalDate(targetDate: number): Date;
     }
 
 }

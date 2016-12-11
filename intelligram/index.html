@@ -5040,7 +5040,7 @@
 				</li>
 				<li>
 					<label>Place  <a data-role="button" data-click="modalPhotoView.updatePlace">Search</a></label>
-					<input type="text" class="input-text-sm" data-bind="value: placeName">
+					<input type="text" class="input-text-sm" data-bind="value: placeString">
 				</li>
 				<li>
 					<label>Location  <a data-role="button" data-click="modalPhotoView.updateAddress">Search</a></label>
@@ -6889,26 +6889,9 @@
 	var noteDate = moment(timestamp);
 	var today = moment();
 
-	if(moment().isSame(noteDate, 'day')){
-		var dateString = moment(noteDate).fromNow();
-	} else {
-		var dateString = moment(noteDate).format("ddd, MMM D YYYY, h:mm a");
-	}
-
+	var dateString = moment(noteDate).format("ddd, MMM D YYYY, h:mm a");
 	#
 	# if (noteType === 'Note') { #
-    #var photoStr = "";
-    var photos = 0;
-
-    if (photoCount !== undefined)
-    photos = photoCount;
-
-    if (photos === 1) {
-    photoStr = "1 photo";
-    } else if (photos > 1) {
-    photoStr = photos + " photos";
-    }
-    #
 		<div class="private-note intelliNote" data-id="#:uuid#" data-uuid="#:uuid#">
 			<h3 class="textClamp">
 				<div class="icon-sm icon-myNotes-dark" data-grunticon-embed></div>
@@ -6916,7 +6899,6 @@
 			</h3>
 			<p class="helper" style="font-size: 0.85em;">
 				<span>#:dateString#</span>
-				<span style="float:right;">#:photoStr#</span>
 			</p>
 			<p class="helper" style="font-size: 1.0em; clear:both;">
 				<span> #:tagString#</span>

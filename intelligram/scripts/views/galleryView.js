@@ -206,7 +206,7 @@ var galleryView = {
 
        // _preventDefault(e);
 
-        ux.hideKeyboard();
+        //ux.hideKeyboard();
 
         galleryView.updateTotalPhotos();
         // Make sure all the local photos have been uploaded
@@ -233,14 +233,15 @@ var galleryView = {
             $("#gallery .gg_mainSearchInput").on('input', function() {
                 var query = this.value;
 
-                galleryView._filter(query);
+                if (galleryView._filter !== undefined && galleryView._filter !== null)
+                    galleryView._filter(query);
             });
            
             // bind clear search btn
 			$("#gallery .enterSearch").on("click", function(){
 					$("#gallery .gg_mainSearchInput").val('');
-					
-					// reset data filters
+
+                if (galleryView._filter !== undefined && galleryView._filter !== null)
                     galleryView._filter('');
 
                    // hide clear btn
@@ -283,19 +284,6 @@ var galleryView = {
         });
 
         ux.setAddTarget(null, null, galleryView.onAddGallery);
-        // set filter count
-       /* var filterCount = 0;
-        $("#filterCount").text(filterCount);
-
-        if(filterCount > 1){
-        	$("#filterText").text("Filters");
-        } else if(filterCount === 0) {
-        	$("#filterCount").text("");
-        	$("#filterText").text("Filter");
-        } else {
-        	$("#filterText").text("Filter");
-        }*/
-
     },
 
     photoFilter : function (query) {
@@ -1493,6 +1481,7 @@ var modalPhotoView = {
         modalPhotoView._activePhoto.set('addressString', photo.addressString);
         modalPhotoView._activePhoto.set('placeString', photo.placeString);
 
+
         var formattedDate = moment(photo.dateString, "MMMM Do YYYY, h:mm A").fromNow();
         modalPhotoView._activePhoto.set('dateString', formattedDate);
 
@@ -1543,7 +1532,7 @@ var modalPhotoView = {
             photoObj.set('title',modalPhotoView._activePhoto.title);
             photoObj.set('description',modalPhotoView._activePhoto.description);
             photoObj.set('addressString', modalPhotoView._activePhoto.addressString);
-            photoObj.set('placeName', modalPhotoView._activePhoto.placeName);
+            photoObj.set('placeString', modalPhotoView._activePhoto.placeString);
             photoObj.set('lat', modalPhotoView._activePhoto.lat);
             photoObj.set('lng', modalPhotoView._activePhoto.lng);
             photoObj.set('placeUUID', modalPhotoView._activePhoto.placeUUID);
@@ -1573,7 +1562,7 @@ var modalPhotoView = {
             modalPhotoView._activePhoto.set('addressString', placeObj.address);
             modalPhotoView._activePhoto.set('lat', placeObj.lat);
             modalPhotoView._activePhoto.set('lng', placeObj.lng);
-            modalPhotoView._activePhoto.set('placeName', placeObj.name);
+            modalPhotoView._activePhoto.set('placeString', placeObj.name);
 
             $("#modalPhotoView").data("kendoMobileModalView").open();
         });
