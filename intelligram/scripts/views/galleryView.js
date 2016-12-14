@@ -1386,7 +1386,7 @@ var modalPhotoView = {
     		}
     	});*/
         // todo - wire new photo DS
-        $("#photo-smartTag").kendoMultiSelect({
+        /*$("#photo-smartTag").kendoMultiSelect({
             autoClose: false,
             dataTextField: "tagname",
             dataValueField: "uuid",
@@ -1401,7 +1401,7 @@ var modalPhotoView = {
                 var text = item.text();
             },
             dataSource: tagModel.tagsDS
-        });
+        });*/
     },
 
     openModal : function (photo, deleteCallback) {
