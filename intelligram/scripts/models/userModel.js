@@ -232,6 +232,7 @@ var userModel = {
     },
 
     clearCloudModels : function () {
+        mobileNotify("Clearing Cloud Models...");
         photoModel.clearStorage();
         contactModel.clearStorage();
         channelModel.clearStorage();
@@ -553,8 +554,10 @@ var userModel = {
             uuid: uuid
         });
 
-        /* appDataChannel.history();
-         userDataChannel.history();*/
+        deviceModel.setAppState('pubnubInit', true);
+        deviceModel.isPushProvisioned();
+
+
         // This is new message read multiplexer...
         APP.pubnub.addListener({
 
@@ -597,14 +600,12 @@ var userModel = {
             status: function(s) {
                 // handle status
                 if (s.category === "PNConnectedCategory") {
-                    mobileNotify("Pubnub Connected");
-                    deviceModel.setAppState('pubnubInit', true);
-                    deviceModel.isPushProvisioned();
+                   // mobileNotify("Pubnub Connected");
+
 
                 } else if (s.category === "PNReconnectedCategory") {
-                    mobileNotify("Pubnub ReConnected");
-                    appDataChannel.history();
-                    userDataChannel.history();
+                   // mobileNotify("Pubnub ReConnected");
+
                 } else if (s.category === "PNNetworkDownCategory") {
                     mobileNotify("Pubnub Network Down!");
 
