@@ -678,6 +678,7 @@ var userStatusView = {
 
         everlive.isAuthenticated = false;
         deviceModel.resetDeviceState();
+        APP.pubnub = null;
         everlive.clearLocalStorage();
 
         userModel.clearCloudModels();
@@ -2881,7 +2882,7 @@ var userPermission = {
     goTriggerSystem: function(e){
         var btnType = e.button[0].dataset.type;
         userPermission._type = btnType;
-        userPermission.triggerSystemDialog()
+        userPermission.triggerSystemDialog();
     }
 
 };

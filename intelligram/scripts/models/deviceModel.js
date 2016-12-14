@@ -144,7 +144,7 @@ var deviceModel = {
 
     onGoogleMapsLoaded : function () {
 
-        mobileNotify("Maps loaded...");
+       // mobileNotify("Maps loaded...");
 
         if (google === undefined || google === null) {
             deviceModel.state.googleMapsLoaded = false;
