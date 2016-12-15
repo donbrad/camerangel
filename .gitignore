@@ -2,7 +2,7 @@
 */obj
 *.ipa
 *.apk
-*.ab/*
+*.ab
 *.user-settings.xml
 
 lesswatch.bat

@@ -31,7 +31,6 @@
     "uk.co.whiteoctober.cordova.appversion@0.1.7",
     "nl.x-services.plugins.calendar@4.5.5",
     "cordova-plugin-battery-status",
-    "cordova-plugin-console",
     "cordova-plugin-contacts",
     "cordova-plugin-device",
     "cordova-plugin-device-motion",
