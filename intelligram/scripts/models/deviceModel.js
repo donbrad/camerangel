@@ -189,6 +189,7 @@ var deviceModel = {
 
     onPause: function() {
         deviceModel.setAppState('inBackground', true);
+        homeView.disableHotButtons();
        // console.log("Pause");
 
 
@@ -196,6 +197,7 @@ var deviceModel = {
 
     onActive : function () {
         deviceModel.setAppState('inBackground', false);
+        homeView.enableHotButtons();
        /* var channels = channelModel.getUnreadChannels();
 
         for (var i=0; i<channels.length; i++) {
@@ -215,6 +217,7 @@ var deviceModel = {
             notificationModel.processUnreadChannels();
             appDataChannel.resumeHistory();
             userDataChannel.resumeHistory();
+            homeView.enableHotButtons();
         } else {
             if (APP.everlive !== null)
              APP.everlive.offline();
